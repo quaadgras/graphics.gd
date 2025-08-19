@@ -130,36 +130,36 @@ func (self Instance) SetFftSize(value FFTSize) {
 
 //go:nosplit
 func (self class) SetBufferLength(seconds float64) { //gd:AudioEffectSpectrumAnalyzer.set_buffer_length
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_buffer_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ seconds float64 }{seconds}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_buffer_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ seconds float64 }{seconds}))
 }
 
 //go:nosplit
 func (self class) GetBufferLength() float64 { //gd:AudioEffectSpectrumAnalyzer.get_buffer_length
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_buffer_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_buffer_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTapBackPos(seconds float64) { //gd:AudioEffectSpectrumAnalyzer.set_tap_back_pos
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_tap_back_pos), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ seconds float64 }{seconds}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_tap_back_pos), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ seconds float64 }{seconds}))
 }
 
 //go:nosplit
 func (self class) GetTapBackPos() float64 { //gd:AudioEffectSpectrumAnalyzer.get_tap_back_pos
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_tap_back_pos), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_tap_back_pos), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFftSize(size FFTSize) { //gd:AudioEffectSpectrumAnalyzer.set_fft_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_fft_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size FFTSize }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_set_fft_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size FFTSize }{size}))
 }
 
 //go:nosplit
 func (self class) GetFftSize() FFTSize { //gd:AudioEffectSpectrumAnalyzer.get_fft_size
-	var r_ret = gdextension.Call[FFTSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_fft_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[FFTSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzer.Bind_get_fft_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

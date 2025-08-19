@@ -112,12 +112,12 @@ func (self Instance) SetDegreesMode(value bool) {
 
 //go:nosplit
 func (self class) SetDegreesMode(enabled bool) { //gd:VisualShaderNodeParticleMultiplyByAxisAngle.set_degrees_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleMultiplyByAxisAngle.Bind_set_degrees_mode), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleMultiplyByAxisAngle.Bind_set_degrees_mode), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsDegreesMode() bool { //gd:VisualShaderNodeParticleMultiplyByAxisAngle.is_degrees_mode
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleMultiplyByAxisAngle.Bind_is_degrees_mode), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleMultiplyByAxisAngle.Bind_is_degrees_mode), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

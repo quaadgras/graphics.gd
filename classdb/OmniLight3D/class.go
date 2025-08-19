@@ -115,12 +115,12 @@ func (self Instance) SetOmniShadowMode(value ShadowMode) {
 
 //go:nosplit
 func (self class) SetShadowMode(mode ShadowMode) { //gd:OmniLight3D.set_shadow_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OmniLight3D.Bind_set_shadow_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ShadowMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OmniLight3D.Bind_set_shadow_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ShadowMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetShadowMode() ShadowMode { //gd:OmniLight3D.get_shadow_mode
-	var r_ret = gdextension.Call[ShadowMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OmniLight3D.Bind_get_shadow_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ShadowMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OmniLight3D.Bind_get_shadow_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -99,7 +99,7 @@ var self [1]gdclass.RenderingServer
 var once sync.Once
 
 func singleton() {
-	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.RenderingServer)
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.RenderingServer)[0])))})
 	self = *(*[1]gdclass.RenderingServer)(unsafe.Pointer(&obj))
 }
 
@@ -4641,7 +4641,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) Texture2dCreate(image [1]gdclass.Image) RID.Any { //gd:RenderingServer.texture_2d_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_create), gdextension.SizeRID|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_create), gdextension.SizeRID|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -4653,7 +4653,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) Texture2dLayeredCreate(layers Array.Contains[[1]gdclass.Image], layered_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_2d_layered_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_layered_create), gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_layered_create), gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		layers       gdextension.Array
 		layered_type TextureLayeredType
 	}{gdextension.Array(pointers.Get(gd.InternalArray(layers))[0]), layered_type}))
@@ -4666,7 +4666,7 @@ func (self class) Texture2dLayeredCreate(layers Array.Contains[[1]gdclass.Image]
 */
 //go:nosplit
 func (self class) Texture3dCreate(format Image.Format, width int64, height int64, depth int64, mipmaps bool, data Array.Contains[[1]gdclass.Image]) RID.Any { //gd:RenderingServer.texture_3d_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_3d_create), gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeArray<<24), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_3d_create), gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeArray<<24), unsafe.Pointer(&struct {
 		format  Image.Format
 		width   int64
 		height  int64
@@ -4683,7 +4683,7 @@ This method does nothing and always returns an invalid [RID].
 */
 //go:nosplit
 func (self class) TextureProxyCreate(base RID.Any) RID.Any { //gd:RenderingServer.texture_proxy_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_proxy_create), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ base RID.Any }{base}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_proxy_create), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ base RID.Any }{base}))
 	var ret = r_ret
 	return ret
 }
@@ -4694,7 +4694,7 @@ Creates a texture based on a native handle that was created outside of Godot's r
 */
 //go:nosplit
 func (self class) TextureCreateFromNativeHandle(atype TextureType, format Image.Format, native_handle int64, width int64, height int64, depth int64, layers int64, layered_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_create_from_native_handle
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_create_from_native_handle), gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_create_from_native_handle), gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), unsafe.Pointer(&struct {
 		atype         TextureType
 		format        Image.Format
 		native_handle int64
@@ -4714,7 +4714,7 @@ Updates the texture specified by the [param texture] [RID] with the data in [par
 */
 //go:nosplit
 func (self class) Texture2dUpdate(texture RID.Any, image [1]gdclass.Image, layer int64) { //gd:RenderingServer.texture_2d_update
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_update), 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_update), 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		texture RID.Any
 		image   gdextension.Object
 		layer   int64
@@ -4727,7 +4727,7 @@ Updates the texture specified by the [param texture] [RID]'s data with the data 
 */
 //go:nosplit
 func (self class) Texture3dUpdate(texture RID.Any, data Array.Contains[[1]gdclass.Image]) { //gd:RenderingServer.texture_3d_update
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_3d_update), 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_3d_update), 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		texture RID.Any
 		data    gdextension.Array
 	}{texture, gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
@@ -4738,7 +4738,7 @@ This method does nothing.
 */
 //go:nosplit
 func (self class) TextureProxyUpdate(texture RID.Any, proxy_to RID.Any) { //gd:RenderingServer.texture_proxy_update
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_proxy_update), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_proxy_update), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		texture  RID.Any
 		proxy_to RID.Any
 	}{texture, proxy_to}))
@@ -4751,7 +4751,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) Texture2dPlaceholderCreate() RID.Any { //gd:RenderingServer.texture_2d_placeholder_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_placeholder_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_placeholder_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -4762,7 +4762,7 @@ Creates a placeholder for a 2-dimensional layered texture and adds it to the Ren
 */
 //go:nosplit
 func (self class) Texture2dLayeredPlaceholderCreate(layered_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_2d_layered_placeholder_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_layered_placeholder_create), gdextension.SizeRID|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layered_type TextureLayeredType }{layered_type}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_layered_placeholder_create), gdextension.SizeRID|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layered_type TextureLayeredType }{layered_type}))
 	var ret = r_ret
 	return ret
 }
@@ -4774,7 +4774,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) Texture3dPlaceholderCreate() RID.Any { //gd:RenderingServer.texture_3d_placeholder_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_3d_placeholder_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_3d_placeholder_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -4790,7 +4790,7 @@ $Sprite2D.texture = texture
 */
 //go:nosplit
 func (self class) Texture2dGet(texture RID.Any) [1]gdclass.Image { //gd:RenderingServer.texture_2d_get
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_get), gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_get), gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
@@ -4800,7 +4800,7 @@ Returns an [Image] instance from the given [param texture] [RID] and [param laye
 */
 //go:nosplit
 func (self class) Texture2dLayerGet(texture RID.Any, layer int64) [1]gdclass.Image { //gd:RenderingServer.texture_2d_layer_get
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_layer_get), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_layer_get), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		texture RID.Any
 		layer   int64
 	}{texture, layer}))
@@ -4813,7 +4813,7 @@ Returns 3D texture data as an array of [Image]s for the specified texture [RID].
 */
 //go:nosplit
 func (self class) Texture3dGet(texture RID.Any) Array.Contains[[1]gdclass.Image] { //gd:RenderingServer.texture_3d_get
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_3d_get), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_3d_get), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -4823,7 +4823,7 @@ Replaces [param texture]'s texture data by the texture specified by the [param b
 */
 //go:nosplit
 func (self class) TextureReplace(texture RID.Any, by_texture RID.Any) { //gd:RenderingServer.texture_replace
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_replace), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_replace), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		texture    RID.Any
 		by_texture RID.Any
 	}{texture, by_texture}))
@@ -4831,7 +4831,7 @@ func (self class) TextureReplace(texture RID.Any, by_texture RID.Any) { //gd:Ren
 
 //go:nosplit
 func (self class) TextureSetSizeOverride(texture RID.Any, width int64, height int64) { //gd:RenderingServer.texture_set_size_override
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_set_size_override), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_set_size_override), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		texture RID.Any
 		width   int64
 		height  int64
@@ -4840,7 +4840,7 @@ func (self class) TextureSetSizeOverride(texture RID.Any, width int64, height in
 
 //go:nosplit
 func (self class) TextureSetPath(texture RID.Any, path String.Readable) { //gd:RenderingServer.texture_set_path
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_set_path), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_set_path), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		texture RID.Any
 		path    gdextension.String
 	}{texture, gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
@@ -4848,7 +4848,7 @@ func (self class) TextureSetPath(texture RID.Any, path String.Readable) { //gd:R
 
 //go:nosplit
 func (self class) TextureGetPath(texture RID.Any) String.Readable { //gd:RenderingServer.texture_get_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_get_path), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_get_path), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4858,14 +4858,14 @@ Returns the format for the texture.
 */
 //go:nosplit
 func (self class) TextureGetFormat(texture RID.Any) Image.Format { //gd:RenderingServer.texture_get_format
-	var r_ret = gdextension.Call[Image.Format](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_get_format), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
+	var r_ret = gdextension.Call[Image.Format](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_get_format), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) TextureSetForceRedrawIfVisible(texture RID.Any, enable bool) { //gd:RenderingServer.texture_set_force_redraw_if_visible
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_set_force_redraw_if_visible), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_set_force_redraw_if_visible), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		texture RID.Any
 		enable  bool
 	}{texture, enable}))
@@ -4876,7 +4876,7 @@ Creates a new texture object based on a texture created directly on the [Renderi
 */
 //go:nosplit
 func (self class) TextureRdCreate(rd_texture RID.Any, layer_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_rd_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_rd_create), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_rd_create), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rd_texture RID.Any
 		layer_type TextureLayeredType
 	}{rd_texture, layer_type}))
@@ -4889,7 +4889,7 @@ Returns a texture [RID] that can be used with [RenderingDevice].
 */
 //go:nosplit
 func (self class) TextureGetRdTexture(texture RID.Any, srgb bool) RID.Any { //gd:RenderingServer.texture_get_rd_texture
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_get_rd_texture), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_get_rd_texture), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		texture RID.Any
 		srgb    bool
 	}{texture, srgb}))
@@ -4903,7 +4903,7 @@ Returns the internal graphics handle for this texture object. For use when commu
 */
 //go:nosplit
 func (self class) TextureGetNativeHandle(texture RID.Any, srgb bool) int64 { //gd:RenderingServer.texture_get_native_handle
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_get_native_handle), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_get_native_handle), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		texture RID.Any
 		srgb    bool
 	}{texture, srgb}))
@@ -4918,7 +4918,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) ShaderCreate() RID.Any { //gd:RenderingServer.shader_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -4928,7 +4928,7 @@ Sets the shader's source code (which triggers recompilation after being changed)
 */
 //go:nosplit
 func (self class) ShaderSetCode(shader RID.Any, code String.Readable) { //gd:RenderingServer.shader_set_code
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_set_code), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_set_code), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		shader RID.Any
 		code   gdextension.String
 	}{shader, gdextension.String(pointers.Get(gd.InternalString(code))[0])}))
@@ -4939,7 +4939,7 @@ Sets the path hint for the specified shader. This should generally match the [Sh
 */
 //go:nosplit
 func (self class) ShaderSetPathHint(shader RID.Any, path String.Readable) { //gd:RenderingServer.shader_set_path_hint
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_set_path_hint), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_set_path_hint), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		shader RID.Any
 		path   gdextension.String
 	}{shader, gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
@@ -4950,7 +4950,7 @@ Returns a shader's source code as a string.
 */
 //go:nosplit
 func (self class) ShaderGetCode(shader RID.Any) String.Readable { //gd:RenderingServer.shader_get_code
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_get_code), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shader RID.Any }{shader}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_get_code), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shader RID.Any }{shader}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4960,7 +4960,7 @@ Returns the parameters of a shader.
 */
 //go:nosplit
 func (self class) GetShaderParameterList(shader RID.Any) Array.Contains[Dictionary.Any] { //gd:RenderingServer.get_shader_parameter_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_shader_parameter_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shader RID.Any }{shader}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_shader_parameter_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shader RID.Any }{shader}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -4970,7 +4970,7 @@ Returns the default value for the specified shader uniform. This is usually the 
 */
 //go:nosplit
 func (self class) ShaderGetParameterDefault(shader RID.Any, name String.Name) variant.Any { //gd:RenderingServer.shader_get_parameter_default
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_get_parameter_default), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_get_parameter_default), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		shader RID.Any
 		name   gdextension.StringName
 	}{shader, gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
@@ -4984,7 +4984,7 @@ Sets a shader's default texture. Overwrites the texture given by name.
 */
 //go:nosplit
 func (self class) ShaderSetDefaultTextureParameter(shader RID.Any, name String.Name, texture RID.Any, index int64) { //gd:RenderingServer.shader_set_default_texture_parameter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_set_default_texture_parameter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_set_default_texture_parameter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		shader  RID.Any
 		name    gdextension.StringName
 		texture RID.Any
@@ -4998,7 +4998,7 @@ Returns a default texture from a shader searched by name.
 */
 //go:nosplit
 func (self class) ShaderGetDefaultTextureParameter(shader RID.Any, name String.Name, index int64) RID.Any { //gd:RenderingServer.shader_get_default_texture_parameter
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_get_default_texture_parameter), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_get_default_texture_parameter), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		shader RID.Any
 		name   gdextension.StringName
 		index  int64
@@ -5014,7 +5014,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) MaterialCreate() RID.Any { //gd:RenderingServer.material_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -5024,7 +5024,7 @@ Sets a shader material's shader.
 */
 //go:nosplit
 func (self class) MaterialSetShader(shader_material RID.Any, shader RID.Any) { //gd:RenderingServer.material_set_shader
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_set_shader), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_set_shader), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		shader_material RID.Any
 		shader          RID.Any
 	}{shader_material, shader}))
@@ -5035,7 +5035,7 @@ Sets a material's parameter.
 */
 //go:nosplit
 func (self class) MaterialSetParam(material RID.Any, parameter String.Name, value variant.Any) { //gd:RenderingServer.material_set_param
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_set_param), 0|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_set_param), 0|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		material  RID.Any
 		parameter gdextension.StringName
 		value     gdextension.Variant
@@ -5047,7 +5047,7 @@ Returns the value of a certain material's parameter.
 */
 //go:nosplit
 func (self class) MaterialGetParam(material RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.material_get_param
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_get_param), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_get_param), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		material  RID.Any
 		parameter gdextension.StringName
 	}{material, gdextension.StringName(pointers.Get(gd.InternalStringName(parameter))[0])}))
@@ -5060,7 +5060,7 @@ Sets a material's render priority.
 */
 //go:nosplit
 func (self class) MaterialSetRenderPriority(material RID.Any, priority int64) { //gd:RenderingServer.material_set_render_priority
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_set_render_priority), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_set_render_priority), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		material RID.Any
 		priority int64
 	}{material, priority}))
@@ -5071,7 +5071,7 @@ Sets an object's next material.
 */
 //go:nosplit
 func (self class) MaterialSetNextPass(material RID.Any, next_material RID.Any) { //gd:RenderingServer.material_set_next_pass
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_set_next_pass), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_set_next_pass), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		material      RID.Any
 		next_material RID.Any
 	}{material, next_material}))
@@ -5079,7 +5079,7 @@ func (self class) MaterialSetNextPass(material RID.Any, next_material RID.Any) {
 
 //go:nosplit
 func (self class) MeshCreateFromSurfaces(surfaces Array.Contains[Dictionary.Any], blend_shape_count int64) RID.Any { //gd:RenderingServer.mesh_create_from_surfaces
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_create_from_surfaces), gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_create_from_surfaces), gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		surfaces          gdextension.Array
 		blend_shape_count int64
 	}{gdextension.Array(pointers.Get(gd.InternalArray(surfaces))[0]), blend_shape_count}))
@@ -5095,7 +5095,7 @@ To place in a scene, attach this mesh to an instance using [method instance_set_
 */
 //go:nosplit
 func (self class) MeshCreate() RID.Any { //gd:RenderingServer.mesh_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -5105,7 +5105,7 @@ Returns the offset of a given attribute by [param array_index] in the start of i
 */
 //go:nosplit
 func (self class) MeshSurfaceGetFormatOffset(format ArrayFormat, vertex_count int64, array_index int64) int64 { //gd:RenderingServer.mesh_surface_get_format_offset
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_offset), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_offset), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		format       ArrayFormat
 		vertex_count int64
 		array_index  int64
@@ -5119,7 +5119,7 @@ Returns the stride of the vertex positions for a mesh with given [param format].
 */
 //go:nosplit
 func (self class) MeshSurfaceGetFormatVertexStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_vertex_stride
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_vertex_stride), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_vertex_stride), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		format       ArrayFormat
 		vertex_count int64
 	}{format, vertex_count}))
@@ -5132,7 +5132,7 @@ Returns the stride of the combined normals and tangents for a mesh with given [p
 */
 //go:nosplit
 func (self class) MeshSurfaceGetFormatNormalTangentStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_normal_tangent_stride
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_normal_tangent_stride), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_normal_tangent_stride), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		format       ArrayFormat
 		vertex_count int64
 	}{format, vertex_count}))
@@ -5145,7 +5145,7 @@ Returns the stride of the attribute buffer for a mesh with given [param format].
 */
 //go:nosplit
 func (self class) MeshSurfaceGetFormatAttributeStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_attribute_stride
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_attribute_stride), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_attribute_stride), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		format       ArrayFormat
 		vertex_count int64
 	}{format, vertex_count}))
@@ -5158,7 +5158,7 @@ Returns the stride of the skin buffer for a mesh with given [param format].
 */
 //go:nosplit
 func (self class) MeshSurfaceGetFormatSkinStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_skin_stride
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_skin_stride), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_format_skin_stride), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		format       ArrayFormat
 		vertex_count int64
 	}{format, vertex_count}))
@@ -5168,7 +5168,7 @@ func (self class) MeshSurfaceGetFormatSkinStride(format ArrayFormat, vertex_coun
 
 //go:nosplit
 func (self class) MeshAddSurface(mesh RID.Any, surface Dictionary.Any) { //gd:RenderingServer.mesh_add_surface
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_add_surface), 0|(gdextension.SizeRID<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_add_surface), 0|(gdextension.SizeRID<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
 		mesh    RID.Any
 		surface gdextension.Dictionary
 	}{mesh, gdextension.Dictionary(pointers.Get(gd.InternalDictionary(surface))[0])}))
@@ -5176,7 +5176,7 @@ func (self class) MeshAddSurface(mesh RID.Any, surface Dictionary.Any) { //gd:Re
 
 //go:nosplit
 func (self class) MeshAddSurfaceFromArrays(mesh RID.Any, primitive PrimitiveType, arrays Array.Any, blend_shapes Array.Any, lods Dictionary.Any, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_add_surface_from_arrays), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeArray<<16)|(gdextension.SizeDictionary<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_add_surface_from_arrays), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeArray<<16)|(gdextension.SizeDictionary<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
 		mesh            RID.Any
 		primitive       PrimitiveType
 		arrays          gdextension.Array
@@ -5191,7 +5191,7 @@ Returns a mesh's blend shape count.
 */
 //go:nosplit
 func (self class) MeshGetBlendShapeCount(mesh RID.Any) int64 { //gd:RenderingServer.mesh_get_blend_shape_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_get_blend_shape_count), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mesh RID.Any }{mesh}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_get_blend_shape_count), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mesh RID.Any }{mesh}))
 	var ret = r_ret
 	return ret
 }
@@ -5201,7 +5201,7 @@ Sets a mesh's blend shape mode.
 */
 //go:nosplit
 func (self class) MeshSetBlendShapeMode(mesh RID.Any, mode BlendShapeMode) { //gd:RenderingServer.mesh_set_blend_shape_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_set_blend_shape_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_set_blend_shape_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		mesh RID.Any
 		mode BlendShapeMode
 	}{mesh, mode}))
@@ -5212,7 +5212,7 @@ Returns a mesh's blend shape mode.
 */
 //go:nosplit
 func (self class) MeshGetBlendShapeMode(mesh RID.Any) BlendShapeMode { //gd:RenderingServer.mesh_get_blend_shape_mode
-	var r_ret = gdextension.Call[BlendShapeMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_get_blend_shape_mode), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mesh RID.Any }{mesh}))
+	var r_ret = gdextension.Call[BlendShapeMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_get_blend_shape_mode), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mesh RID.Any }{mesh}))
 	var ret = r_ret
 	return ret
 }
@@ -5222,7 +5222,7 @@ Sets a mesh's surface's material.
 */
 //go:nosplit
 func (self class) MeshSurfaceSetMaterial(mesh RID.Any, surface int64, material RID.Any) { //gd:RenderingServer.mesh_surface_set_material
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_set_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_set_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
 		mesh     RID.Any
 		surface  int64
 		material RID.Any
@@ -5234,7 +5234,7 @@ Returns a mesh's surface's material.
 */
 //go:nosplit
 func (self class) MeshSurfaceGetMaterial(mesh RID.Any, surface int64) RID.Any { //gd:RenderingServer.mesh_surface_get_material
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_material), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_material), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		mesh    RID.Any
 		surface int64
 	}{mesh, surface}))
@@ -5244,7 +5244,7 @@ func (self class) MeshSurfaceGetMaterial(mesh RID.Any, surface int64) RID.Any { 
 
 //go:nosplit
 func (self class) MeshGetSurface(mesh RID.Any, surface int64) Dictionary.Any { //gd:RenderingServer.mesh_get_surface
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_get_surface), gdextension.SizeDictionary|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_get_surface), gdextension.SizeDictionary|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		mesh    RID.Any
 		surface int64
 	}{mesh, surface}))
@@ -5257,7 +5257,7 @@ Returns a mesh's surface's buffer arrays.
 */
 //go:nosplit
 func (self class) MeshSurfaceGetArrays(mesh RID.Any, surface int64) Array.Any { //gd:RenderingServer.mesh_surface_get_arrays
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_arrays), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_arrays), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		mesh    RID.Any
 		surface int64
 	}{mesh, surface}))
@@ -5270,7 +5270,7 @@ Returns a mesh's surface's arrays for blend shapes.
 */
 //go:nosplit
 func (self class) MeshSurfaceGetBlendShapeArrays(mesh RID.Any, surface int64) Array.Contains[Array.Any] { //gd:RenderingServer.mesh_surface_get_blend_shape_arrays
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_blend_shape_arrays), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_blend_shape_arrays), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		mesh    RID.Any
 		surface int64
 	}{mesh, surface}))
@@ -5283,7 +5283,7 @@ Returns a mesh's number of surfaces.
 */
 //go:nosplit
 func (self class) MeshGetSurfaceCount(mesh RID.Any) int64 { //gd:RenderingServer.mesh_get_surface_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_get_surface_count), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mesh RID.Any }{mesh}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_get_surface_count), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mesh RID.Any }{mesh}))
 	var ret = r_ret
 	return ret
 }
@@ -5293,7 +5293,7 @@ Sets a mesh's custom aabb.
 */
 //go:nosplit
 func (self class) MeshSetCustomAabb(mesh RID.Any, aabb AABB.PositionSize) { //gd:RenderingServer.mesh_set_custom_aabb
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_set_custom_aabb), 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_set_custom_aabb), 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), unsafe.Pointer(&struct {
 		mesh RID.Any
 		aabb AABB.PositionSize
 	}{mesh, aabb}))
@@ -5304,7 +5304,7 @@ Returns a mesh's custom aabb.
 */
 //go:nosplit
 func (self class) MeshGetCustomAabb(mesh RID.Any) AABB.PositionSize { //gd:RenderingServer.mesh_get_custom_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_get_custom_aabb), gdextension.SizeAABB|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mesh RID.Any }{mesh}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_get_custom_aabb), gdextension.SizeAABB|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mesh RID.Any }{mesh}))
 	var ret = r_ret
 	return ret
 }
@@ -5314,7 +5314,7 @@ Removes the surface at the given index from the Mesh, shifting surfaces with hig
 */
 //go:nosplit
 func (self class) MeshSurfaceRemove(mesh RID.Any, surface int64) { //gd:RenderingServer.mesh_surface_remove
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_remove), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_remove), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		mesh    RID.Any
 		surface int64
 	}{mesh, surface}))
@@ -5325,12 +5325,12 @@ Removes all surfaces from a mesh.
 */
 //go:nosplit
 func (self class) MeshClear(mesh RID.Any) { //gd:RenderingServer.mesh_clear
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_clear), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mesh RID.Any }{mesh}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_clear), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mesh RID.Any }{mesh}))
 }
 
 //go:nosplit
 func (self class) MeshSurfaceUpdateVertexRegion(mesh RID.Any, surface int64, offset int64, data Packed.Bytes) { //gd:RenderingServer.mesh_surface_update_vertex_region
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_update_vertex_region), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_update_vertex_region), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
 		mesh    RID.Any
 		surface int64
 		offset  int64
@@ -5340,7 +5340,7 @@ func (self class) MeshSurfaceUpdateVertexRegion(mesh RID.Any, surface int64, off
 
 //go:nosplit
 func (self class) MeshSurfaceUpdateAttributeRegion(mesh RID.Any, surface int64, offset int64, data Packed.Bytes) { //gd:RenderingServer.mesh_surface_update_attribute_region
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_update_attribute_region), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_update_attribute_region), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
 		mesh    RID.Any
 		surface int64
 		offset  int64
@@ -5350,7 +5350,7 @@ func (self class) MeshSurfaceUpdateAttributeRegion(mesh RID.Any, surface int64, 
 
 //go:nosplit
 func (self class) MeshSurfaceUpdateSkinRegion(mesh RID.Any, surface int64, offset int64, data Packed.Bytes) { //gd:RenderingServer.mesh_surface_update_skin_region
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_update_skin_region), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_update_skin_region), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
 		mesh    RID.Any
 		surface int64
 		offset  int64
@@ -5360,7 +5360,7 @@ func (self class) MeshSurfaceUpdateSkinRegion(mesh RID.Any, surface int64, offse
 
 //go:nosplit
 func (self class) MeshSetShadowMesh(mesh RID.Any, shadow_mesh RID.Any) { //gd:RenderingServer.mesh_set_shadow_mesh
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_set_shadow_mesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_set_shadow_mesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		mesh        RID.Any
 		shadow_mesh RID.Any
 	}{mesh, shadow_mesh}))
@@ -5374,14 +5374,14 @@ To place in a scene, attach this multimesh to an instance using [method instance
 */
 //go:nosplit
 func (self class) MultimeshCreate() RID.Any { //gd:RenderingServer.multimesh_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) MultimeshAllocateData(multimesh RID.Any, instances int64, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_allocate_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_allocate_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
 		multimesh          RID.Any
 		instances          int64
 		transform_format   MultimeshTransformFormat
@@ -5396,7 +5396,7 @@ Returns the number of instances allocated for this multimesh.
 */
 //go:nosplit
 func (self class) MultimeshGetInstanceCount(multimesh RID.Any) int64 { //gd:RenderingServer.multimesh_get_instance_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_instance_count), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_instance_count), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
 	var ret = r_ret
 	return ret
 }
@@ -5406,7 +5406,7 @@ Sets the mesh to be drawn by the multimesh. Equivalent to [member MultiMesh.mesh
 */
 //go:nosplit
 func (self class) MultimeshSetMesh(multimesh RID.Any, mesh RID.Any) { //gd:RenderingServer.multimesh_set_mesh
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_mesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_mesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		multimesh RID.Any
 		mesh      RID.Any
 	}{multimesh, mesh}))
@@ -5417,7 +5417,7 @@ Sets the [Transform3D] for this instance. Equivalent to [method MultiMesh.set_in
 */
 //go:nosplit
 func (self class) MultimeshInstanceSetTransform(multimesh RID.Any, index int64, transform Transform3D.BasisOrigin) { //gd:RenderingServer.multimesh_instance_set_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), unsafe.Pointer(&struct {
 		multimesh RID.Any
 		index     int64
 		transform Transform3D.BasisOrigin
@@ -5429,7 +5429,7 @@ Sets the [Transform2D] for this instance. For use when multimesh is used in 2D. 
 */
 //go:nosplit
 func (self class) MultimeshInstanceSetTransform2d(multimesh RID.Any, index int64, transform Transform2D.OriginXY) { //gd:RenderingServer.multimesh_instance_set_transform_2d
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_transform_2d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform2D<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_transform_2d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform2D<<12), unsafe.Pointer(&struct {
 		multimesh RID.Any
 		index     int64
 		transform Transform2D.OriginXY
@@ -5441,7 +5441,7 @@ Sets the color by which this instance will be modulated. Equivalent to [method M
 */
 //go:nosplit
 func (self class) MultimeshInstanceSetColor(multimesh RID.Any, index int64, color Color.RGBA) { //gd:RenderingServer.multimesh_instance_set_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_color), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeColor<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_color), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeColor<<12), unsafe.Pointer(&struct {
 		multimesh RID.Any
 		index     int64
 		color     Color.RGBA
@@ -5453,7 +5453,7 @@ Sets the custom data for this instance. Custom data is passed as a [Color], but 
 */
 //go:nosplit
 func (self class) MultimeshInstanceSetCustomData(multimesh RID.Any, index int64, custom_data Color.RGBA) { //gd:RenderingServer.multimesh_instance_set_custom_data
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_custom_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeColor<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_set_custom_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeColor<<12), unsafe.Pointer(&struct {
 		multimesh   RID.Any
 		index       int64
 		custom_data Color.RGBA
@@ -5465,7 +5465,7 @@ Returns the RID of the mesh that will be used in drawing this multimesh.
 */
 //go:nosplit
 func (self class) MultimeshGetMesh(multimesh RID.Any) RID.Any { //gd:RenderingServer.multimesh_get_mesh
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_mesh), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_mesh), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
 	var ret = r_ret
 	return ret
 }
@@ -5475,7 +5475,7 @@ Calculates and returns the axis-aligned bounding box that encloses all instances
 */
 //go:nosplit
 func (self class) MultimeshGetAabb(multimesh RID.Any) AABB.PositionSize { //gd:RenderingServer.multimesh_get_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_aabb), gdextension.SizeAABB|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_aabb), gdextension.SizeAABB|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
 	var ret = r_ret
 	return ret
 }
@@ -5485,7 +5485,7 @@ Sets the custom AABB for this MultiMesh resource.
 */
 //go:nosplit
 func (self class) MultimeshSetCustomAabb(multimesh RID.Any, aabb AABB.PositionSize) { //gd:RenderingServer.multimesh_set_custom_aabb
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_custom_aabb), 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_custom_aabb), 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), unsafe.Pointer(&struct {
 		multimesh RID.Any
 		aabb      AABB.PositionSize
 	}{multimesh, aabb}))
@@ -5496,7 +5496,7 @@ Returns the custom AABB defined for this MultiMesh resource.
 */
 //go:nosplit
 func (self class) MultimeshGetCustomAabb(multimesh RID.Any) AABB.PositionSize { //gd:RenderingServer.multimesh_get_custom_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_custom_aabb), gdextension.SizeAABB|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_custom_aabb), gdextension.SizeAABB|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
 	var ret = r_ret
 	return ret
 }
@@ -5506,7 +5506,7 @@ Returns the [Transform3D] of the specified instance.
 */
 //go:nosplit
 func (self class) MultimeshInstanceGetTransform(multimesh RID.Any, index int64) Transform3D.BasisOrigin { //gd:RenderingServer.multimesh_instance_get_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_transform), gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_transform), gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		multimesh RID.Any
 		index     int64
 	}{multimesh, index}))
@@ -5519,7 +5519,7 @@ Returns the [Transform2D] of the specified instance. For use when the multimesh 
 */
 //go:nosplit
 func (self class) MultimeshInstanceGetTransform2d(multimesh RID.Any, index int64) Transform2D.OriginXY { //gd:RenderingServer.multimesh_instance_get_transform_2d
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_transform_2d), gdextension.SizeTransform2D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_transform_2d), gdextension.SizeTransform2D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		multimesh RID.Any
 		index     int64
 	}{multimesh, index}))
@@ -5532,7 +5532,7 @@ Returns the color by which the specified instance will be modulated.
 */
 //go:nosplit
 func (self class) MultimeshInstanceGetColor(multimesh RID.Any, index int64) Color.RGBA { //gd:RenderingServer.multimesh_instance_get_color
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_color), gdextension.SizeColor|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_color), gdextension.SizeColor|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		multimesh RID.Any
 		index     int64
 	}{multimesh, index}))
@@ -5545,7 +5545,7 @@ Returns the custom data associated with the specified instance.
 */
 //go:nosplit
 func (self class) MultimeshInstanceGetCustomData(multimesh RID.Any, index int64) Color.RGBA { //gd:RenderingServer.multimesh_instance_get_custom_data
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_custom_data), gdextension.SizeColor|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_get_custom_data), gdextension.SizeColor|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		multimesh RID.Any
 		index     int64
 	}{multimesh, index}))
@@ -5558,7 +5558,7 @@ Sets the number of instances visible at a given time. If -1, all instances that 
 */
 //go:nosplit
 func (self class) MultimeshSetVisibleInstances(multimesh RID.Any, visible int64) { //gd:RenderingServer.multimesh_set_visible_instances
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_visible_instances), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_visible_instances), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		multimesh RID.Any
 		visible   int64
 	}{multimesh, visible}))
@@ -5569,7 +5569,7 @@ Returns the number of visible instances for this multimesh.
 */
 //go:nosplit
 func (self class) MultimeshGetVisibleInstances(multimesh RID.Any) int64 { //gd:RenderingServer.multimesh_get_visible_instances
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_visible_instances), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_visible_instances), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
 	var ret = r_ret
 	return ret
 }
@@ -5595,7 +5595,7 @@ Instance transforms are in row-major order. Specifically:
 */
 //go:nosplit
 func (self class) MultimeshSetBuffer(multimesh RID.Any, buffer Packed.Array[float32]) { //gd:RenderingServer.multimesh_set_buffer
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_buffer), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_buffer), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		multimesh RID.Any
 		buffer    gdextension.PackedArray
 	}{multimesh, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer)))}))
@@ -5622,7 +5622,7 @@ Non Indexed:
 */
 //go:nosplit
 func (self class) MultimeshGetCommandBufferRdRid(multimesh RID.Any) RID.Any { //gd:RenderingServer.multimesh_get_command_buffer_rd_rid
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_command_buffer_rd_rid), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_command_buffer_rd_rid), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
 	var ret = r_ret
 	return ret
 }
@@ -5632,7 +5632,7 @@ Returns the [RenderingDevice] [RID] handle of the [MultiMesh], which can be used
 */
 //go:nosplit
 func (self class) MultimeshGetBufferRdRid(multimesh RID.Any) RID.Any { //gd:RenderingServer.multimesh_get_buffer_rd_rid
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_buffer_rd_rid), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_buffer_rd_rid), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
 	var ret = r_ret
 	return ret
 }
@@ -5643,7 +5643,7 @@ Returns the MultiMesh data (such as instance transforms, colors, etc.). See [met
 */
 //go:nosplit
 func (self class) MultimeshGetBuffer(multimesh RID.Any) Packed.Array[float32] { //gd:RenderingServer.multimesh_get_buffer
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_buffer), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_get_buffer), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ multimesh RID.Any }{multimesh}))
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -5654,7 +5654,7 @@ Takes both an array of current data and an array of data for the previous physic
 */
 //go:nosplit
 func (self class) MultimeshSetBufferInterpolated(multimesh RID.Any, buffer Packed.Array[float32], buffer_previous Packed.Array[float32]) { //gd:RenderingServer.multimesh_set_buffer_interpolated
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_buffer_interpolated), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_buffer_interpolated), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
 		multimesh       RID.Any
 		buffer          gdextension.PackedArray
 		buffer_previous gdextension.PackedArray
@@ -5666,7 +5666,7 @@ Turns on and off physics interpolation for this MultiMesh resource.
 */
 //go:nosplit
 func (self class) MultimeshSetPhysicsInterpolated(multimesh RID.Any, interpolated bool) { //gd:RenderingServer.multimesh_set_physics_interpolated
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_physics_interpolated), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_physics_interpolated), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		multimesh    RID.Any
 		interpolated bool
 	}{multimesh, interpolated}))
@@ -5678,7 +5678,7 @@ A value of [constant MULTIMESH_INTERP_QUALITY_FAST] gives fast but low quality i
 */
 //go:nosplit
 func (self class) MultimeshSetPhysicsInterpolationQuality(multimesh RID.Any, quality MultimeshPhysicsInterpolationQuality) { //gd:RenderingServer.multimesh_set_physics_interpolation_quality
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_physics_interpolation_quality), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_physics_interpolation_quality), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		multimesh RID.Any
 		quality   MultimeshPhysicsInterpolationQuality
 	}{multimesh, quality}))
@@ -5690,7 +5690,7 @@ This is useful when moving an instance to a new location, to give an instantaneo
 */
 //go:nosplit
 func (self class) MultimeshInstanceResetPhysicsInterpolation(multimesh RID.Any, index int64) { //gd:RenderingServer.multimesh_instance_reset_physics_interpolation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_reset_physics_interpolation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_instance_reset_physics_interpolation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		multimesh RID.Any
 		index     int64
 	}{multimesh, index}))
@@ -5702,14 +5702,14 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) SkeletonCreate() RID.Any { //gd:RenderingServer.skeleton_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SkeletonAllocateData(skeleton RID.Any, bones int64, is_2d_skeleton bool) { //gd:RenderingServer.skeleton_allocate_data
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_allocate_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_allocate_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		skeleton       RID.Any
 		bones          int64
 		is_2d_skeleton bool
@@ -5721,7 +5721,7 @@ Returns the number of bones allocated for this skeleton.
 */
 //go:nosplit
 func (self class) SkeletonGetBoneCount(skeleton RID.Any) int64 { //gd:RenderingServer.skeleton_get_bone_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_get_bone_count), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ skeleton RID.Any }{skeleton}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_get_bone_count), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ skeleton RID.Any }{skeleton}))
 	var ret = r_ret
 	return ret
 }
@@ -5731,7 +5731,7 @@ Sets the [Transform3D] for a specific bone of this skeleton.
 */
 //go:nosplit
 func (self class) SkeletonBoneSetTransform(skeleton RID.Any, bone int64, transform Transform3D.BasisOrigin) { //gd:RenderingServer.skeleton_bone_set_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), unsafe.Pointer(&struct {
 		skeleton  RID.Any
 		bone      int64
 		transform Transform3D.BasisOrigin
@@ -5743,7 +5743,7 @@ Returns the [Transform3D] set for a specific bone of this skeleton.
 */
 //go:nosplit
 func (self class) SkeletonBoneGetTransform(skeleton RID.Any, bone int64) Transform3D.BasisOrigin { //gd:RenderingServer.skeleton_bone_get_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_get_transform), gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_get_transform), gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		skeleton RID.Any
 		bone     int64
 	}{skeleton, bone}))
@@ -5756,7 +5756,7 @@ Sets the [Transform2D] for a specific bone of this skeleton.
 */
 //go:nosplit
 func (self class) SkeletonBoneSetTransform2d(skeleton RID.Any, bone int64, transform Transform2D.OriginXY) { //gd:RenderingServer.skeleton_bone_set_transform_2d
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_set_transform_2d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform2D<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_set_transform_2d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform2D<<12), unsafe.Pointer(&struct {
 		skeleton  RID.Any
 		bone      int64
 		transform Transform2D.OriginXY
@@ -5768,7 +5768,7 @@ Returns the [Transform2D] set for a specific bone of this skeleton.
 */
 //go:nosplit
 func (self class) SkeletonBoneGetTransform2d(skeleton RID.Any, bone int64) Transform2D.OriginXY { //gd:RenderingServer.skeleton_bone_get_transform_2d
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_get_transform_2d), gdextension.SizeTransform2D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_bone_get_transform_2d), gdextension.SizeTransform2D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		skeleton RID.Any
 		bone     int64
 	}{skeleton, bone}))
@@ -5778,7 +5778,7 @@ func (self class) SkeletonBoneGetTransform2d(skeleton RID.Any, bone int64) Trans
 
 //go:nosplit
 func (self class) SkeletonSetBaseTransform2d(skeleton RID.Any, base_transform Transform2D.OriginXY) { //gd:RenderingServer.skeleton_set_base_transform_2d
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_set_base_transform_2d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_skeleton_set_base_transform_2d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
 		skeleton       RID.Any
 		base_transform Transform2D.OriginXY
 	}{skeleton, base_transform}))
@@ -5792,7 +5792,7 @@ To place in a scene, attach this directional light to an instance using [method 
 */
 //go:nosplit
 func (self class) DirectionalLightCreate() RID.Any { //gd:RenderingServer.directional_light_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_directional_light_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_directional_light_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -5805,7 +5805,7 @@ To place in a scene, attach this omni light to an instance using [method instanc
 */
 //go:nosplit
 func (self class) OmniLightCreate() RID.Any { //gd:RenderingServer.omni_light_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_omni_light_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_omni_light_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -5817,7 +5817,7 @@ To place in a scene, attach this spot light to an instance using [method instanc
 */
 //go:nosplit
 func (self class) SpotLightCreate() RID.Any { //gd:RenderingServer.spot_light_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_spot_light_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_spot_light_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -5827,7 +5827,7 @@ Sets the color of the light. Equivalent to [member Light3D.light_color].
 */
 //go:nosplit
 func (self class) LightSetColor(light RID.Any, color Color.RGBA) { //gd:RenderingServer.light_set_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_color), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_color), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		light RID.Any
 		color Color.RGBA
 	}{light, color}))
@@ -5838,7 +5838,7 @@ Sets the specified 3D light parameter. See [enum LightParam] for options. Equiva
 */
 //go:nosplit
 func (self class) LightSetParam(light RID.Any, param LightParam, value float64) { //gd:RenderingServer.light_set_param
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_param), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_param), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		light RID.Any
 		param LightParam
 		value float64
@@ -5850,7 +5850,7 @@ If [code]true[/code], light will cast shadows. Equivalent to [member Light3D.sha
 */
 //go:nosplit
 func (self class) LightSetShadow(light RID.Any, enabled bool) { //gd:RenderingServer.light_set_shadow
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_shadow), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_shadow), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		light   RID.Any
 		enabled bool
 	}{light, enabled}))
@@ -5861,7 +5861,7 @@ Sets the projector texture to use for the specified 3D light. Equivalent to [mem
 */
 //go:nosplit
 func (self class) LightSetProjector(light RID.Any, texture RID.Any) { //gd:RenderingServer.light_set_projector
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_projector), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_projector), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		light   RID.Any
 		texture RID.Any
 	}{light, texture}))
@@ -5872,7 +5872,7 @@ If [code]true[/code], the 3D light will subtract light instead of adding light. 
 */
 //go:nosplit
 func (self class) LightSetNegative(light RID.Any, enable bool) { //gd:RenderingServer.light_set_negative
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_negative), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_negative), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		light  RID.Any
 		enable bool
 	}{light, enable}))
@@ -5883,7 +5883,7 @@ Sets the cull mask for this 3D light. Lights only affect objects in the selected
 */
 //go:nosplit
 func (self class) LightSetCullMask(light RID.Any, mask int64) { //gd:RenderingServer.light_set_cull_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		light RID.Any
 		mask  int64
 	}{light, mask}))
@@ -5894,7 +5894,7 @@ Sets the distance fade for this 3D light. This acts as a form of level of detail
 */
 //go:nosplit
 func (self class) LightSetDistanceFade(decal RID.Any, enabled bool, begin float64, shadow float64, length float64) { //gd:RenderingServer.light_set_distance_fade
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_distance_fade), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_distance_fade), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), unsafe.Pointer(&struct {
 		decal   RID.Any
 		enabled bool
 		begin   float64
@@ -5908,7 +5908,7 @@ If [code]true[/code], reverses the backface culling of the mesh. This can be use
 */
 //go:nosplit
 func (self class) LightSetReverseCullFaceMode(light RID.Any, enabled bool) { //gd:RenderingServer.light_set_reverse_cull_face_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_reverse_cull_face_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_reverse_cull_face_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		light   RID.Any
 		enabled bool
 	}{light, enabled}))
@@ -5919,7 +5919,7 @@ Sets the shadow caster mask for this 3D light. Shadows will only be cast using o
 */
 //go:nosplit
 func (self class) LightSetShadowCasterMask(light RID.Any, mask int64) { //gd:RenderingServer.light_set_shadow_caster_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_shadow_caster_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_shadow_caster_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		light RID.Any
 		mask  int64
 	}{light, mask}))
@@ -5930,7 +5930,7 @@ Sets the bake mode to use for the specified 3D light. Equivalent to [member Ligh
 */
 //go:nosplit
 func (self class) LightSetBakeMode(light RID.Any, bake_mode LightBakeMode) { //gd:RenderingServer.light_set_bake_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_bake_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_bake_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		light     RID.Any
 		bake_mode LightBakeMode
 	}{light, bake_mode}))
@@ -5941,7 +5941,7 @@ Sets the maximum SDFGI cascade in which the 3D light's indirect lighting is rend
 */
 //go:nosplit
 func (self class) LightSetMaxSdfgiCascade(light RID.Any, cascade int64) { //gd:RenderingServer.light_set_max_sdfgi_cascade
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_max_sdfgi_cascade), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_set_max_sdfgi_cascade), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		light   RID.Any
 		cascade int64
 	}{light, cascade}))
@@ -5952,7 +5952,7 @@ Sets whether to use a dual paraboloid or a cubemap for the shadow map. Dual para
 */
 //go:nosplit
 func (self class) LightOmniSetShadowMode(light RID.Any, mode LightOmniShadowMode) { //gd:RenderingServer.light_omni_set_shadow_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_omni_set_shadow_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_omni_set_shadow_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		light RID.Any
 		mode  LightOmniShadowMode
 	}{light, mode}))
@@ -5963,7 +5963,7 @@ Sets the shadow mode for this directional light. Equivalent to [member Direction
 */
 //go:nosplit
 func (self class) LightDirectionalSetShadowMode(light RID.Any, mode LightDirectionalShadowMode) { //gd:RenderingServer.light_directional_set_shadow_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_directional_set_shadow_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_directional_set_shadow_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		light RID.Any
 		mode  LightDirectionalShadowMode
 	}{light, mode}))
@@ -5974,7 +5974,7 @@ If [code]true[/code], this directional light will blend between shadow map split
 */
 //go:nosplit
 func (self class) LightDirectionalSetBlendSplits(light RID.Any, enable bool) { //gd:RenderingServer.light_directional_set_blend_splits
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_directional_set_blend_splits), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_directional_set_blend_splits), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		light  RID.Any
 		enable bool
 	}{light, enable}))
@@ -5985,7 +5985,7 @@ If [code]true[/code], this light will not be used for anything except sky shader
 */
 //go:nosplit
 func (self class) LightDirectionalSetSkyMode(light RID.Any, mode LightDirectionalSkyMode) { //gd:RenderingServer.light_directional_set_sky_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_directional_set_sky_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_directional_set_sky_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		light RID.Any
 		mode  LightDirectionalSkyMode
 	}{light, mode}))
@@ -5996,7 +5996,7 @@ Sets the texture filter mode to use when rendering light projectors. This parame
 */
 //go:nosplit
 func (self class) LightProjectorsSetFilter(filter LightProjectorFilter) { //gd:RenderingServer.light_projectors_set_filter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_projectors_set_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter LightProjectorFilter }{filter}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_light_projectors_set_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter LightProjectorFilter }{filter}))
 }
 
 /*
@@ -6004,7 +6004,7 @@ Toggles whether a bicubic filter should be used when lightmaps are sampled. This
 */
 //go:nosplit
 func (self class) LightmapsSetBicubicFilter(enable bool) { //gd:RenderingServer.lightmaps_set_bicubic_filter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmaps_set_bicubic_filter), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmaps_set_bicubic_filter), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 /*
@@ -6012,7 +6012,7 @@ Sets the filter quality for omni and spot light shadows in 3D. See also [member 
 */
 //go:nosplit
 func (self class) PositionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:RenderingServer.positional_soft_shadow_filter_set_quality
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_positional_soft_shadow_filter_set_quality), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ quality ShadowQuality }{quality}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_positional_soft_shadow_filter_set_quality), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ quality ShadowQuality }{quality}))
 }
 
 /*
@@ -6020,7 +6020,7 @@ Sets the filter [param quality] for directional light shadows in 3D. See also [m
 */
 //go:nosplit
 func (self class) DirectionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:RenderingServer.directional_soft_shadow_filter_set_quality
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_directional_soft_shadow_filter_set_quality), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ quality ShadowQuality }{quality}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_directional_soft_shadow_filter_set_quality), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ quality ShadowQuality }{quality}))
 }
 
 /*
@@ -6028,7 +6028,7 @@ Sets the [param size] of the directional light shadows in 3D. See also [member P
 */
 //go:nosplit
 func (self class) DirectionalShadowAtlasSetSize(size int64, is_16bits bool) { //gd:RenderingServer.directional_shadow_atlas_set_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_directional_shadow_atlas_set_size), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_directional_shadow_atlas_set_size), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		size      int64
 		is_16bits bool
 	}{size, is_16bits}))
@@ -6042,7 +6042,7 @@ To place in a scene, attach this reflection probe to an instance using [method i
 */
 //go:nosplit
 func (self class) ReflectionProbeCreate() RID.Any { //gd:RenderingServer.reflection_probe_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -6052,7 +6052,7 @@ Sets how often the reflection probe updates. Can either be once or every frame. 
 */
 //go:nosplit
 func (self class) ReflectionProbeSetUpdateMode(probe RID.Any, mode ReflectionProbeUpdateMode) { //gd:RenderingServer.reflection_probe_set_update_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_update_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_update_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		probe RID.Any
 		mode  ReflectionProbeUpdateMode
 	}{probe, mode}))
@@ -6063,7 +6063,7 @@ Sets the intensity of the reflection probe. Intensity modulates the strength of 
 */
 //go:nosplit
 func (self class) ReflectionProbeSetIntensity(probe RID.Any, intensity float64) { //gd:RenderingServer.reflection_probe_set_intensity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_intensity), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_intensity), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		probe     RID.Any
 		intensity float64
 	}{probe, intensity}))
@@ -6074,7 +6074,7 @@ Sets the distance in meters over which a probe blends into the scene.
 */
 //go:nosplit
 func (self class) ReflectionProbeSetBlendDistance(probe RID.Any, blend_distance float64) { //gd:RenderingServer.reflection_probe_set_blend_distance
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_blend_distance), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_blend_distance), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		probe          RID.Any
 		blend_distance float64
 	}{probe, blend_distance}))
@@ -6085,7 +6085,7 @@ Sets the reflection probe's ambient light mode. Equivalent to [member Reflection
 */
 //go:nosplit
 func (self class) ReflectionProbeSetAmbientMode(probe RID.Any, mode ReflectionProbeAmbientMode) { //gd:RenderingServer.reflection_probe_set_ambient_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_ambient_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_ambient_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		probe RID.Any
 		mode  ReflectionProbeAmbientMode
 	}{probe, mode}))
@@ -6096,7 +6096,7 @@ Sets the reflection probe's custom ambient light color. Equivalent to [member Re
 */
 //go:nosplit
 func (self class) ReflectionProbeSetAmbientColor(probe RID.Any, color Color.RGBA) { //gd:RenderingServer.reflection_probe_set_ambient_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_ambient_color), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_ambient_color), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		probe RID.Any
 		color Color.RGBA
 	}{probe, color}))
@@ -6107,7 +6107,7 @@ Sets the reflection probe's custom ambient light energy. Equivalent to [member R
 */
 //go:nosplit
 func (self class) ReflectionProbeSetAmbientEnergy(probe RID.Any, energy float64) { //gd:RenderingServer.reflection_probe_set_ambient_energy
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_ambient_energy), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_ambient_energy), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		probe  RID.Any
 		energy float64
 	}{probe, energy}))
@@ -6118,7 +6118,7 @@ Sets the max distance away from the probe an object can be before it is culled. 
 */
 //go:nosplit
 func (self class) ReflectionProbeSetMaxDistance(probe RID.Any, distance float64) { //gd:RenderingServer.reflection_probe_set_max_distance
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_max_distance), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_max_distance), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		probe    RID.Any
 		distance float64
 	}{probe, distance}))
@@ -6129,7 +6129,7 @@ Sets the size of the area that the reflection probe will capture. Equivalent to 
 */
 //go:nosplit
 func (self class) ReflectionProbeSetSize(probe RID.Any, size Vector3.XYZ) { //gd:RenderingServer.reflection_probe_set_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		probe RID.Any
 		size  Vector3.XYZ
 	}{probe, size}))
@@ -6140,7 +6140,7 @@ Sets the origin offset to be used when this reflection probe is in box project m
 */
 //go:nosplit
 func (self class) ReflectionProbeSetOriginOffset(probe RID.Any, offset Vector3.XYZ) { //gd:RenderingServer.reflection_probe_set_origin_offset
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_origin_offset), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_origin_offset), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		probe  RID.Any
 		offset Vector3.XYZ
 	}{probe, offset}))
@@ -6151,7 +6151,7 @@ If [code]true[/code], reflections will ignore sky contribution. Equivalent to [m
 */
 //go:nosplit
 func (self class) ReflectionProbeSetAsInterior(probe RID.Any, enable bool) { //gd:RenderingServer.reflection_probe_set_as_interior
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_as_interior), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_as_interior), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		probe  RID.Any
 		enable bool
 	}{probe, enable}))
@@ -6162,7 +6162,7 @@ If [code]true[/code], uses box projection. This can make reflections look more c
 */
 //go:nosplit
 func (self class) ReflectionProbeSetEnableBoxProjection(probe RID.Any, enable bool) { //gd:RenderingServer.reflection_probe_set_enable_box_projection
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_enable_box_projection), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_enable_box_projection), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		probe  RID.Any
 		enable bool
 	}{probe, enable}))
@@ -6173,7 +6173,7 @@ If [code]true[/code], computes shadows in the reflection probe. This makes the r
 */
 //go:nosplit
 func (self class) ReflectionProbeSetEnableShadows(probe RID.Any, enable bool) { //gd:RenderingServer.reflection_probe_set_enable_shadows
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_enable_shadows), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_enable_shadows), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		probe  RID.Any
 		enable bool
 	}{probe, enable}))
@@ -6184,7 +6184,7 @@ Sets the render cull mask for this reflection probe. Only instances with a match
 */
 //go:nosplit
 func (self class) ReflectionProbeSetCullMask(probe RID.Any, layers int64) { //gd:RenderingServer.reflection_probe_set_cull_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		probe  RID.Any
 		layers int64
 	}{probe, layers}))
@@ -6195,7 +6195,7 @@ Sets the render reflection mask for this reflection probe. Only instances with a
 */
 //go:nosplit
 func (self class) ReflectionProbeSetReflectionMask(probe RID.Any, layers int64) { //gd:RenderingServer.reflection_probe_set_reflection_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_reflection_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_reflection_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		probe  RID.Any
 		layers int64
 	}{probe, layers}))
@@ -6206,7 +6206,7 @@ Sets the resolution to use when rendering the specified reflection probe. The [p
 */
 //go:nosplit
 func (self class) ReflectionProbeSetResolution(probe RID.Any, resolution int64) { //gd:RenderingServer.reflection_probe_set_resolution
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_resolution), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_resolution), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		probe      RID.Any
 		resolution int64
 	}{probe, resolution}))
@@ -6217,7 +6217,7 @@ Sets the mesh level of detail to use in the reflection probe rendering. Higher v
 */
 //go:nosplit
 func (self class) ReflectionProbeSetMeshLodThreshold(probe RID.Any, pixels float64) { //gd:RenderingServer.reflection_probe_set_mesh_lod_threshold
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_mesh_lod_threshold), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_reflection_probe_set_mesh_lod_threshold), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		probe  RID.Any
 		pixels float64
 	}{probe, pixels}))
@@ -6231,7 +6231,7 @@ To place in a scene, attach this decal to an instance using [method instance_set
 */
 //go:nosplit
 func (self class) DecalCreate() RID.Any { //gd:RenderingServer.decal_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -6241,7 +6241,7 @@ Sets the [param size] of the decal specified by the [param decal] RID. Equivalen
 */
 //go:nosplit
 func (self class) DecalSetSize(decal RID.Any, size Vector3.XYZ) { //gd:RenderingServer.decal_set_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		decal RID.Any
 		size  Vector3.XYZ
 	}{decal, size}))
@@ -6252,7 +6252,7 @@ Sets the [param texture] in the given texture [param type] slot for the specifie
 */
 //go:nosplit
 func (self class) DecalSetTexture(decal RID.Any, atype DecalTexture, texture RID.Any) { //gd:RenderingServer.decal_set_texture
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_texture), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_texture), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
 		decal   RID.Any
 		atype   DecalTexture
 		texture RID.Any
@@ -6264,7 +6264,7 @@ Sets the emission [param energy] in the decal specified by the [param decal] RID
 */
 //go:nosplit
 func (self class) DecalSetEmissionEnergy(decal RID.Any, energy float64) { //gd:RenderingServer.decal_set_emission_energy
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_emission_energy), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_emission_energy), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		decal  RID.Any
 		energy float64
 	}{decal, energy}))
@@ -6275,7 +6275,7 @@ Sets the [param albedo_mix] in the decal specified by the [param decal] RID. Equ
 */
 //go:nosplit
 func (self class) DecalSetAlbedoMix(decal RID.Any, albedo_mix float64) { //gd:RenderingServer.decal_set_albedo_mix
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_albedo_mix), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_albedo_mix), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		decal      RID.Any
 		albedo_mix float64
 	}{decal, albedo_mix}))
@@ -6286,7 +6286,7 @@ Sets the color multiplier in the decal specified by the [param decal] RID to [pa
 */
 //go:nosplit
 func (self class) DecalSetModulate(decal RID.Any, color Color.RGBA) { //gd:RenderingServer.decal_set_modulate
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_modulate), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_modulate), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		decal RID.Any
 		color Color.RGBA
 	}{decal, color}))
@@ -6297,7 +6297,7 @@ Sets the cull [param mask] in the decal specified by the [param decal] RID. Equi
 */
 //go:nosplit
 func (self class) DecalSetCullMask(decal RID.Any, mask int64) { //gd:RenderingServer.decal_set_cull_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		decal RID.Any
 		mask  int64
 	}{decal, mask}))
@@ -6308,7 +6308,7 @@ Sets the distance fade parameters in the decal specified by the [param decal] RI
 */
 //go:nosplit
 func (self class) DecalSetDistanceFade(decal RID.Any, enabled bool, begin float64, length float64) { //gd:RenderingServer.decal_set_distance_fade
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_distance_fade), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_distance_fade), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
 		decal   RID.Any
 		enabled bool
 		begin   float64
@@ -6321,7 +6321,7 @@ Sets the upper fade ([param above]) and lower fade ([param below]) in the decal 
 */
 //go:nosplit
 func (self class) DecalSetFade(decal RID.Any, above float64, below float64) { //gd:RenderingServer.decal_set_fade
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_fade), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_fade), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		decal RID.Any
 		above float64
 		below float64
@@ -6333,7 +6333,7 @@ Sets the normal [param fade] in the decal specified by the [param decal] RID. Eq
 */
 //go:nosplit
 func (self class) DecalSetNormalFade(decal RID.Any, fade float64) { //gd:RenderingServer.decal_set_normal_fade
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_normal_fade), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decal_set_normal_fade), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		decal RID.Any
 		fade  float64
 	}{decal, fade}))
@@ -6344,7 +6344,7 @@ Sets the texture [param filter] mode to use when rendering decals. This paramete
 */
 //go:nosplit
 func (self class) DecalsSetFilter(filter DecalFilter) { //gd:RenderingServer.decals_set_filter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decals_set_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter DecalFilter }{filter}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_decals_set_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter DecalFilter }{filter}))
 }
 
 /*
@@ -6352,7 +6352,7 @@ If [param half_resolution] is [code]true[/code], renders [VoxelGI] and SDFGI ([m
 */
 //go:nosplit
 func (self class) GiSetUseHalfResolution(half_resolution bool) { //gd:RenderingServer.gi_set_use_half_resolution
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_gi_set_use_half_resolution), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ half_resolution bool }{half_resolution}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_gi_set_use_half_resolution), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ half_resolution bool }{half_resolution}))
 }
 
 /*
@@ -6362,14 +6362,14 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) VoxelGiCreate() RID.Any { //gd:RenderingServer.voxel_gi_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) VoxelGiAllocateData(voxel_gi RID.Any, to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3i.XYZ, octree_cells Packed.Bytes, data_cells Packed.Bytes, distance_field Packed.Bytes, level_counts Packed.Array[int32]) { //gd:RenderingServer.voxel_gi_allocate_data
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_allocate_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8)|(gdextension.SizeAABB<<12)|(gdextension.SizeVector3i<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizePackedArray<<32), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_allocate_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8)|(gdextension.SizeAABB<<12)|(gdextension.SizeVector3i<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizePackedArray<<32), unsafe.Pointer(&struct {
 		voxel_gi       RID.Any
 		to_cell_xform  Transform3D.BasisOrigin
 		aabb           AABB.PositionSize
@@ -6383,42 +6383,42 @@ func (self class) VoxelGiAllocateData(voxel_gi RID.Any, to_cell_xform Transform3
 
 //go:nosplit
 func (self class) VoxelGiGetOctreeSize(voxel_gi RID.Any) Vector3i.XYZ { //gd:RenderingServer.voxel_gi_get_octree_size
-	var r_ret = gdextension.Call[Vector3i.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_octree_size), gdextension.SizeVector3i|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ voxel_gi RID.Any }{voxel_gi}))
+	var r_ret = gdextension.Call[Vector3i.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_octree_size), gdextension.SizeVector3i|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ voxel_gi RID.Any }{voxel_gi}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) VoxelGiGetOctreeCells(voxel_gi RID.Any) Packed.Bytes { //gd:RenderingServer.voxel_gi_get_octree_cells
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_octree_cells), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ voxel_gi RID.Any }{voxel_gi}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_octree_cells), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ voxel_gi RID.Any }{voxel_gi}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) VoxelGiGetDataCells(voxel_gi RID.Any) Packed.Bytes { //gd:RenderingServer.voxel_gi_get_data_cells
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_data_cells), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ voxel_gi RID.Any }{voxel_gi}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_data_cells), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ voxel_gi RID.Any }{voxel_gi}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) VoxelGiGetDistanceField(voxel_gi RID.Any) Packed.Bytes { //gd:RenderingServer.voxel_gi_get_distance_field
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_distance_field), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ voxel_gi RID.Any }{voxel_gi}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_distance_field), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ voxel_gi RID.Any }{voxel_gi}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) VoxelGiGetLevelCounts(voxel_gi RID.Any) Packed.Array[int32] { //gd:RenderingServer.voxel_gi_get_level_counts
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_level_counts), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ voxel_gi RID.Any }{voxel_gi}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_level_counts), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ voxel_gi RID.Any }{voxel_gi}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) VoxelGiGetToCellXform(voxel_gi RID.Any) Transform3D.BasisOrigin { //gd:RenderingServer.voxel_gi_get_to_cell_xform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_to_cell_xform), gdextension.SizeTransform3D|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ voxel_gi RID.Any }{voxel_gi}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_get_to_cell_xform), gdextension.SizeTransform3D|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ voxel_gi RID.Any }{voxel_gi}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -6428,7 +6428,7 @@ Sets the [member VoxelGIData.dynamic_range] value to use on the specified [param
 */
 //go:nosplit
 func (self class) VoxelGiSetDynamicRange(voxel_gi RID.Any, arange float64) { //gd:RenderingServer.voxel_gi_set_dynamic_range
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_dynamic_range), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_dynamic_range), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		voxel_gi RID.Any
 		arange   float64
 	}{voxel_gi, arange}))
@@ -6439,7 +6439,7 @@ Sets the [member VoxelGIData.propagation] value to use on the specified [param v
 */
 //go:nosplit
 func (self class) VoxelGiSetPropagation(voxel_gi RID.Any, amount float64) { //gd:RenderingServer.voxel_gi_set_propagation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_propagation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_propagation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		voxel_gi RID.Any
 		amount   float64
 	}{voxel_gi, amount}))
@@ -6450,7 +6450,7 @@ Sets the [member VoxelGIData.energy] value to use on the specified [param voxel_
 */
 //go:nosplit
 func (self class) VoxelGiSetEnergy(voxel_gi RID.Any, energy float64) { //gd:RenderingServer.voxel_gi_set_energy
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_energy), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_energy), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		voxel_gi RID.Any
 		energy   float64
 	}{voxel_gi, energy}))
@@ -6461,7 +6461,7 @@ Used to inform the renderer what exposure normalization value was used while bak
 */
 //go:nosplit
 func (self class) VoxelGiSetBakedExposureNormalization(voxel_gi RID.Any, baked_exposure float64) { //gd:RenderingServer.voxel_gi_set_baked_exposure_normalization
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_baked_exposure_normalization), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_baked_exposure_normalization), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		voxel_gi       RID.Any
 		baked_exposure float64
 	}{voxel_gi, baked_exposure}))
@@ -6472,7 +6472,7 @@ Sets the [member VoxelGIData.bias] value to use on the specified [param voxel_gi
 */
 //go:nosplit
 func (self class) VoxelGiSetBias(voxel_gi RID.Any, bias float64) { //gd:RenderingServer.voxel_gi_set_bias
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_bias), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_bias), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		voxel_gi RID.Any
 		bias     float64
 	}{voxel_gi, bias}))
@@ -6483,7 +6483,7 @@ Sets the [member VoxelGIData.normal_bias] value to use on the specified [param v
 */
 //go:nosplit
 func (self class) VoxelGiSetNormalBias(voxel_gi RID.Any, bias float64) { //gd:RenderingServer.voxel_gi_set_normal_bias
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_normal_bias), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_normal_bias), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		voxel_gi RID.Any
 		bias     float64
 	}{voxel_gi, bias}))
@@ -6494,7 +6494,7 @@ Sets the [member VoxelGIData.interior] value to use on the specified [param voxe
 */
 //go:nosplit
 func (self class) VoxelGiSetInterior(voxel_gi RID.Any, enable bool) { //gd:RenderingServer.voxel_gi_set_interior
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_interior), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_interior), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		voxel_gi RID.Any
 		enable   bool
 	}{voxel_gi, enable}))
@@ -6505,7 +6505,7 @@ Sets the [member VoxelGIData.use_two_bounces] value to use on the specified [par
 */
 //go:nosplit
 func (self class) VoxelGiSetUseTwoBounces(voxel_gi RID.Any, enable bool) { //gd:RenderingServer.voxel_gi_set_use_two_bounces
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_use_two_bounces), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_use_two_bounces), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		voxel_gi RID.Any
 		enable   bool
 	}{voxel_gi, enable}))
@@ -6516,7 +6516,7 @@ Sets the [member ProjectSettings.rendering/global_illumination/voxel_gi/quality]
 */
 //go:nosplit
 func (self class) VoxelGiSetQuality(quality VoxelGIQuality) { //gd:RenderingServer.voxel_gi_set_quality
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_quality), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ quality VoxelGIQuality }{quality}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_voxel_gi_set_quality), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ quality VoxelGIQuality }{quality}))
 }
 
 /*
@@ -6526,7 +6526,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) LightmapCreate() RID.Any { //gd:RenderingServer.lightmap_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -6536,7 +6536,7 @@ Set the textures on the given [param lightmap] GI instance to the texture array 
 */
 //go:nosplit
 func (self class) LightmapSetTextures(lightmap RID.Any, light RID.Any, uses_sh bool) { //gd:RenderingServer.lightmap_set_textures
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_set_textures), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_set_textures), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		lightmap RID.Any
 		light    RID.Any
 		uses_sh  bool
@@ -6545,7 +6545,7 @@ func (self class) LightmapSetTextures(lightmap RID.Any, light RID.Any, uses_sh b
 
 //go:nosplit
 func (self class) LightmapSetProbeBounds(lightmap RID.Any, bounds AABB.PositionSize) { //gd:RenderingServer.lightmap_set_probe_bounds
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_bounds), 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_bounds), 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), unsafe.Pointer(&struct {
 		lightmap RID.Any
 		bounds   AABB.PositionSize
 	}{lightmap, bounds}))
@@ -6553,7 +6553,7 @@ func (self class) LightmapSetProbeBounds(lightmap RID.Any, bounds AABB.PositionS
 
 //go:nosplit
 func (self class) LightmapSetProbeInterior(lightmap RID.Any, interior bool) { //gd:RenderingServer.lightmap_set_probe_interior
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_interior), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_interior), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		lightmap RID.Any
 		interior bool
 	}{lightmap, interior}))
@@ -6561,7 +6561,7 @@ func (self class) LightmapSetProbeInterior(lightmap RID.Any, interior bool) { //
 
 //go:nosplit
 func (self class) LightmapSetProbeCaptureData(lightmap RID.Any, points Packed.Array[Vector3.XYZ], point_sh Packed.Array[Color.RGBA], tetrahedra Packed.Array[int32], bsp_tree Packed.Array[int32]) { //gd:RenderingServer.lightmap_set_probe_capture_data
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_capture_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_capture_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20), unsafe.Pointer(&struct {
 		lightmap   RID.Any
 		points     gdextension.PackedArray
 		point_sh   gdextension.PackedArray
@@ -6572,28 +6572,28 @@ func (self class) LightmapSetProbeCaptureData(lightmap RID.Any, points Packed.Ar
 
 //go:nosplit
 func (self class) LightmapGetProbeCapturePoints(lightmap RID.Any) Packed.Array[Vector3.XYZ] { //gd:RenderingServer.lightmap_get_probe_capture_points
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_points), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ lightmap RID.Any }{lightmap}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_points), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ lightmap RID.Any }{lightmap}))
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) LightmapGetProbeCaptureSh(lightmap RID.Any) Packed.Array[Color.RGBA] { //gd:RenderingServer.lightmap_get_probe_capture_sh
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_sh), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ lightmap RID.Any }{lightmap}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_sh), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ lightmap RID.Any }{lightmap}))
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) LightmapGetProbeCaptureTetrahedra(lightmap RID.Any) Packed.Array[int32] { //gd:RenderingServer.lightmap_get_probe_capture_tetrahedra
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_tetrahedra), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ lightmap RID.Any }{lightmap}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_tetrahedra), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ lightmap RID.Any }{lightmap}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) LightmapGetProbeCaptureBspTree(lightmap RID.Any) Packed.Array[int32] { //gd:RenderingServer.lightmap_get_probe_capture_bsp_tree
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_bsp_tree), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ lightmap RID.Any }{lightmap}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_get_probe_capture_bsp_tree), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ lightmap RID.Any }{lightmap}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -6603,7 +6603,7 @@ Used to inform the renderer what exposure normalization value was used while bak
 */
 //go:nosplit
 func (self class) LightmapSetBakedExposureNormalization(lightmap RID.Any, baked_exposure float64) { //gd:RenderingServer.lightmap_set_baked_exposure_normalization
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_set_baked_exposure_normalization), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_set_baked_exposure_normalization), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		lightmap       RID.Any
 		baked_exposure float64
 	}{lightmap, baked_exposure}))
@@ -6611,7 +6611,7 @@ func (self class) LightmapSetBakedExposureNormalization(lightmap RID.Any, baked_
 
 //go:nosplit
 func (self class) LightmapSetProbeCaptureUpdateSpeed(speed float64) { //gd:RenderingServer.lightmap_set_probe_capture_update_speed
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_capture_update_speed), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ speed float64 }{speed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_capture_update_speed), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ speed float64 }{speed}))
 }
 
 /*
@@ -6623,7 +6623,7 @@ To place in a scene, attach these particles to an instance using [method instanc
 */
 //go:nosplit
 func (self class) ParticlesCreate() RID.Any { //gd:RenderingServer.particles_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -6633,7 +6633,7 @@ Sets whether the GPU particles specified by the [param particles] RID should be 
 */
 //go:nosplit
 func (self class) ParticlesSetMode(particles RID.Any, mode ParticlesMode) { //gd:RenderingServer.particles_set_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		mode      ParticlesMode
 	}{particles, mode}))
@@ -6644,7 +6644,7 @@ If [code]true[/code], particles will emit over time. Setting to [code]false[/cod
 */
 //go:nosplit
 func (self class) ParticlesSetEmitting(particles RID.Any, emitting bool) { //gd:RenderingServer.particles_set_emitting
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_emitting), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_emitting), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		emitting  bool
 	}{particles, emitting}))
@@ -6655,7 +6655,7 @@ Returns [code]true[/code] if particles are currently set to emitting.
 */
 //go:nosplit
 func (self class) ParticlesGetEmitting(particles RID.Any) bool { //gd:RenderingServer.particles_get_emitting
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_get_emitting), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ particles RID.Any }{particles}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_get_emitting), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ particles RID.Any }{particles}))
 	var ret = r_ret
 	return ret
 }
@@ -6665,7 +6665,7 @@ Sets the number of particles to be drawn and allocates the memory for them. Equi
 */
 //go:nosplit
 func (self class) ParticlesSetAmount(particles RID.Any, amount int64) { //gd:RenderingServer.particles_set_amount
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_amount), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_amount), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		amount    int64
 	}{particles, amount}))
@@ -6676,7 +6676,7 @@ Sets the amount ratio for particles to be emitted. Equivalent to [member GPUPart
 */
 //go:nosplit
 func (self class) ParticlesSetAmountRatio(particles RID.Any, ratio float64) { //gd:RenderingServer.particles_set_amount_ratio
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_amount_ratio), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_amount_ratio), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		ratio     float64
 	}{particles, ratio}))
@@ -6687,7 +6687,7 @@ Sets the lifetime of each particle in the system. Equivalent to [member GPUParti
 */
 //go:nosplit
 func (self class) ParticlesSetLifetime(particles RID.Any, lifetime float64) { //gd:RenderingServer.particles_set_lifetime
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_lifetime), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_lifetime), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		lifetime  float64
 	}{particles, lifetime}))
@@ -6698,7 +6698,7 @@ If [code]true[/code], particles will emit once and then stop. Equivalent to [mem
 */
 //go:nosplit
 func (self class) ParticlesSetOneShot(particles RID.Any, one_shot bool) { //gd:RenderingServer.particles_set_one_shot
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_one_shot), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_one_shot), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		one_shot  bool
 	}{particles, one_shot}))
@@ -6709,7 +6709,7 @@ Sets the preprocess time for the particles' animation. This lets you delay start
 */
 //go:nosplit
 func (self class) ParticlesSetPreProcessTime(particles RID.Any, time float64) { //gd:RenderingServer.particles_set_pre_process_time
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_pre_process_time), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_pre_process_time), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		time      float64
 	}{particles, time}))
@@ -6720,7 +6720,7 @@ Requests particles to process for extra process time during a single frame.
 */
 //go:nosplit
 func (self class) ParticlesRequestProcessTime(particles RID.Any, time float64) { //gd:RenderingServer.particles_request_process_time
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_request_process_time), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_request_process_time), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		time      float64
 	}{particles, time}))
@@ -6731,7 +6731,7 @@ Sets the explosiveness ratio. Equivalent to [member GPUParticles3D.explosiveness
 */
 //go:nosplit
 func (self class) ParticlesSetExplosivenessRatio(particles RID.Any, ratio float64) { //gd:RenderingServer.particles_set_explosiveness_ratio
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_explosiveness_ratio), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_explosiveness_ratio), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		ratio     float64
 	}{particles, ratio}))
@@ -6742,7 +6742,7 @@ Sets the emission randomness ratio. This randomizes the emission of particles wi
 */
 //go:nosplit
 func (self class) ParticlesSetRandomnessRatio(particles RID.Any, ratio float64) { //gd:RenderingServer.particles_set_randomness_ratio
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_randomness_ratio), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_randomness_ratio), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		ratio     float64
 	}{particles, ratio}))
@@ -6753,7 +6753,7 @@ Sets the value that informs a [ParticleProcessMaterial] to rush all particles to
 */
 //go:nosplit
 func (self class) ParticlesSetInterpToEnd(particles RID.Any, factor float64) { //gd:RenderingServer.particles_set_interp_to_end
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_interp_to_end), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_interp_to_end), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		factor    float64
 	}{particles, factor}))
@@ -6764,7 +6764,7 @@ Sets the velocity of a particle node, that will be used by [member ParticleProce
 */
 //go:nosplit
 func (self class) ParticlesSetEmitterVelocity(particles RID.Any, velocity Vector3.XYZ) { //gd:RenderingServer.particles_set_emitter_velocity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_emitter_velocity), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_emitter_velocity), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		velocity  Vector3.XYZ
 	}{particles, velocity}))
@@ -6775,7 +6775,7 @@ Sets a custom axis-aligned bounding box for the particle system. Equivalent to [
 */
 //go:nosplit
 func (self class) ParticlesSetCustomAabb(particles RID.Any, aabb AABB.PositionSize) { //gd:RenderingServer.particles_set_custom_aabb
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_custom_aabb), 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_custom_aabb), 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		aabb      AABB.PositionSize
 	}{particles, aabb}))
@@ -6786,7 +6786,7 @@ Sets the speed scale of the particle system. Equivalent to [member GPUParticles3
 */
 //go:nosplit
 func (self class) ParticlesSetSpeedScale(particles RID.Any, scale float64) { //gd:RenderingServer.particles_set_speed_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_speed_scale), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_speed_scale), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		scale     float64
 	}{particles, scale}))
@@ -6797,7 +6797,7 @@ If [code]true[/code], particles use local coordinates. If [code]false[/code] the
 */
 //go:nosplit
 func (self class) ParticlesSetUseLocalCoordinates(particles RID.Any, enable bool) { //gd:RenderingServer.particles_set_use_local_coordinates
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_use_local_coordinates), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_use_local_coordinates), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		enable    bool
 	}{particles, enable}))
@@ -6809,7 +6809,7 @@ Sets the material for processing the particles.
 */
 //go:nosplit
 func (self class) ParticlesSetProcessMaterial(particles RID.Any, material RID.Any) { //gd:RenderingServer.particles_set_process_material
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_process_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_process_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		material  RID.Any
 	}{particles, material}))
@@ -6820,7 +6820,7 @@ Sets the frame rate that the particle system rendering will be fixed to. Equival
 */
 //go:nosplit
 func (self class) ParticlesSetFixedFps(particles RID.Any, fps int64) { //gd:RenderingServer.particles_set_fixed_fps
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_fixed_fps), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_fixed_fps), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		fps       int64
 	}{particles, fps}))
@@ -6828,7 +6828,7 @@ func (self class) ParticlesSetFixedFps(particles RID.Any, fps int64) { //gd:Rend
 
 //go:nosplit
 func (self class) ParticlesSetInterpolate(particles RID.Any, enable bool) { //gd:RenderingServer.particles_set_interpolate
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_interpolate), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_interpolate), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		enable    bool
 	}{particles, enable}))
@@ -6839,7 +6839,7 @@ If [code]true[/code], uses fractional delta which smooths the movement of the pa
 */
 //go:nosplit
 func (self class) ParticlesSetFractionalDelta(particles RID.Any, enable bool) { //gd:RenderingServer.particles_set_fractional_delta
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_fractional_delta), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_fractional_delta), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		enable    bool
 	}{particles, enable}))
@@ -6847,7 +6847,7 @@ func (self class) ParticlesSetFractionalDelta(particles RID.Any, enable bool) { 
 
 //go:nosplit
 func (self class) ParticlesSetCollisionBaseSize(particles RID.Any, size float64) { //gd:RenderingServer.particles_set_collision_base_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_collision_base_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_collision_base_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		size      float64
 	}{particles, size}))
@@ -6855,7 +6855,7 @@ func (self class) ParticlesSetCollisionBaseSize(particles RID.Any, size float64)
 
 //go:nosplit
 func (self class) ParticlesSetTransformAlign(particles RID.Any, align ParticlesTransformAlign) { //gd:RenderingServer.particles_set_transform_align
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_transform_align), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_transform_align), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		align     ParticlesTransformAlign
 	}{particles, align}))
@@ -6866,7 +6866,7 @@ If [param enable] is [code]true[/code], enables trails for the [param particles]
 */
 //go:nosplit
 func (self class) ParticlesSetTrails(particles RID.Any, enable bool, length_sec float64) { //gd:RenderingServer.particles_set_trails
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_trails), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_trails), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		particles  RID.Any
 		enable     bool
 		length_sec float64
@@ -6875,7 +6875,7 @@ func (self class) ParticlesSetTrails(particles RID.Any, enable bool, length_sec 
 
 //go:nosplit
 func (self class) ParticlesSetTrailBindPoses(particles RID.Any, bind_poses Array.Contains[Transform3D.BasisOrigin]) { //gd:RenderingServer.particles_set_trail_bind_poses
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_trail_bind_poses), 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_trail_bind_poses), 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		particles  RID.Any
 		bind_poses gdextension.Array
 	}{particles, gdextension.Array(pointers.Get(gd.InternalArray(bind_poses))[0])}))
@@ -6886,7 +6886,7 @@ Returns [code]true[/code] if particles are not emitting and particles are set to
 */
 //go:nosplit
 func (self class) ParticlesIsInactive(particles RID.Any) bool { //gd:RenderingServer.particles_is_inactive
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_is_inactive), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ particles RID.Any }{particles}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_is_inactive), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ particles RID.Any }{particles}))
 	var ret = r_ret
 	return ret
 }
@@ -6896,7 +6896,7 @@ Add particle system to list of particle systems that need to be updated. Update 
 */
 //go:nosplit
 func (self class) ParticlesRequestProcess(particles RID.Any) { //gd:RenderingServer.particles_request_process
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_request_process), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ particles RID.Any }{particles}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_request_process), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ particles RID.Any }{particles}))
 }
 
 /*
@@ -6904,12 +6904,12 @@ Reset the particles on the next update. Equivalent to [method GPUParticles3D.res
 */
 //go:nosplit
 func (self class) ParticlesRestart(particles RID.Any) { //gd:RenderingServer.particles_restart
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_restart), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ particles RID.Any }{particles}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_restart), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ particles RID.Any }{particles}))
 }
 
 //go:nosplit
 func (self class) ParticlesSetSubemitter(particles RID.Any, subemitter_particles RID.Any) { //gd:RenderingServer.particles_set_subemitter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_subemitter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_subemitter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		particles            RID.Any
 		subemitter_particles RID.Any
 	}{particles, subemitter_particles}))
@@ -6920,7 +6920,7 @@ Manually emits particles from the [param particles] instance.
 */
 //go:nosplit
 func (self class) ParticlesEmit(particles RID.Any, transform Transform3D.BasisOrigin, velocity Vector3.XYZ, color Color.RGBA, custom Color.RGBA, emit_flags int64) { //gd:RenderingServer.particles_emit
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_emit), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_emit), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
 		particles  RID.Any
 		transform  Transform3D.BasisOrigin
 		velocity   Vector3.XYZ
@@ -6935,7 +6935,7 @@ Sets the draw order of the particles to one of the named enums from [enum Partic
 */
 //go:nosplit
 func (self class) ParticlesSetDrawOrder(particles RID.Any, order ParticlesDrawOrder) { //gd:RenderingServer.particles_set_draw_order
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_draw_order), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_draw_order), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		order     ParticlesDrawOrder
 	}{particles, order}))
@@ -6946,7 +6946,7 @@ Sets the number of draw passes to use. Equivalent to [member GPUParticles3D.draw
 */
 //go:nosplit
 func (self class) ParticlesSetDrawPasses(particles RID.Any, count int64) { //gd:RenderingServer.particles_set_draw_passes
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_draw_passes), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_draw_passes), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		count     int64
 	}{particles, count}))
@@ -6957,7 +6957,7 @@ Sets the mesh to be used for the specified draw pass. Equivalent to [member GPUP
 */
 //go:nosplit
 func (self class) ParticlesSetDrawPassMesh(particles RID.Any, pass int64, mesh RID.Any) { //gd:RenderingServer.particles_set_draw_pass_mesh
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_draw_pass_mesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_draw_pass_mesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
 		particles RID.Any
 		pass      int64
 		mesh      RID.Any
@@ -6969,7 +6969,7 @@ Calculates and returns the axis-aligned bounding box that contains all the parti
 */
 //go:nosplit
 func (self class) ParticlesGetCurrentAabb(particles RID.Any) AABB.PositionSize { //gd:RenderingServer.particles_get_current_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_get_current_aabb), gdextension.SizeAABB|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ particles RID.Any }{particles}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_get_current_aabb), gdextension.SizeAABB|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ particles RID.Any }{particles}))
 	var ret = r_ret
 	return ret
 }
@@ -6979,7 +6979,7 @@ Sets the [Transform3D] that will be used by the particles when they first emit.
 */
 //go:nosplit
 func (self class) ParticlesSetEmissionTransform(particles RID.Any, transform Transform3D.BasisOrigin) { //gd:RenderingServer.particles_set_emission_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_emission_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_emission_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		particles RID.Any
 		transform Transform3D.BasisOrigin
 	}{particles, gd.Transposed(transform)}))
@@ -6991,7 +6991,7 @@ Creates a new 3D GPU particle collision or attractor and adds it to the Renderin
 */
 //go:nosplit
 func (self class) ParticlesCollisionCreate() RID.Any { //gd:RenderingServer.particles_collision_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -7001,7 +7001,7 @@ Sets the collision or attractor shape [param type] for the 3D GPU particles coll
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetCollisionType(particles_collision RID.Any, atype ParticlesCollisionType) { //gd:RenderingServer.particles_collision_set_collision_type
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_collision_type), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_collision_type), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		particles_collision RID.Any
 		atype               ParticlesCollisionType
 	}{particles_collision, atype}))
@@ -7012,7 +7012,7 @@ Sets the cull [param mask] for the 3D GPU particles collision or attractor speci
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetCullMask(particles_collision RID.Any, mask int64) { //gd:RenderingServer.particles_collision_set_cull_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		particles_collision RID.Any
 		mask                int64
 	}{particles_collision, mask}))
@@ -7023,7 +7023,7 @@ Sets the [param radius] for the 3D GPU particles sphere collision or attractor s
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetSphereRadius(particles_collision RID.Any, radius float64) { //gd:RenderingServer.particles_collision_set_sphere_radius
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_sphere_radius), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_sphere_radius), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		particles_collision RID.Any
 		radius              float64
 	}{particles_collision, radius}))
@@ -7034,7 +7034,7 @@ Sets the [param extents] for the 3D GPU particles collision by the [param partic
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetBoxExtents(particles_collision RID.Any, extents Vector3.XYZ) { //gd:RenderingServer.particles_collision_set_box_extents
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_box_extents), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_box_extents), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		particles_collision RID.Any
 		extents             Vector3.XYZ
 	}{particles_collision, extents}))
@@ -7045,7 +7045,7 @@ Sets the [param strength] for the 3D GPU particles attractor specified by the [p
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetAttractorStrength(particles_collision RID.Any, strength float64) { //gd:RenderingServer.particles_collision_set_attractor_strength
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_attractor_strength), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_attractor_strength), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		particles_collision RID.Any
 		strength            float64
 	}{particles_collision, strength}))
@@ -7056,7 +7056,7 @@ Sets the directionality [param amount] for the 3D GPU particles attractor specif
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetAttractorDirectionality(particles_collision RID.Any, amount float64) { //gd:RenderingServer.particles_collision_set_attractor_directionality
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_attractor_directionality), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_attractor_directionality), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		particles_collision RID.Any
 		amount              float64
 	}{particles_collision, amount}))
@@ -7067,7 +7067,7 @@ Sets the attenuation [param curve] for the 3D GPU particles attractor specified 
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetAttractorAttenuation(particles_collision RID.Any, curve float64) { //gd:RenderingServer.particles_collision_set_attractor_attenuation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_attractor_attenuation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_attractor_attenuation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		particles_collision RID.Any
 		curve               float64
 	}{particles_collision, curve}))
@@ -7078,7 +7078,7 @@ Sets the signed distance field [param texture] for the 3D GPU particles collisio
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetFieldTexture(particles_collision RID.Any, texture RID.Any) { //gd:RenderingServer.particles_collision_set_field_texture
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_field_texture), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_field_texture), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		particles_collision RID.Any
 		texture             RID.Any
 	}{particles_collision, texture}))
@@ -7089,7 +7089,7 @@ Requests an update for the 3D GPU particle collision heightfield. This may be au
 */
 //go:nosplit
 func (self class) ParticlesCollisionHeightFieldUpdate(particles_collision RID.Any) { //gd:RenderingServer.particles_collision_height_field_update
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_height_field_update), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ particles_collision RID.Any }{particles_collision}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_height_field_update), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ particles_collision RID.Any }{particles_collision}))
 }
 
 /*
@@ -7097,7 +7097,7 @@ Sets the heightmap [param resolution] for the 3D GPU particles heightfield colli
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetHeightFieldResolution(particles_collision RID.Any, resolution ParticlesCollisionHeightfieldResolution) { //gd:RenderingServer.particles_collision_set_height_field_resolution
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_height_field_resolution), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_height_field_resolution), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		particles_collision RID.Any
 		resolution          ParticlesCollisionHeightfieldResolution
 	}{particles_collision, resolution}))
@@ -7108,7 +7108,7 @@ Sets the heightfield [param mask] for the 3D GPU particles heightfield collision
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetHeightFieldMask(particles_collision RID.Any, mask int64) { //gd:RenderingServer.particles_collision_set_height_field_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_height_field_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_collision_set_height_field_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		particles_collision RID.Any
 		mask                int64
 	}{particles_collision, mask}))
@@ -7121,7 +7121,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) FogVolumeCreate() RID.Any { //gd:RenderingServer.fog_volume_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_fog_volume_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_fog_volume_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -7131,7 +7131,7 @@ Sets the shape of the fog volume to either [constant RenderingServer.FOG_VOLUME_
 */
 //go:nosplit
 func (self class) FogVolumeSetShape(fog_volume RID.Any, shape FogVolumeShape) { //gd:RenderingServer.fog_volume_set_shape
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_fog_volume_set_shape), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_fog_volume_set_shape), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		fog_volume RID.Any
 		shape      FogVolumeShape
 	}{fog_volume, shape}))
@@ -7142,7 +7142,7 @@ Sets the size of the fog volume when shape is [constant RenderingServer.FOG_VOLU
 */
 //go:nosplit
 func (self class) FogVolumeSetSize(fog_volume RID.Any, size Vector3.XYZ) { //gd:RenderingServer.fog_volume_set_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_fog_volume_set_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_fog_volume_set_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		fog_volume RID.Any
 		size       Vector3.XYZ
 	}{fog_volume, size}))
@@ -7153,7 +7153,7 @@ Sets the [Material] of the fog volume. Can be either a [FogMaterial] or a custom
 */
 //go:nosplit
 func (self class) FogVolumeSetMaterial(fog_volume RID.Any, material RID.Any) { //gd:RenderingServer.fog_volume_set_material
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_fog_volume_set_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_fog_volume_set_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		fog_volume RID.Any
 		material   RID.Any
 	}{fog_volume, material}))
@@ -7167,14 +7167,14 @@ To place in a scene, attach this notifier to an instance using [method instance_
 */
 //go:nosplit
 func (self class) VisibilityNotifierCreate() RID.Any { //gd:RenderingServer.visibility_notifier_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_visibility_notifier_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_visibility_notifier_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) VisibilityNotifierSetAabb(notifier RID.Any, aabb AABB.PositionSize) { //gd:RenderingServer.visibility_notifier_set_aabb
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_visibility_notifier_set_aabb), 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_visibility_notifier_set_aabb), 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), unsafe.Pointer(&struct {
 		notifier RID.Any
 		aabb     AABB.PositionSize
 	}{notifier, aabb}))
@@ -7182,7 +7182,7 @@ func (self class) VisibilityNotifierSetAabb(notifier RID.Any, aabb AABB.Position
 
 //go:nosplit
 func (self class) VisibilityNotifierSetCallbacks(notifier RID.Any, enter_callable Callable.Function, exit_callable Callable.Function) { //gd:RenderingServer.visibility_notifier_set_callbacks
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_visibility_notifier_set_callbacks), 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_visibility_notifier_set_callbacks), 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
 		notifier       RID.Any
 		enter_callable gdextension.Callable
 		exit_callable  gdextension.Callable
@@ -7196,7 +7196,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) OccluderCreate() RID.Any { //gd:RenderingServer.occluder_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_occluder_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_occluder_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -7206,7 +7206,7 @@ Sets the mesh data for the given occluder RID, which controls the shape of the o
 */
 //go:nosplit
 func (self class) OccluderSetMesh(occluder RID.Any, vertices Packed.Array[Vector3.XYZ], indices Packed.Array[int32]) { //gd:RenderingServer.occluder_set_mesh
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_occluder_set_mesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_occluder_set_mesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
 		occluder RID.Any
 		vertices gdextension.PackedArray
 		indices  gdextension.PackedArray
@@ -7220,7 +7220,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) CameraCreate() RID.Any { //gd:RenderingServer.camera_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -7230,7 +7230,7 @@ Sets camera to use perspective projection. Objects on the screen becomes smaller
 */
 //go:nosplit
 func (self class) CameraSetPerspective(camera RID.Any, fovy_degrees float64, z_near float64, z_far float64) { //gd:RenderingServer.camera_set_perspective
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_perspective), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_perspective), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
 		camera       RID.Any
 		fovy_degrees float64
 		z_near       float64
@@ -7243,7 +7243,7 @@ Sets camera to use orthogonal projection, also known as orthographic projection.
 */
 //go:nosplit
 func (self class) CameraSetOrthogonal(camera RID.Any, size float64, z_near float64, z_far float64) { //gd:RenderingServer.camera_set_orthogonal
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_orthogonal), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_orthogonal), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
 		camera RID.Any
 		size   float64
 		z_near float64
@@ -7256,7 +7256,7 @@ Sets camera to use frustum projection. This mode allows adjusting the [param off
 */
 //go:nosplit
 func (self class) CameraSetFrustum(camera RID.Any, size float64, offset Vector2.XY, z_near float64, z_far float64) { //gd:RenderingServer.camera_set_frustum
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_frustum), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_frustum), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), unsafe.Pointer(&struct {
 		camera RID.Any
 		size   float64
 		offset Vector2.XY
@@ -7270,7 +7270,7 @@ Sets [Transform3D] of camera.
 */
 //go:nosplit
 func (self class) CameraSetTransform(camera RID.Any, transform Transform3D.BasisOrigin) { //gd:RenderingServer.camera_set_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		camera    RID.Any
 		transform Transform3D.BasisOrigin
 	}{camera, gd.Transposed(transform)}))
@@ -7281,7 +7281,7 @@ Sets the cull mask associated with this camera. The cull mask describes which 3D
 */
 //go:nosplit
 func (self class) CameraSetCullMask(camera RID.Any, layers int64) { //gd:RenderingServer.camera_set_cull_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		camera RID.Any
 		layers int64
 	}{camera, layers}))
@@ -7292,7 +7292,7 @@ Sets the environment used by this camera. Equivalent to [member Camera3D.environ
 */
 //go:nosplit
 func (self class) CameraSetEnvironment(camera RID.Any, env RID.Any) { //gd:RenderingServer.camera_set_environment
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_environment), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_environment), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		camera RID.Any
 		env    RID.Any
 	}{camera, env}))
@@ -7303,7 +7303,7 @@ Sets the camera_attributes created with [method camera_attributes_create] to the
 */
 //go:nosplit
 func (self class) CameraSetCameraAttributes(camera RID.Any, effects RID.Any) { //gd:RenderingServer.camera_set_camera_attributes
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_camera_attributes), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_camera_attributes), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		camera  RID.Any
 		effects RID.Any
 	}{camera, effects}))
@@ -7314,7 +7314,7 @@ Sets the compositor used by this camera. Equivalent to [member Camera3D.composit
 */
 //go:nosplit
 func (self class) CameraSetCompositor(camera RID.Any, compositor RID.Any) { //gd:RenderingServer.camera_set_compositor
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_compositor), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_compositor), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		camera     RID.Any
 		compositor RID.Any
 	}{camera, compositor}))
@@ -7325,7 +7325,7 @@ If [code]true[/code], preserves the horizontal aspect ratio which is equivalent 
 */
 //go:nosplit
 func (self class) CameraSetUseVerticalAspect(camera RID.Any, enable bool) { //gd:RenderingServer.camera_set_use_vertical_aspect
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_use_vertical_aspect), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_set_use_vertical_aspect), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		camera RID.Any
 		enable bool
 	}{camera, enable}))
@@ -7338,7 +7338,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) ViewportCreate() RID.Any { //gd:RenderingServer.viewport_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -7348,7 +7348,7 @@ If [code]true[/code], the viewport uses augmented or virtual reality technologie
 */
 //go:nosplit
 func (self class) ViewportSetUseXr(viewport RID.Any, use_xr bool) { //gd:RenderingServer.viewport_set_use_xr
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_xr), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_xr), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		use_xr   bool
 	}{viewport, use_xr}))
@@ -7359,7 +7359,7 @@ Sets the viewport's width and height in pixels.
 */
 //go:nosplit
 func (self class) ViewportSetSize(viewport RID.Any, width int64, height int64) { //gd:RenderingServer.viewport_set_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		viewport RID.Any
 		width    int64
 		height   int64
@@ -7371,7 +7371,7 @@ If [code]true[/code], sets the viewport active, else sets it inactive.
 */
 //go:nosplit
 func (self class) ViewportSetActive(viewport RID.Any, active bool) { //gd:RenderingServer.viewport_set_active
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_active), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_active), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		active   bool
 	}{viewport, active}))
@@ -7382,7 +7382,7 @@ Sets the viewport's parent to the viewport specified by the [param parent_viewpo
 */
 //go:nosplit
 func (self class) ViewportSetParentViewport(viewport RID.Any, parent_viewport RID.Any) { //gd:RenderingServer.viewport_set_parent_viewport
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_parent_viewport), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_parent_viewport), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		viewport        RID.Any
 		parent_viewport RID.Any
 	}{viewport, parent_viewport}))
@@ -7402,7 +7402,7 @@ Using this can result in significant optimization, especially on lower-end devic
 */
 //go:nosplit
 func (self class) ViewportAttachToScreen(viewport RID.Any, rect Rect2.PositionSize, screen int64) { //gd:RenderingServer.viewport_attach_to_screen
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_attach_to_screen), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_attach_to_screen), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		viewport RID.Any
 		rect     Rect2.PositionSize
 		screen   int64
@@ -7414,7 +7414,7 @@ If [code]true[/code], render the contents of the viewport directly to screen. Th
 */
 //go:nosplit
 func (self class) ViewportSetRenderDirectToScreen(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_render_direct_to_screen
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_render_direct_to_screen), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_render_direct_to_screen), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		enabled  bool
 	}{viewport, enabled}))
@@ -7425,7 +7425,7 @@ Sets the rendering mask associated with this [Viewport]. Only [CanvasItem] nodes
 */
 //go:nosplit
 func (self class) ViewportSetCanvasCullMask(viewport RID.Any, canvas_cull_mask int64) { //gd:RenderingServer.viewport_set_canvas_cull_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_canvas_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_canvas_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport         RID.Any
 		canvas_cull_mask int64
 	}{viewport, canvas_cull_mask}))
@@ -7436,7 +7436,7 @@ Sets the 3D resolution scaling mode. Bilinear scaling renders at different resol
 */
 //go:nosplit
 func (self class) ViewportSetScaling3dMode(viewport RID.Any, scaling_3d_mode ViewportScaling3DMode) { //gd:RenderingServer.viewport_set_scaling_3d_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_scaling_3d_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_scaling_3d_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport        RID.Any
 		scaling_3d_mode ViewportScaling3DMode
 	}{viewport, scaling_3d_mode}))
@@ -7448,7 +7448,7 @@ When using FSR upscaling, AMD recommends exposing the following values as preset
 */
 //go:nosplit
 func (self class) ViewportSetScaling3dScale(viewport RID.Any, scale float64) { //gd:RenderingServer.viewport_set_scaling_3d_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_scaling_3d_scale), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_scaling_3d_scale), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		scale    float64
 	}{viewport, scale}))
@@ -7459,7 +7459,7 @@ Determines how sharp the upscaled image will be when using the FSR upscaling mod
 */
 //go:nosplit
 func (self class) ViewportSetFsrSharpness(viewport RID.Any, sharpness float64) { //gd:RenderingServer.viewport_set_fsr_sharpness
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_fsr_sharpness), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_fsr_sharpness), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		viewport  RID.Any
 		sharpness float64
 	}{viewport, sharpness}))
@@ -7471,7 +7471,7 @@ Affects the final texture sharpness by reading from a lower or higher mipmap (al
 */
 //go:nosplit
 func (self class) ViewportSetTextureMipmapBias(viewport RID.Any, mipmap_bias float64) { //gd:RenderingServer.viewport_set_texture_mipmap_bias
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_texture_mipmap_bias), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_texture_mipmap_bias), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		viewport    RID.Any
 		mipmap_bias float64
 	}{viewport, mipmap_bias}))
@@ -7485,7 +7485,7 @@ The anisotropic filtering level also affects decals and light projectors if they
 */
 //go:nosplit
 func (self class) ViewportSetAnisotropicFilteringLevel(viewport RID.Any, anisotropic_filtering_level ViewportAnisotropicFiltering) { //gd:RenderingServer.viewport_set_anisotropic_filtering_level
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_anisotropic_filtering_level), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_anisotropic_filtering_level), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport                    RID.Any
 		anisotropic_filtering_level ViewportAnisotropicFiltering
 	}{viewport, anisotropic_filtering_level}))
@@ -7496,7 +7496,7 @@ Sets when the viewport should be updated. See [enum ViewportUpdateMode] constant
 */
 //go:nosplit
 func (self class) ViewportSetUpdateMode(viewport RID.Any, update_mode ViewportUpdateMode) { //gd:RenderingServer.viewport_set_update_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_update_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_update_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport    RID.Any
 		update_mode ViewportUpdateMode
 	}{viewport, update_mode}))
@@ -7508,7 +7508,7 @@ Returns the viewport's update mode. See [enum ViewportUpdateMode] constants for 
 */
 //go:nosplit
 func (self class) ViewportGetUpdateMode(viewport RID.Any) ViewportUpdateMode { //gd:RenderingServer.viewport_get_update_mode
-	var r_ret = gdextension.Call[ViewportUpdateMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_get_update_mode), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ viewport RID.Any }{viewport}))
+	var r_ret = gdextension.Call[ViewportUpdateMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_get_update_mode), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ viewport RID.Any }{viewport}))
 	var ret = r_ret
 	return ret
 }
@@ -7518,7 +7518,7 @@ Sets the clear mode of a viewport. See [enum ViewportClearMode] for options.
 */
 //go:nosplit
 func (self class) ViewportSetClearMode(viewport RID.Any, clear_mode ViewportClearMode) { //gd:RenderingServer.viewport_set_clear_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_clear_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_clear_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport   RID.Any
 		clear_mode ViewportClearMode
 	}{viewport, clear_mode}))
@@ -7529,7 +7529,7 @@ Returns the render target for the viewport.
 */
 //go:nosplit
 func (self class) ViewportGetRenderTarget(viewport RID.Any) RID.Any { //gd:RenderingServer.viewport_get_render_target
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_get_render_target), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ viewport RID.Any }{viewport}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_get_render_target), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ viewport RID.Any }{viewport}))
 	var ret = r_ret
 	return ret
 }
@@ -7539,7 +7539,7 @@ Returns the viewport's last rendered frame.
 */
 //go:nosplit
 func (self class) ViewportGetTexture(viewport RID.Any) RID.Any { //gd:RenderingServer.viewport_get_texture
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_get_texture), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ viewport RID.Any }{viewport}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_get_texture), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ viewport RID.Any }{viewport}))
 	var ret = r_ret
 	return ret
 }
@@ -7549,7 +7549,7 @@ If [code]true[/code], the viewport's 3D elements are not rendered.
 */
 //go:nosplit
 func (self class) ViewportSetDisable3d(viewport RID.Any, disable bool) { //gd:RenderingServer.viewport_set_disable_3d
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_disable_3d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_disable_3d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		disable  bool
 	}{viewport, disable}))
@@ -7560,7 +7560,7 @@ If [code]true[/code], the viewport's canvas (i.e. 2D and GUI elements) is not re
 */
 //go:nosplit
 func (self class) ViewportSetDisable2d(viewport RID.Any, disable bool) { //gd:RenderingServer.viewport_set_disable_2d
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_disable_2d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_disable_2d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		disable  bool
 	}{viewport, disable}))
@@ -7571,7 +7571,7 @@ Sets the viewport's environment mode which allows enabling or disabling renderin
 */
 //go:nosplit
 func (self class) ViewportSetEnvironmentMode(viewport RID.Any, mode ViewportEnvironmentMode) { //gd:RenderingServer.viewport_set_environment_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_environment_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_environment_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		mode     ViewportEnvironmentMode
 	}{viewport, mode}))
@@ -7582,7 +7582,7 @@ Sets a viewport's camera.
 */
 //go:nosplit
 func (self class) ViewportAttachCamera(viewport RID.Any, camera RID.Any) { //gd:RenderingServer.viewport_attach_camera
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_attach_camera), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_attach_camera), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		camera   RID.Any
 	}{viewport, camera}))
@@ -7593,7 +7593,7 @@ Sets a viewport's scenario. The scenario contains information about environment 
 */
 //go:nosplit
 func (self class) ViewportSetScenario(viewport RID.Any, scenario RID.Any) { //gd:RenderingServer.viewport_set_scenario
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_scenario), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_scenario), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		scenario RID.Any
 	}{viewport, scenario}))
@@ -7604,7 +7604,7 @@ Sets a viewport's canvas.
 */
 //go:nosplit
 func (self class) ViewportAttachCanvas(viewport RID.Any, canvas RID.Any) { //gd:RenderingServer.viewport_attach_canvas
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_attach_canvas), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_attach_canvas), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		canvas   RID.Any
 	}{viewport, canvas}))
@@ -7615,7 +7615,7 @@ Detaches a viewport from a canvas.
 */
 //go:nosplit
 func (self class) ViewportRemoveCanvas(viewport RID.Any, canvas RID.Any) { //gd:RenderingServer.viewport_remove_canvas
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_remove_canvas), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_remove_canvas), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		canvas   RID.Any
 	}{viewport, canvas}))
@@ -7626,7 +7626,7 @@ If [code]true[/code], canvas item transforms (i.e. origin position) are snapped 
 */
 //go:nosplit
 func (self class) ViewportSetSnap2dTransformsToPixel(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_snap_2d_transforms_to_pixel
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_snap_2d_transforms_to_pixel), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_snap_2d_transforms_to_pixel), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		enabled  bool
 	}{viewport, enabled}))
@@ -7637,7 +7637,7 @@ If [code]true[/code], canvas item vertices (i.e. polygon points) are snapped to 
 */
 //go:nosplit
 func (self class) ViewportSetSnap2dVerticesToPixel(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_snap_2d_vertices_to_pixel
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_snap_2d_vertices_to_pixel), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_snap_2d_vertices_to_pixel), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		enabled  bool
 	}{viewport, enabled}))
@@ -7648,7 +7648,7 @@ Sets the default texture filtering mode for the specified [param viewport] RID. 
 */
 //go:nosplit
 func (self class) ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Any, filter CanvasItemTextureFilter) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_filter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_default_canvas_item_texture_filter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_default_canvas_item_texture_filter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		filter   CanvasItemTextureFilter
 	}{viewport, filter}))
@@ -7659,7 +7659,7 @@ Sets the default texture repeat mode for the specified [param viewport] RID. See
 */
 //go:nosplit
 func (self class) ViewportSetDefaultCanvasItemTextureRepeat(viewport RID.Any, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_repeat
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_default_canvas_item_texture_repeat), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_default_canvas_item_texture_repeat), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		repeat   CanvasItemTextureRepeat
 	}{viewport, repeat}))
@@ -7670,7 +7670,7 @@ Sets the transformation of a viewport's canvas.
 */
 //go:nosplit
 func (self class) ViewportSetCanvasTransform(viewport RID.Any, canvas RID.Any, offset Transform2D.OriginXY) { //gd:RenderingServer.viewport_set_canvas_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_canvas_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform2D<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_canvas_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform2D<<12), unsafe.Pointer(&struct {
 		viewport RID.Any
 		canvas   RID.Any
 		offset   Transform2D.OriginXY
@@ -7683,7 +7683,7 @@ Sets the stacking order for a viewport's canvas.
 */
 //go:nosplit
 func (self class) ViewportSetCanvasStacking(viewport RID.Any, canvas RID.Any, layer int64, sublayer int64) { //gd:RenderingServer.viewport_set_canvas_stacking
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_canvas_stacking), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_canvas_stacking), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		viewport RID.Any
 		canvas   RID.Any
 		layer    int64
@@ -7696,7 +7696,7 @@ If [code]true[/code], the viewport renders its background as transparent.
 */
 //go:nosplit
 func (self class) ViewportSetTransparentBackground(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_transparent_background
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_transparent_background), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_transparent_background), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		enabled  bool
 	}{viewport, enabled}))
@@ -7707,7 +7707,7 @@ Sets the viewport's global transformation matrix.
 */
 //go:nosplit
 func (self class) ViewportSetGlobalCanvasTransform(viewport RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.viewport_set_global_canvas_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_global_canvas_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_global_canvas_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
 		viewport  RID.Any
 		transform Transform2D.OriginXY
 	}{viewport, transform}))
@@ -7718,7 +7718,7 @@ Sets the viewport's 2D signed distance field [member ProjectSettings.rendering/2
 */
 //go:nosplit
 func (self class) ViewportSetSdfOversizeAndScale(viewport RID.Any, oversize ViewportSDFOversize, scale ViewportSDFScale) { //gd:RenderingServer.viewport_set_sdf_oversize_and_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_sdf_oversize_and_scale), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_sdf_oversize_and_scale), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		viewport RID.Any
 		oversize ViewportSDFOversize
 		scale    ViewportSDFScale
@@ -7731,7 +7731,7 @@ Sets the [param size] of the shadow atlas's images (used for omni and spot light
 */
 //go:nosplit
 func (self class) ViewportSetPositionalShadowAtlasSize(viewport RID.Any, size int64, use_16_bits bool) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_positional_shadow_atlas_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_positional_shadow_atlas_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		viewport    RID.Any
 		size        int64
 		use_16_bits bool
@@ -7743,7 +7743,7 @@ Sets the number of subdivisions to use in the specified shadow atlas [param quad
 */
 //go:nosplit
 func (self class) ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport RID.Any, quadrant int64, subdivision int64) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_quadrant_subdivision
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_positional_shadow_atlas_quadrant_subdivision), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_positional_shadow_atlas_quadrant_subdivision), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		viewport    RID.Any
 		quadrant    int64
 		subdivision int64
@@ -7755,7 +7755,7 @@ Sets the multisample antialiasing mode for 3D on the specified [param viewport] 
 */
 //go:nosplit
 func (self class) ViewportSetMsaa3d(viewport RID.Any, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_msaa_3d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_msaa_3d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		msaa     ViewportMSAA
 	}{viewport, msaa}))
@@ -7766,7 +7766,7 @@ Sets the multisample antialiasing mode for 2D/Canvas on the specified [param vie
 */
 //go:nosplit
 func (self class) ViewportSetMsaa2d(viewport RID.Any, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_msaa_2d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_msaa_2d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		msaa     ViewportMSAA
 	}{viewport, msaa}))
@@ -7778,7 +7778,7 @@ If [code]true[/code], 2D rendering will use a high dynamic range (HDR) format fr
 */
 //go:nosplit
 func (self class) ViewportSetUseHdr2d(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_use_hdr_2d
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_hdr_2d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_hdr_2d), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		enabled  bool
 	}{viewport, enabled}))
@@ -7789,7 +7789,7 @@ Sets the viewport's screen-space antialiasing mode. Equivalent to [member Projec
 */
 //go:nosplit
 func (self class) ViewportSetScreenSpaceAa(viewport RID.Any, mode ViewportScreenSpaceAA) { //gd:RenderingServer.viewport_set_screen_space_aa
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_screen_space_aa), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_screen_space_aa), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		mode     ViewportScreenSpaceAA
 	}{viewport, mode}))
@@ -7800,7 +7800,7 @@ If [code]true[/code], use temporal antialiasing. Equivalent to [member ProjectSe
 */
 //go:nosplit
 func (self class) ViewportSetUseTaa(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_use_taa
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_taa), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_taa), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		enable   bool
 	}{viewport, enable}))
@@ -7811,7 +7811,7 @@ If [code]true[/code], enables debanding on the specified viewport. Equivalent to
 */
 //go:nosplit
 func (self class) ViewportSetUseDebanding(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_use_debanding
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_debanding), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_debanding), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		enable   bool
 	}{viewport, enable}))
@@ -7822,7 +7822,7 @@ If [code]true[/code], enables occlusion culling on the specified viewport. Equiv
 */
 //go:nosplit
 func (self class) ViewportSetUseOcclusionCulling(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_use_occlusion_culling
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_occlusion_culling), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_use_occlusion_culling), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		enable   bool
 	}{viewport, enable}))
@@ -7833,7 +7833,7 @@ Sets the [member ProjectSettings.rendering/occlusion_culling/occlusion_rays_per_
 */
 //go:nosplit
 func (self class) ViewportSetOcclusionRaysPerThread(rays_per_thread int64) { //gd:RenderingServer.viewport_set_occlusion_rays_per_thread
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_occlusion_rays_per_thread), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ rays_per_thread int64 }{rays_per_thread}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_occlusion_rays_per_thread), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ rays_per_thread int64 }{rays_per_thread}))
 }
 
 /*
@@ -7841,7 +7841,7 @@ Sets the [member ProjectSettings.rendering/occlusion_culling/bvh_build_quality] 
 */
 //go:nosplit
 func (self class) ViewportSetOcclusionCullingBuildQuality(quality ViewportOcclusionCullingBuildQuality) { //gd:RenderingServer.viewport_set_occlusion_culling_build_quality
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_occlusion_culling_build_quality), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_occlusion_culling_build_quality), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		quality ViewportOcclusionCullingBuildQuality
 	}{quality}))
 }
@@ -7864,7 +7864,7 @@ func _ready():
 */
 //go:nosplit
 func (self class) ViewportGetRenderInfo(viewport RID.Any, atype ViewportRenderInfoType, info ViewportRenderInfo) int64 { //gd:RenderingServer.viewport_get_render_info
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_get_render_info), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_get_render_info), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		viewport RID.Any
 		atype    ViewportRenderInfoType
 		info     ViewportRenderInfo
@@ -7878,7 +7878,7 @@ Sets the debug draw mode of a viewport. See [enum ViewportDebugDraw] for options
 */
 //go:nosplit
 func (self class) ViewportSetDebugDraw(viewport RID.Any, draw ViewportDebugDraw) { //gd:RenderingServer.viewport_set_debug_draw
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_debug_draw), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_debug_draw), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		draw     ViewportDebugDraw
 	}{viewport, draw}))
@@ -7889,7 +7889,7 @@ Sets the measurement for the given [param viewport] RID (obtained using [method 
 */
 //go:nosplit
 func (self class) ViewportSetMeasureRenderTime(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_measure_render_time
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_measure_render_time), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_measure_render_time), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		enable   bool
 	}{viewport, enable}))
@@ -7901,7 +7901,7 @@ Returns the CPU time taken to render the last frame in milliseconds. This [i]onl
 */
 //go:nosplit
 func (self class) ViewportGetMeasuredRenderTimeCpu(viewport RID.Any) float64 { //gd:RenderingServer.viewport_get_measured_render_time_cpu
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_get_measured_render_time_cpu), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ viewport RID.Any }{viewport}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_get_measured_render_time_cpu), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ viewport RID.Any }{viewport}))
 	var ret = r_ret
 	return ret
 }
@@ -7913,7 +7913,7 @@ Returns the GPU time taken to render the last frame in milliseconds. To get a co
 */
 //go:nosplit
 func (self class) ViewportGetMeasuredRenderTimeGpu(viewport RID.Any) float64 { //gd:RenderingServer.viewport_get_measured_render_time_gpu
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_get_measured_render_time_gpu), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ viewport RID.Any }{viewport}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_get_measured_render_time_gpu), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ viewport RID.Any }{viewport}))
 	var ret = r_ret
 	return ret
 }
@@ -7923,7 +7923,7 @@ Sets the Variable Rate Shading (VRS) mode for the viewport. If the GPU does not 
 */
 //go:nosplit
 func (self class) ViewportSetVrsMode(viewport RID.Any, mode ViewportVRSMode) { //gd:RenderingServer.viewport_set_vrs_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_vrs_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_vrs_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		mode     ViewportVRSMode
 	}{viewport, mode}))
@@ -7935,7 +7935,7 @@ If set to [constant RenderingServer.VIEWPORT_VRS_UPDATE_ONCE], the input texture
 */
 //go:nosplit
 func (self class) ViewportSetVrsUpdateMode(viewport RID.Any, mode ViewportVRSUpdateMode) { //gd:RenderingServer.viewport_set_vrs_update_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_vrs_update_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_vrs_update_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		mode     ViewportVRSUpdateMode
 	}{viewport, mode}))
@@ -7946,7 +7946,7 @@ The texture to use when the VRS mode is set to [constant RenderingServer.VIEWPOR
 */
 //go:nosplit
 func (self class) ViewportSetVrsTexture(viewport RID.Any, texture RID.Any) { //gd:RenderingServer.viewport_set_vrs_texture
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_vrs_texture), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_viewport_set_vrs_texture), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		viewport RID.Any
 		texture  RID.Any
 	}{viewport, texture}))
@@ -7958,7 +7958,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) SkyCreate() RID.Any { //gd:RenderingServer.sky_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sky_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sky_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -7968,7 +7968,7 @@ Sets the [param radiance_size] of the sky specified by the [param sky] RID (in p
 */
 //go:nosplit
 func (self class) SkySetRadianceSize(sky RID.Any, radiance_size int64) { //gd:RenderingServer.sky_set_radiance_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sky_set_radiance_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sky_set_radiance_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		sky           RID.Any
 		radiance_size int64
 	}{sky, radiance_size}))
@@ -7979,7 +7979,7 @@ Sets the process [param mode] of the sky specified by the [param sky] RID. Equiv
 */
 //go:nosplit
 func (self class) SkySetMode(sky RID.Any, mode SkyMode) { //gd:RenderingServer.sky_set_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sky_set_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sky_set_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		sky  RID.Any
 		mode SkyMode
 	}{sky, mode}))
@@ -7990,7 +7990,7 @@ Sets the material that the sky uses to render the background, ambient and reflec
 */
 //go:nosplit
 func (self class) SkySetMaterial(sky RID.Any, material RID.Any) { //gd:RenderingServer.sky_set_material
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sky_set_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sky_set_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		sky      RID.Any
 		material RID.Any
 	}{sky, material}))
@@ -8003,7 +8003,7 @@ Generates and returns an [Image] containing the radiance map for the specified [
 */
 //go:nosplit
 func (self class) SkyBakePanorama(sky RID.Any, energy float64, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.sky_bake_panorama
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sky_bake_panorama), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeVector2i<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sky_bake_panorama), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeVector2i<<16), unsafe.Pointer(&struct {
 		sky             RID.Any
 		energy          float64
 		bake_irradiance bool
@@ -8019,7 +8019,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) CompositorEffectCreate() RID.Any { //gd:RenderingServer.compositor_effect_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_compositor_effect_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_compositor_effect_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -8029,7 +8029,7 @@ Enables/disables this rendering effect.
 */
 //go:nosplit
 func (self class) CompositorEffectSetEnabled(effect RID.Any, enabled bool) { //gd:RenderingServer.compositor_effect_set_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_compositor_effect_set_enabled), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_compositor_effect_set_enabled), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		effect  RID.Any
 		enabled bool
 	}{effect, enabled}))
@@ -8040,7 +8040,7 @@ Sets the callback type ([param callback_type]) and callback method([param callba
 */
 //go:nosplit
 func (self class) CompositorEffectSetCallback(effect RID.Any, callback_type CompositorEffectCallbackType, callback Callable.Function) { //gd:RenderingServer.compositor_effect_set_callback
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_compositor_effect_set_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_compositor_effect_set_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
 		effect        RID.Any
 		callback_type CompositorEffectCallbackType
 		callback      gdextension.Callable
@@ -8052,7 +8052,7 @@ Sets the flag ([param flag]) for this rendering effect to [code]true[/code] or [
 */
 //go:nosplit
 func (self class) CompositorEffectSetFlag(effect RID.Any, flag CompositorEffectFlags, set bool) { //gd:RenderingServer.compositor_effect_set_flag
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_compositor_effect_set_flag), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_compositor_effect_set_flag), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		effect RID.Any
 		flag   CompositorEffectFlags
 		set    bool
@@ -8065,7 +8065,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) CompositorCreate() RID.Any { //gd:RenderingServer.compositor_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_compositor_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_compositor_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -8075,7 +8075,7 @@ Sets the compositor effects for the specified compositor RID. [param effects] sh
 */
 //go:nosplit
 func (self class) CompositorSetCompositorEffects(compositor RID.Any, effects Array.Contains[RID.Any]) { //gd:RenderingServer.compositor_set_compositor_effects
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_compositor_set_compositor_effects), 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_compositor_set_compositor_effects), 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		compositor RID.Any
 		effects    gdextension.Array
 	}{compositor, gdextension.Array(pointers.Get(gd.InternalArray(effects))[0])}))
@@ -8088,7 +8088,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) EnvironmentCreate() RID.Any { //gd:RenderingServer.environment_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -8098,7 +8098,7 @@ Sets the environment's background mode. Equivalent to [member Environment.backgr
 */
 //go:nosplit
 func (self class) EnvironmentSetBackground(env RID.Any, bg EnvironmentBG) { //gd:RenderingServer.environment_set_background
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_background), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_background), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		env RID.Any
 		bg  EnvironmentBG
 	}{env, bg}))
@@ -8109,7 +8109,7 @@ Sets the camera ID to be used as environment background.
 */
 //go:nosplit
 func (self class) EnvironmentSetCameraId(env RID.Any, id int64) { //gd:RenderingServer.environment_set_camera_id
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_camera_id), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_camera_id), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		env RID.Any
 		id  int64
 	}{env, id}))
@@ -8120,7 +8120,7 @@ Sets the [Sky] to be used as the environment's background when using [i]BGMode[/
 */
 //go:nosplit
 func (self class) EnvironmentSetSky(env RID.Any, sky RID.Any) { //gd:RenderingServer.environment_set_sky
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sky), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sky), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		env RID.Any
 		sky RID.Any
 	}{env, sky}))
@@ -8131,7 +8131,7 @@ Sets a custom field of view for the background [Sky]. Equivalent to [member Envi
 */
 //go:nosplit
 func (self class) EnvironmentSetSkyCustomFov(env RID.Any, scale float64) { //gd:RenderingServer.environment_set_sky_custom_fov
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sky_custom_fov), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sky_custom_fov), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		env   RID.Any
 		scale float64
 	}{env, scale}))
@@ -8142,7 +8142,7 @@ Sets the rotation of the background [Sky] expressed as a [Basis]. Equivalent to 
 */
 //go:nosplit
 func (self class) EnvironmentSetSkyOrientation(env RID.Any, orientation Basis.XYZ) { //gd:RenderingServer.environment_set_sky_orientation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sky_orientation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBasis<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sky_orientation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBasis<<8), unsafe.Pointer(&struct {
 		env         RID.Any
 		orientation Basis.XYZ
 	}{env, Basis.Transposed(orientation)}))
@@ -8153,7 +8153,7 @@ Color displayed for clear areas of the scene. Only effective if using the [const
 */
 //go:nosplit
 func (self class) EnvironmentSetBgColor(env RID.Any, color Color.RGBA) { //gd:RenderingServer.environment_set_bg_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_bg_color), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_bg_color), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		env   RID.Any
 		color Color.RGBA
 	}{env, color}))
@@ -8164,7 +8164,7 @@ Sets the intensity of the background color.
 */
 //go:nosplit
 func (self class) EnvironmentSetBgEnergy(env RID.Any, multiplier float64, exposure_value float64) { //gd:RenderingServer.environment_set_bg_energy
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_bg_energy), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_bg_energy), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		env            RID.Any
 		multiplier     float64
 		exposure_value float64
@@ -8176,7 +8176,7 @@ Sets the maximum layer to use if using Canvas background mode.
 */
 //go:nosplit
 func (self class) EnvironmentSetCanvasMaxLayer(env RID.Any, max_layer int64) { //gd:RenderingServer.environment_set_canvas_max_layer
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_canvas_max_layer), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_canvas_max_layer), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		env       RID.Any
 		max_layer int64
 	}{env, max_layer}))
@@ -8187,7 +8187,7 @@ Sets the values to be used for ambient light rendering. See [Environment] for mo
 */
 //go:nosplit
 func (self class) EnvironmentSetAmbientLight(env RID.Any, color Color.RGBA, ambient EnvironmentAmbientSource, energy float64, sky_contribution float64, reflection_source EnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_ambient_light), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_ambient_light), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
 		env               RID.Any
 		color             Color.RGBA
 		ambient           EnvironmentAmbientSource
@@ -8202,7 +8202,7 @@ Configures glow for the specified environment RID. See [code]glow_*[/code] prope
 */
 //go:nosplit
 func (self class) EnvironmentSetGlow(env RID.Any, enable bool, levels Packed.Array[float32], intensity float64, strength float64, mix float64, bloom_threshold float64, blend_mode EnvironmentGlowBlendMode, hdr_bleed_threshold float64, hdr_bleed_scale float64, hdr_luminance_cap float64, glow_map_strength float64, glow_map RID.Any) { //gd:RenderingServer.environment_set_glow
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_glow), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44)|(gdextension.SizeFloat<<48)|(gdextension.SizeRID<<52), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_glow), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44)|(gdextension.SizeFloat<<48)|(gdextension.SizeRID<<52), unsafe.Pointer(&struct {
 		env                 RID.Any
 		enable              bool
 		levels              gdextension.PackedArray
@@ -8224,7 +8224,7 @@ Sets the variables to be used with the "tonemap" post-process effect. See [Envir
 */
 //go:nosplit
 func (self class) EnvironmentSetTonemap(env RID.Any, tone_mapper EnvironmentToneMapper, exposure float64, white float64) { //gd:RenderingServer.environment_set_tonemap
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_tonemap), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_tonemap), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
 		env         RID.Any
 		tone_mapper EnvironmentToneMapper
 		exposure    float64
@@ -8237,7 +8237,7 @@ Sets the values to be used with the "adjustments" post-process effect. See [Envi
 */
 //go:nosplit
 func (self class) EnvironmentSetAdjustment(env RID.Any, enable bool, brightness float64, contrast float64, saturation float64, use_1d_color_correction bool, color_correction RID.Any) { //gd:RenderingServer.environment_set_adjustment
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_adjustment), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeRID<<28), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_adjustment), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeRID<<28), unsafe.Pointer(&struct {
 		env                     RID.Any
 		enable                  bool
 		brightness              float64
@@ -8253,7 +8253,7 @@ Sets the variables to be used with the screen-space reflections (SSR) post-proce
 */
 //go:nosplit
 func (self class) EnvironmentSetSsr(env RID.Any, enable bool, max_steps int64, fade_in float64, fade_out float64, depth_tolerance float64) { //gd:RenderingServer.environment_set_ssr
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_ssr), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_ssr), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), unsafe.Pointer(&struct {
 		env             RID.Any
 		enable          bool
 		max_steps       int64
@@ -8268,7 +8268,7 @@ Sets the variables to be used with the screen-space ambient occlusion (SSAO) pos
 */
 //go:nosplit
 func (self class) EnvironmentSetSsao(env RID.Any, enable bool, radius float64, intensity float64, power float64, detail float64, horizon float64, sharpness float64, light_affect float64, ao_channel_affect float64) { //gd:RenderingServer.environment_set_ssao
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_ssao), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_ssao), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40), unsafe.Pointer(&struct {
 		env               RID.Any
 		enable            bool
 		radius            float64
@@ -8287,7 +8287,7 @@ Configures fog for the specified environment RID. See [code]fog_*[/code] propert
 */
 //go:nosplit
 func (self class) EnvironmentSetFog(env RID.Any, enable bool, light_color Color.RGBA, light_energy float64, sun_scatter float64, density float64, height float64, height_density float64, aerial_perspective float64, sky_affect float64, fog_mode EnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_fog), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeInt<<44), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_fog), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeInt<<44), unsafe.Pointer(&struct {
 		env                RID.Any
 		enable             bool
 		light_color        Color.RGBA
@@ -8307,7 +8307,7 @@ Configures signed distance field global illumination for the specified environme
 */
 //go:nosplit
 func (self class) EnvironmentSetSdfgi(env RID.Any, enable bool, cascades int64, min_cell_size float64, y_scale EnvironmentSDFGIYScale, use_occlusion bool, bounce_feedback float64, read_sky bool, energy float64, normal_bias float64, probe_bias float64) { //gd:RenderingServer.environment_set_sdfgi
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44), unsafe.Pointer(&struct {
 		env             RID.Any
 		enable          bool
 		cascades        int64
@@ -8327,7 +8327,7 @@ Sets the variables to be used with the volumetric fog post-process effect. See [
 */
 //go:nosplit
 func (self class) EnvironmentSetVolumetricFog(env RID.Any, enable bool, density float64, albedo Color.RGBA, emission Color.RGBA, emission_energy float64, anisotropy float64, length float64, p_detail_spread float64, gi_inject float64, temporal_reprojection bool, temporal_reprojection_amount float64, ambient_inject float64, sky_affect float64) { //gd:RenderingServer.environment_set_volumetric_fog
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_volumetric_fog), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeBool<<44)|(gdextension.SizeFloat<<48)|(gdextension.SizeFloat<<52)|(gdextension.SizeFloat<<56), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_volumetric_fog), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeBool<<44)|(gdextension.SizeFloat<<48)|(gdextension.SizeFloat<<52)|(gdextension.SizeFloat<<56), unsafe.Pointer(&struct {
 		env                          RID.Any
 		enable                       bool
 		density                      float64
@@ -8350,12 +8350,12 @@ If [param enable] is [code]true[/code], enables bicubic upscaling for glow which
 */
 //go:nosplit
 func (self class) EnvironmentGlowSetUseBicubicUpscale(enable bool) { //gd:RenderingServer.environment_glow_set_use_bicubic_upscale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_glow_set_use_bicubic_upscale), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_glow_set_use_bicubic_upscale), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) EnvironmentSetSsrRoughnessQuality(quality EnvironmentSSRRoughnessQuality) { //gd:RenderingServer.environment_set_ssr_roughness_quality
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_ssr_roughness_quality), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_ssr_roughness_quality), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		quality EnvironmentSSRRoughnessQuality
 	}{quality}))
 }
@@ -8365,7 +8365,7 @@ Sets the quality level of the screen-space ambient occlusion (SSAO) post-process
 */
 //go:nosplit
 func (self class) EnvironmentSetSsaoQuality(quality EnvironmentSSAOQuality, half_size bool, adaptive_target float64, blur_passes int64, fadeout_from float64, fadeout_to float64) { //gd:RenderingServer.environment_set_ssao_quality
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_ssao_quality), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_ssao_quality), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), unsafe.Pointer(&struct {
 		quality         EnvironmentSSAOQuality
 		half_size       bool
 		adaptive_target float64
@@ -8380,7 +8380,7 @@ Sets the quality level of the screen-space indirect lighting (SSIL) post-process
 */
 //go:nosplit
 func (self class) EnvironmentSetSsilQuality(quality EnvironmentSSILQuality, half_size bool, adaptive_target float64, blur_passes int64, fadeout_from float64, fadeout_to float64) { //gd:RenderingServer.environment_set_ssil_quality
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_ssil_quality), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_ssil_quality), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), unsafe.Pointer(&struct {
 		quality         EnvironmentSSILQuality
 		half_size       bool
 		adaptive_target float64
@@ -8395,7 +8395,7 @@ Sets the number of rays to throw per frame when computing signed distance field 
 */
 //go:nosplit
 func (self class) EnvironmentSetSdfgiRayCount(ray_count EnvironmentSDFGIRayCount) { //gd:RenderingServer.environment_set_sdfgi_ray_count
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi_ray_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ray_count EnvironmentSDFGIRayCount }{ray_count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi_ray_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ray_count EnvironmentSDFGIRayCount }{ray_count}))
 }
 
 /*
@@ -8403,7 +8403,7 @@ Sets the number of frames to use for converging signed distance field global ill
 */
 //go:nosplit
 func (self class) EnvironmentSetSdfgiFramesToConverge(frames EnvironmentSDFGIFramesToConverge) { //gd:RenderingServer.environment_set_sdfgi_frames_to_converge
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi_frames_to_converge), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi_frames_to_converge), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		frames EnvironmentSDFGIFramesToConverge
 	}{frames}))
 }
@@ -8413,7 +8413,7 @@ Sets the update speed for dynamic lights' indirect lighting when computing signe
 */
 //go:nosplit
 func (self class) EnvironmentSetSdfgiFramesToUpdateLight(frames EnvironmentSDFGIFramesToUpdateLight) { //gd:RenderingServer.environment_set_sdfgi_frames_to_update_light
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi_frames_to_update_light), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_sdfgi_frames_to_update_light), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		frames EnvironmentSDFGIFramesToUpdateLight
 	}{frames}))
 }
@@ -8423,7 +8423,7 @@ Sets the resolution of the volumetric fog's froxel buffer. [param size] is modif
 */
 //go:nosplit
 func (self class) EnvironmentSetVolumetricFogVolumeSize(size int64, depth int64) { //gd:RenderingServer.environment_set_volumetric_fog_volume_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_volumetric_fog_volume_size), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_volumetric_fog_volume_size), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		size  int64
 		depth int64
 	}{size, depth}))
@@ -8434,7 +8434,7 @@ Enables filtering of the volumetric fog scattering buffer. This results in much 
 */
 //go:nosplit
 func (self class) EnvironmentSetVolumetricFogFilterActive(active bool) { //gd:RenderingServer.environment_set_volumetric_fog_filter_active
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_volumetric_fog_filter_active), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_volumetric_fog_filter_active), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
 }
 
 /*
@@ -8444,7 +8444,7 @@ Generates and returns an [Image] containing the radiance map for the specified [
 */
 //go:nosplit
 func (self class) EnvironmentBakePanorama(environment RID.Any, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.environment_bake_panorama
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_bake_panorama), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeVector2i<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_bake_panorama), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeVector2i<<12), unsafe.Pointer(&struct {
 		environment     RID.Any
 		bake_irradiance bool
 		size            Vector2i.XY
@@ -8458,7 +8458,7 @@ Sets the screen-space roughness limiter parameters, such as whether it should be
 */
 //go:nosplit
 func (self class) ScreenSpaceRoughnessLimiterSetActive(enable bool, amount float64, limit float64) { //gd:RenderingServer.screen_space_roughness_limiter_set_active
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_screen_space_roughness_limiter_set_active), 0|(gdextension.SizeBool<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_screen_space_roughness_limiter_set_active), 0|(gdextension.SizeBool<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		enable bool
 		amount float64
 		limit  float64
@@ -8470,7 +8470,7 @@ Sets [member ProjectSettings.rendering/environment/subsurface_scattering/subsurf
 */
 //go:nosplit
 func (self class) SubSurfaceScatteringSetQuality(quality SubSurfaceScatteringQuality) { //gd:RenderingServer.sub_surface_scattering_set_quality
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sub_surface_scattering_set_quality), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ quality SubSurfaceScatteringQuality }{quality}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sub_surface_scattering_set_quality), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ quality SubSurfaceScatteringQuality }{quality}))
 }
 
 /*
@@ -8478,7 +8478,7 @@ Sets the [member ProjectSettings.rendering/environment/subsurface_scattering/sub
 */
 //go:nosplit
 func (self class) SubSurfaceScatteringSetScale(scale float64, depth_scale float64) { //gd:RenderingServer.sub_surface_scattering_set_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sub_surface_scattering_set_scale), 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sub_surface_scattering_set_scale), 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		scale       float64
 		depth_scale float64
 	}{scale, depth_scale}))
@@ -8491,7 +8491,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) CameraAttributesCreate() RID.Any { //gd:RenderingServer.camera_attributes_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_attributes_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_attributes_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -8501,7 +8501,7 @@ Sets the quality level of the DOF blur effect to one of the options in [enum DOF
 */
 //go:nosplit
 func (self class) CameraAttributesSetDofBlurQuality(quality DOFBlurQuality, use_jitter bool) { //gd:RenderingServer.camera_attributes_set_dof_blur_quality
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur_quality), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur_quality), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		quality    DOFBlurQuality
 		use_jitter bool
 	}{quality, use_jitter}))
@@ -8512,7 +8512,7 @@ Sets the shape of the DOF bokeh pattern. Different shapes may be used to achieve
 */
 //go:nosplit
 func (self class) CameraAttributesSetDofBlurBokehShape(shape DOFBokehShape) { //gd:RenderingServer.camera_attributes_set_dof_blur_bokeh_shape
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur_bokeh_shape), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shape DOFBokehShape }{shape}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur_bokeh_shape), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shape DOFBokehShape }{shape}))
 }
 
 /*
@@ -8520,7 +8520,7 @@ Sets the parameters to use with the DOF blur effect. These parameters take on th
 */
 //go:nosplit
 func (self class) CameraAttributesSetDofBlur(camera_attributes RID.Any, far_enable bool, far_distance float64, far_transition float64, near_enable bool, near_distance float64, near_transition float64, amount float64) { //gd:RenderingServer.camera_attributes_set_dof_blur
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_dof_blur), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32), unsafe.Pointer(&struct {
 		camera_attributes RID.Any
 		far_enable        bool
 		far_distance      float64
@@ -8547,7 +8547,7 @@ func get_exposure(aperture: float, shutter_speed: float, sensitivity: float):
 */
 //go:nosplit
 func (self class) CameraAttributesSetExposure(camera_attributes RID.Any, multiplier float64, normalization float64) { //gd:RenderingServer.camera_attributes_set_exposure
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_exposure), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_exposure), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		camera_attributes RID.Any
 		multiplier        float64
 		normalization     float64
@@ -8559,7 +8559,7 @@ Sets the parameters to use with the auto-exposure effect. These parameters take 
 */
 //go:nosplit
 func (self class) CameraAttributesSetAutoExposure(camera_attributes RID.Any, enable bool, min_sensitivity float64, max_sensitivity float64, speed float64, scale float64) { //gd:RenderingServer.camera_attributes_set_auto_exposure
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_auto_exposure), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_camera_attributes_set_auto_exposure), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), unsafe.Pointer(&struct {
 		camera_attributes RID.Any
 		enable            bool
 		min_sensitivity   float64
@@ -8576,7 +8576,7 @@ The scenario is the 3D world that all the visual instances exist in.
 */
 //go:nosplit
 func (self class) ScenarioCreate() RID.Any { //gd:RenderingServer.scenario_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_scenario_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_scenario_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -8586,7 +8586,7 @@ Sets the environment that will be used with this scenario. See also [Environment
 */
 //go:nosplit
 func (self class) ScenarioSetEnvironment(scenario RID.Any, environment RID.Any) { //gd:RenderingServer.scenario_set_environment
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_scenario_set_environment), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_scenario_set_environment), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		scenario    RID.Any
 		environment RID.Any
 	}{scenario, environment}))
@@ -8597,7 +8597,7 @@ Sets the fallback environment to be used by this scenario. The fallback environm
 */
 //go:nosplit
 func (self class) ScenarioSetFallbackEnvironment(scenario RID.Any, environment RID.Any) { //gd:RenderingServer.scenario_set_fallback_environment
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_scenario_set_fallback_environment), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_scenario_set_fallback_environment), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		scenario    RID.Any
 		environment RID.Any
 	}{scenario, environment}))
@@ -8608,7 +8608,7 @@ Sets the camera attributes ([param effects]) that will be used with this scenari
 */
 //go:nosplit
 func (self class) ScenarioSetCameraAttributes(scenario RID.Any, effects RID.Any) { //gd:RenderingServer.scenario_set_camera_attributes
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_scenario_set_camera_attributes), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_scenario_set_camera_attributes), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		scenario RID.Any
 		effects  RID.Any
 	}{scenario, effects}))
@@ -8619,7 +8619,7 @@ Sets the compositor ([param compositor]) that will be used with this scenario. S
 */
 //go:nosplit
 func (self class) ScenarioSetCompositor(scenario RID.Any, compositor RID.Any) { //gd:RenderingServer.scenario_set_compositor
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_scenario_set_compositor), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_scenario_set_compositor), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		scenario   RID.Any
 		compositor RID.Any
 	}{scenario, compositor}))
@@ -8631,7 +8631,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) InstanceCreate2(base RID.Any, scenario RID.Any) RID.Any { //gd:RenderingServer.instance_create2
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_create2), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_create2), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		base     RID.Any
 		scenario RID.Any
 	}{base, scenario}))
@@ -8647,7 +8647,7 @@ An instance is a way of placing a 3D object in the scenario. Objects like partic
 */
 //go:nosplit
 func (self class) InstanceCreate() RID.Any { //gd:RenderingServer.instance_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -8657,7 +8657,7 @@ Sets the base of the instance. A base can be any of the 3D objects that are crea
 */
 //go:nosplit
 func (self class) InstanceSetBase(instance RID.Any, base RID.Any) { //gd:RenderingServer.instance_set_base
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_base), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_base), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		instance RID.Any
 		base     RID.Any
 	}{instance, base}))
@@ -8668,7 +8668,7 @@ Sets the scenario that the instance is in. The scenario is the 3D world that the
 */
 //go:nosplit
 func (self class) InstanceSetScenario(instance RID.Any, scenario RID.Any) { //gd:RenderingServer.instance_set_scenario
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_scenario), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_scenario), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		instance RID.Any
 		scenario RID.Any
 	}{instance, scenario}))
@@ -8679,7 +8679,7 @@ Sets the render layers that this instance will be drawn to. Equivalent to [membe
 */
 //go:nosplit
 func (self class) InstanceSetLayerMask(instance RID.Any, mask int64) { //gd:RenderingServer.instance_set_layer_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_layer_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_layer_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		instance RID.Any
 		mask     int64
 	}{instance, mask}))
@@ -8690,7 +8690,7 @@ Sets the sorting offset and switches between using the bounding box or instance 
 */
 //go:nosplit
 func (self class) InstanceSetPivotData(instance RID.Any, sorting_offset float64, use_aabb_center bool) { //gd:RenderingServer.instance_set_pivot_data
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_pivot_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_pivot_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		instance        RID.Any
 		sorting_offset  float64
 		use_aabb_center bool
@@ -8702,7 +8702,7 @@ Sets the world space transform of the instance. Equivalent to [member Node3D.glo
 */
 //go:nosplit
 func (self class) InstanceSetTransform(instance RID.Any, transform Transform3D.BasisOrigin) { //gd:RenderingServer.instance_set_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		instance  RID.Any
 		transform Transform3D.BasisOrigin
 	}{instance, gd.Transposed(transform)}))
@@ -8713,7 +8713,7 @@ Turns on and off physics interpolation for the instance.
 */
 //go:nosplit
 func (self class) InstanceSetInterpolated(instance RID.Any, interpolated bool) { //gd:RenderingServer.instance_set_interpolated
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_interpolated), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_interpolated), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		instance     RID.Any
 		interpolated bool
 	}{instance, interpolated}))
@@ -8725,7 +8725,7 @@ This is useful when moving an instance to a new location, to give an instantaneo
 */
 //go:nosplit
 func (self class) InstanceResetPhysicsInterpolation(instance RID.Any) { //gd:RenderingServer.instance_reset_physics_interpolation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_reset_physics_interpolation), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ instance RID.Any }{instance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_reset_physics_interpolation), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ instance RID.Any }{instance}))
 }
 
 /*
@@ -8733,7 +8733,7 @@ Attaches a unique Object ID to instance. Object ID must be attached to instance 
 */
 //go:nosplit
 func (self class) InstanceAttachObjectInstanceId(instance RID.Any, id int64) { //gd:RenderingServer.instance_attach_object_instance_id
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_attach_object_instance_id), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_attach_object_instance_id), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		instance RID.Any
 		id       int64
 	}{instance, id}))
@@ -8744,7 +8744,7 @@ Sets the weight for a given blend shape associated with this instance.
 */
 //go:nosplit
 func (self class) InstanceSetBlendShapeWeight(instance RID.Any, shape int64, weight float64) { //gd:RenderingServer.instance_set_blend_shape_weight
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_blend_shape_weight), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_blend_shape_weight), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		instance RID.Any
 		shape    int64
 		weight   float64
@@ -8756,7 +8756,7 @@ Sets the override material of a specific surface. Equivalent to [method MeshInst
 */
 //go:nosplit
 func (self class) InstanceSetSurfaceOverrideMaterial(instance RID.Any, surface int64, material RID.Any) { //gd:RenderingServer.instance_set_surface_override_material
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_surface_override_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_surface_override_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
 		instance RID.Any
 		surface  int64
 		material RID.Any
@@ -8768,7 +8768,7 @@ Sets whether an instance is drawn or not. Equivalent to [member Node3D.visible].
 */
 //go:nosplit
 func (self class) InstanceSetVisible(instance RID.Any, visible bool) { //gd:RenderingServer.instance_set_visible
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_visible), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_visible), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		instance RID.Any
 		visible  bool
 	}{instance, visible}))
@@ -8782,7 +8782,7 @@ In spatial shaders, [code]1.0 - transparency[/code] is set as the default value 
 */
 //go:nosplit
 func (self class) InstanceGeometrySetTransparency(instance RID.Any, transparency float64) { //gd:RenderingServer.instance_geometry_set_transparency
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_transparency), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_transparency), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		instance     RID.Any
 		transparency float64
 	}{instance, transparency}))
@@ -8793,7 +8793,7 @@ Sets a custom AABB to use when culling objects from the view frustum. Equivalent
 */
 //go:nosplit
 func (self class) InstanceSetCustomAabb(instance RID.Any, aabb AABB.PositionSize) { //gd:RenderingServer.instance_set_custom_aabb
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_custom_aabb), 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_custom_aabb), 0|(gdextension.SizeRID<<4)|(gdextension.SizeAABB<<8), unsafe.Pointer(&struct {
 		instance RID.Any
 		aabb     AABB.PositionSize
 	}{instance, aabb}))
@@ -8804,7 +8804,7 @@ Attaches a skeleton to an instance. Removes the previous skeleton from the insta
 */
 //go:nosplit
 func (self class) InstanceAttachSkeleton(instance RID.Any, skeleton RID.Any) { //gd:RenderingServer.instance_attach_skeleton
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_attach_skeleton), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_attach_skeleton), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		instance RID.Any
 		skeleton RID.Any
 	}{instance, skeleton}))
@@ -8815,7 +8815,7 @@ Sets a margin to increase the size of the AABB when culling objects from the vie
 */
 //go:nosplit
 func (self class) InstanceSetExtraVisibilityMargin(instance RID.Any, margin float64) { //gd:RenderingServer.instance_set_extra_visibility_margin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_extra_visibility_margin), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_extra_visibility_margin), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		instance RID.Any
 		margin   float64
 	}{instance, margin}))
@@ -8826,7 +8826,7 @@ Sets the visibility parent for the given instance. Equivalent to [member Node3D.
 */
 //go:nosplit
 func (self class) InstanceSetVisibilityParent(instance RID.Any, parent RID.Any) { //gd:RenderingServer.instance_set_visibility_parent
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_visibility_parent), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_visibility_parent), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		instance RID.Any
 		parent   RID.Any
 	}{instance, parent}))
@@ -8837,7 +8837,7 @@ If [code]true[/code], ignores both frustum and occlusion culling on the specifie
 */
 //go:nosplit
 func (self class) InstanceSetIgnoreCulling(instance RID.Any, enabled bool) { //gd:RenderingServer.instance_set_ignore_culling
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_ignore_culling), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_set_ignore_culling), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		instance RID.Any
 		enabled  bool
 	}{instance, enabled}))
@@ -8848,7 +8848,7 @@ Sets the flag for a given [enum InstanceFlags]. See [enum InstanceFlags] for mor
 */
 //go:nosplit
 func (self class) InstanceGeometrySetFlag(instance RID.Any, flag InstanceFlags, enabled bool) { //gd:RenderingServer.instance_geometry_set_flag
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_flag), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_flag), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		instance RID.Any
 		flag     InstanceFlags
 		enabled  bool
@@ -8860,7 +8860,7 @@ Sets the shadow casting setting to one of [enum ShadowCastingSetting]. Equivalen
 */
 //go:nosplit
 func (self class) InstanceGeometrySetCastShadowsSetting(instance RID.Any, shadow_casting_setting ShadowCastingSetting) { //gd:RenderingServer.instance_geometry_set_cast_shadows_setting
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_cast_shadows_setting), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_cast_shadows_setting), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		instance               RID.Any
 		shadow_casting_setting ShadowCastingSetting
 	}{instance, shadow_casting_setting}))
@@ -8871,7 +8871,7 @@ Sets a material that will override the material for all surfaces on the mesh ass
 */
 //go:nosplit
 func (self class) InstanceGeometrySetMaterialOverride(instance RID.Any, material RID.Any) { //gd:RenderingServer.instance_geometry_set_material_override
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_material_override), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_material_override), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		instance RID.Any
 		material RID.Any
 	}{instance, material}))
@@ -8882,7 +8882,7 @@ Sets a material that will be rendered for all surfaces on top of active material
 */
 //go:nosplit
 func (self class) InstanceGeometrySetMaterialOverlay(instance RID.Any, material RID.Any) { //gd:RenderingServer.instance_geometry_set_material_overlay
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_material_overlay), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_material_overlay), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		instance RID.Any
 		material RID.Any
 	}{instance, material}))
@@ -8893,7 +8893,7 @@ Sets the visibility range values for the given geometry instance. Equivalent to 
 */
 //go:nosplit
 func (self class) InstanceGeometrySetVisibilityRange(instance RID.Any, min float64, max float64, min_margin float64, max_margin float64, fade_mode VisibilityRangeFadeMode) { //gd:RenderingServer.instance_geometry_set_visibility_range
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_visibility_range), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_visibility_range), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
 		instance   RID.Any
 		min        float64
 		max        float64
@@ -8908,7 +8908,7 @@ Sets the lightmap GI instance to use for the specified 3D geometry instance. The
 */
 //go:nosplit
 func (self class) InstanceGeometrySetLightmap(instance RID.Any, lightmap RID.Any, lightmap_uv_scale Rect2.PositionSize, lightmap_slice int64) { //gd:RenderingServer.instance_geometry_set_lightmap
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_lightmap), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_lightmap), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		instance          RID.Any
 		lightmap          RID.Any
 		lightmap_uv_scale Rect2.PositionSize
@@ -8921,7 +8921,7 @@ Sets the level of detail bias to use when rendering the specified 3D geometry in
 */
 //go:nosplit
 func (self class) InstanceGeometrySetLodBias(instance RID.Any, lod_bias float64) { //gd:RenderingServer.instance_geometry_set_lod_bias
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_lod_bias), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_lod_bias), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		instance RID.Any
 		lod_bias float64
 	}{instance, lod_bias}))
@@ -8932,7 +8932,7 @@ Sets the per-instance shader uniform on the specified 3D geometry instance. Equi
 */
 //go:nosplit
 func (self class) InstanceGeometrySetShaderParameter(instance RID.Any, parameter String.Name, value variant.Any) { //gd:RenderingServer.instance_geometry_set_shader_parameter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_shader_parameter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_set_shader_parameter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		instance  RID.Any
 		parameter gdextension.StringName
 		value     gdextension.Variant
@@ -8945,7 +8945,7 @@ Returns the value of the per-instance shader uniform from the specified 3D geome
 */
 //go:nosplit
 func (self class) InstanceGeometryGetShaderParameter(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.instance_geometry_get_shader_parameter
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		instance  RID.Any
 		parameter gdextension.StringName
 	}{instance, gdextension.StringName(pointers.Get(gd.InternalStringName(parameter))[0])}))
@@ -8958,7 +8958,7 @@ Returns the default value of the per-instance shader uniform from the specified 
 */
 //go:nosplit
 func (self class) InstanceGeometryGetShaderParameterDefaultValue(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.instance_geometry_get_shader_parameter_default_value
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_default_value), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_default_value), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		instance  RID.Any
 		parameter gdextension.StringName
 	}{instance, gdextension.StringName(pointers.Get(gd.InternalStringName(parameter))[0])}))
@@ -8971,7 +8971,7 @@ Returns a dictionary of per-instance shader uniform names of the per-instance sh
 */
 //go:nosplit
 func (self class) InstanceGeometryGetShaderParameterList(instance RID.Any) Array.Contains[Dictionary.Any] { //gd:RenderingServer.instance_geometry_get_shader_parameter_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ instance RID.Any }{instance}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ instance RID.Any }{instance}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -8982,7 +8982,7 @@ Returns an array of object IDs intersecting with the provided AABB. Only 3D node
 */
 //go:nosplit
 func (self class) InstancesCullAabb(aabb AABB.PositionSize, scenario RID.Any) Packed.Array[int64] { //gd:RenderingServer.instances_cull_aabb
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instances_cull_aabb), gdextension.SizePackedArray|(gdextension.SizeAABB<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instances_cull_aabb), gdextension.SizePackedArray|(gdextension.SizeAABB<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		aabb     AABB.PositionSize
 		scenario RID.Any
 	}{aabb, scenario}))
@@ -8996,7 +8996,7 @@ Returns an array of object IDs intersecting with the provided 3D ray. Only 3D no
 */
 //go:nosplit
 func (self class) InstancesCullRay(from Vector3.XYZ, to Vector3.XYZ, scenario RID.Any) Packed.Array[int64] { //gd:RenderingServer.instances_cull_ray
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instances_cull_ray), gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instances_cull_ray), gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
 		from     Vector3.XYZ
 		to       Vector3.XYZ
 		scenario RID.Any
@@ -9011,7 +9011,7 @@ Returns an array of object IDs intersecting with the provided convex shape. Only
 */
 //go:nosplit
 func (self class) InstancesCullConvex(convex Array.Contains[Plane.NormalD], scenario RID.Any) Packed.Array[int64] { //gd:RenderingServer.instances_cull_convex
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instances_cull_convex), gdextension.SizePackedArray|(gdextension.SizeArray<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instances_cull_convex), gdextension.SizePackedArray|(gdextension.SizeArray<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		convex   gdextension.Array
 		scenario RID.Any
 	}{gdextension.Array(pointers.Get(gd.InternalArray(convex))[0]), scenario}))
@@ -9024,7 +9024,7 @@ Bakes the material data of the Mesh passed in the [param base] parameter with op
 */
 //go:nosplit
 func (self class) BakeRenderUv2(base RID.Any, material_overrides Array.Contains[RID.Any], image_size Vector2i.XY) Array.Contains[[1]gdclass.Image] { //gd:RenderingServer.bake_render_uv2
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_bake_render_uv2), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeVector2i<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_bake_render_uv2), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeVector2i<<12), unsafe.Pointer(&struct {
 		base               RID.Any
 		material_overrides gdextension.Array
 		image_size         Vector2i.XY
@@ -9040,7 +9040,7 @@ Canvas has no [Resource] or [Node] equivalent.
 */
 //go:nosplit
 func (self class) CanvasCreate() RID.Any { //gd:RenderingServer.canvas_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -9051,7 +9051,7 @@ A copy of the canvas item will be drawn with a local offset of the [param mirror
 */
 //go:nosplit
 func (self class) CanvasSetItemMirroring(canvas RID.Any, item RID.Any, mirroring Vector2.XY) { //gd:RenderingServer.canvas_set_item_mirroring
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_set_item_mirroring), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeVector2<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_set_item_mirroring), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeVector2<<12), unsafe.Pointer(&struct {
 		canvas    RID.Any
 		item      RID.Any
 		mirroring Vector2.XY
@@ -9063,7 +9063,7 @@ A copy of the canvas item will be drawn with a local offset of the [param repeat
 */
 //go:nosplit
 func (self class) CanvasSetItemRepeat(item RID.Any, repeat_size Vector2.XY, repeat_times int64) { //gd:RenderingServer.canvas_set_item_repeat
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_set_item_repeat), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_set_item_repeat), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		item         RID.Any
 		repeat_size  Vector2.XY
 		repeat_times int64
@@ -9075,7 +9075,7 @@ Modulates all colors in the given canvas.
 */
 //go:nosplit
 func (self class) CanvasSetModulate(canvas RID.Any, color Color.RGBA) { //gd:RenderingServer.canvas_set_modulate
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_set_modulate), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_set_modulate), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		canvas RID.Any
 		color  Color.RGBA
 	}{canvas, color}))
@@ -9083,7 +9083,7 @@ func (self class) CanvasSetModulate(canvas RID.Any, color Color.RGBA) { //gd:Ren
 
 //go:nosplit
 func (self class) CanvasSetDisableScale(disable bool) { //gd:RenderingServer.canvas_set_disable_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_set_disable_scale), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disable bool }{disable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_set_disable_scale), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disable bool }{disable}))
 }
 
 /*
@@ -9093,7 +9093,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) CanvasTextureCreate() RID.Any { //gd:RenderingServer.canvas_texture_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_texture_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_texture_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -9103,7 +9103,7 @@ Sets the [param channel]'s [param texture] for the canvas texture specified by t
 */
 //go:nosplit
 func (self class) CanvasTextureSetChannel(canvas_texture RID.Any, channel CanvasTextureChannel, texture RID.Any) { //gd:RenderingServer.canvas_texture_set_channel
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_channel), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_channel), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
 		canvas_texture RID.Any
 		channel        CanvasTextureChannel
 		texture        RID.Any
@@ -9115,7 +9115,7 @@ Sets the [param base_color] and [param shininess] to use for the canvas texture 
 */
 //go:nosplit
 func (self class) CanvasTextureSetShadingParameters(canvas_texture RID.Any, base_color Color.RGBA, shininess float64) { //gd:RenderingServer.canvas_texture_set_shading_parameters
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_shading_parameters), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_shading_parameters), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		canvas_texture RID.Any
 		base_color     Color.RGBA
 		shininess      float64
@@ -9127,7 +9127,7 @@ Sets the texture [param filter] mode to use for the canvas texture specified by 
 */
 //go:nosplit
 func (self class) CanvasTextureSetTextureFilter(canvas_texture RID.Any, filter CanvasItemTextureFilter) { //gd:RenderingServer.canvas_texture_set_texture_filter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_texture_filter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_texture_filter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		canvas_texture RID.Any
 		filter         CanvasItemTextureFilter
 	}{canvas_texture, filter}))
@@ -9138,7 +9138,7 @@ Sets the texture [param repeat] mode to use for the canvas texture specified by 
 */
 //go:nosplit
 func (self class) CanvasTextureSetTextureRepeat(canvas_texture RID.Any, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.canvas_texture_set_texture_repeat
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_texture_repeat), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_texture_set_texture_repeat), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		canvas_texture RID.Any
 		repeat         CanvasItemTextureRepeat
 	}{canvas_texture, repeat}))
@@ -9151,7 +9151,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) CanvasItemCreate() RID.Any { //gd:RenderingServer.canvas_item_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -9161,7 +9161,7 @@ Sets a parent [CanvasItem] to the [CanvasItem]. The item will inherit transform,
 */
 //go:nosplit
 func (self class) CanvasItemSetParent(item RID.Any, parent RID.Any) { //gd:RenderingServer.canvas_item_set_parent
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_parent), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_parent), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		item   RID.Any
 		parent RID.Any
 	}{item, parent}))
@@ -9172,7 +9172,7 @@ Sets the default texture filter mode for the canvas item specified by the [param
 */
 //go:nosplit
 func (self class) CanvasItemSetDefaultTextureFilter(item RID.Any, filter CanvasItemTextureFilter) { //gd:RenderingServer.canvas_item_set_default_texture_filter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_default_texture_filter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_default_texture_filter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		item   RID.Any
 		filter CanvasItemTextureFilter
 	}{item, filter}))
@@ -9183,7 +9183,7 @@ Sets the default texture repeat mode for the canvas item specified by the [param
 */
 //go:nosplit
 func (self class) CanvasItemSetDefaultTextureRepeat(item RID.Any, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.canvas_item_set_default_texture_repeat
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_default_texture_repeat), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_default_texture_repeat), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		item   RID.Any
 		repeat CanvasItemTextureRepeat
 	}{item, repeat}))
@@ -9194,7 +9194,7 @@ Sets the visibility of the [CanvasItem].
 */
 //go:nosplit
 func (self class) CanvasItemSetVisible(item RID.Any, visible bool) { //gd:RenderingServer.canvas_item_set_visible
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_visible), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_visible), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		item    RID.Any
 		visible bool
 	}{item, visible}))
@@ -9205,7 +9205,7 @@ Sets the light [param mask] for the canvas item specified by the [param item] RI
 */
 //go:nosplit
 func (self class) CanvasItemSetLightMask(item RID.Any, mask int64) { //gd:RenderingServer.canvas_item_set_light_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_light_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_light_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		item RID.Any
 		mask int64
 	}{item, mask}))
@@ -9216,7 +9216,7 @@ Sets the rendering visibility layer associated with this [CanvasItem]. Only [Vie
 */
 //go:nosplit
 func (self class) CanvasItemSetVisibilityLayer(item RID.Any, visibility_layer int64) { //gd:RenderingServer.canvas_item_set_visibility_layer
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_visibility_layer), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_visibility_layer), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		item             RID.Any
 		visibility_layer int64
 	}{item, visibility_layer}))
@@ -9227,7 +9227,7 @@ Sets the [param transform] of the canvas item specified by the [param item] RID.
 */
 //go:nosplit
 func (self class) CanvasItemSetTransform(item RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_set_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
 		item      RID.Any
 		transform Transform2D.OriginXY
 	}{item, transform}))
@@ -9239,7 +9239,7 @@ If [param clip] is [code]true[/code], makes the canvas item specified by the [pa
 */
 //go:nosplit
 func (self class) CanvasItemSetClip(item RID.Any, clip bool) { //gd:RenderingServer.canvas_item_set_clip
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_clip), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_clip), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		item RID.Any
 		clip bool
 	}{item, clip}))
@@ -9250,7 +9250,7 @@ If [param enabled] is [code]true[/code], enables multichannel signed distance fi
 */
 //go:nosplit
 func (self class) CanvasItemSetDistanceFieldMode(item RID.Any, enabled bool) { //gd:RenderingServer.canvas_item_set_distance_field_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_distance_field_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_distance_field_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		item    RID.Any
 		enabled bool
 	}{item, enabled}))
@@ -9261,7 +9261,7 @@ If [param use_custom_rect] is [code]true[/code], sets the custom visibility rect
 */
 //go:nosplit
 func (self class) CanvasItemSetCustomRect(item RID.Any, use_custom_rect bool, rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_set_custom_rect
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_custom_rect), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeRect2<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_custom_rect), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeRect2<<12), unsafe.Pointer(&struct {
 		item            RID.Any
 		use_custom_rect bool
 		rect            Rect2.PositionSize
@@ -9273,7 +9273,7 @@ Multiplies the color of the canvas item specified by the [param item] RID, while
 */
 //go:nosplit
 func (self class) CanvasItemSetModulate(item RID.Any, color Color.RGBA) { //gd:RenderingServer.canvas_item_set_modulate
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_modulate), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_modulate), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		item  RID.Any
 		color Color.RGBA
 	}{item, color}))
@@ -9284,7 +9284,7 @@ Multiplies the color of the canvas item specified by the [param item] RID, witho
 */
 //go:nosplit
 func (self class) CanvasItemSetSelfModulate(item RID.Any, color Color.RGBA) { //gd:RenderingServer.canvas_item_set_self_modulate
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_self_modulate), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_self_modulate), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		item  RID.Any
 		color Color.RGBA
 	}{item, color}))
@@ -9295,7 +9295,7 @@ If [param enabled] is [code]true[/code], draws the canvas item specified by the 
 */
 //go:nosplit
 func (self class) CanvasItemSetDrawBehindParent(item RID.Any, enabled bool) { //gd:RenderingServer.canvas_item_set_draw_behind_parent
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_draw_behind_parent), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_draw_behind_parent), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		item    RID.Any
 		enabled bool
 	}{item, enabled}))
@@ -9306,7 +9306,7 @@ If [param interpolated] is [code]true[/code], turns on physics interpolation for
 */
 //go:nosplit
 func (self class) CanvasItemSetInterpolated(item RID.Any, interpolated bool) { //gd:RenderingServer.canvas_item_set_interpolated
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_interpolated), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_interpolated), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		item         RID.Any
 		interpolated bool
 	}{item, interpolated}))
@@ -9318,7 +9318,7 @@ This is useful when moving a canvas item to a new location, to give an instantan
 */
 //go:nosplit
 func (self class) CanvasItemResetPhysicsInterpolation(item RID.Any) { //gd:RenderingServer.canvas_item_reset_physics_interpolation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_reset_physics_interpolation), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ item RID.Any }{item}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_reset_physics_interpolation), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ item RID.Any }{item}))
 }
 
 /*
@@ -9327,7 +9327,7 @@ This allows transforming a canvas item without creating a "glitch" in the interp
 */
 //go:nosplit
 func (self class) CanvasItemTransformPhysicsInterpolation(item RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_transform_physics_interpolation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_transform_physics_interpolation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_transform_physics_interpolation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
 		item      RID.Any
 		transform Transform2D.OriginXY
 	}{item, transform}))
@@ -9338,7 +9338,7 @@ Draws a line on the [CanvasItem] pointed to by the [param item] [RID]. See also 
 */
 //go:nosplit
 func (self class) CanvasItemAddLine(item RID.Any, from Vector2.XY, to Vector2.XY, color Color.RGBA, width float64, antialiased bool) { //gd:RenderingServer.canvas_item_add_line
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_line), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_line), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
 		item        RID.Any
 		from        Vector2.XY
 		to          Vector2.XY
@@ -9353,7 +9353,7 @@ Draws a 2D polyline on the [CanvasItem] pointed to by the [param item] [RID]. Se
 */
 //go:nosplit
 func (self class) CanvasItemAddPolyline(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width float64, antialiased bool) { //gd:RenderingServer.canvas_item_add_polyline
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_polyline), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_polyline), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		item        RID.Any
 		points      gdextension.PackedArray
 		colors      gdextension.PackedArray
@@ -9367,7 +9367,7 @@ Draws a 2D multiline on the [CanvasItem] pointed to by the [param item] [RID]. S
 */
 //go:nosplit
 func (self class) CanvasItemAddMultiline(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width float64, antialiased bool) { //gd:RenderingServer.canvas_item_add_multiline
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_multiline), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_multiline), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		item        RID.Any
 		points      gdextension.PackedArray
 		colors      gdextension.PackedArray
@@ -9381,7 +9381,7 @@ Draws a rectangle on the [CanvasItem] pointed to by the [param item] [RID]. See 
 */
 //go:nosplit
 func (self class) CanvasItemAddRect(item RID.Any, rect Rect2.PositionSize, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_rect
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_rect), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_rect), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		item        RID.Any
 		rect        Rect2.PositionSize
 		color       Color.RGBA
@@ -9394,7 +9394,7 @@ Draws a circle on the [CanvasItem] pointed to by the [param item] [RID]. See als
 */
 //go:nosplit
 func (self class) CanvasItemAddCircle(item RID.Any, pos Vector2.XY, radius float64, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_circle
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_circle), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_circle), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		item        RID.Any
 		pos         Vector2.XY
 		radius      float64
@@ -9408,7 +9408,7 @@ Draws a 2D textured rectangle on the [CanvasItem] pointed to by the [param item]
 */
 //go:nosplit
 func (self class) CanvasItemAddTextureRect(item RID.Any, rect Rect2.PositionSize, texture RID.Any, tile bool, modulate Color.RGBA, transpose bool) { //gd:RenderingServer.canvas_item_add_texture_rect
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_texture_rect), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_texture_rect), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
 		item      RID.Any
 		rect      Rect2.PositionSize
 		texture   RID.Any
@@ -9423,7 +9423,7 @@ See also [method CanvasItem.draw_msdf_texture_rect_region].
 */
 //go:nosplit
 func (self class) CanvasItemAddMsdfTextureRectRegion(item RID.Any, rect Rect2.PositionSize, texture RID.Any, src_rect Rect2.PositionSize, modulate Color.RGBA, outline_size int64, px_range float64, scale float64) { //gd:RenderingServer.canvas_item_add_msdf_texture_rect_region
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_msdf_texture_rect_region), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_msdf_texture_rect_region), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeFloat<<32), unsafe.Pointer(&struct {
 		item         RID.Any
 		rect         Rect2.PositionSize
 		texture      RID.Any
@@ -9440,7 +9440,7 @@ See also [method CanvasItem.draw_lcd_texture_rect_region].
 */
 //go:nosplit
 func (self class) CanvasItemAddLcdTextureRectRegion(item RID.Any, rect Rect2.PositionSize, texture RID.Any, src_rect Rect2.PositionSize, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_lcd_texture_rect_region
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_lcd_texture_rect_region), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_lcd_texture_rect_region), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20), unsafe.Pointer(&struct {
 		item     RID.Any
 		rect     Rect2.PositionSize
 		texture  RID.Any
@@ -9454,7 +9454,7 @@ Draws the specified region of a 2D textured rectangle on the [CanvasItem] pointe
 */
 //go:nosplit
 func (self class) CanvasItemAddTextureRectRegion(item RID.Any, rect Rect2.PositionSize, texture RID.Any, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:RenderingServer.canvas_item_add_texture_rect_region
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_texture_rect_region), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeBool<<28), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_texture_rect_region), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeBool<<28), unsafe.Pointer(&struct {
 		item      RID.Any
 		rect      Rect2.PositionSize
 		texture   RID.Any
@@ -9470,7 +9470,7 @@ Draws a nine-patch rectangle on the [CanvasItem] pointed to by the [param item] 
 */
 //go:nosplit
 func (self class) CanvasItemAddNinePatch(item RID.Any, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.Any, topleft Vector2.XY, bottomright Vector2.XY, x_axis_mode NinePatchAxisMode, y_axis_mode NinePatchAxisMode, draw_center bool, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_nine_patch
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_nine_patch), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeVector2<<20)|(gdextension.SizeVector2<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeColor<<40), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_nine_patch), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeVector2<<20)|(gdextension.SizeVector2<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeColor<<40), unsafe.Pointer(&struct {
 		item        RID.Any
 		rect        Rect2.PositionSize
 		source      Rect2.PositionSize
@@ -9489,7 +9489,7 @@ Draws a 2D primitive on the [CanvasItem] pointed to by the [param item] [RID]. S
 */
 //go:nosplit
 func (self class) CanvasItemAddPrimitive(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture RID.Any) { //gd:RenderingServer.canvas_item_add_primitive
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_primitive), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizeRID<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_primitive), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizeRID<<20), unsafe.Pointer(&struct {
 		item    RID.Any
 		points  gdextension.PackedArray
 		colors  gdextension.PackedArray
@@ -9504,7 +9504,7 @@ Draws a 2D polygon on the [CanvasItem] pointed to by the [param item] [RID]. If 
 */
 //go:nosplit
 func (self class) CanvasItemAddPolygon(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture RID.Any) { //gd:RenderingServer.canvas_item_add_polygon
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_polygon), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizeRID<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_polygon), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizeRID<<20), unsafe.Pointer(&struct {
 		item    RID.Any
 		points  gdextension.PackedArray
 		colors  gdextension.PackedArray
@@ -9519,7 +9519,7 @@ Draws a triangle array on the [CanvasItem] pointed to by the [param item] [RID].
 */
 //go:nosplit
 func (self class) CanvasItemAddTriangleArray(item RID.Any, indices Packed.Array[int32], points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], bones Packed.Array[int32], weights Packed.Array[float32], texture RID.Any, count int64) { //gd:RenderingServer.canvas_item_add_triangle_array
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_triangle_array), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeRID<<32)|(gdextension.SizeInt<<36), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_triangle_array), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeRID<<32)|(gdextension.SizeInt<<36), unsafe.Pointer(&struct {
 		item    RID.Any
 		indices gdextension.PackedArray
 		points  gdextension.PackedArray
@@ -9537,7 +9537,7 @@ Draws a mesh created with [method mesh_create] with given [param transform], [pa
 */
 //go:nosplit
 func (self class) CanvasItemAddMesh(item RID.Any, mesh RID.Any, transform Transform2D.OriginXY, modulate Color.RGBA, texture RID.Any) { //gd:RenderingServer.canvas_item_add_mesh
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_mesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform2D<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeRID<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_mesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform2D<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeRID<<20), unsafe.Pointer(&struct {
 		item      RID.Any
 		mesh      RID.Any
 		transform Transform2D.OriginXY
@@ -9551,7 +9551,7 @@ Draws a 2D [MultiMesh] on the [CanvasItem] pointed to by the [param item] [RID].
 */
 //go:nosplit
 func (self class) CanvasItemAddMultimesh(item RID.Any, mesh RID.Any, texture RID.Any) { //gd:RenderingServer.canvas_item_add_multimesh
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_multimesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_multimesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
 		item    RID.Any
 		mesh    RID.Any
 		texture RID.Any
@@ -9563,7 +9563,7 @@ Draws particles on the [CanvasItem] pointed to by the [param item] [RID].
 */
 //go:nosplit
 func (self class) CanvasItemAddParticles(item RID.Any, particles RID.Any, texture RID.Any) { //gd:RenderingServer.canvas_item_add_particles
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_particles), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_particles), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
 		item      RID.Any
 		particles RID.Any
 		texture   RID.Any
@@ -9575,7 +9575,7 @@ Sets a [Transform2D] that will be used to transform subsequent canvas item comma
 */
 //go:nosplit
 func (self class) CanvasItemAddSetTransform(item RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_add_set_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
 		item      RID.Any
 		transform Transform2D.OriginXY
 	}{item, transform}))
@@ -9586,7 +9586,7 @@ If [param ignore] is [code]true[/code], ignore clipping on items drawn with this
 */
 //go:nosplit
 func (self class) CanvasItemAddClipIgnore(item RID.Any, ignore bool) { //gd:RenderingServer.canvas_item_add_clip_ignore
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_clip_ignore), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_clip_ignore), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		item   RID.Any
 		ignore bool
 	}{item, ignore}))
@@ -9597,7 +9597,7 @@ Subsequent drawing commands will be ignored unless they fall within the specifie
 */
 //go:nosplit
 func (self class) CanvasItemAddAnimationSlice(item RID.Any, animation_length float64, slice_begin float64, slice_end float64, offset float64) { //gd:RenderingServer.canvas_item_add_animation_slice
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_animation_slice), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_animation_slice), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), unsafe.Pointer(&struct {
 		item             RID.Any
 		animation_length float64
 		slice_begin      float64
@@ -9611,7 +9611,7 @@ If [param enabled] is [code]true[/code], child nodes with the lowest Y position 
 */
 //go:nosplit
 func (self class) CanvasItemSetSortChildrenByY(item RID.Any, enabled bool) { //gd:RenderingServer.canvas_item_set_sort_children_by_y
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_sort_children_by_y), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_sort_children_by_y), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		item    RID.Any
 		enabled bool
 	}{item, enabled}))
@@ -9622,7 +9622,7 @@ Sets the [CanvasItem]'s Z index, i.e. its draw order (lower indexes are drawn fi
 */
 //go:nosplit
 func (self class) CanvasItemSetZIndex(item RID.Any, z_index int64) { //gd:RenderingServer.canvas_item_set_z_index
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_z_index), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_z_index), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		item    RID.Any
 		z_index int64
 	}{item, z_index}))
@@ -9633,7 +9633,7 @@ If this is enabled, the Z index of the parent will be added to the children's Z 
 */
 //go:nosplit
 func (self class) CanvasItemSetZAsRelativeToParent(item RID.Any, enabled bool) { //gd:RenderingServer.canvas_item_set_z_as_relative_to_parent
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_z_as_relative_to_parent), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_z_as_relative_to_parent), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		item    RID.Any
 		enabled bool
 	}{item, enabled}))
@@ -9644,7 +9644,7 @@ Sets the [CanvasItem] to copy a rect to the backbuffer.
 */
 //go:nosplit
 func (self class) CanvasItemSetCopyToBackbuffer(item RID.Any, enabled bool, rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_set_copy_to_backbuffer
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_copy_to_backbuffer), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeRect2<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_copy_to_backbuffer), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeRect2<<12), unsafe.Pointer(&struct {
 		item    RID.Any
 		enabled bool
 		rect    Rect2.PositionSize
@@ -9656,7 +9656,7 @@ Attaches a skeleton to the [CanvasItem]. Removes the previous skeleton.
 */
 //go:nosplit
 func (self class) CanvasItemAttachSkeleton(item RID.Any, skeleton RID.Any) { //gd:RenderingServer.canvas_item_attach_skeleton
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_attach_skeleton), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_attach_skeleton), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		item     RID.Any
 		skeleton RID.Any
 	}{item, skeleton}))
@@ -9667,7 +9667,7 @@ Clears the [CanvasItem] and removes all commands in it.
 */
 //go:nosplit
 func (self class) CanvasItemClear(item RID.Any) { //gd:RenderingServer.canvas_item_clear
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_clear), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ item RID.Any }{item}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_clear), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ item RID.Any }{item}))
 }
 
 /*
@@ -9675,7 +9675,7 @@ Sets the index for the [CanvasItem].
 */
 //go:nosplit
 func (self class) CanvasItemSetDrawIndex(item RID.Any, index int64) { //gd:RenderingServer.canvas_item_set_draw_index
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_draw_index), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_draw_index), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		item  RID.Any
 		index int64
 	}{item, index}))
@@ -9686,7 +9686,7 @@ Sets a new [param material] to the canvas item specified by the [param item] RID
 */
 //go:nosplit
 func (self class) CanvasItemSetMaterial(item RID.Any, material RID.Any) { //gd:RenderingServer.canvas_item_set_material
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		item     RID.Any
 		material RID.Any
 	}{item, material}))
@@ -9697,7 +9697,7 @@ Sets if the [CanvasItem] uses its parent's material.
 */
 //go:nosplit
 func (self class) CanvasItemSetUseParentMaterial(item RID.Any, enabled bool) { //gd:RenderingServer.canvas_item_set_use_parent_material
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_use_parent_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_use_parent_material), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		item    RID.Any
 		enabled bool
 	}{item, enabled}))
@@ -9708,7 +9708,7 @@ Sets the per-instance shader uniform on the specified canvas item instance. Equi
 */
 //go:nosplit
 func (self class) CanvasItemSetInstanceShaderParameter(instance RID.Any, parameter String.Name, value variant.Any) { //gd:RenderingServer.canvas_item_set_instance_shader_parameter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_instance_shader_parameter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_instance_shader_parameter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		instance  RID.Any
 		parameter gdextension.StringName
 		value     gdextension.Variant
@@ -9720,7 +9720,7 @@ Returns the value of the per-instance shader uniform from the specified canvas i
 */
 //go:nosplit
 func (self class) CanvasItemGetInstanceShaderParameter(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		instance  RID.Any
 		parameter gdextension.StringName
 	}{instance, gdextension.StringName(pointers.Get(gd.InternalStringName(parameter))[0])}))
@@ -9733,7 +9733,7 @@ Returns the default value of the per-instance shader uniform from the specified 
 */
 //go:nosplit
 func (self class) CanvasItemGetInstanceShaderParameterDefaultValue(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_default_value
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter_default_value), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter_default_value), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		instance  RID.Any
 		parameter gdextension.StringName
 	}{instance, gdextension.StringName(pointers.Get(gd.InternalStringName(parameter))[0])}))
@@ -9747,7 +9747,7 @@ The returned dictionary is in PropertyInfo format, with the keys [code]name[/cod
 */
 //go:nosplit
 func (self class) CanvasItemGetInstanceShaderParameterList(instance RID.Any) Array.Contains[Dictionary.Any] { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ instance RID.Any }{instance}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ instance RID.Any }{instance}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -9758,7 +9758,7 @@ This method can be used to manually mimic [VisibleOnScreenNotifier2D].
 */
 //go:nosplit
 func (self class) CanvasItemSetVisibilityNotifier(item RID.Any, enable bool, area Rect2.PositionSize, enter_callable Callable.Function, exit_callable Callable.Function) { //gd:RenderingServer.canvas_item_set_visibility_notifier
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_visibility_notifier), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_visibility_notifier), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20), unsafe.Pointer(&struct {
 		item           RID.Any
 		enable         bool
 		area           Rect2.PositionSize
@@ -9773,7 +9773,7 @@ Sets the canvas group mode used during 2D rendering for the canvas item specifie
 */
 //go:nosplit
 func (self class) CanvasItemSetCanvasGroupMode(item RID.Any, mode CanvasGroupMode, clear_margin float64, fit_empty bool, fit_margin float64, blur_mipmaps bool) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_canvas_group_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_set_canvas_group_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
 		item         RID.Any
 		mode         CanvasGroupMode
 		clear_margin float64
@@ -9789,7 +9789,7 @@ Returns the bounding rectangle for a canvas item in local space, as calculated b
 */
 //go:nosplit
 func (self class) DebugCanvasItemGetRect(item RID.Any) Rect2.PositionSize { //gd:RenderingServer.debug_canvas_item_get_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_debug_canvas_item_get_rect), gdextension.SizeRect2|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ item RID.Any }{item}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_debug_canvas_item_get_rect), gdextension.SizeRect2|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ item RID.Any }{item}))
 	var ret = r_ret
 	return ret
 }
@@ -9801,7 +9801,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) CanvasLightCreate() RID.Any { //gd:RenderingServer.canvas_light_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -9811,7 +9811,7 @@ Attaches the canvas light to the canvas. Removes it from its previous canvas.
 */
 //go:nosplit
 func (self class) CanvasLightAttachToCanvas(light RID.Any, canvas RID.Any) { //gd:RenderingServer.canvas_light_attach_to_canvas
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_attach_to_canvas), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_attach_to_canvas), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		light  RID.Any
 		canvas RID.Any
 	}{light, canvas}))
@@ -9822,7 +9822,7 @@ Enables or disables a canvas light.
 */
 //go:nosplit
 func (self class) CanvasLightSetEnabled(light RID.Any, enabled bool) { //gd:RenderingServer.canvas_light_set_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_enabled), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_enabled), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		light   RID.Any
 		enabled bool
 	}{light, enabled}))
@@ -9833,7 +9833,7 @@ Sets the scale factor of a [PointLight2D]'s texture. Equivalent to [member Point
 */
 //go:nosplit
 func (self class) CanvasLightSetTextureScale(light RID.Any, scale float64) { //gd:RenderingServer.canvas_light_set_texture_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_texture_scale), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_texture_scale), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		light RID.Any
 		scale float64
 	}{light, scale}))
@@ -9844,7 +9844,7 @@ Sets the canvas light's [Transform2D].
 */
 //go:nosplit
 func (self class) CanvasLightSetTransform(light RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_set_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
 		light     RID.Any
 		transform Transform2D.OriginXY
 	}{light, transform}))
@@ -9855,7 +9855,7 @@ Sets the texture to be used by a [PointLight2D]. Equivalent to [member PointLigh
 */
 //go:nosplit
 func (self class) CanvasLightSetTexture(light RID.Any, texture RID.Any) { //gd:RenderingServer.canvas_light_set_texture
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_texture), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_texture), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		light   RID.Any
 		texture RID.Any
 	}{light, texture}))
@@ -9866,7 +9866,7 @@ Sets the offset of a [PointLight2D]'s texture. Equivalent to [member PointLight2
 */
 //go:nosplit
 func (self class) CanvasLightSetTextureOffset(light RID.Any, offset Vector2.XY) { //gd:RenderingServer.canvas_light_set_texture_offset
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_texture_offset), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_texture_offset), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		light  RID.Any
 		offset Vector2.XY
 	}{light, offset}))
@@ -9877,7 +9877,7 @@ Sets the color for a light.
 */
 //go:nosplit
 func (self class) CanvasLightSetColor(light RID.Any, color Color.RGBA) { //gd:RenderingServer.canvas_light_set_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_color), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_color), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		light RID.Any
 		color Color.RGBA
 	}{light, color}))
@@ -9888,7 +9888,7 @@ Sets a canvas light's height.
 */
 //go:nosplit
 func (self class) CanvasLightSetHeight(light RID.Any, height float64) { //gd:RenderingServer.canvas_light_set_height
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_height), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_height), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		light  RID.Any
 		height float64
 	}{light, height}))
@@ -9899,7 +9899,7 @@ Sets a canvas light's energy.
 */
 //go:nosplit
 func (self class) CanvasLightSetEnergy(light RID.Any, energy float64) { //gd:RenderingServer.canvas_light_set_energy
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_energy), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_energy), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		light  RID.Any
 		energy float64
 	}{light, energy}))
@@ -9910,7 +9910,7 @@ Sets the Z range of objects that will be affected by this light. Equivalent to [
 */
 //go:nosplit
 func (self class) CanvasLightSetZRange(light RID.Any, min_z int64, max_z int64) { //gd:RenderingServer.canvas_light_set_z_range
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_z_range), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_z_range), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		light RID.Any
 		min_z int64
 		max_z int64
@@ -9922,7 +9922,7 @@ The layer range that gets rendered with this light.
 */
 //go:nosplit
 func (self class) CanvasLightSetLayerRange(light RID.Any, min_layer int64, max_layer int64) { //gd:RenderingServer.canvas_light_set_layer_range
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_layer_range), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_layer_range), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		light     RID.Any
 		min_layer int64
 		max_layer int64
@@ -9934,7 +9934,7 @@ The light mask. See [LightOccluder2D] for more information on light masks.
 */
 //go:nosplit
 func (self class) CanvasLightSetItemCullMask(light RID.Any, mask int64) { //gd:RenderingServer.canvas_light_set_item_cull_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_item_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_item_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		light RID.Any
 		mask  int64
 	}{light, mask}))
@@ -9945,7 +9945,7 @@ The binary mask used to determine which layers this canvas light's shadows affec
 */
 //go:nosplit
 func (self class) CanvasLightSetItemShadowCullMask(light RID.Any, mask int64) { //gd:RenderingServer.canvas_light_set_item_shadow_cull_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_item_shadow_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_item_shadow_cull_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		light RID.Any
 		mask  int64
 	}{light, mask}))
@@ -9956,7 +9956,7 @@ The mode of the light, see [enum CanvasLightMode] constants.
 */
 //go:nosplit
 func (self class) CanvasLightSetMode(light RID.Any, mode CanvasLightMode) { //gd:RenderingServer.canvas_light_set_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		light RID.Any
 		mode  CanvasLightMode
 	}{light, mode}))
@@ -9967,7 +9967,7 @@ Enables or disables the canvas light's shadow.
 */
 //go:nosplit
 func (self class) CanvasLightSetShadowEnabled(light RID.Any, enabled bool) { //gd:RenderingServer.canvas_light_set_shadow_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_enabled), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_enabled), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		light   RID.Any
 		enabled bool
 	}{light, enabled}))
@@ -9978,7 +9978,7 @@ Sets the canvas light's shadow's filter, see [enum CanvasLightShadowFilter] cons
 */
 //go:nosplit
 func (self class) CanvasLightSetShadowFilter(light RID.Any, filter CanvasLightShadowFilter) { //gd:RenderingServer.canvas_light_set_shadow_filter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_filter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_filter), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		light  RID.Any
 		filter CanvasLightShadowFilter
 	}{light, filter}))
@@ -9989,7 +9989,7 @@ Sets the color of the canvas light's shadow.
 */
 //go:nosplit
 func (self class) CanvasLightSetShadowColor(light RID.Any, color Color.RGBA) { //gd:RenderingServer.canvas_light_set_shadow_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_color), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_color), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		light RID.Any
 		color Color.RGBA
 	}{light, color}))
@@ -10000,7 +10000,7 @@ Smoothens the shadow. The lower, the smoother.
 */
 //go:nosplit
 func (self class) CanvasLightSetShadowSmooth(light RID.Any, smooth float64) { //gd:RenderingServer.canvas_light_set_shadow_smooth
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_smooth), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_shadow_smooth), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		light  RID.Any
 		smooth float64
 	}{light, smooth}))
@@ -10011,7 +10011,7 @@ Sets the blend mode for the given canvas light. See [enum CanvasLightBlendMode] 
 */
 //go:nosplit
 func (self class) CanvasLightSetBlendMode(light RID.Any, mode CanvasLightBlendMode) { //gd:RenderingServer.canvas_light_set_blend_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_blend_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_blend_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		light RID.Any
 		mode  CanvasLightBlendMode
 	}{light, mode}))
@@ -10022,7 +10022,7 @@ If [param interpolated] is [code]true[/code], turns on physics interpolation for
 */
 //go:nosplit
 func (self class) CanvasLightSetInterpolated(light RID.Any, interpolated bool) { //gd:RenderingServer.canvas_light_set_interpolated
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_interpolated), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_set_interpolated), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		light        RID.Any
 		interpolated bool
 	}{light, interpolated}))
@@ -10034,7 +10034,7 @@ This is useful when moving a canvas item to a new location, to give an instantan
 */
 //go:nosplit
 func (self class) CanvasLightResetPhysicsInterpolation(light RID.Any) { //gd:RenderingServer.canvas_light_reset_physics_interpolation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_reset_physics_interpolation), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ light RID.Any }{light}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_reset_physics_interpolation), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ light RID.Any }{light}))
 }
 
 /*
@@ -10043,7 +10043,7 @@ This allows transforming a light without creating a "glitch" in the interpolatio
 */
 //go:nosplit
 func (self class) CanvasLightTransformPhysicsInterpolation(light RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_transform_physics_interpolation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_transform_physics_interpolation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_transform_physics_interpolation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
 		light     RID.Any
 		transform Transform2D.OriginXY
 	}{light, transform}))
@@ -10056,7 +10056,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) CanvasLightOccluderCreate() RID.Any { //gd:RenderingServer.canvas_light_occluder_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -10066,7 +10066,7 @@ Attaches a light occluder to the canvas. Removes it from its previous canvas.
 */
 //go:nosplit
 func (self class) CanvasLightOccluderAttachToCanvas(occluder RID.Any, canvas RID.Any) { //gd:RenderingServer.canvas_light_occluder_attach_to_canvas
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_attach_to_canvas), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_attach_to_canvas), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		occluder RID.Any
 		canvas   RID.Any
 	}{occluder, canvas}))
@@ -10077,7 +10077,7 @@ Enables or disables light occluder.
 */
 //go:nosplit
 func (self class) CanvasLightOccluderSetEnabled(occluder RID.Any, enabled bool) { //gd:RenderingServer.canvas_light_occluder_set_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_enabled), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_enabled), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		occluder RID.Any
 		enabled  bool
 	}{occluder, enabled}))
@@ -10088,7 +10088,7 @@ Sets a light occluder's polygon.
 */
 //go:nosplit
 func (self class) CanvasLightOccluderSetPolygon(occluder RID.Any, polygon RID.Any) { //gd:RenderingServer.canvas_light_occluder_set_polygon
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_polygon), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_polygon), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		occluder RID.Any
 		polygon  RID.Any
 	}{occluder, polygon}))
@@ -10096,7 +10096,7 @@ func (self class) CanvasLightOccluderSetPolygon(occluder RID.Any, polygon RID.An
 
 //go:nosplit
 func (self class) CanvasLightOccluderSetAsSdfCollision(occluder RID.Any, enable bool) { //gd:RenderingServer.canvas_light_occluder_set_as_sdf_collision
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_as_sdf_collision), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_as_sdf_collision), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		occluder RID.Any
 		enable   bool
 	}{occluder, enable}))
@@ -10107,7 +10107,7 @@ Sets a light occluder's [Transform2D].
 */
 //go:nosplit
 func (self class) CanvasLightOccluderSetTransform(occluder RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_occluder_set_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
 		occluder  RID.Any
 		transform Transform2D.OriginXY
 	}{occluder, transform}))
@@ -10118,7 +10118,7 @@ The light mask. See [LightOccluder2D] for more information on light masks.
 */
 //go:nosplit
 func (self class) CanvasLightOccluderSetLightMask(occluder RID.Any, mask int64) { //gd:RenderingServer.canvas_light_occluder_set_light_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_light_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_light_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		occluder RID.Any
 		mask     int64
 	}{occluder, mask}))
@@ -10129,7 +10129,7 @@ If [param interpolated] is [code]true[/code], turns on physics interpolation for
 */
 //go:nosplit
 func (self class) CanvasLightOccluderSetInterpolated(occluder RID.Any, interpolated bool) { //gd:RenderingServer.canvas_light_occluder_set_interpolated
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_interpolated), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_set_interpolated), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		occluder     RID.Any
 		interpolated bool
 	}{occluder, interpolated}))
@@ -10141,7 +10141,7 @@ This is useful when moving an occluder to a new location, to give an instantaneo
 */
 //go:nosplit
 func (self class) CanvasLightOccluderResetPhysicsInterpolation(occluder RID.Any) { //gd:RenderingServer.canvas_light_occluder_reset_physics_interpolation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_reset_physics_interpolation), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ occluder RID.Any }{occluder}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_reset_physics_interpolation), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ occluder RID.Any }{occluder}))
 }
 
 /*
@@ -10150,7 +10150,7 @@ This allows transforming an occluder without creating a "glitch" in the interpol
 */
 //go:nosplit
 func (self class) CanvasLightOccluderTransformPhysicsInterpolation(occluder RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_occluder_transform_physics_interpolation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_transform_physics_interpolation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_light_occluder_transform_physics_interpolation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
 		occluder  RID.Any
 		transform Transform2D.OriginXY
 	}{occluder, transform}))
@@ -10163,7 +10163,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) CanvasOccluderPolygonCreate() RID.Any { //gd:RenderingServer.canvas_occluder_polygon_create
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -10173,7 +10173,7 @@ Sets the shape of the occluder polygon.
 */
 //go:nosplit
 func (self class) CanvasOccluderPolygonSetShape(occluder_polygon RID.Any, shape Packed.Array[Vector2.XY], closed bool) { //gd:RenderingServer.canvas_occluder_polygon_set_shape
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_set_shape), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_set_shape), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		occluder_polygon RID.Any
 		shape            gdextension.PackedArray
 		closed           bool
@@ -10185,7 +10185,7 @@ Sets an occluder polygons cull mode. See [enum CanvasOccluderPolygonCullMode] co
 */
 //go:nosplit
 func (self class) CanvasOccluderPolygonSetCullMode(occluder_polygon RID.Any, mode CanvasOccluderPolygonCullMode) { //gd:RenderingServer.canvas_occluder_polygon_set_cull_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_set_cull_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_set_cull_mode), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		occluder_polygon RID.Any
 		mode             CanvasOccluderPolygonCullMode
 	}{occluder_polygon, mode}))
@@ -10196,7 +10196,7 @@ Sets the [member ProjectSettings.rendering/2d/shadow_atlas/size] to use for [Lig
 */
 //go:nosplit
 func (self class) CanvasSetShadowTextureSize(size int64) { //gd:RenderingServer.canvas_set_shadow_texture_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_set_shadow_texture_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_set_shadow_texture_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 }
 
 /*
@@ -10205,7 +10205,7 @@ Creates a new global shader uniform.
 */
 //go:nosplit
 func (self class) GlobalShaderParameterAdd(name String.Name, atype GlobalShaderParameterType, default_value variant.Any) { //gd:RenderingServer.global_shader_parameter_add
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_add), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_add), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		name          gdextension.StringName
 		atype         GlobalShaderParameterType
 		default_value gdextension.Variant
@@ -10217,7 +10217,7 @@ Removes the global shader uniform specified by [param name].
 */
 //go:nosplit
 func (self class) GlobalShaderParameterRemove(name String.Name) { //gd:RenderingServer.global_shader_parameter_remove
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_remove), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_remove), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 }
 
 /*
@@ -10226,7 +10226,7 @@ Returns the list of global shader uniform names.
 */
 //go:nosplit
 func (self class) GlobalShaderParameterGetList() Array.Contains[String.Name] { //gd:RenderingServer.global_shader_parameter_get_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -10236,7 +10236,7 @@ Sets the global shader uniform [param name] to [param value].
 */
 //go:nosplit
 func (self class) GlobalShaderParameterSet(name String.Name, value variant.Any) { //gd:RenderingServer.global_shader_parameter_set
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_set), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_set), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		name  gdextension.StringName
 		value gdextension.Variant
 	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
@@ -10247,7 +10247,7 @@ Overrides the global shader uniform [param name] with [param value]. Equivalent 
 */
 //go:nosplit
 func (self class) GlobalShaderParameterSetOverride(name String.Name, value variant.Any) { //gd:RenderingServer.global_shader_parameter_set_override
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_set_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_set_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		name  gdextension.StringName
 		value gdextension.Variant
 	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
@@ -10259,7 +10259,7 @@ Returns the value of the global shader uniform specified by [param name].
 */
 //go:nosplit
 func (self class) GlobalShaderParameterGet(name String.Name) variant.Any { //gd:RenderingServer.global_shader_parameter_get
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -10270,7 +10270,7 @@ Returns the type associated to the global shader uniform specified by [param nam
 */
 //go:nosplit
 func (self class) GlobalShaderParameterGetType(name String.Name) GlobalShaderParameterType { //gd:RenderingServer.global_shader_parameter_get_type
-	var r_ret = gdextension.Call[GlobalShaderParameterType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_type), gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[GlobalShaderParameterType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_type), gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -10280,7 +10280,7 @@ Tries to free an object in the RenderingServer. To avoid memory leaks, this shou
 */
 //go:nosplit
 func (self class) FreeRid(rid RID.Any) { //gd:RenderingServer.free_rid
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_free_rid), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_free_rid), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 }
 
 /*
@@ -10288,7 +10288,7 @@ Schedules a callback to the given callable after a frame has been drawn.
 */
 //go:nosplit
 func (self class) RequestFrameDrawnCallback(callable Callable.Function) { //gd:RenderingServer.request_frame_drawn_callback
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_request_frame_drawn_callback), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_request_frame_drawn_callback), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
 }
 
 /*
@@ -10296,7 +10296,7 @@ Returns [code]true[/code] if changes have been made to the RenderingServer's dat
 */
 //go:nosplit
 func (self class) HasChanged() bool { //gd:RenderingServer.has_changed
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_has_changed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_has_changed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -10315,7 +10315,7 @@ func _ready():
 */
 //go:nosplit
 func (self class) GetRenderingInfo(info RenderingInfo) int64 { //gd:RenderingServer.get_rendering_info
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_rendering_info), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ info RenderingInfo }{info}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_rendering_info), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ info RenderingInfo }{info}))
 	var ret = r_ret
 	return ret
 }
@@ -10327,7 +10327,7 @@ Returns the name of the video adapter (e.g. "GeForce GTX 1080/PCIe/SSE2").
 */
 //go:nosplit
 func (self class) GetVideoAdapterName() String.Readable { //gd:RenderingServer.get_video_adapter_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -10338,7 +10338,7 @@ Returns the vendor of the video adapter (e.g. "NVIDIA Corporation").
 */
 //go:nosplit
 func (self class) GetVideoAdapterVendor() String.Readable { //gd:RenderingServer.get_video_adapter_vendor
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_vendor), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_vendor), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -10349,7 +10349,7 @@ Returns the type of the video adapter. Since dedicated graphics cards from a giv
 */
 //go:nosplit
 func (self class) GetVideoAdapterType() Rendering.DeviceType { //gd:RenderingServer.get_video_adapter_type
-	var r_ret = gdextension.Call[Rendering.DeviceType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.DeviceType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -10360,7 +10360,7 @@ Returns the version of the graphics video adapter [i]currently in use[/i] (e.g. 
 */
 //go:nosplit
 func (self class) GetVideoAdapterApiVersion() String.Readable { //gd:RenderingServer.get_video_adapter_api_version
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_api_version), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_api_version), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -10371,7 +10371,7 @@ The rendering driver is determined by [member ProjectSettings.rendering/renderin
 */
 //go:nosplit
 func (self class) GetCurrentRenderingDriverName() String.Readable { //gd:RenderingServer.get_current_rendering_driver_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_current_rendering_driver_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_current_rendering_driver_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -10382,7 +10382,7 @@ The rendering method is determined by [member ProjectSettings.rendering/renderer
 */
 //go:nosplit
 func (self class) GetCurrentRenderingMethod() String.Readable { //gd:RenderingServer.get_current_rendering_method
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_current_rendering_method), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_current_rendering_method), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -10392,7 +10392,7 @@ Returns a mesh of a sphere with the given number of horizontal subdivisions, ver
 */
 //go:nosplit
 func (self class) MakeSphereMesh(latitudes int64, longitudes int64, radius float64) RID.Any { //gd:RenderingServer.make_sphere_mesh
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_make_sphere_mesh), gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_make_sphere_mesh), gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		latitudes  int64
 		longitudes int64
 		radius     float64
@@ -10406,7 +10406,7 @@ Returns the RID of the test cube. This mesh will be created and returned on the 
 */
 //go:nosplit
 func (self class) GetTestCube() RID.Any { //gd:RenderingServer.get_test_cube
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_test_cube), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_test_cube), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -10422,7 +10422,7 @@ $Sprite2D.texture = texture
 */
 //go:nosplit
 func (self class) GetTestTexture() RID.Any { //gd:RenderingServer.get_test_texture
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_test_texture), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_test_texture), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -10438,7 +10438,7 @@ $Sprite2D.texture = texture
 */
 //go:nosplit
 func (self class) GetWhiteTexture() RID.Any { //gd:RenderingServer.get_white_texture
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_white_texture), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_white_texture), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -10448,7 +10448,7 @@ Sets a boot image. The color defines the background color. If [param scale] is [
 */
 //go:nosplit
 func (self class) SetBootImage(image [1]gdclass.Image, color Color.RGBA, scale bool, use_filter bool) { //gd:RenderingServer.set_boot_image
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_set_boot_image), 0|(gdextension.SizeObject<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_set_boot_image), 0|(gdextension.SizeObject<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		image      gdextension.Object
 		color      Color.RGBA
 		scale      bool
@@ -10461,7 +10461,7 @@ Returns the default clear color which is used when a specific clear color has no
 */
 //go:nosplit
 func (self class) GetDefaultClearColor() Color.RGBA { //gd:RenderingServer.get_default_clear_color
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_default_clear_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_default_clear_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -10471,7 +10471,7 @@ Sets the default clear color which is used when a specific clear color has not b
 */
 //go:nosplit
 func (self class) SetDefaultClearColor(color Color.RGBA) { //gd:RenderingServer.set_default_clear_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_set_default_clear_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_set_default_clear_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 /*
@@ -10479,7 +10479,7 @@ Returns [code]true[/code] if the OS supports a certain [param feature]. Features
 */
 //go:nosplit
 func (self class) HasOsFeature(feature String.Readable) bool { //gd:RenderingServer.has_os_feature
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_has_os_feature), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ feature gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(feature))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_has_os_feature), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ feature gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(feature))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -10490,19 +10490,19 @@ If [param generate] is [code]true[/code], generates debug wireframes for all mes
 */
 //go:nosplit
 func (self class) SetDebugGenerateWireframes(generate bool) { //gd:RenderingServer.set_debug_generate_wireframes
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_set_debug_generate_wireframes), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ generate bool }{generate}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_set_debug_generate_wireframes), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ generate bool }{generate}))
 }
 
 //go:nosplit
 func (self class) IsRenderLoopEnabled() bool { //gd:RenderingServer.is_render_loop_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_is_render_loop_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_is_render_loop_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRenderLoopEnabled(enabled bool) { //gd:RenderingServer.set_render_loop_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_set_render_loop_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_set_render_loop_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 /*
@@ -10510,7 +10510,7 @@ Returns the time taken to setup rendering on the CPU in milliseconds. This value
 */
 //go:nosplit
 func (self class) GetFrameSetupTimeCpu() float64 { //gd:RenderingServer.get_frame_setup_time_cpu
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_frame_setup_time_cpu), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_frame_setup_time_cpu), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -10520,7 +10520,7 @@ Forces a synchronization between the CPU and GPU, which may be required in certa
 */
 //go:nosplit
 func (self class) ForceSync() { //gd:RenderingServer.force_sync
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_force_sync), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_force_sync), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -10528,7 +10528,7 @@ Forces redrawing of all viewports at once. Must be called from the main thread.
 */
 //go:nosplit
 func (self class) ForceDraw(swap_buffers bool, frame_step float64) { //gd:RenderingServer.force_draw
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_force_draw), 0|(gdextension.SizeBool<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_force_draw), 0|(gdextension.SizeBool<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		swap_buffers bool
 		frame_step   float64
 	}{swap_buffers, frame_step}))
@@ -10540,7 +10540,7 @@ Returns the global RenderingDevice.
 */
 //go:nosplit
 func (self class) GetRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.get_rendering_device
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_rendering_device), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_rendering_device), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.RenderingDevice{gd.PointerBorrowedTemporarily[gdclass.RenderingDevice](r_ret)}
 	return ret
 }
@@ -10551,7 +10551,7 @@ Creates a RenderingDevice that can be used to do draw and compute operations on 
 */
 //go:nosplit
 func (self class) CreateLocalRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.create_local_rendering_device
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_create_local_rendering_device), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_create_local_rendering_device), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.RenderingDevice{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderingDevice](r_ret)}
 	return ret
 }
@@ -10561,7 +10561,7 @@ Returns [code]true[/code] if our code is currently executing on the rendering th
 */
 //go:nosplit
 func (self class) IsOnRenderThread() bool { //gd:RenderingServer.is_on_render_thread
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_is_on_render_thread), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_is_on_render_thread), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -10571,7 +10571,7 @@ As the RenderingServer actual logic may run on an separate thread, accessing its
 */
 //go:nosplit
 func (self class) CallOnRenderThread(callable Callable.Function) { //gd:RenderingServer.call_on_render_thread
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_call_on_render_thread), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_call_on_render_thread), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
 }
 
 /*
@@ -10579,7 +10579,7 @@ This method does nothing and always returns [code]false[/code].
 */
 //go:nosplit
 func (self class) HasFeature(feature Features) bool { //gd:RenderingServer.has_feature
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_has_feature), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ feature Features }{feature}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_has_feature), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ feature Features }{feature}))
 	var ret = r_ret
 	return ret
 }

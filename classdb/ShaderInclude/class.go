@@ -111,12 +111,12 @@ func (self Instance) SetCode(value string) {
 
 //go:nosplit
 func (self class) SetCode(code String.Readable) { //gd:ShaderInclude.set_code
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ShaderInclude.Bind_set_code), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ code gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(code))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ShaderInclude.Bind_set_code), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ code gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(code))[0])}))
 }
 
 //go:nosplit
 func (self class) GetCode() String.Readable { //gd:ShaderInclude.get_code
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ShaderInclude.Bind_get_code), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ShaderInclude.Bind_get_code), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

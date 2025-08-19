@@ -375,254 +375,254 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:Label3D.set_horizontal_alignment
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_horizontal_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_horizontal_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:Label3D.get_horizontal_alignment
-	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_horizontal_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_horizontal_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVerticalAlignment(alignment GUI.VerticalAlignment) { //gd:Label3D.set_vertical_alignment
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_vertical_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.VerticalAlignment }{alignment}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_vertical_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.VerticalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetVerticalAlignment() GUI.VerticalAlignment { //gd:Label3D.get_vertical_alignment
-	var r_ret = gdextension.Call[GUI.VerticalAlignment](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_vertical_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.VerticalAlignment](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_vertical_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetModulate(modulate Color.RGBA) { //gd:Label3D.set_modulate
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_modulate), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ modulate Color.RGBA }{modulate}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_modulate), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ modulate Color.RGBA }{modulate}))
 }
 
 //go:nosplit
 func (self class) GetModulate() Color.RGBA { //gd:Label3D.get_modulate
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_modulate), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_modulate), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOutlineModulate(modulate Color.RGBA) { //gd:Label3D.set_outline_modulate
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_outline_modulate), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ modulate Color.RGBA }{modulate}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_outline_modulate), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ modulate Color.RGBA }{modulate}))
 }
 
 //go:nosplit
 func (self class) GetOutlineModulate() Color.RGBA { //gd:Label3D.get_outline_modulate
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_outline_modulate), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_outline_modulate), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetText(text String.Readable) { //gd:Label3D.set_text
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 //go:nosplit
 func (self class) GetText() String.Readable { //gd:Label3D.get_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextDirection(direction TextServer.Direction) { //gd:Label3D.set_text_direction
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_text_direction), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction TextServer.Direction }{direction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_text_direction), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction TextServer.Direction }{direction}))
 }
 
 //go:nosplit
 func (self class) GetTextDirection() TextServer.Direction { //gd:Label3D.get_text_direction
-	var r_ret = gdextension.Call[TextServer.Direction](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_text_direction), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.Direction](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_text_direction), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:Label3D.set_language
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_language), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_language), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:Label3D.get_language
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:Label3D.set_structured_text_bidi_override
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_structured_text_bidi_override), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_structured_text_bidi_override), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		parser TextServer.StructuredTextParser
 	}{parser}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:Label3D.get_structured_text_bidi_override
-	var r_ret = gdextension.Call[TextServer.StructuredTextParser](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_structured_text_bidi_override), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_structured_text_bidi_override), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:Label3D.set_structured_text_bidi_override_options
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_structured_text_bidi_override_options), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(args))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_structured_text_bidi_override_options), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(args))[0])}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:Label3D.get_structured_text_bidi_override_options
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_structured_text_bidi_override_options), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_structured_text_bidi_override_options), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUppercase(enable bool) { //gd:Label3D.set_uppercase
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_uppercase), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_uppercase), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUppercase() bool { //gd:Label3D.is_uppercase
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_is_uppercase), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_is_uppercase), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRenderPriority(priority int64) { //gd:Label3D.set_render_priority
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_render_priority), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_render_priority), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
 }
 
 //go:nosplit
 func (self class) GetRenderPriority() int64 { //gd:Label3D.get_render_priority
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_render_priority), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_render_priority), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOutlineRenderPriority(priority int64) { //gd:Label3D.set_outline_render_priority
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_outline_render_priority), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_outline_render_priority), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
 }
 
 //go:nosplit
 func (self class) GetOutlineRenderPriority() int64 { //gd:Label3D.get_outline_render_priority
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_outline_render_priority), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_outline_render_priority), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFont(font [1]gdclass.Font) { //gd:Label3D.set_font
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_font), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_font), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetFont() [1]gdclass.Font { //gd:Label3D.get_font
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_font), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_font), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFontSize(size int64) { //gd:Label3D.set_font_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_font_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_font_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetFontSize() int64 { //gd:Label3D.get_font_size
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_font_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_font_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOutlineSize(outline_size int64) { //gd:Label3D.set_outline_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_outline_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ outline_size int64 }{outline_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_outline_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ outline_size int64 }{outline_size}))
 }
 
 //go:nosplit
 func (self class) GetOutlineSize() int64 { //gd:Label3D.get_outline_size
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_outline_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_outline_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLineSpacing(line_spacing float64) { //gd:Label3D.set_line_spacing
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_line_spacing), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ line_spacing float64 }{line_spacing}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_line_spacing), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ line_spacing float64 }{line_spacing}))
 }
 
 //go:nosplit
 func (self class) GetLineSpacing() float64 { //gd:Label3D.get_line_spacing
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_line_spacing), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_line_spacing), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:Label3D.set_autowrap_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_autowrap_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_autowrap_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode}))
 }
 
 //go:nosplit
 func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:Label3D.get_autowrap_mode
-	var r_ret = gdextension.Call[TextServer.AutowrapMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_autowrap_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_autowrap_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJustificationFlags(justification_flags TextServer.JustificationFlag) { //gd:Label3D.set_justification_flags
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_justification_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ justification_flags TextServer.JustificationFlag }{justification_flags}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_justification_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ justification_flags TextServer.JustificationFlag }{justification_flags}))
 }
 
 //go:nosplit
 func (self class) GetJustificationFlags() TextServer.JustificationFlag { //gd:Label3D.get_justification_flags
-	var r_ret = gdextension.Call[TextServer.JustificationFlag](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_justification_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_justification_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWidth(width float64) { //gd:Label3D.set_width
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_width), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ width float64 }{width}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_width), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ width float64 }{width}))
 }
 
 //go:nosplit
 func (self class) GetWidth() float64 { //gd:Label3D.get_width
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_width), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_width), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPixelSize(pixel_size float64) { //gd:Label3D.set_pixel_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_pixel_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pixel_size float64 }{pixel_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_pixel_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pixel_size float64 }{pixel_size}))
 }
 
 //go:nosplit
 func (self class) GetPixelSize() float64 { //gd:Label3D.get_pixel_size
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_pixel_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_pixel_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffset(offset Vector2.XY) { //gd:Label3D.set_offset
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetOffset() Vector2.XY { //gd:Label3D.get_offset
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -632,7 +632,7 @@ If [code]true[/code], the specified flag will be enabled. See [enum Label3D.Draw
 */
 //go:nosplit
 func (self class) SetDrawFlag(flag DrawFlags, enabled bool) { //gd:Label3D.set_draw_flag
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_draw_flag), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_draw_flag), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		flag    DrawFlags
 		enabled bool
 	}{flag, enabled}))
@@ -643,93 +643,93 @@ Returns the value of the specified flag.
 */
 //go:nosplit
 func (self class) GetDrawFlag(flag DrawFlags) bool { //gd:Label3D.get_draw_flag
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_draw_flag), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag DrawFlags }{flag}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_draw_flag), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag DrawFlags }{flag}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBillboardMode(mode BaseMaterial3D.BillboardMode) { //gd:Label3D.set_billboard_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_billboard_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode BaseMaterial3D.BillboardMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_billboard_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode BaseMaterial3D.BillboardMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetBillboardMode() BaseMaterial3D.BillboardMode { //gd:Label3D.get_billboard_mode
-	var r_ret = gdextension.Call[BaseMaterial3D.BillboardMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_billboard_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BaseMaterial3D.BillboardMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_billboard_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaCutMode(mode AlphaCutMode) { //gd:Label3D.set_alpha_cut_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_alpha_cut_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AlphaCutMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_alpha_cut_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AlphaCutMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetAlphaCutMode() AlphaCutMode { //gd:Label3D.get_alpha_cut_mode
-	var r_ret = gdextension.Call[AlphaCutMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_alpha_cut_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AlphaCutMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_alpha_cut_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaScissorThreshold(threshold float64) { //gd:Label3D.set_alpha_scissor_threshold
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_alpha_scissor_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_alpha_scissor_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
 }
 
 //go:nosplit
 func (self class) GetAlphaScissorThreshold() float64 { //gd:Label3D.get_alpha_scissor_threshold
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_alpha_scissor_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_alpha_scissor_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaHashScale(threshold float64) { //gd:Label3D.set_alpha_hash_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_alpha_hash_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_alpha_hash_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
 }
 
 //go:nosplit
 func (self class) GetAlphaHashScale() float64 { //gd:Label3D.get_alpha_hash_scale
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_alpha_hash_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_alpha_hash_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaAntialiasing(alpha_aa BaseMaterial3D.AlphaAntiAliasing) { //gd:Label3D.set_alpha_antialiasing
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_alpha_antialiasing), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_alpha_antialiasing), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		alpha_aa BaseMaterial3D.AlphaAntiAliasing
 	}{alpha_aa}))
 }
 
 //go:nosplit
 func (self class) GetAlphaAntialiasing() BaseMaterial3D.AlphaAntiAliasing { //gd:Label3D.get_alpha_antialiasing
-	var r_ret = gdextension.Call[BaseMaterial3D.AlphaAntiAliasing](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_alpha_antialiasing), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BaseMaterial3D.AlphaAntiAliasing](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_alpha_antialiasing), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaAntialiasingEdge(edge float64) { //gd:Label3D.set_alpha_antialiasing_edge
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_alpha_antialiasing_edge), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ edge float64 }{edge}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_alpha_antialiasing_edge), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ edge float64 }{edge}))
 }
 
 //go:nosplit
 func (self class) GetAlphaAntialiasingEdge() float64 { //gd:Label3D.get_alpha_antialiasing_edge
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_alpha_antialiasing_edge), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_alpha_antialiasing_edge), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureFilter(mode BaseMaterial3D.TextureFilter) { //gd:Label3D.set_texture_filter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_texture_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode BaseMaterial3D.TextureFilter }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_set_texture_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode BaseMaterial3D.TextureFilter }{mode}))
 }
 
 //go:nosplit
 func (self class) GetTextureFilter() BaseMaterial3D.TextureFilter { //gd:Label3D.get_texture_filter
-	var r_ret = gdextension.Call[BaseMaterial3D.TextureFilter](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_texture_filter), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BaseMaterial3D.TextureFilter](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_get_texture_filter), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -739,7 +739,7 @@ Returns a [TriangleMesh] with the label's vertices following its current configu
 */
 //go:nosplit
 func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:Label3D.generate_triangle_mesh
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_generate_triangle_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label3D.Bind_generate_triangle_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TriangleMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.TriangleMesh](r_ret)}
 	return ret
 }

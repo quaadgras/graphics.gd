@@ -421,7 +421,7 @@ Returns the length of the audio stream in seconds.
 */
 //go:nosplit
 func (self class) GetLength() float64 { //gd:AudioStream.get_length
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -431,7 +431,7 @@ Returns [code]true[/code] if this audio stream only supports one channel ([i]mon
 */
 //go:nosplit
 func (self class) IsMonophonic() bool { //gd:AudioStream.is_monophonic
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_is_monophonic), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_is_monophonic), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -441,7 +441,7 @@ Returns a newly created [AudioStreamPlayback] intended to play this audio stream
 */
 //go:nosplit
 func (self class) InstantiatePlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStream.instantiate_playback
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_instantiate_playback), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_instantiate_playback), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamPlayback](r_ret)}
 	return ret
 }
@@ -451,7 +451,7 @@ Returns if the current [AudioStream] can be used as a sample. Only static stream
 */
 //go:nosplit
 func (self class) CanBeSampled() bool { //gd:AudioStream.can_be_sampled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_can_be_sampled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_can_be_sampled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -461,7 +461,7 @@ Generates an [AudioSample] based on the current stream.
 */
 //go:nosplit
 func (self class) GenerateSample() [1]gdclass.AudioSample { //gd:AudioStream.generate_sample
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_generate_sample), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_generate_sample), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.AudioSample{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioSample](r_ret)}
 	return ret
 }
@@ -471,7 +471,7 @@ Returns [code]true[/code] if the stream is a collection of other streams, [code]
 */
 //go:nosplit
 func (self class) IsMetaStream() bool { //gd:AudioStream.is_meta_stream
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_is_meta_stream), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_is_meta_stream), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

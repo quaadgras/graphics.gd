@@ -116,12 +116,12 @@ func (self Instance) SetFactor(value Float.X) {
 
 //go:nosplit
 func (self class) SetFactor(factor float64) { //gd:InputEventMagnifyGesture.set_factor
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMagnifyGesture.Bind_set_factor), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ factor float64 }{factor}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMagnifyGesture.Bind_set_factor), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ factor float64 }{factor}))
 }
 
 //go:nosplit
 func (self class) GetFactor() float64 { //gd:InputEventMagnifyGesture.get_factor
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMagnifyGesture.Bind_get_factor), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMagnifyGesture.Bind_get_factor), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

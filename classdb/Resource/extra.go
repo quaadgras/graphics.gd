@@ -89,7 +89,7 @@ var once sync.Once
 var self [1]gdclass.ResourceLoader
 
 func singleton() {
-	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.ResourceLoader)
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.ResourceLoader)[0])))})
 	self = *(*[1]gdclass.ResourceLoader)(unsafe.Pointer(&obj))
 }
 

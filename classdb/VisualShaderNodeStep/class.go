@@ -113,12 +113,12 @@ func (self Instance) SetOpType(value OpType) {
 
 //go:nosplit
 func (self class) SetOpType(op_type OpType) { //gd:VisualShaderNodeStep.set_op_type
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeStep.Bind_set_op_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ op_type OpType }{op_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeStep.Bind_set_op_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ op_type OpType }{op_type}))
 }
 
 //go:nosplit
 func (self class) GetOpType() OpType { //gd:VisualShaderNodeStep.get_op_type
-	var r_ret = gdextension.Call[OpType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeStep.Bind_get_op_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[OpType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeStep.Bind_get_op_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

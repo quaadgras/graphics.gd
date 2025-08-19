@@ -125,7 +125,7 @@ Returns the underlying [Control] used for editing scripts. For text scripts, thi
 */
 //go:nosplit
 func (self class) GetBaseEditor() [1]gdclass.Control { //gd:ScriptEditorBase.get_base_editor
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ScriptEditorBase.Bind_get_base_editor), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ScriptEditorBase.Bind_get_base_editor), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
@@ -135,7 +135,7 @@ Adds a [EditorSyntaxHighlighter] to the open script.
 */
 //go:nosplit
 func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ScriptEditorBase.Bind_add_syntax_highlighter), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(highlighter[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ScriptEditorBase.Bind_add_syntax_highlighter), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(highlighter[0].AsObject()))}))
 }
 func (self Instance) OnNameChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("name_changed"), gd.NewCallable(cb), 0)

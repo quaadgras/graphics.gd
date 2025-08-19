@@ -427,7 +427,7 @@ The optional [param keep_text] argument instructs the parser to keep a copy of t
 */
 //go:nosplit
 func (self class) Parse(json_text String.Readable, keep_text bool) Error.Code { //gd:JSON.parse
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JSON.Bind_parse), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JSON.Bind_parse), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		json_text gdextension.String
 		keep_text bool
 	}{gdextension.String(pointers.Get(gd.InternalString(json_text))[0]), keep_text}))
@@ -437,14 +437,14 @@ func (self class) Parse(json_text String.Readable, keep_text bool) Error.Code { 
 
 //go:nosplit
 func (self class) GetData() variant.Any { //gd:JSON.get_data
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JSON.Bind_get_data), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JSON.Bind_get_data), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetData(data variant.Any) { //gd:JSON.set_data
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JSON.Bind_set_data), 0|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ data gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(data)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JSON.Bind_set_data), 0|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ data gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(data)))}))
 }
 
 /*
@@ -452,7 +452,7 @@ Return the text parsed by [method parse] (requires passing [code]keep_text[/code
 */
 //go:nosplit
 func (self class) GetParsedText() String.Readable { //gd:JSON.get_parsed_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JSON.Bind_get_parsed_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JSON.Bind_get_parsed_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -462,7 +462,7 @@ Returns [code]0[/code] if the last call to [method parse] was successful, or the
 */
 //go:nosplit
 func (self class) GetErrorLine() int64 { //gd:JSON.get_error_line
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JSON.Bind_get_error_line), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JSON.Bind_get_error_line), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -472,7 +472,7 @@ Returns an empty string if the last call to [method parse] was successful, or th
 */
 //go:nosplit
 func (self class) GetErrorMessage() String.Readable { //gd:JSON.get_error_message
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JSON.Bind_get_error_message), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JSON.Bind_get_error_message), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

@@ -330,24 +330,24 @@ func (self Instance) SetAntiAliasingSize(value Float.X) {
 
 //go:nosplit
 func (self class) SetBgColor(color Color.RGBA) { //gd:StyleBoxFlat.set_bg_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_bg_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_bg_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetBgColor() Color.RGBA { //gd:StyleBoxFlat.get_bg_color
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_bg_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_bg_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBorderColor(color Color.RGBA) { //gd:StyleBoxFlat.set_border_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_border_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_border_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetBorderColor() Color.RGBA { //gd:StyleBoxFlat.get_border_color
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_border_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_border_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -357,7 +357,7 @@ Sets the border width to [param width] pixels for all sides.
 */
 //go:nosplit
 func (self class) SetBorderWidthAll(width int64) { //gd:StyleBoxFlat.set_border_width_all
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_border_width_all), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ width int64 }{width}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_border_width_all), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ width int64 }{width}))
 }
 
 /*
@@ -365,7 +365,7 @@ Returns the smallest border width out of all four borders.
 */
 //go:nosplit
 func (self class) GetBorderWidthMin() int64 { //gd:StyleBoxFlat.get_border_width_min
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_border_width_min), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_border_width_min), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -375,7 +375,7 @@ Sets the specified [enum Side]'s border width to [param width] pixels.
 */
 //go:nosplit
 func (self class) SetBorderWidth(margin Rect2.Side, width int64) { //gd:StyleBoxFlat.set_border_width
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_border_width), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_border_width), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		margin Rect2.Side
 		width  int64
 	}{margin, width}))
@@ -386,19 +386,19 @@ Returns the specified [enum Side]'s border width.
 */
 //go:nosplit
 func (self class) GetBorderWidth(margin Rect2.Side) int64 { //gd:StyleBoxFlat.get_border_width
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_border_width), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_border_width), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBorderBlend(blend bool) { //gd:StyleBoxFlat.set_border_blend
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_border_blend), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ blend bool }{blend}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_border_blend), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ blend bool }{blend}))
 }
 
 //go:nosplit
 func (self class) GetBorderBlend() bool { //gd:StyleBoxFlat.get_border_blend
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_border_blend), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_border_blend), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -408,7 +408,7 @@ Sets the corner radius to [param radius] pixels for all corners.
 */
 //go:nosplit
 func (self class) SetCornerRadiusAll(radius int64) { //gd:StyleBoxFlat.set_corner_radius_all
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_corner_radius_all), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ radius int64 }{radius}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_corner_radius_all), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ radius int64 }{radius}))
 }
 
 /*
@@ -416,7 +416,7 @@ Sets the corner radius to [param radius] pixels for the given [param corner]. Se
 */
 //go:nosplit
 func (self class) SetCornerRadius(corner Rect2.Corner, radius int64) { //gd:StyleBoxFlat.set_corner_radius
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_corner_radius), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_corner_radius), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		corner Rect2.Corner
 		radius int64
 	}{corner, radius}))
@@ -427,7 +427,7 @@ Returns the given [param corner]'s radius. See [enum Corner] for possible values
 */
 //go:nosplit
 func (self class) GetCornerRadius(corner Rect2.Corner) int64 { //gd:StyleBoxFlat.get_corner_radius
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_corner_radius), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ corner Rect2.Corner }{corner}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_corner_radius), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ corner Rect2.Corner }{corner}))
 	var ret = r_ret
 	return ret
 }
@@ -437,7 +437,7 @@ Sets the expand margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
 func (self class) SetExpandMargin(margin Rect2.Side, size float64) { //gd:StyleBoxFlat.set_expand_margin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_expand_margin), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_expand_margin), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		margin Rect2.Side
 		size   float64
 	}{margin, size}))
@@ -448,7 +448,7 @@ Sets the expand margin to [param size] pixels for all sides.
 */
 //go:nosplit
 func (self class) SetExpandMarginAll(size float64) { //gd:StyleBoxFlat.set_expand_margin_all
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_expand_margin_all), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_expand_margin_all), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
 }
 
 /*
@@ -456,103 +456,103 @@ Returns the size of the specified [enum Side]'s expand margin.
 */
 //go:nosplit
 func (self class) GetExpandMargin(margin Rect2.Side) float64 { //gd:StyleBoxFlat.get_expand_margin
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_expand_margin), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_expand_margin), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawCenter(draw_center bool) { //gd:StyleBoxFlat.set_draw_center
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_draw_center), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_center bool }{draw_center}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_draw_center), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_center bool }{draw_center}))
 }
 
 //go:nosplit
 func (self class) IsDrawCenterEnabled() bool { //gd:StyleBoxFlat.is_draw_center_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_is_draw_center_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_is_draw_center_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkew(skew Vector2.XY) { //gd:StyleBoxFlat.set_skew
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_skew), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ skew Vector2.XY }{skew}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_skew), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ skew Vector2.XY }{skew}))
 }
 
 //go:nosplit
 func (self class) GetSkew() Vector2.XY { //gd:StyleBoxFlat.get_skew
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_skew), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_skew), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShadowColor(color Color.RGBA) { //gd:StyleBoxFlat.set_shadow_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_shadow_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_shadow_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetShadowColor() Color.RGBA { //gd:StyleBoxFlat.get_shadow_color
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_shadow_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_shadow_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShadowSize(size int64) { //gd:StyleBoxFlat.set_shadow_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_shadow_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_shadow_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetShadowSize() int64 { //gd:StyleBoxFlat.get_shadow_size
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_shadow_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_shadow_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShadowOffset(offset Vector2.XY) { //gd:StyleBoxFlat.set_shadow_offset
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_shadow_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_shadow_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetShadowOffset() Vector2.XY { //gd:StyleBoxFlat.get_shadow_offset
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_shadow_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_shadow_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAntiAliased(anti_aliased bool) { //gd:StyleBoxFlat.set_anti_aliased
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_anti_aliased), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ anti_aliased bool }{anti_aliased}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_anti_aliased), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ anti_aliased bool }{anti_aliased}))
 }
 
 //go:nosplit
 func (self class) IsAntiAliased() bool { //gd:StyleBoxFlat.is_anti_aliased
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_is_anti_aliased), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_is_anti_aliased), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAaSize(size float64) { //gd:StyleBoxFlat.set_aa_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_aa_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_aa_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetAaSize() float64 { //gd:StyleBoxFlat.get_aa_size
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_aa_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_aa_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCornerDetail(detail int64) { //gd:StyleBoxFlat.set_corner_detail
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_corner_detail), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ detail int64 }{detail}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_set_corner_detail), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ detail int64 }{detail}))
 }
 
 //go:nosplit
 func (self class) GetCornerDetail() int64 { //gd:StyleBoxFlat.get_corner_detail
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_corner_detail), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxFlat.Bind_get_corner_detail), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

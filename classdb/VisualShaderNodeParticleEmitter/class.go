@@ -112,12 +112,12 @@ func (self Instance) SetMode2d(value bool) {
 
 //go:nosplit
 func (self class) SetMode2d(enabled bool) { //gd:VisualShaderNodeParticleEmitter.set_mode_2d
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleEmitter.Bind_set_mode_2d), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleEmitter.Bind_set_mode_2d), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsMode2d() bool { //gd:VisualShaderNodeParticleEmitter.is_mode_2d
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleEmitter.Bind_is_mode_2d), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleEmitter.Bind_is_mode_2d), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

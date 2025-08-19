@@ -331,7 +331,7 @@ This is equivalent to using [method apply_impulse] at the body's center of mass.
 */
 //go:nosplit
 func (self class) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:PhysicalBone3D.apply_central_impulse
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_apply_central_impulse), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ impulse Vector3.XYZ }{impulse}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_apply_central_impulse), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ impulse Vector3.XYZ }{impulse}))
 }
 
 /*
@@ -341,7 +341,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicalBone3D.apply_impulse
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_apply_impulse), 0|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_apply_impulse), 0|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		impulse  Vector3.XYZ
 		position Vector3.XYZ
 	}{impulse, position}))
@@ -349,48 +349,48 @@ func (self class) ApplyImpulse(impulse Vector3.XYZ, position Vector3.XYZ) { //gd
 
 //go:nosplit
 func (self class) SetJointType(joint_type JointType) { //gd:PhysicalBone3D.set_joint_type
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_joint_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_type JointType }{joint_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_joint_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_type JointType }{joint_type}))
 }
 
 //go:nosplit
 func (self class) GetJointType() JointType { //gd:PhysicalBone3D.get_joint_type
-	var r_ret = gdextension.Call[JointType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_joint_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[JointType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_joint_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJointOffset(offset Transform3D.BasisOrigin) { //gd:PhysicalBone3D.set_joint_offset
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_joint_offset), 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ offset Transform3D.BasisOrigin }{gd.Transposed(offset)}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_joint_offset), 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ offset Transform3D.BasisOrigin }{gd.Transposed(offset)}))
 }
 
 //go:nosplit
 func (self class) GetJointOffset() Transform3D.BasisOrigin { //gd:PhysicalBone3D.get_joint_offset
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_joint_offset), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_joint_offset), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJointRotation(euler Vector3.XYZ) { //gd:PhysicalBone3D.set_joint_rotation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_joint_rotation), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ euler Vector3.XYZ }{euler}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_joint_rotation), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ euler Vector3.XYZ }{euler}))
 }
 
 //go:nosplit
 func (self class) GetJointRotation() Vector3.XYZ { //gd:PhysicalBone3D.get_joint_rotation
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_joint_rotation), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_joint_rotation), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBodyOffset(offset Transform3D.BasisOrigin) { //gd:PhysicalBone3D.set_body_offset
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_body_offset), 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ offset Transform3D.BasisOrigin }{gd.Transposed(offset)}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_body_offset), 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ offset Transform3D.BasisOrigin }{gd.Transposed(offset)}))
 }
 
 //go:nosplit
 func (self class) GetBodyOffset() Transform3D.BasisOrigin { //gd:PhysicalBone3D.get_body_offset
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_body_offset), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_body_offset), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -400,7 +400,7 @@ Returns [code]true[/code] if the PhysicsBone3D is allowed to simulate physics.
 */
 //go:nosplit
 func (self class) GetSimulatePhysics() bool { //gd:PhysicalBone3D.get_simulate_physics
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_simulate_physics), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_simulate_physics), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -410,7 +410,7 @@ Returns [code]true[/code] if the PhysicsBone3D is currently simulating physics.
 */
 //go:nosplit
 func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBone3D.is_simulating_physics
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_is_simulating_physics), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_is_simulating_physics), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -420,151 +420,151 @@ Returns the unique identifier of the PhysicsBone3D.
 */
 //go:nosplit
 func (self class) GetBoneId() int64 { //gd:PhysicalBone3D.get_bone_id
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_bone_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_bone_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMass(mass float64) { //gd:PhysicalBone3D.set_mass
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_mass), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mass float64 }{mass}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_mass), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mass float64 }{mass}))
 }
 
 //go:nosplit
 func (self class) GetMass() float64 { //gd:PhysicalBone3D.get_mass
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_mass), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_mass), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFriction(friction float64) { //gd:PhysicalBone3D.set_friction
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_friction), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ friction float64 }{friction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_friction), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ friction float64 }{friction}))
 }
 
 //go:nosplit
 func (self class) GetFriction() float64 { //gd:PhysicalBone3D.get_friction
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_friction), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_friction), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBounce(bounce float64) { //gd:PhysicalBone3D.set_bounce
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_bounce), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bounce float64 }{bounce}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_bounce), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bounce float64 }{bounce}))
 }
 
 //go:nosplit
 func (self class) GetBounce() float64 { //gd:PhysicalBone3D.get_bounce
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_bounce), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_bounce), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGravityScale(gravity_scale float64) { //gd:PhysicalBone3D.set_gravity_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_gravity_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gravity_scale float64 }{gravity_scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_gravity_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gravity_scale float64 }{gravity_scale}))
 }
 
 //go:nosplit
 func (self class) GetGravityScale() float64 { //gd:PhysicalBone3D.get_gravity_scale
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_gravity_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_gravity_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearDampMode(linear_damp_mode DampMode) { //gd:PhysicalBone3D.set_linear_damp_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_linear_damp_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ linear_damp_mode DampMode }{linear_damp_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_linear_damp_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ linear_damp_mode DampMode }{linear_damp_mode}))
 }
 
 //go:nosplit
 func (self class) GetLinearDampMode() DampMode { //gd:PhysicalBone3D.get_linear_damp_mode
-	var r_ret = gdextension.Call[DampMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_linear_damp_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DampMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_linear_damp_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularDampMode(angular_damp_mode DampMode) { //gd:PhysicalBone3D.set_angular_damp_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_angular_damp_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ angular_damp_mode DampMode }{angular_damp_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_angular_damp_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ angular_damp_mode DampMode }{angular_damp_mode}))
 }
 
 //go:nosplit
 func (self class) GetAngularDampMode() DampMode { //gd:PhysicalBone3D.get_angular_damp_mode
-	var r_ret = gdextension.Call[DampMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_angular_damp_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DampMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_angular_damp_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearDamp(linear_damp float64) { //gd:PhysicalBone3D.set_linear_damp
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_linear_damp), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ linear_damp float64 }{linear_damp}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_linear_damp), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ linear_damp float64 }{linear_damp}))
 }
 
 //go:nosplit
 func (self class) GetLinearDamp() float64 { //gd:PhysicalBone3D.get_linear_damp
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_linear_damp), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_linear_damp), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularDamp(angular_damp float64) { //gd:PhysicalBone3D.set_angular_damp
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_angular_damp), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angular_damp float64 }{angular_damp}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_angular_damp), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angular_damp float64 }{angular_damp}))
 }
 
 //go:nosplit
 func (self class) GetAngularDamp() float64 { //gd:PhysicalBone3D.get_angular_damp
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_angular_damp), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_angular_damp), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearVelocity(linear_velocity Vector3.XYZ) { //gd:PhysicalBone3D.set_linear_velocity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_linear_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ linear_velocity Vector3.XYZ }{linear_velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_linear_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ linear_velocity Vector3.XYZ }{linear_velocity}))
 }
 
 //go:nosplit
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:PhysicalBone3D.get_linear_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_linear_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_linear_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularVelocity(angular_velocity Vector3.XYZ) { //gd:PhysicalBone3D.set_angular_velocity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_angular_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ angular_velocity Vector3.XYZ }{angular_velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_angular_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ angular_velocity Vector3.XYZ }{angular_velocity}))
 }
 
 //go:nosplit
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:PhysicalBone3D.get_angular_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_angular_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_get_angular_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseCustomIntegrator(enable bool) { //gd:PhysicalBone3D.set_use_custom_integrator
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_use_custom_integrator), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_use_custom_integrator), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingCustomIntegrator() bool { //gd:PhysicalBone3D.is_using_custom_integrator
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_is_using_custom_integrator), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_is_using_custom_integrator), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCanSleep(able_to_sleep bool) { //gd:PhysicalBone3D.set_can_sleep
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_can_sleep), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ able_to_sleep bool }{able_to_sleep}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_set_can_sleep), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ able_to_sleep bool }{able_to_sleep}))
 }
 
 //go:nosplit
 func (self class) IsAbleToSleep() bool { //gd:PhysicalBone3D.is_able_to_sleep
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_is_able_to_sleep), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone3D.Bind_is_able_to_sleep), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

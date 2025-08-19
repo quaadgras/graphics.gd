@@ -129,36 +129,36 @@ func (self Instance) SetSkyMode(value SkyMode) {
 
 //go:nosplit
 func (self class) SetShadowMode(mode ShadowMode) { //gd:DirectionalLight3D.set_shadow_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_set_shadow_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ShadowMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_set_shadow_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ShadowMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetShadowMode() ShadowMode { //gd:DirectionalLight3D.get_shadow_mode
-	var r_ret = gdextension.Call[ShadowMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_get_shadow_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ShadowMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_get_shadow_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlendSplits(enabled bool) { //gd:DirectionalLight3D.set_blend_splits
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_set_blend_splits), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_set_blend_splits), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsBlendSplitsEnabled() bool { //gd:DirectionalLight3D.is_blend_splits_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_is_blend_splits_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_is_blend_splits_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkyMode(mode SkyMode) { //gd:DirectionalLight3D.set_sky_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_set_sky_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode SkyMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_set_sky_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode SkyMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetSkyMode() SkyMode { //gd:DirectionalLight3D.get_sky_mode
-	var r_ret = gdextension.Call[SkyMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_get_sky_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SkyMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_get_sky_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

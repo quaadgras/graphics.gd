@@ -235,36 +235,36 @@ func (self Instance) SetSpeedScale(value Float.X) {
 
 //go:nosplit
 func (self class) SetSpriteFrames(sprite_frames [1]gdclass.SpriteFrames) { //gd:AnimatedSprite3D.set_sprite_frames
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_sprite_frames), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sprite_frames gdextension.Object }{gdextension.Object(gd.ObjectChecked(sprite_frames[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_sprite_frames), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sprite_frames gdextension.Object }{gdextension.Object(gd.ObjectChecked(sprite_frames[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetSpriteFrames() [1]gdclass.SpriteFrames { //gd:AnimatedSprite3D.get_sprite_frames
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_sprite_frames), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_sprite_frames), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SpriteFrames{gd.PointerWithOwnershipTransferredToGo[gdclass.SpriteFrames](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAnimation(name String.Name) { //gd:AnimatedSprite3D.set_animation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_animation), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_animation), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetAnimation() String.Name { //gd:AnimatedSprite3D.get_animation
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_animation), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_animation), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoplay(name String.Readable) { //gd:AnimatedSprite3D.set_autoplay
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_autoplay), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_autoplay), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetAutoplay() String.Readable { //gd:AnimatedSprite3D.get_autoplay
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_autoplay), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_autoplay), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -274,7 +274,7 @@ Returns [code]true[/code] if an animation is currently playing (even if [member 
 */
 //go:nosplit
 func (self class) IsPlaying() bool { //gd:AnimatedSprite3D.is_playing
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_is_playing), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_is_playing), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -285,7 +285,7 @@ If this method is called with that same animation [param name], or with no [para
 */
 //go:nosplit
 func (self class) Play(name String.Name, custom_speed float64, from_end bool) { //gd:AnimatedSprite3D.play
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_play), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_play), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		name         gdextension.StringName
 		custom_speed float64
 		from_end     bool
@@ -298,7 +298,7 @@ This method is a shorthand for [method play] with [code]custom_speed = -1.0[/cod
 */
 //go:nosplit
 func (self class) PlayBackwards(name String.Name) { //gd:AnimatedSprite3D.play_backwards
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_play_backwards), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_play_backwards), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 }
 
 /*
@@ -307,7 +307,7 @@ See also [method stop].
 */
 //go:nosplit
 func (self class) Pause() { //gd:AnimatedSprite3D.pause
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_pause), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_pause), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -315,29 +315,29 @@ Stops the currently playing animation. The animation position is reset to [code]
 */
 //go:nosplit
 func (self class) Stop() { //gd:AnimatedSprite3D.stop
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_stop), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_stop), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetFrame(frame_ int64) { //gd:AnimatedSprite3D.set_frame
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_frame), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frame_ int64 }{frame_}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_frame), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frame_ int64 }{frame_}))
 }
 
 //go:nosplit
 func (self class) GetFrame() int64 { //gd:AnimatedSprite3D.get_frame
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_frame), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_frame), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrameProgress(progress float64) { //gd:AnimatedSprite3D.set_frame_progress
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_frame_progress), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ progress float64 }{progress}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_frame_progress), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ progress float64 }{progress}))
 }
 
 //go:nosplit
 func (self class) GetFrameProgress() float64 { //gd:AnimatedSprite3D.get_frame_progress
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_frame_progress), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_frame_progress), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -356,7 +356,7 @@ animated_sprite.set_frame_and_progress(current_frame, current_progress)
 */
 //go:nosplit
 func (self class) SetFrameAndProgress(frame_ int64, progress float64) { //gd:AnimatedSprite3D.set_frame_and_progress
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_frame_and_progress), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_frame_and_progress), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		frame_   int64
 		progress float64
 	}{frame_, progress}))
@@ -364,12 +364,12 @@ func (self class) SetFrameAndProgress(frame_ int64, progress float64) { //gd:Ani
 
 //go:nosplit
 func (self class) SetSpeedScale(speed_scale float64) { //gd:AnimatedSprite3D.set_speed_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_speed_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ speed_scale float64 }{speed_scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_set_speed_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ speed_scale float64 }{speed_scale}))
 }
 
 //go:nosplit
 func (self class) GetSpeedScale() float64 { //gd:AnimatedSprite3D.get_speed_scale
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_speed_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_speed_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -380,7 +380,7 @@ Returns a negative value if the current animation is playing backwards.
 */
 //go:nosplit
 func (self class) GetPlayingSpeed() float64 { //gd:AnimatedSprite3D.get_playing_speed
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_playing_speed), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimatedSprite3D.Bind_get_playing_speed), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

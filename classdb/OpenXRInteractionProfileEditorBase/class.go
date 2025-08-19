@@ -119,7 +119,7 @@ Setup this editor for the provided [param action_map] and [param interaction_pro
 */
 //go:nosplit
 func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRInteractionProfileEditorBase.setup
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfileEditorBase.Bind_setup), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfileEditorBase.Bind_setup), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action_map          gdextension.Object
 		interaction_profile gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(action_map[0].AsObject())), gdextension.Object(gd.ObjectChecked(interaction_profile[0].AsObject()))}))

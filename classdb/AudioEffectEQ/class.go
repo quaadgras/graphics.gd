@@ -128,7 +128,7 @@ Sets band's gain at the specified index, in dB.
 */
 //go:nosplit
 func (self class) SetBandGainDb(band_idx int64, volume_db float64) { //gd:AudioEffectEQ.set_band_gain_db
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectEQ.Bind_set_band_gain_db), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectEQ.Bind_set_band_gain_db), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		band_idx  int64
 		volume_db float64
 	}{band_idx, volume_db}))
@@ -139,7 +139,7 @@ Returns the band's gain at the specified index, in dB.
 */
 //go:nosplit
 func (self class) GetBandGainDb(band_idx int64) float64 { //gd:AudioEffectEQ.get_band_gain_db
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectEQ.Bind_get_band_gain_db), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ band_idx int64 }{band_idx}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectEQ.Bind_get_band_gain_db), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ band_idx int64 }{band_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -149,7 +149,7 @@ Returns the number of bands of the equalizer.
 */
 //go:nosplit
 func (self class) GetBandCount() int64 { //gd:AudioEffectEQ.get_band_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectEQ.Bind_get_band_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectEQ.Bind_get_band_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

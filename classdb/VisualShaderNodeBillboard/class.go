@@ -120,24 +120,24 @@ func (self Instance) SetKeepScale(value bool) {
 
 //go:nosplit
 func (self class) SetBillboardType(billboard_type BillboardType) { //gd:VisualShaderNodeBillboard.set_billboard_type
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBillboard.Bind_set_billboard_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ billboard_type BillboardType }{billboard_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBillboard.Bind_set_billboard_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ billboard_type BillboardType }{billboard_type}))
 }
 
 //go:nosplit
 func (self class) GetBillboardType() BillboardType { //gd:VisualShaderNodeBillboard.get_billboard_type
-	var r_ret = gdextension.Call[BillboardType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBillboard.Bind_get_billboard_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BillboardType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBillboard.Bind_get_billboard_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeepScaleEnabled(enabled bool) { //gd:VisualShaderNodeBillboard.set_keep_scale_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBillboard.Bind_set_keep_scale_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBillboard.Bind_set_keep_scale_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsKeepScaleEnabled() bool { //gd:VisualShaderNodeBillboard.is_keep_scale_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBillboard.Bind_is_keep_scale_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBillboard.Bind_is_keep_scale_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

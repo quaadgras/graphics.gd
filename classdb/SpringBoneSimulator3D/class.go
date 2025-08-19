@@ -651,7 +651,7 @@ Sets the root bone name of the bone chain.
 */
 //go:nosplit
 func (self class) SetRootBoneName(index int64, bone_name String.Readable) { //gd:SpringBoneSimulator3D.set_root_bone_name
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_root_bone_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_root_bone_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		index     int64
 		bone_name gdextension.String
 	}{index, gdextension.String(pointers.Get(gd.InternalString(bone_name))[0])}))
@@ -662,7 +662,7 @@ Returns the root bone name of the bone chain.
 */
 //go:nosplit
 func (self class) GetRootBoneName(index int64) String.Readable { //gd:SpringBoneSimulator3D.get_root_bone_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_root_bone_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_root_bone_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -672,7 +672,7 @@ Sets the root bone index of the bone chain.
 */
 //go:nosplit
 func (self class) SetRootBone(index int64, bone int64) { //gd:SpringBoneSimulator3D.set_root_bone
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_root_bone), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_root_bone), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		bone  int64
 	}{index, bone}))
@@ -683,7 +683,7 @@ Returns the root bone index of the bone chain.
 */
 //go:nosplit
 func (self class) GetRootBone(index int64) int64 { //gd:SpringBoneSimulator3D.get_root_bone
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_root_bone), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_root_bone), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -694,7 +694,7 @@ Sets the end bone name of the bone chain.
 */
 //go:nosplit
 func (self class) SetEndBoneName(index int64, bone_name String.Readable) { //gd:SpringBoneSimulator3D.set_end_bone_name
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_end_bone_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_end_bone_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		index     int64
 		bone_name gdextension.String
 	}{index, gdextension.String(pointers.Get(gd.InternalString(bone_name))[0])}))
@@ -705,7 +705,7 @@ Returns the end bone name of the bone chain.
 */
 //go:nosplit
 func (self class) GetEndBoneName(index int64) String.Readable { //gd:SpringBoneSimulator3D.get_end_bone_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_end_bone_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_end_bone_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -715,7 +715,7 @@ Sets the end bone index of the bone chain.
 */
 //go:nosplit
 func (self class) SetEndBone(index int64, bone int64) { //gd:SpringBoneSimulator3D.set_end_bone
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_end_bone), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_end_bone), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		bone  int64
 	}{index, bone}))
@@ -726,7 +726,7 @@ Returns the end bone index of the bone chain.
 */
 //go:nosplit
 func (self class) GetEndBone(index int64) int64 { //gd:SpringBoneSimulator3D.get_end_bone
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_end_bone), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_end_bone), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -738,7 +738,7 @@ In other words, if you set [param enabled] is [code]false[/code], the config of 
 */
 //go:nosplit
 func (self class) SetExtendEndBone(index int64, enabled bool) { //gd:SpringBoneSimulator3D.set_extend_end_bone
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_extend_end_bone), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_extend_end_bone), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		index   int64
 		enabled bool
 	}{index, enabled}))
@@ -749,7 +749,7 @@ Returns [code]true[/code] if the end bone is extended to have the tail.
 */
 //go:nosplit
 func (self class) IsEndBoneExtended(index int64) bool { //gd:SpringBoneSimulator3D.is_end_bone_extended
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_is_end_bone_extended), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_is_end_bone_extended), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -759,7 +759,7 @@ Sets the end bone tail direction of the bone chain when [method is_end_bone_exte
 */
 //go:nosplit
 func (self class) SetEndBoneDirection(index int64, bone_direction BoneDirection) { //gd:SpringBoneSimulator3D.set_end_bone_direction
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_end_bone_direction), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_end_bone_direction), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index          int64
 		bone_direction BoneDirection
 	}{index, bone_direction}))
@@ -770,7 +770,7 @@ Returns the end bone's tail direction of the bone chain when [method is_end_bone
 */
 //go:nosplit
 func (self class) GetEndBoneDirection(index int64) BoneDirection { //gd:SpringBoneSimulator3D.get_end_bone_direction
-	var r_ret = gdextension.Call[BoneDirection](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_end_bone_direction), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[BoneDirection](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_end_bone_direction), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -780,7 +780,7 @@ Sets the end bone tail length of the bone chain when [method is_end_bone_extende
 */
 //go:nosplit
 func (self class) SetEndBoneLength(index int64, length float64) { //gd:SpringBoneSimulator3D.set_end_bone_length
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_end_bone_length), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_end_bone_length), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		index  int64
 		length float64
 	}{index, length}))
@@ -791,7 +791,7 @@ Returns the end bone's tail length of the bone chain when [method is_end_bone_ex
 */
 //go:nosplit
 func (self class) GetEndBoneLength(index int64) float64 { //gd:SpringBoneSimulator3D.get_end_bone_length
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_end_bone_length), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_end_bone_length), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -804,7 +804,7 @@ In this case, only a change in the bone pose is considered to be a bone movement
 */
 //go:nosplit
 func (self class) SetCenterFrom(index int64, center_from CenterFrom) { //gd:SpringBoneSimulator3D.set_center_from
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_center_from), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_center_from), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index       int64
 		center_from CenterFrom
 	}{index, center_from}))
@@ -815,7 +815,7 @@ Returns what the center originates from in the bone chain.
 */
 //go:nosplit
 func (self class) GetCenterFrom(index int64) CenterFrom { //gd:SpringBoneSimulator3D.get_center_from
-	var r_ret = gdextension.Call[CenterFrom](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_center_from), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[CenterFrom](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_center_from), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -825,7 +825,7 @@ Sets the center node path of the bone chain.
 */
 //go:nosplit
 func (self class) SetCenterNode(index int64, node_path Path.ToNode) { //gd:SpringBoneSimulator3D.set_center_node
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_center_node), 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_center_node), 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
 		index     int64
 		node_path gdextension.NodePath
 	}{index, gdextension.NodePath(pointers.Get(gd.InternalNodePath(node_path))[0])}))
@@ -836,7 +836,7 @@ Returns the center node path of the bone chain.
 */
 //go:nosplit
 func (self class) GetCenterNode(index int64) Path.ToNode { //gd:SpringBoneSimulator3D.get_center_node
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_center_node), gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_center_node), gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -846,7 +846,7 @@ Sets the center bone name of the bone chain.
 */
 //go:nosplit
 func (self class) SetCenterBoneName(index int64, bone_name String.Readable) { //gd:SpringBoneSimulator3D.set_center_bone_name
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_center_bone_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_center_bone_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		index     int64
 		bone_name gdextension.String
 	}{index, gdextension.String(pointers.Get(gd.InternalString(bone_name))[0])}))
@@ -857,7 +857,7 @@ Returns the center bone name of the bone chain.
 */
 //go:nosplit
 func (self class) GetCenterBoneName(index int64) String.Readable { //gd:SpringBoneSimulator3D.get_center_bone_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_center_bone_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_center_bone_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -867,7 +867,7 @@ Sets the center bone index of the bone chain.
 */
 //go:nosplit
 func (self class) SetCenterBone(index int64, bone int64) { //gd:SpringBoneSimulator3D.set_center_bone
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_center_bone), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_center_bone), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		bone  int64
 	}{index, bone}))
@@ -878,7 +878,7 @@ Returns the center bone index of the bone chain.
 */
 //go:nosplit
 func (self class) GetCenterBone(index int64) int64 { //gd:SpringBoneSimulator3D.get_center_bone
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_center_bone), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_center_bone), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -889,7 +889,7 @@ The value is scaled by [method set_radius_damping_curve] and cached in each join
 */
 //go:nosplit
 func (self class) SetRadius(index int64, radius float64) { //gd:SpringBoneSimulator3D.set_radius
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_radius), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_radius), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		index  int64
 		radius float64
 	}{index, radius}))
@@ -900,7 +900,7 @@ Returns the joint radius of the bone chain.
 */
 //go:nosplit
 func (self class) GetRadius(index int64) float64 { //gd:SpringBoneSimulator3D.get_radius
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_radius), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_radius), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -912,7 +912,7 @@ The value is cached in each joint setting in the joint list.
 */
 //go:nosplit
 func (self class) SetRotationAxis(index int64, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_rotation_axis
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_rotation_axis), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_rotation_axis), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		axis  RotationAxis
 	}{index, axis}))
@@ -923,7 +923,7 @@ Returns the rotation axis of the bone chain.
 */
 //go:nosplit
 func (self class) GetRotationAxis(index int64) RotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
-	var r_ret = gdextension.Call[RotationAxis](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_rotation_axis), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[RotationAxis](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_rotation_axis), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -933,7 +933,7 @@ Sets the joint radius damping curve of the bone chain.
 */
 //go:nosplit
 func (self class) SetRadiusDampingCurve(index int64, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_radius_damping_curve
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_radius_damping_curve), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_radius_damping_curve), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index int64
 		curve gdextension.Object
 	}{index, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
@@ -944,7 +944,7 @@ Returns the joint radius damping curve of the bone chain.
 */
 //go:nosplit
 func (self class) GetRadiusDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_radius_damping_curve
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_radius_damping_curve), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_radius_damping_curve), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
@@ -956,7 +956,7 @@ The value is scaled by [method set_stiffness_damping_curve] and cached in each j
 */
 //go:nosplit
 func (self class) SetStiffness(index int64, stiffness float64) { //gd:SpringBoneSimulator3D.set_stiffness
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_stiffness), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_stiffness), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		index     int64
 		stiffness float64
 	}{index, stiffness}))
@@ -967,7 +967,7 @@ Returns the stiffness force of the bone chain.
 */
 //go:nosplit
 func (self class) GetStiffness(index int64) float64 { //gd:SpringBoneSimulator3D.get_stiffness
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_stiffness), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_stiffness), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -977,7 +977,7 @@ Sets the stiffness force damping curve of the bone chain.
 */
 //go:nosplit
 func (self class) SetStiffnessDampingCurve(index int64, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_stiffness_damping_curve
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_stiffness_damping_curve), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_stiffness_damping_curve), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index int64
 		curve gdextension.Object
 	}{index, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
@@ -988,7 +988,7 @@ Returns the stiffness force damping curve of the bone chain.
 */
 //go:nosplit
 func (self class) GetStiffnessDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_stiffness_damping_curve
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_stiffness_damping_curve), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_stiffness_damping_curve), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
@@ -999,7 +999,7 @@ The value is scaled by [method set_drag_damping_curve] and cached in each joint 
 */
 //go:nosplit
 func (self class) SetDrag(index int64, drag float64) { //gd:SpringBoneSimulator3D.set_drag
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_drag), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_drag), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		index int64
 		drag  float64
 	}{index, drag}))
@@ -1010,7 +1010,7 @@ Returns the drag force damping curve of the bone chain.
 */
 //go:nosplit
 func (self class) GetDrag(index int64) float64 { //gd:SpringBoneSimulator3D.get_drag
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_drag), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_drag), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -1020,7 +1020,7 @@ Sets the drag force damping curve of the bone chain.
 */
 //go:nosplit
 func (self class) SetDragDampingCurve(index int64, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_drag_damping_curve
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_drag_damping_curve), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_drag_damping_curve), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index int64
 		curve gdextension.Object
 	}{index, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
@@ -1031,7 +1031,7 @@ Returns the drag force damping curve of the bone chain.
 */
 //go:nosplit
 func (self class) GetDragDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_drag_damping_curve
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_drag_damping_curve), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_drag_damping_curve), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
@@ -1043,7 +1043,7 @@ The value is scaled by [method set_gravity_damping_curve] and cached in each joi
 */
 //go:nosplit
 func (self class) SetGravity(index int64, gravity float64) { //gd:SpringBoneSimulator3D.set_gravity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_gravity), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_gravity), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		index   int64
 		gravity float64
 	}{index, gravity}))
@@ -1054,7 +1054,7 @@ Returns the gravity amount of the bone chain.
 */
 //go:nosplit
 func (self class) GetGravity(index int64) float64 { //gd:SpringBoneSimulator3D.get_gravity
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_gravity), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_gravity), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -1064,7 +1064,7 @@ Sets the gravity amount damping curve of the bone chain.
 */
 //go:nosplit
 func (self class) SetGravityDampingCurve(index int64, curve [1]gdclass.Curve) { //gd:SpringBoneSimulator3D.set_gravity_damping_curve
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_gravity_damping_curve), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_gravity_damping_curve), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index int64
 		curve gdextension.Object
 	}{index, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
@@ -1075,7 +1075,7 @@ Returns the gravity amount damping curve of the bone chain.
 */
 //go:nosplit
 func (self class) GetGravityDampingCurve(index int64) [1]gdclass.Curve { //gd:SpringBoneSimulator3D.get_gravity_damping_curve
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_gravity_damping_curve), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_gravity_damping_curve), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
@@ -1086,7 +1086,7 @@ The value is cached in each joint setting in the joint list.
 */
 //go:nosplit
 func (self class) SetGravityDirection(index int64, gravity_direction Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_gravity_direction
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_gravity_direction), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_gravity_direction), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		index             int64
 		gravity_direction Vector3.XYZ
 	}{index, gravity_direction}))
@@ -1097,19 +1097,19 @@ Returns the gravity direction of the bone chain.
 */
 //go:nosplit
 func (self class) GetGravityDirection(index int64) Vector3.XYZ { //gd:SpringBoneSimulator3D.get_gravity_direction
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_gravity_direction), gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_gravity_direction), gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSettingCount(count int64) { //gd:SpringBoneSimulator3D.set_setting_count
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_setting_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_setting_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 //go:nosplit
 func (self class) GetSettingCount() int64 { //gd:SpringBoneSimulator3D.get_setting_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_setting_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_setting_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1119,7 +1119,7 @@ Clears all settings.
 */
 //go:nosplit
 func (self class) ClearSettings() { //gd:SpringBoneSimulator3D.clear_settings
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_clear_settings), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_clear_settings), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1127,7 +1127,7 @@ If [param enabled] is [code]true[/code], the config can be edited individually f
 */
 //go:nosplit
 func (self class) SetIndividualConfig(index int64, enabled bool) { //gd:SpringBoneSimulator3D.set_individual_config
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_individual_config), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_individual_config), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		index   int64
 		enabled bool
 	}{index, enabled}))
@@ -1138,7 +1138,7 @@ Returns [code]true[/code] if the config can be edited individually for each join
 */
 //go:nosplit
 func (self class) IsConfigIndividual(index int64) bool { //gd:SpringBoneSimulator3D.is_config_individual
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_is_config_individual), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_is_config_individual), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -1148,7 +1148,7 @@ Returns the bone name at [param joint] in the bone chain's joint list.
 */
 //go:nosplit
 func (self class) GetJointBoneName(index int64, joint int64) String.Readable { //gd:SpringBoneSimulator3D.get_joint_bone_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_bone_name), gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_bone_name), gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		joint int64
 	}{index, joint}))
@@ -1161,7 +1161,7 @@ Returns the bone index at [param joint] in the bone chain's joint list.
 */
 //go:nosplit
 func (self class) GetJointBone(index int64, joint int64) int64 { //gd:SpringBoneSimulator3D.get_joint_bone
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_bone), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_bone), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		joint int64
 	}{index, joint}))
@@ -1174,7 +1174,7 @@ Sets the rotation axis at [param joint] in the bone chain's joint list when [met
 */
 //go:nosplit
 func (self class) SetJointRotationAxis(index int64, joint int64, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_rotation_axis), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_rotation_axis), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		index int64
 		joint int64
 		axis  RotationAxis
@@ -1186,7 +1186,7 @@ Returns the rotation axis at [param joint] in the bone chain's joint list.
 */
 //go:nosplit
 func (self class) GetJointRotationAxis(index int64, joint int64) RotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
-	var r_ret = gdextension.Call[RotationAxis](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_rotation_axis), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RotationAxis](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_rotation_axis), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		joint int64
 	}{index, joint}))
@@ -1199,7 +1199,7 @@ Sets the joint radius at [param joint] in the bone chain's joint list when [meth
 */
 //go:nosplit
 func (self class) SetJointRadius(index int64, joint int64, radius float64) { //gd:SpringBoneSimulator3D.set_joint_radius
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_radius), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_radius), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		index  int64
 		joint  int64
 		radius float64
@@ -1211,7 +1211,7 @@ Returns the radius at [param joint] in the bone chain's joint list.
 */
 //go:nosplit
 func (self class) GetJointRadius(index int64, joint int64) float64 { //gd:SpringBoneSimulator3D.get_joint_radius
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_radius), gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_radius), gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		joint int64
 	}{index, joint}))
@@ -1224,7 +1224,7 @@ Sets the stiffness force at [param joint] in the bone chain's joint list when [m
 */
 //go:nosplit
 func (self class) SetJointStiffness(index int64, joint int64, stiffness float64) { //gd:SpringBoneSimulator3D.set_joint_stiffness
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_stiffness), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_stiffness), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		index     int64
 		joint     int64
 		stiffness float64
@@ -1236,7 +1236,7 @@ Returns the stiffness force at [param joint] in the bone chain's joint list.
 */
 //go:nosplit
 func (self class) GetJointStiffness(index int64, joint int64) float64 { //gd:SpringBoneSimulator3D.get_joint_stiffness
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_stiffness), gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_stiffness), gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		joint int64
 	}{index, joint}))
@@ -1249,7 +1249,7 @@ Sets the drag force at [param joint] in the bone chain's joint list when [method
 */
 //go:nosplit
 func (self class) SetJointDrag(index int64, joint int64, drag float64) { //gd:SpringBoneSimulator3D.set_joint_drag
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_drag), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_drag), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		index int64
 		joint int64
 		drag  float64
@@ -1261,7 +1261,7 @@ Returns the drag force at [param joint] in the bone chain's joint list.
 */
 //go:nosplit
 func (self class) GetJointDrag(index int64, joint int64) float64 { //gd:SpringBoneSimulator3D.get_joint_drag
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_drag), gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_drag), gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		joint int64
 	}{index, joint}))
@@ -1274,7 +1274,7 @@ Sets the gravity amount at [param joint] in the bone chain's joint list when [me
 */
 //go:nosplit
 func (self class) SetJointGravity(index int64, joint int64, gravity float64) { //gd:SpringBoneSimulator3D.set_joint_gravity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_gravity), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_gravity), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		index   int64
 		joint   int64
 		gravity float64
@@ -1286,7 +1286,7 @@ Returns the gravity amount at [param joint] in the bone chain's joint list.
 */
 //go:nosplit
 func (self class) GetJointGravity(index int64, joint int64) float64 { //gd:SpringBoneSimulator3D.get_joint_gravity
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_gravity), gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_gravity), gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		joint int64
 	}{index, joint}))
@@ -1299,7 +1299,7 @@ Sets the gravity direction at [param joint] in the bone chain's joint list when 
 */
 //go:nosplit
 func (self class) SetJointGravityDirection(index int64, joint int64, gravity_direction Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_joint_gravity_direction
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_gravity_direction), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector3<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_joint_gravity_direction), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector3<<12), unsafe.Pointer(&struct {
 		index             int64
 		joint             int64
 		gravity_direction Vector3.XYZ
@@ -1311,7 +1311,7 @@ Returns the gravity direction at [param joint] in the bone chain's joint list.
 */
 //go:nosplit
 func (self class) GetJointGravityDirection(index int64, joint int64) Vector3.XYZ { //gd:SpringBoneSimulator3D.get_joint_gravity_direction
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_gravity_direction), gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_gravity_direction), gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		joint int64
 	}{index, joint}))
@@ -1324,7 +1324,7 @@ Returns the joint count of the bone chain's joint list.
 */
 //go:nosplit
 func (self class) GetJointCount(index int64) int64 { //gd:SpringBoneSimulator3D.get_joint_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_count), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_joint_count), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -1335,7 +1335,7 @@ If sets [param enabled] to [code]false[/code], you need to manually register all
 */
 //go:nosplit
 func (self class) SetEnableAllChildCollisions(index int64, enabled bool) { //gd:SpringBoneSimulator3D.set_enable_all_child_collisions
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_enable_all_child_collisions), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_enable_all_child_collisions), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		index   int64
 		enabled bool
 	}{index, enabled}))
@@ -1346,7 +1346,7 @@ Returns [code]true[/code] if the all child [SpringBoneCollision3D]s are containe
 */
 //go:nosplit
 func (self class) AreAllChildCollisionsEnabled(index int64) bool { //gd:SpringBoneSimulator3D.are_all_child_collisions_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_are_all_child_collisions_enabled), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_are_all_child_collisions_enabled), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -1356,7 +1356,7 @@ Sets the node path of the [SpringBoneCollision3D] at [param collision] in the bo
 */
 //go:nosplit
 func (self class) SetExcludeCollisionPath(index int64, collision int64, node_path Path.ToNode) { //gd:SpringBoneSimulator3D.set_exclude_collision_path
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_exclude_collision_path), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeNodePath<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_exclude_collision_path), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeNodePath<<12), unsafe.Pointer(&struct {
 		index     int64
 		collision int64
 		node_path gdextension.NodePath
@@ -1368,7 +1368,7 @@ Returns the node path of the [SpringBoneCollision3D] at [param collision] in the
 */
 //go:nosplit
 func (self class) GetExcludeCollisionPath(index int64, collision int64) Path.ToNode { //gd:SpringBoneSimulator3D.get_exclude_collision_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_exclude_collision_path), gdextension.SizeNodePath|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_exclude_collision_path), gdextension.SizeNodePath|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index     int64
 		collision int64
 	}{index, collision}))
@@ -1381,7 +1381,7 @@ Sets the number of exclude collisions in the exclude collision list at [param in
 */
 //go:nosplit
 func (self class) SetExcludeCollisionCount(index int64, count int64) { //gd:SpringBoneSimulator3D.set_exclude_collision_count
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_exclude_collision_count), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_exclude_collision_count), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		count int64
 	}{index, count}))
@@ -1392,7 +1392,7 @@ Returns the exclude collision count of the bone chain's exclude collision list w
 */
 //go:nosplit
 func (self class) GetExcludeCollisionCount(index int64) int64 { //gd:SpringBoneSimulator3D.get_exclude_collision_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_exclude_collision_count), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_exclude_collision_count), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -1402,7 +1402,7 @@ Clears all exclude collisions from the collision list at [param index] in the se
 */
 //go:nosplit
 func (self class) ClearExcludeCollisions(index int64) { //gd:SpringBoneSimulator3D.clear_exclude_collisions
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_clear_exclude_collisions), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_clear_exclude_collisions), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 /*
@@ -1410,7 +1410,7 @@ Sets the node path of the [SpringBoneCollision3D] at [param collision] in the bo
 */
 //go:nosplit
 func (self class) SetCollisionPath(index int64, collision int64, node_path Path.ToNode) { //gd:SpringBoneSimulator3D.set_collision_path
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_collision_path), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeNodePath<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_collision_path), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeNodePath<<12), unsafe.Pointer(&struct {
 		index     int64
 		collision int64
 		node_path gdextension.NodePath
@@ -1422,7 +1422,7 @@ Returns the node path of the [SpringBoneCollision3D] at [param collision] in the
 */
 //go:nosplit
 func (self class) GetCollisionPath(index int64, collision int64) Path.ToNode { //gd:SpringBoneSimulator3D.get_collision_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_collision_path), gdextension.SizeNodePath|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_collision_path), gdextension.SizeNodePath|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index     int64
 		collision int64
 	}{index, collision}))
@@ -1435,7 +1435,7 @@ Sets the number of collisions in the collision list at [param index] in the sett
 */
 //go:nosplit
 func (self class) SetCollisionCount(index int64, count int64) { //gd:SpringBoneSimulator3D.set_collision_count
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_collision_count), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_set_collision_count), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		count int64
 	}{index, count}))
@@ -1446,7 +1446,7 @@ Returns the collision count of the bone chain's collision list when [method are_
 */
 //go:nosplit
 func (self class) GetCollisionCount(index int64) int64 { //gd:SpringBoneSimulator3D.get_collision_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_collision_count), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_get_collision_count), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -1456,7 +1456,7 @@ Clears all collisions from the collision list at [param index] in the settings w
 */
 //go:nosplit
 func (self class) ClearCollisions(index int64) { //gd:SpringBoneSimulator3D.clear_collisions
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_clear_collisions), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_clear_collisions), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 /*
@@ -1465,7 +1465,7 @@ It is useful to prevent the simulation result getting violent. For example, call
 */
 //go:nosplit
 func (self class) Reset() { //gd:SpringBoneSimulator3D.reset
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_reset), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringBoneSimulator3D.Bind_reset), 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsSpringBoneSimulator3D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsSpringBoneSimulator3D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }

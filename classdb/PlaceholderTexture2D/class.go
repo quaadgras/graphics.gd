@@ -113,7 +113,7 @@ func (self Instance) SetSize(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2.XY) { //gd:PlaceholderTexture2D.set_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaceholderTexture2D.Bind_set_size), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PlaceholderTexture2D.Bind_set_size), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
 }
 func (self class) AsPlaceholderTexture2D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPlaceholderTexture2D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }

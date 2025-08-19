@@ -199,36 +199,36 @@ func (self Instance) SetTargetNodepath(value string) {
 
 //go:nosplit
 func (self class) SetBone2dNode(bone2d_nodepath Path.ToNode) { //gd:SkeletonModification2DLookAt.set_bone2d_node
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_bone2d_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ bone2d_nodepath gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(bone2d_nodepath))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_bone2d_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ bone2d_nodepath gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(bone2d_nodepath))[0])}))
 }
 
 //go:nosplit
 func (self class) GetBone2dNode() Path.ToNode { //gd:SkeletonModification2DLookAt.get_bone2d_node
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_bone2d_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_bone2d_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBoneIndex(bone_idx int64) { //gd:SkeletonModification2DLookAt.set_bone_index
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_bone_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_bone_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
 }
 
 //go:nosplit
 func (self class) GetBoneIndex() int64 { //gd:SkeletonModification2DLookAt.get_bone_index
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_bone_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_bone_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModification2DLookAt.set_target_node
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_target_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target_nodepath gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(target_nodepath))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_target_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target_nodepath gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(target_nodepath))[0])}))
 }
 
 //go:nosplit
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DLookAt.get_target_node
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_target_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_target_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -238,7 +238,7 @@ Sets the amount of additional rotation that is to be applied after executing the
 */
 //go:nosplit
 func (self class) SetAdditionalRotation(rotation float64) { //gd:SkeletonModification2DLookAt.set_additional_rotation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_additional_rotation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ rotation float64 }{rotation}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_additional_rotation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ rotation float64 }{rotation}))
 }
 
 /*
@@ -246,7 +246,7 @@ Returns the amount of additional rotation that is applied after the LookAt modif
 */
 //go:nosplit
 func (self class) GetAdditionalRotation() float64 { //gd:SkeletonModification2DLookAt.get_additional_rotation
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_additional_rotation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_additional_rotation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -256,7 +256,7 @@ Sets whether this modification will use constraints or not. When [code]true[/cod
 */
 //go:nosplit
 func (self class) SetEnableConstraint(enable_constraint bool) { //gd:SkeletonModification2DLookAt.set_enable_constraint
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_enable_constraint), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable_constraint bool }{enable_constraint}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_enable_constraint), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable_constraint bool }{enable_constraint}))
 }
 
 /*
@@ -264,7 +264,7 @@ Returns [code]true[/code] if the LookAt modification is using constraints.
 */
 //go:nosplit
 func (self class) GetEnableConstraint() bool { //gd:SkeletonModification2DLookAt.get_enable_constraint
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_enable_constraint), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_enable_constraint), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -274,7 +274,7 @@ Sets the constraint's minimum allowed angle.
 */
 //go:nosplit
 func (self class) SetConstraintAngleMin(angle_min float64) { //gd:SkeletonModification2DLookAt.set_constraint_angle_min
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_constraint_angle_min), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle_min float64 }{angle_min}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_constraint_angle_min), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle_min float64 }{angle_min}))
 }
 
 /*
@@ -282,7 +282,7 @@ Returns the constraint's minimum allowed angle.
 */
 //go:nosplit
 func (self class) GetConstraintAngleMin() float64 { //gd:SkeletonModification2DLookAt.get_constraint_angle_min
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_constraint_angle_min), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_constraint_angle_min), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -292,7 +292,7 @@ Sets the constraint's maximum allowed angle.
 */
 //go:nosplit
 func (self class) SetConstraintAngleMax(angle_max float64) { //gd:SkeletonModification2DLookAt.set_constraint_angle_max
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_constraint_angle_max), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle_max float64 }{angle_max}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_constraint_angle_max), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle_max float64 }{angle_max}))
 }
 
 /*
@@ -300,7 +300,7 @@ Returns the constraint's maximum allowed angle.
 */
 //go:nosplit
 func (self class) GetConstraintAngleMax() float64 { //gd:SkeletonModification2DLookAt.get_constraint_angle_max
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_constraint_angle_max), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_constraint_angle_max), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -311,7 +311,7 @@ An inverted joint constraint only constraints the [Bone2D] to the angles [i]outs
 */
 //go:nosplit
 func (self class) SetConstraintAngleInvert(invert bool) { //gd:SkeletonModification2DLookAt.set_constraint_angle_invert
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_constraint_angle_invert), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ invert bool }{invert}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_set_constraint_angle_invert), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ invert bool }{invert}))
 }
 
 /*
@@ -319,7 +319,7 @@ Returns whether the constraints to this modification are inverted or not.
 */
 //go:nosplit
 func (self class) GetConstraintAngleInvert() bool { //gd:SkeletonModification2DLookAt.get_constraint_angle_invert
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_constraint_angle_invert), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DLookAt.Bind_get_constraint_angle_invert), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

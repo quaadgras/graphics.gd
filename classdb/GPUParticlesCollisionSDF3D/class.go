@@ -166,60 +166,60 @@ func (self Instance) SetTexture(value Texture3D.Instance) {
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:GPUParticlesCollisionSDF3D.set_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_size), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_size), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesCollisionSDF3D.get_size
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetResolution(resolution Resolution) { //gd:GPUParticlesCollisionSDF3D.set_resolution
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_resolution), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ resolution Resolution }{resolution}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_resolution), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ resolution Resolution }{resolution}))
 }
 
 //go:nosplit
 func (self class) GetResolution() Resolution { //gd:GPUParticlesCollisionSDF3D.get_resolution
-	var r_ret = gdextension.Call[Resolution](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_resolution), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Resolution](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_resolution), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture3D) { //gd:GPUParticlesCollisionSDF3D.set_texture
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture3D { //gd:GPUParticlesCollisionSDF3D.get_texture
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture3D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetThickness(thickness float64) { //gd:GPUParticlesCollisionSDF3D.set_thickness
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_thickness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ thickness float64 }{thickness}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_thickness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ thickness float64 }{thickness}))
 }
 
 //go:nosplit
 func (self class) GetThickness() float64 { //gd:GPUParticlesCollisionSDF3D.get_thickness
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_thickness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_thickness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBakeMask(mask int64) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_bake_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_bake_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetBakeMask() int64 { //gd:GPUParticlesCollisionSDF3D.get_bake_mask
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_bake_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_bake_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -229,7 +229,7 @@ Based on [param value], enables or disables the specified layer in the [member b
 */
 //go:nosplit
 func (self class) SetBakeMaskValue(layer_number int64, value bool) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask_value
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_bake_mask_value), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_bake_mask_value), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value}))
@@ -240,7 +240,7 @@ Returns whether or not the specified layer of the [member bake_mask] is enabled,
 */
 //go:nosplit
 func (self class) GetBakeMaskValue(layer_number int64) bool { //gd:GPUParticlesCollisionSDF3D.get_bake_mask_value
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_bake_mask_value), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_bake_mask_value), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
 	var ret = r_ret
 	return ret
 }

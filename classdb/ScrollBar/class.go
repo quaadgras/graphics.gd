@@ -113,12 +113,12 @@ func (self Instance) SetCustomStep(value Float.X) {
 
 //go:nosplit
 func (self class) SetCustomStep(step float64) { //gd:ScrollBar.set_custom_step
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ScrollBar.Bind_set_custom_step), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ step float64 }{step}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ScrollBar.Bind_set_custom_step), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ step float64 }{step}))
 }
 
 //go:nosplit
 func (self class) GetCustomStep() float64 { //gd:ScrollBar.get_custom_step
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ScrollBar.Bind_get_custom_step), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ScrollBar.Bind_get_custom_step), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

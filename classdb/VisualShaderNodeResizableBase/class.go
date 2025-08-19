@@ -113,12 +113,12 @@ func (self Instance) SetSize(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2.XY) { //gd:VisualShaderNodeResizableBase.set_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeResizableBase.Bind_set_size), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeResizableBase.Bind_set_size), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:VisualShaderNodeResizableBase.get_size
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeResizableBase.Bind_get_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeResizableBase.Bind_get_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

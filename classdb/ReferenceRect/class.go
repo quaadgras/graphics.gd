@@ -129,38 +129,38 @@ func (self Instance) SetEditorOnly(value bool) {
 
 //go:nosplit
 func (self class) GetBorderColor() Color.RGBA { //gd:ReferenceRect.get_border_color
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_get_border_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_get_border_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBorderColor(color Color.RGBA) { //gd:ReferenceRect.set_border_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_set_border_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_set_border_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetBorderWidth() float64 { //gd:ReferenceRect.get_border_width
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_get_border_width), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_get_border_width), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBorderWidth(width float64) { //gd:ReferenceRect.set_border_width
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_set_border_width), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ width float64 }{width}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_set_border_width), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ width float64 }{width}))
 }
 
 //go:nosplit
 func (self class) GetEditorOnly() bool { //gd:ReferenceRect.get_editor_only
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_get_editor_only), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_get_editor_only), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditorOnly(enabled bool) { //gd:ReferenceRect.set_editor_only
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_set_editor_only), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_set_editor_only), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 func (self class) AsReferenceRect() Advanced           { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsReferenceRect() Instance        { return *((*Instance)(unsafe.Pointer(&self))) }

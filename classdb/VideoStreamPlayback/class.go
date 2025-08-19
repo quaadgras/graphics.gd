@@ -464,7 +464,7 @@ Render [param num_frames] audio frames (of [method _get_channels] floats each) f
 */
 //go:nosplit
 func (self class) MixAudio(num_frames int64, buffer Packed.Array[float32], offset int64) int64 { //gd:VideoStreamPlayback.mix_audio
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayback.Bind_mix_audio), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayback.Bind_mix_audio), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		num_frames int64
 		buffer     gdextension.PackedArray
 		offset     int64

@@ -814,7 +814,7 @@ This function can only be called during the [method _import] callback and it all
 */
 //go:nosplit
 func (self class) AppendImportExternalResource(path String.Readable, custom_options Dictionary.Any, custom_importer String.Readable, generator_parameters variant.Any) Error.Code { //gd:EditorImportPlugin.append_import_external_resource
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorImportPlugin.Bind_append_import_external_resource), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8)|(gdextension.SizeString<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorImportPlugin.Bind_append_import_external_resource), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8)|(gdextension.SizeString<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
 		path                 gdextension.String
 		custom_options       gdextension.Dictionary
 		custom_importer      gdextension.String

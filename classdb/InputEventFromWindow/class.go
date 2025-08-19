@@ -112,12 +112,12 @@ func (self Instance) SetWindowId(value int) {
 
 //go:nosplit
 func (self class) SetWindowId(id int64) { //gd:InputEventFromWindow.set_window_id
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventFromWindow.Bind_set_window_id), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventFromWindow.Bind_set_window_id), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 }
 
 //go:nosplit
 func (self class) GetWindowId() int64 { //gd:InputEventFromWindow.get_window_id
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventFromWindow.Bind_get_window_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventFromWindow.Bind_get_window_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

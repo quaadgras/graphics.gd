@@ -123,7 +123,7 @@ Sets the [SkeletonModificationStack2D] that this modification is holding. This m
 */
 //go:nosplit
 func (self class) SetHeldModificationStack(held_modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:SkeletonModification2DStackHolder.set_held_modification_stack
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DStackHolder.Bind_set_held_modification_stack), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ held_modification_stack gdextension.Object }{gdextension.Object(gd.ObjectChecked(held_modification_stack[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DStackHolder.Bind_set_held_modification_stack), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ held_modification_stack gdextension.Object }{gdextension.Object(gd.ObjectChecked(held_modification_stack[0].AsObject()))}))
 }
 
 /*
@@ -131,7 +131,7 @@ Returns the [SkeletonModificationStack2D] that this modification is holding.
 */
 //go:nosplit
 func (self class) GetHeldModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2DStackHolder.get_held_modification_stack
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DStackHolder.Bind_get_held_modification_stack), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DStackHolder.Bind_get_held_modification_stack), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SkeletonModificationStack2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModificationStack2D](r_ret)}
 	return ret
 }

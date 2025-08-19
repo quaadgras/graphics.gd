@@ -151,72 +151,72 @@ func (self Instance) SetSampleMasks(value []int) {
 
 //go:nosplit
 func (self class) SetSampleCount(p_member Rendering.TextureSamples) { //gd:RDPipelineMultisampleState.set_sample_count
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_set_sample_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSamples }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_set_sample_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSamples }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetSampleCount() Rendering.TextureSamples { //gd:RDPipelineMultisampleState.get_sample_count
-	var r_ret = gdextension.Call[Rendering.TextureSamples](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_sample_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_sample_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableSampleShading(p_member bool) { //gd:RDPipelineMultisampleState.set_enable_sample_shading
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_set_enable_sample_shading), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_set_enable_sample_shading), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetEnableSampleShading() bool { //gd:RDPipelineMultisampleState.get_enable_sample_shading
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_enable_sample_shading), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_enable_sample_shading), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinSampleShading(p_member float64) { //gd:RDPipelineMultisampleState.set_min_sample_shading
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_set_min_sample_shading), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_set_min_sample_shading), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetMinSampleShading() float64 { //gd:RDPipelineMultisampleState.get_min_sample_shading
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_min_sample_shading), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_min_sample_shading), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableAlphaToCoverage(p_member bool) { //gd:RDPipelineMultisampleState.set_enable_alpha_to_coverage
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_set_enable_alpha_to_coverage), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_set_enable_alpha_to_coverage), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetEnableAlphaToCoverage() bool { //gd:RDPipelineMultisampleState.get_enable_alpha_to_coverage
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_enable_alpha_to_coverage), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_enable_alpha_to_coverage), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableAlphaToOne(p_member bool) { //gd:RDPipelineMultisampleState.set_enable_alpha_to_one
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_set_enable_alpha_to_one), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_set_enable_alpha_to_one), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetEnableAlphaToOne() bool { //gd:RDPipelineMultisampleState.get_enable_alpha_to_one
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_enable_alpha_to_one), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_enable_alpha_to_one), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSampleMasks(masks Array.Contains[int64]) { //gd:RDPipelineMultisampleState.set_sample_masks
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_set_sample_masks), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ masks gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(masks))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_set_sample_masks), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ masks gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(masks))[0])}))
 }
 
 //go:nosplit
 func (self class) GetSampleMasks() Array.Contains[int64] { //gd:RDPipelineMultisampleState.get_sample_masks
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_sample_masks), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineMultisampleState.Bind_get_sample_masks), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

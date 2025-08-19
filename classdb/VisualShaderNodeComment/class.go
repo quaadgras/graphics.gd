@@ -114,12 +114,12 @@ func (self Instance) SetDescription(value string) {
 
 //go:nosplit
 func (self class) SetDescription(description String.Readable) { //gd:VisualShaderNodeComment.set_description
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeComment.Bind_set_description), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ description gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(description))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeComment.Bind_set_description), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ description gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(description))[0])}))
 }
 
 //go:nosplit
 func (self class) GetDescription() String.Readable { //gd:VisualShaderNodeComment.get_description
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeComment.Bind_get_description), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeComment.Bind_get_description), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

@@ -177,108 +177,108 @@ func (self Instance) SetAdvanceExpression(value string) {
 
 //go:nosplit
 func (self class) SetSwitchMode(mode SwitchMode) { //gd:AnimationNodeStateMachineTransition.set_switch_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_switch_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode SwitchMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_switch_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode SwitchMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetSwitchMode() SwitchMode { //gd:AnimationNodeStateMachineTransition.get_switch_mode
-	var r_ret = gdextension.Call[SwitchMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_switch_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SwitchMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_switch_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAdvanceMode(mode AdvanceMode) { //gd:AnimationNodeStateMachineTransition.set_advance_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_advance_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AdvanceMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_advance_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AdvanceMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetAdvanceMode() AdvanceMode { //gd:AnimationNodeStateMachineTransition.get_advance_mode
-	var r_ret = gdextension.Call[AdvanceMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_advance_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AdvanceMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_advance_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAdvanceCondition(name String.Name) { //gd:AnimationNodeStateMachineTransition.set_advance_condition
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_advance_condition), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_advance_condition), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetAdvanceCondition() String.Name { //gd:AnimationNodeStateMachineTransition.get_advance_condition
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_advance_condition), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_advance_condition), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetXfadeTime(secs float64) { //gd:AnimationNodeStateMachineTransition.set_xfade_time
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_xfade_time), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ secs float64 }{secs}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_xfade_time), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ secs float64 }{secs}))
 }
 
 //go:nosplit
 func (self class) GetXfadeTime() float64 { //gd:AnimationNodeStateMachineTransition.get_xfade_time
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_xfade_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_xfade_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetXfadeCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeStateMachineTransition.set_xfade_curve
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_xfade_curve), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_xfade_curve), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetXfadeCurve() [1]gdclass.Curve { //gd:AnimationNodeStateMachineTransition.get_xfade_curve
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_xfade_curve), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_xfade_curve), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBreakLoopAtEnd(enable bool) { //gd:AnimationNodeStateMachineTransition.set_break_loop_at_end
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_break_loop_at_end), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_break_loop_at_end), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsLoopBrokenAtEnd() bool { //gd:AnimationNodeStateMachineTransition.is_loop_broken_at_end
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_is_loop_broken_at_end), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_is_loop_broken_at_end), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetReset(reset bool) { //gd:AnimationNodeStateMachineTransition.set_reset
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_reset), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ reset bool }{reset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_reset), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ reset bool }{reset}))
 }
 
 //go:nosplit
 func (self class) IsReset() bool { //gd:AnimationNodeStateMachineTransition.is_reset
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_is_reset), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_is_reset), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPriority(priority int64) { //gd:AnimationNodeStateMachineTransition.set_priority
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_priority), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_priority), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
 }
 
 //go:nosplit
 func (self class) GetPriority() int64 { //gd:AnimationNodeStateMachineTransition.get_priority
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_priority), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_priority), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAdvanceExpression(text String.Readable) { //gd:AnimationNodeStateMachineTransition.set_advance_expression
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_advance_expression), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_set_advance_expression), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 //go:nosplit
 func (self class) GetAdvanceExpression() String.Readable { //gd:AnimationNodeStateMachineTransition.get_advance_expression
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_advance_expression), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachineTransition.Bind_get_advance_expression), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

@@ -217,7 +217,7 @@ Returns the source file path which got imported (e.g. [code]res://scene.dae[/cod
 */
 //go:nosplit
 func (self class) GetSourceFile() String.Readable { //gd:EditorScenePostImport.get_source_file
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorScenePostImport.Bind_get_source_file), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorScenePostImport.Bind_get_source_file), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

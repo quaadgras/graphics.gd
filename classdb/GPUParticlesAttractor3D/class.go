@@ -139,48 +139,48 @@ func (self Instance) SetCullMask(value int) {
 
 //go:nosplit
 func (self class) SetCullMask(mask int64) { //gd:GPUParticlesAttractor3D.set_cull_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_set_cull_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_set_cull_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetCullMask() int64 { //gd:GPUParticlesAttractor3D.get_cull_mask
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_cull_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_cull_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStrength(strength float64) { //gd:GPUParticlesAttractor3D.set_strength
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_set_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_set_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
 }
 
 //go:nosplit
 func (self class) GetStrength() float64 { //gd:GPUParticlesAttractor3D.get_strength
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAttenuation(attenuation float64) { //gd:GPUParticlesAttractor3D.set_attenuation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_set_attenuation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ attenuation float64 }{attenuation}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_set_attenuation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ attenuation float64 }{attenuation}))
 }
 
 //go:nosplit
 func (self class) GetAttenuation() float64 { //gd:GPUParticlesAttractor3D.get_attenuation
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_attenuation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_attenuation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDirectionality(amount float64) { //gd:GPUParticlesAttractor3D.set_directionality
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_set_directionality), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_set_directionality), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetDirectionality() float64 { //gd:GPUParticlesAttractor3D.get_directionality
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_directionality), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractor3D.Bind_get_directionality), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

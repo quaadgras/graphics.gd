@@ -137,48 +137,48 @@ func (self Instance) SetEditorPreviewIndeterminate(value bool) {
 
 //go:nosplit
 func (self class) SetFillMode(mode int64) { //gd:ProgressBar.set_fill_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_set_fill_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode int64 }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_set_fill_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode int64 }{mode}))
 }
 
 //go:nosplit
 func (self class) GetFillMode() int64 { //gd:ProgressBar.get_fill_mode
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_get_fill_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_get_fill_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShowPercentage(visible bool) { //gd:ProgressBar.set_show_percentage
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_set_show_percentage), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_set_show_percentage), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
 }
 
 //go:nosplit
 func (self class) IsPercentageShown() bool { //gd:ProgressBar.is_percentage_shown
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_is_percentage_shown), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_is_percentage_shown), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIndeterminate(indeterminate bool) { //gd:ProgressBar.set_indeterminate
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_set_indeterminate), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ indeterminate bool }{indeterminate}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_set_indeterminate), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ indeterminate bool }{indeterminate}))
 }
 
 //go:nosplit
 func (self class) IsIndeterminate() bool { //gd:ProgressBar.is_indeterminate
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_is_indeterminate), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_is_indeterminate), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditorPreviewIndeterminate(preview_indeterminate bool) { //gd:ProgressBar.set_editor_preview_indeterminate
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_set_editor_preview_indeterminate), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ preview_indeterminate bool }{preview_indeterminate}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_set_editor_preview_indeterminate), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ preview_indeterminate bool }{preview_indeterminate}))
 }
 
 //go:nosplit
 func (self class) IsEditorPreviewIndeterminateEnabled() bool { //gd:ProgressBar.is_editor_preview_indeterminate_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_is_editor_preview_indeterminate_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProgressBar.Bind_is_editor_preview_indeterminate_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

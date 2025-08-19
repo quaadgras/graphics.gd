@@ -114,12 +114,12 @@ func (self Instance) SetPlane(value Plane.NormalD) {
 
 //go:nosplit
 func (self class) SetPlane(plane Plane.NormalD) { //gd:WorldBoundaryShape3D.set_plane
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WorldBoundaryShape3D.Bind_set_plane), 0|(gdextension.SizePlane<<4), unsafe.Pointer(&struct{ plane Plane.NormalD }{plane}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorldBoundaryShape3D.Bind_set_plane), 0|(gdextension.SizePlane<<4), unsafe.Pointer(&struct{ plane Plane.NormalD }{plane}))
 }
 
 //go:nosplit
 func (self class) GetPlane() Plane.NormalD { //gd:WorldBoundaryShape3D.get_plane
-	var r_ret = gdextension.Call[Plane.NormalD](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WorldBoundaryShape3D.Bind_get_plane), gdextension.SizePlane, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Plane.NormalD](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorldBoundaryShape3D.Bind_get_plane), gdextension.SizePlane, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

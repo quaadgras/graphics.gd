@@ -216,7 +216,7 @@ Sets the position for the [SoftBody3D] vertex at the index specified by [param v
 */
 //go:nosplit
 func (self class) SetVertex(vertex_id int64, vertex Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_vertex
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_vertex), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_vertex), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		vertex_id int64
 		vertex    Vector3.XYZ
 	}{vertex_id, vertex}))
@@ -227,7 +227,7 @@ Sets the normal for the [SoftBody3D] vertex at the index specified by [param ver
 */
 //go:nosplit
 func (self class) SetNormal(vertex_id int64, normal Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_normal
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_normal), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_normal), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		vertex_id int64
 		normal    Vector3.XYZ
 	}{vertex_id, normal}))
@@ -238,7 +238,7 @@ Sets the bounding box for the [SoftBody3D].
 */
 //go:nosplit
 func (self class) SetAabb(aabb AABB.PositionSize) { //gd:PhysicsServer3DRenderingServerHandler.set_aabb
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_aabb), 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ aabb AABB.PositionSize }{aabb}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_aabb), 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ aabb AABB.PositionSize }{aabb}))
 }
 func (self class) AsPhysicsServer3DRenderingServerHandler() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

@@ -137,48 +137,48 @@ func (self Instance) SetDamping(value Float.X) {
 
 //go:nosplit
 func (self class) SetLength(length float64) { //gd:DampedSpringJoint2D.set_length
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_set_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_set_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetLength() float64 { //gd:DampedSpringJoint2D.get_length
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRestLength(rest_length float64) { //gd:DampedSpringJoint2D.set_rest_length
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_set_rest_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ rest_length float64 }{rest_length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_set_rest_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ rest_length float64 }{rest_length}))
 }
 
 //go:nosplit
 func (self class) GetRestLength() float64 { //gd:DampedSpringJoint2D.get_rest_length
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_get_rest_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_get_rest_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStiffness(stiffness float64) { //gd:DampedSpringJoint2D.set_stiffness
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_set_stiffness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ stiffness float64 }{stiffness}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_set_stiffness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ stiffness float64 }{stiffness}))
 }
 
 //go:nosplit
 func (self class) GetStiffness() float64 { //gd:DampedSpringJoint2D.get_stiffness
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_get_stiffness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_get_stiffness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDamping(damping float64) { //gd:DampedSpringJoint2D.set_damping
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_set_damping), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ damping float64 }{damping}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_set_damping), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ damping float64 }{damping}))
 }
 
 //go:nosplit
 func (self class) GetDamping() float64 { //gd:DampedSpringJoint2D.get_damping
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_get_damping), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_get_damping), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -112,12 +112,12 @@ func (self Instance) SetCompositorEffects(value []CompositorEffect.Instance) {
 
 //go:nosplit
 func (self class) SetCompositorEffects(compositor_effects Array.Contains[[1]gdclass.CompositorEffect]) { //gd:Compositor.set_compositor_effects
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Compositor.Bind_set_compositor_effects), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ compositor_effects gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(compositor_effects))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Compositor.Bind_set_compositor_effects), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ compositor_effects gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(compositor_effects))[0])}))
 }
 
 //go:nosplit
 func (self class) GetCompositorEffects() Array.Contains[[1]gdclass.CompositorEffect] { //gd:Compositor.get_compositor_effects
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Compositor.Bind_get_compositor_effects), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Compositor.Bind_get_compositor_effects), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.CompositorEffect]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

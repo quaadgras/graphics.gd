@@ -127,7 +127,7 @@ Pushes a toast notification to the editor for display.
 */
 //go:nosplit
 func (self class) PushToast(message String.Readable, severity Severity, tooltip String.Readable) { //gd:EditorToaster.push_toast
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorToaster.Bind_push_toast), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorToaster.Bind_push_toast), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		message  gdextension.String
 		severity Severity
 		tooltip  gdextension.String

@@ -127,7 +127,7 @@ Returns the magnitude of the frequencies from [param from_hz] to [param to_hz] i
 */
 //go:nosplit
 func (self class) GetMagnitudeForFrequencyRange(from_hz float64, to_hz float64, mode MagnitudeMode) Vector2.XY { //gd:AudioEffectSpectrumAnalyzerInstance.get_magnitude_for_frequency_range
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzerInstance.Bind_get_magnitude_for_frequency_range), gdextension.SizeVector2|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzerInstance.Bind_get_magnitude_for_frequency_range), gdextension.SizeVector2|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		from_hz float64
 		to_hz   float64
 		mode    MagnitudeMode

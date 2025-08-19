@@ -112,12 +112,12 @@ func (self Instance) SetFunction(value Function) {
 
 //go:nosplit
 func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeColorFunc.set_function
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeColorFunc.Bind_set_function), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn Function }{fn}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeColorFunc.Bind_set_function), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn Function }{fn}))
 }
 
 //go:nosplit
 func (self class) GetFunction() Function { //gd:VisualShaderNodeColorFunc.get_function
-	var r_ret = gdextension.Call[Function](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeColorFunc.Bind_get_function), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Function](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeColorFunc.Bind_get_function), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

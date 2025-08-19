@@ -113,12 +113,12 @@ func (self Instance) SetPolyphony(value int) {
 
 //go:nosplit
 func (self class) SetPolyphony(voices int64) { //gd:AudioStreamPolyphonic.set_polyphony
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPolyphonic.Bind_set_polyphony), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ voices int64 }{voices}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPolyphonic.Bind_set_polyphony), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ voices int64 }{voices}))
 }
 
 //go:nosplit
 func (self class) GetPolyphony() int64 { //gd:AudioStreamPolyphonic.get_polyphony
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPolyphonic.Bind_get_polyphony), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPolyphonic.Bind_get_polyphony), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

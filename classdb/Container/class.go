@@ -208,7 +208,7 @@ Queue resort of the contained children. This is called automatically anyway, but
 */
 //go:nosplit
 func (self class) QueueSort() { //gd:Container.queue_sort
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Container.Bind_queue_sort), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Container.Bind_queue_sort), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -216,7 +216,7 @@ Fit a child control in a given rect. This is mainly a helper for creating custom
 */
 //go:nosplit
 func (self class) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSize) { //gd:Container.fit_child_in_rect
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Container.Bind_fit_child_in_rect), 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Container.Bind_fit_child_in_rect), 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8), unsafe.Pointer(&struct {
 		child gdextension.Object
 		rect  Rect2.PositionSize
 	}{gdextension.Object(gd.ObjectChecked(child[0].AsObject())), rect}))

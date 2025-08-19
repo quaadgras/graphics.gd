@@ -1429,7 +1429,7 @@ Sets current configuration error message text. This method should be called only
 */
 //go:nosplit
 func (self class) SetConfigError(error_text String.Readable) { //gd:EditorExportPlatformExtension.set_config_error
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatformExtension.Bind_set_config_error), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ error_text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(error_text))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatformExtension.Bind_set_config_error), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ error_text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(error_text))[0])}))
 }
 
 /*
@@ -1437,7 +1437,7 @@ Returns current configuration error message text. This method should be called o
 */
 //go:nosplit
 func (self class) GetConfigError() String.Readable { //gd:EditorExportPlatformExtension.get_config_error
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatformExtension.Bind_get_config_error), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatformExtension.Bind_get_config_error), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1447,7 +1447,7 @@ Set to [code]true[/code] is export templates are missing from the current config
 */
 //go:nosplit
 func (self class) SetConfigMissingTemplates(missing_templates bool) { //gd:EditorExportPlatformExtension.set_config_missing_templates
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatformExtension.Bind_set_config_missing_templates), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ missing_templates bool }{missing_templates}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatformExtension.Bind_set_config_missing_templates), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ missing_templates bool }{missing_templates}))
 }
 
 /*
@@ -1455,7 +1455,7 @@ Returns [code]true[/code] is export templates are missing from the current confi
 */
 //go:nosplit
 func (self class) GetConfigMissingTemplates() bool { //gd:EditorExportPlatformExtension.get_config_missing_templates
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatformExtension.Bind_get_config_missing_templates), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatformExtension.Bind_get_config_missing_templates), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

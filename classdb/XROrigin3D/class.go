@@ -122,24 +122,24 @@ func (self Instance) SetCurrent(value bool) {
 
 //go:nosplit
 func (self class) SetWorldScale(world_scale float64) { //gd:XROrigin3D.set_world_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XROrigin3D.Bind_set_world_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ world_scale float64 }{world_scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XROrigin3D.Bind_set_world_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ world_scale float64 }{world_scale}))
 }
 
 //go:nosplit
 func (self class) GetWorldScale() float64 { //gd:XROrigin3D.get_world_scale
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XROrigin3D.Bind_get_world_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XROrigin3D.Bind_get_world_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurrent(enabled bool) { //gd:XROrigin3D.set_current
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XROrigin3D.Bind_set_current), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XROrigin3D.Bind_set_current), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsCurrent() bool { //gd:XROrigin3D.is_current
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XROrigin3D.Bind_is_current), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XROrigin3D.Bind_is_current), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

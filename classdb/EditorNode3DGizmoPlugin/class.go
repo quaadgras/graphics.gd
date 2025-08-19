@@ -887,7 +887,7 @@ Creates an unshaded material with its variants (selected and/or editable) and ad
 */
 //go:nosplit
 func (self class) CreateMaterial(name String.Readable, color Color.RGBA, billboard bool, on_top bool, use_vertex_color bool) { //gd:EditorNode3DGizmoPlugin.create_material
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_material), 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_material), 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		name             gdextension.String
 		color            Color.RGBA
 		billboard        bool
@@ -901,7 +901,7 @@ Creates an icon material with its variants (selected and/or editable) and adds t
 */
 //go:nosplit
 func (self class) CreateIconMaterial(name String.Readable, texture [1]gdclass.Texture2D, on_top bool, color Color.RGBA) { //gd:EditorNode3DGizmoPlugin.create_icon_material
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_icon_material), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_icon_material), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16), unsafe.Pointer(&struct {
 		name    gdextension.String
 		texture gdextension.Object
 		on_top  bool
@@ -915,7 +915,7 @@ You can optionally provide a texture to use instead of the default icon.
 */
 //go:nosplit
 func (self class) CreateHandleMaterial(name String.Readable, billboard bool, texture [1]gdclass.Texture2D) { //gd:EditorNode3DGizmoPlugin.create_handle_material
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_handle_material), 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_handle_material), 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		name      gdextension.String
 		billboard bool
 		texture   gdextension.Object
@@ -927,7 +927,7 @@ Adds a new material to the internal material list for the plugin. It can then be
 */
 //go:nosplit
 func (self class) AddMaterial(name String.Readable, material [1]gdclass.StandardMaterial3D) { //gd:EditorNode3DGizmoPlugin.add_material
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_add_material), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_add_material), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name     gdextension.String
 		material gdextension.Object
 	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
@@ -938,7 +938,7 @@ Gets material from the internal list of materials. If an [EditorNode3DGizmo] is 
 */
 //go:nosplit
 func (self class) GetMaterial(name String.Readable, gizmo [1]gdclass.EditorNode3DGizmo) [1]gdclass.StandardMaterial3D { //gd:EditorNode3DGizmoPlugin.get_material
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_get_material), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_get_material), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name  gdextension.String
 		gizmo gdextension.Object
 	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(gd.ObjectChecked(gizmo[0].AsObject()))}))

@@ -212,7 +212,7 @@ If [param reset_on_teleport] is [code]true[/code], the animation is played from 
 */
 //go:nosplit
 func (self class) Travel(to_node String.Name, reset_on_teleport bool) { //gd:AnimationNodeStateMachinePlayback.travel
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_travel), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_travel), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		to_node           gdextension.StringName
 		reset_on_teleport bool
 	}{gdextension.StringName(pointers.Get(gd.InternalStringName(to_node))[0]), reset_on_teleport}))
@@ -224,7 +224,7 @@ If [param reset] is [code]true[/code], the animation is played from the beginnin
 */
 //go:nosplit
 func (self class) Start(node String.Name, reset bool) { //gd:AnimationNodeStateMachinePlayback.start
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_start), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_start), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		node  gdextension.StringName
 		reset bool
 	}{gdextension.StringName(pointers.Get(gd.InternalStringName(node))[0]), reset}))
@@ -235,7 +235,7 @@ If there is a next path by travel or auto advance, immediately transitions from 
 */
 //go:nosplit
 func (self class) Next() { //gd:AnimationNodeStateMachinePlayback.next
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_next), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_next), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -243,7 +243,7 @@ Stops the currently playing animation.
 */
 //go:nosplit
 func (self class) Stop() { //gd:AnimationNodeStateMachinePlayback.stop
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_stop), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_stop), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -251,7 +251,7 @@ Returns [code]true[/code] if an animation is playing.
 */
 //go:nosplit
 func (self class) IsPlaying() bool { //gd:AnimationNodeStateMachinePlayback.is_playing
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_is_playing), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_is_playing), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -262,7 +262,7 @@ Returns the currently playing animation state.
 */
 //go:nosplit
 func (self class) GetCurrentNode() String.Name { //gd:AnimationNodeStateMachinePlayback.get_current_node
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_node), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_node), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -272,7 +272,7 @@ Returns the playback position within the current animation state.
 */
 //go:nosplit
 func (self class) GetCurrentPlayPosition() float64 { //gd:AnimationNodeStateMachinePlayback.get_current_play_position
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_play_position), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_play_position), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -283,7 +283,7 @@ Returns the current state length.
 */
 //go:nosplit
 func (self class) GetCurrentLength() float64 { //gd:AnimationNodeStateMachinePlayback.get_current_length
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_current_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -293,7 +293,7 @@ Returns the starting state of currently fading animation.
 */
 //go:nosplit
 func (self class) GetFadingFromNode() String.Name { //gd:AnimationNodeStateMachinePlayback.get_fading_from_node
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_fading_from_node), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_fading_from_node), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -303,7 +303,7 @@ Returns the current travel path as computed internally by the A* algorithm.
 */
 //go:nosplit
 func (self class) GetTravelPath() Array.Contains[String.Name] { //gd:AnimationNodeStateMachinePlayback.get_travel_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_travel_path), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachinePlayback.Bind_get_travel_path), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

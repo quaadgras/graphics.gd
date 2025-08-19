@@ -143,36 +143,36 @@ func (self Instance) SetAnimPlayer(value string) {
 
 //go:nosplit
 func (self class) SetTreeRoot(animation_node [1]gdclass.AnimationRootNode) { //gd:AnimationTree.set_tree_root
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_set_tree_root), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(animation_node[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_set_tree_root), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(animation_node[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTreeRoot() [1]gdclass.AnimationRootNode { //gd:AnimationTree.get_tree_root
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_get_tree_root), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_get_tree_root), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.AnimationRootNode{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationRootNode](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAdvanceExpressionBaseNode(path Path.ToNode) { //gd:AnimationTree.set_advance_expression_base_node
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_set_advance_expression_base_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_set_advance_expression_base_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetAdvanceExpressionBaseNode() Path.ToNode { //gd:AnimationTree.get_advance_expression_base_node
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_get_advance_expression_base_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_get_advance_expression_base_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAnimationPlayer(path Path.ToNode) { //gd:AnimationTree.set_animation_player
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_set_animation_player), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_set_animation_player), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetAnimationPlayer() Path.ToNode { //gd:AnimationTree.get_animation_player
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_get_animation_player), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_get_animation_player), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -182,7 +182,7 @@ Sets the process notification in which to update animations.
 */
 //go:nosplit
 func (self class) SetProcessCallback(mode AnimationProcessCallback) { //gd:AnimationTree.set_process_callback
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_set_process_callback), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationProcessCallback }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_set_process_callback), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationProcessCallback }{mode}))
 }
 
 /*
@@ -190,7 +190,7 @@ Returns the process notification in which to update animations.
 */
 //go:nosplit
 func (self class) GetProcessCallback() AnimationProcessCallback { //gd:AnimationTree.get_process_callback
-	var r_ret = gdextension.Call[AnimationProcessCallback](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_get_process_callback), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AnimationProcessCallback](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationTree.Bind_get_process_callback), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

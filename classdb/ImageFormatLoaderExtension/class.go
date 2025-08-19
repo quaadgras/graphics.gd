@@ -221,7 +221,7 @@ Add this format loader to the engine, allowing it to recognize the file extensio
 */
 //go:nosplit
 func (self class) AddFormatLoader() { //gd:ImageFormatLoaderExtension.add_format_loader
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ImageFormatLoaderExtension.Bind_add_format_loader), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageFormatLoaderExtension.Bind_add_format_loader), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -229,7 +229,7 @@ Remove this format loader from the engine.
 */
 //go:nosplit
 func (self class) RemoveFormatLoader() { //gd:ImageFormatLoaderExtension.remove_format_loader
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ImageFormatLoaderExtension.Bind_remove_format_loader), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageFormatLoaderExtension.Bind_remove_format_loader), 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsImageFormatLoaderExtension() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

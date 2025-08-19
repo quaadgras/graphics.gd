@@ -156,7 +156,7 @@ Shows the properties of the given [param object] in this inspector for editing. 
 */
 //go:nosplit
 func (self class) Edit(obj [1]gd.Object) { //gd:EditorInspector.edit
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorInspector.Bind_edit), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInspector.Bind_edit), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))}))
 }
 
 /*
@@ -164,7 +164,7 @@ Gets the path of the currently selected property.
 */
 //go:nosplit
 func (self class) GetSelectedPath() String.Readable { //gd:EditorInspector.get_selected_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorInspector.Bind_get_selected_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInspector.Bind_get_selected_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -174,7 +174,7 @@ Returns the object currently selected in this inspector.
 */
 //go:nosplit
 func (self class) GetEditedObject() [1]gd.Object { //gd:EditorInspector.get_edited_object
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorInspector.Bind_get_edited_object), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInspector.Bind_get_edited_object), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }

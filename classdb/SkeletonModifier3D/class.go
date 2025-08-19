@@ -168,31 +168,31 @@ Get parent [Skeleton3D] node if found.
 */
 //go:nosplit
 func (self class) GetSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonModifier3D.get_skeleton
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModifier3D.Bind_get_skeleton), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModifier3D.Bind_get_skeleton), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Skeleton3D{gd.PointerMustAssertInstanceID[gdclass.Skeleton3D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetActive(active bool) { //gd:SkeletonModifier3D.set_active
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModifier3D.Bind_set_active), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModifier3D.Bind_set_active), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
 }
 
 //go:nosplit
 func (self class) IsActive() bool { //gd:SkeletonModifier3D.is_active
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModifier3D.Bind_is_active), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModifier3D.Bind_is_active), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInfluence(influence float64) { //gd:SkeletonModifier3D.set_influence
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModifier3D.Bind_set_influence), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ influence float64 }{influence}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModifier3D.Bind_set_influence), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ influence float64 }{influence}))
 }
 
 //go:nosplit
 func (self class) GetInfluence() float64 { //gd:SkeletonModifier3D.get_influence
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModifier3D.Bind_get_influence), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModifier3D.Bind_get_influence), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -129,36 +129,36 @@ func (self Instance) SetTextureType(value TextureType) {
 
 //go:nosplit
 func (self class) SetSource(value Source) { //gd:VisualShaderNodeTexture.set_source
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_set_source), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value Source }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_set_source), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value Source }{value}))
 }
 
 //go:nosplit
 func (self class) GetSource() Source { //gd:VisualShaderNodeTexture.get_source
-	var r_ret = gdextension.Call[Source](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_source), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Source](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_source), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTexture(value [1]gdclass.Texture2D) { //gd:VisualShaderNodeTexture.set_texture
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(value[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(value[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:VisualShaderNodeTexture.get_texture
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureType(value TextureType) { //gd:VisualShaderNodeTexture.set_texture_type
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_set_texture_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value TextureType }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_set_texture_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value TextureType }{value}))
 }
 
 //go:nosplit
 func (self class) GetTextureType() TextureType { //gd:VisualShaderNodeTexture.get_texture_type
-	var r_ret = gdextension.Call[TextureType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_texture_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextureType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_texture_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

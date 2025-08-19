@@ -128,36 +128,36 @@ func (self Instance) SetPolygon(value []Vector2.XY) {
 
 //go:nosplit
 func (self class) SetClosed(closed bool) { //gd:OccluderPolygon2D.set_closed
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_set_closed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ closed bool }{closed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_set_closed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ closed bool }{closed}))
 }
 
 //go:nosplit
 func (self class) IsClosed() bool { //gd:OccluderPolygon2D.is_closed
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_is_closed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_is_closed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCullMode(cull_mode CullMode) { //gd:OccluderPolygon2D.set_cull_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_set_cull_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cull_mode CullMode }{cull_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_set_cull_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cull_mode CullMode }{cull_mode}))
 }
 
 //go:nosplit
 func (self class) GetCullMode() CullMode { //gd:OccluderPolygon2D.get_cull_mode
-	var r_ret = gdextension.Call[CullMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_get_cull_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[CullMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_get_cull_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:OccluderPolygon2D.set_polygon
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_set_polygon), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ polygon gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_set_polygon), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ polygon gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))}))
 }
 
 //go:nosplit
 func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:OccluderPolygon2D.get_polygon
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_get_polygon), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_get_polygon), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

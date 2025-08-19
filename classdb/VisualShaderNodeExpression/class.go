@@ -115,12 +115,12 @@ func (self Instance) SetExpression(value string) {
 
 //go:nosplit
 func (self class) SetExpression(expression String.Readable) { //gd:VisualShaderNodeExpression.set_expression
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeExpression.Bind_set_expression), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ expression gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(expression))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeExpression.Bind_set_expression), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ expression gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(expression))[0])}))
 }
 
 //go:nosplit
 func (self class) GetExpression() String.Readable { //gd:VisualShaderNodeExpression.get_expression
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeExpression.Bind_get_expression), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeExpression.Bind_get_expression), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

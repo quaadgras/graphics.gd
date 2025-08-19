@@ -114,12 +114,12 @@ func (self Instance) SetTexture(value CurveXYZTexture.Instance) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.CurveXYZTexture) { //gd:VisualShaderNodeCurveXYZTexture.set_texture
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeCurveXYZTexture.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeCurveXYZTexture.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.CurveXYZTexture { //gd:VisualShaderNodeCurveXYZTexture.get_texture
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeCurveXYZTexture.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeCurveXYZTexture.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.CurveXYZTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.CurveXYZTexture](r_ret)}
 	return ret
 }

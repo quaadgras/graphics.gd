@@ -178,7 +178,7 @@ Returns the format of the texture, one of [enum Image.Format].
 */
 //go:nosplit
 func (self class) GetFormat() Image.Format { //gd:ImageTexture.get_format
-	var r_ret = gdextension.Call[Image.Format](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ImageTexture.Bind_get_format), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Image.Format](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTexture.Bind_get_format), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -189,7 +189,7 @@ If you want to update the image, but don't need to change its parameters (format
 */
 //go:nosplit
 func (self class) SetImage(image [1]gdclass.Image) { //gd:ImageTexture.set_image
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ImageTexture.Bind_set_image), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTexture.Bind_set_image), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 }
 
 /*
@@ -199,7 +199,7 @@ Use this method over [method set_image] if you need to update the texture freque
 */
 //go:nosplit
 func (self class) Update(image [1]gdclass.Image) { //gd:ImageTexture.update
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ImageTexture.Bind_update), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTexture.Bind_update), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 }
 
 /*
@@ -207,7 +207,7 @@ Resizes the texture to the specified dimensions.
 */
 //go:nosplit
 func (self class) SetSizeOverride(size Vector2i.XY) { //gd:ImageTexture.set_size_override
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ImageTexture.Bind_set_size_override), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTexture.Bind_set_size_override), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
 }
 func (self class) AsImageTexture() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsImageTexture() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

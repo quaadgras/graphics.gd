@@ -111,7 +111,7 @@ func (self Instance) SetAabb(value AABB.PositionSize) {
 
 //go:nosplit
 func (self class) SetAabb(aabb AABB.PositionSize) { //gd:PlaceholderMesh.set_aabb
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaceholderMesh.Bind_set_aabb), 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ aabb AABB.PositionSize }{aabb}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PlaceholderMesh.Bind_set_aabb), 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ aabb AABB.PositionSize }{aabb}))
 }
 func (self class) AsPlaceholderMesh() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPlaceholderMesh() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

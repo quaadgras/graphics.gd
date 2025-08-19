@@ -400,17 +400,6 @@ func linkCGO(API *gd.API) {
 			C.uintptr_t(self[0]),
 		)
 	}
-	global_get_singleton := dlsymGD("global_get_singleton")
-	API.Object.GetSingleton = func(name gd.StringName) [1]gd.Object {
-		var frame = callframe.New()
-		var p_name = callframe.Arg(frame, pointers.Get(name))
-		var ret = C.global_get_singleton(
-			C.uintptr_t(uintptr(global_get_singleton)),
-			C.uintptr_t(p_name.Uintptr()),
-		)
-		frame.Free()
-		return [1]gd.Object{pointers.Raw[gd.Object]([3]uint64{uint64(ret)})}
-	}
 	object_get_instance_binding := dlsymGD("object_get_instance_binding")
 	API.Object.GetInstanceBinding = func(o [1]gd.Object, et gd.ExtensionToken, ibt gd.InstanceBindingType) any {
 		var self = pointers.Get(o[0])

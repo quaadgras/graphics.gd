@@ -145,60 +145,60 @@ func (self Instance) SetVertical(value bool) {
 
 //go:nosplit
 func (self class) SetColor(color Color.RGBA) { //gd:StyleBoxLine.set_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_set_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_set_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetColor() Color.RGBA { //gd:StyleBoxLine.get_color
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_get_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_get_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetThickness(thickness int64) { //gd:StyleBoxLine.set_thickness
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_set_thickness), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ thickness int64 }{thickness}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_set_thickness), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ thickness int64 }{thickness}))
 }
 
 //go:nosplit
 func (self class) GetThickness() int64 { //gd:StyleBoxLine.get_thickness
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_get_thickness), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_get_thickness), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGrowBegin(offset float64) { //gd:StyleBoxLine.set_grow_begin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_set_grow_begin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_set_grow_begin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
 }
 
 //go:nosplit
 func (self class) GetGrowBegin() float64 { //gd:StyleBoxLine.get_grow_begin
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_get_grow_begin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_get_grow_begin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGrowEnd(offset float64) { //gd:StyleBoxLine.set_grow_end
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_set_grow_end), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_set_grow_end), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
 }
 
 //go:nosplit
 func (self class) GetGrowEnd() float64 { //gd:StyleBoxLine.get_grow_end
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_get_grow_end), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_get_grow_end), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVertical(vertical bool) { //gd:StyleBoxLine.set_vertical
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_set_vertical), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ vertical bool }{vertical}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_set_vertical), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ vertical bool }{vertical}))
 }
 
 //go:nosplit
 func (self class) IsVertical() bool { //gd:StyleBoxLine.is_vertical
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_is_vertical), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxLine.Bind_is_vertical), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

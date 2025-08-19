@@ -135,7 +135,7 @@ Sets the value of the specified parameter.
 */
 //go:nosplit
 func (self class) SetParam(param Param, value float64) { //gd:HingeJoint3D.set_param
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HingeJoint3D.Bind_set_param), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HingeJoint3D.Bind_set_param), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		param Param
 		value float64
 	}{param, value}))
@@ -146,7 +146,7 @@ Returns the value of the specified parameter.
 */
 //go:nosplit
 func (self class) GetParam(param Param) float64 { //gd:HingeJoint3D.get_param
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HingeJoint3D.Bind_get_param), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HingeJoint3D.Bind_get_param), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
 	var ret = r_ret
 	return ret
 }
@@ -156,7 +156,7 @@ If [code]true[/code], enables the specified flag.
 */
 //go:nosplit
 func (self class) SetFlag(flag Flag, enabled bool) { //gd:HingeJoint3D.set_flag
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HingeJoint3D.Bind_set_flag), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HingeJoint3D.Bind_set_flag), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		flag    Flag
 		enabled bool
 	}{flag, enabled}))
@@ -167,7 +167,7 @@ Returns the value of the specified flag.
 */
 //go:nosplit
 func (self class) GetFlag(flag Flag) bool { //gd:HingeJoint3D.get_flag
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HingeJoint3D.Bind_get_flag), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HingeJoint3D.Bind_get_flag), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
 	var ret = r_ret
 	return ret
 }

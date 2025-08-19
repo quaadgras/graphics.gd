@@ -195,7 +195,7 @@ ResourceSaver.save(cubemap_array, "res://cubemap_array.res", ResourceSaver.FLAG_
 */
 //go:nosplit
 func (self class) CreateFromImages(images Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTextureLayered.create_from_images
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ImageTextureLayered.Bind_create_from_images), gdextension.SizeInt|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ images gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(images))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTextureLayered.Bind_create_from_images), gdextension.SizeInt|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ images gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(images))[0])}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -208,7 +208,7 @@ The update is immediate: it's synchronized with drawing.
 */
 //go:nosplit
 func (self class) UpdateLayer(image [1]gdclass.Image, layer int64) { //gd:ImageTextureLayered.update_layer
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ImageTextureLayered.Bind_update_layer), 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTextureLayered.Bind_update_layer), 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		image gdextension.Object
 		layer int64
 	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), layer}))

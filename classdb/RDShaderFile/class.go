@@ -153,7 +153,7 @@ Sets the SPIR-V [param bytecode] that will be compiled for the specified [param 
 */
 //go:nosplit
 func (self class) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV, version String.Name) { //gd:RDShaderFile.set_bytecode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_set_bytecode), 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_set_bytecode), 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		bytecode gdextension.Object
 		version  gdextension.StringName
 	}{gdextension.Object(gd.ObjectChecked(bytecode[0].AsObject())), gdextension.StringName(pointers.Get(gd.InternalStringName(version))[0])}))
@@ -164,7 +164,7 @@ Returns the SPIR-V intermediate representation for the specified shader [param v
 */
 //go:nosplit
 func (self class) GetSpirv(version String.Name) [1]gdclass.RDShaderSPIRV { //gd:RDShaderFile.get_spirv
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_spirv), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ version gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(version))[0])}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_spirv), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ version gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(version))[0])}))
 	var ret = [1]gdclass.RDShaderSPIRV{gd.PointerWithOwnershipTransferredToGo[gdclass.RDShaderSPIRV](r_ret)}
 	return ret
 }
@@ -174,19 +174,19 @@ Returns the list of compiled versions for this shader.
 */
 //go:nosplit
 func (self class) GetVersionList() Array.Contains[String.Name] { //gd:RDShaderFile.get_version_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_version_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_version_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBaseError(error String.Readable) { //gd:RDShaderFile.set_base_error
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_set_base_error), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ error gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(error))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_set_base_error), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ error gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(error))[0])}))
 }
 
 //go:nosplit
 func (self class) GetBaseError() String.Readable { //gd:RDShaderFile.get_base_error
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_base_error), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_base_error), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

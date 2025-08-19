@@ -542,7 +542,7 @@ Adds an input to the animation node. This is only useful for animation nodes cre
 */
 //go:nosplit
 func (self class) AddInput(name String.Readable) bool { //gd:AnimationNode.add_input
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_add_input), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_add_input), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -552,7 +552,7 @@ Removes an input, call this only when inactive.
 */
 //go:nosplit
 func (self class) RemoveInput(index int64) { //gd:AnimationNode.remove_input
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_remove_input), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_remove_input), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 /*
@@ -560,7 +560,7 @@ Sets the name of the input at the given [param input] index. If the setting fail
 */
 //go:nosplit
 func (self class) SetInputName(input int64, name String.Readable) bool { //gd:AnimationNode.set_input_name
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_set_input_name), gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_set_input_name), gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		input int64
 		name  gdextension.String
 	}{input, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
@@ -573,7 +573,7 @@ Gets the name of an input by index.
 */
 //go:nosplit
 func (self class) GetInputName(input int64) String.Readable { //gd:AnimationNode.get_input_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_get_input_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input int64 }{input}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_get_input_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input int64 }{input}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -583,7 +583,7 @@ Amount of inputs in this animation node, only useful for animation nodes that go
 */
 //go:nosplit
 func (self class) GetInputCount() int64 { //gd:AnimationNode.get_input_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_get_input_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_get_input_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -593,7 +593,7 @@ Returns the input index which corresponds to [param name]. If not found, returns
 */
 //go:nosplit
 func (self class) FindInput(name String.Readable) int64 { //gd:AnimationNode.find_input
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_find_input), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_find_input), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -603,7 +603,7 @@ Adds or removes a path for the filter.
 */
 //go:nosplit
 func (self class) SetFilterPath(path Path.ToNode, enable bool) { //gd:AnimationNode.set_filter_path
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_set_filter_path), 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_set_filter_path), 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path   gdextension.NodePath
 		enable bool
 	}{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0]), enable}))
@@ -614,19 +614,19 @@ Returns [code]true[/code] if the given path is filtered.
 */
 //go:nosplit
 func (self class) IsPathFiltered(path Path.ToNode) bool { //gd:AnimationNode.is_path_filtered
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_is_path_filtered), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_is_path_filtered), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFilterEnabled(enable bool) { //gd:AnimationNode.set_filter_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_set_filter_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_set_filter_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsFilterEnabled() bool { //gd:AnimationNode.is_filter_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_is_filter_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_is_filter_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -637,7 +637,7 @@ Returns the object id of the [AnimationTree] that owns this node.
 */
 //go:nosplit
 func (self class) GetProcessingAnimationTreeInstanceId() int64 { //gd:AnimationNode.get_processing_animation_tree_instance_id
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_get_processing_animation_tree_instance_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_get_processing_animation_tree_instance_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -647,7 +647,7 @@ Returns [code]true[/code] if this animation node is being processed in test-only
 */
 //go:nosplit
 func (self class) IsProcessTesting() bool { //gd:AnimationNode.is_process_testing
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_is_process_testing), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_is_process_testing), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -658,7 +658,7 @@ A [param looped_flag] is used by internal processing immediately after the loop.
 */
 //go:nosplit
 func (self class) BlendAnimation(animation String.Name, time float64, delta float64, seeked bool, is_external_seeking bool, blend float64, looped_flag Animation.LoopedFlag) { //gd:AnimationNode.blend_animation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_blend_animation), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_blend_animation), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
 		animation           gdextension.StringName
 		time                float64
 		delta               float64
@@ -674,7 +674,7 @@ Blend another animation node (in case this animation node contains child animati
 */
 //go:nosplit
 func (self class) BlendNode(name String.Name, node [1]gdclass.AnimationNode, time float64, seek bool, is_external_seeking bool, blend float64, filter FilterAction, sync bool, test_only bool) float64 { //gd:AnimationNode.blend_node
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_blend_node), gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeBool<<36), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_blend_node), gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeBool<<36), unsafe.Pointer(&struct {
 		name                gdextension.StringName
 		node                gdextension.Object
 		time                float64
@@ -694,7 +694,7 @@ Blend an input. This is only useful for animation nodes created for an [Animatio
 */
 //go:nosplit
 func (self class) BlendInput(input_index int64, time float64, seek bool, is_external_seeking bool, blend float64, filter FilterAction, sync bool, test_only bool) float64 { //gd:AnimationNode.blend_input
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_blend_input), gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28)|(gdextension.SizeBool<<32), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_blend_input), gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28)|(gdextension.SizeBool<<32), unsafe.Pointer(&struct {
 		input_index         int64
 		time                float64
 		seek                bool
@@ -713,7 +713,7 @@ Sets a custom parameter. These are used as local memory, because resources can b
 */
 //go:nosplit
 func (self class) SetParameter(name String.Name, value variant.Any) { //gd:AnimationNode.set_parameter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_set_parameter), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_set_parameter), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		name  gdextension.StringName
 		value gdextension.Variant
 	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
@@ -724,7 +724,7 @@ Gets the value of a parameter. Parameters are custom local memory used for your 
 */
 //go:nosplit
 func (self class) GetParameter(name String.Name) variant.Any { //gd:AnimationNode.get_parameter
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_get_parameter), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_get_parameter), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

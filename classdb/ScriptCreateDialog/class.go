@@ -148,7 +148,7 @@ Prefills required fields to configure the ScriptCreateDialog for use.
 */
 //go:nosplit
 func (self class) Config(inherits String.Readable, path String.Readable, built_in_enabled bool, load_enabled bool) { //gd:ScriptCreateDialog.config
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ScriptCreateDialog.Bind_config), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ScriptCreateDialog.Bind_config), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		inherits         gdextension.String
 		path             gdextension.String
 		built_in_enabled bool

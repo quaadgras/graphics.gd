@@ -167,31 +167,31 @@ Returns the spring arm's current length.
 */
 //go:nosplit
 func (self class) GetHitLength() float64 { //gd:SpringArm3D.get_hit_length
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_get_hit_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_get_hit_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLength(length float64) { //gd:SpringArm3D.set_length
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_set_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_set_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetLength() float64 { //gd:SpringArm3D.get_length
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:SpringArm3D.set_shape
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_set_shape), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_set_shape), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetShape() [1]gdclass.Shape3D { //gd:SpringArm3D.get_shape
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_get_shape), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_get_shape), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Shape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape3D](r_ret)}
 	return ret
 }
@@ -201,7 +201,7 @@ Adds the [PhysicsBody3D] object with the given [RID] to the list of [PhysicsBody
 */
 //go:nosplit
 func (self class) AddExcludedObject(rid RID.Any) { //gd:SpringArm3D.add_excluded_object
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_add_excluded_object), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_add_excluded_object), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 }
 
 /*
@@ -209,7 +209,7 @@ Removes the given [RID] from the list of [PhysicsBody3D] objects excluded from t
 */
 //go:nosplit
 func (self class) RemoveExcludedObject(rid RID.Any) bool { //gd:SpringArm3D.remove_excluded_object
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_remove_excluded_object), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_remove_excluded_object), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 	var ret = r_ret
 	return ret
 }
@@ -219,29 +219,29 @@ Clears the list of [PhysicsBody3D] objects excluded from the collision check.
 */
 //go:nosplit
 func (self class) ClearExcludedObjects() { //gd:SpringArm3D.clear_excluded_objects
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_clear_excluded_objects), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_clear_excluded_objects), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:SpringArm3D.set_collision_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_set_collision_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_set_collision_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:SpringArm3D.get_collision_mask
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_get_collision_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_get_collision_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMargin(margin float64) { //gd:SpringArm3D.set_margin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_set_margin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_set_margin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
 }
 
 //go:nosplit
 func (self class) GetMargin() float64 { //gd:SpringArm3D.get_margin
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_get_margin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpringArm3D.Bind_get_margin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -120,24 +120,24 @@ func (self Instance) SetSlideOnSlope(value bool) {
 
 //go:nosplit
 func (self class) SetLength(length float64) { //gd:SeparationRayShape3D.set_length
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SeparationRayShape3D.Bind_set_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SeparationRayShape3D.Bind_set_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetLength() float64 { //gd:SeparationRayShape3D.get_length
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SeparationRayShape3D.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SeparationRayShape3D.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSlideOnSlope(active bool) { //gd:SeparationRayShape3D.set_slide_on_slope
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SeparationRayShape3D.Bind_set_slide_on_slope), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SeparationRayShape3D.Bind_set_slide_on_slope), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
 }
 
 //go:nosplit
 func (self class) GetSlideOnSlope() bool { //gd:SeparationRayShape3D.get_slide_on_slope
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SeparationRayShape3D.Bind_get_slide_on_slope), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SeparationRayShape3D.Bind_get_slide_on_slope), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

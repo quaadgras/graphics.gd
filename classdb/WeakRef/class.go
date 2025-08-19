@@ -112,7 +112,7 @@ Returns the [Object] this weakref is referring to. Returns [code]null[/code] if 
 */
 //go:nosplit
 func (self class) GetRef() variant.Any { //gd:WeakRef.get_ref
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WeakRef.Bind_get_ref), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WeakRef.Bind_get_ref), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

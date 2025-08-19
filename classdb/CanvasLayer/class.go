@@ -207,24 +207,24 @@ func (self Instance) SetFollowViewportScale(value Float.X) {
 
 //go:nosplit
 func (self class) SetLayer(layer int64) { //gd:CanvasLayer.set_layer
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_layer), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_layer), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
 }
 
 //go:nosplit
 func (self class) GetLayer() int64 { //gd:CanvasLayer.get_layer
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_layer), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_layer), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisible(visible bool) { //gd:CanvasLayer.set_visible
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_visible), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_visible), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
 }
 
 //go:nosplit
 func (self class) IsVisible() bool { //gd:CanvasLayer.is_visible
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_is_visible), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_is_visible), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -234,7 +234,7 @@ Shows any [CanvasItem] under this [CanvasLayer]. This is equivalent to setting [
 */
 //go:nosplit
 func (self class) Show() { //gd:CanvasLayer.show
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_show), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_show), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -242,17 +242,17 @@ Hides any [CanvasItem] under this [CanvasLayer]. This is equivalent to setting [
 */
 //go:nosplit
 func (self class) Hide() { //gd:CanvasLayer.hide
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_hide), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_hide), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetTransform(transform Transform2D.OriginXY) { //gd:CanvasLayer.set_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_transform), 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ transform Transform2D.OriginXY }{transform}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_transform), 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ transform Transform2D.OriginXY }{transform}))
 }
 
 //go:nosplit
 func (self class) GetTransform() Transform2D.OriginXY { //gd:CanvasLayer.get_transform
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_transform), gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_transform), gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -262,79 +262,79 @@ Returns the transform from the [CanvasLayer]s coordinate system to the [Viewport
 */
 //go:nosplit
 func (self class) GetFinalTransform() Transform2D.OriginXY { //gd:CanvasLayer.get_final_transform
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_final_transform), gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_final_transform), gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffset(offset Vector2.XY) { //gd:CanvasLayer.set_offset
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetOffset() Vector2.XY { //gd:CanvasLayer.get_offset
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRotation(radians float64) { //gd:CanvasLayer.set_rotation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_rotation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_rotation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
 }
 
 //go:nosplit
 func (self class) GetRotation() float64 { //gd:CanvasLayer.get_rotation
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_rotation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_rotation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScale(scale Vector2.XY) { //gd:CanvasLayer.set_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_scale), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_scale), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
 }
 
 //go:nosplit
 func (self class) GetScale() Vector2.XY { //gd:CanvasLayer.get_scale
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_scale), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_scale), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFollowViewport(enable bool) { //gd:CanvasLayer.set_follow_viewport
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_follow_viewport), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_follow_viewport), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsFollowingViewport() bool { //gd:CanvasLayer.is_following_viewport
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_is_following_viewport), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_is_following_viewport), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFollowViewportScale(scale float64) { //gd:CanvasLayer.set_follow_viewport_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_follow_viewport_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_follow_viewport_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
 }
 
 //go:nosplit
 func (self class) GetFollowViewportScale() float64 { //gd:CanvasLayer.get_follow_viewport_scale
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_follow_viewport_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_follow_viewport_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCustomViewport(viewport [1]gdclass.Node) { //gd:CanvasLayer.set_custom_viewport
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_custom_viewport), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ viewport gdextension.Object }{gdextension.Object(gd.ObjectChecked(viewport[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_set_custom_viewport), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ viewport gdextension.Object }{gdextension.Object(gd.ObjectChecked(viewport[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetCustomViewport() [1]gdclass.Node { //gd:CanvasLayer.get_custom_viewport
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_custom_viewport), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_custom_viewport), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -344,7 +344,7 @@ Returns the RID of the canvas used by this layer.
 */
 //go:nosplit
 func (self class) GetCanvas() RID.Any { //gd:CanvasLayer.get_canvas
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_canvas), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasLayer.Bind_get_canvas), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

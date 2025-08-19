@@ -142,48 +142,48 @@ func (self Instance) SetExcludeNodesFromCollision(value bool) {
 
 //go:nosplit
 func (self class) SetNodeA(node Path.ToNode) { //gd:Joint3D.set_node_a
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_set_node_a), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(node))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_set_node_a), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(node))[0])}))
 }
 
 //go:nosplit
 func (self class) GetNodeA() Path.ToNode { //gd:Joint3D.get_node_a
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_get_node_a), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_get_node_a), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNodeB(node Path.ToNode) { //gd:Joint3D.set_node_b
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_set_node_b), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(node))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_set_node_b), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(node))[0])}))
 }
 
 //go:nosplit
 func (self class) GetNodeB() Path.ToNode { //gd:Joint3D.get_node_b
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_get_node_b), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_get_node_b), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSolverPriority(priority int64) { //gd:Joint3D.set_solver_priority
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_set_solver_priority), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_set_solver_priority), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
 }
 
 //go:nosplit
 func (self class) GetSolverPriority() int64 { //gd:Joint3D.get_solver_priority
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_get_solver_priority), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_get_solver_priority), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExcludeNodesFromCollision(enable bool) { //gd:Joint3D.set_exclude_nodes_from_collision
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_set_exclude_nodes_from_collision), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_set_exclude_nodes_from_collision), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetExcludeNodesFromCollision() bool { //gd:Joint3D.get_exclude_nodes_from_collision
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_get_exclude_nodes_from_collision), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_get_exclude_nodes_from_collision), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -193,7 +193,7 @@ Returns the joint's internal [RID] from the [PhysicsServer3D].
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:Joint3D.get_rid
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_get_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint3D.Bind_get_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

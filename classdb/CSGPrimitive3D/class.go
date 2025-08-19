@@ -115,12 +115,12 @@ func (self Instance) SetFlipFaces(value bool) {
 
 //go:nosplit
 func (self class) SetFlipFaces(flip_faces bool) { //gd:CSGPrimitive3D.set_flip_faces
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGPrimitive3D.Bind_set_flip_faces), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip_faces bool }{flip_faces}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPrimitive3D.Bind_set_flip_faces), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip_faces bool }{flip_faces}))
 }
 
 //go:nosplit
 func (self class) GetFlipFaces() bool { //gd:CSGPrimitive3D.get_flip_faces
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGPrimitive3D.Bind_get_flip_faces), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPrimitive3D.Bind_get_flip_faces), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

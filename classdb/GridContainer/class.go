@@ -114,12 +114,12 @@ func (self Instance) SetColumns(value int) {
 
 //go:nosplit
 func (self class) SetColumns(columns int64) { //gd:GridContainer.set_columns
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GridContainer.Bind_set_columns), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ columns int64 }{columns}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridContainer.Bind_set_columns), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ columns int64 }{columns}))
 }
 
 //go:nosplit
 func (self class) GetColumns() int64 { //gd:GridContainer.get_columns
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GridContainer.Bind_get_columns), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridContainer.Bind_get_columns), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

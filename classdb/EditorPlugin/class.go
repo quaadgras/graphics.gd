@@ -2042,7 +2042,7 @@ When your plugin is deactivated, make sure to remove your custom control with [m
 */
 //go:nosplit
 func (self class) AddControlToContainer(container CustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.add_control_to_container
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_control_to_container), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_control_to_container), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		container CustomControlContainer
 		control   gdextension.Object
 	}{container, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))}))
@@ -2054,7 +2054,7 @@ Optionally, you can specify a shortcut parameter. When pressed, this shortcut wi
 */
 //go:nosplit
 func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title String.Readable, shortcut [1]gdclass.Shortcut) [1]gdclass.Button { //gd:EditorPlugin.add_control_to_bottom_panel
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_control_to_bottom_panel), gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_control_to_bottom_panel), gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		control  gdextension.Object
 		title    gdextension.String
 		shortcut gdextension.Object
@@ -2071,7 +2071,7 @@ Optionally, you can specify a shortcut parameter. When pressed, this shortcut wi
 */
 //go:nosplit
 func (self class) AddControlToDock(slot DockSlot, control [1]gdclass.Control, shortcut [1]gdclass.Shortcut) { //gd:EditorPlugin.add_control_to_dock
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_control_to_dock), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_control_to_dock), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		slot     DockSlot
 		control  gdextension.Object
 		shortcut gdextension.Object
@@ -2083,7 +2083,7 @@ Removes the control from the dock. You have to manually [method Node.queue_free]
 */
 //go:nosplit
 func (self class) RemoveControlFromDocks(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_docks
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_docks), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_docks), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
 }
 
 /*
@@ -2091,7 +2091,7 @@ Removes the control from the bottom panel. You have to manually [method Node.que
 */
 //go:nosplit
 func (self class) RemoveControlFromBottomPanel(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_bottom_panel
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_bottom_panel), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_bottom_panel), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
 }
 
 /*
@@ -2099,7 +2099,7 @@ Removes the control from the specified container. You have to manually [method N
 */
 //go:nosplit
 func (self class) RemoveControlFromContainer(container CustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_container
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_container), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_control_from_container), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		container CustomControlContainer
 		control   gdextension.Object
 	}{container, gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
@@ -2110,7 +2110,7 @@ Sets the tab icon for the given control in a dock slot. Setting to [code]null[/c
 */
 //go:nosplit
 func (self class) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.set_dock_tab_icon
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_set_dock_tab_icon), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_set_dock_tab_icon), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		control gdextension.Object
 		icon    gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(control[0].AsObject())), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
@@ -2121,7 +2121,7 @@ Adds a custom menu item to [b]Project > Tools[/b] named [param name]. When click
 */
 //go:nosplit
 func (self class) AddToolMenuItem(name String.Readable, callable Callable.Function) { //gd:EditorPlugin.add_tool_menu_item
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_tool_menu_item), 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_tool_menu_item), 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		name     gdextension.String
 		callable gdextension.Callable
 	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
@@ -2132,7 +2132,7 @@ Adds a custom [PopupMenu] submenu under [b]Project > Tools >[/b] [param name]. U
 */
 //go:nosplit
 func (self class) AddToolSubmenuItem(name String.Readable, submenu [1]gdclass.PopupMenu) { //gd:EditorPlugin.add_tool_submenu_item
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_tool_submenu_item), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_tool_submenu_item), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name    gdextension.String
 		submenu gdextension.Object
 	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0]))}))
@@ -2143,7 +2143,7 @@ Removes a menu [param name] from [b]Project > Tools[/b].
 */
 //go:nosplit
 func (self class) RemoveToolMenuItem(name String.Readable) { //gd:EditorPlugin.remove_tool_menu_item
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_tool_menu_item), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_tool_menu_item), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 /*
@@ -2151,7 +2151,7 @@ Returns the [PopupMenu] under [b]Scene > Export As...[/b].
 */
 //go:nosplit
 func (self class) GetExportAsMenu() [1]gdclass.PopupMenu { //gd:EditorPlugin.get_export_as_menu
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_get_export_as_menu), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_get_export_as_menu), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
@@ -2166,7 +2166,7 @@ During run-time, this will be a simple object with a script so this function doe
 */
 //go:nosplit
 func (self class) AddCustomType(atype String.Readable, base String.Readable, script [1]gdclass.Script, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.add_custom_type
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_custom_type), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeObject<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_custom_type), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeObject<<16), unsafe.Pointer(&struct {
 		atype  gdextension.String
 		base   gdextension.String
 		script gdextension.Object
@@ -2179,7 +2179,7 @@ Removes a custom type added by [method add_custom_type].
 */
 //go:nosplit
 func (self class) RemoveCustomType(atype String.Readable) { //gd:EditorPlugin.remove_custom_type
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_custom_type), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ atype gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(atype))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_custom_type), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ atype gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(atype))[0])}))
 }
 
 /*
@@ -2187,7 +2187,7 @@ Adds a script at [param path] to the Autoload list as [param name].
 */
 //go:nosplit
 func (self class) AddAutoloadSingleton(name String.Readable, path String.Readable) { //gd:EditorPlugin.add_autoload_singleton
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_autoload_singleton), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_autoload_singleton), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		name gdextension.String
 		path gdextension.String
 	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
@@ -2198,7 +2198,7 @@ Removes an Autoload [param name] from the list.
 */
 //go:nosplit
 func (self class) RemoveAutoloadSingleton(name String.Readable) { //gd:EditorPlugin.remove_autoload_singleton
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_autoload_singleton), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_autoload_singleton), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 /*
@@ -2206,7 +2206,7 @@ Updates the overlays of the 2D and 3D editor viewport. Causes methods [method _f
 */
 //go:nosplit
 func (self class) UpdateOverlays() int64 { //gd:EditorPlugin.update_overlays
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_update_overlays), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_update_overlays), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2216,7 +2216,7 @@ Makes a specific item in the bottom panel visible.
 */
 //go:nosplit
 func (self class) MakeBottomPanelItemVisible(item [1]gdclass.Control) { //gd:EditorPlugin.make_bottom_panel_item_visible
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_make_bottom_panel_item_visible), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(item[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_make_bottom_panel_item_visible), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(item[0].AsObject()))}))
 }
 
 /*
@@ -2224,7 +2224,7 @@ Minimizes the bottom panel.
 */
 //go:nosplit
 func (self class) HideBottomPanel() { //gd:EditorPlugin.hide_bottom_panel
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_hide_bottom_panel), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_hide_bottom_panel), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2232,7 +2232,7 @@ Gets the undo/redo object. Most actions in the editor can be undoable, so use th
 */
 //go:nosplit
 func (self class) GetUndoRedo() [1]gdclass.EditorUndoRedoManager { //gd:EditorPlugin.get_undo_redo
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_get_undo_redo), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_get_undo_redo), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorUndoRedoManager{gd.PointerLifetimeBoundTo[gdclass.EditorUndoRedoManager](self.AsObject(), r_ret)}
 	return ret
 }
@@ -2243,7 +2243,7 @@ The callback should have 4 arguments: [Object] [code]undo_redo[/code], [Object] 
 */
 //go:nosplit
 func (self class) AddUndoRedoInspectorHookCallback(callable Callable.Function) { //gd:EditorPlugin.add_undo_redo_inspector_hook_callback
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_undo_redo_inspector_hook_callback), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_undo_redo_inspector_hook_callback), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
 }
 
 /*
@@ -2251,7 +2251,7 @@ Removes a callback previously added by [method add_undo_redo_inspector_hook_call
 */
 //go:nosplit
 func (self class) RemoveUndoRedoInspectorHookCallback(callable Callable.Function) { //gd:EditorPlugin.remove_undo_redo_inspector_hook_callback
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_undo_redo_inspector_hook_callback), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_undo_redo_inspector_hook_callback), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
 }
 
 /*
@@ -2259,7 +2259,7 @@ Queue save the project's editor layout.
 */
 //go:nosplit
 func (self class) QueueSaveLayout() { //gd:EditorPlugin.queue_save_layout
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_queue_save_layout), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_queue_save_layout), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2267,7 +2267,7 @@ Registers a custom translation parser plugin for extracting translatable strings
 */
 //go:nosplit
 func (self class) AddTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.add_translation_parser_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_translation_parser_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(parser[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_translation_parser_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(parser[0].AsObject()))}))
 }
 
 /*
@@ -2275,7 +2275,7 @@ Removes a custom translation parser plugin registered by [method add_translation
 */
 //go:nosplit
 func (self class) RemoveTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.remove_translation_parser_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_translation_parser_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(parser[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_translation_parser_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(parser[0].AsObject()))}))
 }
 
 /*
@@ -2286,7 +2286,7 @@ See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 //go:nosplit
 func (self class) AddImportPlugin(importer [1]gdclass.EditorImportPlugin, first_priority bool) { //gd:EditorPlugin.add_import_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_import_plugin), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_import_plugin), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		importer       gdextension.Object
 		first_priority bool
 	}{gdextension.Object(gd.ObjectChecked(importer[0].AsObject())), first_priority}))
@@ -2297,7 +2297,7 @@ Removes an import plugin registered by [method add_import_plugin].
 */
 //go:nosplit
 func (self class) RemoveImportPlugin(importer [1]gdclass.EditorImportPlugin) { //gd:EditorPlugin.remove_import_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_import_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(importer[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_import_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(importer[0].AsObject()))}))
 }
 
 /*
@@ -2306,7 +2306,7 @@ If [param first_priority] is [code]true[/code], the new import plugin is inserte
 */
 //go:nosplit
 func (self class) AddSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter, first_priority bool) { //gd:EditorPlugin.add_scene_format_importer_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_scene_format_importer_plugin), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_scene_format_importer_plugin), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		scene_format_importer gdextension.Object
 		first_priority        bool
 	}{gdextension.Object(gd.ObjectChecked(scene_format_importer[0].AsObject())), first_priority}))
@@ -2317,7 +2317,7 @@ Removes a scene format importer registered by [method add_scene_format_importer_
 */
 //go:nosplit
 func (self class) RemoveSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter) { //gd:EditorPlugin.remove_scene_format_importer_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_scene_format_importer_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scene_format_importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_format_importer[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_scene_format_importer_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scene_format_importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_format_importer[0].AsObject()))}))
 }
 
 /*
@@ -2326,7 +2326,7 @@ If [param first_priority] is [code]true[/code], the new import plugin is inserte
 */
 //go:nosplit
 func (self class) AddScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin, first_priority bool) { //gd:EditorPlugin.add_scene_post_import_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_scene_post_import_plugin), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_scene_post_import_plugin), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		scene_import_plugin gdextension.Object
 		first_priority      bool
 	}{gdextension.Object(gd.ObjectChecked(scene_import_plugin[0].AsObject())), first_priority}))
@@ -2337,7 +2337,7 @@ Remove the [EditorScenePostImportPlugin], added with [method add_scene_post_impo
 */
 //go:nosplit
 func (self class) RemoveScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin) { //gd:EditorPlugin.remove_scene_post_import_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_scene_post_import_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scene_import_plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_import_plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_scene_post_import_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scene_import_plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_import_plugin[0].AsObject()))}))
 }
 
 /*
@@ -2346,7 +2346,7 @@ See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 //go:nosplit
 func (self class) AddExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.add_export_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_export_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_export_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2354,7 +2354,7 @@ Removes an export plugin registered by [method add_export_plugin].
 */
 //go:nosplit
 func (self class) RemoveExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.remove_export_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_export_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_export_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2362,7 +2362,7 @@ Registers a new [EditorExportPlatform]. Export platforms provides functionality 
 */
 //go:nosplit
 func (self class) AddExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.add_export_platform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_export_platform), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(platform[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_export_platform), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(platform[0].AsObject()))}))
 }
 
 /*
@@ -2370,7 +2370,7 @@ Removes an export platform registered by [method add_export_platform].
 */
 //go:nosplit
 func (self class) RemoveExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.remove_export_platform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_export_platform), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(platform[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_export_platform), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(platform[0].AsObject()))}))
 }
 
 /*
@@ -2379,7 +2379,7 @@ See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 //go:nosplit
 func (self class) AddNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.add_node_3d_gizmo_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_node_3d_gizmo_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_node_3d_gizmo_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2387,7 +2387,7 @@ Removes a gizmo plugin registered by [method add_node_3d_gizmo_plugin].
 */
 //go:nosplit
 func (self class) RemoveNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.remove_node_3d_gizmo_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_node_3d_gizmo_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_node_3d_gizmo_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2408,7 +2408,7 @@ func _exit_tree():
 */
 //go:nosplit
 func (self class) AddInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.add_inspector_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_inspector_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_inspector_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2416,7 +2416,7 @@ Removes an inspector plugin registered by [method add_inspector_plugin].
 */
 //go:nosplit
 func (self class) RemoveInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.remove_inspector_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_inspector_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_inspector_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2425,7 +2425,7 @@ See [EditorResourceConversionPlugin] for an example of how to create a resource 
 */
 //go:nosplit
 func (self class) AddResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.add_resource_conversion_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_resource_conversion_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_resource_conversion_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2433,7 +2433,7 @@ Removes a resource conversion plugin registered by [method add_resource_conversi
 */
 //go:nosplit
 func (self class) RemoveResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.remove_resource_conversion_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_resource_conversion_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_resource_conversion_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2441,7 +2441,7 @@ Use this method if you always want to receive inputs from 3D view screen inside 
 */
 //go:nosplit
 func (self class) SetInputEventForwardingAlwaysEnabled() { //gd:EditorPlugin.set_input_event_forwarding_always_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_set_input_event_forwarding_always_enabled), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_set_input_event_forwarding_always_enabled), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2449,7 +2449,7 @@ Enables calling of [method _forward_canvas_force_draw_over_viewport] for the 2D 
 */
 //go:nosplit
 func (self class) SetForceDrawOverForwardingEnabled() { //gd:EditorPlugin.set_force_draw_over_forwarding_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_set_force_draw_over_forwarding_enabled), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_set_force_draw_over_forwarding_enabled), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2458,7 +2458,7 @@ See [enum EditorContextMenuPlugin.ContextMenuSlot] for available context menus. 
 */
 //go:nosplit
 func (self class) AddContextMenuPlugin(slot EditorContextMenuPlugin.ContextMenuSlot, plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.add_context_menu_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_context_menu_plugin), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_context_menu_plugin), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		slot   EditorContextMenuPlugin.ContextMenuSlot
 		plugin gdextension.Object
 	}{slot, gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
@@ -2469,7 +2469,7 @@ Removes the specified context menu plugin.
 */
 //go:nosplit
 func (self class) RemoveContextMenuPlugin(plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.remove_context_menu_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_context_menu_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_context_menu_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -2477,7 +2477,7 @@ Returns the [EditorInterface] singleton instance.
 */
 //go:nosplit
 func (self class) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorPlugin.get_editor_interface
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_get_editor_interface), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_get_editor_interface), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorInterface{gd.PointerLifetimeBoundTo[gdclass.EditorInterface](self.AsObject(), r_ret)}
 	return ret
 }
@@ -2489,7 +2489,7 @@ Gets the Editor's dialog used for making scripts.
 */
 //go:nosplit
 func (self class) GetScriptCreateDialog() [1]gdclass.ScriptCreateDialog { //gd:EditorPlugin.get_script_create_dialog
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_get_script_create_dialog), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_get_script_create_dialog), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.ScriptCreateDialog{gd.PointerLifetimeBoundTo[gdclass.ScriptCreateDialog](self.AsObject(), r_ret)}
 	return ret
 }
@@ -2499,7 +2499,7 @@ Adds a [Script] as debugger plugin to the Debugger. The script must extend [Edit
 */
 //go:nosplit
 func (self class) AddDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.add_debugger_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_debugger_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_add_debugger_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))}))
 }
 
 /*
@@ -2507,7 +2507,7 @@ Removes the debugger plugin with given script from the Debugger.
 */
 //go:nosplit
 func (self class) RemoveDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.remove_debugger_plugin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_debugger_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_remove_debugger_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))}))
 }
 
 /*
@@ -2515,7 +2515,7 @@ Provide the version of the plugin declared in the [code]plugin.cfg[/code] config
 */
 //go:nosplit
 func (self class) GetPluginVersion() String.Readable { //gd:EditorPlugin.get_plugin_version
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_get_plugin_version), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPlugin.Bind_get_plugin_version), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

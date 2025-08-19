@@ -117,12 +117,12 @@ func (self Instance) SetDelta(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetDelta(delta Vector2.XY) { //gd:InputEventPanGesture.set_delta
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventPanGesture.Bind_set_delta), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ delta Vector2.XY }{delta}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventPanGesture.Bind_set_delta), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ delta Vector2.XY }{delta}))
 }
 
 //go:nosplit
 func (self class) GetDelta() Vector2.XY { //gd:InputEventPanGesture.get_delta
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventPanGesture.Bind_get_delta), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventPanGesture.Bind_get_delta), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

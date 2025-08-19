@@ -136,7 +136,7 @@ Returns the size of the packed container (see [method Array.size] and [method Di
 */
 //go:nosplit
 func (self class) Size() int64 { //gd:PackedDataContainerRef.size
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PackedDataContainerRef.Bind_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PackedDataContainerRef.Bind_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -140,24 +140,24 @@ func (self Instance) SetBinding(value int) {
 
 //go:nosplit
 func (self class) SetUniformType(p_member Rendering.UniformType) { //gd:RDUniform.set_uniform_type
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_set_uniform_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.UniformType }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_set_uniform_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.UniformType }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetUniformType() Rendering.UniformType { //gd:RDUniform.get_uniform_type
-	var r_ret = gdextension.Call[Rendering.UniformType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_get_uniform_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.UniformType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_get_uniform_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBinding(p_member int64) { //gd:RDUniform.set_binding
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_set_binding), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_set_binding), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetBinding() int64 { //gd:RDUniform.get_binding
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_get_binding), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_get_binding), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -167,7 +167,7 @@ Binds the given id to the uniform. The data associated with the id is then used 
 */
 //go:nosplit
 func (self class) AddId(id RID.Any) { //gd:RDUniform.add_id
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_add_id), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ id RID.Any }{id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_add_id), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ id RID.Any }{id}))
 }
 
 /*
@@ -175,7 +175,7 @@ Unbinds all ids currently bound to the uniform.
 */
 //go:nosplit
 func (self class) ClearIds() { //gd:RDUniform.clear_ids
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_clear_ids), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_clear_ids), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -183,7 +183,7 @@ Returns an array of all ids currently bound to the uniform.
 */
 //go:nosplit
 func (self class) GetIds() Array.Contains[RID.Any] { //gd:RDUniform.get_ids
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_get_ids), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDUniform.Bind_get_ids), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

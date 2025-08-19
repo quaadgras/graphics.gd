@@ -148,7 +148,7 @@ func (class) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) float64) (c
 
 //go:nosplit
 func (self class) BeginResample() { //gd:AudioStreamPlaybackResampled.begin_resample
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaybackResampled.Bind_begin_resample), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaybackResampled.Bind_begin_resample), 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsAudioStreamPlaybackResampled() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

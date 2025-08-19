@@ -160,36 +160,36 @@ func (self Instance) SetTrackingConfidence(value TrackingConfidence) {
 
 //go:nosplit
 func (self class) SetHasTrackingData(has_tracking_data bool) { //gd:XRPose.set_has_tracking_data
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_has_tracking_data), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ has_tracking_data bool }{has_tracking_data}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_has_tracking_data), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ has_tracking_data bool }{has_tracking_data}))
 }
 
 //go:nosplit
 func (self class) GetHasTrackingData() bool { //gd:XRPose.get_has_tracking_data
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_has_tracking_data), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_has_tracking_data), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetName(name String.Name) { //gd:XRPose.set_name
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetName() String.Name { //gd:XRPose.get_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransform(transform Transform3D.BasisOrigin) { //gd:XRPose.set_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_transform), 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ transform Transform3D.BasisOrigin }{gd.Transposed(transform)}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_transform), 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ transform Transform3D.BasisOrigin }{gd.Transposed(transform)}))
 }
 
 //go:nosplit
 func (self class) GetTransform() Transform3D.BasisOrigin { //gd:XRPose.get_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_transform), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_transform), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -199,43 +199,43 @@ Returns the [member transform] with world scale and our reference frame applied.
 */
 //go:nosplit
 func (self class) GetAdjustedTransform() Transform3D.BasisOrigin { //gd:XRPose.get_adjusted_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_adjusted_transform), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_adjusted_transform), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearVelocity(velocity Vector3.XYZ) { //gd:XRPose.set_linear_velocity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_linear_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ velocity Vector3.XYZ }{velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_linear_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ velocity Vector3.XYZ }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:XRPose.get_linear_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_linear_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_linear_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularVelocity(velocity Vector3.XYZ) { //gd:XRPose.set_angular_velocity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_angular_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ velocity Vector3.XYZ }{velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_angular_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ velocity Vector3.XYZ }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:XRPose.get_angular_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_angular_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_angular_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackingConfidence(tracking_confidence TrackingConfidence) { //gd:XRPose.set_tracking_confidence
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_tracking_confidence), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tracking_confidence TrackingConfidence }{tracking_confidence}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_tracking_confidence), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tracking_confidence TrackingConfidence }{tracking_confidence}))
 }
 
 //go:nosplit
 func (self class) GetTrackingConfidence() TrackingConfidence { //gd:XRPose.get_tracking_confidence
-	var r_ret = gdextension.Call[TrackingConfidence](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_tracking_confidence), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TrackingConfidence](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_tracking_confidence), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

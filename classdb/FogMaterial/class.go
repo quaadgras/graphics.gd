@@ -155,72 +155,72 @@ func (self Instance) SetDensityTexture(value Texture3D.Instance) {
 
 //go:nosplit
 func (self class) SetDensity(density float64) { //gd:FogMaterial.set_density
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_set_density), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ density float64 }{density}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_set_density), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ density float64 }{density}))
 }
 
 //go:nosplit
 func (self class) GetDensity() float64 { //gd:FogMaterial.get_density
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_get_density), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_get_density), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlbedo(albedo Color.RGBA) { //gd:FogMaterial.set_albedo
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_set_albedo), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ albedo Color.RGBA }{albedo}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_set_albedo), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ albedo Color.RGBA }{albedo}))
 }
 
 //go:nosplit
 func (self class) GetAlbedo() Color.RGBA { //gd:FogMaterial.get_albedo
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_get_albedo), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_get_albedo), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmission(emission Color.RGBA) { //gd:FogMaterial.set_emission
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_set_emission), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ emission Color.RGBA }{emission}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_set_emission), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ emission Color.RGBA }{emission}))
 }
 
 //go:nosplit
 func (self class) GetEmission() Color.RGBA { //gd:FogMaterial.get_emission
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_get_emission), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_get_emission), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeightFalloff(height_falloff float64) { //gd:FogMaterial.set_height_falloff
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_set_height_falloff), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height_falloff float64 }{height_falloff}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_set_height_falloff), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height_falloff float64 }{height_falloff}))
 }
 
 //go:nosplit
 func (self class) GetHeightFalloff() float64 { //gd:FogMaterial.get_height_falloff
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_get_height_falloff), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_get_height_falloff), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEdgeFade(edge_fade float64) { //gd:FogMaterial.set_edge_fade
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_set_edge_fade), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ edge_fade float64 }{edge_fade}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_set_edge_fade), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ edge_fade float64 }{edge_fade}))
 }
 
 //go:nosplit
 func (self class) GetEdgeFade() float64 { //gd:FogMaterial.get_edge_fade
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_get_edge_fade), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_get_edge_fade), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDensityTexture(density_texture [1]gdclass.Texture3D) { //gd:FogMaterial.set_density_texture
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_set_density_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ density_texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(density_texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_set_density_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ density_texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(density_texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetDensityTexture() [1]gdclass.Texture3D { //gd:FogMaterial.get_density_texture
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_get_density_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FogMaterial.Bind_get_density_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture3D](r_ret)}
 	return ret
 }

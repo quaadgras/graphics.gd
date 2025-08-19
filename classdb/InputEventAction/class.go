@@ -133,41 +133,41 @@ func (self Instance) SetEventIndex(value int) {
 
 //go:nosplit
 func (self class) SetAction(action String.Name) { //gd:InputEventAction.set_action
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_set_action), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_set_action), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0])}))
 }
 
 //go:nosplit
 func (self class) GetAction() String.Name { //gd:InputEventAction.get_action
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_get_action), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_get_action), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressed(pressed bool) { //gd:InputEventAction.set_pressed
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_set_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_set_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
 }
 
 //go:nosplit
 func (self class) SetStrength(strength float64) { //gd:InputEventAction.set_strength
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_set_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_set_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
 }
 
 //go:nosplit
 func (self class) GetStrength() float64 { //gd:InputEventAction.get_strength
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_get_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_get_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEventIndex(index int64) { //gd:InputEventAction.set_event_index
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_set_event_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_set_event_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 //go:nosplit
 func (self class) GetEventIndex() int64 { //gd:InputEventAction.get_event_index
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_get_event_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventAction.Bind_get_event_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

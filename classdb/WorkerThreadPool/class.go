@@ -119,7 +119,7 @@ var self [1]gdclass.WorkerThreadPool
 var once sync.Once
 
 func singleton() {
-	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.WorkerThreadPool)
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.WorkerThreadPool)[0])))})
 	self = *(*[1]gdclass.WorkerThreadPool)(unsafe.Pointer(&obj))
 }
 
@@ -233,7 +233,7 @@ Returns a task ID that can be used by other methods.
 */
 //go:nosplit
 func (self class) AddTask(action Callable.Function, high_priority bool, description String.Readable) int64 { //gd:WorkerThreadPool.add_task
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_add_task), gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_add_task), gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		action        gdextension.Callable
 		high_priority bool
 		description   gdextension.String
@@ -248,7 +248,7 @@ Returns [code]true[/code] if the task with the given ID is completed.
 */
 //go:nosplit
 func (self class) IsTaskCompleted(task_id int64) bool { //gd:WorkerThreadPool.is_task_completed
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_is_task_completed), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ task_id int64 }{task_id}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_is_task_completed), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ task_id int64 }{task_id}))
 	var ret = r_ret
 	return ret
 }
@@ -261,7 +261,7 @@ Returns [constant @GlobalScope.ERR_BUSY] if the call is made from another runnin
 */
 //go:nosplit
 func (self class) WaitForTaskCompletion(task_id int64) Error.Code { //gd:WorkerThreadPool.wait_for_task_completion
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_wait_for_task_completion), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ task_id int64 }{task_id}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_wait_for_task_completion), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ task_id int64 }{task_id}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -274,7 +274,7 @@ Returns a group task ID that can be used by other methods.
 */
 //go:nosplit
 func (self class) AddGroupTask(action Callable.Function, elements int64, tasks_needed int64, high_priority bool, description String.Readable) int64 { //gd:WorkerThreadPool.add_group_task
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_add_group_task), gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeString<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_add_group_task), gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeString<<20), unsafe.Pointer(&struct {
 		action        gdextension.Callable
 		elements      int64
 		tasks_needed  int64
@@ -291,7 +291,7 @@ Returns [code]true[/code] if the group task with the given ID is completed.
 */
 //go:nosplit
 func (self class) IsGroupTaskCompleted(group_id int64) bool { //gd:WorkerThreadPool.is_group_task_completed
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_is_group_task_completed), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ group_id int64 }{group_id}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_is_group_task_completed), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ group_id int64 }{group_id}))
 	var ret = r_ret
 	return ret
 }
@@ -302,7 +302,7 @@ Returns how many times the [Callable] of the group task with the given ID has al
 */
 //go:nosplit
 func (self class) GetGroupProcessedElementCount(group_id int64) int64 { //gd:WorkerThreadPool.get_group_processed_element_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_get_group_processed_element_count), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ group_id int64 }{group_id}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_get_group_processed_element_count), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ group_id int64 }{group_id}))
 	var ret = r_ret
 	return ret
 }
@@ -312,7 +312,7 @@ Pauses the thread that calls this method until the group task with the given ID 
 */
 //go:nosplit
 func (self class) WaitForGroupTaskCompletion(group_id int64) { //gd:WorkerThreadPool.wait_for_group_task_completion
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_wait_for_group_task_completion), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ group_id int64 }{group_id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorkerThreadPool.Bind_wait_for_group_task_completion), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ group_id int64 }{group_id}))
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

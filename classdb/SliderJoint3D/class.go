@@ -121,7 +121,7 @@ Assigns [param value] to the given parameter (see [enum Param] constants).
 */
 //go:nosplit
 func (self class) SetParam(param Param, value float64) { //gd:SliderJoint3D.set_param
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SliderJoint3D.Bind_set_param), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SliderJoint3D.Bind_set_param), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		param Param
 		value float64
 	}{param, value}))
@@ -132,7 +132,7 @@ Returns the value of the given parameter (see [enum Param] constants).
 */
 //go:nosplit
 func (self class) GetParam(param Param) float64 { //gd:SliderJoint3D.get_param
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SliderJoint3D.Bind_get_param), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SliderJoint3D.Bind_get_param), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
 	var ret = r_ret
 	return ret
 }

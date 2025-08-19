@@ -161,7 +161,7 @@ Adds a custom command to EditorCommandPalette.
 */
 //go:nosplit
 func (self class) AddCommand(command_name String.Readable, key_name String.Readable, binded_callable Callable.Function, shortcut_text String.Readable) { //gd:EditorCommandPalette.add_command
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorCommandPalette.Bind_add_command), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorCommandPalette.Bind_add_command), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
 		command_name    gdextension.String
 		key_name        gdextension.String
 		binded_callable gdextension.Callable
@@ -175,7 +175,7 @@ Removes the custom command from EditorCommandPalette.
 */
 //go:nosplit
 func (self class) RemoveCommand(key_name String.Readable) { //gd:EditorCommandPalette.remove_command
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorCommandPalette.Bind_remove_command), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ key_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(key_name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorCommandPalette.Bind_remove_command), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ key_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(key_name))[0])}))
 }
 func (self class) AsEditorCommandPalette() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorCommandPalette() Instance { return *((*Instance)(unsafe.Pointer(&self))) }

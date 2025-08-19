@@ -173,36 +173,36 @@ func (class) _propagate_input_event(impl func(ptr unsafe.Pointer, event [1]gdcla
 
 //go:nosplit
 func (self class) SetStretch(enable bool) { //gd:SubViewportContainer.set_stretch
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_set_stretch), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_set_stretch), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsStretchEnabled() bool { //gd:SubViewportContainer.is_stretch_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_is_stretch_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_is_stretch_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStretchShrink(amount int64) { //gd:SubViewportContainer.set_stretch_shrink
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_set_stretch_shrink), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_set_stretch_shrink), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetStretchShrink() int64 { //gd:SubViewportContainer.get_stretch_shrink
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_get_stretch_shrink), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_get_stretch_shrink), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMouseTarget(amount bool) { //gd:SubViewportContainer.set_mouse_target
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_set_mouse_target), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ amount bool }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_set_mouse_target), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ amount bool }{amount}))
 }
 
 //go:nosplit
 func (self class) IsMouseTargetEnabled() bool { //gd:SubViewportContainer.is_mouse_target_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_is_mouse_target_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_is_mouse_target_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -121,24 +121,24 @@ func (self Instance) SetAxisValue(value Float.X) {
 
 //go:nosplit
 func (self class) SetAxis(axis Input.JoyAxis) { //gd:InputEventJoypadMotion.set_axis
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_set_axis), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ axis Input.JoyAxis }{axis}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_set_axis), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ axis Input.JoyAxis }{axis}))
 }
 
 //go:nosplit
 func (self class) GetAxis() Input.JoyAxis { //gd:InputEventJoypadMotion.get_axis
-	var r_ret = gdextension.Call[Input.JoyAxis](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.JoyAxis](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAxisValue(axis_value float64) { //gd:InputEventJoypadMotion.set_axis_value
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_set_axis_value), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ axis_value float64 }{axis_value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_set_axis_value), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ axis_value float64 }{axis_value}))
 }
 
 //go:nosplit
 func (self class) GetAxisValue() float64 { //gd:InputEventJoypadMotion.get_axis_value
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis_value), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis_value), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -657,7 +657,7 @@ Adds lines to the gizmo (as sets of 2 points), with a given material. The lines 
 */
 //go:nosplit
 func (self class) AddLines(lines Packed.Array[Vector3.XYZ], material [1]gdclass.Material, billboard bool, modulate Color.RGBA) { //gd:EditorNode3DGizmo.add_lines
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_add_lines), 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_add_lines), 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16), unsafe.Pointer(&struct {
 		lines     gdextension.PackedArray
 		material  gdextension.Object
 		billboard bool
@@ -670,7 +670,7 @@ Adds a mesh to the gizmo with the specified [param material], local [param trans
 */
 //go:nosplit
 func (self class) AddMesh(mesh [1]gdclass.Mesh, material [1]gdclass.Material, transform Transform3D.BasisOrigin, skeleton [1]gdclass.SkinReference) { //gd:EditorNode3DGizmo.add_mesh
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_add_mesh), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeObject<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_add_mesh), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeObject<<16), unsafe.Pointer(&struct {
 		mesh      gdextension.Object
 		material  gdextension.Object
 		transform Transform3D.BasisOrigin
@@ -683,7 +683,7 @@ Adds the specified [param segments] to the gizmo's collision shape for picking. 
 */
 //go:nosplit
 func (self class) AddCollisionSegments(segments Packed.Array[Vector3.XYZ]) { //gd:EditorNode3DGizmo.add_collision_segments
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_add_collision_segments), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ segments gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](segments)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_add_collision_segments), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ segments gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](segments)))}))
 }
 
 /*
@@ -691,7 +691,7 @@ Adds collision triangles to the gizmo for picking. A [TriangleMesh] can be gener
 */
 //go:nosplit
 func (self class) AddCollisionTriangles(triangles [1]gdclass.TriangleMesh) { //gd:EditorNode3DGizmo.add_collision_triangles
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_add_collision_triangles), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ triangles gdextension.Object }{gdextension.Object(gd.ObjectChecked(triangles[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_add_collision_triangles), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ triangles gdextension.Object }{gdextension.Object(gd.ObjectChecked(triangles[0].AsObject()))}))
 }
 
 /*
@@ -699,7 +699,7 @@ Adds an unscaled billboard for visualization and selection. Call this method dur
 */
 //go:nosplit
 func (self class) AddUnscaledBillboard(material [1]gdclass.Material, default_scale float64, modulate Color.RGBA) { //gd:EditorNode3DGizmo.add_unscaled_billboard
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_add_unscaled_billboard), 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeColor<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_add_unscaled_billboard), 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeColor<<12), unsafe.Pointer(&struct {
 		material      gdextension.Object
 		default_scale float64
 		modulate      Color.RGBA
@@ -713,7 +713,7 @@ There are virtual methods which will be called upon editing of these handles. Ca
 */
 //go:nosplit
 func (self class) AddHandles(handles Packed.Array[Vector3.XYZ], material [1]gdclass.Material, ids Packed.Array[int32], billboard bool, secondary bool) { //gd:EditorNode3DGizmo.add_handles
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_add_handles), 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeObject<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_add_handles), 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeObject<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		handles   gdextension.PackedArray
 		material  gdextension.Object
 		ids       gdextension.PackedArray
@@ -727,7 +727,7 @@ Sets the reference [Node3D] node for the gizmo. [param node] must inherit from [
 */
 //go:nosplit
 func (self class) SetNode3d(node [1]gdclass.Node) { //gd:EditorNode3DGizmo.set_node_3d
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_set_node_3d), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_set_node_3d), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))}))
 }
 
 /*
@@ -735,7 +735,7 @@ Returns the [Node3D] node associated with this gizmo.
 */
 //go:nosplit
 func (self class) GetNode3d() [1]gdclass.Node3D { //gd:EditorNode3DGizmo.get_node_3d
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_get_node_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_get_node_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node3D{gd.PointerLifetimeBoundTo[gdclass.Node3D](self.AsObject(), r_ret)}
 	return ret
 }
@@ -745,7 +745,7 @@ Returns the [EditorNode3DGizmoPlugin] that owns this gizmo. It's useful to retri
 */
 //go:nosplit
 func (self class) GetPlugin() [1]gdclass.EditorNode3DGizmoPlugin { //gd:EditorNode3DGizmo.get_plugin
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_get_plugin), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_get_plugin), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorNode3DGizmoPlugin{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorNode3DGizmoPlugin](r_ret)}
 	return ret
 }
@@ -755,7 +755,7 @@ Removes everything in the gizmo including meshes, collisions and handles.
 */
 //go:nosplit
 func (self class) Clear() { //gd:EditorNode3DGizmo.clear
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -763,7 +763,7 @@ Sets the gizmo's hidden state. If [code]true[/code], the gizmo will be hidden. I
 */
 //go:nosplit
 func (self class) SetHidden(hidden bool) { //gd:EditorNode3DGizmo.set_hidden
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_set_hidden), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ hidden bool }{hidden}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_set_hidden), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ hidden bool }{hidden}))
 }
 
 /*
@@ -771,7 +771,7 @@ Returns [code]true[/code] if the given subgizmo is currently selected. Can be us
 */
 //go:nosplit
 func (self class) IsSubgizmoSelected(id int64) bool { //gd:EditorNode3DGizmo.is_subgizmo_selected
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_is_subgizmo_selected), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_is_subgizmo_selected), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = r_ret
 	return ret
 }
@@ -781,7 +781,7 @@ Returns a list of the currently selected subgizmos. Can be used to highlight sel
 */
 //go:nosplit
 func (self class) GetSubgizmoSelection() Packed.Array[int32] { //gd:EditorNode3DGizmo.get_subgizmo_selection
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_get_subgizmo_selection), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmo.Bind_get_subgizmo_selection), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

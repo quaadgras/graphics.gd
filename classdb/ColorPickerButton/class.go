@@ -143,12 +143,12 @@ func (self Instance) SetEditAlpha(value bool) {
 
 //go:nosplit
 func (self class) SetPickColor(color Color.RGBA) { //gd:ColorPickerButton.set_pick_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ColorPickerButton.Bind_set_pick_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPickerButton.Bind_set_pick_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetPickColor() Color.RGBA { //gd:ColorPickerButton.get_pick_color
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ColorPickerButton.Bind_get_pick_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPickerButton.Bind_get_pick_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -159,7 +159,7 @@ Returns the [ColorPicker] that this node toggles.
 */
 //go:nosplit
 func (self class) GetPicker() [1]gdclass.ColorPicker { //gd:ColorPickerButton.get_picker
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ColorPickerButton.Bind_get_picker), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPickerButton.Bind_get_picker), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.ColorPicker{gd.PointerLifetimeBoundTo[gdclass.ColorPicker](self.AsObject(), r_ret)}
 	return ret
 }
@@ -170,19 +170,19 @@ Returns the control's [PopupPanel] which allows you to connect to popup signals.
 */
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.PopupPanel { //gd:ColorPickerButton.get_popup
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ColorPickerButton.Bind_get_popup), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPickerButton.Bind_get_popup), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.PopupPanel{gd.PointerLifetimeBoundTo[gdclass.PopupPanel](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditAlpha(show bool) { //gd:ColorPickerButton.set_edit_alpha
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ColorPickerButton.Bind_set_edit_alpha), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ show bool }{show}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPickerButton.Bind_set_edit_alpha), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ show bool }{show}))
 }
 
 //go:nosplit
 func (self class) IsEditingAlpha() bool { //gd:ColorPickerButton.is_editing_alpha
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ColorPickerButton.Bind_is_editing_alpha), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPickerButton.Bind_is_editing_alpha), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

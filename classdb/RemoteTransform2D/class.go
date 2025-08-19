@@ -152,12 +152,12 @@ func (self Instance) SetUpdateScale(value bool) {
 
 //go:nosplit
 func (self class) SetRemoteNode(path Path.ToNode) { //gd:RemoteTransform2D.set_remote_node
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_set_remote_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_set_remote_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetRemoteNode() Path.ToNode { //gd:RemoteTransform2D.get_remote_node
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_get_remote_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_get_remote_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -167,53 +167,53 @@ func (self class) GetRemoteNode() Path.ToNode { //gd:RemoteTransform2D.get_remot
 */
 //go:nosplit
 func (self class) ForceUpdateCache() { //gd:RemoteTransform2D.force_update_cache
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_force_update_cache), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_force_update_cache), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetUseGlobalCoordinates(use_global_coordinates bool) { //gd:RemoteTransform2D.set_use_global_coordinates
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_set_use_global_coordinates), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_global_coordinates bool }{use_global_coordinates}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_set_use_global_coordinates), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_global_coordinates bool }{use_global_coordinates}))
 }
 
 //go:nosplit
 func (self class) GetUseGlobalCoordinates() bool { //gd:RemoteTransform2D.get_use_global_coordinates
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_get_use_global_coordinates), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_get_use_global_coordinates), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpdatePosition(update_remote_position bool) { //gd:RemoteTransform2D.set_update_position
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_set_update_position), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ update_remote_position bool }{update_remote_position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_set_update_position), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ update_remote_position bool }{update_remote_position}))
 }
 
 //go:nosplit
 func (self class) GetUpdatePosition() bool { //gd:RemoteTransform2D.get_update_position
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_get_update_position), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_get_update_position), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpdateRotation(update_remote_rotation bool) { //gd:RemoteTransform2D.set_update_rotation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_set_update_rotation), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ update_remote_rotation bool }{update_remote_rotation}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_set_update_rotation), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ update_remote_rotation bool }{update_remote_rotation}))
 }
 
 //go:nosplit
 func (self class) GetUpdateRotation() bool { //gd:RemoteTransform2D.get_update_rotation
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_get_update_rotation), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_get_update_rotation), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpdateScale(update_remote_scale bool) { //gd:RemoteTransform2D.set_update_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_set_update_scale), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ update_remote_scale bool }{update_remote_scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_set_update_scale), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ update_remote_scale bool }{update_remote_scale}))
 }
 
 //go:nosplit
 func (self class) GetUpdateScale() bool { //gd:RemoteTransform2D.get_update_scale
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_get_update_scale), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RemoteTransform2D.Bind_get_update_scale), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

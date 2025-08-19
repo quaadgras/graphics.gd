@@ -113,12 +113,12 @@ func (self Instance) SetConstant(value Float.X) {
 
 //go:nosplit
 func (self class) SetConstant(constant float64) { //gd:VisualShaderNodeFloatConstant.set_constant
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatConstant.Bind_set_constant), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ constant float64 }{constant}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatConstant.Bind_set_constant), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ constant float64 }{constant}))
 }
 
 //go:nosplit
 func (self class) GetConstant() float64 { //gd:VisualShaderNodeFloatConstant.get_constant
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatConstant.Bind_get_constant), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatConstant.Bind_get_constant), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

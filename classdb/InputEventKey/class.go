@@ -209,72 +209,72 @@ func (self Instance) SetEcho(value bool) {
 
 //go:nosplit
 func (self class) SetPressed(pressed bool) { //gd:InputEventKey.set_pressed
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
 }
 
 //go:nosplit
 func (self class) SetKeycode(keycode Input.Key) { //gd:InputEventKey.set_keycode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_keycode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ keycode Input.Key }{keycode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_keycode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ keycode Input.Key }{keycode}))
 }
 
 //go:nosplit
 func (self class) GetKeycode() Input.Key { //gd:InputEventKey.get_keycode
-	var r_ret = gdextension.Call[Input.Key](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_keycode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_keycode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicalKeycode(physical_keycode Input.Key) { //gd:InputEventKey.set_physical_keycode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_physical_keycode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ physical_keycode Input.Key }{physical_keycode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_physical_keycode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ physical_keycode Input.Key }{physical_keycode}))
 }
 
 //go:nosplit
 func (self class) GetPhysicalKeycode() Input.Key { //gd:InputEventKey.get_physical_keycode
-	var r_ret = gdextension.Call[Input.Key](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_physical_keycode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_physical_keycode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeyLabel(key_label Input.Key) { //gd:InputEventKey.set_key_label
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_key_label), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ key_label Input.Key }{key_label}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_key_label), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ key_label Input.Key }{key_label}))
 }
 
 //go:nosplit
 func (self class) GetKeyLabel() Input.Key { //gd:InputEventKey.get_key_label
-	var r_ret = gdextension.Call[Input.Key](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_key_label), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_key_label), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUnicode(unicode int64) { //gd:InputEventKey.set_unicode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_unicode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ unicode int64 }{unicode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_unicode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ unicode int64 }{unicode}))
 }
 
 //go:nosplit
 func (self class) GetUnicode() int64 { //gd:InputEventKey.get_unicode
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_unicode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_unicode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLocation(location Input.KeyLocation) { //gd:InputEventKey.set_location
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_location), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ location Input.KeyLocation }{location}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_location), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ location Input.KeyLocation }{location}))
 }
 
 //go:nosplit
 func (self class) GetLocation() Input.KeyLocation { //gd:InputEventKey.get_location
-	var r_ret = gdextension.Call[Input.KeyLocation](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_location), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.KeyLocation](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_location), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEcho(echo bool) { //gd:InputEventKey.set_echo
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_echo), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ echo bool }{echo}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_set_echo), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ echo bool }{echo}))
 }
 
 /*
@@ -283,7 +283,7 @@ To get a human-readable representation of the [InputEventKey] with modifiers, us
 */
 //go:nosplit
 func (self class) GetKeycodeWithModifiers() Input.Key { //gd:InputEventKey.get_keycode_with_modifiers
-	var r_ret = gdextension.Call[Input.Key](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_keycode_with_modifiers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_keycode_with_modifiers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -294,7 +294,7 @@ To get a human-readable representation of the [InputEventKey] with modifiers, us
 */
 //go:nosplit
 func (self class) GetPhysicalKeycodeWithModifiers() Input.Key { //gd:InputEventKey.get_physical_keycode_with_modifiers
-	var r_ret = gdextension.Call[Input.Key](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_physical_keycode_with_modifiers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_physical_keycode_with_modifiers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -305,7 +305,7 @@ To get a human-readable representation of the [InputEventKey] with modifiers, us
 */
 //go:nosplit
 func (self class) GetKeyLabelWithModifiers() Input.Key { //gd:InputEventKey.get_key_label_with_modifiers
-	var r_ret = gdextension.Call[Input.Key](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_key_label_with_modifiers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_get_key_label_with_modifiers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -315,7 +315,7 @@ Returns a [String] representation of the event's [member keycode] and modifiers.
 */
 //go:nosplit
 func (self class) AsTextKeycode() String.Readable { //gd:InputEventKey.as_text_keycode
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_as_text_keycode), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_as_text_keycode), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -325,7 +325,7 @@ Returns a [String] representation of the event's [member physical_keycode] and m
 */
 //go:nosplit
 func (self class) AsTextPhysicalKeycode() String.Readable { //gd:InputEventKey.as_text_physical_keycode
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_as_text_physical_keycode), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_as_text_physical_keycode), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -335,7 +335,7 @@ Returns a [String] representation of the event's [member key_label] and modifier
 */
 //go:nosplit
 func (self class) AsTextKeyLabel() String.Readable { //gd:InputEventKey.as_text_key_label
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_as_text_key_label), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_as_text_key_label), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -345,7 +345,7 @@ Returns a [String] representation of the event's [member location]. This will be
 */
 //go:nosplit
 func (self class) AsTextLocation() String.Readable { //gd:InputEventKey.as_text_location
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_as_text_location), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventKey.Bind_as_text_location), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

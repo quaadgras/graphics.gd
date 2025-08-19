@@ -115,12 +115,12 @@ func (self Instance) SetConstant(value Color.RGBA) {
 
 //go:nosplit
 func (self class) SetConstant(constant Color.RGBA) { //gd:VisualShaderNodeColorConstant.set_constant
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeColorConstant.Bind_set_constant), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ constant Color.RGBA }{constant}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeColorConstant.Bind_set_constant), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ constant Color.RGBA }{constant}))
 }
 
 //go:nosplit
 func (self class) GetConstant() Color.RGBA { //gd:VisualShaderNodeColorConstant.get_constant
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeColorConstant.Bind_get_constant), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeColorConstant.Bind_get_constant), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

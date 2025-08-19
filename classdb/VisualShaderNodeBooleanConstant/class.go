@@ -114,12 +114,12 @@ func (self Instance) SetConstant(value bool) {
 
 //go:nosplit
 func (self class) SetConstant(constant bool) { //gd:VisualShaderNodeBooleanConstant.set_constant
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBooleanConstant.Bind_set_constant), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ constant bool }{constant}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBooleanConstant.Bind_set_constant), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ constant bool }{constant}))
 }
 
 //go:nosplit
 func (self class) GetConstant() bool { //gd:VisualShaderNodeBooleanConstant.get_constant
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBooleanConstant.Bind_get_constant), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBooleanConstant.Bind_get_constant), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

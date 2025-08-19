@@ -167,26 +167,26 @@ func (self Instance) SetHand(value TrackerHand) {
 
 //go:nosplit
 func (self class) GetTrackerProfile() String.Readable { //gd:XRPositionalTracker.get_tracker_profile
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_profile), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_profile), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerProfile(profile String.Readable) { //gd:XRPositionalTracker.set_tracker_profile
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_set_tracker_profile), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ profile gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(profile))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_set_tracker_profile), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ profile gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(profile))[0])}))
 }
 
 //go:nosplit
 func (self class) GetTrackerHand() TrackerHand { //gd:XRPositionalTracker.get_tracker_hand
-	var r_ret = gdextension.Call[TrackerHand](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_hand), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TrackerHand](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_get_tracker_hand), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerHand(hand TrackerHand) { //gd:XRPositionalTracker.set_tracker_hand
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_set_tracker_hand), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hand TrackerHand }{hand}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_set_tracker_hand), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hand TrackerHand }{hand}))
 }
 
 /*
@@ -194,7 +194,7 @@ Returns [code]true[/code] if the tracker is available and is currently tracking 
 */
 //go:nosplit
 func (self class) HasPose(name String.Name) bool { //gd:XRPositionalTracker.has_pose
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_has_pose), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_has_pose), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -204,7 +204,7 @@ Returns the current [XRPose] state object for the bound [param name] pose.
 */
 //go:nosplit
 func (self class) GetPose(name String.Name) [1]gdclass.XRPose { //gd:XRPositionalTracker.get_pose
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_get_pose), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_get_pose), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = [1]gdclass.XRPose{gd.PointerWithOwnershipTransferredToGo[gdclass.XRPose](r_ret)}
 	return ret
 }
@@ -214,7 +214,7 @@ Marks this pose as invalid, we don't clear the last reported state but it allows
 */
 //go:nosplit
 func (self class) InvalidatePose(name String.Name) { //gd:XRPositionalTracker.invalidate_pose
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_invalidate_pose), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_invalidate_pose), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 }
 
 /*
@@ -222,7 +222,7 @@ Sets the transform, linear velocity, angular velocity and tracking confidence fo
 */
 //go:nosplit
 func (self class) SetPose(name String.Name, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence XRPose.TrackingConfidence) { //gd:XRPositionalTracker.set_pose
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_set_pose), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeTransform3D<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_set_pose), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeTransform3D<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		name                gdextension.StringName
 		transform           Transform3D.BasisOrigin
 		linear_velocity     Vector3.XYZ
@@ -236,7 +236,7 @@ Returns an input for this tracker. It can return a boolean, float or [Vector2] v
 */
 //go:nosplit
 func (self class) GetInput(name String.Name) variant.Any { //gd:XRPositionalTracker.get_input
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_get_input), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_get_input), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -246,7 +246,7 @@ Changes the value for the given input. This method is called by a [XRInterface] 
 */
 //go:nosplit
 func (self class) SetInput(name String.Name, value variant.Any) { //gd:XRPositionalTracker.set_input
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_set_input), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPositionalTracker.Bind_set_input), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		name  gdextension.StringName
 		value gdextension.Variant
 	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))

@@ -120,24 +120,24 @@ func (self Instance) SetQualifier(value Qualifier) {
 
 //go:nosplit
 func (self class) SetParameterName(name String.Readable) { //gd:VisualShaderNodeParameter.set_parameter_name
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParameter.Bind_set_parameter_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParameter.Bind_set_parameter_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetParameterName() String.Readable { //gd:VisualShaderNodeParameter.get_parameter_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParameter.Bind_get_parameter_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParameter.Bind_get_parameter_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetQualifier(qualifier Qualifier) { //gd:VisualShaderNodeParameter.set_qualifier
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParameter.Bind_set_qualifier), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ qualifier Qualifier }{qualifier}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParameter.Bind_set_qualifier), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ qualifier Qualifier }{qualifier}))
 }
 
 //go:nosplit
 func (self class) GetQualifier() Qualifier { //gd:VisualShaderNodeParameter.get_qualifier
-	var r_ret = gdextension.Call[Qualifier](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParameter.Bind_get_qualifier), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Qualifier](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParameter.Bind_get_qualifier), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

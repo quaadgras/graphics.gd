@@ -112,12 +112,12 @@ func (self Instance) SetMode(value Mode) {
 
 //go:nosplit
 func (self class) SetMode(mode Mode) { //gd:VisualShaderNodeParticleAccelerator.set_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleAccelerator.Bind_set_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleAccelerator.Bind_set_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetMode() Mode { //gd:VisualShaderNodeParticleAccelerator.get_mode
-	var r_ret = gdextension.Call[Mode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleAccelerator.Bind_get_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Mode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleAccelerator.Bind_get_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

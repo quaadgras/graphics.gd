@@ -178,108 +178,108 @@ func (self Instance) SetScreenVelocity(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetIndex(index int64) { //gd:InputEventScreenDrag.set_index
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 //go:nosplit
 func (self class) GetIndex() int64 { //gd:InputEventScreenDrag.get_index
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTilt(tilt Vector2.XY) { //gd:InputEventScreenDrag.set_tilt
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_tilt), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ tilt Vector2.XY }{tilt}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_tilt), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ tilt Vector2.XY }{tilt}))
 }
 
 //go:nosplit
 func (self class) GetTilt() Vector2.XY { //gd:InputEventScreenDrag.get_tilt
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_tilt), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_tilt), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressure(pressure float64) { //gd:InputEventScreenDrag.set_pressure
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_pressure), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pressure float64 }{pressure}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_pressure), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pressure float64 }{pressure}))
 }
 
 //go:nosplit
 func (self class) GetPressure() float64 { //gd:InputEventScreenDrag.get_pressure
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_pressure), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_pressure), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPenInverted(pen_inverted bool) { //gd:InputEventScreenDrag.set_pen_inverted
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_pen_inverted), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pen_inverted bool }{pen_inverted}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_pen_inverted), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pen_inverted bool }{pen_inverted}))
 }
 
 //go:nosplit
 func (self class) GetPenInverted() bool { //gd:InputEventScreenDrag.get_pen_inverted
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_pen_inverted), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_pen_inverted), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPosition(position Vector2.XY) { //gd:InputEventScreenDrag.set_position
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_position), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_position), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:InputEventScreenDrag.get_position
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRelative(relative Vector2.XY) { //gd:InputEventScreenDrag.set_relative
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_relative), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ relative Vector2.XY }{relative}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_relative), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ relative Vector2.XY }{relative}))
 }
 
 //go:nosplit
 func (self class) GetRelative() Vector2.XY { //gd:InputEventScreenDrag.get_relative
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_relative), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_relative), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScreenRelative(relative Vector2.XY) { //gd:InputEventScreenDrag.set_screen_relative
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_screen_relative), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ relative Vector2.XY }{relative}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_screen_relative), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ relative Vector2.XY }{relative}))
 }
 
 //go:nosplit
 func (self class) GetScreenRelative() Vector2.XY { //gd:InputEventScreenDrag.get_screen_relative
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_screen_relative), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_screen_relative), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVelocity(velocity Vector2.XY) { //gd:InputEventScreenDrag.set_velocity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_velocity), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_velocity), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetVelocity() Vector2.XY { //gd:InputEventScreenDrag.get_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_velocity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_velocity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScreenVelocity(velocity Vector2.XY) { //gd:InputEventScreenDrag.set_screen_velocity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_screen_velocity), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_set_screen_velocity), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetScreenVelocity() Vector2.XY { //gd:InputEventScreenDrag.get_screen_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_screen_velocity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenDrag.Bind_get_screen_velocity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

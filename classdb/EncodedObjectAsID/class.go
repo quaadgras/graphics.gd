@@ -111,12 +111,12 @@ func (self Instance) SetObjectId(value int) {
 
 //go:nosplit
 func (self class) SetObjectId(id int64) { //gd:EncodedObjectAsID.set_object_id
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EncodedObjectAsID.Bind_set_object_id), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EncodedObjectAsID.Bind_set_object_id), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 }
 
 //go:nosplit
 func (self class) GetObjectId() int64 { //gd:EncodedObjectAsID.get_object_id
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EncodedObjectAsID.Bind_get_object_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EncodedObjectAsID.Bind_get_object_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

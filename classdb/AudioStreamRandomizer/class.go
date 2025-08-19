@@ -197,7 +197,7 @@ Insert a stream at the specified index. If the index is less than zero, the inse
 */
 //go:nosplit
 func (self class) AddStream(index int64, stream [1]gdclass.AudioStream, weight float64) { //gd:AudioStreamRandomizer.add_stream
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_add_stream), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_add_stream), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		index  int64
 		stream gdextension.Object
 		weight float64
@@ -209,7 +209,7 @@ Move a stream from one index to another.
 */
 //go:nosplit
 func (self class) MoveStream(index_from int64, index_to int64) { //gd:AudioStreamRandomizer.move_stream
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_move_stream), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_move_stream), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index_from int64
 		index_to   int64
 	}{index_from, index_to}))
@@ -220,7 +220,7 @@ Remove the stream at the specified index.
 */
 //go:nosplit
 func (self class) RemoveStream(index int64) { //gd:AudioStreamRandomizer.remove_stream
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_remove_stream), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_remove_stream), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 /*
@@ -228,7 +228,7 @@ Set the AudioStream at the specified index.
 */
 //go:nosplit
 func (self class) SetStream(index int64, stream [1]gdclass.AudioStream) { //gd:AudioStreamRandomizer.set_stream
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_set_stream), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_set_stream), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index  int64
 		stream gdextension.Object
 	}{index, gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
@@ -239,7 +239,7 @@ Returns the stream at the specified index.
 */
 //go:nosplit
 func (self class) GetStream(index int64) [1]gdclass.AudioStream { //gd:AudioStreamRandomizer.get_stream
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_get_stream), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_get_stream), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = [1]gdclass.AudioStream{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStream](r_ret)}
 	return ret
 }
@@ -249,7 +249,7 @@ Set the probability weight of the stream at the specified index. The higher this
 */
 //go:nosplit
 func (self class) SetStreamProbabilityWeight(index int64, weight float64) { //gd:AudioStreamRandomizer.set_stream_probability_weight
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_set_stream_probability_weight), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_set_stream_probability_weight), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		index  int64
 		weight float64
 	}{index, weight}))
@@ -260,55 +260,55 @@ Returns the probability weight associated with the stream at the given index.
 */
 //go:nosplit
 func (self class) GetStreamProbabilityWeight(index int64) float64 { //gd:AudioStreamRandomizer.get_stream_probability_weight
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_get_stream_probability_weight), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_get_stream_probability_weight), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStreamsCount(count int64) { //gd:AudioStreamRandomizer.set_streams_count
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_set_streams_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_set_streams_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 //go:nosplit
 func (self class) GetStreamsCount() int64 { //gd:AudioStreamRandomizer.get_streams_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_get_streams_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_get_streams_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRandomPitch(scale float64) { //gd:AudioStreamRandomizer.set_random_pitch
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_set_random_pitch), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_set_random_pitch), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
 }
 
 //go:nosplit
 func (self class) GetRandomPitch() float64 { //gd:AudioStreamRandomizer.get_random_pitch
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_get_random_pitch), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_get_random_pitch), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRandomVolumeOffsetDb(db_offset float64) { //gd:AudioStreamRandomizer.set_random_volume_offset_db
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_set_random_volume_offset_db), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ db_offset float64 }{db_offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_set_random_volume_offset_db), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ db_offset float64 }{db_offset}))
 }
 
 //go:nosplit
 func (self class) GetRandomVolumeOffsetDb() float64 { //gd:AudioStreamRandomizer.get_random_volume_offset_db
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_get_random_volume_offset_db), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_get_random_volume_offset_db), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlaybackMode(mode PlaybackMode) { //gd:AudioStreamRandomizer.set_playback_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_set_playback_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode PlaybackMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_set_playback_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode PlaybackMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetPlaybackMode() PlaybackMode { //gd:AudioStreamRandomizer.get_playback_mode
-	var r_ret = gdextension.Call[PlaybackMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_get_playback_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PlaybackMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamRandomizer.Bind_get_playback_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

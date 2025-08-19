@@ -111,7 +111,7 @@ Returns the port type of the reroute node.
 */
 //go:nosplit
 func (self class) GetPortType() VisualShaderNode.PortType { //gd:VisualShaderNodeReroute.get_port_type
-	var r_ret = gdextension.Call[VisualShaderNode.PortType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeReroute.Bind_get_port_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[VisualShaderNode.PortType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeReroute.Bind_get_port_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -120,24 +120,24 @@ func (self Instance) SetVolumeLinear(value Float.X) {
 
 //go:nosplit
 func (self class) SetVolumeDb(volume float64) { //gd:AudioEffectAmplify.set_volume_db
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectAmplify.Bind_set_volume_db), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume float64 }{volume}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectAmplify.Bind_set_volume_db), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume float64 }{volume}))
 }
 
 //go:nosplit
 func (self class) GetVolumeDb() float64 { //gd:AudioEffectAmplify.get_volume_db
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectAmplify.Bind_get_volume_db), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectAmplify.Bind_get_volume_db), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumeLinear(volume float64) { //gd:AudioEffectAmplify.set_volume_linear
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectAmplify.Bind_set_volume_linear), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume float64 }{volume}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectAmplify.Bind_set_volume_linear), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume float64 }{volume}))
 }
 
 //go:nosplit
 func (self class) GetVolumeLinear() float64 { //gd:AudioEffectAmplify.get_volume_linear
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectAmplify.Bind_get_volume_linear), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectAmplify.Bind_get_volume_linear), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

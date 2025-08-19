@@ -893,7 +893,7 @@ Returns the selected index of the drop-down list option within a graph. You may 
 */
 //go:nosplit
 func (self class) GetOptionIndex(option int64) int64 { //gd:VisualShaderNodeCustom.get_option_index
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeCustom.Bind_get_option_index), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ option int64 }{option}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeCustom.Bind_get_option_index), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ option int64 }{option}))
 	var ret = r_ret
 	return ret
 }

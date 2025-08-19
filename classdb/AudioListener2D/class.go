@@ -131,7 +131,7 @@ This method will have no effect if the [AudioListener2D] is not added to [SceneT
 */
 //go:nosplit
 func (self class) MakeCurrent() { //gd:AudioListener2D.make_current
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioListener2D.Bind_make_current), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioListener2D.Bind_make_current), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -139,7 +139,7 @@ Disables the [AudioListener2D]. If it's not set as current, this method will hav
 */
 //go:nosplit
 func (self class) ClearCurrent() { //gd:AudioListener2D.clear_current
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioListener2D.Bind_clear_current), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioListener2D.Bind_clear_current), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -147,7 +147,7 @@ Returns [code]true[/code] if this [AudioListener2D] is currently active.
 */
 //go:nosplit
 func (self class) IsCurrent() bool { //gd:AudioListener2D.is_current
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioListener2D.Bind_is_current), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioListener2D.Bind_is_current), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

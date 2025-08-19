@@ -128,7 +128,7 @@ Sets the faces of the trimesh shape from an array of vertices. The [param faces]
 */
 //go:nosplit
 func (self class) SetFaces(faces Packed.Array[Vector3.XYZ]) { //gd:ConcavePolygonShape3D.set_faces
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConcavePolygonShape3D.Bind_set_faces), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ faces gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](faces)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConcavePolygonShape3D.Bind_set_faces), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ faces gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](faces)))}))
 }
 
 /*
@@ -136,19 +136,19 @@ Returns the faces of the trimesh shape as an array of vertices. The array (of le
 */
 //go:nosplit
 func (self class) GetFaces() Packed.Array[Vector3.XYZ] { //gd:ConcavePolygonShape3D.get_faces
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConcavePolygonShape3D.Bind_get_faces), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConcavePolygonShape3D.Bind_get_faces), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBackfaceCollisionEnabled(enabled bool) { //gd:ConcavePolygonShape3D.set_backface_collision_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConcavePolygonShape3D.Bind_set_backface_collision_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConcavePolygonShape3D.Bind_set_backface_collision_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsBackfaceCollisionEnabled() bool { //gd:ConcavePolygonShape3D.is_backface_collision_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConcavePolygonShape3D.Bind_is_backface_collision_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConcavePolygonShape3D.Bind_is_backface_collision_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

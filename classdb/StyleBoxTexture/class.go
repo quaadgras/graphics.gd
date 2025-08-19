@@ -233,12 +233,12 @@ func (self Instance) SetDrawCenter(value bool) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:StyleBoxTexture.set_texture
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:StyleBoxTexture.get_texture
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -248,7 +248,7 @@ Sets the margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
 func (self class) SetTextureMargin(margin Rect2.Side, size float64) { //gd:StyleBoxTexture.set_texture_margin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_texture_margin), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_texture_margin), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		margin Rect2.Side
 		size   float64
 	}{margin, size}))
@@ -259,7 +259,7 @@ Sets the margin to [param size] pixels for all sides.
 */
 //go:nosplit
 func (self class) SetTextureMarginAll(size float64) { //gd:StyleBoxTexture.set_texture_margin_all
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_texture_margin_all), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_texture_margin_all), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
 }
 
 /*
@@ -267,7 +267,7 @@ Returns the margin size of the specified [enum Side].
 */
 //go:nosplit
 func (self class) GetTextureMargin(margin Rect2.Side) float64 { //gd:StyleBoxTexture.get_texture_margin
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_texture_margin), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_texture_margin), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
 	var ret = r_ret
 	return ret
 }
@@ -277,7 +277,7 @@ Sets the expand margin to [param size] pixels for the specified [enum Side].
 */
 //go:nosplit
 func (self class) SetExpandMargin(margin Rect2.Side, size float64) { //gd:StyleBoxTexture.set_expand_margin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_expand_margin), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_expand_margin), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		margin Rect2.Side
 		size   float64
 	}{margin, size}))
@@ -288,7 +288,7 @@ Sets the expand margin to [param size] pixels for all sides.
 */
 //go:nosplit
 func (self class) SetExpandMarginAll(size float64) { //gd:StyleBoxTexture.set_expand_margin_all
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_expand_margin_all), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_expand_margin_all), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
 }
 
 /*
@@ -296,67 +296,67 @@ Returns the expand margin size of the specified [enum Side].
 */
 //go:nosplit
 func (self class) GetExpandMargin(margin Rect2.Side) float64 { //gd:StyleBoxTexture.get_expand_margin
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_expand_margin), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_expand_margin), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRegionRect(region Rect2.PositionSize) { //gd:StyleBoxTexture.set_region_rect
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_region_rect), 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ region Rect2.PositionSize }{region}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_region_rect), 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ region Rect2.PositionSize }{region}))
 }
 
 //go:nosplit
 func (self class) GetRegionRect() Rect2.PositionSize { //gd:StyleBoxTexture.get_region_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_region_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_region_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawCenter(enable bool) { //gd:StyleBoxTexture.set_draw_center
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_draw_center), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_draw_center), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDrawCenterEnabled() bool { //gd:StyleBoxTexture.is_draw_center_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_is_draw_center_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_is_draw_center_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetModulate(color Color.RGBA) { //gd:StyleBoxTexture.set_modulate
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_modulate), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_modulate), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetModulate() Color.RGBA { //gd:StyleBoxTexture.get_modulate
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_modulate), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_modulate), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHAxisStretchMode(mode AxisStretchMode) { //gd:StyleBoxTexture.set_h_axis_stretch_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_h_axis_stretch_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AxisStretchMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_h_axis_stretch_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AxisStretchMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetHAxisStretchMode() AxisStretchMode { //gd:StyleBoxTexture.get_h_axis_stretch_mode
-	var r_ret = gdextension.Call[AxisStretchMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_h_axis_stretch_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_h_axis_stretch_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVAxisStretchMode(mode AxisStretchMode) { //gd:StyleBoxTexture.set_v_axis_stretch_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_v_axis_stretch_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AxisStretchMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_set_v_axis_stretch_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AxisStretchMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetVAxisStretchMode() AxisStretchMode { //gd:StyleBoxTexture.get_v_axis_stretch_mode
-	var r_ret = gdextension.Call[AxisStretchMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_v_axis_stretch_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StyleBoxTexture.Bind_get_v_axis_stretch_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

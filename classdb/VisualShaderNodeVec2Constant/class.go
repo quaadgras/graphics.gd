@@ -114,12 +114,12 @@ func (self Instance) SetConstant(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetConstant(constant Vector2.XY) { //gd:VisualShaderNodeVec2Constant.set_constant
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec2Constant.Bind_set_constant), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ constant Vector2.XY }{constant}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec2Constant.Bind_set_constant), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ constant Vector2.XY }{constant}))
 }
 
 //go:nosplit
 func (self class) GetConstant() Vector2.XY { //gd:VisualShaderNodeVec2Constant.get_constant
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec2Constant.Bind_get_constant), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec2Constant.Bind_get_constant), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

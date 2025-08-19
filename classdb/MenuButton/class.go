@@ -150,7 +150,7 @@ Returns the [PopupMenu] contained in this button.
 */
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.PopupMenu { //gd:MenuButton.get_popup
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_get_popup), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_get_popup), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
@@ -160,17 +160,17 @@ Adjusts popup position and sizing for the [MenuButton], then shows the [PopupMen
 */
 //go:nosplit
 func (self class) ShowPopup() { //gd:MenuButton.show_popup
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_show_popup), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_show_popup), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetSwitchOnHover(enable bool) { //gd:MenuButton.set_switch_on_hover
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_set_switch_on_hover), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_set_switch_on_hover), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSwitchOnHover() bool { //gd:MenuButton.is_switch_on_hover
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_is_switch_on_hover), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_is_switch_on_hover), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -180,17 +180,17 @@ If [code]true[/code], shortcuts are disabled and cannot be used to trigger the b
 */
 //go:nosplit
 func (self class) SetDisableShortcuts(disabled bool) { //gd:MenuButton.set_disable_shortcuts
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_set_disable_shortcuts), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disabled bool }{disabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_set_disable_shortcuts), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disabled bool }{disabled}))
 }
 
 //go:nosplit
 func (self class) SetItemCount(count int64) { //gd:MenuButton.set_item_count
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_set_item_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_set_item_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 //go:nosplit
 func (self class) GetItemCount() int64 { //gd:MenuButton.get_item_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_get_item_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuButton.Bind_get_item_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

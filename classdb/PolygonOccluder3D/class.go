@@ -114,12 +114,12 @@ func (self Instance) SetPolygon(value []Vector2.XY) {
 
 //go:nosplit
 func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:PolygonOccluder3D.set_polygon
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PolygonOccluder3D.Bind_set_polygon), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ polygon gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PolygonOccluder3D.Bind_set_polygon), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ polygon gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))}))
 }
 
 //go:nosplit
 func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:PolygonOccluder3D.get_polygon
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PolygonOccluder3D.Bind_get_polygon), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PolygonOccluder3D.Bind_get_polygon), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

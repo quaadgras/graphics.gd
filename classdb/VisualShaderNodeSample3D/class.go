@@ -112,12 +112,12 @@ func (self Instance) SetSource(value Source) {
 
 //go:nosplit
 func (self class) SetSource(value Source) { //gd:VisualShaderNodeSample3D.set_source
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeSample3D.Bind_set_source), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value Source }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeSample3D.Bind_set_source), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value Source }{value}))
 }
 
 //go:nosplit
 func (self class) GetSource() Source { //gd:VisualShaderNodeSample3D.get_source
-	var r_ret = gdextension.Call[Source](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeSample3D.Bind_get_source), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Source](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeSample3D.Bind_get_source), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

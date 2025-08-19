@@ -133,12 +133,12 @@ func (self Instance) SetExplicitElapse(value bool) {
 
 //go:nosplit
 func (self class) SetExplicitElapse(enable bool) { //gd:AnimationNodeTimeSeek.set_explicit_elapse
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTimeSeek.Bind_set_explicit_elapse), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTimeSeek.Bind_set_explicit_elapse), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsExplicitElapse() bool { //gd:AnimationNodeTimeSeek.is_explicit_elapse
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTimeSeek.Bind_is_explicit_elapse), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTimeSeek.Bind_is_explicit_elapse), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

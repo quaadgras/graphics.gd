@@ -193,24 +193,24 @@ func (self Instance) SetHandTrackingSource(value HandTrackingSource) {
 
 //go:nosplit
 func (self class) SetHasTrackingData(has_data bool) { //gd:XRHandTracker.set_has_tracking_data
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_has_tracking_data), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ has_data bool }{has_data}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_has_tracking_data), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ has_data bool }{has_data}))
 }
 
 //go:nosplit
 func (self class) GetHasTrackingData() bool { //gd:XRHandTracker.get_has_tracking_data
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_has_tracking_data), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_has_tracking_data), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHandTrackingSource(source HandTrackingSource) { //gd:XRHandTracker.set_hand_tracking_source
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_hand_tracking_source), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ source HandTrackingSource }{source}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_hand_tracking_source), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ source HandTrackingSource }{source}))
 }
 
 //go:nosplit
 func (self class) GetHandTrackingSource() HandTrackingSource { //gd:XRHandTracker.get_hand_tracking_source
-	var r_ret = gdextension.Call[HandTrackingSource](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_hand_tracking_source), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[HandTrackingSource](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_hand_tracking_source), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -220,7 +220,7 @@ Sets flags about the validity of the tracking data for the given hand joint.
 */
 //go:nosplit
 func (self class) SetHandJointFlags(joint HandJoint, flags HandJointFlags) { //gd:XRHandTracker.set_hand_joint_flags
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_flags), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_flags), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		joint HandJoint
 		flags HandJointFlags
 	}{joint, flags}))
@@ -231,7 +231,7 @@ Returns flags about the validity of the tracking data for the given hand joint (
 */
 //go:nosplit
 func (self class) GetHandJointFlags(joint HandJoint) HandJointFlags { //gd:XRHandTracker.get_hand_joint_flags
-	var r_ret = gdextension.Call[HandJointFlags](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_flags), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint HandJoint }{joint}))
+	var r_ret = gdextension.Call[HandJointFlags](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_flags), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint HandJoint }{joint}))
 	var ret = r_ret
 	return ret
 }
@@ -241,7 +241,7 @@ Sets the transform for the given hand joint.
 */
 //go:nosplit
 func (self class) SetHandJointTransform(joint HandJoint, transform Transform3D.BasisOrigin) { //gd:XRHandTracker.set_hand_joint_transform
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_transform), 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_transform), 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		joint     HandJoint
 		transform Transform3D.BasisOrigin
 	}{joint, gd.Transposed(transform)}))
@@ -252,7 +252,7 @@ Returns the transform for the given hand joint.
 */
 //go:nosplit
 func (self class) GetHandJointTransform(joint HandJoint) Transform3D.BasisOrigin { //gd:XRHandTracker.get_hand_joint_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_transform), gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint HandJoint }{joint}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_transform), gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint HandJoint }{joint}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -262,7 +262,7 @@ Sets the radius of the given hand joint.
 */
 //go:nosplit
 func (self class) SetHandJointRadius(joint HandJoint, radius float64) { //gd:XRHandTracker.set_hand_joint_radius
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_radius), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_radius), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		joint  HandJoint
 		radius float64
 	}{joint, radius}))
@@ -273,7 +273,7 @@ Returns the radius of the given hand joint.
 */
 //go:nosplit
 func (self class) GetHandJointRadius(joint HandJoint) float64 { //gd:XRHandTracker.get_hand_joint_radius
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_radius), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint HandJoint }{joint}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_radius), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint HandJoint }{joint}))
 	var ret = r_ret
 	return ret
 }
@@ -283,7 +283,7 @@ Sets the linear velocity for the given hand joint.
 */
 //go:nosplit
 func (self class) SetHandJointLinearVelocity(joint HandJoint, linear_velocity Vector3.XYZ) { //gd:XRHandTracker.set_hand_joint_linear_velocity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_linear_velocity), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_linear_velocity), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		joint           HandJoint
 		linear_velocity Vector3.XYZ
 	}{joint, linear_velocity}))
@@ -294,7 +294,7 @@ Returns the linear velocity for the given hand joint.
 */
 //go:nosplit
 func (self class) GetHandJointLinearVelocity(joint HandJoint) Vector3.XYZ { //gd:XRHandTracker.get_hand_joint_linear_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_linear_velocity), gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint HandJoint }{joint}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_linear_velocity), gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint HandJoint }{joint}))
 	var ret = r_ret
 	return ret
 }
@@ -304,7 +304,7 @@ Sets the angular velocity for the given hand joint.
 */
 //go:nosplit
 func (self class) SetHandJointAngularVelocity(joint HandJoint, angular_velocity Vector3.XYZ) { //gd:XRHandTracker.set_hand_joint_angular_velocity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_angular_velocity), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_set_hand_joint_angular_velocity), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		joint            HandJoint
 		angular_velocity Vector3.XYZ
 	}{joint, angular_velocity}))
@@ -315,7 +315,7 @@ Returns the angular velocity for the given hand joint.
 */
 //go:nosplit
 func (self class) GetHandJointAngularVelocity(joint HandJoint) Vector3.XYZ { //gd:XRHandTracker.get_hand_joint_angular_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_angular_velocity), gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint HandJoint }{joint}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRHandTracker.Bind_get_hand_joint_angular_velocity), gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint HandJoint }{joint}))
 	var ret = r_ret
 	return ret
 }

@@ -133,12 +133,12 @@ func (self Instance) SetTimeLeft(value Float.X) {
 
 //go:nosplit
 func (self class) SetTimeLeft(time float64) { //gd:SceneTreeTimer.set_time_left
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneTreeTimer.Bind_set_time_left), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTreeTimer.Bind_set_time_left), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
 }
 
 //go:nosplit
 func (self class) GetTimeLeft() float64 { //gd:SceneTreeTimer.get_time_left
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneTreeTimer.Bind_get_time_left), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTreeTimer.Bind_get_time_left), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

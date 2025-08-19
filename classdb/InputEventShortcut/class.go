@@ -113,12 +113,12 @@ func (self Instance) SetShortcut(value Shortcut.Instance) {
 
 //go:nosplit
 func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) { //gd:InputEventShortcut.set_shortcut
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventShortcut.Bind_set_shortcut), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shortcut gdextension.Object }{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventShortcut.Bind_set_shortcut), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shortcut gdextension.Object }{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetShortcut() [1]gdclass.Shortcut { //gd:InputEventShortcut.get_shortcut
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventShortcut.Bind_get_shortcut), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventShortcut.Bind_get_shortcut), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Shortcut{gd.PointerWithOwnershipTransferredToGo[gdclass.Shortcut](r_ret)}
 	return ret
 }

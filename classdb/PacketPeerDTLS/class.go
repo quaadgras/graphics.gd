@@ -147,7 +147,7 @@ Poll the connection to check for incoming packets. Call this frequently to updat
 */
 //go:nosplit
 func (self class) Poll() { //gd:PacketPeerDTLS.poll
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PacketPeerDTLS.Bind_poll), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerDTLS.Bind_poll), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -155,7 +155,7 @@ Connects a [param packet_peer] beginning the DTLS handshake using the underlying
 */
 //go:nosplit
 func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname String.Readable, client_options [1]gdclass.TLSOptions) Error.Code { //gd:PacketPeerDTLS.connect_to_peer
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PacketPeerDTLS.Bind_connect_to_peer), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerDTLS.Bind_connect_to_peer), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		packet_peer    gdextension.Object
 		hostname       gdextension.String
 		client_options gdextension.Object
@@ -169,7 +169,7 @@ Returns the status of the connection. See [enum Status] for values.
 */
 //go:nosplit
 func (self class) GetStatus() Status { //gd:PacketPeerDTLS.get_status
-	var r_ret = gdextension.Call[Status](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PacketPeerDTLS.Bind_get_status), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Status](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerDTLS.Bind_get_status), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -179,7 +179,7 @@ Disconnects this peer, terminating the DTLS session.
 */
 //go:nosplit
 func (self class) DisconnectFromPeer() { //gd:PacketPeerDTLS.disconnect_from_peer
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PacketPeerDTLS.Bind_disconnect_from_peer), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerDTLS.Bind_disconnect_from_peer), 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsPacketPeerDTLS() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPacketPeerDTLS() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

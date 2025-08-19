@@ -148,60 +148,60 @@ func (self Instance) SetOrientation(value Orientation) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2.XY) { //gd:PlaneMesh.set_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_set_size), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_set_size), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:PlaneMesh.get_size
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_get_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_get_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubdivideWidth(subdivide int64) { //gd:PlaneMesh.set_subdivide_width
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_set_subdivide_width), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ subdivide int64 }{subdivide}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_set_subdivide_width), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ subdivide int64 }{subdivide}))
 }
 
 //go:nosplit
 func (self class) GetSubdivideWidth() int64 { //gd:PlaneMesh.get_subdivide_width
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_get_subdivide_width), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_get_subdivide_width), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubdivideDepth(subdivide int64) { //gd:PlaneMesh.set_subdivide_depth
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_set_subdivide_depth), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ subdivide int64 }{subdivide}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_set_subdivide_depth), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ subdivide int64 }{subdivide}))
 }
 
 //go:nosplit
 func (self class) GetSubdivideDepth() int64 { //gd:PlaneMesh.get_subdivide_depth
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_get_subdivide_depth), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_get_subdivide_depth), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCenterOffset(offset Vector3.XYZ) { //gd:PlaneMesh.set_center_offset
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_set_center_offset), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_set_center_offset), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
 }
 
 //go:nosplit
 func (self class) GetCenterOffset() Vector3.XYZ { //gd:PlaneMesh.get_center_offset
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_get_center_offset), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_get_center_offset), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOrientation(orientation Orientation) { //gd:PlaneMesh.set_orientation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_set_orientation), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ orientation int64 }{int64(orientation)}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_set_orientation), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ orientation int64 }{int64(orientation)}))
 }
 
 //go:nosplit
 func (self class) GetOrientation() Orientation { //gd:PlaneMesh.get_orientation
-	var r_ret = gdextension.Call[Orientation](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_get_orientation), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Orientation](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PlaneMesh.Bind_get_orientation), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

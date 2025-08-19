@@ -114,12 +114,12 @@ func (self Instance) SetConstant(value Quaternion.IJKX) {
 
 //go:nosplit
 func (self class) SetConstant(constant Quaternion.IJKX) { //gd:VisualShaderNodeVec4Constant.set_constant
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Constant.Bind_set_constant), 0|(gdextension.SizeQuaternion<<4), unsafe.Pointer(&struct{ constant Quaternion.IJKX }{constant}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Constant.Bind_set_constant), 0|(gdextension.SizeQuaternion<<4), unsafe.Pointer(&struct{ constant Quaternion.IJKX }{constant}))
 }
 
 //go:nosplit
 func (self class) GetConstant() Quaternion.IJKX { //gd:VisualShaderNodeVec4Constant.get_constant
-	var r_ret = gdextension.Call[Quaternion.IJKX](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Constant.Bind_get_constant), gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Constant.Bind_get_constant), gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

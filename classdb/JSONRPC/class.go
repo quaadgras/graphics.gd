@@ -176,7 +176,7 @@ func New() Instance {
 
 //go:nosplit
 func (self class) SetScope(scope String.Readable, target [1]gd.Object) { //gd:JSONRPC.set_scope
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_set_scope), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_set_scope), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		scope  gdextension.String
 		target gdextension.Object
 	}{gdextension.String(pointers.Get(gd.InternalString(scope))[0]), gdextension.Object(gd.ObjectChecked(target[0].AsObject()))}))
@@ -189,7 +189,7 @@ To add new supported methods extend the JSONRPC class and call [method process_a
 */
 //go:nosplit
 func (self class) ProcessAction(action variant.Any, recurse bool) variant.Any { //gd:JSONRPC.process_action
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_process_action), gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_process_action), gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		action  gdextension.Variant
 		recurse bool
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(action))), recurse}))
@@ -199,7 +199,7 @@ func (self class) ProcessAction(action variant.Any, recurse bool) variant.Any { 
 
 //go:nosplit
 func (self class) ProcessString(action String.Readable) String.Readable { //gd:JSONRPC.process_string
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_process_string), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ action gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(action))[0])}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_process_string), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ action gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(action))[0])}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -212,7 +212,7 @@ Returns a dictionary in the form of a JSON-RPC request. Requests are sent to a s
 */
 //go:nosplit
 func (self class) MakeRequest(method String.Readable, params variant.Any, id variant.Any) Dictionary.Any { //gd:JSONRPC.make_request
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_make_request), gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_make_request), gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		method gdextension.String
 		params gdextension.Variant
 		id     gdextension.Variant
@@ -228,7 +228,7 @@ When a server has received and processed a request, it is expected to send a res
 */
 //go:nosplit
 func (self class) MakeResponse(result variant.Any, id variant.Any) Dictionary.Any { //gd:JSONRPC.make_response
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_make_response), gdextension.SizeDictionary|(gdextension.SizeVariant<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_make_response), gdextension.SizeDictionary|(gdextension.SizeVariant<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		result gdextension.Variant
 		id     gdextension.Variant
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(result))), gdextension.Variant(pointers.Get(gd.InternalVariant(id)))}))
@@ -243,7 +243,7 @@ Returns a dictionary in the form of a JSON-RPC notification. Notifications are o
 */
 //go:nosplit
 func (self class) MakeNotification(method String.Readable, params variant.Any) Dictionary.Any { //gd:JSONRPC.make_notification
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_make_notification), gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_make_notification), gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		method gdextension.String
 		params gdextension.Variant
 	}{gdextension.String(pointers.Get(gd.InternalString(method))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(params)))}))
@@ -259,7 +259,7 @@ Creates a response which indicates a previous reply has failed in some way.
 */
 //go:nosplit
 func (self class) MakeResponseError(code int64, message String.Readable, id variant.Any) Dictionary.Any { //gd:JSONRPC.make_response_error
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_make_response_error), gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JSONRPC.Bind_make_response_error), gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		code    int64
 		message gdextension.String
 		id      gdextension.Variant

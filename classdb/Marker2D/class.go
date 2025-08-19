@@ -112,12 +112,12 @@ func (self Instance) SetGizmoExtents(value Float.X) {
 
 //go:nosplit
 func (self class) SetGizmoExtents(extents float64) { //gd:Marker2D.set_gizmo_extents
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Marker2D.Bind_set_gizmo_extents), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ extents float64 }{extents}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Marker2D.Bind_set_gizmo_extents), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ extents float64 }{extents}))
 }
 
 //go:nosplit
 func (self class) GetGizmoExtents() float64 { //gd:Marker2D.get_gizmo_extents
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Marker2D.Bind_get_gizmo_extents), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Marker2D.Bind_get_gizmo_extents), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

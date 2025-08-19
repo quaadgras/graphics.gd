@@ -222,12 +222,12 @@ func (class) _handle_menu_selected(impl func(ptr unsafe.Pointer, id int64) bool)
 
 //go:nosplit
 func (self class) SetBaseType(base_type String.Readable) { //gd:EditorResourcePicker.set_base_type
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_set_base_type), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ base_type gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(base_type))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_set_base_type), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ base_type gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(base_type))[0])}))
 }
 
 //go:nosplit
 func (self class) GetBaseType() String.Readable { //gd:EditorResourcePicker.get_base_type
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_get_base_type), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_get_base_type), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -237,31 +237,31 @@ Returns a list of all allowed types and subtypes corresponding to the [member ba
 */
 //go:nosplit
 func (self class) GetAllowedTypes() Packed.Strings { //gd:EditorResourcePicker.get_allowed_types
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_get_allowed_types), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_get_allowed_types), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditedResource(resource [1]gdclass.Resource) { //gd:EditorResourcePicker.set_edited_resource
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_set_edited_resource), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_set_edited_resource), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetEditedResource() [1]gdclass.Resource { //gd:EditorResourcePicker.get_edited_resource
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_get_edited_resource), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_get_edited_resource), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetToggleMode(enable bool) { //gd:EditorResourcePicker.set_toggle_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_set_toggle_mode), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_set_toggle_mode), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsToggleMode() bool { //gd:EditorResourcePicker.is_toggle_mode
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_is_toggle_mode), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_is_toggle_mode), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -271,17 +271,17 @@ Sets the toggle mode state for the main button. Works only if [member toggle_mod
 */
 //go:nosplit
 func (self class) SetTogglePressed(pressed bool) { //gd:EditorResourcePicker.set_toggle_pressed
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_set_toggle_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_set_toggle_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
 }
 
 //go:nosplit
 func (self class) SetEditable(enable bool) { //gd:EditorResourcePicker.set_editable
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_set_editable), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_set_editable), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsEditable() bool { //gd:EditorResourcePicker.is_editable
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_is_editable), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePicker.Bind_is_editable), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

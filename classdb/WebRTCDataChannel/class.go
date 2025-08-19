@@ -197,7 +197,7 @@ Reserved, but not used for now.
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:WebRTCDataChannel.poll
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_poll), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_poll), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -207,7 +207,7 @@ Closes this data channel, notifying the other peer.
 */
 //go:nosplit
 func (self class) Close() { //gd:WebRTCDataChannel.close
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_close), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_close), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -215,19 +215,19 @@ Returns [code]true[/code] if the last received packet was transferred as text. S
 */
 //go:nosplit
 func (self class) WasStringPacket() bool { //gd:WebRTCDataChannel.was_string_packet
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_was_string_packet), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_was_string_packet), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWriteMode(write_mode WriteMode) { //gd:WebRTCDataChannel.set_write_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_set_write_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ write_mode WriteMode }{write_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_set_write_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ write_mode WriteMode }{write_mode}))
 }
 
 //go:nosplit
 func (self class) GetWriteMode() WriteMode { //gd:WebRTCDataChannel.get_write_mode
-	var r_ret = gdextension.Call[WriteMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_write_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[WriteMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_write_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -237,7 +237,7 @@ Returns the current state of this channel, see [enum ChannelState].
 */
 //go:nosplit
 func (self class) GetReadyState() ChannelState { //gd:WebRTCDataChannel.get_ready_state
-	var r_ret = gdextension.Call[ChannelState](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_ready_state), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ChannelState](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_ready_state), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -247,7 +247,7 @@ Returns the label assigned to this channel during creation.
 */
 //go:nosplit
 func (self class) GetLabel() String.Readable { //gd:WebRTCDataChannel.get_label
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_label), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_label), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -257,7 +257,7 @@ Returns [code]true[/code] if this channel was created with ordering enabled (def
 */
 //go:nosplit
 func (self class) IsOrdered() bool { //gd:WebRTCDataChannel.is_ordered
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_is_ordered), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_is_ordered), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -268,7 +268,7 @@ If the channel is not negotiated out-of-band the ID will only be available after
 */
 //go:nosplit
 func (self class) GetId() int64 { //gd:WebRTCDataChannel.get_id
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -279,7 +279,7 @@ Will be [code]65535[/code] if not specified.
 */
 //go:nosplit
 func (self class) GetMaxPacketLifeTime() int64 { //gd:WebRTCDataChannel.get_max_packet_life_time
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_max_packet_life_time), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_max_packet_life_time), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -290,7 +290,7 @@ Will be [code]65535[/code] if not specified.
 */
 //go:nosplit
 func (self class) GetMaxRetransmits() int64 { //gd:WebRTCDataChannel.get_max_retransmits
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_max_retransmits), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_max_retransmits), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -300,7 +300,7 @@ Returns the sub-protocol assigned to this channel during creation. An empty stri
 */
 //go:nosplit
 func (self class) GetProtocol() String.Readable { //gd:WebRTCDataChannel.get_protocol
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_protocol), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_protocol), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -310,7 +310,7 @@ Returns [code]true[/code] if this channel was created with out-of-band configura
 */
 //go:nosplit
 func (self class) IsNegotiated() bool { //gd:WebRTCDataChannel.is_negotiated
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_is_negotiated), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_is_negotiated), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -320,7 +320,7 @@ Returns the number of bytes currently queued to be sent over this channel.
 */
 //go:nosplit
 func (self class) GetBufferedAmount() int64 { //gd:WebRTCDataChannel.get_buffered_amount
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_buffered_amount), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCDataChannel.Bind_get_buffered_amount), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

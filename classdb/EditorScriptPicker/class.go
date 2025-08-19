@@ -117,12 +117,12 @@ func (self Instance) SetScriptOwner(value Node.Instance) {
 
 //go:nosplit
 func (self class) SetScriptOwner(owner_node [1]gdclass.Node) { //gd:EditorScriptPicker.set_script_owner
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorScriptPicker.Bind_set_script_owner), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ owner_node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(owner_node[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorScriptPicker.Bind_set_script_owner), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ owner_node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(owner_node[0].AsObject()[0]))}))
 }
 
 //go:nosplit
 func (self class) GetScriptOwner() [1]gdclass.Node { //gd:EditorScriptPicker.get_script_owner
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorScriptPicker.Bind_get_script_owner), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorScriptPicker.Bind_get_script_owner), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }

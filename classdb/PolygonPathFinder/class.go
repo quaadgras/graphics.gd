@@ -203,7 +203,7 @@ polygonPathFinder.Setup(points, connections);
 */
 //go:nosplit
 func (self class) Setup(points Packed.Array[Vector2.XY], connections Packed.Array[int32]) { //gd:PolygonPathFinder.setup
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_setup), 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_setup), 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		points      gdextension.PackedArray
 		connections gdextension.PackedArray
 	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](connections)))}))
@@ -211,7 +211,7 @@ func (self class) Setup(points Packed.Array[Vector2.XY], connections Packed.Arra
 
 //go:nosplit
 func (self class) FindPath(from Vector2.XY, to Vector2.XY) Packed.Array[Vector2.XY] { //gd:PolygonPathFinder.find_path
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_find_path), gdextension.SizePackedArray|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_find_path), gdextension.SizePackedArray|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		from Vector2.XY
 		to   Vector2.XY
 	}{from, to}))
@@ -221,7 +221,7 @@ func (self class) FindPath(from Vector2.XY, to Vector2.XY) Packed.Array[Vector2.
 
 //go:nosplit
 func (self class) GetIntersections(from Vector2.XY, to Vector2.XY) Packed.Array[Vector2.XY] { //gd:PolygonPathFinder.get_intersections
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_get_intersections), gdextension.SizePackedArray|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_get_intersections), gdextension.SizePackedArray|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		from Vector2.XY
 		to   Vector2.XY
 	}{from, to}))
@@ -231,7 +231,7 @@ func (self class) GetIntersections(from Vector2.XY, to Vector2.XY) Packed.Array[
 
 //go:nosplit
 func (self class) GetClosestPoint(point Vector2.XY) Vector2.XY { //gd:PolygonPathFinder.get_closest_point
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_get_closest_point), gdextension.SizeVector2|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ point Vector2.XY }{point}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_get_closest_point), gdextension.SizeVector2|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ point Vector2.XY }{point}))
 	var ret = r_ret
 	return ret
 }
@@ -264,14 +264,14 @@ GD.Print(polygonPathFinder.IsPointInside(new Vector2(1.0f, 1.0f))); // Prints Fa
 */
 //go:nosplit
 func (self class) IsPointInside(point Vector2.XY) bool { //gd:PolygonPathFinder.is_point_inside
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_is_point_inside), gdextension.SizeBool|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ point Vector2.XY }{point}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_is_point_inside), gdextension.SizeBool|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ point Vector2.XY }{point}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPointPenalty(idx int64, penalty float64) { //gd:PolygonPathFinder.set_point_penalty
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_set_point_penalty), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_set_point_penalty), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		idx     int64
 		penalty float64
 	}{idx, penalty}))
@@ -279,14 +279,14 @@ func (self class) SetPointPenalty(idx int64, penalty float64) { //gd:PolygonPath
 
 //go:nosplit
 func (self class) GetPointPenalty(idx int64) float64 { //gd:PolygonPathFinder.get_point_penalty
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_get_point_penalty), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_get_point_penalty), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetBounds() Rect2.PositionSize { //gd:PolygonPathFinder.get_bounds
-	var r_ret = gdextension.Call[Rect2.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_get_bounds), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PolygonPathFinder.Bind_get_bounds), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

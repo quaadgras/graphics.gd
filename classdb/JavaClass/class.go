@@ -128,7 +128,7 @@ Returns the Java class name.
 */
 //go:nosplit
 func (self class) GetJavaClassName() String.Readable { //gd:JavaClass.get_java_class_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JavaClass.Bind_get_java_class_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JavaClass.Bind_get_java_class_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -138,7 +138,7 @@ Returns the object's Java methods and their signatures as an [Array] of dictiona
 */
 //go:nosplit
 func (self class) GetJavaMethodList() Array.Contains[Dictionary.Any] { //gd:JavaClass.get_java_method_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JavaClass.Bind_get_java_method_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JavaClass.Bind_get_java_method_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -148,7 +148,7 @@ Returns a [JavaClass] representing the Java parent class of this class.
 */
 //go:nosplit
 func (self class) GetJavaParentClass() [1]gdclass.JavaClass { //gd:JavaClass.get_java_parent_class
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JavaClass.Bind_get_java_parent_class), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JavaClass.Bind_get_java_parent_class), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.JavaClass{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaClass](r_ret)}
 	return ret
 }

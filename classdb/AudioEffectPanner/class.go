@@ -112,12 +112,12 @@ func (self Instance) SetPan(value Float.X) {
 
 //go:nosplit
 func (self class) SetPan(cpanume float64) { //gd:AudioEffectPanner.set_pan
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPanner.Bind_set_pan), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ cpanume float64 }{cpanume}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPanner.Bind_set_pan), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ cpanume float64 }{cpanume}))
 }
 
 //go:nosplit
 func (self class) GetPan() float64 { //gd:AudioEffectPanner.get_pan
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPanner.Bind_get_pan), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPanner.Bind_get_pan), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

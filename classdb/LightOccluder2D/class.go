@@ -129,36 +129,36 @@ func (self Instance) SetOccluderLightMask(value int) {
 
 //go:nosplit
 func (self class) SetOccluderPolygon(polygon [1]gdclass.OccluderPolygon2D) { //gd:LightOccluder2D.set_occluder_polygon
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_set_occluder_polygon), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(polygon[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_set_occluder_polygon), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(polygon[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetOccluderPolygon() [1]gdclass.OccluderPolygon2D { //gd:LightOccluder2D.get_occluder_polygon
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_get_occluder_polygon), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_get_occluder_polygon), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.OccluderPolygon2D{gd.PointerWithOwnershipTransferredToGo[gdclass.OccluderPolygon2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOccluderLightMask(mask int64) { //gd:LightOccluder2D.set_occluder_light_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_set_occluder_light_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_set_occluder_light_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetOccluderLightMask() int64 { //gd:LightOccluder2D.get_occluder_light_mask
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_get_occluder_light_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_get_occluder_light_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAsSdfCollision(enable bool) { //gd:LightOccluder2D.set_as_sdf_collision
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_set_as_sdf_collision), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_set_as_sdf_collision), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSetAsSdfCollision() bool { //gd:LightOccluder2D.is_set_as_sdf_collision
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_is_set_as_sdf_collision), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_is_set_as_sdf_collision), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -149,7 +149,7 @@ Adds a resource to the preloader with the given [param name]. If a resource with
 */
 //go:nosplit
 func (self class) AddResource(name String.Name, resource [1]gdclass.Resource) { //gd:ResourcePreloader.add_resource
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ResourcePreloader.Bind_add_resource), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourcePreloader.Bind_add_resource), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		resource gdextension.Object
 	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
@@ -160,7 +160,7 @@ Removes the resource associated to [param name] from the preloader.
 */
 //go:nosplit
 func (self class) RemoveResource(name String.Name) { //gd:ResourcePreloader.remove_resource
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ResourcePreloader.Bind_remove_resource), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourcePreloader.Bind_remove_resource), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 }
 
 /*
@@ -168,7 +168,7 @@ Renames a resource inside the preloader from [param name] to [param newname].
 */
 //go:nosplit
 func (self class) RenameResource(name String.Name, newname String.Name) { //gd:ResourcePreloader.rename_resource
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ResourcePreloader.Bind_rename_resource), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourcePreloader.Bind_rename_resource), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name    gdextension.StringName
 		newname gdextension.StringName
 	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(newname))[0])}))
@@ -179,7 +179,7 @@ Returns [code]true[/code] if the preloader contains a resource associated to [pa
 */
 //go:nosplit
 func (self class) HasResource(name String.Name) bool { //gd:ResourcePreloader.has_resource
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ResourcePreloader.Bind_has_resource), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourcePreloader.Bind_has_resource), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -189,7 +189,7 @@ Returns the resource associated to [param name].
 */
 //go:nosplit
 func (self class) GetResource(name String.Name) [1]gdclass.Resource { //gd:ResourcePreloader.get_resource
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ResourcePreloader.Bind_get_resource), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourcePreloader.Bind_get_resource), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
@@ -199,7 +199,7 @@ Returns the list of resources inside the preloader.
 */
 //go:nosplit
 func (self class) GetResourceList() Packed.Strings { //gd:ResourcePreloader.get_resource_list
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ResourcePreloader.Bind_get_resource_list), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourcePreloader.Bind_get_resource_list), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

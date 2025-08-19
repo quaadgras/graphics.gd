@@ -136,7 +136,7 @@ Locks this [Mutex], blocks until it is unlocked by the current owner.
 */
 //go:nosplit
 func (self class) Lock() { //gd:Mutex.lock
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Mutex.Bind_lock), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mutex.Bind_lock), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -145,7 +145,7 @@ Tries locking this [Mutex], but does not block. Returns [code]true[/code] on suc
 */
 //go:nosplit
 func (self class) TryLock() bool { //gd:Mutex.try_lock
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Mutex.Bind_try_lock), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mutex.Bind_try_lock), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -157,7 +157,7 @@ Unlocks this [Mutex], leaving it to other threads.
 */
 //go:nosplit
 func (self class) Unlock() { //gd:Mutex.unlock
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Mutex.Bind_unlock), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mutex.Bind_unlock), 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsMutex() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsMutex() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

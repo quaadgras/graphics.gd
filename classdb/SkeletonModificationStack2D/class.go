@@ -168,7 +168,7 @@ Sets up the modification stack so it can execute. This function should be called
 */
 //go:nosplit
 func (self class) Setup() { //gd:SkeletonModificationStack2D.setup
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_setup), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_setup), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -177,7 +177,7 @@ Executes all of the [SkeletonModification2D]s in the stack that use the same exe
 */
 //go:nosplit
 func (self class) Execute(delta float64, execution_mode int64) { //gd:SkeletonModificationStack2D.execute
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_execute), 0|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_execute), 0|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		delta          float64
 		execution_mode int64
 	}{delta, execution_mode}))
@@ -188,7 +188,7 @@ Enables all [SkeletonModification2D]s in the stack.
 */
 //go:nosplit
 func (self class) EnableAllModifications(enabled bool) { //gd:SkeletonModificationStack2D.enable_all_modifications
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_enable_all_modifications), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_enable_all_modifications), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 /*
@@ -196,7 +196,7 @@ Returns the [SkeletonModification2D] at the passed-in index, [param mod_idx].
 */
 //go:nosplit
 func (self class) GetModification(mod_idx int64) [1]gdclass.SkeletonModification2D { //gd:SkeletonModificationStack2D.get_modification
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_modification), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mod_idx int64 }{mod_idx}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_modification), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mod_idx int64 }{mod_idx}))
 	var ret = [1]gdclass.SkeletonModification2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModification2D](r_ret)}
 	return ret
 }
@@ -206,7 +206,7 @@ Adds the passed-in [SkeletonModification2D] to the stack.
 */
 //go:nosplit
 func (self class) AddModification(modification [1]gdclass.SkeletonModification2D) { //gd:SkeletonModificationStack2D.add_modification
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_add_modification), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ modification gdextension.Object }{gdextension.Object(gd.ObjectChecked(modification[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_add_modification), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ modification gdextension.Object }{gdextension.Object(gd.ObjectChecked(modification[0].AsObject()))}))
 }
 
 /*
@@ -214,7 +214,7 @@ Deletes the [SkeletonModification2D] at the index position [param mod_idx], if i
 */
 //go:nosplit
 func (self class) DeleteModification(mod_idx int64) { //gd:SkeletonModificationStack2D.delete_modification
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_delete_modification), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mod_idx int64 }{mod_idx}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_delete_modification), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mod_idx int64 }{mod_idx}))
 }
 
 /*
@@ -222,7 +222,7 @@ Sets the modification at [param mod_idx] to the passed-in modification, [param m
 */
 //go:nosplit
 func (self class) SetModification(mod_idx int64, modification [1]gdclass.SkeletonModification2D) { //gd:SkeletonModificationStack2D.set_modification
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_modification), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_modification), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		mod_idx      int64
 		modification gdextension.Object
 	}{mod_idx, gdextension.Object(gd.ObjectChecked(modification[0].AsObject()))}))
@@ -230,12 +230,12 @@ func (self class) SetModification(mod_idx int64, modification [1]gdclass.Skeleto
 
 //go:nosplit
 func (self class) SetModificationCount(count int64) { //gd:SkeletonModificationStack2D.set_modification_count
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_modification_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_modification_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 //go:nosplit
 func (self class) GetModificationCount() int64 { //gd:SkeletonModificationStack2D.get_modification_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_modification_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_modification_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -245,31 +245,31 @@ Returns a boolean that indicates whether the modification stack is setup and can
 */
 //go:nosplit
 func (self class) GetIsSetup() bool { //gd:SkeletonModificationStack2D.get_is_setup
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_is_setup), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_is_setup), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:SkeletonModificationStack2D.set_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetEnabled() bool { //gd:SkeletonModificationStack2D.get_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStrength(strength float64) { //gd:SkeletonModificationStack2D.set_strength
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_set_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
 }
 
 //go:nosplit
 func (self class) GetStrength() float64 { //gd:SkeletonModificationStack2D.get_strength
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -279,7 +279,7 @@ Returns the [Skeleton2D] node that the SkeletonModificationStack2D is bound to.
 */
 //go:nosplit
 func (self class) GetSkeleton() [1]gdclass.Skeleton2D { //gd:SkeletonModificationStack2D.get_skeleton
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_skeleton), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_skeleton), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Skeleton2D{gd.PointerMustAssertInstanceID[gdclass.Skeleton2D](r_ret)}
 	return ret
 }

@@ -121,24 +121,24 @@ func (self Instance) SetVaryingType(value VisualShader.VaryingType) {
 
 //go:nosplit
 func (self class) SetVaryingName(name String.Readable) { //gd:VisualShaderNodeVarying.set_varying_name
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVarying.Bind_set_varying_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVarying.Bind_set_varying_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetVaryingName() String.Readable { //gd:VisualShaderNodeVarying.get_varying_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVarying.Bind_get_varying_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVarying.Bind_get_varying_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVaryingType(atype VisualShader.VaryingType) { //gd:VisualShaderNodeVarying.set_varying_type
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVarying.Bind_set_varying_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype VisualShader.VaryingType }{atype}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVarying.Bind_set_varying_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype VisualShader.VaryingType }{atype}))
 }
 
 //go:nosplit
 func (self class) GetVaryingType() VisualShader.VaryingType { //gd:VisualShaderNodeVarying.get_varying_type
-	var r_ret = gdextension.Call[VisualShader.VaryingType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVarying.Bind_get_varying_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[VisualShader.VaryingType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVarying.Bind_get_varying_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

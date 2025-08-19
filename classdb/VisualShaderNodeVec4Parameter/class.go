@@ -122,24 +122,24 @@ func (self Instance) SetDefaultValue(value Vector4.XYZW) {
 
 //go:nosplit
 func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeVec4Parameter.set_default_value_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Parameter.Bind_set_default_value_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Parameter.Bind_set_default_value_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeVec4Parameter.is_default_value_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Parameter.Bind_is_default_value_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Parameter.Bind_is_default_value_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultValue(value Vector4.XYZW) { //gd:VisualShaderNodeVec4Parameter.set_default_value
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Parameter.Bind_set_default_value), 0|(gdextension.SizeVector4<<4), unsafe.Pointer(&struct{ value Vector4.XYZW }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Parameter.Bind_set_default_value), 0|(gdextension.SizeVector4<<4), unsafe.Pointer(&struct{ value Vector4.XYZW }{value}))
 }
 
 //go:nosplit
 func (self class) GetDefaultValue() Vector4.XYZW { //gd:VisualShaderNodeVec4Parameter.get_default_value
-	var r_ret = gdextension.Call[Vector4.XYZW](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Parameter.Bind_get_default_value), gdextension.SizeVector4, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector4.XYZW](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Parameter.Bind_get_default_value), gdextension.SizeVector4, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

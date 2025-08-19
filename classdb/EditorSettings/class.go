@@ -282,7 +282,7 @@ Returns [code]true[/code] if the setting specified by [param name] exists, [code
 */
 //go:nosplit
 func (self class) HasSetting(name String.Readable) bool { //gd:EditorSettings.has_setting
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_has_setting), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_has_setting), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -292,7 +292,7 @@ Sets the [param value] of the setting specified by [param name]. This is equival
 */
 //go:nosplit
 func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:EditorSettings.set_setting
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_set_setting), 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_set_setting), 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		name  gdextension.String
 		value gdextension.Variant
 	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
@@ -303,7 +303,7 @@ Returns the value of the setting specified by [param name]. This is equivalent t
 */
 //go:nosplit
 func (self class) GetSetting(name String.Readable) variant.Any { //gd:EditorSettings.get_setting
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_get_setting), gdextension.SizeVariant|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_get_setting), gdextension.SizeVariant|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -313,7 +313,7 @@ Erases the setting whose name is specified by [param property].
 */
 //go:nosplit
 func (self class) Erase(property String.Readable) { //gd:EditorSettings.erase
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_erase), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ property gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(property))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_erase), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ property gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(property))[0])}))
 }
 
 /*
@@ -321,7 +321,7 @@ Sets the initial value of the setting specified by [param name] to [param value]
 */
 //go:nosplit
 func (self class) SetInitialValue(name String.Name, value variant.Any, update_current bool) { //gd:EditorSettings.set_initial_value
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_set_initial_value), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_set_initial_value), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		name           gdextension.StringName
 		value          gdextension.Variant
 		update_current bool
@@ -365,7 +365,7 @@ settings.AddPropertyInfo(propertyInfo);
 */
 //go:nosplit
 func (self class) AddPropertyInfo(info Dictionary.Any) { //gd:EditorSettings.add_property_info
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_add_property_info), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ info gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(info))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_add_property_info), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ info gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(info))[0])}))
 }
 
 /*
@@ -373,7 +373,7 @@ Sets project-specific metadata with the [param section], [param key] and [param 
 */
 //go:nosplit
 func (self class) SetProjectMetadata(section String.Readable, key String.Readable, data variant.Any) { //gd:EditorSettings.set_project_metadata
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_set_project_metadata), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_set_project_metadata), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		section gdextension.String
 		key     gdextension.String
 		data    gdextension.Variant
@@ -385,7 +385,7 @@ Returns project-specific metadata for the [param section] and [param key] specif
 */
 //go:nosplit
 func (self class) GetProjectMetadata(section String.Readable, key String.Readable, def variant.Any) variant.Any { //gd:EditorSettings.get_project_metadata
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_get_project_metadata), gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_get_project_metadata), gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		section gdextension.String
 		key     gdextension.String
 		def     gdextension.Variant
@@ -399,7 +399,7 @@ Sets the list of favorite files and directories for this project.
 */
 //go:nosplit
 func (self class) SetFavorites(dirs Packed.Strings) { //gd:EditorSettings.set_favorites
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_set_favorites), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ dirs gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(dirs)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_set_favorites), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ dirs gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(dirs)))}))
 }
 
 /*
@@ -407,7 +407,7 @@ Returns the list of favorite files and directories for this project.
 */
 //go:nosplit
 func (self class) GetFavorites() Packed.Strings { //gd:EditorSettings.get_favorites
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_get_favorites), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_get_favorites), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -417,7 +417,7 @@ Sets the list of recently visited folders in the file dialog for this project.
 */
 //go:nosplit
 func (self class) SetRecentDirs(dirs Packed.Strings) { //gd:EditorSettings.set_recent_dirs
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_set_recent_dirs), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ dirs gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(dirs)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_set_recent_dirs), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ dirs gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(dirs)))}))
 }
 
 /*
@@ -425,7 +425,7 @@ Returns the list of recently visited folders in the file dialog for this project
 */
 //go:nosplit
 func (self class) GetRecentDirs() Packed.Strings { //gd:EditorSettings.get_recent_dirs
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_get_recent_dirs), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_get_recent_dirs), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -435,7 +435,7 @@ Overrides the built-in editor action [param name] with the input actions defined
 */
 //go:nosplit
 func (self class) SetBuiltinActionOverride(name String.Readable, actions_list Array.Contains[[1]gdclass.InputEvent]) { //gd:EditorSettings.set_builtin_action_override
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_set_builtin_action_override), 0|(gdextension.SizeString<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_set_builtin_action_override), 0|(gdextension.SizeString<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		name         gdextension.String
 		actions_list gdextension.Array
 	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Array(pointers.Get(gd.InternalArray(actions_list))[0])}))
@@ -446,7 +446,7 @@ Checks if any settings with the prefix [param setting_prefix] exist in the set o
 */
 //go:nosplit
 func (self class) CheckChangedSettingsInGroup(setting_prefix String.Readable) bool { //gd:EditorSettings.check_changed_settings_in_group
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_check_changed_settings_in_group), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ setting_prefix gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(setting_prefix))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_check_changed_settings_in_group), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ setting_prefix gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(setting_prefix))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -456,7 +456,7 @@ Gets an array of the settings which have been changed since the last save. Note 
 */
 //go:nosplit
 func (self class) GetChangedSettings() Packed.Strings { //gd:EditorSettings.get_changed_settings
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_get_changed_settings), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_get_changed_settings), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -466,7 +466,7 @@ Marks the passed editor setting as being changed, see [method get_changed_settin
 */
 //go:nosplit
 func (self class) MarkSettingChanged(setting String.Readable) { //gd:EditorSettings.mark_setting_changed
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_mark_setting_changed), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ setting gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(setting))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSettings.Bind_mark_setting_changed), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ setting gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(setting))[0])}))
 }
 func (self Instance) OnSettingsChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("settings_changed"), gd.NewCallable(cb), 0)

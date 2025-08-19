@@ -112,12 +112,12 @@ func (self Instance) SetOperator(value Operator) {
 
 //go:nosplit
 func (self class) SetOperator(op Operator) { //gd:VisualShaderNodeTransformVecMult.set_operator
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTransformVecMult.Bind_set_operator), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ op Operator }{op}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTransformVecMult.Bind_set_operator), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ op Operator }{op}))
 }
 
 //go:nosplit
 func (self class) GetOperator() Operator { //gd:VisualShaderNodeTransformVecMult.get_operator
-	var r_ret = gdextension.Call[Operator](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTransformVecMult.Bind_get_operator), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Operator](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTransformVecMult.Bind_get_operator), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

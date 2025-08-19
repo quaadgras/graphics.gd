@@ -414,7 +414,7 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 */
 //go:nosplit
 func (self class) Request(url String.Readable, custom_headers Packed.Strings, method HTTPClient.Method, request_data String.Readable) Error.Code { //gd:HTTPRequest.request
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_request), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_request), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
 		url            gdextension.String
 		custom_headers gdextension.PackedArray
 		method         HTTPClient.Method
@@ -430,7 +430,7 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 */
 //go:nosplit
 func (self class) RequestRaw(url String.Readable, custom_headers Packed.Strings, method HTTPClient.Method, request_data_raw Packed.Bytes) Error.Code { //gd:HTTPRequest.request_raw
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_request_raw), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_request_raw), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
 		url              gdextension.String
 		custom_headers   gdextension.PackedArray
 		method           HTTPClient.Method
@@ -445,7 +445,7 @@ Cancels the current request.
 */
 //go:nosplit
 func (self class) CancelRequest() { //gd:HTTPRequest.cancel_request
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_cancel_request), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_cancel_request), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -453,7 +453,7 @@ Sets the [TLSOptions] to be used when connecting to an HTTPS server. See [method
 */
 //go:nosplit
 func (self class) SetTlsOptions(client_options [1]gdclass.TLSOptions) { //gd:HTTPRequest.set_tls_options
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_tls_options), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ client_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(client_options[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_tls_options), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ client_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(client_options[0].AsObject()))}))
 }
 
 /*
@@ -461,67 +461,67 @@ Returns the current status of the underlying [HTTPClient]. See [enum HTTPClient.
 */
 //go:nosplit
 func (self class) GetHttpClientStatus() HTTPClient.Status { //gd:HTTPRequest.get_http_client_status
-	var r_ret = gdextension.Call[HTTPClient.Status](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_http_client_status), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[HTTPClient.Status](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_http_client_status), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseThreads(enable bool) { //gd:HTTPRequest.set_use_threads
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_use_threads), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_use_threads), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingThreads() bool { //gd:HTTPRequest.is_using_threads
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_is_using_threads), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_is_using_threads), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAcceptGzip(enable bool) { //gd:HTTPRequest.set_accept_gzip
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_accept_gzip), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_accept_gzip), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsAcceptingGzip() bool { //gd:HTTPRequest.is_accepting_gzip
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_is_accepting_gzip), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_is_accepting_gzip), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBodySizeLimit(bytes int64) { //gd:HTTPRequest.set_body_size_limit
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_body_size_limit), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bytes int64 }{bytes}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_body_size_limit), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bytes int64 }{bytes}))
 }
 
 //go:nosplit
 func (self class) GetBodySizeLimit() int64 { //gd:HTTPRequest.get_body_size_limit
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_body_size_limit), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_body_size_limit), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxRedirects(amount int64) { //gd:HTTPRequest.set_max_redirects
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_max_redirects), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_max_redirects), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetMaxRedirects() int64 { //gd:HTTPRequest.get_max_redirects
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_max_redirects), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_max_redirects), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDownloadFile(path String.Readable) { //gd:HTTPRequest.set_download_file
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_download_file), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_download_file), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetDownloadFile() String.Readable { //gd:HTTPRequest.get_download_file
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_download_file), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_download_file), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -531,7 +531,7 @@ Returns the number of bytes this HTTPRequest downloaded.
 */
 //go:nosplit
 func (self class) GetDownloadedBytes() int64 { //gd:HTTPRequest.get_downloaded_bytes
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_downloaded_bytes), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_downloaded_bytes), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -542,31 +542,31 @@ Returns the response body length.
 */
 //go:nosplit
 func (self class) GetBodySize() int64 { //gd:HTTPRequest.get_body_size
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_body_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_body_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTimeout(timeout float64) { //gd:HTTPRequest.set_timeout
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_timeout), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ timeout float64 }{timeout}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_timeout), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ timeout float64 }{timeout}))
 }
 
 //go:nosplit
 func (self class) GetTimeout() float64 { //gd:HTTPRequest.get_timeout
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_timeout), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_timeout), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDownloadChunkSize(chunk_size int64) { //gd:HTTPRequest.set_download_chunk_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_download_chunk_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ chunk_size int64 }{chunk_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_download_chunk_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ chunk_size int64 }{chunk_size}))
 }
 
 //go:nosplit
 func (self class) GetDownloadChunkSize() int64 { //gd:HTTPRequest.get_download_chunk_size
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_download_chunk_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_download_chunk_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -577,7 +577,7 @@ The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
 func (self class) SetHttpProxy(host String.Readable, port int64) { //gd:HTTPRequest.set_http_proxy
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_http_proxy), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_http_proxy), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		host gdextension.String
 		port int64
 	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), port}))
@@ -589,7 +589,7 @@ The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
 func (self class) SetHttpsProxy(host String.Readable, port int64) { //gd:HTTPRequest.set_https_proxy
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_https_proxy), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_https_proxy), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		host gdextension.String
 		port int64
 	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), port}))

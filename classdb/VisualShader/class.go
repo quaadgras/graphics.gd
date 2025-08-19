@@ -257,7 +257,7 @@ Sets the mode of this shader.
 */
 //go:nosplit
 func (self class) SetMode(mode Shader.Mode) { //gd:VisualShader.set_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_set_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Shader.Mode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_set_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Shader.Mode }{mode}))
 }
 
 /*
@@ -265,7 +265,7 @@ Adds the specified [param node] to the shader.
 */
 //go:nosplit
 func (self class) AddNode(atype Type, node [1]gdclass.VisualShaderNode, position Vector2.XY, id int64) { //gd:VisualShader.add_node
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_add_node), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_add_node), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		atype    Type
 		node     gdextension.Object
 		position Vector2.XY
@@ -278,7 +278,7 @@ Returns the shader node instance with specified [param type] and [param id].
 */
 //go:nosplit
 func (self class) GetNode(atype Type, id int64) [1]gdclass.VisualShaderNode { //gd:VisualShader.get_node
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_node), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_node), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		atype Type
 		id    int64
 	}{atype, id}))
@@ -291,7 +291,7 @@ Sets the position of the specified node.
 */
 //go:nosplit
 func (self class) SetNodePosition(atype Type, id int64, position Vector2.XY) { //gd:VisualShader.set_node_position
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_set_node_position), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_set_node_position), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2<<12), unsafe.Pointer(&struct {
 		atype    Type
 		id       int64
 		position Vector2.XY
@@ -303,7 +303,7 @@ Returns the position of the specified node within the shader graph.
 */
 //go:nosplit
 func (self class) GetNodePosition(atype Type, id int64) Vector2.XY { //gd:VisualShader.get_node_position
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_node_position), gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_node_position), gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		atype Type
 		id    int64
 	}{atype, id}))
@@ -316,7 +316,7 @@ Returns the list of all nodes in the shader with the specified type.
 */
 //go:nosplit
 func (self class) GetNodeList(atype Type) Packed.Array[int32] { //gd:VisualShader.get_node_list
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_node_list), gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype Type }{atype}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_node_list), gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype Type }{atype}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -326,7 +326,7 @@ Returns next valid node ID that can be added to the shader graph.
 */
 //go:nosplit
 func (self class) GetValidNodeId(atype Type) int64 { //gd:VisualShader.get_valid_node_id
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_valid_node_id), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype Type }{atype}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_valid_node_id), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype Type }{atype}))
 	var ret = r_ret
 	return ret
 }
@@ -336,7 +336,7 @@ Removes the specified node from the shader.
 */
 //go:nosplit
 func (self class) RemoveNode(atype Type, id int64) { //gd:VisualShader.remove_node
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_remove_node), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_remove_node), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		atype Type
 		id    int64
 	}{atype, id}))
@@ -347,7 +347,7 @@ Replaces the specified node with a node of new class type.
 */
 //go:nosplit
 func (self class) ReplaceNode(atype Type, id int64, new_class String.Name) { //gd:VisualShader.replace_node
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_replace_node), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeStringName<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_replace_node), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeStringName<<12), unsafe.Pointer(&struct {
 		atype     Type
 		id        int64
 		new_class gdextension.StringName
@@ -359,7 +359,7 @@ Returns [code]true[/code] if the specified node and port connection exist.
 */
 //go:nosplit
 func (self class) IsNodeConnection(atype Type, from_node int64, from_port int64, to_node int64, to_port int64) bool { //gd:VisualShader.is_node_connection
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_is_node_connection), gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_is_node_connection), gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		atype     Type
 		from_node int64
 		from_port int64
@@ -375,7 +375,7 @@ Returns [code]true[/code] if the specified nodes and ports can be connected toge
 */
 //go:nosplit
 func (self class) CanConnectNodes(atype Type, from_node int64, from_port int64, to_node int64, to_port int64) bool { //gd:VisualShader.can_connect_nodes
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_can_connect_nodes), gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_can_connect_nodes), gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		atype     Type
 		from_node int64
 		from_port int64
@@ -391,7 +391,7 @@ Connects the specified nodes and ports.
 */
 //go:nosplit
 func (self class) ConnectNodes(atype Type, from_node int64, from_port int64, to_node int64, to_port int64) Error.Code { //gd:VisualShader.connect_nodes
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_connect_nodes), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_connect_nodes), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		atype     Type
 		from_node int64
 		from_port int64
@@ -407,7 +407,7 @@ Connects the specified nodes and ports.
 */
 //go:nosplit
 func (self class) DisconnectNodes(atype Type, from_node int64, from_port int64, to_node int64, to_port int64) { //gd:VisualShader.disconnect_nodes
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_disconnect_nodes), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_disconnect_nodes), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		atype     Type
 		from_node int64
 		from_port int64
@@ -421,7 +421,7 @@ Connects the specified nodes and ports, even if they can't be connected. Such co
 */
 //go:nosplit
 func (self class) ConnectNodesForced(atype Type, from_node int64, from_port int64, to_node int64, to_port int64) { //gd:VisualShader.connect_nodes_forced
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_connect_nodes_forced), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_connect_nodes_forced), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		atype     Type
 		from_node int64
 		from_port int64
@@ -435,19 +435,19 @@ Returns the list of connected nodes with the specified type.
 */
 //go:nosplit
 func (self class) GetNodeConnections(atype Type) Array.Contains[Dictionary.Any] { //gd:VisualShader.get_node_connections
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_node_connections), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype Type }{atype}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_node_connections), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype Type }{atype}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGraphOffset(offset Vector2.XY) { //gd:VisualShader.set_graph_offset
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_set_graph_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_set_graph_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetGraphOffset() Vector2.XY { //gd:VisualShader.get_graph_offset
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_graph_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_graph_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -457,7 +457,7 @@ Attaches the given node to the given frame.
 */
 //go:nosplit
 func (self class) AttachNodeToFrame(atype Type, id int64, frame_ int64) { //gd:VisualShader.attach_node_to_frame
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_attach_node_to_frame), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_attach_node_to_frame), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		atype  Type
 		id     int64
 		frame_ int64
@@ -469,7 +469,7 @@ Detaches the given node from the frame it is attached to.
 */
 //go:nosplit
 func (self class) DetachNodeFromFrame(atype Type, id int64) { //gd:VisualShader.detach_node_from_frame
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_detach_node_from_frame), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_detach_node_from_frame), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		atype Type
 		id    int64
 	}{atype, id}))
@@ -480,7 +480,7 @@ Adds a new varying value node to the shader.
 */
 //go:nosplit
 func (self class) AddVarying(name String.Readable, mode VaryingMode, atype VaryingType) { //gd:VisualShader.add_varying
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_add_varying), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_add_varying), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		name  gdextension.String
 		mode  VaryingMode
 		atype VaryingType
@@ -492,7 +492,7 @@ Removes a varying value node with the given [param name]. Prints an error if a n
 */
 //go:nosplit
 func (self class) RemoveVarying(name String.Readable) { //gd:VisualShader.remove_varying
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_remove_varying), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_remove_varying), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 /*
@@ -500,7 +500,7 @@ Returns [code]true[/code] if the shader has a varying with the given [param name
 */
 //go:nosplit
 func (self class) HasVarying(name String.Readable) bool { //gd:VisualShader.has_varying
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_has_varying), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_has_varying), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 	var ret = r_ret
 	return ret
 }

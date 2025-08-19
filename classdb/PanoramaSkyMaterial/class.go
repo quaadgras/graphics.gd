@@ -131,36 +131,36 @@ func (self Instance) SetEnergyMultiplier(value Float.X) {
 
 //go:nosplit
 func (self class) SetPanorama(texture [1]gdclass.Texture2D) { //gd:PanoramaSkyMaterial.set_panorama
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_set_panorama), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_set_panorama), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetPanorama() [1]gdclass.Texture2D { //gd:PanoramaSkyMaterial.get_panorama
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_get_panorama), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_get_panorama), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFilteringEnabled(enabled bool) { //gd:PanoramaSkyMaterial.set_filtering_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_set_filtering_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_set_filtering_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFilteringEnabled() bool { //gd:PanoramaSkyMaterial.is_filtering_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_is_filtering_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_is_filtering_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnergyMultiplier(multiplier float64) { //gd:PanoramaSkyMaterial.set_energy_multiplier
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_set_energy_multiplier), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ multiplier float64 }{multiplier}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_set_energy_multiplier), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ multiplier float64 }{multiplier}))
 }
 
 //go:nosplit
 func (self class) GetEnergyMultiplier() float64 { //gd:PanoramaSkyMaterial.get_energy_multiplier
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_get_energy_multiplier), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_get_energy_multiplier), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

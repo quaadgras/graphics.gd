@@ -374,7 +374,7 @@ Returns the [EditorDebuggerSession] with the given [param id].
 */
 //go:nosplit
 func (self class) GetSession(id int64) [1]gdclass.EditorDebuggerSession { //gd:EditorDebuggerPlugin.get_session
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorDebuggerPlugin.Bind_get_session), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorDebuggerPlugin.Bind_get_session), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = [1]gdclass.EditorDebuggerSession{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorDebuggerSession](r_ret)}
 	return ret
 }
@@ -385,7 +385,7 @@ Returns an array of [EditorDebuggerSession] currently available to this debugger
 */
 //go:nosplit
 func (self class) GetSessions() Array.Any { //gd:EditorDebuggerPlugin.get_sessions
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorDebuggerPlugin.Bind_get_sessions), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorDebuggerPlugin.Bind_get_sessions), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

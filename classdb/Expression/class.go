@@ -3,32 +3,28 @@
 // Package Expression provides methods for working with Expression object instances.
 package Expression
 
-import (
-	"reflect"
-	"slices"
-	"unsafe"
-
-	"graphics.gd/internal/callframe"
-	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/pointers"
-
-	gd "graphics.gd/internal"
-	"graphics.gd/internal/gdclass"
-	"graphics.gd/variant"
-	"graphics.gd/variant/Angle"
-	"graphics.gd/variant/Array"
-	"graphics.gd/variant/Callable"
-	"graphics.gd/variant/Dictionary"
-	"graphics.gd/variant/Error"
-	"graphics.gd/variant/Euler"
-	"graphics.gd/variant/Float"
-	"graphics.gd/variant/Object"
-	"graphics.gd/variant/Packed"
-	"graphics.gd/variant/Path"
-	"graphics.gd/variant/RID"
-	"graphics.gd/variant/RefCounted"
-	"graphics.gd/variant/String"
-)
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdextension"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
 
 var _ Object.ID
 
@@ -206,7 +202,7 @@ You can optionally specify names of variables that may appear in the expression 
 */
 //go:nosplit
 func (self class) Parse(expression String.Readable, input_names Packed.Strings) Error.Code { //gd:Expression.parse
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_parse), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_parse), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		expression  gdextension.String
 		input_names gdextension.PackedArray
 	}{gdextension.String(pointers.Get(gd.InternalString(expression))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(input_names)))}))
@@ -220,7 +216,7 @@ If you defined input variables in [method parse], you can specify their values i
 */
 //go:nosplit
 func (self class) Execute(inputs Array.Any, base_instance [1]gd.Object, show_error bool, const_calls_only bool) variant.Any { //gd:Expression.execute
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_execute), gdextension.SizeVariant|(gdextension.SizeArray<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_execute), gdextension.SizeVariant|(gdextension.SizeArray<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		inputs           gdextension.Array
 		base_instance    gdextension.Object
 		show_error       bool
@@ -235,7 +231,7 @@ Returns [code]true[/code] if [method execute] has failed.
 */
 //go:nosplit
 func (self class) HasExecuteFailed() bool { //gd:Expression.has_execute_failed
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_has_execute_failed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_has_execute_failed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -245,7 +241,7 @@ Returns the error text if [method parse] or [method execute] has failed.
 */
 //go:nosplit
 func (self class) GetErrorText() String.Readable { //gd:Expression.get_error_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_get_error_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_get_error_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

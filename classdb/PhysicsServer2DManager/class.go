@@ -79,7 +79,7 @@ var self [1]gdclass.PhysicsServer2DManager
 var once sync.Once
 
 func singleton() {
-	obj := gd.Global.Object.GetSingleton(gd.Global.Singletons.PhysicsServer2DManager)
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.PhysicsServer2DManager)[0])))})
 	self = *(*[1]gdclass.PhysicsServer2DManager)(unsafe.Pointer(&obj))
 }
 
@@ -119,7 +119,7 @@ Register a [PhysicsServer2D] implementation by passing a [param name] and a [Cal
 */
 //go:nosplit
 func (self class) RegisterServer(name String.Readable, create_callback Callable.Function) { //gd:PhysicsServer2DManager.register_server
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer2DManager.Bind_register_server), 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer2DManager.Bind_register_server), 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		name            gdextension.String
 		create_callback gdextension.Callable
 	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(create_callback)))}))
@@ -130,7 +130,7 @@ Set the default [PhysicsServer2D] implementation to the one identified by [param
 */
 //go:nosplit
 func (self class) SetDefaultServer(name String.Readable, priority int64) { //gd:PhysicsServer2DManager.set_default_server
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer2DManager.Bind_set_default_server), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer2DManager.Bind_set_default_server), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		name     gdextension.String
 		priority int64
 	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), priority}))

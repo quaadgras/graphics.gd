@@ -296,7 +296,7 @@ Returns the name of this interface ([code]"OpenXR"[/code], [code]"OpenVR"[/code]
 */
 //go:nosplit
 func (self class) GetName() String.Name { //gd:XRInterface.get_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -306,21 +306,21 @@ Returns a combination of [enum Capabilities] flags providing information about t
 */
 //go:nosplit
 func (self class) GetCapabilities() int64 { //gd:XRInterface.get_capabilities
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_capabilities), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_capabilities), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) IsPrimary() bool { //gd:XRInterface.is_primary
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_is_primary), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_is_primary), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrimary(primary bool) { //gd:XRInterface.set_primary
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_set_primary), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ primary bool }{primary}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_set_primary), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ primary bool }{primary}))
 }
 
 /*
@@ -328,7 +328,7 @@ Returns [code]true[/code] if this interface has been initialized.
 */
 //go:nosplit
 func (self class) IsInitialized() bool { //gd:XRInterface.is_initialized
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_is_initialized), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_is_initialized), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -342,7 +342,7 @@ While currently not used, you can activate additional interfaces. You may wish t
 */
 //go:nosplit
 func (self class) Initialize() bool { //gd:XRInterface.initialize
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_initialize), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_initialize), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -352,7 +352,7 @@ Turns the interface off.
 */
 //go:nosplit
 func (self class) Uninitialize() { //gd:XRInterface.uninitialize
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_uninitialize), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_uninitialize), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -361,7 +361,7 @@ Returns a [Dictionary] with extra system info. Interfaces are expected to return
 */
 //go:nosplit
 func (self class) GetSystemInfo() Dictionary.Any { //gd:XRInterface.get_system_info
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_system_info), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_system_info), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -371,7 +371,7 @@ If supported, returns the status of our tracking. This will allow you to provide
 */
 //go:nosplit
 func (self class) GetTrackingStatus() TrackingStatus { //gd:XRInterface.get_tracking_status
-	var r_ret = gdextension.Call[TrackingStatus](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_tracking_status), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TrackingStatus](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_tracking_status), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -381,7 +381,7 @@ Returns the resolution at which we should render our intermediate results before
 */
 //go:nosplit
 func (self class) GetRenderTargetSize() Vector2.XY { //gd:XRInterface.get_render_target_size
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_render_target_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_render_target_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -391,7 +391,7 @@ Returns the number of views that need to be rendered for this device. 1 for Mono
 */
 //go:nosplit
 func (self class) GetViewCount() int64 { //gd:XRInterface.get_view_count
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_view_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_view_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -407,7 +407,7 @@ Triggers a haptic pulse on a device associated with this interface.
 */
 //go:nosplit
 func (self class) TriggerHapticPulse(action_name String.Readable, tracker_name String.Name, frequency float64, amplitude float64, duration_sec float64, delay_sec float64) { //gd:XRInterface.trigger_haptic_pulse
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_trigger_haptic_pulse), 0|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_trigger_haptic_pulse), 0|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24), unsafe.Pointer(&struct {
 		action_name  gdextension.String
 		tracker_name gdextension.StringName
 		frequency    float64
@@ -422,14 +422,14 @@ Call this to find out if a given play area mode is supported by this interface.
 */
 //go:nosplit
 func (self class) SupportsPlayAreaMode(mode PlayAreaMode) bool { //gd:XRInterface.supports_play_area_mode
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_supports_play_area_mode), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode PlayAreaMode }{mode}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_supports_play_area_mode), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode PlayAreaMode }{mode}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetPlayAreaMode() PlayAreaMode { //gd:XRInterface.get_play_area_mode
-	var r_ret = gdextension.Call[PlayAreaMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_play_area_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PlayAreaMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_play_area_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -440,7 +440,7 @@ Sets the active play area mode, will return [code]false[/code] if the mode can't
 */
 //go:nosplit
 func (self class) SetPlayAreaMode(mode PlayAreaMode) bool { //gd:XRInterface.set_play_area_mode
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_set_play_area_mode), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode PlayAreaMode }{mode}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_set_play_area_mode), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode PlayAreaMode }{mode}))
 	var ret = r_ret
 	return ret
 }
@@ -450,21 +450,21 @@ Returns an array of vectors that represent the physical play area mapped to the 
 */
 //go:nosplit
 func (self class) GetPlayArea() Packed.Array[Vector3.XYZ] { //gd:XRInterface.get_play_area
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_play_area), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_play_area), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetAnchorDetectionIsEnabled() bool { //gd:XRInterface.get_anchor_detection_is_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_anchor_detection_is_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_anchor_detection_is_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAnchorDetectionIsEnabled(enable bool) { //gd:XRInterface.set_anchor_detection_is_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_set_anchor_detection_is_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_set_anchor_detection_is_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 /*
@@ -472,7 +472,7 @@ If this is an AR interface that requires displaying a camera feed as the backgro
 */
 //go:nosplit
 func (self class) GetCameraFeedId() int64 { //gd:XRInterface.get_camera_feed_id
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_camera_feed_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_camera_feed_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -482,7 +482,7 @@ Returns [code]true[/code] if this interface supports passthrough.
 */
 //go:nosplit
 func (self class) IsPassthroughSupported() bool { //gd:XRInterface.is_passthrough_supported
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_is_passthrough_supported), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_is_passthrough_supported), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -492,7 +492,7 @@ Returns [code]true[/code] if passthrough is enabled.
 */
 //go:nosplit
 func (self class) IsPassthroughEnabled() bool { //gd:XRInterface.is_passthrough_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_is_passthrough_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_is_passthrough_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -503,7 +503,7 @@ Starts passthrough, will return [code]false[/code] if passthrough couldn't be st
 */
 //go:nosplit
 func (self class) StartPassthrough() bool { //gd:XRInterface.start_passthrough
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_start_passthrough), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_start_passthrough), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -513,7 +513,7 @@ Stops passthrough.
 */
 //go:nosplit
 func (self class) StopPassthrough() { //gd:XRInterface.stop_passthrough
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_stop_passthrough), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_stop_passthrough), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -523,7 +523,7 @@ Returns the transform for a view/eye.
 */
 //go:nosplit
 func (self class) GetTransformForView(view int64, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin { //gd:XRInterface.get_transform_for_view
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_transform_for_view), gdextension.SizeTransform3D|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_transform_for_view), gdextension.SizeTransform3D|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		view          int64
 		cam_transform Transform3D.BasisOrigin
 	}{view, gd.Transposed(cam_transform)}))
@@ -536,7 +536,7 @@ Returns the projection matrix for a view/eye.
 */
 //go:nosplit
 func (self class) GetProjectionForView(view int64, aspect float64, near float64, far float64) Projection.XYZW { //gd:XRInterface.get_projection_for_view
-	var r_ret = gdextension.Call[Projection.XYZW](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_projection_for_view), gdextension.SizeProjection|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Projection.XYZW](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_projection_for_view), gdextension.SizeProjection|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
 		view   int64
 		aspect float64
 		near   float64
@@ -551,7 +551,7 @@ Returns the an array of supported environment blend modes, see [enum XRInterface
 */
 //go:nosplit
 func (self class) GetSupportedEnvironmentBlendModes() Array.Any { //gd:XRInterface.get_supported_environment_blend_modes
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_supported_environment_blend_modes), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_supported_environment_blend_modes), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -576,14 +576,14 @@ func _ready():
 */
 //go:nosplit
 func (self class) SetEnvironmentBlendMode(mode EnvironmentBlendMode) bool { //gd:XRInterface.set_environment_blend_mode
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_set_environment_blend_mode), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode EnvironmentBlendMode }{mode}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_set_environment_blend_mode), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode EnvironmentBlendMode }{mode}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetEnvironmentBlendMode() EnvironmentBlendMode { //gd:XRInterface.get_environment_blend_mode
-	var r_ret = gdextension.Call[EnvironmentBlendMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_environment_blend_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[EnvironmentBlendMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_environment_blend_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

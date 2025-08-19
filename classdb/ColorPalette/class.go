@@ -112,12 +112,12 @@ func (self Instance) SetColors(value []Color.RGBA) {
 
 //go:nosplit
 func (self class) SetColors(colors Packed.Array[Color.RGBA]) { //gd:ColorPalette.set_colors
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ColorPalette.Bind_set_colors), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ colors gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPalette.Bind_set_colors), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ colors gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))}))
 }
 
 //go:nosplit
 func (self class) GetColors() Packed.Array[Color.RGBA] { //gd:ColorPalette.get_colors
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ColorPalette.Bind_get_colors), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPalette.Bind_get_colors), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

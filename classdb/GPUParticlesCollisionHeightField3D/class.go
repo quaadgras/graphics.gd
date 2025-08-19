@@ -164,48 +164,48 @@ func (self Instance) SetHeightfieldMask(value int) {
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:GPUParticlesCollisionHeightField3D.set_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_size), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_size), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesCollisionHeightField3D.get_size
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetResolution(resolution Resolution) { //gd:GPUParticlesCollisionHeightField3D.set_resolution
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_resolution), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ resolution Resolution }{resolution}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_resolution), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ resolution Resolution }{resolution}))
 }
 
 //go:nosplit
 func (self class) GetResolution() Resolution { //gd:GPUParticlesCollisionHeightField3D.get_resolution
-	var r_ret = gdextension.Call[Resolution](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_resolution), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Resolution](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_resolution), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpdateMode(update_mode UpdateMode) { //gd:GPUParticlesCollisionHeightField3D.set_update_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_update_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ update_mode UpdateMode }{update_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_update_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ update_mode UpdateMode }{update_mode}))
 }
 
 //go:nosplit
 func (self class) GetUpdateMode() UpdateMode { //gd:GPUParticlesCollisionHeightField3D.get_update_mode
-	var r_ret = gdextension.Call[UpdateMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_update_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[UpdateMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_update_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeightfieldMask(heightfield_mask int64) { //gd:GPUParticlesCollisionHeightField3D.set_heightfield_mask
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_heightfield_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ heightfield_mask int64 }{heightfield_mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_heightfield_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ heightfield_mask int64 }{heightfield_mask}))
 }
 
 //go:nosplit
 func (self class) GetHeightfieldMask() int64 { //gd:GPUParticlesCollisionHeightField3D.get_heightfield_mask
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_heightfield_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_heightfield_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -215,7 +215,7 @@ Based on [param value], enables or disables the specified layer in the [member h
 */
 //go:nosplit
 func (self class) SetHeightfieldMaskValue(layer_number int64, value bool) { //gd:GPUParticlesCollisionHeightField3D.set_heightfield_mask_value
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_heightfield_mask_value), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_heightfield_mask_value), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value}))
@@ -226,19 +226,19 @@ Returns [code]true[/code] if the specified layer of the [member heightfield_mask
 */
 //go:nosplit
 func (self class) GetHeightfieldMaskValue(layer_number int64) bool { //gd:GPUParticlesCollisionHeightField3D.get_heightfield_mask_value
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_heightfield_mask_value), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_get_heightfield_mask_value), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFollowCameraEnabled(enabled bool) { //gd:GPUParticlesCollisionHeightField3D.set_follow_camera_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_follow_camera_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_set_follow_camera_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFollowCameraEnabled() bool { //gd:GPUParticlesCollisionHeightField3D.is_follow_camera_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_is_follow_camera_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionHeightField3D.Bind_is_follow_camera_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

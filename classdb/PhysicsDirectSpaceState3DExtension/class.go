@@ -359,7 +359,7 @@ func (class) _get_closest_point_to_object_volume(impl func(ptr unsafe.Pointer, o
 
 //go:nosplit
 func (self class) IsBodyExcludedFromQuery(body RID.Any) bool { //gd:PhysicsDirectSpaceState3DExtension.is_body_excluded_from_query
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState3DExtension.Bind_is_body_excluded_from_query), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState3DExtension.Bind_is_body_excluded_from_query), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
 	var ret = r_ret
 	return ret
 }

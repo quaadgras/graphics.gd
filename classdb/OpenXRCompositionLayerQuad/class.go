@@ -113,12 +113,12 @@ func (self Instance) SetQuadSize(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetQuadSize(size Vector2.XY) { //gd:OpenXRCompositionLayerQuad.set_quad_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerQuad.Bind_set_quad_size), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerQuad.Bind_set_quad_size), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
 }
 
 //go:nosplit
 func (self class) GetQuadSize() Vector2.XY { //gd:OpenXRCompositionLayerQuad.get_quad_size
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerQuad.Bind_get_quad_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerQuad.Bind_get_quad_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

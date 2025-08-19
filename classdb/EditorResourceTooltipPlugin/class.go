@@ -242,7 +242,7 @@ Requests a thumbnail for the given [TextureRect]. The thumbnail is created async
 */
 //go:nosplit
 func (self class) RequestThumbnail(path String.Readable, control [1]gdclass.TextureRect) { //gd:EditorResourceTooltipPlugin.request_thumbnail
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorResourceTooltipPlugin.Bind_request_thumbnail), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourceTooltipPlugin.Bind_request_thumbnail), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		path    gdextension.String
 		control gdextension.Object
 	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))

@@ -119,7 +119,7 @@ func (self Instance) SetAabb(value AABB.PositionSize) {
 
 //go:nosplit
 func (self class) SetAabb(rect AABB.PositionSize) { //gd:VisibleOnScreenNotifier3D.set_aabb
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenNotifier3D.Bind_set_aabb), 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ rect AABB.PositionSize }{rect}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenNotifier3D.Bind_set_aabb), 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ rect AABB.PositionSize }{rect}))
 }
 
 /*
@@ -128,7 +128,7 @@ Returns [code]true[/code] if the bounding box is on the screen.
 */
 //go:nosplit
 func (self class) IsOnScreen() bool { //gd:VisibleOnScreenNotifier3D.is_on_screen
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenNotifier3D.Bind_is_on_screen), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenNotifier3D.Bind_is_on_screen), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

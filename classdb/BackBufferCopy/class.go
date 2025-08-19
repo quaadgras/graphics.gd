@@ -122,24 +122,24 @@ func (self Instance) SetRect(value Rect2.PositionSize) {
 
 //go:nosplit
 func (self class) SetRect(rect Rect2.PositionSize) { //gd:BackBufferCopy.set_rect
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BackBufferCopy.Bind_set_rect), 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BackBufferCopy.Bind_set_rect), 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
 }
 
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:BackBufferCopy.get_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BackBufferCopy.Bind_get_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BackBufferCopy.Bind_get_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCopyMode(copy_mode CopyMode) { //gd:BackBufferCopy.set_copy_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BackBufferCopy.Bind_set_copy_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ copy_mode CopyMode }{copy_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BackBufferCopy.Bind_set_copy_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ copy_mode CopyMode }{copy_mode}))
 }
 
 //go:nosplit
 func (self class) GetCopyMode() CopyMode { //gd:BackBufferCopy.get_copy_mode
-	var r_ret = gdextension.Call[CopyMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BackBufferCopy.Bind_get_copy_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[CopyMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BackBufferCopy.Bind_get_copy_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

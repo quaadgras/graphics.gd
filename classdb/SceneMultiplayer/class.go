@@ -224,12 +224,12 @@ func (self Instance) SetMaxDeltaPacketSize(value int) {
 
 //go:nosplit
 func (self class) SetRootPath(path Path.ToNode) { //gd:SceneMultiplayer.set_root_path
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_root_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_root_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetRootPath() Path.ToNode { //gd:SceneMultiplayer.get_root_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_root_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_root_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -239,7 +239,7 @@ Clears the current SceneMultiplayer network state (you shouldn't call this unles
 */
 //go:nosplit
 func (self class) Clear() { //gd:SceneMultiplayer.clear
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -247,7 +247,7 @@ Disconnects the peer identified by [param id], removing it from the list of conn
 */
 //go:nosplit
 func (self class) DisconnectPeer(id int64) { //gd:SceneMultiplayer.disconnect_peer
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_disconnect_peer), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_disconnect_peer), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 }
 
 /*
@@ -255,7 +255,7 @@ Returns the IDs of the peers currently trying to authenticate with this [Multipl
 */
 //go:nosplit
 func (self class) GetAuthenticatingPeers() Packed.Array[int32] { //gd:SceneMultiplayer.get_authenticating_peers
-	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_authenticating_peers), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_authenticating_peers), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -265,7 +265,7 @@ Sends the specified [param data] to the remote peer identified by [param id] as 
 */
 //go:nosplit
 func (self class) SendAuth(id int64, data Packed.Bytes) Error.Code { //gd:SceneMultiplayer.send_auth
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_send_auth), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_send_auth), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		id   int64
 		data gdextension.PackedArray
 	}{id, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
@@ -279,67 +279,67 @@ If a peer disconnects before completing authentication, either due to a network 
 */
 //go:nosplit
 func (self class) CompleteAuth(id int64) Error.Code { //gd:SceneMultiplayer.complete_auth
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_complete_auth), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_complete_auth), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAuthCallback(callback Callable.Function) { //gd:SceneMultiplayer.set_auth_callback
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_auth_callback), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callback gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_auth_callback), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callback gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
 }
 
 //go:nosplit
 func (self class) GetAuthCallback() Callable.Function { //gd:SceneMultiplayer.get_auth_callback
-	var r_ret = gdextension.Call[[2]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_auth_callback), gdextension.SizeCallable, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[2]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_auth_callback), gdextension.SizeCallable, unsafe.Pointer(&struct{}{}))
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAuthTimeout(timeout float64) { //gd:SceneMultiplayer.set_auth_timeout
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_auth_timeout), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ timeout float64 }{timeout}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_auth_timeout), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ timeout float64 }{timeout}))
 }
 
 //go:nosplit
 func (self class) GetAuthTimeout() float64 { //gd:SceneMultiplayer.get_auth_timeout
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_auth_timeout), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_auth_timeout), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRefuseNewConnections(refuse bool) { //gd:SceneMultiplayer.set_refuse_new_connections
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_refuse_new_connections), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ refuse bool }{refuse}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_refuse_new_connections), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ refuse bool }{refuse}))
 }
 
 //go:nosplit
 func (self class) IsRefusingNewConnections() bool { //gd:SceneMultiplayer.is_refusing_new_connections
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_is_refusing_new_connections), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_is_refusing_new_connections), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowObjectDecoding(enable bool) { //gd:SceneMultiplayer.set_allow_object_decoding
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_allow_object_decoding), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_allow_object_decoding), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsObjectDecodingAllowed() bool { //gd:SceneMultiplayer.is_object_decoding_allowed
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_is_object_decoding_allowed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_is_object_decoding_allowed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetServerRelayEnabled(enabled bool) { //gd:SceneMultiplayer.set_server_relay_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_server_relay_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_server_relay_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsServerRelayEnabled() bool { //gd:SceneMultiplayer.is_server_relay_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_is_server_relay_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_is_server_relay_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -349,7 +349,7 @@ Sends the given raw [param bytes] to a specific peer identified by [param id] (s
 */
 //go:nosplit
 func (self class) SendBytes(bytes Packed.Bytes, id int64, mode MultiplayerPeer.TransferMode, channel int64) Error.Code { //gd:SceneMultiplayer.send_bytes
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_send_bytes), gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_send_bytes), gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		bytes   gdextension.PackedArray
 		id      int64
 		mode    MultiplayerPeer.TransferMode
@@ -361,26 +361,26 @@ func (self class) SendBytes(bytes Packed.Bytes, id int64, mode MultiplayerPeer.T
 
 //go:nosplit
 func (self class) GetMaxSyncPacketSize() int64 { //gd:SceneMultiplayer.get_max_sync_packet_size
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_max_sync_packet_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_max_sync_packet_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxSyncPacketSize(size int64) { //gd:SceneMultiplayer.set_max_sync_packet_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_max_sync_packet_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_max_sync_packet_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetMaxDeltaPacketSize() int64 { //gd:SceneMultiplayer.get_max_delta_packet_size
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_max_delta_packet_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_max_delta_packet_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxDeltaPacketSize(size int64) { //gd:SceneMultiplayer.set_max_delta_packet_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_max_delta_packet_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_max_delta_packet_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 }
 func (self Instance) OnPeerAuthenticating(cb func(id int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("peer_authenticating"), gd.NewCallable(cb), 0)

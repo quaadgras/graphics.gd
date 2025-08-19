@@ -302,7 +302,7 @@ Add a specific import option (name and default value only). This function can on
 */
 //go:nosplit
 func (self class) AddImportOption(name String.Readable, value variant.Any) { //gd:EditorSceneFormatImporter.add_import_option
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSceneFormatImporter.Bind_add_import_option), 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSceneFormatImporter.Bind_add_import_option), 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		name  gdextension.String
 		value gdextension.Variant
 	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
@@ -313,7 +313,7 @@ Add a specific import option. This function can only be called from [method _get
 */
 //go:nosplit
 func (self class) AddImportOptionAdvanced(atype variant.Type, name String.Readable, default_value variant.Any, hint ClassDB.PropertyHint, hint_string String.Readable, usage_flags int64) { //gd:EditorSceneFormatImporter.add_import_option_advanced
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorSceneFormatImporter.Bind_add_import_option_advanced), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSceneFormatImporter.Bind_add_import_option_advanced), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
 		atype         variant.Type
 		name          gdextension.String
 		default_value gdextension.Variant

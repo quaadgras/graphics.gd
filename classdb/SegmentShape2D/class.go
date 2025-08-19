@@ -121,24 +121,24 @@ func (self Instance) SetB(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetA(a Vector2.XY) { //gd:SegmentShape2D.set_a
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_set_a), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ a Vector2.XY }{a}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_set_a), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ a Vector2.XY }{a}))
 }
 
 //go:nosplit
 func (self class) GetA() Vector2.XY { //gd:SegmentShape2D.get_a
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_get_a), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_get_a), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetB(b Vector2.XY) { //gd:SegmentShape2D.set_b
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_set_b), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ b Vector2.XY }{b}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_set_b), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ b Vector2.XY }{b}))
 }
 
 //go:nosplit
 func (self class) GetB() Vector2.XY { //gd:SegmentShape2D.get_b
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_get_b), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_get_b), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

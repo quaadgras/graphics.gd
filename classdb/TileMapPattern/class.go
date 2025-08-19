@@ -187,7 +187,7 @@ Sets the tile identifiers for the cell at coordinates [param coords]. See [metho
 */
 //go:nosplit
 func (self class) SetCell(coords Vector2i.XY, source_id int64, atlas_coords Vector2i.XY, alternative_tile int64) { //gd:TileMapPattern.set_cell
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_set_cell), 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2i<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_set_cell), 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2i<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		coords           Vector2i.XY
 		source_id        int64
 		atlas_coords     Vector2i.XY
@@ -200,7 +200,7 @@ Returns whether the pattern has a tile at the given coordinates.
 */
 //go:nosplit
 func (self class) HasCell(coords Vector2i.XY) bool { //gd:TileMapPattern.has_cell
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_has_cell), gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_has_cell), gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 	var ret = r_ret
 	return ret
 }
@@ -210,7 +210,7 @@ Remove the cell at the given coordinates.
 */
 //go:nosplit
 func (self class) RemoveCell(coords Vector2i.XY, update_size bool) { //gd:TileMapPattern.remove_cell
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_remove_cell), 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_remove_cell), 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		coords      Vector2i.XY
 		update_size bool
 	}{coords, update_size}))
@@ -221,7 +221,7 @@ Returns the tile source ID of the cell at [param coords].
 */
 //go:nosplit
 func (self class) GetCellSourceId(coords Vector2i.XY) int64 { //gd:TileMapPattern.get_cell_source_id
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_get_cell_source_id), gdextension.SizeInt|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_get_cell_source_id), gdextension.SizeInt|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 	var ret = r_ret
 	return ret
 }
@@ -231,7 +231,7 @@ Returns the tile atlas coordinates ID of the cell at [param coords].
 */
 //go:nosplit
 func (self class) GetCellAtlasCoords(coords Vector2i.XY) Vector2i.XY { //gd:TileMapPattern.get_cell_atlas_coords
-	var r_ret = gdextension.Call[Vector2i.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_get_cell_atlas_coords), gdextension.SizeVector2i|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_get_cell_atlas_coords), gdextension.SizeVector2i|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 	var ret = r_ret
 	return ret
 }
@@ -241,7 +241,7 @@ Returns the tile alternative ID of the cell at [param coords].
 */
 //go:nosplit
 func (self class) GetCellAlternativeTile(coords Vector2i.XY) int64 { //gd:TileMapPattern.get_cell_alternative_tile
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_get_cell_alternative_tile), gdextension.SizeInt|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_get_cell_alternative_tile), gdextension.SizeInt|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 	var ret = r_ret
 	return ret
 }
@@ -251,7 +251,7 @@ Returns the list of used cell coordinates in the pattern.
 */
 //go:nosplit
 func (self class) GetUsedCells() Array.Contains[Vector2i.XY] { //gd:TileMapPattern.get_used_cells
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_get_used_cells), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_get_used_cells), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -261,7 +261,7 @@ Returns the size, in cells, of the pattern.
 */
 //go:nosplit
 func (self class) GetSize() Vector2i.XY { //gd:TileMapPattern.get_size
-	var r_ret = gdextension.Call[Vector2i.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_get_size), gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_get_size), gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -271,7 +271,7 @@ Sets the size of the pattern.
 */
 //go:nosplit
 func (self class) SetSize(size Vector2i.XY) { //gd:TileMapPattern.set_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_set_size), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_set_size), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
 }
 
 /*
@@ -279,7 +279,7 @@ Returns whether the pattern is empty or not.
 */
 //go:nosplit
 func (self class) IsEmpty() bool { //gd:TileMapPattern.is_empty
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_is_empty), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapPattern.Bind_is_empty), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

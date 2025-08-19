@@ -112,12 +112,12 @@ func (self Instance) SetFlags(value EmitFlags) {
 
 //go:nosplit
 func (self class) SetFlags(flags EmitFlags) { //gd:VisualShaderNodeParticleEmit.set_flags
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleEmit.Bind_set_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags EmitFlags }{flags}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleEmit.Bind_set_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags EmitFlags }{flags}))
 }
 
 //go:nosplit
 func (self class) GetFlags() EmitFlags { //gd:VisualShaderNodeParticleEmit.get_flags
-	var r_ret = gdextension.Call[EmitFlags](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleEmit.Bind_get_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[EmitFlags](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleEmit.Bind_get_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

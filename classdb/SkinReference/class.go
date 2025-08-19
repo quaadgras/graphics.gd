@@ -125,7 +125,7 @@ Returns the [RID] owned by this SkinReference, as returned by [method RenderingS
 */
 //go:nosplit
 func (self class) GetSkeleton() RID.Any { //gd:SkinReference.get_skeleton
-	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkinReference.Bind_get_skeleton), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkinReference.Bind_get_skeleton), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -136,7 +136,7 @@ Note that a single [Skin] may have more than one [SkinReference] in the case tha
 */
 //go:nosplit
 func (self class) GetSkin() [1]gdclass.Skin { //gd:SkinReference.get_skin
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkinReference.Bind_get_skin), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkinReference.Bind_get_skin), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret)}
 	return ret
 }

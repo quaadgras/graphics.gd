@@ -179,7 +179,7 @@ Sets the time in seconds after which the [MethodTweener] will start interpolatin
 */
 //go:nosplit
 func (self class) SetDelay(delay float64) [1]gdclass.MethodTweener { //gd:MethodTweener.set_delay
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.MethodTweener.Bind_set_delay), gdextension.SizeObject|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ delay float64 }{delay}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MethodTweener.Bind_set_delay), gdextension.SizeObject|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ delay float64 }{delay}))
 	var ret = [1]gdclass.MethodTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.MethodTweener](r_ret)}
 	return ret
 }
@@ -189,7 +189,7 @@ Sets the type of used transition from [enum Tween.TransitionType]. If not set, t
 */
 //go:nosplit
 func (self class) SetTrans(trans Tween.TransitionType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_trans
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.MethodTweener.Bind_set_trans), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ trans Tween.TransitionType }{trans}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MethodTweener.Bind_set_trans), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ trans Tween.TransitionType }{trans}))
 	var ret = [1]gdclass.MethodTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.MethodTweener](r_ret)}
 	return ret
 }
@@ -199,7 +199,7 @@ Sets the type of used easing from [enum Tween.EaseType]. If not set, the default
 */
 //go:nosplit
 func (self class) SetEase(ease Tween.EaseType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_ease
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.MethodTweener.Bind_set_ease), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ease Tween.EaseType }{ease}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MethodTweener.Bind_set_ease), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ease Tween.EaseType }{ease}))
 	var ret = [1]gdclass.MethodTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.MethodTweener](r_ret)}
 	return ret
 }

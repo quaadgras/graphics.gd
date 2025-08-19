@@ -853,588 +853,588 @@ func (self Instance) SetAdjustmentColorCorrection(value Texture.Instance) {
 
 //go:nosplit
 func (self class) SetBackground(mode BGMode) { //gd:Environment.set_background
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_background), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode BGMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_background), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode BGMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetBackground() BGMode { //gd:Environment.get_background
-	var r_ret = gdextension.Call[BGMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_background), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BGMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_background), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSky(sky [1]gdclass.Sky) { //gd:Environment.set_sky
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sky), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sky gdextension.Object }{gdextension.Object(gd.ObjectChecked(sky[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sky), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sky gdextension.Object }{gdextension.Object(gd.ObjectChecked(sky[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetSky() [1]gdclass.Sky { //gd:Environment.get_sky
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sky), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sky), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Sky{gd.PointerWithOwnershipTransferredToGo[gdclass.Sky](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkyCustomFov(scale float64) { //gd:Environment.set_sky_custom_fov
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sky_custom_fov), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sky_custom_fov), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
 }
 
 //go:nosplit
 func (self class) GetSkyCustomFov() float64 { //gd:Environment.get_sky_custom_fov
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sky_custom_fov), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sky_custom_fov), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkyRotation(euler_radians Vector3.XYZ) { //gd:Environment.set_sky_rotation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sky_rotation), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ euler_radians Vector3.XYZ }{euler_radians}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sky_rotation), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ euler_radians Vector3.XYZ }{euler_radians}))
 }
 
 //go:nosplit
 func (self class) GetSkyRotation() Vector3.XYZ { //gd:Environment.get_sky_rotation
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sky_rotation), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sky_rotation), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBgColor(color Color.RGBA) { //gd:Environment.set_bg_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_bg_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_bg_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetBgColor() Color.RGBA { //gd:Environment.get_bg_color
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_bg_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_bg_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBgEnergyMultiplier(energy float64) { //gd:Environment.set_bg_energy_multiplier
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_bg_energy_multiplier), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ energy float64 }{energy}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_bg_energy_multiplier), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ energy float64 }{energy}))
 }
 
 //go:nosplit
 func (self class) GetBgEnergyMultiplier() float64 { //gd:Environment.get_bg_energy_multiplier
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_bg_energy_multiplier), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_bg_energy_multiplier), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBgIntensity(energy float64) { //gd:Environment.set_bg_intensity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_bg_intensity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ energy float64 }{energy}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_bg_intensity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ energy float64 }{energy}))
 }
 
 //go:nosplit
 func (self class) GetBgIntensity() float64 { //gd:Environment.get_bg_intensity
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_bg_intensity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_bg_intensity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCanvasMaxLayer(layer int64) { //gd:Environment.set_canvas_max_layer
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_canvas_max_layer), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_canvas_max_layer), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
 }
 
 //go:nosplit
 func (self class) GetCanvasMaxLayer() int64 { //gd:Environment.get_canvas_max_layer
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_canvas_max_layer), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_canvas_max_layer), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCameraFeedId(id int64) { //gd:Environment.set_camera_feed_id
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_camera_feed_id), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_camera_feed_id), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 }
 
 //go:nosplit
 func (self class) GetCameraFeedId() int64 { //gd:Environment.get_camera_feed_id
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_camera_feed_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_camera_feed_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAmbientLightColor(color Color.RGBA) { //gd:Environment.set_ambient_light_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ambient_light_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ambient_light_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetAmbientLightColor() Color.RGBA { //gd:Environment.get_ambient_light_color
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ambient_light_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ambient_light_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAmbientSource(source AmbientSource) { //gd:Environment.set_ambient_source
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ambient_source), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ source AmbientSource }{source}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ambient_source), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ source AmbientSource }{source}))
 }
 
 //go:nosplit
 func (self class) GetAmbientSource() AmbientSource { //gd:Environment.get_ambient_source
-	var r_ret = gdextension.Call[AmbientSource](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ambient_source), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AmbientSource](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ambient_source), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAmbientLightEnergy(energy float64) { //gd:Environment.set_ambient_light_energy
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ambient_light_energy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ energy float64 }{energy}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ambient_light_energy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ energy float64 }{energy}))
 }
 
 //go:nosplit
 func (self class) GetAmbientLightEnergy() float64 { //gd:Environment.get_ambient_light_energy
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ambient_light_energy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ambient_light_energy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAmbientLightSkyContribution(ratio float64) { //gd:Environment.set_ambient_light_sky_contribution
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ambient_light_sky_contribution), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ambient_light_sky_contribution), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
 }
 
 //go:nosplit
 func (self class) GetAmbientLightSkyContribution() float64 { //gd:Environment.get_ambient_light_sky_contribution
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ambient_light_sky_contribution), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ambient_light_sky_contribution), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetReflectionSource(source ReflectionSource) { //gd:Environment.set_reflection_source
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_reflection_source), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ source ReflectionSource }{source}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_reflection_source), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ source ReflectionSource }{source}))
 }
 
 //go:nosplit
 func (self class) GetReflectionSource() ReflectionSource { //gd:Environment.get_reflection_source
-	var r_ret = gdextension.Call[ReflectionSource](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_reflection_source), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ReflectionSource](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_reflection_source), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTonemapper(mode ToneMapper) { //gd:Environment.set_tonemapper
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_tonemapper), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ToneMapper }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_tonemapper), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ToneMapper }{mode}))
 }
 
 //go:nosplit
 func (self class) GetTonemapper() ToneMapper { //gd:Environment.get_tonemapper
-	var r_ret = gdextension.Call[ToneMapper](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_tonemapper), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ToneMapper](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_tonemapper), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTonemapExposure(exposure float64) { //gd:Environment.set_tonemap_exposure
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_tonemap_exposure), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ exposure float64 }{exposure}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_tonemap_exposure), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ exposure float64 }{exposure}))
 }
 
 //go:nosplit
 func (self class) GetTonemapExposure() float64 { //gd:Environment.get_tonemap_exposure
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_tonemap_exposure), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_tonemap_exposure), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTonemapWhite(white float64) { //gd:Environment.set_tonemap_white
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_tonemap_white), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ white float64 }{white}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_tonemap_white), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ white float64 }{white}))
 }
 
 //go:nosplit
 func (self class) GetTonemapWhite() float64 { //gd:Environment.get_tonemap_white
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_tonemap_white), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_tonemap_white), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsrEnabled(enabled bool) { //gd:Environment.set_ssr_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssr_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssr_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSsrEnabled() bool { //gd:Environment.is_ssr_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_ssr_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_ssr_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsrMaxSteps(max_steps int64) { //gd:Environment.set_ssr_max_steps
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssr_max_steps), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_steps int64 }{max_steps}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssr_max_steps), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_steps int64 }{max_steps}))
 }
 
 //go:nosplit
 func (self class) GetSsrMaxSteps() int64 { //gd:Environment.get_ssr_max_steps
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssr_max_steps), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssr_max_steps), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsrFadeIn(fade_in float64) { //gd:Environment.set_ssr_fade_in
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssr_fade_in), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fade_in float64 }{fade_in}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssr_fade_in), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fade_in float64 }{fade_in}))
 }
 
 //go:nosplit
 func (self class) GetSsrFadeIn() float64 { //gd:Environment.get_ssr_fade_in
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssr_fade_in), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssr_fade_in), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsrFadeOut(fade_out float64) { //gd:Environment.set_ssr_fade_out
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssr_fade_out), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fade_out float64 }{fade_out}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssr_fade_out), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fade_out float64 }{fade_out}))
 }
 
 //go:nosplit
 func (self class) GetSsrFadeOut() float64 { //gd:Environment.get_ssr_fade_out
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssr_fade_out), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssr_fade_out), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsrDepthTolerance(depth_tolerance float64) { //gd:Environment.set_ssr_depth_tolerance
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssr_depth_tolerance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ depth_tolerance float64 }{depth_tolerance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssr_depth_tolerance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ depth_tolerance float64 }{depth_tolerance}))
 }
 
 //go:nosplit
 func (self class) GetSsrDepthTolerance() float64 { //gd:Environment.get_ssr_depth_tolerance
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssr_depth_tolerance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssr_depth_tolerance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsaoEnabled(enabled bool) { //gd:Environment.set_ssao_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSsaoEnabled() bool { //gd:Environment.is_ssao_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_ssao_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_ssao_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsaoRadius(radius float64) { //gd:Environment.set_ssao_radius
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetSsaoRadius() float64 { //gd:Environment.get_ssao_radius
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsaoIntensity(intensity float64) { //gd:Environment.set_ssao_intensity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_intensity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ intensity float64 }{intensity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_intensity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ intensity float64 }{intensity}))
 }
 
 //go:nosplit
 func (self class) GetSsaoIntensity() float64 { //gd:Environment.get_ssao_intensity
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_intensity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_intensity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsaoPower(power float64) { //gd:Environment.set_ssao_power
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_power), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_power), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
 }
 
 //go:nosplit
 func (self class) GetSsaoPower() float64 { //gd:Environment.get_ssao_power
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_power), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_power), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsaoDetail(detail float64) { //gd:Environment.set_ssao_detail
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_detail), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ detail float64 }{detail}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_detail), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ detail float64 }{detail}))
 }
 
 //go:nosplit
 func (self class) GetSsaoDetail() float64 { //gd:Environment.get_ssao_detail
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_detail), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_detail), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsaoHorizon(horizon float64) { //gd:Environment.set_ssao_horizon
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_horizon), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ horizon float64 }{horizon}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_horizon), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ horizon float64 }{horizon}))
 }
 
 //go:nosplit
 func (self class) GetSsaoHorizon() float64 { //gd:Environment.get_ssao_horizon
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_horizon), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_horizon), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsaoSharpness(sharpness float64) { //gd:Environment.set_ssao_sharpness
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_sharpness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sharpness float64 }{sharpness}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_sharpness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sharpness float64 }{sharpness}))
 }
 
 //go:nosplit
 func (self class) GetSsaoSharpness() float64 { //gd:Environment.get_ssao_sharpness
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_sharpness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_sharpness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsaoDirectLightAffect(amount float64) { //gd:Environment.set_ssao_direct_light_affect
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_direct_light_affect), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_direct_light_affect), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetSsaoDirectLightAffect() float64 { //gd:Environment.get_ssao_direct_light_affect
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_direct_light_affect), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_direct_light_affect), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsaoAoChannelAffect(amount float64) { //gd:Environment.set_ssao_ao_channel_affect
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_ao_channel_affect), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssao_ao_channel_affect), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetSsaoAoChannelAffect() float64 { //gd:Environment.get_ssao_ao_channel_affect
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_ao_channel_affect), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssao_ao_channel_affect), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsilEnabled(enabled bool) { //gd:Environment.set_ssil_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssil_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssil_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSsilEnabled() bool { //gd:Environment.is_ssil_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_ssil_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_ssil_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsilRadius(radius float64) { //gd:Environment.set_ssil_radius
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssil_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssil_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetSsilRadius() float64 { //gd:Environment.get_ssil_radius
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssil_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssil_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsilIntensity(intensity float64) { //gd:Environment.set_ssil_intensity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssil_intensity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ intensity float64 }{intensity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssil_intensity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ intensity float64 }{intensity}))
 }
 
 //go:nosplit
 func (self class) GetSsilIntensity() float64 { //gd:Environment.get_ssil_intensity
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssil_intensity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssil_intensity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsilSharpness(sharpness float64) { //gd:Environment.set_ssil_sharpness
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssil_sharpness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sharpness float64 }{sharpness}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssil_sharpness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sharpness float64 }{sharpness}))
 }
 
 //go:nosplit
 func (self class) GetSsilSharpness() float64 { //gd:Environment.get_ssil_sharpness
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssil_sharpness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssil_sharpness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSsilNormalRejection(normal_rejection float64) { //gd:Environment.set_ssil_normal_rejection
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssil_normal_rejection), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ normal_rejection float64 }{normal_rejection}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_ssil_normal_rejection), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ normal_rejection float64 }{normal_rejection}))
 }
 
 //go:nosplit
 func (self class) GetSsilNormalRejection() float64 { //gd:Environment.get_ssil_normal_rejection
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssil_normal_rejection), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_ssil_normal_rejection), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfgiEnabled(enabled bool) { //gd:Environment.set_sdfgi_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSdfgiEnabled() bool { //gd:Environment.is_sdfgi_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_sdfgi_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_sdfgi_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfgiCascades(amount int64) { //gd:Environment.set_sdfgi_cascades
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_cascades), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_cascades), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetSdfgiCascades() int64 { //gd:Environment.get_sdfgi_cascades
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_cascades), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_cascades), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfgiMinCellSize(size float64) { //gd:Environment.set_sdfgi_min_cell_size
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_min_cell_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_min_cell_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetSdfgiMinCellSize() float64 { //gd:Environment.get_sdfgi_min_cell_size
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_min_cell_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_min_cell_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfgiMaxDistance(distance float64) { //gd:Environment.set_sdfgi_max_distance
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_max_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_max_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetSdfgiMaxDistance() float64 { //gd:Environment.get_sdfgi_max_distance
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_max_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_max_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfgiCascade0Distance(distance float64) { //gd:Environment.set_sdfgi_cascade0_distance
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_cascade0_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_cascade0_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetSdfgiCascade0Distance() float64 { //gd:Environment.get_sdfgi_cascade0_distance
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_cascade0_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_cascade0_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfgiYScale(scale SDFGIYScale) { //gd:Environment.set_sdfgi_y_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_y_scale), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ scale SDFGIYScale }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_y_scale), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ scale SDFGIYScale }{scale}))
 }
 
 //go:nosplit
 func (self class) GetSdfgiYScale() SDFGIYScale { //gd:Environment.get_sdfgi_y_scale
-	var r_ret = gdextension.Call[SDFGIYScale](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_y_scale), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SDFGIYScale](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_y_scale), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfgiUseOcclusion(enable bool) { //gd:Environment.set_sdfgi_use_occlusion
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_use_occlusion), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_use_occlusion), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSdfgiUsingOcclusion() bool { //gd:Environment.is_sdfgi_using_occlusion
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_sdfgi_using_occlusion), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_sdfgi_using_occlusion), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfgiBounceFeedback(amount float64) { //gd:Environment.set_sdfgi_bounce_feedback
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_bounce_feedback), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_bounce_feedback), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetSdfgiBounceFeedback() float64 { //gd:Environment.get_sdfgi_bounce_feedback
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_bounce_feedback), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_bounce_feedback), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfgiReadSkyLight(enable bool) { //gd:Environment.set_sdfgi_read_sky_light
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_read_sky_light), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_read_sky_light), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSdfgiReadingSkyLight() bool { //gd:Environment.is_sdfgi_reading_sky_light
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_sdfgi_reading_sky_light), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_sdfgi_reading_sky_light), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfgiEnergy(amount float64) { //gd:Environment.set_sdfgi_energy
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_energy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_energy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetSdfgiEnergy() float64 { //gd:Environment.get_sdfgi_energy
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_energy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_energy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfgiNormalBias(bias float64) { //gd:Environment.set_sdfgi_normal_bias
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_normal_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_normal_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
 }
 
 //go:nosplit
 func (self class) GetSdfgiNormalBias() float64 { //gd:Environment.get_sdfgi_normal_bias
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_normal_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_normal_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfgiProbeBias(bias float64) { //gd:Environment.set_sdfgi_probe_bias
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_probe_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_sdfgi_probe_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
 }
 
 //go:nosplit
 func (self class) GetSdfgiProbeBias() float64 { //gd:Environment.get_sdfgi_probe_bias
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_probe_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sdfgi_probe_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlowEnabled(enabled bool) { //gd:Environment.set_glow_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsGlowEnabled() bool { //gd:Environment.is_glow_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_glow_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_glow_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1444,7 +1444,7 @@ Sets the intensity of the glow level [param idx]. A value above [code]0.0[/code]
 */
 //go:nosplit
 func (self class) SetGlowLevel(idx int64, intensity float64) { //gd:Environment.set_glow_level
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_level), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_level), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		idx       int64
 		intensity float64
 	}{idx, intensity}))
@@ -1455,511 +1455,511 @@ Returns the intensity of the glow level [param idx].
 */
 //go:nosplit
 func (self class) GetGlowLevel(idx int64) float64 { //gd:Environment.get_glow_level
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_level), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_level), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlowNormalized(normalize bool) { //gd:Environment.set_glow_normalized
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_normalized), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ normalize bool }{normalize}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_normalized), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ normalize bool }{normalize}))
 }
 
 //go:nosplit
 func (self class) IsGlowNormalized() bool { //gd:Environment.is_glow_normalized
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_glow_normalized), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_glow_normalized), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlowIntensity(intensity float64) { //gd:Environment.set_glow_intensity
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_intensity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ intensity float64 }{intensity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_intensity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ intensity float64 }{intensity}))
 }
 
 //go:nosplit
 func (self class) GetGlowIntensity() float64 { //gd:Environment.get_glow_intensity
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_intensity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_intensity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlowStrength(strength float64) { //gd:Environment.set_glow_strength
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
 }
 
 //go:nosplit
 func (self class) GetGlowStrength() float64 { //gd:Environment.get_glow_strength
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlowMix(mix float64) { //gd:Environment.set_glow_mix
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_mix), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mix float64 }{mix}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_mix), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mix float64 }{mix}))
 }
 
 //go:nosplit
 func (self class) GetGlowMix() float64 { //gd:Environment.get_glow_mix
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_mix), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_mix), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlowBloom(amount float64) { //gd:Environment.set_glow_bloom
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_bloom), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_bloom), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetGlowBloom() float64 { //gd:Environment.get_glow_bloom
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_bloom), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_bloom), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlowBlendMode(mode GlowBlendMode) { //gd:Environment.set_glow_blend_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_blend_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode GlowBlendMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_blend_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode GlowBlendMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetGlowBlendMode() GlowBlendMode { //gd:Environment.get_glow_blend_mode
-	var r_ret = gdextension.Call[GlowBlendMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_blend_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GlowBlendMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_blend_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlowHdrBleedThreshold(threshold float64) { //gd:Environment.set_glow_hdr_bleed_threshold
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_hdr_bleed_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_hdr_bleed_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
 }
 
 //go:nosplit
 func (self class) GetGlowHdrBleedThreshold() float64 { //gd:Environment.get_glow_hdr_bleed_threshold
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_hdr_bleed_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_hdr_bleed_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlowHdrBleedScale(scale float64) { //gd:Environment.set_glow_hdr_bleed_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_hdr_bleed_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_hdr_bleed_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
 }
 
 //go:nosplit
 func (self class) GetGlowHdrBleedScale() float64 { //gd:Environment.get_glow_hdr_bleed_scale
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_hdr_bleed_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_hdr_bleed_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlowHdrLuminanceCap(amount float64) { //gd:Environment.set_glow_hdr_luminance_cap
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_hdr_luminance_cap), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_hdr_luminance_cap), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetGlowHdrLuminanceCap() float64 { //gd:Environment.get_glow_hdr_luminance_cap
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_hdr_luminance_cap), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_hdr_luminance_cap), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlowMapStrength(strength float64) { //gd:Environment.set_glow_map_strength
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_map_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_map_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
 }
 
 //go:nosplit
 func (self class) GetGlowMapStrength() float64 { //gd:Environment.get_glow_map_strength
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_map_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_map_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlowMap(mode [1]gdclass.Texture) { //gd:Environment.set_glow_map
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_map), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mode gdextension.Object }{gdextension.Object(gd.ObjectChecked(mode[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_glow_map), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mode gdextension.Object }{gdextension.Object(gd.ObjectChecked(mode[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetGlowMap() [1]gdclass.Texture { //gd:Environment.get_glow_map
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_map), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_map), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFogEnabled(enabled bool) { //gd:Environment.set_fog_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFogEnabled() bool { //gd:Environment.is_fog_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_fog_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_fog_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFogMode(mode FogMode) { //gd:Environment.set_fog_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode FogMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode FogMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetFogMode() FogMode { //gd:Environment.get_fog_mode
-	var r_ret = gdextension.Call[FogMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[FogMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFogLightColor(light_color Color.RGBA) { //gd:Environment.set_fog_light_color
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_light_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ light_color Color.RGBA }{light_color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_light_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ light_color Color.RGBA }{light_color}))
 }
 
 //go:nosplit
 func (self class) GetFogLightColor() Color.RGBA { //gd:Environment.get_fog_light_color
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_light_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_light_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFogLightEnergy(light_energy float64) { //gd:Environment.set_fog_light_energy
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_light_energy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ light_energy float64 }{light_energy}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_light_energy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ light_energy float64 }{light_energy}))
 }
 
 //go:nosplit
 func (self class) GetFogLightEnergy() float64 { //gd:Environment.get_fog_light_energy
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_light_energy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_light_energy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFogSunScatter(sun_scatter float64) { //gd:Environment.set_fog_sun_scatter
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_sun_scatter), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sun_scatter float64 }{sun_scatter}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_sun_scatter), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sun_scatter float64 }{sun_scatter}))
 }
 
 //go:nosplit
 func (self class) GetFogSunScatter() float64 { //gd:Environment.get_fog_sun_scatter
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_sun_scatter), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_sun_scatter), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFogDensity(density float64) { //gd:Environment.set_fog_density
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_density), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ density float64 }{density}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_density), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ density float64 }{density}))
 }
 
 //go:nosplit
 func (self class) GetFogDensity() float64 { //gd:Environment.get_fog_density
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_density), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_density), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFogHeight(height float64) { //gd:Environment.set_fog_height
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_height), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height float64 }{height}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_height), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height float64 }{height}))
 }
 
 //go:nosplit
 func (self class) GetFogHeight() float64 { //gd:Environment.get_fog_height
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_height), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_height), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFogHeightDensity(height_density float64) { //gd:Environment.set_fog_height_density
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_height_density), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height_density float64 }{height_density}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_height_density), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height_density float64 }{height_density}))
 }
 
 //go:nosplit
 func (self class) GetFogHeightDensity() float64 { //gd:Environment.get_fog_height_density
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_height_density), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_height_density), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFogAerialPerspective(aerial_perspective float64) { //gd:Environment.set_fog_aerial_perspective
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_aerial_perspective), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ aerial_perspective float64 }{aerial_perspective}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_aerial_perspective), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ aerial_perspective float64 }{aerial_perspective}))
 }
 
 //go:nosplit
 func (self class) GetFogAerialPerspective() float64 { //gd:Environment.get_fog_aerial_perspective
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_aerial_perspective), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_aerial_perspective), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFogSkyAffect(sky_affect float64) { //gd:Environment.set_fog_sky_affect
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_sky_affect), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sky_affect float64 }{sky_affect}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_sky_affect), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sky_affect float64 }{sky_affect}))
 }
 
 //go:nosplit
 func (self class) GetFogSkyAffect() float64 { //gd:Environment.get_fog_sky_affect
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_sky_affect), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_sky_affect), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFogDepthCurve(curve float64) { //gd:Environment.set_fog_depth_curve
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_depth_curve), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ curve float64 }{curve}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_depth_curve), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ curve float64 }{curve}))
 }
 
 //go:nosplit
 func (self class) GetFogDepthCurve() float64 { //gd:Environment.get_fog_depth_curve
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_depth_curve), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_depth_curve), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFogDepthBegin(begin float64) { //gd:Environment.set_fog_depth_begin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_depth_begin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ begin float64 }{begin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_depth_begin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ begin float64 }{begin}))
 }
 
 //go:nosplit
 func (self class) GetFogDepthBegin() float64 { //gd:Environment.get_fog_depth_begin
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_depth_begin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_depth_begin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFogDepthEnd(end float64) { //gd:Environment.set_fog_depth_end
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_depth_end), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ end float64 }{end}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_fog_depth_end), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ end float64 }{end}))
 }
 
 //go:nosplit
 func (self class) GetFogDepthEnd() float64 { //gd:Environment.get_fog_depth_end
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_depth_end), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_fog_depth_end), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumetricFogEnabled(enabled bool) { //gd:Environment.set_volumetric_fog_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsVolumetricFogEnabled() bool { //gd:Environment.is_volumetric_fog_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_volumetric_fog_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_volumetric_fog_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumetricFogEmission(color Color.RGBA) { //gd:Environment.set_volumetric_fog_emission
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_emission), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_emission), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetVolumetricFogEmission() Color.RGBA { //gd:Environment.get_volumetric_fog_emission
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_emission), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_emission), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumetricFogAlbedo(color Color.RGBA) { //gd:Environment.set_volumetric_fog_albedo
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_albedo), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_albedo), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetVolumetricFogAlbedo() Color.RGBA { //gd:Environment.get_volumetric_fog_albedo
-	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_albedo), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_albedo), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumetricFogDensity(density float64) { //gd:Environment.set_volumetric_fog_density
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_density), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ density float64 }{density}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_density), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ density float64 }{density}))
 }
 
 //go:nosplit
 func (self class) GetVolumetricFogDensity() float64 { //gd:Environment.get_volumetric_fog_density
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_density), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_density), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumetricFogEmissionEnergy(begin float64) { //gd:Environment.set_volumetric_fog_emission_energy
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_emission_energy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ begin float64 }{begin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_emission_energy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ begin float64 }{begin}))
 }
 
 //go:nosplit
 func (self class) GetVolumetricFogEmissionEnergy() float64 { //gd:Environment.get_volumetric_fog_emission_energy
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_emission_energy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_emission_energy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumetricFogAnisotropy(anisotropy float64) { //gd:Environment.set_volumetric_fog_anisotropy
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_anisotropy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ anisotropy float64 }{anisotropy}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_anisotropy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ anisotropy float64 }{anisotropy}))
 }
 
 //go:nosplit
 func (self class) GetVolumetricFogAnisotropy() float64 { //gd:Environment.get_volumetric_fog_anisotropy
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_anisotropy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_anisotropy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumetricFogLength(length float64) { //gd:Environment.set_volumetric_fog_length
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetVolumetricFogLength() float64 { //gd:Environment.get_volumetric_fog_length
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumetricFogDetailSpread(detail_spread float64) { //gd:Environment.set_volumetric_fog_detail_spread
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_detail_spread), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ detail_spread float64 }{detail_spread}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_detail_spread), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ detail_spread float64 }{detail_spread}))
 }
 
 //go:nosplit
 func (self class) GetVolumetricFogDetailSpread() float64 { //gd:Environment.get_volumetric_fog_detail_spread
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_detail_spread), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_detail_spread), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumetricFogGiInject(gi_inject float64) { //gd:Environment.set_volumetric_fog_gi_inject
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_gi_inject), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gi_inject float64 }{gi_inject}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_gi_inject), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gi_inject float64 }{gi_inject}))
 }
 
 //go:nosplit
 func (self class) GetVolumetricFogGiInject() float64 { //gd:Environment.get_volumetric_fog_gi_inject
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_gi_inject), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_gi_inject), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumetricFogAmbientInject(enabled float64) { //gd:Environment.set_volumetric_fog_ambient_inject
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_ambient_inject), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ enabled float64 }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_ambient_inject), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ enabled float64 }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetVolumetricFogAmbientInject() float64 { //gd:Environment.get_volumetric_fog_ambient_inject
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_ambient_inject), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_ambient_inject), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumetricFogSkyAffect(sky_affect float64) { //gd:Environment.set_volumetric_fog_sky_affect
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_sky_affect), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sky_affect float64 }{sky_affect}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_sky_affect), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sky_affect float64 }{sky_affect}))
 }
 
 //go:nosplit
 func (self class) GetVolumetricFogSkyAffect() float64 { //gd:Environment.get_volumetric_fog_sky_affect
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_sky_affect), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_sky_affect), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumetricFogTemporalReprojectionEnabled(enabled bool) { //gd:Environment.set_volumetric_fog_temporal_reprojection_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_temporal_reprojection_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_temporal_reprojection_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsVolumetricFogTemporalReprojectionEnabled() bool { //gd:Environment.is_volumetric_fog_temporal_reprojection_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_volumetric_fog_temporal_reprojection_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_volumetric_fog_temporal_reprojection_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumetricFogTemporalReprojectionAmount(temporal_reprojection_amount float64) { //gd:Environment.set_volumetric_fog_temporal_reprojection_amount
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_temporal_reprojection_amount), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ temporal_reprojection_amount float64 }{temporal_reprojection_amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_volumetric_fog_temporal_reprojection_amount), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ temporal_reprojection_amount float64 }{temporal_reprojection_amount}))
 }
 
 //go:nosplit
 func (self class) GetVolumetricFogTemporalReprojectionAmount() float64 { //gd:Environment.get_volumetric_fog_temporal_reprojection_amount
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_temporal_reprojection_amount), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_volumetric_fog_temporal_reprojection_amount), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAdjustmentEnabled(enabled bool) { //gd:Environment.set_adjustment_enabled
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_adjustment_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_adjustment_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsAdjustmentEnabled() bool { //gd:Environment.is_adjustment_enabled
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_adjustment_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_is_adjustment_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAdjustmentBrightness(brightness float64) { //gd:Environment.set_adjustment_brightness
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_adjustment_brightness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ brightness float64 }{brightness}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_adjustment_brightness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ brightness float64 }{brightness}))
 }
 
 //go:nosplit
 func (self class) GetAdjustmentBrightness() float64 { //gd:Environment.get_adjustment_brightness
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_adjustment_brightness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_adjustment_brightness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAdjustmentContrast(contrast float64) { //gd:Environment.set_adjustment_contrast
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_adjustment_contrast), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ contrast float64 }{contrast}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_adjustment_contrast), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ contrast float64 }{contrast}))
 }
 
 //go:nosplit
 func (self class) GetAdjustmentContrast() float64 { //gd:Environment.get_adjustment_contrast
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_adjustment_contrast), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_adjustment_contrast), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAdjustmentSaturation(saturation float64) { //gd:Environment.set_adjustment_saturation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_adjustment_saturation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ saturation float64 }{saturation}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_adjustment_saturation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ saturation float64 }{saturation}))
 }
 
 //go:nosplit
 func (self class) GetAdjustmentSaturation() float64 { //gd:Environment.get_adjustment_saturation
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_adjustment_saturation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_adjustment_saturation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAdjustmentColorCorrection(color_correction [1]gdclass.Texture) { //gd:Environment.set_adjustment_color_correction
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_adjustment_color_correction), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ color_correction gdextension.Object }{gdextension.Object(gd.ObjectChecked(color_correction[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_set_adjustment_color_correction), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ color_correction gdextension.Object }{gdextension.Object(gd.ObjectChecked(color_correction[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetAdjustmentColorCorrection() [1]gdclass.Texture { //gd:Environment.get_adjustment_color_correction
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_adjustment_color_correction), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_adjustment_color_correction), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture](r_ret)}
 	return ret
 }

@@ -125,7 +125,7 @@ Returns the [OpenXRBindingModifier] currently being edited.
 */
 //go:nosplit
 func (self class) GetBindingModifier() [1]gdclass.OpenXRBindingModifier { //gd:OpenXRBindingModifierEditor.get_binding_modifier
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRBindingModifierEditor.Bind_get_binding_modifier), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRBindingModifierEditor.Bind_get_binding_modifier), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.OpenXRBindingModifier{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRBindingModifier](r_ret)}
 	return ret
 }
@@ -135,7 +135,7 @@ Setup this editor for the provided [param action_map] and [param binding_modifie
 */
 //go:nosplit
 func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, binding_modifier [1]gdclass.OpenXRBindingModifier) { //gd:OpenXRBindingModifierEditor.setup
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRBindingModifierEditor.Bind_setup), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRBindingModifierEditor.Bind_setup), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action_map       gdextension.Object
 		binding_modifier gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(action_map[0].AsObject())), gdextension.Object(gd.ObjectChecked(binding_modifier[0].AsObject()))}))

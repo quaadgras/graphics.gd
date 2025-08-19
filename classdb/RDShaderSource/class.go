@@ -156,7 +156,7 @@ Sets [param source] code for the specified shader [param stage]. Equivalent to s
 */
 //go:nosplit
 func (self class) SetStageSource(stage Rendering.ShaderStage, source String.Readable) { //gd:RDShaderSource.set_stage_source
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDShaderSource.Bind_set_stage_source), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderSource.Bind_set_stage_source), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		stage  Rendering.ShaderStage
 		source gdextension.String
 	}{stage, gdextension.String(pointers.Get(gd.InternalString(source))[0])}))
@@ -167,19 +167,19 @@ Returns source code for the specified shader [param stage]. Equivalent to gettin
 */
 //go:nosplit
 func (self class) GetStageSource(stage Rendering.ShaderStage) String.Readable { //gd:RDShaderSource.get_stage_source
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDShaderSource.Bind_get_stage_source), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stage Rendering.ShaderStage }{stage}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderSource.Bind_get_stage_source), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stage Rendering.ShaderStage }{stage}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language Rendering.ShaderLanguage) { //gd:RDShaderSource.set_language
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDShaderSource.Bind_set_language), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ language Rendering.ShaderLanguage }{language}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderSource.Bind_set_language), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ language Rendering.ShaderLanguage }{language}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() Rendering.ShaderLanguage { //gd:RDShaderSource.get_language
-	var r_ret = gdextension.Call[Rendering.ShaderLanguage](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDShaderSource.Bind_get_language), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.ShaderLanguage](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderSource.Bind_get_language), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

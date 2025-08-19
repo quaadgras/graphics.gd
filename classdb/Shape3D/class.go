@@ -120,24 +120,24 @@ func (self Instance) SetMargin(value Float.X) {
 
 //go:nosplit
 func (self class) SetCustomSolverBias(bias float64) { //gd:Shape3D.set_custom_solver_bias
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Shape3D.Bind_set_custom_solver_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shape3D.Bind_set_custom_solver_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
 }
 
 //go:nosplit
 func (self class) GetCustomSolverBias() float64 { //gd:Shape3D.get_custom_solver_bias
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Shape3D.Bind_get_custom_solver_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shape3D.Bind_get_custom_solver_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMargin(margin float64) { //gd:Shape3D.set_margin
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Shape3D.Bind_set_margin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shape3D.Bind_set_margin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
 }
 
 //go:nosplit
 func (self class) GetMargin() float64 { //gd:Shape3D.get_margin
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Shape3D.Bind_get_margin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shape3D.Bind_get_margin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -147,7 +147,7 @@ Returns the [ArrayMesh] used to draw the debug collision for this [Shape3D].
 */
 //go:nosplit
 func (self class) GetDebugMesh() [1]gdclass.ArrayMesh { //gd:Shape3D.get_debug_mesh
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Shape3D.Bind_get_debug_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shape3D.Bind_get_debug_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }

@@ -125,7 +125,7 @@ tween.tween_callback(queue_free).set_delay(2)
 */
 //go:nosplit
 func (self class) SetDelay(delay float64) [1]gdclass.CallbackTweener { //gd:CallbackTweener.set_delay
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CallbackTweener.Bind_set_delay), gdextension.SizeObject|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ delay float64 }{delay}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CallbackTweener.Bind_set_delay), gdextension.SizeObject|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ delay float64 }{delay}))
 	var ret = [1]gdclass.CallbackTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.CallbackTweener](r_ret)}
 	return ret
 }

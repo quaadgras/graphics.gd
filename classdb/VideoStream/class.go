@@ -157,12 +157,12 @@ func (class) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.Vide
 
 //go:nosplit
 func (self class) SetFile(file String.Readable) { //gd:VideoStream.set_file
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VideoStream.Bind_set_file), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(file))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStream.Bind_set_file), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(file))[0])}))
 }
 
 //go:nosplit
 func (self class) GetFile() String.Readable { //gd:VideoStream.get_file
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VideoStream.Bind_get_file), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStream.Bind_get_file), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

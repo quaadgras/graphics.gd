@@ -332,7 +332,7 @@ func (class) _rest_info(impl func(ptr unsafe.Pointer, shape_rid RID.Any, transfo
 
 //go:nosplit
 func (self class) IsBodyExcludedFromQuery(body RID.Any) bool { //gd:PhysicsDirectSpaceState2DExtension.is_body_excluded_from_query
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState2DExtension.Bind_is_body_excluded_from_query), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState2DExtension.Bind_is_body_excluded_from_query), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
 	var ret = r_ret
 	return ret
 }

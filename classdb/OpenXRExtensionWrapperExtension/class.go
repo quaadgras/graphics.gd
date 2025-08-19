@@ -1118,7 +1118,7 @@ Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR
 */
 //go:nosplit
 func (self class) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension { //gd:OpenXRExtensionWrapperExtension.get_openxr_api
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_get_openxr_api), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_get_openxr_api), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.OpenXRAPIExtension{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRAPIExtension](r_ret)}
 	return ret
 }
@@ -1128,7 +1128,7 @@ Registers the extension. This should happen at core module initialization level.
 */
 //go:nosplit
 func (self class) RegisterExtensionWrapper() { //gd:OpenXRExtensionWrapperExtension.register_extension_wrapper
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_register_extension_wrapper), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRExtensionWrapperExtension.Bind_register_extension_wrapper), 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsOpenXRExtensionWrapperExtension() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

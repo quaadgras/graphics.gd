@@ -125,7 +125,7 @@ Returns the estimated size of the plane that was detected. Say when the anchor r
 */
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:XRAnchor3D.get_size
-	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRAnchor3D.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRAnchor3D.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -135,7 +135,7 @@ Returns a plane aligned with our anchor; handy for intersection testing.
 */
 //go:nosplit
 func (self class) GetPlane() Plane.NormalD { //gd:XRAnchor3D.get_plane
-	var r_ret = gdextension.Call[Plane.NormalD](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRAnchor3D.Bind_get_plane), gdextension.SizePlane, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Plane.NormalD](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRAnchor3D.Bind_get_plane), gdextension.SizePlane, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

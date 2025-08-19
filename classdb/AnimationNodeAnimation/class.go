@@ -170,96 +170,96 @@ func (self Instance) SetLoopMode(value Animation.LoopMode) {
 
 //go:nosplit
 func (self class) SetAnimation(name String.Name) { //gd:AnimationNodeAnimation.set_animation
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_animation), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_animation), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetAnimation() String.Name { //gd:AnimationNodeAnimation.get_animation
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_get_animation), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_get_animation), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlayMode(mode PlayMode) { //gd:AnimationNodeAnimation.set_play_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_play_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode PlayMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_play_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode PlayMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetPlayMode() PlayMode { //gd:AnimationNodeAnimation.get_play_mode
-	var r_ret = gdextension.Call[PlayMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_get_play_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PlayMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_get_play_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAdvanceOnStart(advance_on_start bool) { //gd:AnimationNodeAnimation.set_advance_on_start
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_advance_on_start), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ advance_on_start bool }{advance_on_start}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_advance_on_start), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ advance_on_start bool }{advance_on_start}))
 }
 
 //go:nosplit
 func (self class) IsAdvanceOnStart() bool { //gd:AnimationNodeAnimation.is_advance_on_start
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_is_advance_on_start), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_is_advance_on_start), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseCustomTimeline(use_custom_timeline bool) { //gd:AnimationNodeAnimation.set_use_custom_timeline
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_use_custom_timeline), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_custom_timeline bool }{use_custom_timeline}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_use_custom_timeline), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_custom_timeline bool }{use_custom_timeline}))
 }
 
 //go:nosplit
 func (self class) IsUsingCustomTimeline() bool { //gd:AnimationNodeAnimation.is_using_custom_timeline
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_is_using_custom_timeline), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_is_using_custom_timeline), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTimelineLength(timeline_length float64) { //gd:AnimationNodeAnimation.set_timeline_length
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_timeline_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ timeline_length float64 }{timeline_length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_timeline_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ timeline_length float64 }{timeline_length}))
 }
 
 //go:nosplit
 func (self class) GetTimelineLength() float64 { //gd:AnimationNodeAnimation.get_timeline_length
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_get_timeline_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_get_timeline_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStretchTimeScale(stretch_time_scale bool) { //gd:AnimationNodeAnimation.set_stretch_time_scale
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_stretch_time_scale), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ stretch_time_scale bool }{stretch_time_scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_stretch_time_scale), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ stretch_time_scale bool }{stretch_time_scale}))
 }
 
 //go:nosplit
 func (self class) IsStretchingTimeScale() bool { //gd:AnimationNodeAnimation.is_stretching_time_scale
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_is_stretching_time_scale), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_is_stretching_time_scale), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStartOffset(start_offset float64) { //gd:AnimationNodeAnimation.set_start_offset
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_start_offset), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ start_offset float64 }{start_offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_start_offset), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ start_offset float64 }{start_offset}))
 }
 
 //go:nosplit
 func (self class) GetStartOffset() float64 { //gd:AnimationNodeAnimation.get_start_offset
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_get_start_offset), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_get_start_offset), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoopMode(loop_mode Animation.LoopMode) { //gd:AnimationNodeAnimation.set_loop_mode
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_loop_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ loop_mode Animation.LoopMode }{loop_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_set_loop_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ loop_mode Animation.LoopMode }{loop_mode}))
 }
 
 //go:nosplit
 func (self class) GetLoopMode() Animation.LoopMode { //gd:AnimationNodeAnimation.get_loop_mode
-	var r_ret = gdextension.Call[Animation.LoopMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_get_loop_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Animation.LoopMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeAnimation.Bind_get_loop_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -128,36 +128,36 @@ func (self Instance) SetAmplitude(value Float.X) {
 
 //go:nosplit
 func (self class) SetDuration(duration int64) { //gd:OpenXRHapticVibration.set_duration
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRHapticVibration.Bind_set_duration), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ duration int64 }{duration}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHapticVibration.Bind_set_duration), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ duration int64 }{duration}))
 }
 
 //go:nosplit
 func (self class) GetDuration() int64 { //gd:OpenXRHapticVibration.get_duration
-	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRHapticVibration.Bind_get_duration), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHapticVibration.Bind_get_duration), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrequency(frequency float64) { //gd:OpenXRHapticVibration.set_frequency
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRHapticVibration.Bind_set_frequency), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ frequency float64 }{frequency}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHapticVibration.Bind_set_frequency), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ frequency float64 }{frequency}))
 }
 
 //go:nosplit
 func (self class) GetFrequency() float64 { //gd:OpenXRHapticVibration.get_frequency
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRHapticVibration.Bind_get_frequency), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHapticVibration.Bind_get_frequency), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAmplitude(amplitude float64) { //gd:OpenXRHapticVibration.set_amplitude
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRHapticVibration.Bind_set_amplitude), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amplitude float64 }{amplitude}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHapticVibration.Bind_set_amplitude), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amplitude float64 }{amplitude}))
 }
 
 //go:nosplit
 func (self class) GetAmplitude() float64 { //gd:OpenXRHapticVibration.get_amplitude
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRHapticVibration.Bind_get_amplitude), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHapticVibration.Bind_get_amplitude), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -147,7 +147,7 @@ Returns [code]true[/code] if the button with the given [param name] is pressed.
 */
 //go:nosplit
 func (self class) IsButtonPressed(name String.Name) bool { //gd:XRController3D.is_button_pressed
-	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRController3D.Bind_is_button_pressed), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRController3D.Bind_is_button_pressed), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -157,7 +157,7 @@ Returns a [Variant] for the input with the given [param name]. This works for an
 */
 //go:nosplit
 func (self class) GetInput(name String.Name) variant.Any { //gd:XRController3D.get_input
-	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRController3D.Bind_get_input), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRController3D.Bind_get_input), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -167,7 +167,7 @@ Returns a numeric value for the input with the given [param name]. This is used 
 */
 //go:nosplit
 func (self class) GetFloat(name String.Name) float64 { //gd:XRController3D.get_float
-	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRController3D.Bind_get_float), gdextension.SizeFloat|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRController3D.Bind_get_float), gdextension.SizeFloat|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -177,7 +177,7 @@ Returns a [Vector2] for the input with the given [param name]. This is used for 
 */
 //go:nosplit
 func (self class) GetVector2(name String.Name) Vector2.XY { //gd:XRController3D.get_vector2
-	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRController3D.Bind_get_vector2), gdextension.SizeVector2|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRController3D.Bind_get_vector2), gdextension.SizeVector2|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -187,7 +187,7 @@ Returns the hand holding this controller, if known. See [enum XRPositionalTracke
 */
 //go:nosplit
 func (self class) GetTrackerHand() XRPositionalTracker.TrackerHand { //gd:XRController3D.get_tracker_hand
-	var r_ret = gdextension.Call[XRPositionalTracker.TrackerHand](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRController3D.Bind_get_tracker_hand), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[XRPositionalTracker.TrackerHand](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRController3D.Bind_get_tracker_hand), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

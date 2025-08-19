@@ -266,7 +266,7 @@ Each entry is a column number containing a nested [Dictionary]. The column numbe
 */
 //go:nosplit
 func (self class) GetLineSyntaxHighlighting(line int64) Dictionary.Any { //gd:SyntaxHighlighter.get_line_syntax_highlighting
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SyntaxHighlighter.Bind_get_line_syntax_highlighting), gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SyntaxHighlighter.Bind_get_line_syntax_highlighting), gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -277,7 +277,7 @@ Clears then updates the [SyntaxHighlighter] caches. Override [method _update_cac
 */
 //go:nosplit
 func (self class) UpdateCache() { //gd:SyntaxHighlighter.update_cache
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SyntaxHighlighter.Bind_update_cache), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SyntaxHighlighter.Bind_update_cache), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -286,7 +286,7 @@ Then calls overridable method [method _clear_highlighting_cache].
 */
 //go:nosplit
 func (self class) ClearHighlightingCache() { //gd:SyntaxHighlighter.clear_highlighting_cache
-	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SyntaxHighlighter.Bind_clear_highlighting_cache), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SyntaxHighlighter.Bind_clear_highlighting_cache), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -294,7 +294,7 @@ Returns the associated [TextEdit] node.
 */
 //go:nosplit
 func (self class) GetTextEdit() [1]gdclass.TextEdit { //gd:SyntaxHighlighter.get_text_edit
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SyntaxHighlighter.Bind_get_text_edit), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SyntaxHighlighter.Bind_get_text_edit), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TextEdit{gd.PointerMustAssertInstanceID[gdclass.TextEdit](r_ret)}
 	return ret
 }

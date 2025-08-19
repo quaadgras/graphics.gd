@@ -115,7 +115,7 @@ Returns the [JavaClass] that this object is an instance of.
 */
 //go:nosplit
 func (self class) GetJavaClass() [1]gdclass.JavaClass { //gd:JavaObject.get_java_class
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.JavaObject.Bind_get_java_class), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JavaObject.Bind_get_java_class), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.JavaClass{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaClass](r_ret)}
 	return ret
 }
