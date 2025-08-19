@@ -81,7 +81,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 			} else if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
 				vtype, ok := gd.VariantTypeOf(etype)
 				if ok {
-					name := fmt.Sprintf("event")
+					name := "event"
 					if len(argNames) > 0 {
 						name = argNames[0]
 					}

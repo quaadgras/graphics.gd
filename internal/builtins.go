@@ -1,7 +1,6 @@
 package gd
 
 import (
-	"errors"
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
@@ -482,9 +481,9 @@ func (o Object) Call(method StringName, args ...Variant) (Variant, error) {
 		)
 		return pointers.New[Variant]([3]uint64(result)), err.Err()
 	}
-	return Variant{}, errors.New("Object does not define method ")
-	return NewVariant(o).Call(method, args...)
+	return NewVariant(o).Call(method, args...) // FIXME is this ok?
 }
+
 func (o Object) CanTranslateMessages() bool {
 	return gdextension.Call[bool](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_can_translate_messages, gdextension.SizeBool, nil)
 }

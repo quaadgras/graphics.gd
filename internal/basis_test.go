@@ -25,7 +25,7 @@ func TestBasis(t *testing.T) {
 	script.Reload()
 	runner.SetScript(script)
 
-	angles := Euler.Radians{-1, 0.2, 0}
+	angles := Euler.Radians{X: -1, Y: 0.2, Z: 0}
 	engine := Object.Call(runner, "test_basis", angles).(Basis.XYZ)
 	if engine != Basis.FromEuler(angles, Angle.OrderYXZ) {
 		t.Fatalf("Expected %v, got %v", Object.Call(runner, "test_basis", angles), Basis.FromEuler(angles, Angle.OrderYXZ))

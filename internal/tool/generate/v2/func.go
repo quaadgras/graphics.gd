@@ -338,5 +338,4 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	}
 	fmt.Fprintf(w, "\t}\n")
 	fmt.Fprintf(w, "}\n")
-	return
 }

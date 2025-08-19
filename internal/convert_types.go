@@ -261,7 +261,7 @@ func convertToGoStruct(rtype reflect.Type, value any) (reflect.Value, error) {
 	}
 	switch value := value.(type) {
 	case IsClass:
-		var object = value.(IsClass).AsObject()
+		var object = value.AsObject()
 		var structure = reflect.New(rtype).Elem()
 		for i := 0; i < rtype.NumField(); i++ {
 			field := rtype.Field(i)
