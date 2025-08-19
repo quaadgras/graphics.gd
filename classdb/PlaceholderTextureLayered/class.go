@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -123,19 +121,19 @@ func (self Instance) SetLayers(value int) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2i.XY) { //gd:PlaceholderTextureLayered.set_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PlaceholderTextureLayered.Bind_set_size, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaceholderTextureLayered.Bind_set_size), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector2i.XY { //gd:PlaceholderTextureLayered.get_size
-	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.PlaceholderTextureLayered.Bind_get_size, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaceholderTextureLayered.Bind_get_size), gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLayers(layers int64) { //gd:PlaceholderTextureLayered.set_layers
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PlaceholderTextureLayered.Bind_set_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layers int64 }{layers}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaceholderTextureLayered.Bind_set_layers), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layers int64 }{layers}))
 }
 func (self class) AsPlaceholderTextureLayered() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

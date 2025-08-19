@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -225,108 +223,108 @@ func (self Instance) SetAutorestartRandomDelay(value Float.X) {
 
 //go:nosplit
 func (self class) SetFadeinTime(time float64) { //gd:AnimationNodeOneShot.set_fadein_time
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_set_fadein_time, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_set_fadein_time), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
 }
 
 //go:nosplit
 func (self class) GetFadeinTime() float64 { //gd:AnimationNodeOneShot.get_fadein_time
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadein_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadein_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFadeinCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeOneShot.set_fadein_curve
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_set_fadein_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_set_fadein_curve), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetFadeinCurve() [1]gdclass.Curve { //gd:AnimationNodeOneShot.get_fadein_curve
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadein_curve, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadein_curve), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFadeoutTime(time float64) { //gd:AnimationNodeOneShot.set_fadeout_time
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_set_fadeout_time, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_set_fadeout_time), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
 }
 
 //go:nosplit
 func (self class) GetFadeoutTime() float64 { //gd:AnimationNodeOneShot.get_fadeout_time
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadeout_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadeout_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFadeoutCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeOneShot.set_fadeout_curve
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_set_fadeout_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_set_fadeout_curve), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetFadeoutCurve() [1]gdclass.Curve { //gd:AnimationNodeOneShot.get_fadeout_curve
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadeout_curve, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_get_fadeout_curve), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBreakLoopAtEnd(enable bool) { //gd:AnimationNodeOneShot.set_break_loop_at_end
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_set_break_loop_at_end, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_set_break_loop_at_end), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsLoopBrokenAtEnd() bool { //gd:AnimationNodeOneShot.is_loop_broken_at_end
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_is_loop_broken_at_end, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_is_loop_broken_at_end), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutorestart(active bool) { //gd:AnimationNodeOneShot.set_autorestart
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_set_autorestart, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_set_autorestart), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
 }
 
 //go:nosplit
 func (self class) HasAutorestart() bool { //gd:AnimationNodeOneShot.has_autorestart
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_has_autorestart, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_has_autorestart), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutorestartDelay(time float64) { //gd:AnimationNodeOneShot.set_autorestart_delay
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_set_autorestart_delay, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_set_autorestart_delay), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
 }
 
 //go:nosplit
 func (self class) GetAutorestartDelay() float64 { //gd:AnimationNodeOneShot.get_autorestart_delay
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_get_autorestart_delay, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_get_autorestart_delay), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutorestartRandomDelay(time float64) { //gd:AnimationNodeOneShot.set_autorestart_random_delay
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_set_autorestart_random_delay, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_set_autorestart_random_delay), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
 }
 
 //go:nosplit
 func (self class) GetAutorestartRandomDelay() float64 { //gd:AnimationNodeOneShot.get_autorestart_random_delay
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_get_autorestart_random_delay, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_get_autorestart_random_delay), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMixMode(mode MixMode) { //gd:AnimationNodeOneShot.set_mix_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_set_mix_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode MixMode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_set_mix_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode MixMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetMixMode() MixMode { //gd:AnimationNodeOneShot.get_mix_mode
-	var r_ret = gdunsafe.Call[MixMode](self.AsObject(), gd.Global.Methods.AnimationNodeOneShot.Bind_get_mix_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[MixMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeOneShot.Bind_get_mix_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

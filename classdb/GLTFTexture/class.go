@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -117,26 +115,26 @@ func (self Instance) SetSampler(value int) {
 
 //go:nosplit
 func (self class) GetSrcImage() int64 { //gd:GLTFTexture.get_src_image
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFTexture.Bind_get_src_image, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFTexture.Bind_get_src_image), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSrcImage(src_image int64) { //gd:GLTFTexture.set_src_image
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFTexture.Bind_set_src_image, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ src_image int64 }{src_image}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFTexture.Bind_set_src_image), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ src_image int64 }{src_image}))
 }
 
 //go:nosplit
 func (self class) GetSampler() int64 { //gd:GLTFTexture.get_sampler
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFTexture.Bind_get_sampler, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFTexture.Bind_get_sampler), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSampler(sampler int64) { //gd:GLTFTexture.set_sampler
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFTexture.Bind_set_sampler, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ sampler int64 }{sampler}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFTexture.Bind_set_sampler), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ sampler int64 }{sampler}))
 }
 func (self class) AsGLTFTexture() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGLTFTexture() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

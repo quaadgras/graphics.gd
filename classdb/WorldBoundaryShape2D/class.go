@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -123,24 +121,24 @@ func (self Instance) SetDistance(value Float.X) {
 
 //go:nosplit
 func (self class) SetNormal(normal Vector2.XY) { //gd:WorldBoundaryShape2D.set_normal
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WorldBoundaryShape2D.Bind_set_normal, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ normal Vector2.XY }{normal}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WorldBoundaryShape2D.Bind_set_normal), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ normal Vector2.XY }{normal}))
 }
 
 //go:nosplit
 func (self class) GetNormal() Vector2.XY { //gd:WorldBoundaryShape2D.get_normal
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.WorldBoundaryShape2D.Bind_get_normal, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WorldBoundaryShape2D.Bind_get_normal), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDistance(distance float64) { //gd:WorldBoundaryShape2D.set_distance
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WorldBoundaryShape2D.Bind_set_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WorldBoundaryShape2D.Bind_set_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetDistance() float64 { //gd:WorldBoundaryShape2D.get_distance
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.WorldBoundaryShape2D.Bind_get_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WorldBoundaryShape2D.Bind_get_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -192,7 +190,7 @@ func (self Instance) SetInterior(value bool) {
 
 //go:nosplit
 func (self class) Allocate(to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3.XYZ, octree_cells Packed.Bytes, data_cells Packed.Bytes, distance_field Packed.Bytes, level_counts Packed.Array[int32]) { //gd:VoxelGIData.allocate
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_allocate, 0|(gdextension.SizeTransform3D<<4)|(gdextension.SizeAABB<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizePackedArray<<28), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_allocate), 0|(gdextension.SizeTransform3D<<4)|(gdextension.SizeAABB<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizePackedArray<<28), unsafe.Pointer(&struct {
 		to_cell_xform  Transform3D.BasisOrigin
 		aabb           AABB.PositionSize
 		octree_size    Vector3.XYZ
@@ -209,126 +207,126 @@ Returns the bounds of the baked voxel data as an [AABB], which should match [mem
 */
 //go:nosplit
 func (self class) GetBounds() AABB.PositionSize { //gd:VoxelGIData.get_bounds
-	var r_ret = gdunsafe.Call[AABB.PositionSize](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_get_bounds, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_get_bounds), gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetOctreeSize() Vector3.XYZ { //gd:VoxelGIData.get_octree_size
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_get_octree_size, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_get_octree_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetToCellXform() Transform3D.BasisOrigin { //gd:VoxelGIData.get_to_cell_xform
-	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_get_to_cell_xform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_get_to_cell_xform), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) GetOctreeCells() Packed.Bytes { //gd:VoxelGIData.get_octree_cells
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_get_octree_cells, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_get_octree_cells), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetDataCells() Packed.Bytes { //gd:VoxelGIData.get_data_cells
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_get_data_cells, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_get_data_cells), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetLevelCounts() Packed.Array[int32] { //gd:VoxelGIData.get_level_counts
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_get_level_counts, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_get_level_counts), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDynamicRange(dynamic_range float64) { //gd:VoxelGIData.set_dynamic_range
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_set_dynamic_range, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ dynamic_range float64 }{dynamic_range}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_set_dynamic_range), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ dynamic_range float64 }{dynamic_range}))
 }
 
 //go:nosplit
 func (self class) GetDynamicRange() float64 { //gd:VoxelGIData.get_dynamic_range
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_get_dynamic_range, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_get_dynamic_range), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnergy(energy float64) { //gd:VoxelGIData.set_energy
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_set_energy, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ energy float64 }{energy}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_set_energy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ energy float64 }{energy}))
 }
 
 //go:nosplit
 func (self class) GetEnergy() float64 { //gd:VoxelGIData.get_energy
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_get_energy, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_get_energy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBias(bias float64) { //gd:VoxelGIData.set_bias
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_set_bias, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_set_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
 }
 
 //go:nosplit
 func (self class) GetBias() float64 { //gd:VoxelGIData.get_bias
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_get_bias, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_get_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNormalBias(bias float64) { //gd:VoxelGIData.set_normal_bias
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_set_normal_bias, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_set_normal_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
 }
 
 //go:nosplit
 func (self class) GetNormalBias() float64 { //gd:VoxelGIData.get_normal_bias
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_get_normal_bias, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_get_normal_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPropagation(propagation float64) { //gd:VoxelGIData.set_propagation
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_set_propagation, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ propagation float64 }{propagation}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_set_propagation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ propagation float64 }{propagation}))
 }
 
 //go:nosplit
 func (self class) GetPropagation() float64 { //gd:VoxelGIData.get_propagation
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_get_propagation, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_get_propagation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInterior(interior bool) { //gd:VoxelGIData.set_interior
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_set_interior, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ interior bool }{interior}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_set_interior), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ interior bool }{interior}))
 }
 
 //go:nosplit
 func (self class) IsInterior() bool { //gd:VoxelGIData.is_interior
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_is_interior, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_is_interior), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseTwoBounces(enable bool) { //gd:VoxelGIData.set_use_two_bounces
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_set_use_two_bounces, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_set_use_two_bounces), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingTwoBounces() bool { //gd:VoxelGIData.is_using_two_bounces
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.VoxelGIData.Bind_is_using_two_bounces, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VoxelGIData.Bind_is_using_two_bounces), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

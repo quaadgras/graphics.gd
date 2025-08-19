@@ -82,7 +82,7 @@ type Iterator struct {
 func (iter Iterator) Next() bool {
 	var err gdextension.CallError
 	var raw = pointers.Get(iter.iter)
-	next := gdextension.Host.Iterators.Next(pointers.Get(iter.self), gdextension.CallReturns[gdextension.Iterator](&raw), pointers.Get(iter.iter), gdextension.CallReturns[gdextension.CallError](&err))
+	next := gdextension.Host.Iterators.Next(pointers.Get(iter.self), gdextension.CallMutates[gdextension.Iterator](&raw), gdextension.CallReturns[gdextension.CallError](&err))
 	pointers.Set(iter.iter, raw)
 	return next
 }
@@ -90,7 +90,7 @@ func (iter Iterator) Next() bool {
 func (iter Iterator) Value() Variant {
 	var err gdextension.CallError
 	var raw gdextension.Variant
-	gdextension.Host.Iterators.Load(pointers.Get(iter.self), gdextension.CallReturns[gdextension.Variant](&raw), pointers.Get(iter.iter), gdextension.CallReturns[gdextension.CallError](&err))
+	gdextension.Host.Iterators.Load(pointers.Get(iter.self), pointers.Get(iter.iter), gdextension.CallReturns[gdextension.Variant](&raw), gdextension.CallReturns[gdextension.CallError](&err))
 	if err.Type != 0 {
 		panic("failed to get iterator value")
 	}

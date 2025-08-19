@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -50,7 +49,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -138,7 +136,7 @@ Locks this [Mutex], blocks until it is unlocked by the current owner.
 */
 //go:nosplit
 func (self class) Lock() { //gd:Mutex.lock
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Mutex.Bind_lock, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Mutex.Bind_lock), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -147,7 +145,7 @@ Tries locking this [Mutex], but does not block. Returns [code]true[/code] on suc
 */
 //go:nosplit
 func (self class) TryLock() bool { //gd:Mutex.try_lock
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Mutex.Bind_try_lock, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Mutex.Bind_try_lock), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -159,7 +157,7 @@ Unlocks this [Mutex], leaving it to other threads.
 */
 //go:nosplit
 func (self class) Unlock() { //gd:Mutex.unlock
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Mutex.Bind_unlock, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Mutex.Bind_unlock), 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsMutex() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsMutex() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

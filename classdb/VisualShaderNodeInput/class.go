@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -121,12 +119,12 @@ func (self Instance) SetInputName(value string) {
 
 //go:nosplit
 func (self class) SetInputName(name String.Readable) { //gd:VisualShaderNodeInput.set_input_name
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeInput.Bind_set_input_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeInput.Bind_set_input_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetInputName() String.Readable { //gd:VisualShaderNodeInput.get_input_name
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.VisualShaderNodeInput.Bind_get_input_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeInput.Bind_get_input_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -136,7 +134,7 @@ Returns a translated name of the current constant in the Godot Shader Language. 
 */
 //go:nosplit
 func (self class) GetInputRealName() String.Readable { //gd:VisualShaderNodeInput.get_input_real_name
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.VisualShaderNodeInput.Bind_get_input_real_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeInput.Bind_get_input_real_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -115,7 +113,7 @@ func (self Instance) SetSize(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2.XY) { //gd:PlaceholderTexture2D.set_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PlaceholderTexture2D.Bind_set_size, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PlaceholderTexture2D.Bind_set_size), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
 }
 func (self class) AsPlaceholderTexture2D() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPlaceholderTexture2D() Instance { return *((*Instance)(unsafe.Pointer(&self))) }

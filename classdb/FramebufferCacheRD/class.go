@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -115,7 +113,7 @@ Creates, or obtains a cached, framebuffer. [param textures] lists textures acces
 */
 //go:nosplit
 func (self class) GetCacheMultipass(textures Array.Contains[RID.Any], passes Array.Contains[[1]gdclass.RDFramebufferPass], views int64) RID.Any { //gd:FramebufferCacheRD.get_cache_multipass
-	var r_ret = gdunsafe.CallStatic[RID.Any](gd.Global.Methods.FramebufferCacheRD.Bind_get_cache_multipass, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[RID.Any](gdextension.MethodForClass(gd.Global.Methods.FramebufferCacheRD.Bind_get_cache_multipass), gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		textures gdextension.Array
 		passes   gdextension.Array
 		views    int64

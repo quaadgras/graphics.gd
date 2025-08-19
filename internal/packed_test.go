@@ -12,7 +12,7 @@ func TestPacked(t *testing.T) {
 	if array.Size() != 2 {
 		t.Fatal("packed array failed to resize")
 	}
-	array.Set(0, 1)
+	array.SetIndex(0, 1)
 	if array.Index(0) != 1 {
 		t.Fatal("bad")
 	}

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -180,12 +178,12 @@ func (self Instance) SetAxisStretchVertical(value AxisStretchMode) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:NinePatchRect.set_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NinePatchRect.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:NinePatchRect.get_texture
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.NinePatchRect.Bind_get_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -195,7 +193,7 @@ Sets the size of the margin on the specified [enum Side] to [param value] pixels
 */
 //go:nosplit
 func (self class) SetPatchMargin(margin Rect2.Side, value int64) { //gd:NinePatchRect.set_patch_margin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NinePatchRect.Bind_set_patch_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_set_patch_margin), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		margin Rect2.Side
 		value  int64
 	}{margin, value}))
@@ -206,55 +204,55 @@ Returns the size of the margin on the specified [enum Side].
 */
 //go:nosplit
 func (self class) GetPatchMargin(margin Rect2.Side) int64 { //gd:NinePatchRect.get_patch_margin
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.NinePatchRect.Bind_get_patch_margin, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_get_patch_margin), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRegionRect(rect Rect2.PositionSize) { //gd:NinePatchRect.set_region_rect
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NinePatchRect.Bind_set_region_rect, 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_set_region_rect), 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
 }
 
 //go:nosplit
 func (self class) GetRegionRect() Rect2.PositionSize { //gd:NinePatchRect.get_region_rect
-	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.NinePatchRect.Bind_get_region_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_get_region_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawCenter(draw_center bool) { //gd:NinePatchRect.set_draw_center
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NinePatchRect.Bind_set_draw_center, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_center bool }{draw_center}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_set_draw_center), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_center bool }{draw_center}))
 }
 
 //go:nosplit
 func (self class) IsDrawCenterEnabled() bool { //gd:NinePatchRect.is_draw_center_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NinePatchRect.Bind_is_draw_center_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_is_draw_center_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHAxisStretchMode(mode AxisStretchMode) { //gd:NinePatchRect.set_h_axis_stretch_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NinePatchRect.Bind_set_h_axis_stretch_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AxisStretchMode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_set_h_axis_stretch_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AxisStretchMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetHAxisStretchMode() AxisStretchMode { //gd:NinePatchRect.get_h_axis_stretch_mode
-	var r_ret = gdunsafe.Call[AxisStretchMode](self.AsObject(), gd.Global.Methods.NinePatchRect.Bind_get_h_axis_stretch_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AxisStretchMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_get_h_axis_stretch_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVAxisStretchMode(mode AxisStretchMode) { //gd:NinePatchRect.set_v_axis_stretch_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NinePatchRect.Bind_set_v_axis_stretch_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AxisStretchMode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_set_v_axis_stretch_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AxisStretchMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetVAxisStretchMode() AxisStretchMode { //gd:NinePatchRect.get_v_axis_stretch_mode
-	var r_ret = gdunsafe.Call[AxisStretchMode](self.AsObject(), gd.Global.Methods.NinePatchRect.Bind_get_v_axis_stretch_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AxisStretchMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_get_v_axis_stretch_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

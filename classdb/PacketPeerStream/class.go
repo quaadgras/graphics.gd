@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -131,36 +129,36 @@ func (self Instance) SetStreamPeer(value StreamPeer.Instance) {
 
 //go:nosplit
 func (self class) SetStreamPeer(peer [1]gdclass.StreamPeer) { //gd:PacketPeerStream.set_stream_peer
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_set_stream_peer, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(peer[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PacketPeerStream.Bind_set_stream_peer), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(peer[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetStreamPeer() [1]gdclass.StreamPeer { //gd:PacketPeerStream.get_stream_peer
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_get_stream_peer, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PacketPeerStream.Bind_get_stream_peer), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.StreamPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeer](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInputBufferMaxSize(max_size_bytes int64) { //gd:PacketPeerStream.set_input_buffer_max_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_set_input_buffer_max_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_size_bytes int64 }{max_size_bytes}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PacketPeerStream.Bind_set_input_buffer_max_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_size_bytes int64 }{max_size_bytes}))
 }
 
 //go:nosplit
 func (self class) SetOutputBufferMaxSize(max_size_bytes int64) { //gd:PacketPeerStream.set_output_buffer_max_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_set_output_buffer_max_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_size_bytes int64 }{max_size_bytes}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PacketPeerStream.Bind_set_output_buffer_max_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_size_bytes int64 }{max_size_bytes}))
 }
 
 //go:nosplit
 func (self class) GetInputBufferMaxSize() int64 { //gd:PacketPeerStream.get_input_buffer_max_size
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_get_input_buffer_max_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PacketPeerStream.Bind_get_input_buffer_max_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetOutputBufferMaxSize() int64 { //gd:PacketPeerStream.get_output_buffer_max_size
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PacketPeerStream.Bind_get_output_buffer_max_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PacketPeerStream.Bind_get_output_buffer_max_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

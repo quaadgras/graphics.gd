@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -125,12 +123,12 @@ func (self Instance) SetRect(value Rect2.PositionSize) {
 
 //go:nosplit
 func (self class) SetRect(rect Rect2.PositionSize) { //gd:VisibleOnScreenNotifier2D.set_rect
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_set_rect, 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_set_rect), 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
 }
 
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:VisibleOnScreenNotifier2D.get_rect
-	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_get_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_get_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -141,7 +139,7 @@ If [code]true[/code], the bounding rectangle is on the screen.
 */
 //go:nosplit
 func (self class) IsOnScreen() bool { //gd:VisibleOnScreenNotifier2D.is_on_screen
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_is_on_screen, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenNotifier2D.Bind_is_on_screen), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

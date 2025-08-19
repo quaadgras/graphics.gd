@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -56,7 +55,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -1008,21 +1006,21 @@ func (class) _get_velocity_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd
 
 //go:nosplit
 func (self class) GetColorTexture() RID.Any { //gd:XRInterfaceExtension.get_color_texture
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.XRInterfaceExtension.Bind_get_color_texture, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterfaceExtension.Bind_get_color_texture), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetDepthTexture() RID.Any { //gd:XRInterfaceExtension.get_depth_texture
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.XRInterfaceExtension.Bind_get_depth_texture, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterfaceExtension.Bind_get_depth_texture), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetVelocityTexture() RID.Any { //gd:XRInterfaceExtension.get_velocity_texture
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.XRInterfaceExtension.Bind_get_velocity_texture, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterfaceExtension.Bind_get_velocity_texture), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1032,7 +1030,7 @@ Blits our render results to screen optionally applying lens distortion. This can
 */
 //go:nosplit
 func (self class) AddBlit(render_target RID.Any, src_rect Rect2.PositionSize, dst_rect Rect2i.PositionSize, use_layer bool, layer int64, apply_lens_distortion bool, eye_center Vector2.XY, k1 float64, k2 float64, upscale float64, aspect_ratio float64) { //gd:XRInterfaceExtension.add_blit
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRInterfaceExtension.Bind_add_blit, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2i<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeVector2<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterfaceExtension.Bind_add_blit), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2i<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeVector2<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44), unsafe.Pointer(&struct {
 		render_target         RID.Any
 		src_rect              Rect2.PositionSize
 		dst_rect              Rect2i.PositionSize
@@ -1052,7 +1050,7 @@ Returns a valid [RID] for a texture to which we should render the current frame 
 */
 //go:nosplit
 func (self class) GetRenderTargetTexture(render_target RID.Any) RID.Any { //gd:XRInterfaceExtension.get_render_target_texture
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.XRInterfaceExtension.Bind_get_render_target_texture, gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ render_target RID.Any }{render_target}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRInterfaceExtension.Bind_get_render_target_texture), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ render_target RID.Any }{render_target}))
 	var ret = r_ret
 	return ret
 }

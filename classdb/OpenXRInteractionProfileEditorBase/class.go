@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -58,7 +57,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -121,7 +119,7 @@ Setup this editor for the provided [param action_map] and [param interaction_pro
 */
 //go:nosplit
 func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRInteractionProfileEditorBase.setup
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRInteractionProfileEditorBase.Bind_setup, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfileEditorBase.Bind_setup), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action_map          gdextension.Object
 		interaction_profile gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(action_map[0].AsObject())), gdextension.Object(gd.ObjectChecked(interaction_profile[0].AsObject()))}))

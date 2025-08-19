@@ -7,8 +7,8 @@ import (
 	"unsafe"
 
 	gd "graphics.gd/internal"
-	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/gdclass"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Path"
@@ -95,14 +95,12 @@ func singleton() {
 
 func load(path String.Readable, type_hint String.Readable, cache_mode int) [1]gdclass.Resource { //gd:ResourceLoader.load
 	once.Do(singleton)
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(gd.InternalString(path)))
-	callframe.Arg(frame, pointers.Get(gd.InternalString(type_hint)))
-	callframe.Arg(frame, cache_mode)
-	var r_ret = callframe.Ret[gd.EnginePointer](frame)
-	gd.Global.Object.MethodBindPointerCall(gd.Global.Methods.ResourceLoader.Bind_load, self[0].AsObject(), frame.Array(0), r_ret.Addr())
-	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret.Get())}
-	frame.Free()
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self[0].AsObject())), gdextension.MethodForClass(gd.Global.Methods.ResourceLoader.Bind_load), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+		path       gdextension.String
+		type_hint  gdextension.String
+		cache_mode int64
+	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.String(pointers.Get(gd.InternalString(type_hint))[0]), int64(cache_mode)}))
+	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
 

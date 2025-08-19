@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -113,12 +111,12 @@ func (self Instance) SetGizmoExtents(value Float.X) {
 
 //go:nosplit
 func (self class) SetGizmoExtents(extents float64) { //gd:Marker3D.set_gizmo_extents
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Marker3D.Bind_set_gizmo_extents, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ extents float64 }{extents}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Marker3D.Bind_set_gizmo_extents), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ extents float64 }{extents}))
 }
 
 //go:nosplit
 func (self class) GetGizmoExtents() float64 { //gd:Marker3D.get_gizmo_extents
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Marker3D.Bind_get_gizmo_extents, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Marker3D.Bind_get_gizmo_extents), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

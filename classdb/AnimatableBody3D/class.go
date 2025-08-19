@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -117,12 +115,12 @@ func (self Instance) SetSyncToPhysics(value bool) {
 
 //go:nosplit
 func (self class) SetSyncToPhysics(enable bool) { //gd:AnimatableBody3D.set_sync_to_physics
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimatableBody3D.Bind_set_sync_to_physics, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatableBody3D.Bind_set_sync_to_physics), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSyncToPhysicsEnabled() bool { //gd:AnimatableBody3D.is_sync_to_physics_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimatableBody3D.Bind_is_sync_to_physics_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimatableBody3D.Bind_is_sync_to_physics_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

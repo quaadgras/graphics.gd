@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -57,7 +56,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -587,7 +585,7 @@ Clears the tree. This removes all items.
 */
 //go:nosplit
 func (self class) Clear() { //gd:Tree.clear
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_clear, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -597,7 +595,7 @@ The new item will be the [param index]-th child of parent, or it will be the las
 */
 //go:nosplit
 func (self class) CreateItem(parent [1]gdclass.TreeItem, index int64) [1]gdclass.TreeItem { //gd:Tree.create_item
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tree.Bind_create_item, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_create_item), gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		parent gdextension.Object
 		index  int64
 	}{gdextension.Object(gd.ObjectChecked(parent[0].AsObject())), index}))
@@ -610,7 +608,7 @@ Returns the tree's root item, or [code]null[/code] if the tree is empty.
 */
 //go:nosplit
 func (self class) GetRoot() [1]gdclass.TreeItem { //gd:Tree.get_root
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tree.Bind_get_root, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_root), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
 	return ret
 }
@@ -620,7 +618,7 @@ Overrides the calculated minimum width of a column. It can be set to [code]0[/co
 */
 //go:nosplit
 func (self class) SetColumnCustomMinimumWidth(column int64, min_width int64) { //gd:Tree.set_column_custom_minimum_width
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_column_custom_minimum_width, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_column_custom_minimum_width), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		column    int64
 		min_width int64
 	}{column, min_width}))
@@ -631,7 +629,7 @@ If [code]true[/code], the column will have the "Expand" flag of [Control]. Colum
 */
 //go:nosplit
 func (self class) SetColumnExpand(column int64, expand bool) { //gd:Tree.set_column_expand
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_column_expand, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_column_expand), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		column int64
 		expand bool
 	}{column, expand}))
@@ -642,7 +640,7 @@ Sets the relative expand ratio for a column. See [method set_column_expand].
 */
 //go:nosplit
 func (self class) SetColumnExpandRatio(column int64, ratio int64) { //gd:Tree.set_column_expand_ratio
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_column_expand_ratio, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_column_expand_ratio), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		column int64
 		ratio  int64
 	}{column, ratio}))
@@ -653,7 +651,7 @@ Allows to enable clipping for column's content, making the content size ignored.
 */
 //go:nosplit
 func (self class) SetColumnClipContent(column int64, enable bool) { //gd:Tree.set_column_clip_content
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_column_clip_content, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_column_clip_content), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		column int64
 		enable bool
 	}{column, enable}))
@@ -664,7 +662,7 @@ Returns [code]true[/code] if the column has enabled expanding (see [method set_c
 */
 //go:nosplit
 func (self class) IsColumnExpanding(column int64) bool { //gd:Tree.is_column_expanding
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Tree.Bind_is_column_expanding, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_is_column_expanding), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
 	var ret = r_ret
 	return ret
 }
@@ -674,7 +672,7 @@ Returns [code]true[/code] if the column has enabled clipping (see [method set_co
 */
 //go:nosplit
 func (self class) IsColumnClippingContent(column int64) bool { //gd:Tree.is_column_clipping_content
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Tree.Bind_is_column_clipping_content, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_is_column_clipping_content), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
 	var ret = r_ret
 	return ret
 }
@@ -684,7 +682,7 @@ Returns the expand ratio assigned to the column.
 */
 //go:nosplit
 func (self class) GetColumnExpandRatio(column int64) int64 { //gd:Tree.get_column_expand_ratio
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Tree.Bind_get_column_expand_ratio, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_column_expand_ratio), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
 	var ret = r_ret
 	return ret
 }
@@ -694,19 +692,19 @@ Returns the column's width in pixels.
 */
 //go:nosplit
 func (self class) GetColumnWidth(column int64) int64 { //gd:Tree.get_column_width
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Tree.Bind_get_column_width, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_column_width), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHideRoot(enable bool) { //gd:Tree.set_hide_root
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_hide_root, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_hide_root), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsRootHidden() bool { //gd:Tree.is_root_hidden
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Tree.Bind_is_root_hidden, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_is_root_hidden), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -717,7 +715,7 @@ If [param from] is [code]null[/code], this returns the first selected item.
 */
 //go:nosplit
 func (self class) GetNextSelected(from [1]gdclass.TreeItem) [1]gdclass.TreeItem { //gd:Tree.get_next_selected
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tree.Bind_get_next_selected, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(from[0].AsObject()))}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_next_selected), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(from[0].AsObject()))}))
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
 	return ret
 }
@@ -729,7 +727,7 @@ To get the currently selected item(s), use [method get_next_selected].
 */
 //go:nosplit
 func (self class) GetSelected() [1]gdclass.TreeItem { //gd:Tree.get_selected
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tree.Bind_get_selected, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_selected), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
 	return ret
 }
@@ -739,7 +737,7 @@ Selects the specified [TreeItem] and column.
 */
 //go:nosplit
 func (self class) SetSelected(item [1]gdclass.TreeItem, column int64) { //gd:Tree.set_selected
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_selected, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_selected), 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		item   gdextension.Object
 		column int64
 	}{gdextension.Object(gd.ObjectChecked(item[0].AsObject())), column}))
@@ -752,7 +750,7 @@ To tell whether a column of an item is selected, use [method TreeItem.is_selecte
 */
 //go:nosplit
 func (self class) GetSelectedColumn() int64 { //gd:Tree.get_selected_column
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Tree.Bind_get_selected_column, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_selected_column), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -762,19 +760,19 @@ Returns the last pressed button's index.
 */
 //go:nosplit
 func (self class) GetPressedButton() int64 { //gd:Tree.get_pressed_button
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Tree.Bind_get_pressed_button, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_pressed_button), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectMode(mode SelectMode) { //gd:Tree.set_select_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_select_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode SelectMode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_select_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode SelectMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetSelectMode() SelectMode { //gd:Tree.get_select_mode
-	var r_ret = gdunsafe.Call[SelectMode](self.AsObject(), gd.Global.Methods.Tree.Bind_get_select_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SelectMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_select_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -784,17 +782,17 @@ Deselects all tree items (rows and columns). In [constant SELECT_MULTI] mode als
 */
 //go:nosplit
 func (self class) DeselectAll() { //gd:Tree.deselect_all
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_deselect_all, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_deselect_all), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetColumns(amount int64) { //gd:Tree.set_columns
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_columns, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_columns), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetColumns() int64 { //gd:Tree.get_columns
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Tree.Bind_get_columns, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_columns), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -824,7 +822,7 @@ public void OnTreeItemEdited()
 */
 //go:nosplit
 func (self class) GetEdited() [1]gdclass.TreeItem { //gd:Tree.get_edited
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tree.Bind_get_edited, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_edited), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
 	return ret
 }
@@ -834,7 +832,7 @@ Returns the column for the currently edited item.
 */
 //go:nosplit
 func (self class) GetEditedColumn() int64 { //gd:Tree.get_edited_column
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Tree.Bind_get_edited_column, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_edited_column), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -846,7 +844,7 @@ Returns [code]true[/code] if the item could be edited. Fails if no item is selec
 */
 //go:nosplit
 func (self class) EditSelected(force_edit bool) bool { //gd:Tree.edit_selected
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Tree.Bind_edit_selected, gdextension.SizeBool|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ force_edit bool }{force_edit}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_edit_selected), gdextension.SizeBool|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ force_edit bool }{force_edit}))
 	var ret = r_ret
 	return ret
 }
@@ -856,7 +854,7 @@ Returns the rectangle for custom popups. Helper to create custom cell controls t
 */
 //go:nosplit
 func (self class) GetCustomPopupRect() Rect2.PositionSize { //gd:Tree.get_custom_popup_rect
-	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.Tree.Bind_get_custom_popup_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_custom_popup_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -866,7 +864,7 @@ Returns the rectangle area for the specified [TreeItem]. If [param column] is sp
 */
 //go:nosplit
 func (self class) GetItemAreaRect(item [1]gdclass.TreeItem, column int64, button_index int64) Rect2.PositionSize { //gd:Tree.get_item_area_rect
-	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.Tree.Bind_get_item_area_rect, gdextension.SizeRect2|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Rect2.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_item_area_rect), gdextension.SizeRect2|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		item         gdextension.Object
 		column       int64
 		button_index int64
@@ -880,7 +878,7 @@ Returns the tree item at the specified position (relative to the tree origin pos
 */
 //go:nosplit
 func (self class) GetItemAtPosition(position Vector2.XY) [1]gdclass.TreeItem { //gd:Tree.get_item_at_position
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tree.Bind_get_item_at_position, gdextension.SizeObject|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_item_at_position), gdextension.SizeObject|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
 	return ret
 }
@@ -890,7 +888,7 @@ Returns the column index at [param position], or -1 if no item is there.
 */
 //go:nosplit
 func (self class) GetColumnAtPosition(position Vector2.XY) int64 { //gd:Tree.get_column_at_position
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Tree.Bind_get_column_at_position, gdextension.SizeInt|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_column_at_position), gdextension.SizeInt|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 	var ret = r_ret
 	return ret
 }
@@ -902,7 +900,7 @@ To get the item which the returned drop section is relative to, use [method get_
 */
 //go:nosplit
 func (self class) GetDropSectionAtPosition(position Vector2.XY) int64 { //gd:Tree.get_drop_section_at_position
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Tree.Bind_get_drop_section_at_position, gdextension.SizeInt|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_drop_section_at_position), gdextension.SizeInt|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 	var ret = r_ret
 	return ret
 }
@@ -912,7 +910,7 @@ Returns the button ID at [param position], or -1 if no button is there.
 */
 //go:nosplit
 func (self class) GetButtonIdAtPosition(position Vector2.XY) int64 { //gd:Tree.get_button_id_at_position
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Tree.Bind_get_button_id_at_position, gdextension.SizeInt|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_button_id_at_position), gdextension.SizeInt|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 	var ret = r_ret
 	return ret
 }
@@ -924,17 +922,17 @@ This will scroll the tree if necessary. In [constant SELECT_ROW] mode, this will
 */
 //go:nosplit
 func (self class) EnsureCursorIsVisible() { //gd:Tree.ensure_cursor_is_visible
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_ensure_cursor_is_visible, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_ensure_cursor_is_visible), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetColumnTitlesVisible(visible bool) { //gd:Tree.set_column_titles_visible
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_column_titles_visible, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_column_titles_visible), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
 }
 
 //go:nosplit
 func (self class) AreColumnTitlesVisible() bool { //gd:Tree.are_column_titles_visible
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Tree.Bind_are_column_titles_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_are_column_titles_visible), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -944,7 +942,7 @@ Sets the title of a column.
 */
 //go:nosplit
 func (self class) SetColumnTitle(column int64, title String.Readable) { //gd:Tree.set_column_title
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_column_title, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_column_title), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		column int64
 		title  gdextension.String
 	}{column, gdextension.String(pointers.Get(gd.InternalString(title))[0])}))
@@ -955,7 +953,7 @@ Returns the column's title.
 */
 //go:nosplit
 func (self class) GetColumnTitle(column int64) String.Readable { //gd:Tree.get_column_title
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tree.Bind_get_column_title, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_column_title), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -965,7 +963,7 @@ Sets the column title alignment. Note that [constant @GlobalScope.HORIZONTAL_ALI
 */
 //go:nosplit
 func (self class) SetColumnTitleAlignment(column int64, title_alignment GUI.HorizontalAlignment) { //gd:Tree.set_column_title_alignment
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_column_title_alignment, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_column_title_alignment), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		column          int64
 		title_alignment GUI.HorizontalAlignment
 	}{column, title_alignment}))
@@ -976,7 +974,7 @@ Returns the column title alignment.
 */
 //go:nosplit
 func (self class) GetColumnTitleAlignment(column int64) GUI.HorizontalAlignment { //gd:Tree.get_column_title_alignment
-	var r_ret = gdunsafe.Call[GUI.HorizontalAlignment](self.AsObject(), gd.Global.Methods.Tree.Bind_get_column_title_alignment, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
+	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_column_title_alignment), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
 	var ret = r_ret
 	return ret
 }
@@ -986,7 +984,7 @@ Sets column title base writing direction.
 */
 //go:nosplit
 func (self class) SetColumnTitleDirection(column int64, direction Control.TextDirection) { //gd:Tree.set_column_title_direction
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_column_title_direction, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_column_title_direction), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		column    int64
 		direction Control.TextDirection
 	}{column, direction}))
@@ -997,7 +995,7 @@ Returns column title base writing direction.
 */
 //go:nosplit
 func (self class) GetColumnTitleDirection(column int64) Control.TextDirection { //gd:Tree.get_column_title_direction
-	var r_ret = gdunsafe.Call[Control.TextDirection](self.AsObject(), gd.Global.Methods.Tree.Bind_get_column_title_direction, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
+	var r_ret = gdextension.Call[Control.TextDirection](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_column_title_direction), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
 	var ret = r_ret
 	return ret
 }
@@ -1007,7 +1005,7 @@ Sets language code of column title used for line-breaking and text shaping algor
 */
 //go:nosplit
 func (self class) SetColumnTitleLanguage(column int64, language String.Readable) { //gd:Tree.set_column_title_language
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_column_title_language, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_column_title_language), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		column   int64
 		language gdextension.String
 	}{column, gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
@@ -1018,7 +1016,7 @@ Returns column title language code.
 */
 //go:nosplit
 func (self class) GetColumnTitleLanguage(column int64) String.Readable { //gd:Tree.get_column_title_language
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Tree.Bind_get_column_title_language, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_column_title_language), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1028,7 +1026,7 @@ Returns the current scrolling position.
 */
 //go:nosplit
 func (self class) GetScroll() Vector2.XY { //gd:Tree.get_scroll
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Tree.Bind_get_scroll, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_scroll), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1038,7 +1036,7 @@ Causes the [Tree] to jump to the specified [TreeItem].
 */
 //go:nosplit
 func (self class) ScrollToItem(item [1]gdclass.TreeItem, center_on_item bool) { //gd:Tree.scroll_to_item
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_scroll_to_item, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_scroll_to_item), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		item           gdextension.Object
 		center_on_item bool
 	}{gdextension.Object(gd.ObjectChecked(item[0].AsObject())), center_on_item}))
@@ -1046,108 +1044,108 @@ func (self class) ScrollToItem(item [1]gdclass.TreeItem, center_on_item bool) { 
 
 //go:nosplit
 func (self class) SetHScrollEnabled(h_scroll bool) { //gd:Tree.set_h_scroll_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_h_scroll_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ h_scroll bool }{h_scroll}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_h_scroll_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ h_scroll bool }{h_scroll}))
 }
 
 //go:nosplit
 func (self class) IsHScrollEnabled() bool { //gd:Tree.is_h_scroll_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Tree.Bind_is_h_scroll_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_is_h_scroll_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVScrollEnabled(h_scroll bool) { //gd:Tree.set_v_scroll_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_v_scroll_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ h_scroll bool }{h_scroll}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_v_scroll_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ h_scroll bool }{h_scroll}))
 }
 
 //go:nosplit
 func (self class) IsVScrollEnabled() bool { //gd:Tree.is_v_scroll_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Tree.Bind_is_v_scroll_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_is_v_scroll_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHideFolding(hide bool) { //gd:Tree.set_hide_folding
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_hide_folding, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ hide bool }{hide}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_hide_folding), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ hide bool }{hide}))
 }
 
 //go:nosplit
 func (self class) IsFoldingHidden() bool { //gd:Tree.is_folding_hidden
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Tree.Bind_is_folding_hidden, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_is_folding_hidden), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableRecursiveFolding(enable bool) { //gd:Tree.set_enable_recursive_folding
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_enable_recursive_folding, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_enable_recursive_folding), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsRecursiveFoldingEnabled() bool { //gd:Tree.is_recursive_folding_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Tree.Bind_is_recursive_folding_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_is_recursive_folding_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDropModeFlags(flags int64) { //gd:Tree.set_drop_mode_flags
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_drop_mode_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags int64 }{flags}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_drop_mode_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags int64 }{flags}))
 }
 
 //go:nosplit
 func (self class) GetDropModeFlags() int64 { //gd:Tree.get_drop_mode_flags
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Tree.Bind_get_drop_mode_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_drop_mode_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowRmbSelect(allow bool) { //gd:Tree.set_allow_rmb_select
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_allow_rmb_select, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_allow_rmb_select), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
 }
 
 //go:nosplit
 func (self class) GetAllowRmbSelect() bool { //gd:Tree.get_allow_rmb_select
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Tree.Bind_get_allow_rmb_select, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_allow_rmb_select), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowReselect(allow bool) { //gd:Tree.set_allow_reselect
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_allow_reselect, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_allow_reselect), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
 }
 
 //go:nosplit
 func (self class) GetAllowReselect() bool { //gd:Tree.get_allow_reselect
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Tree.Bind_get_allow_reselect, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_allow_reselect), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowSearch(allow bool) { //gd:Tree.set_allow_search
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_allow_search, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_allow_search), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
 }
 
 //go:nosplit
 func (self class) GetAllowSearch() bool { //gd:Tree.get_allow_search
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Tree.Bind_get_allow_search, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_allow_search), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoTooltip(enable bool) { //gd:Tree.set_auto_tooltip
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Tree.Bind_set_auto_tooltip, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_auto_tooltip), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsAutoTooltipEnabled() bool { //gd:Tree.is_auto_tooltip_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Tree.Bind_is_auto_tooltip_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_is_auto_tooltip_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

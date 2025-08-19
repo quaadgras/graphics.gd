@@ -9,7 +9,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -344,7 +342,7 @@ If translations have been loaded beforehand for the new locale, they will be app
 */
 //go:nosplit
 func (self class) SetLocale(locale String.Readable) { //gd:TranslationServer.set_locale
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_set_locale, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ locale gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(locale))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_set_locale), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ locale gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(locale))[0])}))
 }
 
 /*
@@ -353,7 +351,7 @@ See also [method OS.get_locale] and [method OS.get_locale_language] to query the
 */
 //go:nosplit
 func (self class) GetLocale() String.Readable { //gd:TranslationServer.get_locale
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_get_locale, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_get_locale), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -364,7 +362,7 @@ Returns the current locale of the editor.
 */
 //go:nosplit
 func (self class) GetToolLocale() String.Readable { //gd:TranslationServer.get_tool_locale
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_get_tool_locale, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_get_tool_locale), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -374,7 +372,7 @@ Compares two locales and returns a similarity score between [code]0[/code] (no m
 */
 //go:nosplit
 func (self class) CompareLocales(locale_a String.Readable, locale_b String.Readable) int64 { //gd:TranslationServer.compare_locales
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_compare_locales, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_compare_locales), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		locale_a gdextension.String
 		locale_b gdextension.String
 	}{gdextension.String(pointers.Get(gd.InternalString(locale_a))[0]), gdextension.String(pointers.Get(gd.InternalString(locale_b))[0])}))
@@ -387,7 +385,7 @@ Returns a [param locale] string standardized to match known locales (e.g. [code]
 */
 //go:nosplit
 func (self class) StandardizeLocale(locale String.Readable, add_defaults bool) String.Readable { //gd:TranslationServer.standardize_locale
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_standardize_locale, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_standardize_locale), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		locale       gdextension.String
 		add_defaults bool
 	}{gdextension.String(pointers.Get(gd.InternalString(locale))[0]), add_defaults}))
@@ -400,7 +398,7 @@ Returns array of known language codes.
 */
 //go:nosplit
 func (self class) GetAllLanguages() Packed.Strings { //gd:TranslationServer.get_all_languages
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_get_all_languages, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_get_all_languages), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -410,7 +408,7 @@ Returns a readable language name for the [param language] code.
 */
 //go:nosplit
 func (self class) GetLanguageName(language String.Readable) String.Readable { //gd:TranslationServer.get_language_name
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_get_language_name, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_get_language_name), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -420,7 +418,7 @@ Returns an array of known script codes.
 */
 //go:nosplit
 func (self class) GetAllScripts() Packed.Strings { //gd:TranslationServer.get_all_scripts
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_get_all_scripts, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_get_all_scripts), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -430,7 +428,7 @@ Returns a readable script name for the [param script] code.
 */
 //go:nosplit
 func (self class) GetScriptName(script String.Readable) String.Readable { //gd:TranslationServer.get_script_name
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_get_script_name, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ script gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(script))[0])}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_get_script_name), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ script gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(script))[0])}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -440,7 +438,7 @@ Returns an array of known country codes.
 */
 //go:nosplit
 func (self class) GetAllCountries() Packed.Strings { //gd:TranslationServer.get_all_countries
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_get_all_countries, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_get_all_countries), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -450,7 +448,7 @@ Returns a readable country name for the [param country] code.
 */
 //go:nosplit
 func (self class) GetCountryName(country String.Readable) String.Readable { //gd:TranslationServer.get_country_name
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_get_country_name, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ country gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(country))[0])}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_get_country_name), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ country gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(country))[0])}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -460,7 +458,7 @@ Returns a locale's language and its variant (e.g. [code]"en_US"[/code] would ret
 */
 //go:nosplit
 func (self class) GetLocaleName(locale String.Readable) String.Readable { //gd:TranslationServer.get_locale_name
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_get_locale_name, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ locale gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(locale))[0])}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_get_locale_name), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ locale gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(locale))[0])}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -471,7 +469,7 @@ Returns the current locale's translation for the given message and context.
 */
 //go:nosplit
 func (self class) Translate(message String.Name, context String.Name) String.Name { //gd:TranslationServer.translate
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_translate, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_translate), gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		message gdextension.StringName
 		context gdextension.StringName
 	}{gdextension.StringName(pointers.Get(gd.InternalStringName(message))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0])}))
@@ -486,7 +484,7 @@ The number [param n] is the number or quantity of the plural object. It will be 
 */
 //go:nosplit
 func (self class) TranslatePlural(message String.Name, plural_message String.Name, n int64, context String.Name) String.Name { //gd:TranslationServer.translate_plural
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_translate_plural, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_translate_plural), gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), unsafe.Pointer(&struct {
 		message        gdextension.StringName
 		plural_message gdextension.StringName
 		n              int64
@@ -501,7 +499,7 @@ Adds a translation to the main translation domain.
 */
 //go:nosplit
 func (self class) AddTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.add_translation
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_add_translation, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(translation[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_add_translation), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(translation[0].AsObject()))}))
 }
 
 /*
@@ -509,7 +507,7 @@ Removes the given translation from the main translation domain.
 */
 //go:nosplit
 func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:TranslationServer.remove_translation
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_remove_translation, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(translation[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_remove_translation), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ translation gdextension.Object }{gdextension.Object(gd.ObjectChecked(translation[0].AsObject()))}))
 }
 
 /*
@@ -517,7 +515,7 @@ Returns the [Translation] instance that best matches [param locale] in the main 
 */
 //go:nosplit
 func (self class) GetTranslationObject(locale String.Readable) [1]gdclass.Translation { //gd:TranslationServer.get_translation_object
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_get_translation_object, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ locale gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(locale))[0])}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_get_translation_object), gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ locale gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(locale))[0])}))
 	var ret = [1]gdclass.Translation{gd.PointerWithOwnershipTransferredToGo[gdclass.Translation](r_ret)}
 	return ret
 }
@@ -527,7 +525,7 @@ Returns [code]true[/code] if a translation domain with the specified name exists
 */
 //go:nosplit
 func (self class) HasDomain(domain String.Name) bool { //gd:TranslationServer.has_domain
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_has_domain, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ domain gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(domain))[0])}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_has_domain), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ domain gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(domain))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -537,7 +535,7 @@ Returns the translation domain with the specified name. An empty translation dom
 */
 //go:nosplit
 func (self class) GetOrAddDomain(domain String.Name) [1]gdclass.TranslationDomain { //gd:TranslationServer.get_or_add_domain
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_get_or_add_domain, gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ domain gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(domain))[0])}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_get_or_add_domain), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ domain gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(domain))[0])}))
 	var ret = [1]gdclass.TranslationDomain{gd.PointerWithOwnershipTransferredToGo[gdclass.TranslationDomain](r_ret)}
 	return ret
 }
@@ -548,7 +546,7 @@ Removes the translation domain with the specified name.
 */
 //go:nosplit
 func (self class) RemoveDomain(domain String.Name) { //gd:TranslationServer.remove_domain
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_remove_domain, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ domain gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(domain))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_remove_domain), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ domain gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(domain))[0])}))
 }
 
 /*
@@ -556,7 +554,7 @@ Removes all translations from the main translation domain.
 */
 //go:nosplit
 func (self class) Clear() { //gd:TranslationServer.clear
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_clear, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -564,21 +562,21 @@ Returns an array of all loaded locales of the project.
 */
 //go:nosplit
 func (self class) GetLoadedLocales() Packed.Strings { //gd:TranslationServer.get_loaded_locales
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_get_loaded_locales, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_get_loaded_locales), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) IsPseudolocalizationEnabled() bool { //gd:TranslationServer.is_pseudolocalization_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_is_pseudolocalization_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_is_pseudolocalization_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPseudolocalizationEnabled(enabled bool) { //gd:TranslationServer.set_pseudolocalization_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_set_pseudolocalization_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_set_pseudolocalization_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 /*
@@ -586,7 +584,7 @@ Reparses the pseudolocalization options and reloads the translation for the main
 */
 //go:nosplit
 func (self class) ReloadPseudolocalization() { //gd:TranslationServer.reload_pseudolocalization
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_reload_pseudolocalization, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_reload_pseudolocalization), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -595,7 +593,7 @@ Returns the pseudolocalized string based on the [param message] passed in.
 */
 //go:nosplit
 func (self class) Pseudolocalize(message String.Name) String.Name { //gd:TranslationServer.pseudolocalize
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.TranslationServer.Bind_pseudolocalize, gdextension.SizeStringName|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ message gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(message))[0])}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TranslationServer.Bind_pseudolocalize), gdextension.SizeStringName|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ message gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(message))[0])}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

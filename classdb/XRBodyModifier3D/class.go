@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -132,36 +130,36 @@ func (self Instance) SetBoneUpdate(value BoneUpdate) {
 
 //go:nosplit
 func (self class) SetBodyTracker(tracker_name String.Name) { //gd:XRBodyModifier3D.set_body_tracker
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRBodyModifier3D.Bind_set_body_tracker, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ tracker_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(tracker_name))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRBodyModifier3D.Bind_set_body_tracker), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ tracker_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(tracker_name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetBodyTracker() String.Name { //gd:XRBodyModifier3D.get_body_tracker
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.XRBodyModifier3D.Bind_get_body_tracker, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRBodyModifier3D.Bind_get_body_tracker), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBodyUpdate(body_update BodyUpdate) { //gd:XRBodyModifier3D.set_body_update
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRBodyModifier3D.Bind_set_body_update, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ body_update BodyUpdate }{body_update}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRBodyModifier3D.Bind_set_body_update), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ body_update BodyUpdate }{body_update}))
 }
 
 //go:nosplit
 func (self class) GetBodyUpdate() BodyUpdate { //gd:XRBodyModifier3D.get_body_update
-	var r_ret = gdunsafe.Call[BodyUpdate](self.AsObject(), gd.Global.Methods.XRBodyModifier3D.Bind_get_body_update, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BodyUpdate](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRBodyModifier3D.Bind_get_body_update), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBoneUpdate(bone_update BoneUpdate) { //gd:XRBodyModifier3D.set_bone_update
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XRBodyModifier3D.Bind_set_bone_update, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_update BoneUpdate }{bone_update}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRBodyModifier3D.Bind_set_bone_update), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_update BoneUpdate }{bone_update}))
 }
 
 //go:nosplit
 func (self class) GetBoneUpdate() BoneUpdate { //gd:XRBodyModifier3D.get_bone_update
-	var r_ret = gdunsafe.Call[BoneUpdate](self.AsObject(), gd.Global.Methods.XRBodyModifier3D.Bind_get_bone_update, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BoneUpdate](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XRBodyModifier3D.Bind_get_bone_update), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

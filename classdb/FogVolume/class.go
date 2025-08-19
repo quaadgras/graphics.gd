@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -56,7 +55,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -135,38 +133,38 @@ func (self Instance) SetMaterial(value Material.Instance) {
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:FogVolume.set_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FogVolume.Bind_set_size, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogVolume.Bind_set_size), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:FogVolume.get_size
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.FogVolume.Bind_get_size, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogVolume.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShape(shape RenderingServer.FogVolumeShape) { //gd:FogVolume.set_shape
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FogVolume.Bind_set_shape, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogVolume.Bind_set_shape), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		shape RenderingServer.FogVolumeShape
 	}{shape}))
 }
 
 //go:nosplit
 func (self class) GetShape() RenderingServer.FogVolumeShape { //gd:FogVolume.get_shape
-	var r_ret = gdunsafe.Call[RenderingServer.FogVolumeShape](self.AsObject(), gd.Global.Methods.FogVolume.Bind_get_shape, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RenderingServer.FogVolumeShape](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogVolume.Bind_get_shape), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:FogVolume.set_material
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FogVolume.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogVolume.Bind_set_material), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:FogVolume.get_material
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.FogVolume.Bind_get_material, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FogVolume.Bind_get_material), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -155,72 +153,72 @@ func (self Instance) SetDefaultValue(value Float.X) {
 
 //go:nosplit
 func (self class) SetHint(hint Hint) { //gd:VisualShaderNodeFloatParameter.set_hint
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_set_hint, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hint Hint }{hint}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_set_hint), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hint Hint }{hint}))
 }
 
 //go:nosplit
 func (self class) GetHint() Hint { //gd:VisualShaderNodeFloatParameter.get_hint
-	var r_ret = gdunsafe.Call[Hint](self.AsObject(), gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_hint, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Hint](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_hint), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMin(value float64) { //gd:VisualShaderNodeFloatParameter.set_min
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_set_min, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_set_min), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
 }
 
 //go:nosplit
 func (self class) GetMin() float64 { //gd:VisualShaderNodeFloatParameter.get_min
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_min, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_min), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMax(value float64) { //gd:VisualShaderNodeFloatParameter.set_max
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_set_max, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_set_max), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
 }
 
 //go:nosplit
 func (self class) GetMax() float64 { //gd:VisualShaderNodeFloatParameter.get_max
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_max, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_max), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStep(value float64) { //gd:VisualShaderNodeFloatParameter.set_step
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_set_step, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_set_step), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
 }
 
 //go:nosplit
 func (self class) GetStep() float64 { //gd:VisualShaderNodeFloatParameter.get_step
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_step, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_step), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeFloatParameter.set_default_value_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_set_default_value_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_set_default_value_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeFloatParameter.is_default_value_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_is_default_value_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_is_default_value_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultValue(value float64) { //gd:VisualShaderNodeFloatParameter.set_default_value
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_set_default_value, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_set_default_value), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
 }
 
 //go:nosplit
 func (self class) GetDefaultValue() float64 { //gd:VisualShaderNodeFloatParameter.get_default_value
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_default_value, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFloatParameter.Bind_get_default_value), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

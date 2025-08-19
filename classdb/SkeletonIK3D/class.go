@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -56,7 +55,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -245,84 +243,84 @@ func (self Instance) SetInterpolation(value Float.X) {
 
 //go:nosplit
 func (self class) SetRootBone(root_bone String.Name) { //gd:SkeletonIK3D.set_root_bone
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_set_root_bone, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ root_bone gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(root_bone))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_set_root_bone), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ root_bone gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(root_bone))[0])}))
 }
 
 //go:nosplit
 func (self class) GetRootBone() String.Name { //gd:SkeletonIK3D.get_root_bone
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_get_root_bone, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_get_root_bone), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTipBone(tip_bone String.Name) { //gd:SkeletonIK3D.set_tip_bone
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_set_tip_bone, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ tip_bone gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(tip_bone))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_set_tip_bone), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ tip_bone gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(tip_bone))[0])}))
 }
 
 //go:nosplit
 func (self class) GetTipBone() String.Name { //gd:SkeletonIK3D.get_tip_bone
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_get_tip_bone, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_get_tip_bone), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTargetTransform(target Transform3D.BasisOrigin) { //gd:SkeletonIK3D.set_target_transform
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_set_target_transform, 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ target Transform3D.BasisOrigin }{gd.Transposed(target)}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_set_target_transform), 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ target Transform3D.BasisOrigin }{gd.Transposed(target)}))
 }
 
 //go:nosplit
 func (self class) GetTargetTransform() Transform3D.BasisOrigin { //gd:SkeletonIK3D.get_target_transform
-	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_get_target_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_get_target_transform), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTargetNode(node Path.ToNode) { //gd:SkeletonIK3D.set_target_node
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_set_target_node, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(node))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_set_target_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(node))[0])}))
 }
 
 //go:nosplit
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonIK3D.get_target_node
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_get_target_node, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_get_target_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOverrideTipBasis(override bool) { //gd:SkeletonIK3D.set_override_tip_basis
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_set_override_tip_basis, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ override bool }{override}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_set_override_tip_basis), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ override bool }{override}))
 }
 
 //go:nosplit
 func (self class) IsOverrideTipBasis() bool { //gd:SkeletonIK3D.is_override_tip_basis
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_is_override_tip_basis, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_is_override_tip_basis), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseMagnet(use bool) { //gd:SkeletonIK3D.set_use_magnet
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_set_use_magnet, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use bool }{use}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_set_use_magnet), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use bool }{use}))
 }
 
 //go:nosplit
 func (self class) IsUsingMagnet() bool { //gd:SkeletonIK3D.is_using_magnet
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_is_using_magnet, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_is_using_magnet), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMagnetPosition(local_position Vector3.XYZ) { //gd:SkeletonIK3D.set_magnet_position
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_set_magnet_position, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ local_position Vector3.XYZ }{local_position}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_set_magnet_position), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ local_position Vector3.XYZ }{local_position}))
 }
 
 //go:nosplit
 func (self class) GetMagnetPosition() Vector3.XYZ { //gd:SkeletonIK3D.get_magnet_position
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_get_magnet_position, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_get_magnet_position), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -332,7 +330,7 @@ Returns the parent [Skeleton3D] node that was present when SkeletonIK entered th
 */
 //go:nosplit
 func (self class) GetParentSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonIK3D.get_parent_skeleton
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_get_parent_skeleton, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_get_parent_skeleton), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Skeleton3D{gd.PointerMustAssertInstanceID[gdclass.Skeleton3D](r_ret)}
 	return ret
 }
@@ -342,31 +340,31 @@ Returns [code]true[/code] if SkeletonIK is applying IK effects on continues fram
 */
 //go:nosplit
 func (self class) IsRunning() bool { //gd:SkeletonIK3D.is_running
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_is_running, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_is_running), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinDistance(min_distance float64) { //gd:SkeletonIK3D.set_min_distance
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_set_min_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ min_distance float64 }{min_distance}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_set_min_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ min_distance float64 }{min_distance}))
 }
 
 //go:nosplit
 func (self class) GetMinDistance() float64 { //gd:SkeletonIK3D.get_min_distance
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_get_min_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_get_min_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxIterations(iterations int64) { //gd:SkeletonIK3D.set_max_iterations
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_set_max_iterations, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ iterations int64 }{iterations}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_set_max_iterations), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ iterations int64 }{iterations}))
 }
 
 //go:nosplit
 func (self class) GetMaxIterations() int64 { //gd:SkeletonIK3D.get_max_iterations
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_get_max_iterations, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_get_max_iterations), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -376,7 +374,7 @@ Starts applying IK effects on each frame to the [Skeleton3D] bones but will only
 */
 //go:nosplit
 func (self class) Start(one_time bool) { //gd:SkeletonIK3D.start
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_start, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ one_time bool }{one_time}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_start), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ one_time bool }{one_time}))
 }
 
 /*
@@ -384,17 +382,17 @@ Stops applying IK effects on each frame to the [Skeleton3D] bones and also calls
 */
 //go:nosplit
 func (self class) Stop() { //gd:SkeletonIK3D.stop
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_stop, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_stop), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetInterpolation(interpolation float64) { //gd:SkeletonIK3D.set_interpolation
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_set_interpolation, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ interpolation float64 }{interpolation}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_set_interpolation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ interpolation float64 }{interpolation}))
 }
 
 //go:nosplit
 func (self class) GetInterpolation() float64 { //gd:SkeletonIK3D.get_interpolation
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.SkeletonIK3D.Bind_get_interpolation, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SkeletonIK3D.Bind_get_interpolation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

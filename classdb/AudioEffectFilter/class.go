@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -138,48 +136,48 @@ func (self Instance) SetDb(value FilterDB) {
 
 //go:nosplit
 func (self class) SetCutoff(freq float64) { //gd:AudioEffectFilter.set_cutoff
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectFilter.Bind_set_cutoff, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ freq float64 }{freq}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectFilter.Bind_set_cutoff), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ freq float64 }{freq}))
 }
 
 //go:nosplit
 func (self class) GetCutoff() float64 { //gd:AudioEffectFilter.get_cutoff
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectFilter.Bind_get_cutoff, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectFilter.Bind_get_cutoff), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetResonance(amount float64) { //gd:AudioEffectFilter.set_resonance
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectFilter.Bind_set_resonance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectFilter.Bind_set_resonance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetResonance() float64 { //gd:AudioEffectFilter.get_resonance
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectFilter.Bind_get_resonance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectFilter.Bind_get_resonance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGain(amount float64) { //gd:AudioEffectFilter.set_gain
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectFilter.Bind_set_gain, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectFilter.Bind_set_gain), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetGain() float64 { //gd:AudioEffectFilter.get_gain
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectFilter.Bind_get_gain, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectFilter.Bind_get_gain), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDb(amount FilterDB) { //gd:AudioEffectFilter.set_db
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectFilter.Bind_set_db, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount FilterDB }{amount}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectFilter.Bind_set_db), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount FilterDB }{amount}))
 }
 
 //go:nosplit
 func (self class) GetDb() FilterDB { //gd:AudioEffectFilter.get_db
-	var r_ret = gdunsafe.Call[FilterDB](self.AsObject(), gd.Global.Methods.AudioEffectFilter.Bind_get_db, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[FilterDB](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectFilter.Bind_get_db), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -158,7 +156,7 @@ Adds the [param animation] to the library, accessible by the key [param name].
 */
 //go:nosplit
 func (self class) AddAnimation(name String.Name, animation [1]gdclass.Animation) Error.Code { //gd:AnimationLibrary.add_animation
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AnimationLibrary.Bind_add_animation, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationLibrary.Bind_add_animation), gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name      gdextension.StringName
 		animation gdextension.Object
 	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(animation[0].AsObject()))}))
@@ -171,7 +169,7 @@ Removes the [Animation] with the key [param name].
 */
 //go:nosplit
 func (self class) RemoveAnimation(name String.Name) { //gd:AnimationLibrary.remove_animation
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationLibrary.Bind_remove_animation, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationLibrary.Bind_remove_animation), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 }
 
 /*
@@ -179,7 +177,7 @@ Changes the key of the [Animation] associated with the key [param name] to [para
 */
 //go:nosplit
 func (self class) RenameAnimation(name String.Name, newname String.Name) { //gd:AnimationLibrary.rename_animation
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AnimationLibrary.Bind_rename_animation, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationLibrary.Bind_rename_animation), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name    gdextension.StringName
 		newname gdextension.StringName
 	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(newname))[0])}))
@@ -190,7 +188,7 @@ Returns [code]true[/code] if the library stores an [Animation] with [param name]
 */
 //go:nosplit
 func (self class) HasAnimation(name String.Name) bool { //gd:AnimationLibrary.has_animation
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AnimationLibrary.Bind_has_animation, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationLibrary.Bind_has_animation), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -200,7 +198,7 @@ Returns the [Animation] with the key [param name]. If the animation does not exi
 */
 //go:nosplit
 func (self class) GetAnimation(name String.Name) [1]gdclass.Animation { //gd:AnimationLibrary.get_animation
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationLibrary.Bind_get_animation, gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationLibrary.Bind_get_animation), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
 	var ret = [1]gdclass.Animation{gd.PointerWithOwnershipTransferredToGo[gdclass.Animation](r_ret)}
 	return ret
 }
@@ -210,7 +208,7 @@ Returns the keys for the [Animation]s stored in the library.
 */
 //go:nosplit
 func (self class) GetAnimationList() Array.Contains[String.Name] { //gd:AnimationLibrary.get_animation_list
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.AnimationLibrary.Bind_get_animation_list, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationLibrary.Bind_get_animation_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -220,7 +218,7 @@ Returns the key count for the [Animation]s stored in the library.
 */
 //go:nosplit
 func (self class) GetAnimationListSize() int64 { //gd:AnimationLibrary.get_animation_list_size
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AnimationLibrary.Bind_get_animation_list_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AnimationLibrary.Bind_get_animation_list_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

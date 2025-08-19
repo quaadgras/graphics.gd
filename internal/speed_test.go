@@ -46,7 +46,6 @@ func bench():
 	obj.SetScript(script)
 	obj[0].Set(gd.NewStringName("n"), gd.NewVariant(B.N))
 	bench := gd.NewStringName("bench")
-	array := gd.NewArray()
 	var result gd.Variant
 	B.Cleanup(func() {
 		if result.Interface().(int64) != int64(B.N*len("Hello, World!")) {
@@ -54,7 +53,7 @@ func bench():
 		}
 	})
 	B.ResetTimer()
-	result = obj[0].Callv(bench, array)
+	result, _ = obj[0].Call(bench)
 	obj[0].Free()
 }
 
@@ -74,8 +73,8 @@ func bench(c):
 	obj.SetScript(script)
 	obj[0].Set(gd.NewStringName("n"), gd.NewVariant(B.N))
 	bench := gd.NewStringName("bench")
-	array := gd.NewArray()
-	array.PushFront(gd.NewVariant(gd.NewCallable(func() int {
+	var array []gd.Variant
+	array = append(array, gd.NewVariant(gd.NewCallable(func() int {
 		return 1
 	})))
 	var result gd.Variant
@@ -85,6 +84,6 @@ func bench(c):
 		}
 	})
 	B.ResetTimer()
-	result = obj[0].Callv(bench, array)
+	result, _ = obj[0].Call(bench, array...)
 	obj[0].Free()
 }

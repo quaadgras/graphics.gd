@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -117,12 +115,12 @@ func (self Instance) SetConstant(value Color.RGBA) {
 
 //go:nosplit
 func (self class) SetConstant(constant Color.RGBA) { //gd:VisualShaderNodeColorConstant.set_constant
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeColorConstant.Bind_set_constant, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ constant Color.RGBA }{constant}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeColorConstant.Bind_set_constant), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ constant Color.RGBA }{constant}))
 }
 
 //go:nosplit
 func (self class) GetConstant() Color.RGBA { //gd:VisualShaderNodeColorConstant.get_constant
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.VisualShaderNodeColorConstant.Bind_get_constant, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeColorConstant.Bind_get_constant), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

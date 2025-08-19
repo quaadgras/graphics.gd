@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -56,7 +55,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -201,84 +199,84 @@ func (self Instance) SetSelectAllOnFocus(value bool) {
 
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:SpinBox.set_horizontal_alignment
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpinBox.Bind_set_horizontal_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_horizontal_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:SpinBox.get_horizontal_alignment
-	var r_ret = gdunsafe.Call[GUI.HorizontalAlignment](self.AsObject(), gd.Global.Methods.SpinBox.Bind_get_horizontal_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_get_horizontal_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSuffix(suffix String.Readable) { //gd:SpinBox.set_suffix
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpinBox.Bind_set_suffix, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ suffix gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(suffix))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_suffix), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ suffix gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(suffix))[0])}))
 }
 
 //go:nosplit
 func (self class) GetSuffix() String.Readable { //gd:SpinBox.get_suffix
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SpinBox.Bind_get_suffix, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_get_suffix), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrefix(prefix String.Readable) { //gd:SpinBox.set_prefix
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpinBox.Bind_set_prefix, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ prefix gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(prefix))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_prefix), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ prefix gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(prefix))[0])}))
 }
 
 //go:nosplit
 func (self class) GetPrefix() String.Readable { //gd:SpinBox.get_prefix
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.SpinBox.Bind_get_prefix, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_get_prefix), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditable(enabled bool) { //gd:SpinBox.set_editable
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpinBox.Bind_set_editable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_editable), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) SetCustomArrowStep(arrow_step float64) { //gd:SpinBox.set_custom_arrow_step
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpinBox.Bind_set_custom_arrow_step, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ arrow_step float64 }{arrow_step}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_custom_arrow_step), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ arrow_step float64 }{arrow_step}))
 }
 
 //go:nosplit
 func (self class) GetCustomArrowStep() float64 { //gd:SpinBox.get_custom_arrow_step
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.SpinBox.Bind_get_custom_arrow_step, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_get_custom_arrow_step), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) IsEditable() bool { //gd:SpinBox.is_editable
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SpinBox.Bind_is_editable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_is_editable), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpdateOnTextChanged(enabled bool) { //gd:SpinBox.set_update_on_text_changed
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpinBox.Bind_set_update_on_text_changed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_update_on_text_changed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetUpdateOnTextChanged() bool { //gd:SpinBox.get_update_on_text_changed
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SpinBox.Bind_get_update_on_text_changed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_get_update_on_text_changed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectAllOnFocus(enabled bool) { //gd:SpinBox.set_select_all_on_focus
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpinBox.Bind_set_select_all_on_focus, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_select_all_on_focus), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSelectAllOnFocus() bool { //gd:SpinBox.is_select_all_on_focus
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SpinBox.Bind_is_select_all_on_focus, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_is_select_all_on_focus), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -288,7 +286,7 @@ Applies the current value of this [SpinBox].
 */
 //go:nosplit
 func (self class) Apply() { //gd:SpinBox.apply
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SpinBox.Bind_apply, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_apply), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -297,7 +295,7 @@ Returns the [LineEdit] instance from this [SpinBox]. You can use it to access pr
 */
 //go:nosplit
 func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:SpinBox.get_line_edit
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.SpinBox.Bind_get_line_edit, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_get_line_edit), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.LineEdit{gd.PointerLifetimeBoundTo[gdclass.LineEdit](self.AsObject(), r_ret)}
 	return ret
 }

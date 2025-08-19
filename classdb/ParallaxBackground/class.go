@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -155,72 +153,72 @@ func (self Instance) SetScrollIgnoreCameraZoom(value bool) {
 
 //go:nosplit
 func (self class) SetScrollOffset(offset Vector2.XY) { //gd:ParallaxBackground.set_scroll_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParallaxBackground.Bind_set_scroll_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxBackground.Bind_set_scroll_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetScrollOffset() Vector2.XY { //gd:ParallaxBackground.get_scroll_offset
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.ParallaxBackground.Bind_get_scroll_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxBackground.Bind_get_scroll_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollBaseOffset(offset Vector2.XY) { //gd:ParallaxBackground.set_scroll_base_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParallaxBackground.Bind_set_scroll_base_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxBackground.Bind_set_scroll_base_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetScrollBaseOffset() Vector2.XY { //gd:ParallaxBackground.get_scroll_base_offset
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.ParallaxBackground.Bind_get_scroll_base_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxBackground.Bind_get_scroll_base_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollBaseScale(scale Vector2.XY) { //gd:ParallaxBackground.set_scroll_base_scale
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParallaxBackground.Bind_set_scroll_base_scale, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxBackground.Bind_set_scroll_base_scale), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
 }
 
 //go:nosplit
 func (self class) GetScrollBaseScale() Vector2.XY { //gd:ParallaxBackground.get_scroll_base_scale
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.ParallaxBackground.Bind_get_scroll_base_scale, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxBackground.Bind_get_scroll_base_scale), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLimitBegin(offset Vector2.XY) { //gd:ParallaxBackground.set_limit_begin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParallaxBackground.Bind_set_limit_begin, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxBackground.Bind_set_limit_begin), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetLimitBegin() Vector2.XY { //gd:ParallaxBackground.get_limit_begin
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.ParallaxBackground.Bind_get_limit_begin, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxBackground.Bind_get_limit_begin), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLimitEnd(offset Vector2.XY) { //gd:ParallaxBackground.set_limit_end
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParallaxBackground.Bind_set_limit_end, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxBackground.Bind_set_limit_end), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetLimitEnd() Vector2.XY { //gd:ParallaxBackground.get_limit_end
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.ParallaxBackground.Bind_get_limit_end, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxBackground.Bind_get_limit_end), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgnoreCameraZoom(ignore bool) { //gd:ParallaxBackground.set_ignore_camera_zoom
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParallaxBackground.Bind_set_ignore_camera_zoom, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ ignore bool }{ignore}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxBackground.Bind_set_ignore_camera_zoom), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ ignore bool }{ignore}))
 }
 
 //go:nosplit
 func (self class) IsIgnoreCameraZoom() bool { //gd:ParallaxBackground.is_ignore_camera_zoom
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ParallaxBackground.Bind_is_ignore_camera_zoom, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxBackground.Bind_is_ignore_camera_zoom), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

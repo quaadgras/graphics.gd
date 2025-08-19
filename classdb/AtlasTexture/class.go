@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -142,48 +140,48 @@ func (self Instance) SetFilterClip(value bool) {
 
 //go:nosplit
 func (self class) SetAtlas(atlas [1]gdclass.Texture2D) { //gd:AtlasTexture.set_atlas
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AtlasTexture.Bind_set_atlas, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ atlas gdextension.Object }{gdextension.Object(gd.ObjectChecked(atlas[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AtlasTexture.Bind_set_atlas), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ atlas gdextension.Object }{gdextension.Object(gd.ObjectChecked(atlas[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetAtlas() [1]gdclass.Texture2D { //gd:AtlasTexture.get_atlas
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AtlasTexture.Bind_get_atlas, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AtlasTexture.Bind_get_atlas), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRegion(region Rect2.PositionSize) { //gd:AtlasTexture.set_region
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AtlasTexture.Bind_set_region, 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ region Rect2.PositionSize }{region}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AtlasTexture.Bind_set_region), 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ region Rect2.PositionSize }{region}))
 }
 
 //go:nosplit
 func (self class) GetRegion() Rect2.PositionSize { //gd:AtlasTexture.get_region
-	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.AtlasTexture.Bind_get_region, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AtlasTexture.Bind_get_region), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMargin(margin Rect2.PositionSize) { //gd:AtlasTexture.set_margin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AtlasTexture.Bind_set_margin, 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ margin Rect2.PositionSize }{margin}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AtlasTexture.Bind_set_margin), 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ margin Rect2.PositionSize }{margin}))
 }
 
 //go:nosplit
 func (self class) GetMargin() Rect2.PositionSize { //gd:AtlasTexture.get_margin
-	var r_ret = gdunsafe.Call[Rect2.PositionSize](self.AsObject(), gd.Global.Methods.AtlasTexture.Bind_get_margin, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AtlasTexture.Bind_get_margin), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFilterClip(enable bool) { //gd:AtlasTexture.set_filter_clip
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AtlasTexture.Bind_set_filter_clip, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AtlasTexture.Bind_set_filter_clip), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) HasFilterClip() bool { //gd:AtlasTexture.has_filter_clip
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AtlasTexture.Bind_has_filter_clip, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AtlasTexture.Bind_has_filter_clip), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

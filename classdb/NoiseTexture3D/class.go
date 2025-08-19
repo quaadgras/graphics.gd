@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -176,87 +174,87 @@ func (self Instance) SetNoise(value Noise.Instance) {
 
 //go:nosplit
 func (self class) SetWidth(width int64) { //gd:NoiseTexture3D.set_width
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_set_width, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ width int64 }{width}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_set_width), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ width int64 }{width}))
 }
 
 //go:nosplit
 func (self class) SetHeight(height int64) { //gd:NoiseTexture3D.set_height
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_set_height, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ height int64 }{height}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_set_height), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ height int64 }{height}))
 }
 
 //go:nosplit
 func (self class) SetDepth(depth int64) { //gd:NoiseTexture3D.set_depth
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_set_depth, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ depth int64 }{depth}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_set_depth), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ depth int64 }{depth}))
 }
 
 //go:nosplit
 func (self class) SetInvert(invert bool) { //gd:NoiseTexture3D.set_invert
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_set_invert, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ invert bool }{invert}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_set_invert), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ invert bool }{invert}))
 }
 
 //go:nosplit
 func (self class) GetInvert() bool { //gd:NoiseTexture3D.get_invert
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_get_invert, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_get_invert), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSeamless(seamless bool) { //gd:NoiseTexture3D.set_seamless
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_set_seamless, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ seamless bool }{seamless}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_set_seamless), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ seamless bool }{seamless}))
 }
 
 //go:nosplit
 func (self class) GetSeamless() bool { //gd:NoiseTexture3D.get_seamless
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_get_seamless, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_get_seamless), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt float64) { //gd:NoiseTexture3D.set_seamless_blend_skirt
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_set_seamless_blend_skirt, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ seamless_blend_skirt float64 }{seamless_blend_skirt}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_set_seamless_blend_skirt), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ seamless_blend_skirt float64 }{seamless_blend_skirt}))
 }
 
 //go:nosplit
 func (self class) GetSeamlessBlendSkirt() float64 { //gd:NoiseTexture3D.get_seamless_blend_skirt
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_get_seamless_blend_skirt, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_get_seamless_blend_skirt), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNormalize(normalize bool) { //gd:NoiseTexture3D.set_normalize
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_set_normalize, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ normalize bool }{normalize}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_set_normalize), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ normalize bool }{normalize}))
 }
 
 //go:nosplit
 func (self class) IsNormalized() bool { //gd:NoiseTexture3D.is_normalized
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_is_normalized, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_is_normalized), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColorRamp(gradient [1]gdclass.Gradient) { //gd:NoiseTexture3D.set_color_ramp
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_set_color_ramp, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gradient[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_set_color_ramp), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gradient[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:NoiseTexture3D.get_color_ramp
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_get_color_ramp, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_get_color_ramp), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNoise(noise [1]gdclass.Noise) { //gd:NoiseTexture3D.set_noise
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_set_noise, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ noise gdextension.Object }{gdextension.Object(gd.ObjectChecked(noise[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_set_noise), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ noise gdextension.Object }{gdextension.Object(gd.ObjectChecked(noise[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetNoise() [1]gdclass.Noise { //gd:NoiseTexture3D.get_noise
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.NoiseTexture3D.Bind_get_noise, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NoiseTexture3D.Bind_get_noise), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Noise{gd.PointerWithOwnershipTransferredToGo[gdclass.Noise](r_ret)}
 	return ret
 }

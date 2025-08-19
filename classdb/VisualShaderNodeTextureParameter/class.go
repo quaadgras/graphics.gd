@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -147,60 +145,60 @@ func (self Instance) SetTextureSource(value TextureSource) {
 
 //go:nosplit
 func (self class) SetTextureType(atype TextureType) { //gd:VisualShaderNodeTextureParameter.set_texture_type
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_texture_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype TextureType }{atype}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_texture_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype TextureType }{atype}))
 }
 
 //go:nosplit
 func (self class) GetTextureType() TextureType { //gd:VisualShaderNodeTextureParameter.get_texture_type
-	var r_ret = gdunsafe.Call[TextureType](self.AsObject(), gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextureType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColorDefault(color ColorDefault) { //gd:VisualShaderNodeTextureParameter.set_color_default
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_color_default, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ color ColorDefault }{color}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_color_default), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ color ColorDefault }{color}))
 }
 
 //go:nosplit
 func (self class) GetColorDefault() ColorDefault { //gd:VisualShaderNodeTextureParameter.get_color_default
-	var r_ret = gdunsafe.Call[ColorDefault](self.AsObject(), gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_color_default, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ColorDefault](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_color_default), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureFilter(filter TextureFilter) { //gd:VisualShaderNodeTextureParameter.set_texture_filter
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_texture_filter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter TextureFilter }{filter}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_texture_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter TextureFilter }{filter}))
 }
 
 //go:nosplit
 func (self class) GetTextureFilter() TextureFilter { //gd:VisualShaderNodeTextureParameter.get_texture_filter
-	var r_ret = gdunsafe.Call[TextureFilter](self.AsObject(), gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextureFilter](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_filter), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureRepeat(repeat TextureRepeat) { //gd:VisualShaderNodeTextureParameter.set_texture_repeat
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_texture_repeat, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ repeat TextureRepeat }{repeat}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_texture_repeat), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ repeat TextureRepeat }{repeat}))
 }
 
 //go:nosplit
 func (self class) GetTextureRepeat() TextureRepeat { //gd:VisualShaderNodeTextureParameter.get_texture_repeat
-	var r_ret = gdunsafe.Call[TextureRepeat](self.AsObject(), gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_repeat, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextureRepeat](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_repeat), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureSource(source TextureSource) { //gd:VisualShaderNodeTextureParameter.set_texture_source
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_texture_source, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ source TextureSource }{source}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_set_texture_source), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ source TextureSource }{source}))
 }
 
 //go:nosplit
 func (self class) GetTextureSource() TextureSource { //gd:VisualShaderNodeTextureParameter.get_texture_source
-	var r_ret = gdunsafe.Call[TextureSource](self.AsObject(), gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_source, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextureSource](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTextureParameter.Bind_get_texture_source), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

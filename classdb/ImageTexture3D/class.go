@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -126,7 +124,7 @@ Creates the [ImageTexture3D] with specified [param width], [param height], and [
 */
 //go:nosplit
 func (self class) Create(format Image.Format, width int64, height int64, depth int64, use_mipmaps bool, data Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTexture3D.create
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ImageTexture3D.Bind_create, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeArray<<24), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ImageTexture3D.Bind_create), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeArray<<24), unsafe.Pointer(&struct {
 		format      Image.Format
 		width       int64
 		height      int64
@@ -143,7 +141,7 @@ Replaces the texture's existing data with the layers specified in [param data]. 
 */
 //go:nosplit
 func (self class) Update(data Array.Contains[[1]gdclass.Image]) { //gd:ImageTexture3D.update
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ImageTexture3D.Bind_update, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ data gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ImageTexture3D.Bind_update), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ data gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
 }
 func (self class) AsImageTexture3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsImageTexture3D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

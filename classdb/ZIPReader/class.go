@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -50,7 +49,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -203,7 +201,7 @@ Opens the zip archive at the given [param path] and reads its file index.
 */
 //go:nosplit
 func (self class) Open(path String.Readable) Error.Code { //gd:ZIPReader.open
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ZIPReader.Bind_open, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ZIPReader.Bind_open), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -213,7 +211,7 @@ Closes the underlying resources used by this instance.
 */
 //go:nosplit
 func (self class) Close() Error.Code { //gd:ZIPReader.close
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.ZIPReader.Bind_close, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ZIPReader.Bind_close), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -224,7 +222,7 @@ Must be called after [method open].
 */
 //go:nosplit
 func (self class) GetFiles() Packed.Strings { //gd:ZIPReader.get_files
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ZIPReader.Bind_get_files, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ZIPReader.Bind_get_files), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -235,7 +233,7 @@ Must be called after [method open].
 */
 //go:nosplit
 func (self class) ReadFile(path String.Readable, case_sensitive bool) Packed.Bytes { //gd:ZIPReader.read_file
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ZIPReader.Bind_read_file, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ZIPReader.Bind_read_file), gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path           gdextension.String
 		case_sensitive bool
 	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), case_sensitive}))
@@ -249,7 +247,7 @@ Must be called after [method open].
 */
 //go:nosplit
 func (self class) FileExists(path String.Readable, case_sensitive bool) bool { //gd:ZIPReader.file_exists
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.ZIPReader.Bind_file_exists, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ZIPReader.Bind_file_exists), gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path           gdextension.String
 		case_sensitive bool
 	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), case_sensitive}))

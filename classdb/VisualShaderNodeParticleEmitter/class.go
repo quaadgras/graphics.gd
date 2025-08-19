@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -114,12 +112,12 @@ func (self Instance) SetMode2d(value bool) {
 
 //go:nosplit
 func (self class) SetMode2d(enabled bool) { //gd:VisualShaderNodeParticleEmitter.set_mode_2d
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeParticleEmitter.Bind_set_mode_2d, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleEmitter.Bind_set_mode_2d), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsMode2d() bool { //gd:VisualShaderNodeParticleEmitter.is_mode_2d
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.VisualShaderNodeParticleEmitter.Bind_is_mode_2d, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleEmitter.Bind_is_mode_2d), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

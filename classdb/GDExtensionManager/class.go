@@ -9,7 +9,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -154,7 +152,7 @@ Loads an extension by absolute file path. The [param path] needs to point to a v
 */
 //go:nosplit
 func (self class) LoadExtension(path String.Readable) LoadStatus { //gd:GDExtensionManager.load_extension
-	var r_ret = gdunsafe.Call[LoadStatus](self.AsObject(), gd.Global.Methods.GDExtensionManager.Bind_load_extension, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[LoadStatus](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GDExtensionManager.Bind_load_extension), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -165,7 +163,7 @@ Reloads the extension at the given file path. The [param path] needs to point to
 */
 //go:nosplit
 func (self class) ReloadExtension(path String.Readable) LoadStatus { //gd:GDExtensionManager.reload_extension
-	var r_ret = gdunsafe.Call[LoadStatus](self.AsObject(), gd.Global.Methods.GDExtensionManager.Bind_reload_extension, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[LoadStatus](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GDExtensionManager.Bind_reload_extension), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -175,7 +173,7 @@ Unloads an extension by file path. The [param path] needs to point to an already
 */
 //go:nosplit
 func (self class) UnloadExtension(path String.Readable) LoadStatus { //gd:GDExtensionManager.unload_extension
-	var r_ret = gdunsafe.Call[LoadStatus](self.AsObject(), gd.Global.Methods.GDExtensionManager.Bind_unload_extension, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[LoadStatus](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GDExtensionManager.Bind_unload_extension), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -185,7 +183,7 @@ Returns [code]true[/code] if the extension at the given file [param path] has al
 */
 //go:nosplit
 func (self class) IsExtensionLoaded(path String.Readable) bool { //gd:GDExtensionManager.is_extension_loaded
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GDExtensionManager.Bind_is_extension_loaded, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GDExtensionManager.Bind_is_extension_loaded), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -195,7 +193,7 @@ Returns the file paths of all currently loaded extensions.
 */
 //go:nosplit
 func (self class) GetLoadedExtensions() Packed.Strings { //gd:GDExtensionManager.get_loaded_extensions
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.GDExtensionManager.Bind_get_loaded_extensions, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GDExtensionManager.Bind_get_loaded_extensions), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -205,7 +203,7 @@ Returns the [GDExtension] at the given file [param path], or [code]null[/code] i
 */
 //go:nosplit
 func (self class) GetExtension(path String.Readable) [1]gdclass.GDExtension { //gd:GDExtensionManager.get_extension
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GDExtensionManager.Bind_get_extension, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GDExtensionManager.Bind_get_extension), gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 	var ret = [1]gdclass.GDExtension{gd.PointerWithOwnershipTransferredToGo[gdclass.GDExtension](r_ret)}
 	return ret
 }

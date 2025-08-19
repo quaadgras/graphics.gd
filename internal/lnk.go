@@ -11,6 +11,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 )
 
@@ -78,7 +79,7 @@ func (Godot *API) linkBuiltin() {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 			}
 			vtype, _ := variantTypeFromName(class.Name)
-			*(direct.Interface().(*func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32))) = Godot.Variants.GetPointerBuiltinMethod(vtype, methodName, Int(hash))
+			*(direct.Interface().(*gdextension.MethodForBuiltinType)) = gdextension.Host.Builtin.Types.Method(vtype, gdextension.StringName(pointers.Get(methodName)[0]), Int(hash))
 		}
 	}
 }
@@ -122,11 +123,11 @@ func (Godot *API) linkMethods(editor bool) {
 			if err != nil {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 			}
-			bind := Godot.ClassDB.GetMethodBind(className, methodName, Int(hash))
+			bind := gdextension.Host.Objects.Method.Lookup(gdextension.StringName(pointers.Get(className)[0]), gdextension.StringName(pointers.Get(methodName)[0]), hash)
 			if bind == 0 {
 				fmt.Println("null bind ", class.Name, method.Name)
 			}
-			*(direct.Interface().(*MethodBind)) = bind
+			*(direct.Interface().(*gdextension.MethodForClass)) = bind
 
 			methodName.Free()
 		}

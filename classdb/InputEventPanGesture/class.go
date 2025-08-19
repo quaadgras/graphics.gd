@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -56,7 +55,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -119,12 +117,12 @@ func (self Instance) SetDelta(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetDelta(delta Vector2.XY) { //gd:InputEventPanGesture.set_delta
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventPanGesture.Bind_set_delta, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ delta Vector2.XY }{delta}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventPanGesture.Bind_set_delta), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ delta Vector2.XY }{delta}))
 }
 
 //go:nosplit
 func (self class) GetDelta() Vector2.XY { //gd:InputEventPanGesture.get_delta
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.InputEventPanGesture.Bind_get_delta, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventPanGesture.Bind_get_delta), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

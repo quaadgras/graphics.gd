@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -149,7 +147,7 @@ Sets the value of the specified parameter.
 */
 //go:nosplit
 func (self class) SetParam(param Param, value float64) { //gd:ConeTwistJoint3D.set_param
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ConeTwistJoint3D.Bind_set_param, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConeTwistJoint3D.Bind_set_param), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		param Param
 		value float64
 	}{param, value}))
@@ -160,7 +158,7 @@ Returns the value of the specified parameter.
 */
 //go:nosplit
 func (self class) GetParam(param Param) float64 { //gd:ConeTwistJoint3D.get_param
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.ConeTwistJoint3D.Bind_get_param, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConeTwistJoint3D.Bind_get_param), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
 	var ret = r_ret
 	return ret
 }

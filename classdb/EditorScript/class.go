@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -192,7 +190,7 @@ Makes [param node] root of the currently opened scene. Only works if the scene i
 */
 //go:nosplit
 func (self class) AddRootNode(node [1]gdclass.Node) { //gd:EditorScript.add_root_node
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorScript.Bind_add_root_node, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorScript.Bind_add_root_node), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))}))
 }
 
 /*
@@ -200,7 +198,7 @@ Returns the edited (current) scene's root [Node]. Equivalent of [method EditorIn
 */
 //go:nosplit
 func (self class) GetScene() [1]gdclass.Node { //gd:EditorScript.get_scene
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorScript.Bind_get_scene, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorScript.Bind_get_scene), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -210,7 +208,7 @@ Returns the [EditorInterface] singleton instance.
 */
 //go:nosplit
 func (self class) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorScript.get_editor_interface
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorScript.Bind_get_editor_interface, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorScript.Bind_get_editor_interface), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorInterface{gd.PointerLifetimeBoundTo[gdclass.EditorInterface](self.AsObject(), r_ret)}
 	return ret
 }

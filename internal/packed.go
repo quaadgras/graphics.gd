@@ -2,11 +2,17 @@ package gd
 
 import (
 	"strings"
+	"unsafe"
 
 	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	StringType "graphics.gd/variant/String"
 )
+
+func MakePacked(packed gdextension.PackedArray) PackedPointers {
+	return *(*PackedPointers)(unsafe.Pointer(&packed))
+}
 
 func (p *PackedFloat32Array) Pointer() *PackedFloat32Array { return p }
 func (p *PackedFloat64Array) Pointer() *PackedFloat64Array { return p }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -130,36 +128,36 @@ func (self Instance) SetRelease(value Float.X) {
 
 //go:nosplit
 func (self class) SetCeilingDb(ceiling float64) { //gd:AudioEffectHardLimiter.set_ceiling_db
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectHardLimiter.Bind_set_ceiling_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ceiling float64 }{ceiling}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectHardLimiter.Bind_set_ceiling_db), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ceiling float64 }{ceiling}))
 }
 
 //go:nosplit
 func (self class) GetCeilingDb() float64 { //gd:AudioEffectHardLimiter.get_ceiling_db
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectHardLimiter.Bind_get_ceiling_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectHardLimiter.Bind_get_ceiling_db), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPreGainDb(p_pre_gain float64) { //gd:AudioEffectHardLimiter.set_pre_gain_db
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectHardLimiter.Bind_set_pre_gain_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_pre_gain float64 }{p_pre_gain}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectHardLimiter.Bind_set_pre_gain_db), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_pre_gain float64 }{p_pre_gain}))
 }
 
 //go:nosplit
 func (self class) GetPreGainDb() float64 { //gd:AudioEffectHardLimiter.get_pre_gain_db
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectHardLimiter.Bind_get_pre_gain_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectHardLimiter.Bind_get_pre_gain_db), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRelease(p_release float64) { //gd:AudioEffectHardLimiter.set_release
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectHardLimiter.Bind_set_release, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_release float64 }{p_release}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectHardLimiter.Bind_set_release), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_release float64 }{p_release}))
 }
 
 //go:nosplit
 func (self class) GetRelease() float64 { //gd:AudioEffectHardLimiter.get_release
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectHardLimiter.Bind_get_release, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectHardLimiter.Bind_get_release), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

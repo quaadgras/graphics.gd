@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -162,86 +160,86 @@ func (self Instance) SetRecoveryAsCollision(value bool) {
 
 //go:nosplit
 func (self class) GetFrom() Transform2D.OriginXY { //gd:PhysicsTestMotionParameters2D.get_from
-	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_get_from, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_get_from), gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrom(from Transform2D.OriginXY) { //gd:PhysicsTestMotionParameters2D.set_from
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_from, 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ from Transform2D.OriginXY }{from}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_from), 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ from Transform2D.OriginXY }{from}))
 }
 
 //go:nosplit
 func (self class) GetMotion() Vector2.XY { //gd:PhysicsTestMotionParameters2D.get_motion
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_get_motion, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_get_motion), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMotion(motion Vector2.XY) { //gd:PhysicsTestMotionParameters2D.set_motion
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_motion, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ motion Vector2.XY }{motion}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_motion), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ motion Vector2.XY }{motion}))
 }
 
 //go:nosplit
 func (self class) GetMargin() float64 { //gd:PhysicsTestMotionParameters2D.get_margin
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_get_margin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_get_margin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMargin(margin float64) { //gd:PhysicsTestMotionParameters2D.set_margin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_margin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_margin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
 }
 
 //go:nosplit
 func (self class) IsCollideSeparationRayEnabled() bool { //gd:PhysicsTestMotionParameters2D.is_collide_separation_ray_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_is_collide_separation_ray_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_is_collide_separation_ray_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollideSeparationRayEnabled(enabled bool) { //gd:PhysicsTestMotionParameters2D.set_collide_separation_ray_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_collide_separation_ray_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_collide_separation_ray_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetExcludeBodies() Array.Contains[RID.Any] { //gd:PhysicsTestMotionParameters2D.get_exclude_bodies
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_get_exclude_bodies, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_get_exclude_bodies), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExcludeBodies(exclude_list Array.Contains[RID.Any]) { //gd:PhysicsTestMotionParameters2D.set_exclude_bodies
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_exclude_bodies, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ exclude_list gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(exclude_list))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_exclude_bodies), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ exclude_list gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(exclude_list))[0])}))
 }
 
 //go:nosplit
 func (self class) GetExcludeObjects() Array.Contains[int64] { //gd:PhysicsTestMotionParameters2D.get_exclude_objects
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_get_exclude_objects, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_get_exclude_objects), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExcludeObjects(exclude_list Array.Contains[int64]) { //gd:PhysicsTestMotionParameters2D.set_exclude_objects
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_exclude_objects, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ exclude_list gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(exclude_list))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_exclude_objects), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ exclude_list gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(exclude_list))[0])}))
 }
 
 //go:nosplit
 func (self class) IsRecoveryAsCollisionEnabled() bool { //gd:PhysicsTestMotionParameters2D.is_recovery_as_collision_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_is_recovery_as_collision_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_is_recovery_as_collision_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRecoveryAsCollisionEnabled(enabled bool) { //gd:PhysicsTestMotionParameters2D.set_recovery_as_collision_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_recovery_as_collision_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsTestMotionParameters2D.Bind_set_recovery_as_collision_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 func (self class) AsPhysicsTestMotionParameters2D() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

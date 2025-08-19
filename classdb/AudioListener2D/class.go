@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -133,7 +131,7 @@ This method will have no effect if the [AudioListener2D] is not added to [SceneT
 */
 //go:nosplit
 func (self class) MakeCurrent() { //gd:AudioListener2D.make_current
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioListener2D.Bind_make_current, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioListener2D.Bind_make_current), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -141,7 +139,7 @@ Disables the [AudioListener2D]. If it's not set as current, this method will hav
 */
 //go:nosplit
 func (self class) ClearCurrent() { //gd:AudioListener2D.clear_current
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioListener2D.Bind_clear_current, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioListener2D.Bind_clear_current), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -149,7 +147,7 @@ Returns [code]true[/code] if this [AudioListener2D] is currently active.
 */
 //go:nosplit
 func (self class) IsCurrent() bool { //gd:AudioListener2D.is_current
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AudioListener2D.Bind_is_current, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioListener2D.Bind_is_current), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

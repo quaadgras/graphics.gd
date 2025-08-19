@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -56,7 +55,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -134,36 +132,36 @@ func (self Instance) SetGlobalPosition(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetButtonMask(button_mask Input.MouseButtonMask) { //gd:InputEventMouse.set_button_mask
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMouse.Bind_set_button_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ button_mask Input.MouseButtonMask }{button_mask}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouse.Bind_set_button_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ button_mask Input.MouseButtonMask }{button_mask}))
 }
 
 //go:nosplit
 func (self class) GetButtonMask() Input.MouseButtonMask { //gd:InputEventMouse.get_button_mask
-	var r_ret = gdunsafe.Call[Input.MouseButtonMask](self.AsObject(), gd.Global.Methods.InputEventMouse.Bind_get_button_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.MouseButtonMask](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouse.Bind_get_button_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPosition(position Vector2.XY) { //gd:InputEventMouse.set_position
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMouse.Bind_set_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouse.Bind_set_position), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:InputEventMouse.get_position
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.InputEventMouse.Bind_get_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouse.Bind_get_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlobalPosition(global_position Vector2.XY) { //gd:InputEventMouse.set_global_position
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMouse.Bind_set_global_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ global_position Vector2.XY }{global_position}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouse.Bind_set_global_position), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ global_position Vector2.XY }{global_position}))
 }
 
 //go:nosplit
 func (self class) GetGlobalPosition() Vector2.XY { //gd:InputEventMouse.get_global_position
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.InputEventMouse.Bind_get_global_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouse.Bind_get_global_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

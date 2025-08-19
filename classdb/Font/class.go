@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -56,7 +55,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -506,12 +504,12 @@ func (self Instance) SetFallbacks(value []Instance) {
 
 //go:nosplit
 func (self class) SetFallbacks(fallbacks Array.Contains[[1]gdclass.Font]) { //gd:Font.set_fallbacks
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Font.Bind_set_fallbacks, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ fallbacks gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(fallbacks))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_set_fallbacks), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ fallbacks gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(fallbacks))[0])}))
 }
 
 //go:nosplit
 func (self class) GetFallbacks() Array.Contains[[1]gdclass.Font] { //gd:Font.get_fallbacks
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Font.Bind_get_fallbacks, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_fallbacks), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Font]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -521,7 +519,7 @@ Returns [TextServer] RID of the font cache for specific variation.
 */
 //go:nosplit
 func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index int64, strength float64, transform Transform2D.OriginXY, spacing_top int64, spacing_bottom int64, spacing_space int64, spacing_glyph int64, baseline_offset float64) RID.Any { //gd:Font.find_variation
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.Font.Bind_find_variation, gdextension.SizeRID|(gdextension.SizeDictionary<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeFloat<<36), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_find_variation), gdextension.SizeRID|(gdextension.SizeDictionary<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeFloat<<36), unsafe.Pointer(&struct {
 		variation_coordinates gdextension.Dictionary
 		face_index            int64
 		strength              float64
@@ -541,7 +539,7 @@ Returns [Array] of valid [Font] [RID]s, which can be passed to the [TextServer] 
 */
 //go:nosplit
 func (self class) GetRids() Array.Contains[RID.Any] { //gd:Font.get_rids
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Font.Bind_get_rids, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_rids), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -552,7 +550,7 @@ Returns the total average font height (ascent plus descent) in pixels.
 */
 //go:nosplit
 func (self class) GetHeight(font_size int64) float64 { //gd:Font.get_height
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Font.Bind_get_height, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_height), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
 	var ret = r_ret
 	return ret
 }
@@ -563,7 +561,7 @@ Returns the average font ascent (number of pixels above the baseline).
 */
 //go:nosplit
 func (self class) GetAscent(font_size int64) float64 { //gd:Font.get_ascent
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Font.Bind_get_ascent, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_ascent), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
 	var ret = r_ret
 	return ret
 }
@@ -574,7 +572,7 @@ Returns the average font descent (number of pixels below the baseline).
 */
 //go:nosplit
 func (self class) GetDescent(font_size int64) float64 { //gd:Font.get_descent
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Font.Bind_get_descent, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_descent), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
 	var ret = r_ret
 	return ret
 }
@@ -585,7 +583,7 @@ Returns average pixel offset of the underline below the baseline.
 */
 //go:nosplit
 func (self class) GetUnderlinePosition(font_size int64) float64 { //gd:Font.get_underline_position
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Font.Bind_get_underline_position, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_underline_position), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
 	var ret = r_ret
 	return ret
 }
@@ -596,7 +594,7 @@ Returns average thickness of the underline.
 */
 //go:nosplit
 func (self class) GetUnderlineThickness(font_size int64) float64 { //gd:Font.get_underline_thickness
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Font.Bind_get_underline_thickness, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_underline_thickness), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
 	var ret = r_ret
 	return ret
 }
@@ -606,7 +604,7 @@ Returns font family name.
 */
 //go:nosplit
 func (self class) GetFontName() String.Readable { //gd:Font.get_font_name
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Font.Bind_get_font_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_font_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -616,7 +614,7 @@ Returns font style name.
 */
 //go:nosplit
 func (self class) GetFontStyleName() String.Readable { //gd:Font.get_font_style_name
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Font.Bind_get_font_style_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_font_style_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -626,7 +624,7 @@ Returns [Dictionary] with OpenType font name strings (localized font names, vers
 */
 //go:nosplit
 func (self class) GetOtNameStrings() Dictionary.Any { //gd:Font.get_ot_name_strings
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Font.Bind_get_ot_name_strings, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_ot_name_strings), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -636,7 +634,7 @@ Returns font style flags, see [enum TextServer.FontStyle].
 */
 //go:nosplit
 func (self class) GetFontStyle() TextServer.FontStyle { //gd:Font.get_font_style
-	var r_ret = gdunsafe.Call[TextServer.FontStyle](self.AsObject(), gd.Global.Methods.Font.Bind_get_font_style, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.FontStyle](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_font_style), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -646,7 +644,7 @@ Returns weight (boldness) of the font. A value in the [code]100...999[/code] ran
 */
 //go:nosplit
 func (self class) GetFontWeight() int64 { //gd:Font.get_font_weight
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Font.Bind_get_font_weight, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_font_weight), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -656,7 +654,7 @@ Returns font stretch amount, compared to a normal width. A percentage value betw
 */
 //go:nosplit
 func (self class) GetFontStretch() int64 { //gd:Font.get_font_stretch
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Font.Bind_get_font_stretch, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_font_stretch), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -666,7 +664,7 @@ Returns the spacing for the given [code]type[/code] (see [enum TextServer.Spacin
 */
 //go:nosplit
 func (self class) GetSpacing(spacing TextServer.SpacingType) int64 { //gd:Font.get_spacing
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Font.Bind_get_spacing, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ spacing TextServer.SpacingType }{spacing}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_spacing), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ spacing TextServer.SpacingType }{spacing}))
 	var ret = r_ret
 	return ret
 }
@@ -676,7 +674,7 @@ Returns a set of OpenType feature tags. More info: [url=https://docs.microsoft.c
 */
 //go:nosplit
 func (self class) GetOpentypeFeatures() Dictionary.Any { //gd:Font.get_opentype_features
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Font.Bind_get_opentype_features, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_opentype_features), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -686,7 +684,7 @@ Sets LRU cache capacity for [code]draw_*[/code] methods.
 */
 //go:nosplit
 func (self class) SetCacheCapacity(single_line int64, multi_line int64) { //gd:Font.set_cache_capacity
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Font.Bind_set_cache_capacity, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_set_cache_capacity), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		single_line int64
 		multi_line  int64
 	}{single_line, multi_line}))
@@ -709,7 +707,7 @@ Vector2 stringSize = label.GetThemeFont("font").GetStringSize(label.Text, Horizo
 */
 //go:nosplit
 func (self class) GetStringSize(text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_string_size
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Font.Bind_get_string_size, gdextension.SizeVector2|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_string_size), gdextension.SizeVector2|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
 		text                gdextension.String
 		alignment           GUI.HorizontalAlignment
 		width               float64
@@ -728,7 +726,7 @@ See also [method draw_multiline_string].
 */
 //go:nosplit
 func (self class) GetMultilineStringSize(text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_multiline_string_size
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Font.Bind_get_multiline_string_size, gdextension.SizeVector2|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_multiline_string_size), gdextension.SizeVector2|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), unsafe.Pointer(&struct {
 		text                gdextension.String
 		alignment           GUI.HorizontalAlignment
 		width               float64
@@ -749,7 +747,7 @@ See also [method CanvasItem.draw_string].
 */
 //go:nosplit
 func (self class) DrawString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_string
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Font.Bind_draw_string, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_draw_string), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40), unsafe.Pointer(&struct {
 		canvas_item         RID.Any
 		pos                 Vector2.XY
 		text                gdextension.String
@@ -769,7 +767,7 @@ See also [method CanvasItem.draw_multiline_string].
 */
 //go:nosplit
 func (self class) DrawMultilineString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_multiline_string
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Font.Bind_draw_multiline_string, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_draw_multiline_string), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48), unsafe.Pointer(&struct {
 		canvas_item         RID.Any
 		pos                 Vector2.XY
 		text                gdextension.String
@@ -791,7 +789,7 @@ See also [method CanvasItem.draw_string_outline].
 */
 //go:nosplit
 func (self class) DrawStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_string_outline
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Font.Bind_draw_string_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_draw_string_outline), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44), unsafe.Pointer(&struct {
 		canvas_item         RID.Any
 		pos                 Vector2.XY
 		text                gdextension.String
@@ -812,7 +810,7 @@ See also [method CanvasItem.draw_multiline_string_outline].
 */
 //go:nosplit
 func (self class) DrawMultilineStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, size int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_multiline_string_outline
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Font.Bind_draw_multiline_string_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeColor<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48)|(gdextension.SizeInt<<52), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_draw_multiline_string_outline), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeColor<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48)|(gdextension.SizeInt<<52), unsafe.Pointer(&struct {
 		canvas_item         RID.Any
 		pos                 Vector2.XY
 		text                gdextension.String
@@ -835,7 +833,7 @@ Returns the size of a character. Does not take kerning into account.
 */
 //go:nosplit
 func (self class) GetCharSize(char int64, font_size int64) Vector2.XY { //gd:Font.get_char_size
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Font.Bind_get_char_size, gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_char_size), gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		char      int64
 		font_size int64
 	}{char, font_size}))
@@ -849,7 +847,7 @@ Draw a single Unicode character [param char] into a canvas item using the font, 
 */
 //go:nosplit
 func (self class) DrawChar(canvas_item RID.Any, pos Vector2.XY, char int64, font_size int64, modulate Color.RGBA) float64 { //gd:Font.draw_char
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Font.Bind_draw_char, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeColor<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_draw_char), gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeColor<<20), unsafe.Pointer(&struct {
 		canvas_item RID.Any
 		pos         Vector2.XY
 		char        int64
@@ -866,7 +864,7 @@ Draw a single Unicode character [param char] outline into a canvas item using th
 */
 //go:nosplit
 func (self class) DrawCharOutline(canvas_item RID.Any, pos Vector2.XY, char int64, font_size int64, size int64, modulate Color.RGBA) float64 { //gd:Font.draw_char_outline
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Font.Bind_draw_char_outline, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_draw_char_outline), gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24), unsafe.Pointer(&struct {
 		canvas_item RID.Any
 		pos         Vector2.XY
 		char        int64
@@ -883,7 +881,7 @@ Returns [code]true[/code] if a Unicode [param char] is available in the font.
 */
 //go:nosplit
 func (self class) HasChar(char int64) bool { //gd:Font.has_char
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Font.Bind_has_char, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ char int64 }{char}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_has_char), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ char int64 }{char}))
 	var ret = r_ret
 	return ret
 }
@@ -894,7 +892,7 @@ If a given character is included in more than one font data source, it appears o
 */
 //go:nosplit
 func (self class) GetSupportedChars() String.Readable { //gd:Font.get_supported_chars
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Font.Bind_get_supported_chars, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_supported_chars), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -904,7 +902,7 @@ Returns [code]true[/code], if font supports given language ([url=https://en.wiki
 */
 //go:nosplit
 func (self class) IsLanguageSupported(language String.Readable) bool { //gd:Font.is_language_supported
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Font.Bind_is_language_supported, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_is_language_supported), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -914,7 +912,7 @@ Returns [code]true[/code], if font supports given script ([url=https://en.wikipe
 */
 //go:nosplit
 func (self class) IsScriptSupported(script String.Readable) bool { //gd:Font.is_script_supported
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Font.Bind_is_script_supported, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ script gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(script))[0])}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_is_script_supported), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ script gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(script))[0])}))
 	var ret = r_ret
 	return ret
 }
@@ -924,7 +922,7 @@ Returns list of OpenType features supported by font.
 */
 //go:nosplit
 func (self class) GetSupportedFeatureList() Dictionary.Any { //gd:Font.get_supported_feature_list
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Font.Bind_get_supported_feature_list, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_supported_feature_list), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -946,7 +944,7 @@ for tag in variation_list:
 */
 //go:nosplit
 func (self class) GetSupportedVariationList() Dictionary.Any { //gd:Font.get_supported_variation_list
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Font.Bind_get_supported_variation_list, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_supported_variation_list), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -956,7 +954,7 @@ Returns number of faces in the TrueType / OpenType collection.
 */
 //go:nosplit
 func (self class) GetFaceCount() int64 { //gd:Font.get_face_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Font.Bind_get_face_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Font.Bind_get_face_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -136,36 +134,36 @@ func (self Instance) SetSamplingRate(value Float.X) {
 
 //go:nosplit
 func (self class) SetPacketData(packet_data Array.Contains[Array.Any]) { //gd:OggPacketSequence.set_packet_data
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OggPacketSequence.Bind_set_packet_data, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ packet_data gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(packet_data))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_set_packet_data), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ packet_data gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(packet_data))[0])}))
 }
 
 //go:nosplit
 func (self class) GetPacketData() Array.Contains[Array.Any] { //gd:OggPacketSequence.get_packet_data
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OggPacketSequence.Bind_get_packet_data, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_get_packet_data), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Array.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPacketGranulePositions(granule_positions Packed.Array[int64]) { //gd:OggPacketSequence.set_packet_granule_positions
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OggPacketSequence.Bind_set_packet_granule_positions, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ granule_positions gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](granule_positions)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_set_packet_granule_positions), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ granule_positions gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](granule_positions)))}))
 }
 
 //go:nosplit
 func (self class) GetPacketGranulePositions() Packed.Array[int64] { //gd:OggPacketSequence.get_packet_granule_positions
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OggPacketSequence.Bind_get_packet_granule_positions, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_get_packet_granule_positions), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSamplingRate(sampling_rate float64) { //gd:OggPacketSequence.set_sampling_rate
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OggPacketSequence.Bind_set_sampling_rate, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sampling_rate float64 }{sampling_rate}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_set_sampling_rate), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sampling_rate float64 }{sampling_rate}))
 }
 
 //go:nosplit
 func (self class) GetSamplingRate() float64 { //gd:OggPacketSequence.get_sampling_rate
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OggPacketSequence.Bind_get_sampling_rate, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_get_sampling_rate), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -175,7 +173,7 @@ The length of this stream, in seconds.
 */
 //go:nosplit
 func (self class) GetLength() float64 { //gd:OggPacketSequence.get_length
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.OggPacketSequence.Bind_get_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

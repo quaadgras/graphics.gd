@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -139,48 +137,48 @@ func (self Instance) SetTicksOnBorders(value bool) {
 
 //go:nosplit
 func (self class) SetTicks(count int64) { //gd:Slider.set_ticks
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Slider.Bind_set_ticks, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Slider.Bind_set_ticks), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 //go:nosplit
 func (self class) GetTicks() int64 { //gd:Slider.get_ticks
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Slider.Bind_get_ticks, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Slider.Bind_get_ticks), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetTicksOnBorders() bool { //gd:Slider.get_ticks_on_borders
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Slider.Bind_get_ticks_on_borders, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Slider.Bind_get_ticks_on_borders), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTicksOnBorders(ticks_on_border bool) { //gd:Slider.set_ticks_on_borders
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Slider.Bind_set_ticks_on_borders, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ ticks_on_border bool }{ticks_on_border}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Slider.Bind_set_ticks_on_borders), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ ticks_on_border bool }{ticks_on_border}))
 }
 
 //go:nosplit
 func (self class) SetEditable(editable bool) { //gd:Slider.set_editable
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Slider.Bind_set_editable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ editable bool }{editable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Slider.Bind_set_editable), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ editable bool }{editable}))
 }
 
 //go:nosplit
 func (self class) IsEditable() bool { //gd:Slider.is_editable
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Slider.Bind_is_editable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Slider.Bind_is_editable), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollable(scrollable bool) { //gd:Slider.set_scrollable
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Slider.Bind_set_scrollable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ scrollable bool }{scrollable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Slider.Bind_set_scrollable), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ scrollable bool }{scrollable}))
 }
 
 //go:nosplit
 func (self class) IsScrollable() bool { //gd:Slider.is_scrollable
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Slider.Bind_is_scrollable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Slider.Bind_is_scrollable), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

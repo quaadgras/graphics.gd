@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -50,7 +49,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -121,24 +119,24 @@ func (self Instance) SetConstantId(value int) {
 
 //go:nosplit
 func (self class) SetValue(value variant.Any) { //gd:RDPipelineSpecializationConstant.set_value
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDPipelineSpecializationConstant.Bind_set_value, 0|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineSpecializationConstant.Bind_set_value), 0|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 //go:nosplit
 func (self class) GetValue() variant.Any { //gd:RDPipelineSpecializationConstant.get_value
-	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.RDPipelineSpecializationConstant.Bind_get_value, gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineSpecializationConstant.Bind_get_value), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetConstantId(constant_id int64) { //gd:RDPipelineSpecializationConstant.set_constant_id
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDPipelineSpecializationConstant.Bind_set_constant_id, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ constant_id int64 }{constant_id}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineSpecializationConstant.Bind_set_constant_id), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ constant_id int64 }{constant_id}))
 }
 
 //go:nosplit
 func (self class) GetConstantId() int64 { //gd:RDPipelineSpecializationConstant.get_constant_id
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RDPipelineSpecializationConstant.Bind_get_constant_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDPipelineSpecializationConstant.Bind_get_constant_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -334,7 +332,7 @@ func (class) _rest_info(impl func(ptr unsafe.Pointer, shape_rid RID.Any, transfo
 
 //go:nosplit
 func (self class) IsBodyExcludedFromQuery(body RID.Any) bool { //gd:PhysicsDirectSpaceState2DExtension.is_body_excluded_from_query
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsDirectSpaceState2DExtension.Bind_is_body_excluded_from_query, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState2DExtension.Bind_is_body_excluded_from_query), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
 	var ret = r_ret
 	return ret
 }

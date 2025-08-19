@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -148,60 +146,60 @@ func (self Instance) SetOneWayCollisionMargin(value Float.X) {
 
 //go:nosplit
 func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:CollisionPolygon2D.set_polygon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionPolygon2D.Bind_set_polygon, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ polygon gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionPolygon2D.Bind_set_polygon), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ polygon gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))}))
 }
 
 //go:nosplit
 func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:CollisionPolygon2D.get_polygon
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.CollisionPolygon2D.Bind_get_polygon, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionPolygon2D.Bind_get_polygon), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBuildMode(build_mode BuildMode) { //gd:CollisionPolygon2D.set_build_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionPolygon2D.Bind_set_build_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ build_mode BuildMode }{build_mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionPolygon2D.Bind_set_build_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ build_mode BuildMode }{build_mode}))
 }
 
 //go:nosplit
 func (self class) GetBuildMode() BuildMode { //gd:CollisionPolygon2D.get_build_mode
-	var r_ret = gdunsafe.Call[BuildMode](self.AsObject(), gd.Global.Methods.CollisionPolygon2D.Bind_get_build_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BuildMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionPolygon2D.Bind_get_build_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisabled(disabled bool) { //gd:CollisionPolygon2D.set_disabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionPolygon2D.Bind_set_disabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disabled bool }{disabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionPolygon2D.Bind_set_disabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disabled bool }{disabled}))
 }
 
 //go:nosplit
 func (self class) IsDisabled() bool { //gd:CollisionPolygon2D.is_disabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CollisionPolygon2D.Bind_is_disabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionPolygon2D.Bind_is_disabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOneWayCollision(enabled bool) { //gd:CollisionPolygon2D.set_one_way_collision
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionPolygon2D.Bind_set_one_way_collision, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionPolygon2D.Bind_set_one_way_collision), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsOneWayCollisionEnabled() bool { //gd:CollisionPolygon2D.is_one_way_collision_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CollisionPolygon2D.Bind_is_one_way_collision_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionPolygon2D.Bind_is_one_way_collision_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOneWayCollisionMargin(margin float64) { //gd:CollisionPolygon2D.set_one_way_collision_margin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionPolygon2D.Bind_set_one_way_collision_margin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionPolygon2D.Bind_set_one_way_collision_margin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
 }
 
 //go:nosplit
 func (self class) GetOneWayCollisionMargin() float64 { //gd:CollisionPolygon2D.get_one_way_collision_margin
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CollisionPolygon2D.Bind_get_one_way_collision_margin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionPolygon2D.Bind_get_one_way_collision_margin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

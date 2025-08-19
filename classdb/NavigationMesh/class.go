@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -365,36 +363,36 @@ func (self Instance) SetFilterBakingAabbOffset(value Vector3.XYZ) {
 
 //go:nosplit
 func (self class) SetSamplePartitionType(sample_partition_type SamplePartitionType) { //gd:NavigationMesh.set_sample_partition_type
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_sample_partition_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ sample_partition_type SamplePartitionType }{sample_partition_type}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_sample_partition_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ sample_partition_type SamplePartitionType }{sample_partition_type}))
 }
 
 //go:nosplit
 func (self class) GetSamplePartitionType() SamplePartitionType { //gd:NavigationMesh.get_sample_partition_type
-	var r_ret = gdunsafe.Call[SamplePartitionType](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_sample_partition_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SamplePartitionType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_sample_partition_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParsedGeometryType(geometry_type ParsedGeometryType) { //gd:NavigationMesh.set_parsed_geometry_type
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_parsed_geometry_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ geometry_type ParsedGeometryType }{geometry_type}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_parsed_geometry_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ geometry_type ParsedGeometryType }{geometry_type}))
 }
 
 //go:nosplit
 func (self class) GetParsedGeometryType() ParsedGeometryType { //gd:NavigationMesh.get_parsed_geometry_type
-	var r_ret = gdunsafe.Call[ParsedGeometryType](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_parsed_geometry_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ParsedGeometryType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_parsed_geometry_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:NavigationMesh.set_collision_mask
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_collision_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_collision_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:NavigationMesh.get_collision_mask
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_collision_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_collision_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -404,7 +402,7 @@ Based on [param value], enables or disables the specified layer in the [member g
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:NavigationMesh.set_collision_mask_value
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_collision_mask_value), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value}))
@@ -415,259 +413,259 @@ Returns whether or not the specified layer of the [member geometry_collision_mas
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:NavigationMesh.get_collision_mask_value
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_collision_mask_value), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSourceGeometryMode(mask SourceGeometryMode) { //gd:NavigationMesh.set_source_geometry_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_source_geometry_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask SourceGeometryMode }{mask}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_source_geometry_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask SourceGeometryMode }{mask}))
 }
 
 //go:nosplit
 func (self class) GetSourceGeometryMode() SourceGeometryMode { //gd:NavigationMesh.get_source_geometry_mode
-	var r_ret = gdunsafe.Call[SourceGeometryMode](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_source_geometry_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SourceGeometryMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_source_geometry_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSourceGroupName(mask String.Name) { //gd:NavigationMesh.set_source_group_name
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_source_group_name, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ mask gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(mask))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_source_group_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ mask gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(mask))[0])}))
 }
 
 //go:nosplit
 func (self class) GetSourceGroupName() String.Name { //gd:NavigationMesh.get_source_group_name
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_source_group_name, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_source_group_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCellSize(cell_size float64) { //gd:NavigationMesh.set_cell_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_cell_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ cell_size float64 }{cell_size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_cell_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ cell_size float64 }{cell_size}))
 }
 
 //go:nosplit
 func (self class) GetCellSize() float64 { //gd:NavigationMesh.get_cell_size
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_cell_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_cell_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCellHeight(cell_height float64) { //gd:NavigationMesh.set_cell_height
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_cell_height, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ cell_height float64 }{cell_height}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_cell_height), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ cell_height float64 }{cell_height}))
 }
 
 //go:nosplit
 func (self class) GetCellHeight() float64 { //gd:NavigationMesh.get_cell_height
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_cell_height, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_cell_height), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBorderSize(border_size float64) { //gd:NavigationMesh.set_border_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_border_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ border_size float64 }{border_size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_border_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ border_size float64 }{border_size}))
 }
 
 //go:nosplit
 func (self class) GetBorderSize() float64 { //gd:NavigationMesh.get_border_size
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_border_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_border_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAgentHeight(agent_height float64) { //gd:NavigationMesh.set_agent_height
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_agent_height, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ agent_height float64 }{agent_height}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_agent_height), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ agent_height float64 }{agent_height}))
 }
 
 //go:nosplit
 func (self class) GetAgentHeight() float64 { //gd:NavigationMesh.get_agent_height
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_agent_height, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_agent_height), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAgentRadius(agent_radius float64) { //gd:NavigationMesh.set_agent_radius
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_agent_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ agent_radius float64 }{agent_radius}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_agent_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ agent_radius float64 }{agent_radius}))
 }
 
 //go:nosplit
 func (self class) GetAgentRadius() float64 { //gd:NavigationMesh.get_agent_radius
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_agent_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_agent_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAgentMaxClimb(agent_max_climb float64) { //gd:NavigationMesh.set_agent_max_climb
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_agent_max_climb, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ agent_max_climb float64 }{agent_max_climb}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_agent_max_climb), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ agent_max_climb float64 }{agent_max_climb}))
 }
 
 //go:nosplit
 func (self class) GetAgentMaxClimb() float64 { //gd:NavigationMesh.get_agent_max_climb
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_agent_max_climb, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_agent_max_climb), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAgentMaxSlope(agent_max_slope float64) { //gd:NavigationMesh.set_agent_max_slope
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_agent_max_slope, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ agent_max_slope float64 }{agent_max_slope}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_agent_max_slope), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ agent_max_slope float64 }{agent_max_slope}))
 }
 
 //go:nosplit
 func (self class) GetAgentMaxSlope() float64 { //gd:NavigationMesh.get_agent_max_slope
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_agent_max_slope, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_agent_max_slope), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRegionMinSize(region_min_size float64) { //gd:NavigationMesh.set_region_min_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_region_min_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ region_min_size float64 }{region_min_size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_region_min_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ region_min_size float64 }{region_min_size}))
 }
 
 //go:nosplit
 func (self class) GetRegionMinSize() float64 { //gd:NavigationMesh.get_region_min_size
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_region_min_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_region_min_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRegionMergeSize(region_merge_size float64) { //gd:NavigationMesh.set_region_merge_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_region_merge_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ region_merge_size float64 }{region_merge_size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_region_merge_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ region_merge_size float64 }{region_merge_size}))
 }
 
 //go:nosplit
 func (self class) GetRegionMergeSize() float64 { //gd:NavigationMesh.get_region_merge_size
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_region_merge_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_region_merge_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEdgeMaxLength(edge_max_length float64) { //gd:NavigationMesh.set_edge_max_length
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_edge_max_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ edge_max_length float64 }{edge_max_length}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_edge_max_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ edge_max_length float64 }{edge_max_length}))
 }
 
 //go:nosplit
 func (self class) GetEdgeMaxLength() float64 { //gd:NavigationMesh.get_edge_max_length
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_edge_max_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_edge_max_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEdgeMaxError(edge_max_error float64) { //gd:NavigationMesh.set_edge_max_error
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_edge_max_error, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ edge_max_error float64 }{edge_max_error}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_edge_max_error), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ edge_max_error float64 }{edge_max_error}))
 }
 
 //go:nosplit
 func (self class) GetEdgeMaxError() float64 { //gd:NavigationMesh.get_edge_max_error
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_edge_max_error, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_edge_max_error), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVerticesPerPolygon(vertices_per_polygon float64) { //gd:NavigationMesh.set_vertices_per_polygon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_vertices_per_polygon, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ vertices_per_polygon float64 }{vertices_per_polygon}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_vertices_per_polygon), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ vertices_per_polygon float64 }{vertices_per_polygon}))
 }
 
 //go:nosplit
 func (self class) GetVerticesPerPolygon() float64 { //gd:NavigationMesh.get_vertices_per_polygon
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_vertices_per_polygon, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_vertices_per_polygon), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDetailSampleDistance(detail_sample_dist float64) { //gd:NavigationMesh.set_detail_sample_distance
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_detail_sample_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ detail_sample_dist float64 }{detail_sample_dist}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_detail_sample_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ detail_sample_dist float64 }{detail_sample_dist}))
 }
 
 //go:nosplit
 func (self class) GetDetailSampleDistance() float64 { //gd:NavigationMesh.get_detail_sample_distance
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_detail_sample_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_detail_sample_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDetailSampleMaxError(detail_sample_max_error float64) { //gd:NavigationMesh.set_detail_sample_max_error
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_detail_sample_max_error, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ detail_sample_max_error float64 }{detail_sample_max_error}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_detail_sample_max_error), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ detail_sample_max_error float64 }{detail_sample_max_error}))
 }
 
 //go:nosplit
 func (self class) GetDetailSampleMaxError() float64 { //gd:NavigationMesh.get_detail_sample_max_error
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_detail_sample_max_error, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_detail_sample_max_error), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFilterLowHangingObstacles(filter_low_hanging_obstacles bool) { //gd:NavigationMesh.set_filter_low_hanging_obstacles
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_filter_low_hanging_obstacles, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ filter_low_hanging_obstacles bool }{filter_low_hanging_obstacles}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_filter_low_hanging_obstacles), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ filter_low_hanging_obstacles bool }{filter_low_hanging_obstacles}))
 }
 
 //go:nosplit
 func (self class) GetFilterLowHangingObstacles() bool { //gd:NavigationMesh.get_filter_low_hanging_obstacles
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_filter_low_hanging_obstacles, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_filter_low_hanging_obstacles), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFilterLedgeSpans(filter_ledge_spans bool) { //gd:NavigationMesh.set_filter_ledge_spans
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_filter_ledge_spans, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ filter_ledge_spans bool }{filter_ledge_spans}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_filter_ledge_spans), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ filter_ledge_spans bool }{filter_ledge_spans}))
 }
 
 //go:nosplit
 func (self class) GetFilterLedgeSpans() bool { //gd:NavigationMesh.get_filter_ledge_spans
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_filter_ledge_spans, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_filter_ledge_spans), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFilterWalkableLowHeightSpans(filter_walkable_low_height_spans bool) { //gd:NavigationMesh.set_filter_walkable_low_height_spans
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_filter_walkable_low_height_spans, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ filter_walkable_low_height_spans bool }{filter_walkable_low_height_spans}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_filter_walkable_low_height_spans), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ filter_walkable_low_height_spans bool }{filter_walkable_low_height_spans}))
 }
 
 //go:nosplit
 func (self class) GetFilterWalkableLowHeightSpans() bool { //gd:NavigationMesh.get_filter_walkable_low_height_spans
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_filter_walkable_low_height_spans, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_filter_walkable_low_height_spans), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFilterBakingAabb(baking_aabb AABB.PositionSize) { //gd:NavigationMesh.set_filter_baking_aabb
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_filter_baking_aabb, 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ baking_aabb AABB.PositionSize }{baking_aabb}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_filter_baking_aabb), 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ baking_aabb AABB.PositionSize }{baking_aabb}))
 }
 
 //go:nosplit
 func (self class) GetFilterBakingAabb() AABB.PositionSize { //gd:NavigationMesh.get_filter_baking_aabb
-	var r_ret = gdunsafe.Call[AABB.PositionSize](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_filter_baking_aabb, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_filter_baking_aabb), gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFilterBakingAabbOffset(baking_aabb_offset Vector3.XYZ) { //gd:NavigationMesh.set_filter_baking_aabb_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_filter_baking_aabb_offset, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ baking_aabb_offset Vector3.XYZ }{baking_aabb_offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_filter_baking_aabb_offset), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ baking_aabb_offset Vector3.XYZ }{baking_aabb_offset}))
 }
 
 //go:nosplit
 func (self class) GetFilterBakingAabbOffset() Vector3.XYZ { //gd:NavigationMesh.get_filter_baking_aabb_offset
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_filter_baking_aabb_offset, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_filter_baking_aabb_offset), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -677,7 +675,7 @@ Sets the vertices that can be then indexed to create polygons with the [method a
 */
 //go:nosplit
 func (self class) SetVertices(vertices Packed.Array[Vector3.XYZ]) { //gd:NavigationMesh.set_vertices
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_set_vertices, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ vertices gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_vertices), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ vertices gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)))}))
 }
 
 /*
@@ -685,7 +683,7 @@ Returns a [PackedVector3Array] containing all the vertices being used to create 
 */
 //go:nosplit
 func (self class) GetVertices() Packed.Array[Vector3.XYZ] { //gd:NavigationMesh.get_vertices
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_vertices, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_vertices), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -695,7 +693,7 @@ Adds a polygon using the indices of the vertices you get when calling [method ge
 */
 //go:nosplit
 func (self class) AddPolygon(polygon Packed.Array[int32]) { //gd:NavigationMesh.add_polygon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_add_polygon, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ polygon gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](polygon)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_add_polygon), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ polygon gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](polygon)))}))
 }
 
 /*
@@ -703,7 +701,7 @@ Returns the number of polygons in the navigation mesh.
 */
 //go:nosplit
 func (self class) GetPolygonCount() int64 { //gd:NavigationMesh.get_polygon_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_polygon_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_polygon_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -713,7 +711,7 @@ Returns a [PackedInt32Array] containing the indices of the vertices of a created
 */
 //go:nosplit
 func (self class) GetPolygon(idx int64) Packed.Array[int32] { //gd:NavigationMesh.get_polygon
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_get_polygon, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_polygon), gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -723,7 +721,7 @@ Clears the array of polygons, but it doesn't clear the array of vertices.
 */
 //go:nosplit
 func (self class) ClearPolygons() { //gd:NavigationMesh.clear_polygons
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_clear_polygons, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_clear_polygons), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -732,7 +730,7 @@ Initializes the navigation mesh by setting the vertices and indices according to
 */
 //go:nosplit
 func (self class) CreateFromMesh(mesh [1]gdclass.Mesh) { //gd:NavigationMesh.create_from_mesh
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_create_from_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_create_from_mesh), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
 }
 
 /*
@@ -740,7 +738,7 @@ Clears the internal arrays for vertices and polygon indices.
 */
 //go:nosplit
 func (self class) Clear() { //gd:NavigationMesh.clear
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMesh.Bind_clear, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsNavigationMesh() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsNavigationMesh() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -64,7 +63,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -1034,7 +1032,7 @@ Returns the text without BBCode mark-up.
 */
 //go:nosplit
 func (self class) GetParsedText() String.Readable { //gd:RichTextLabel.get_parsed_text
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_parsed_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_parsed_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1044,12 +1042,12 @@ Adds raw non-BBCode-parsed text to the tag stack.
 */
 //go:nosplit
 func (self class) AddText(text String.Readable) { //gd:RichTextLabel.add_text
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_add_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_add_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 //go:nosplit
 func (self class) SetText(text String.Readable) { //gd:RichTextLabel.set_text
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 /*
@@ -1062,7 +1060,7 @@ If [param size_in_percent] is set, [param width] and [param height] values are p
 */
 //go:nosplit
 func (self class) AddImage(image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key variant.Any, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.add_image
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_add_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeRect2<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeString<<36)|(gdextension.SizeBool<<40), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_add_image), 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeRect2<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeString<<36)|(gdextension.SizeBool<<40), unsafe.Pointer(&struct {
 		image           gdextension.Object
 		width           int64
 		height          int64
@@ -1081,7 +1079,7 @@ Updates the existing images with the key [param key]. Only properties specified 
 */
 //go:nosplit
 func (self class) UpdateImage(key variant.Any, mask ImageUpdateMask, image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.update_image
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_update_image, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeRect2<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeString<<40)|(gdextension.SizeBool<<44), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_update_image), 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeRect2<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeString<<40)|(gdextension.SizeBool<<44), unsafe.Pointer(&struct {
 		key             gdextension.Variant
 		mask            ImageUpdateMask
 		image           gdextension.Object
@@ -1101,7 +1099,7 @@ Adds a newline tag to the tag stack.
 */
 //go:nosplit
 func (self class) Newline() { //gd:RichTextLabel.newline
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_newline, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_newline), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1111,7 +1109,7 @@ If [param no_invalidate] is set to [code]true[/code], cache for the subsequent p
 */
 //go:nosplit
 func (self class) RemoveParagraph(paragraph int64, no_invalidate bool) bool { //gd:RichTextLabel.remove_paragraph
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_remove_paragraph, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_remove_paragraph), gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		paragraph     int64
 		no_invalidate bool
 	}{paragraph, no_invalidate}))
@@ -1124,7 +1122,7 @@ Invalidates [param paragraph] and all subsequent paragraphs cache.
 */
 //go:nosplit
 func (self class) InvalidateParagraph(paragraph int64) bool { //gd:RichTextLabel.invalidate_paragraph
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_invalidate_paragraph, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ paragraph int64 }{paragraph}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_invalidate_paragraph), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ paragraph int64 }{paragraph}))
 	var ret = r_ret
 	return ret
 }
@@ -1135,7 +1133,7 @@ Passing [code]0[/code] to [param font_size] will use the existing default font s
 */
 //go:nosplit
 func (self class) PushFont(font [1]gdclass.Font, font_size int64) { //gd:RichTextLabel.push_font
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_font, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_font), 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		font      gdextension.Object
 		font_size int64
 	}{gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size}))
@@ -1146,7 +1144,7 @@ Adds a [code skip-lint][font_size][/code] tag to the tag stack. Overrides defaul
 */
 //go:nosplit
 func (self class) PushFontSize(font_size int64) { //gd:RichTextLabel.push_font_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_font_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_font_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
 }
 
 /*
@@ -1154,7 +1152,7 @@ Adds a [code skip-lint][font][/code] tag with a normal font to the tag stack.
 */
 //go:nosplit
 func (self class) PushNormal() { //gd:RichTextLabel.push_normal
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_normal, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_normal), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1162,7 +1160,7 @@ Adds a [code skip-lint][font][/code] tag with a bold font to the tag stack. This
 */
 //go:nosplit
 func (self class) PushBold() { //gd:RichTextLabel.push_bold
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_bold, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_bold), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1170,7 +1168,7 @@ Adds a [code skip-lint][font][/code] tag with a bold italics font to the tag sta
 */
 //go:nosplit
 func (self class) PushBoldItalics() { //gd:RichTextLabel.push_bold_italics
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_bold_italics, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_bold_italics), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1178,7 +1176,7 @@ Adds a [code skip-lint][font][/code] tag with an italics font to the tag stack. 
 */
 //go:nosplit
 func (self class) PushItalics() { //gd:RichTextLabel.push_italics
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_italics, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_italics), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1186,7 +1184,7 @@ Adds a [code skip-lint][font][/code] tag with a monospace font to the tag stack.
 */
 //go:nosplit
 func (self class) PushMono() { //gd:RichTextLabel.push_mono
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_mono, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_mono), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1194,7 +1192,7 @@ Adds a [code skip-lint][color][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushColor(color Color.RGBA) { //gd:RichTextLabel.push_color
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 /*
@@ -1202,7 +1200,7 @@ Adds a [code skip-lint][outline_size][/code] tag to the tag stack. Overrides def
 */
 //go:nosplit
 func (self class) PushOutlineSize(outline_size int64) { //gd:RichTextLabel.push_outline_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_outline_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ outline_size int64 }{outline_size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_outline_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ outline_size int64 }{outline_size}))
 }
 
 /*
@@ -1210,7 +1208,7 @@ Adds a [code skip-lint][outline_color][/code] tag to the tag stack. Adds text ou
 */
 //go:nosplit
 func (self class) PushOutlineColor(color Color.RGBA) { //gd:RichTextLabel.push_outline_color
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_outline_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_outline_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 /*
@@ -1218,7 +1216,7 @@ Adds a [code skip-lint][p][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushParagraph(alignment GUI.HorizontalAlignment, base_direction Control.TextDirection, language String.Readable, st_parser TextServer.StructuredTextParser, justification_flags TextServer.JustificationFlag, tab_stops Packed.Array[float32]) { //gd:RichTextLabel.push_paragraph
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_paragraph, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizePackedArray<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_paragraph), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizePackedArray<<24), unsafe.Pointer(&struct {
 		alignment           GUI.HorizontalAlignment
 		base_direction      Control.TextDirection
 		language            gdextension.String
@@ -1233,7 +1231,7 @@ Adds an [code skip-lint][indent][/code] tag to the tag stack. Multiplies [param 
 */
 //go:nosplit
 func (self class) PushIndent(level int64) { //gd:RichTextLabel.push_indent
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_indent, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ level int64 }{level}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_indent), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ level int64 }{level}))
 }
 
 /*
@@ -1241,7 +1239,7 @@ Adds [code skip-lint][ol][/code] or [code skip-lint][ul][/code] tag to the tag s
 */
 //go:nosplit
 func (self class) PushList(level int64, atype ListType, capitalize bool, bullet String.Readable) { //gd:RichTextLabel.push_list
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_list, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_list), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
 		level      int64
 		atype      ListType
 		capitalize bool
@@ -1256,7 +1254,7 @@ If [member meta_underlined] is [code]true[/code], meta tags display an underline
 */
 //go:nosplit
 func (self class) PushMeta(data variant.Any, underline_mode MetaUnderline, tooltip String.Readable) { //gd:RichTextLabel.push_meta
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_meta, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_meta), 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		data           gdextension.Variant
 		underline_mode MetaUnderline
 		tooltip        gdextension.String
@@ -1268,7 +1266,7 @@ Adds a [code skip-lint][hint][/code] tag to the tag stack. Same as BBCode [code 
 */
 //go:nosplit
 func (self class) PushHint(description String.Readable) { //gd:RichTextLabel.push_hint
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_hint, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ description gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(description))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_hint), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ description gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(description))[0])}))
 }
 
 /*
@@ -1276,7 +1274,7 @@ Adds language code used for text shaping algorithm and Open-Type font features.
 */
 //go:nosplit
 func (self class) PushLanguage(language String.Readable) { //gd:RichTextLabel.push_language
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_language, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_language), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
 }
 
 /*
@@ -1284,7 +1282,7 @@ Adds a [code skip-lint][u][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushUnderline() { //gd:RichTextLabel.push_underline
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_underline, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_underline), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1292,7 +1290,7 @@ Adds a [code skip-lint][s][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushStrikethrough() { //gd:RichTextLabel.push_strikethrough
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_strikethrough, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_strikethrough), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1300,7 +1298,7 @@ Adds a [code skip-lint][table=columns,inline_align][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushTable(columns int64, inline_align GUI.InlineAlignment, align_to_row int64) { //gd:RichTextLabel.push_table
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_table, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_table), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		columns      int64
 		inline_align GUI.InlineAlignment
 		align_to_row int64
@@ -1312,7 +1310,7 @@ Adds a [code skip-lint][dropcap][/code] tag to the tag stack. Drop cap (dropped 
 */
 //go:nosplit
 func (self class) PushDropcap(s String.Readable, font [1]gdclass.Font, size int64, dropcap_margins Rect2.PositionSize, color Color.RGBA, outline_size int64, outline_color Color.RGBA) { //gd:RichTextLabel.push_dropcap
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_dropcap, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_dropcap), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28), unsafe.Pointer(&struct {
 		s               gdextension.String
 		font            gdextension.Object
 		size            int64
@@ -1330,7 +1328,7 @@ If [param expand] is [code]false[/code], the column will not contribute to the t
 */
 //go:nosplit
 func (self class) SetTableColumnExpand(column int64, expand bool, ratio int64, shrink bool) { //gd:RichTextLabel.set_table_column_expand
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_table_column_expand, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_table_column_expand), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		column int64
 		expand bool
 		ratio  int64
@@ -1343,7 +1341,7 @@ Sets color of a table cell. Separate colors for alternating rows can be specifie
 */
 //go:nosplit
 func (self class) SetCellRowBackgroundColor(odd_row_bg Color.RGBA, even_row_bg Color.RGBA) { //gd:RichTextLabel.set_cell_row_background_color
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_cell_row_background_color, 0|(gdextension.SizeColor<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_cell_row_background_color), 0|(gdextension.SizeColor<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		odd_row_bg  Color.RGBA
 		even_row_bg Color.RGBA
 	}{odd_row_bg, even_row_bg}))
@@ -1354,7 +1352,7 @@ Sets color of a table cell border.
 */
 //go:nosplit
 func (self class) SetCellBorderColor(color Color.RGBA) { //gd:RichTextLabel.set_cell_border_color
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_cell_border_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_cell_border_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 /*
@@ -1362,7 +1360,7 @@ Sets minimum and maximum size overrides for a table cell.
 */
 //go:nosplit
 func (self class) SetCellSizeOverride(min_size Vector2.XY, max_size Vector2.XY) { //gd:RichTextLabel.set_cell_size_override
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_cell_size_override, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_cell_size_override), 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		min_size Vector2.XY
 		max_size Vector2.XY
 	}{min_size, max_size}))
@@ -1373,7 +1371,7 @@ Sets inner padding of a table cell.
 */
 //go:nosplit
 func (self class) SetCellPadding(padding Rect2.PositionSize) { //gd:RichTextLabel.set_cell_padding
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_cell_padding, 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ padding Rect2.PositionSize }{padding}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_cell_padding), 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ padding Rect2.PositionSize }{padding}))
 }
 
 /*
@@ -1381,7 +1379,7 @@ Adds a [code skip-lint][cell][/code] tag to the tag stack. Must be inside a [cod
 */
 //go:nosplit
 func (self class) PushCell() { //gd:RichTextLabel.push_cell
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_cell, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_cell), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1389,7 +1387,7 @@ Adds a [code skip-lint][fgcolor][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushFgcolor(fgcolor Color.RGBA) { //gd:RichTextLabel.push_fgcolor
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_fgcolor, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ fgcolor Color.RGBA }{fgcolor}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_fgcolor), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ fgcolor Color.RGBA }{fgcolor}))
 }
 
 /*
@@ -1397,7 +1395,7 @@ Adds a [code skip-lint][bgcolor][/code] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushBgcolor(bgcolor Color.RGBA) { //gd:RichTextLabel.push_bgcolor
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_bgcolor, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ bgcolor Color.RGBA }{bgcolor}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_bgcolor), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ bgcolor Color.RGBA }{bgcolor}))
 }
 
 /*
@@ -1405,7 +1403,7 @@ Adds a custom effect tag to the tag stack. The effect does not need to be in [me
 */
 //go:nosplit
 func (self class) PushCustomfx(effect [1]gdclass.RichTextEffect, env Dictionary.Any) { //gd:RichTextLabel.push_customfx
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_customfx, 0|(gdextension.SizeObject<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_customfx), 0|(gdextension.SizeObject<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
 		effect gdextension.Object
 		env    gdextension.Dictionary
 	}{gdextension.Object(gd.ObjectChecked(effect[0].AsObject())), gdextension.Dictionary(pointers.Get(gd.InternalDictionary(env))[0])}))
@@ -1416,7 +1414,7 @@ Adds a context marker to the tag stack. See [method pop_context].
 */
 //go:nosplit
 func (self class) PushContext() { //gd:RichTextLabel.push_context
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_push_context, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_push_context), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1424,7 +1422,7 @@ Terminates tags opened after the last [method push_context] call (including cont
 */
 //go:nosplit
 func (self class) PopContext() { //gd:RichTextLabel.pop_context
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_pop_context, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_pop_context), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1432,7 +1430,7 @@ Terminates the current tag. Use after [code]push_*[/code] methods to close BBCod
 */
 //go:nosplit
 func (self class) Pop() { //gd:RichTextLabel.pop
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_pop, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_pop), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1440,7 +1438,7 @@ Terminates all tags opened by [code]push_*[/code] methods.
 */
 //go:nosplit
 func (self class) PopAll() { //gd:RichTextLabel.pop_all
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_pop_all, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_pop_all), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1449,163 +1447,163 @@ Clears the tag stack, causing the label to display nothing.
 */
 //go:nosplit
 func (self class) Clear() { //gd:RichTextLabel.clear
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_clear, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:RichTextLabel.set_structured_text_bidi_override
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_structured_text_bidi_override, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_structured_text_bidi_override), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		parser TextServer.StructuredTextParser
 	}{parser}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:RichTextLabel.get_structured_text_bidi_override
-	var r_ret = gdunsafe.Call[TextServer.StructuredTextParser](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_structured_text_bidi_override, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.StructuredTextParser](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_structured_text_bidi_override), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:RichTextLabel.set_structured_text_bidi_override_options
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(args))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_structured_text_bidi_override_options), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(args))[0])}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:RichTextLabel.get_structured_text_bidi_override_options
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_structured_text_bidi_override_options, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_structured_text_bidi_override_options), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextDirection(direction Control.TextDirection) { //gd:RichTextLabel.set_text_direction
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_text_direction, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Control.TextDirection }{direction}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_text_direction), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Control.TextDirection }{direction}))
 }
 
 //go:nosplit
 func (self class) GetTextDirection() Control.TextDirection { //gd:RichTextLabel.get_text_direction
-	var r_ret = gdunsafe.Call[Control.TextDirection](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_text_direction, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Control.TextDirection](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_text_direction), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:RichTextLabel.set_language
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_language, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_language), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:RichTextLabel.get_language
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_language, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:RichTextLabel.set_horizontal_alignment
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_horizontal_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_horizontal_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:RichTextLabel.get_horizontal_alignment
-	var r_ret = gdunsafe.Call[GUI.HorizontalAlignment](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_horizontal_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_horizontal_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVerticalAlignment(alignment GUI.VerticalAlignment) { //gd:RichTextLabel.set_vertical_alignment
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_vertical_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.VerticalAlignment }{alignment}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_vertical_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.VerticalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetVerticalAlignment() GUI.VerticalAlignment { //gd:RichTextLabel.get_vertical_alignment
-	var r_ret = gdunsafe.Call[GUI.VerticalAlignment](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_vertical_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.VerticalAlignment](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_vertical_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJustificationFlags(justification_flags TextServer.JustificationFlag) { //gd:RichTextLabel.set_justification_flags
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_justification_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ justification_flags TextServer.JustificationFlag }{justification_flags}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_justification_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ justification_flags TextServer.JustificationFlag }{justification_flags}))
 }
 
 //go:nosplit
 func (self class) GetJustificationFlags() TextServer.JustificationFlag { //gd:RichTextLabel.get_justification_flags
-	var r_ret = gdunsafe.Call[TextServer.JustificationFlag](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_justification_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.JustificationFlag](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_justification_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTabStops(tab_stops Packed.Array[float32]) { //gd:RichTextLabel.set_tab_stops
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_tab_stops, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ tab_stops gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_tab_stops), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ tab_stops gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))}))
 }
 
 //go:nosplit
 func (self class) GetTabStops() Packed.Array[float32] { //gd:RichTextLabel.get_tab_stops
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_tab_stops, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_tab_stops), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:RichTextLabel.set_autowrap_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_autowrap_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_autowrap_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode}))
 }
 
 //go:nosplit
 func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:RichTextLabel.get_autowrap_mode
-	var r_ret = gdunsafe.Call[TextServer.AutowrapMode](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_autowrap_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.AutowrapMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_autowrap_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMetaUnderline(enable bool) { //gd:RichTextLabel.set_meta_underline
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_meta_underline, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_meta_underline), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsMetaUnderlined() bool { //gd:RichTextLabel.is_meta_underlined
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_meta_underlined, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_meta_underlined), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHintUnderline(enable bool) { //gd:RichTextLabel.set_hint_underline
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_hint_underline, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_hint_underline), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsHintUnderlined() bool { //gd:RichTextLabel.is_hint_underlined
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_hint_underlined, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_hint_underlined), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollActive(active bool) { //gd:RichTextLabel.set_scroll_active
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_scroll_active, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_scroll_active), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
 }
 
 //go:nosplit
 func (self class) IsScrollActive() bool { //gd:RichTextLabel.is_scroll_active
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_scroll_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_scroll_active), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollFollow(follow bool) { //gd:RichTextLabel.set_scroll_follow
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_scroll_follow, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ follow bool }{follow}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_scroll_follow), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ follow bool }{follow}))
 }
 
 //go:nosplit
 func (self class) IsScrollFollowing() bool { //gd:RichTextLabel.is_scroll_following
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_scroll_following, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_scroll_following), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1616,7 +1614,7 @@ Returns the vertical scrollbar.
 */
 //go:nosplit
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:RichTextLabel.get_v_scroll_bar
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_v_scroll_bar, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_v_scroll_bar), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret)}
 	return ret
 }
@@ -1626,7 +1624,7 @@ Scrolls the window's top line to match [param line].
 */
 //go:nosplit
 func (self class) ScrollToLine(line int64) { //gd:RichTextLabel.scroll_to_line
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_scroll_to_line, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_scroll_to_line), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 }
 
 /*
@@ -1634,7 +1632,7 @@ Scrolls the window's top line to match first line of the [param paragraph].
 */
 //go:nosplit
 func (self class) ScrollToParagraph(paragraph int64) { //gd:RichTextLabel.scroll_to_paragraph
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_scroll_to_paragraph, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ paragraph int64 }{paragraph}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_scroll_to_paragraph), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ paragraph int64 }{paragraph}))
 }
 
 /*
@@ -1642,89 +1640,89 @@ Scrolls to the beginning of the current selection.
 */
 //go:nosplit
 func (self class) ScrollToSelection() { //gd:RichTextLabel.scroll_to_selection
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_scroll_to_selection, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_scroll_to_selection), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetTabSize(spaces int64) { //gd:RichTextLabel.set_tab_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_tab_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ spaces int64 }{spaces}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_tab_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ spaces int64 }{spaces}))
 }
 
 //go:nosplit
 func (self class) GetTabSize() int64 { //gd:RichTextLabel.get_tab_size
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_tab_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_tab_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFitContent(enabled bool) { //gd:RichTextLabel.set_fit_content
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_fit_content, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_fit_content), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFitContentEnabled() bool { //gd:RichTextLabel.is_fit_content_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_fit_content_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_fit_content_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectionEnabled(enabled bool) { //gd:RichTextLabel.set_selection_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_selection_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_selection_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSelectionEnabled() bool { //gd:RichTextLabel.is_selection_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_selection_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_selection_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetContextMenuEnabled(enabled bool) { //gd:RichTextLabel.set_context_menu_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_context_menu_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_context_menu_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsContextMenuEnabled() bool { //gd:RichTextLabel.is_context_menu_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_context_menu_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_context_menu_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShortcutKeysEnabled(enabled bool) { //gd:RichTextLabel.set_shortcut_keys_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_shortcut_keys_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_shortcut_keys_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsShortcutKeysEnabled() bool { //gd:RichTextLabel.is_shortcut_keys_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_shortcut_keys_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_shortcut_keys_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeselectOnFocusLossEnabled(enable bool) { //gd:RichTextLabel.set_deselect_on_focus_loss_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_deselect_on_focus_loss_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_deselect_on_focus_loss_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDeselectOnFocusLossEnabled() bool { //gd:RichTextLabel.is_deselect_on_focus_loss_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_deselect_on_focus_loss_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_deselect_on_focus_loss_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragAndDropSelectionEnabled(enable bool) { //gd:RichTextLabel.set_drag_and_drop_selection_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_drag_and_drop_selection_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_drag_and_drop_selection_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDragAndDropSelectionEnabled() bool { //gd:RichTextLabel.is_drag_and_drop_selection_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_drag_and_drop_selection_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_drag_and_drop_selection_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1734,7 +1732,7 @@ Returns the current selection first character index if a selection is active, [c
 */
 //go:nosplit
 func (self class) GetSelectionFrom() int64 { //gd:RichTextLabel.get_selection_from
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_selection_from, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_selection_from), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1744,7 +1742,7 @@ Returns the current selection last character index if a selection is active, [co
 */
 //go:nosplit
 func (self class) GetSelectionTo() int64 { //gd:RichTextLabel.get_selection_to
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_selection_to, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_selection_to), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1754,7 +1752,7 @@ Returns the current selection vertical line offset if a selection is active, [co
 */
 //go:nosplit
 func (self class) GetSelectionLineOffset() float64 { //gd:RichTextLabel.get_selection_line_offset
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_selection_line_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_selection_line_offset), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1765,7 +1763,7 @@ If [member selection_enabled] is [code]false[/code], no selection will occur.
 */
 //go:nosplit
 func (self class) SelectAll() { //gd:RichTextLabel.select_all
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_select_all, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_select_all), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1773,7 +1771,7 @@ Returns the current selection text. Does not include BBCodes.
 */
 //go:nosplit
 func (self class) GetSelectedText() String.Readable { //gd:RichTextLabel.get_selected_text
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_selected_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_selected_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1783,7 +1781,7 @@ Clears the current selection.
 */
 //go:nosplit
 func (self class) Deselect() { //gd:RichTextLabel.deselect
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_deselect, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_deselect), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1791,7 +1789,7 @@ The assignment version of [method append_text]. Clears the tag stack and inserts
 */
 //go:nosplit
 func (self class) ParseBbcode(bbcode String.Readable) { //gd:RichTextLabel.parse_bbcode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_parse_bbcode, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bbcode gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(bbcode))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_parse_bbcode), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bbcode gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(bbcode))[0])}))
 }
 
 /*
@@ -1800,12 +1798,12 @@ Parses [param bbcode] and adds tags to the tag stack as needed.
 */
 //go:nosplit
 func (self class) AppendText(bbcode String.Readable) { //gd:RichTextLabel.append_text
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_append_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bbcode gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(bbcode))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_append_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bbcode gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(bbcode))[0])}))
 }
 
 //go:nosplit
 func (self class) GetText() String.Readable { //gd:RichTextLabel.get_text
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1815,7 +1813,7 @@ If [member threaded] is enabled, returns [code]true[/code] if the background thr
 */
 //go:nosplit
 func (self class) IsReady() bool { //gd:RichTextLabel.is_ready
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_ready, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_ready), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1825,69 +1823,69 @@ If [member threaded] is enabled, returns [code]true[/code] if the background thr
 */
 //go:nosplit
 func (self class) IsFinished() bool { //gd:RichTextLabel.is_finished
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_finished, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_finished), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetThreaded(threaded bool) { //gd:RichTextLabel.set_threaded
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_threaded, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ threaded bool }{threaded}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_threaded), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ threaded bool }{threaded}))
 }
 
 //go:nosplit
 func (self class) IsThreaded() bool { //gd:RichTextLabel.is_threaded
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_threaded, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_threaded), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProgressBarDelay(delay_ms int64) { //gd:RichTextLabel.set_progress_bar_delay
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_progress_bar_delay, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ delay_ms int64 }{delay_ms}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_progress_bar_delay), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ delay_ms int64 }{delay_ms}))
 }
 
 //go:nosplit
 func (self class) GetProgressBarDelay() int64 { //gd:RichTextLabel.get_progress_bar_delay
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_progress_bar_delay, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_progress_bar_delay), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibleCharacters(amount int64) { //gd:RichTextLabel.set_visible_characters
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_visible_characters, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_visible_characters), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetVisibleCharacters() int64 { //gd:RichTextLabel.get_visible_characters
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_visible_characters, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_visible_characters), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetVisibleCharactersBehavior() TextServer.VisibleCharactersBehavior { //gd:RichTextLabel.get_visible_characters_behavior
-	var r_ret = gdunsafe.Call[TextServer.VisibleCharactersBehavior](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_visible_characters_behavior, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.VisibleCharactersBehavior](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_visible_characters_behavior), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibleCharactersBehavior(behavior TextServer.VisibleCharactersBehavior) { //gd:RichTextLabel.set_visible_characters_behavior
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_visible_characters_behavior, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_visible_characters_behavior), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		behavior TextServer.VisibleCharactersBehavior
 	}{behavior}))
 }
 
 //go:nosplit
 func (self class) SetVisibleRatio(ratio float64) { //gd:RichTextLabel.set_visible_ratio
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_visible_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_visible_ratio), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
 }
 
 //go:nosplit
 func (self class) GetVisibleRatio() float64 { //gd:RichTextLabel.get_visible_ratio
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_visible_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_visible_ratio), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1898,7 +1896,7 @@ Returns the line number of the character position provided. Line and character n
 */
 //go:nosplit
 func (self class) GetCharacterLine(character int64) int64 { //gd:RichTextLabel.get_character_line
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_character_line, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ character int64 }{character}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_character_line), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ character int64 }{character}))
 	var ret = r_ret
 	return ret
 }
@@ -1909,7 +1907,7 @@ Returns the paragraph number of the character position provided. Paragraph and c
 */
 //go:nosplit
 func (self class) GetCharacterParagraph(character int64) int64 { //gd:RichTextLabel.get_character_paragraph
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_character_paragraph, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ character int64 }{character}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_character_paragraph), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ character int64 }{character}))
 	var ret = r_ret
 	return ret
 }
@@ -1919,19 +1917,19 @@ Returns the total number of characters from text tags. Does not include BBCodes.
 */
 //go:nosplit
 func (self class) GetTotalCharacterCount() int64 { //gd:RichTextLabel.get_total_character_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_total_character_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_total_character_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseBbcode(enable bool) { //gd:RichTextLabel.set_use_bbcode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_use_bbcode, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_use_bbcode), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingBbcode() bool { //gd:RichTextLabel.is_using_bbcode
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_using_bbcode, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_using_bbcode), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1943,7 +1941,7 @@ Returns the total number of lines in the text. Wrapped text is counted as multip
 */
 //go:nosplit
 func (self class) GetLineCount() int64 { //gd:RichTextLabel.get_line_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_line_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_line_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1955,7 +1953,7 @@ Returns the indexes of the first and last visible characters for the given [para
 */
 //go:nosplit
 func (self class) GetLineRange(line int64) Vector2i.XY { //gd:RichTextLabel.get_line_range
-	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_line_range, gdextension.SizeVector2i|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[Vector2i.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_line_range), gdextension.SizeVector2i|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = r_ret
 	return ret
 }
@@ -1966,7 +1964,7 @@ Returns the number of visible lines.
 */
 //go:nosplit
 func (self class) GetVisibleLineCount() int64 { //gd:RichTextLabel.get_visible_line_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_visible_line_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_visible_line_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1976,7 +1974,7 @@ Returns the total number of paragraphs (newlines or [code]p[/code] tags in the t
 */
 //go:nosplit
 func (self class) GetParagraphCount() int64 { //gd:RichTextLabel.get_paragraph_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_paragraph_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_paragraph_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1987,7 +1985,7 @@ Returns the number of visible paragraphs. A paragraph is considered visible if a
 */
 //go:nosplit
 func (self class) GetVisibleParagraphCount() int64 { //gd:RichTextLabel.get_visible_paragraph_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_visible_paragraph_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_visible_paragraph_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1998,7 +1996,7 @@ Returns the height of the content.
 */
 //go:nosplit
 func (self class) GetContentHeight() int64 { //gd:RichTextLabel.get_content_height
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_content_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_content_height), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2009,7 +2007,7 @@ Returns the width of the content.
 */
 //go:nosplit
 func (self class) GetContentWidth() int64 { //gd:RichTextLabel.get_content_width
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_content_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_content_width), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2020,7 +2018,7 @@ Returns the vertical offset of the line found at the provided index.
 */
 //go:nosplit
 func (self class) GetLineOffset(line int64) float64 { //gd:RichTextLabel.get_line_offset
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_line_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_line_offset), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = r_ret
 	return ret
 }
@@ -2031,7 +2029,7 @@ Returns the vertical offset of the paragraph found at the provided index.
 */
 //go:nosplit
 func (self class) GetParagraphOffset(paragraph int64) float64 { //gd:RichTextLabel.get_paragraph_offset
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_paragraph_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ paragraph int64 }{paragraph}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_paragraph_offset), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ paragraph int64 }{paragraph}))
 	var ret = r_ret
 	return ret
 }
@@ -2041,19 +2039,19 @@ Parses BBCode parameter [param expressions] into a dictionary.
 */
 //go:nosplit
 func (self class) ParseExpressionsForValues(expressions Packed.Strings) Dictionary.Any { //gd:RichTextLabel.parse_expressions_for_values
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_parse_expressions_for_values, gdextension.SizeDictionary|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ expressions gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(expressions)))}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_parse_expressions_for_values), gdextension.SizeDictionary|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ expressions gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(expressions)))}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEffects(effects Array.Any) { //gd:RichTextLabel.set_effects
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_set_effects, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ effects gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(effects))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_set_effects), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ effects gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(effects))[0])}))
 }
 
 //go:nosplit
 func (self class) GetEffects() Array.Any { //gd:RichTextLabel.get_effects
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_effects, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_effects), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -2084,7 +2082,7 @@ func _ready():
 */
 //go:nosplit
 func (self class) InstallEffect(effect variant.Any) { //gd:RichTextLabel.install_effect
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_install_effect, 0|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ effect gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(effect)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_install_effect), 0|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ effect gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(effect)))}))
 }
 
 /*
@@ -2132,7 +2130,7 @@ public void OnItemPressed(int id)
 */
 //go:nosplit
 func (self class) GetMenu() [1]gdclass.PopupMenu { //gd:RichTextLabel.get_menu
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_get_menu, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_get_menu), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
@@ -2142,7 +2140,7 @@ Returns whether the menu is visible. Use this instead of [code]get_menu().visibl
 */
 //go:nosplit
 func (self class) IsMenuVisible() bool { //gd:RichTextLabel.is_menu_visible
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_is_menu_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_is_menu_visible), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2152,7 +2150,7 @@ Executes a given action as defined in the [enum MenuItems] enum.
 */
 //go:nosplit
 func (self class) MenuOption(option int64) { //gd:RichTextLabel.menu_option
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RichTextLabel.Bind_menu_option, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ option int64 }{option}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RichTextLabel.Bind_menu_option), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ option int64 }{option}))
 }
 func (self Instance) OnMetaClicked(cb func(meta any)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("meta_clicked"), gd.NewCallable(cb), 0)

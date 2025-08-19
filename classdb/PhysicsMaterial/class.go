@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -137,48 +135,48 @@ func (self Instance) SetAbsorbent(value bool) {
 
 //go:nosplit
 func (self class) SetFriction(friction float64) { //gd:PhysicsMaterial.set_friction
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsMaterial.Bind_set_friction, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ friction float64 }{friction}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_set_friction), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ friction float64 }{friction}))
 }
 
 //go:nosplit
 func (self class) GetFriction() float64 { //gd:PhysicsMaterial.get_friction
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsMaterial.Bind_get_friction, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_get_friction), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRough(rough bool) { //gd:PhysicsMaterial.set_rough
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsMaterial.Bind_set_rough, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ rough bool }{rough}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_set_rough), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ rough bool }{rough}))
 }
 
 //go:nosplit
 func (self class) IsRough() bool { //gd:PhysicsMaterial.is_rough
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsMaterial.Bind_is_rough, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_is_rough), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBounce(bounce float64) { //gd:PhysicsMaterial.set_bounce
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsMaterial.Bind_set_bounce, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bounce float64 }{bounce}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_set_bounce), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bounce float64 }{bounce}))
 }
 
 //go:nosplit
 func (self class) GetBounce() float64 { //gd:PhysicsMaterial.get_bounce
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsMaterial.Bind_get_bounce, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_get_bounce), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAbsorbent(absorbent bool) { //gd:PhysicsMaterial.set_absorbent
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsMaterial.Bind_set_absorbent, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ absorbent bool }{absorbent}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_set_absorbent), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ absorbent bool }{absorbent}))
 }
 
 //go:nosplit
 func (self class) IsAbsorbent() bool { //gd:PhysicsMaterial.is_absorbent
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsMaterial.Bind_is_absorbent, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_is_absorbent), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

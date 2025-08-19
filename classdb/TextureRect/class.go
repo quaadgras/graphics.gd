@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -147,60 +145,60 @@ func (self Instance) SetFlipV(value bool) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:TextureRect.set_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureRect.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureRect.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:TextureRect.get_texture
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextureRect.Bind_get_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureRect.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExpandMode(expand_mode ExpandMode) { //gd:TextureRect.set_expand_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureRect.Bind_set_expand_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ expand_mode ExpandMode }{expand_mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureRect.Bind_set_expand_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ expand_mode ExpandMode }{expand_mode}))
 }
 
 //go:nosplit
 func (self class) GetExpandMode() ExpandMode { //gd:TextureRect.get_expand_mode
-	var r_ret = gdunsafe.Call[ExpandMode](self.AsObject(), gd.Global.Methods.TextureRect.Bind_get_expand_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ExpandMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureRect.Bind_get_expand_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlipH(enable bool) { //gd:TextureRect.set_flip_h
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureRect.Bind_set_flip_h, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureRect.Bind_set_flip_h), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsFlippedH() bool { //gd:TextureRect.is_flipped_h
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextureRect.Bind_is_flipped_h, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureRect.Bind_is_flipped_h), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlipV(enable bool) { //gd:TextureRect.set_flip_v
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureRect.Bind_set_flip_v, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureRect.Bind_set_flip_v), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsFlippedV() bool { //gd:TextureRect.is_flipped_v
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextureRect.Bind_is_flipped_v, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureRect.Bind_is_flipped_v), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStretchMode(stretch_mode StretchMode) { //gd:TextureRect.set_stretch_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureRect.Bind_set_stretch_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stretch_mode StretchMode }{stretch_mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureRect.Bind_set_stretch_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stretch_mode StretchMode }{stretch_mode}))
 }
 
 //go:nosplit
 func (self class) GetStretchMode() StretchMode { //gd:TextureRect.get_stretch_mode
-	var r_ret = gdunsafe.Call[StretchMode](self.AsObject(), gd.Global.Methods.TextureRect.Bind_get_stretch_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[StretchMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureRect.Bind_get_stretch_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

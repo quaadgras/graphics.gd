@@ -41,7 +41,7 @@ func init() {
 func loadExtension(lookupFunc uintptr, classes, configuration unsafe.Pointer) uint8 {
 	C.cgo_extension_init(
 		*(*C.GDExtensionInterfaceGetProcAddress)(unsafe.Pointer(&lookupFunc)),
-		*(*C.GDExtensionClassLibraryPtr)(classes),
+		(C.GDExtensionClassLibraryPtr)(classes),
 		(*C.GDExtensionInitialization)(configuration),
 	)
 	dlsymGD = func(s string) unsafe.Pointer {

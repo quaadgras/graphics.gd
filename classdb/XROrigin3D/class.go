@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -124,24 +122,24 @@ func (self Instance) SetCurrent(value bool) {
 
 //go:nosplit
 func (self class) SetWorldScale(world_scale float64) { //gd:XROrigin3D.set_world_scale
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XROrigin3D.Bind_set_world_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ world_scale float64 }{world_scale}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XROrigin3D.Bind_set_world_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ world_scale float64 }{world_scale}))
 }
 
 //go:nosplit
 func (self class) GetWorldScale() float64 { //gd:XROrigin3D.get_world_scale
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.XROrigin3D.Bind_get_world_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XROrigin3D.Bind_get_world_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurrent(enabled bool) { //gd:XROrigin3D.set_current
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.XROrigin3D.Bind_set_current, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XROrigin3D.Bind_set_current), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsCurrent() bool { //gd:XROrigin3D.is_current
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.XROrigin3D.Bind_is_current, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.XROrigin3D.Bind_is_current), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

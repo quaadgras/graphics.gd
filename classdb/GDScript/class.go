@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -132,12 +130,12 @@ print(instance.get_script() == MyClass) # Prints true
 */
 //go:nosplit
 func (self class) New(args ...gd.Variant) variant.Any { //gd:GDScript.new
-	var fixed = [...]gd.Variant{}
-	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.GDScript.Bind_new, self.AsObject(), append(fixed[:], args...)...)
+	var fixed = [...]gdextension.Variant{}
+	ret, err := gdextension.MethodForClass(gd.Global.Methods.GDScript.Bind_new).Call(gdextension.Object(gd.ObjectChecked(self.AsObject())), fixed[:]...)
 	if err != nil {
 		panic(err)
 	}
-	return gd.VariantAs[variant.Any](ret)
+	return gd.VariantAs[variant.Any](pointers.New[gd.Variant]([3]uint64(ret)))
 }
 
 func (self class) AsGDScript() Advanced              { return *((*Advanced)(unsafe.Pointer(&self))) }

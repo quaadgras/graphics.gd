@@ -9,7 +9,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -121,7 +119,7 @@ Register a [PhysicsServer3D] implementation by passing a [param name] and a [Cal
 */
 //go:nosplit
 func (self class) RegisterServer(name String.Readable, create_callback Callable.Function) { //gd:PhysicsServer3DManager.register_server
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer3DManager.Bind_register_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3DManager.Bind_register_server), 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		name            gdextension.String
 		create_callback gdextension.Callable
 	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(create_callback)))}))
@@ -132,7 +130,7 @@ Set the default [PhysicsServer3D] implementation to the one identified by [param
 */
 //go:nosplit
 func (self class) SetDefaultServer(name String.Readable, priority int64) { //gd:PhysicsServer3DManager.set_default_server
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsServer3DManager.Bind_set_default_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3DManager.Bind_set_default_server), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		name     gdextension.String
 		priority int64
 	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), priority}))

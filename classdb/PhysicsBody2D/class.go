@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -57,7 +56,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -191,7 +189,7 @@ If [param recovery_as_collision] is [code]true[/code], any depenetration from th
 */
 //go:nosplit
 func (self class) MoveAndCollide(motion Vector2.XY, test_only bool, safe_margin float64, recovery_as_collision bool) [1]gdclass.KinematicCollision2D { //gd:PhysicsBody2D.move_and_collide
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.PhysicsBody2D.Bind_move_and_collide, gdextension.SizeObject|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody2D.Bind_move_and_collide), gdextension.SizeObject|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		motion                Vector2.XY
 		test_only             bool
 		safe_margin           float64
@@ -210,7 +208,7 @@ If [param recovery_as_collision] is [code]true[/code], any depenetration from th
 */
 //go:nosplit
 func (self class) TestMove(from Transform2D.OriginXY, motion Vector2.XY, collision [1]gdclass.KinematicCollision2D, safe_margin float64, recovery_as_collision bool) bool { //gd:PhysicsBody2D.test_move
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsBody2D.Bind_test_move, gdextension.SizeBool|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody2D.Bind_test_move), gdextension.SizeBool|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		from                  Transform2D.OriginXY
 		motion                Vector2.XY
 		collision             gdextension.Object
@@ -226,7 +224,7 @@ Returns the gravity vector computed from all sources that can affect the body, i
 */
 //go:nosplit
 func (self class) GetGravity() Vector2.XY { //gd:PhysicsBody2D.get_gravity
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.PhysicsBody2D.Bind_get_gravity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody2D.Bind_get_gravity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -236,7 +234,7 @@ Returns an array of nodes that were added as collision exceptions for this body.
 */
 //go:nosplit
 func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody2D] { //gd:PhysicsBody2D.get_collision_exceptions
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.PhysicsBody2D.Bind_get_collision_exceptions, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody2D.Bind_get_collision_exceptions), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.PhysicsBody2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -246,7 +244,7 @@ Adds a body to the list of bodies that this body can't collide with.
 */
 //go:nosplit
 func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody2D.add_collision_exception_with
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsBody2D.Bind_add_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody2D.Bind_add_collision_exception_with), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
 }
 
 /*
@@ -254,7 +252,7 @@ Removes a body from the list of bodies that this body can't collide with.
 */
 //go:nosplit
 func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody2D.remove_collision_exception_with
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsBody2D.Bind_remove_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody2D.Bind_remove_collision_exception_with), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
 }
 func (self class) AsPhysicsBody2D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPhysicsBody2D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

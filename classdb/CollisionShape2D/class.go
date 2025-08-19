@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -148,60 +146,60 @@ func (self Instance) SetDebugColor(value Color.RGBA) {
 
 //go:nosplit
 func (self class) SetShape(shape [1]gdclass.Shape2D) { //gd:CollisionShape2D.set_shape
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape2D.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape2D.Bind_set_shape), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetShape() [1]gdclass.Shape2D { //gd:CollisionShape2D.get_shape
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CollisionShape2D.Bind_get_shape, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape2D.Bind_get_shape), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Shape2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisabled(disabled bool) { //gd:CollisionShape2D.set_disabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape2D.Bind_set_disabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disabled bool }{disabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape2D.Bind_set_disabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disabled bool }{disabled}))
 }
 
 //go:nosplit
 func (self class) IsDisabled() bool { //gd:CollisionShape2D.is_disabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CollisionShape2D.Bind_is_disabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape2D.Bind_is_disabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOneWayCollision(enabled bool) { //gd:CollisionShape2D.set_one_way_collision
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape2D.Bind_set_one_way_collision, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape2D.Bind_set_one_way_collision), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsOneWayCollisionEnabled() bool { //gd:CollisionShape2D.is_one_way_collision_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CollisionShape2D.Bind_is_one_way_collision_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape2D.Bind_is_one_way_collision_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOneWayCollisionMargin(margin float64) { //gd:CollisionShape2D.set_one_way_collision_margin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape2D.Bind_set_one_way_collision_margin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape2D.Bind_set_one_way_collision_margin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
 }
 
 //go:nosplit
 func (self class) GetOneWayCollisionMargin() float64 { //gd:CollisionShape2D.get_one_way_collision_margin
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CollisionShape2D.Bind_get_one_way_collision_margin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape2D.Bind_get_one_way_collision_margin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDebugColor(color Color.RGBA) { //gd:CollisionShape2D.set_debug_color
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape2D.Bind_set_debug_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape2D.Bind_set_debug_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetDebugColor() Color.RGBA { //gd:CollisionShape2D.get_debug_color
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.CollisionShape2D.Bind_get_debug_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape2D.Bind_get_debug_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

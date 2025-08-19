@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -816,7 +814,7 @@ This function can only be called during the [method _import] callback and it all
 */
 //go:nosplit
 func (self class) AppendImportExternalResource(path String.Readable, custom_options Dictionary.Any, custom_importer String.Readable, generator_parameters variant.Any) Error.Code { //gd:EditorImportPlugin.append_import_external_resource
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.EditorImportPlugin.Bind_append_import_external_resource, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8)|(gdextension.SizeString<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorImportPlugin.Bind_append_import_external_resource), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8)|(gdextension.SizeString<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
 		path                 gdextension.String
 		custom_options       gdextension.Dictionary
 		custom_importer      gdextension.String

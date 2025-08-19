@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -148,60 +146,60 @@ func (self Instance) SetZeroY(value bool) {
 
 //go:nosplit
 func (self class) SetAnimationPath(path Path.ToNode) { //gd:RootMotionView.set_animation_path
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RootMotionView.Bind_set_animation_path, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RootMotionView.Bind_set_animation_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetAnimationPath() Path.ToNode { //gd:RootMotionView.get_animation_path
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RootMotionView.Bind_get_animation_path, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RootMotionView.Bind_get_animation_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColor(color Color.RGBA) { //gd:RootMotionView.set_color
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RootMotionView.Bind_set_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RootMotionView.Bind_set_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetColor() Color.RGBA { //gd:RootMotionView.get_color
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.RootMotionView.Bind_get_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RootMotionView.Bind_get_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCellSize(size float64) { //gd:RootMotionView.set_cell_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RootMotionView.Bind_set_cell_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RootMotionView.Bind_set_cell_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetCellSize() float64 { //gd:RootMotionView.get_cell_size
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.RootMotionView.Bind_get_cell_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RootMotionView.Bind_get_cell_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRadius(size float64) { //gd:RootMotionView.set_radius
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RootMotionView.Bind_set_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RootMotionView.Bind_set_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:RootMotionView.get_radius
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.RootMotionView.Bind_get_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RootMotionView.Bind_get_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetZeroY(enable bool) { //gd:RootMotionView.set_zero_y
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RootMotionView.Bind_set_zero_y, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RootMotionView.Bind_set_zero_y), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetZeroY() bool { //gd:RootMotionView.get_zero_y
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RootMotionView.Bind_get_zero_y, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RootMotionView.Bind_get_zero_y), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

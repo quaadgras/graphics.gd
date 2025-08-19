@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -466,7 +464,7 @@ Render [param num_frames] audio frames (of [method _get_channels] floats each) f
 */
 //go:nosplit
 func (self class) MixAudio(num_frames int64, buffer Packed.Array[float32], offset int64) int64 { //gd:VideoStreamPlayback.mix_audio
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.VideoStreamPlayback.Bind_mix_audio, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayback.Bind_mix_audio), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		num_frames int64
 		buffer     gdextension.PackedArray
 		offset     int64

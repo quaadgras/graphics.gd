@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -115,12 +113,12 @@ func (self Instance) SetTextureRdRid(value RID.Any) {
 
 //go:nosplit
 func (self class) SetTextureRdRid(texture_rd_rid RID.Any) { //gd:Texture3DRD.set_texture_rd_rid
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Texture3DRD.Bind_set_texture_rd_rid, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture_rd_rid RID.Any }{texture_rd_rid}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Texture3DRD.Bind_set_texture_rd_rid), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture_rd_rid RID.Any }{texture_rd_rid}))
 }
 
 //go:nosplit
 func (self class) GetTextureRdRid() RID.Any { //gd:Texture3DRD.get_texture_rd_rid
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.Texture3DRD.Bind_get_texture_rd_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Texture3DRD.Bind_get_texture_rd_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

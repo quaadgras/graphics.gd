@@ -10,7 +10,7 @@ func (op VariantOperator) Eval(a, b Variant) (Variant, bool) {
 func (variant VariantType) Call(method StringName, args ...Variant) (Variant, error) {
 	var err CallError
 	var raw Variant
-	Host.VariantTypes.Call(variant, method, CallReturns[Variant](&raw), len(args), CallAccepts[Variant](&args[0]), CallReturns[CallError](&err))
+	Host.Builtin.Types.Call(variant, method, CallReturns[Variant](&raw), len(args), CallAccepts[Variant](&args[0]), CallReturns[CallError](&err))
 	return raw, err
 }
 
@@ -19,6 +19,6 @@ func (variant VariantType) Call(method StringName, args ...Variant) (Variant, er
 func (variant VariantType) New(args ...Variant) (Variant, error) {
 	var err CallError
 	var raw Variant
-	Host.VariantTypes.Make(variant, CallReturns[Variant](&raw), len(args), CallAccepts[Variant](&args[0]), CallReturns[CallError](&err))
+	Host.Builtin.Types.Make(variant, CallReturns[Variant](&raw), len(args), CallAccepts[Variant](&args[0]), CallReturns[CallError](&err))
 	return raw, err
 }

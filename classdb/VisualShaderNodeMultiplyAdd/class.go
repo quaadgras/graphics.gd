@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -114,12 +112,12 @@ func (self Instance) SetOpType(value OpType) {
 
 //go:nosplit
 func (self class) SetOpType(atype OpType) { //gd:VisualShaderNodeMultiplyAdd.set_op_type
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeMultiplyAdd.Bind_set_op_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype OpType }{atype}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeMultiplyAdd.Bind_set_op_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype OpType }{atype}))
 }
 
 //go:nosplit
 func (self class) GetOpType() OpType { //gd:VisualShaderNodeMultiplyAdd.get_op_type
-	var r_ret = gdunsafe.Call[OpType](self.AsObject(), gd.Global.Methods.VisualShaderNodeMultiplyAdd.Bind_get_op_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[OpType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeMultiplyAdd.Bind_get_op_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

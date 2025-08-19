@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -116,7 +114,7 @@ This method is called by the rendering server when the associated viewports conf
 */
 //go:nosplit
 func (self class) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { //gd:RenderSceneBuffers.configure
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RenderSceneBuffers.Bind_configure, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(config[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffers.Bind_configure), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(config[0].AsObject()))}))
 }
 func (self class) AsRenderSceneBuffers() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsRenderSceneBuffers() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -58,7 +57,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -239,132 +237,132 @@ func (self Instance) SetTintProgress(value Color.RGBA) {
 
 //go:nosplit
 func (self class) SetUnderTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_under_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_set_under_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(tex[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_set_under_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(tex[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetUnderTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_under_texture
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_get_under_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_get_under_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProgressTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_progress_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_set_progress_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(tex[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_set_progress_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(tex[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetProgressTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_progress_texture
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_get_progress_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_get_progress_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOverTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_over_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_set_over_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(tex[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_set_over_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(tex[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetOverTexture() [1]gdclass.Texture2D { //gd:TextureProgressBar.get_over_texture
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_get_over_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_get_over_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFillMode(mode int64) { //gd:TextureProgressBar.set_fill_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_set_fill_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode int64 }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_set_fill_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode int64 }{mode}))
 }
 
 //go:nosplit
 func (self class) GetFillMode() int64 { //gd:TextureProgressBar.get_fill_mode
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_get_fill_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_get_fill_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTintUnder(tint Color.RGBA) { //gd:TextureProgressBar.set_tint_under
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_set_tint_under, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ tint Color.RGBA }{tint}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_set_tint_under), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ tint Color.RGBA }{tint}))
 }
 
 //go:nosplit
 func (self class) GetTintUnder() Color.RGBA { //gd:TextureProgressBar.get_tint_under
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_get_tint_under, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_get_tint_under), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTintProgress(tint Color.RGBA) { //gd:TextureProgressBar.set_tint_progress
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_set_tint_progress, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ tint Color.RGBA }{tint}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_set_tint_progress), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ tint Color.RGBA }{tint}))
 }
 
 //go:nosplit
 func (self class) GetTintProgress() Color.RGBA { //gd:TextureProgressBar.get_tint_progress
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_get_tint_progress, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_get_tint_progress), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTintOver(tint Color.RGBA) { //gd:TextureProgressBar.set_tint_over
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_set_tint_over, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ tint Color.RGBA }{tint}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_set_tint_over), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ tint Color.RGBA }{tint}))
 }
 
 //go:nosplit
 func (self class) GetTintOver() Color.RGBA { //gd:TextureProgressBar.get_tint_over
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_get_tint_over, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_get_tint_over), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureProgressOffset(offset Vector2.XY) { //gd:TextureProgressBar.set_texture_progress_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_set_texture_progress_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_set_texture_progress_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetTextureProgressOffset() Vector2.XY { //gd:TextureProgressBar.get_texture_progress_offset
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_get_texture_progress_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_get_texture_progress_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRadialInitialAngle(mode float64) { //gd:TextureProgressBar.set_radial_initial_angle
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_set_radial_initial_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mode float64 }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_set_radial_initial_angle), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mode float64 }{mode}))
 }
 
 //go:nosplit
 func (self class) GetRadialInitialAngle() float64 { //gd:TextureProgressBar.get_radial_initial_angle
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_get_radial_initial_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_get_radial_initial_angle), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRadialCenterOffset(mode Vector2.XY) { //gd:TextureProgressBar.set_radial_center_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_set_radial_center_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ mode Vector2.XY }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_set_radial_center_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ mode Vector2.XY }{mode}))
 }
 
 //go:nosplit
 func (self class) GetRadialCenterOffset() Vector2.XY { //gd:TextureProgressBar.get_radial_center_offset
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_get_radial_center_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_get_radial_center_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFillDegrees(mode float64) { //gd:TextureProgressBar.set_fill_degrees
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_set_fill_degrees, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mode float64 }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_set_fill_degrees), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mode float64 }{mode}))
 }
 
 //go:nosplit
 func (self class) GetFillDegrees() float64 { //gd:TextureProgressBar.get_fill_degrees
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_get_fill_degrees, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_get_fill_degrees), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -374,7 +372,7 @@ Sets the stretch margin with the specified index. See [member stretch_margin_bot
 */
 //go:nosplit
 func (self class) SetStretchMargin(margin Rect2.Side, value int64) { //gd:TextureProgressBar.set_stretch_margin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_set_stretch_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_set_stretch_margin), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		margin Rect2.Side
 		value  int64
 	}{margin, value}))
@@ -385,19 +383,19 @@ Returns the stretch margin with the specified index. See [member stretch_margin_
 */
 //go:nosplit
 func (self class) GetStretchMargin(margin Rect2.Side) int64 { //gd:TextureProgressBar.get_stretch_margin
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_get_stretch_margin, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_get_stretch_margin), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNinePatchStretch(stretch bool) { //gd:TextureProgressBar.set_nine_patch_stretch
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_set_nine_patch_stretch, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ stretch bool }{stretch}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_set_nine_patch_stretch), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ stretch bool }{stretch}))
 }
 
 //go:nosplit
 func (self class) GetNinePatchStretch() bool { //gd:TextureProgressBar.get_nine_patch_stretch
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.TextureProgressBar.Bind_get_nine_patch_stretch, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.TextureProgressBar.Bind_get_nine_patch_stretch), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

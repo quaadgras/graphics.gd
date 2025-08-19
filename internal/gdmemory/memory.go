@@ -1,3 +1,7 @@
+// Package gdmemory provides functions for transferring data between Go and the graphics engine.
+//
+// This package is primarily used on platforms where the extension is running in a different
+// address space, ie. web/wasm.
 package gdmemory
 
 import (
@@ -8,120 +12,76 @@ import (
 )
 
 var arguments gdextension.Pointer
+var receiver gdextension.Pointer
 var results [2]gdextension.Pointer
 var current int
 
 var setup = sync.OnceFunc(func() {
 	arguments = gdextension.Host.Memory.Malloc(64 * 64)
+	receiver = gdextension.Host.Memory.Malloc(64 * 64 / 16)
 	for i := range results {
 		results[i] = gdextension.Host.Memory.Malloc(64 * 64)
 	}
 })
 
-// ALIGN_UP aligns a value to the next multiple of align.
-func alignUp(value, align uint32) uint32 {
-	return (value + (align - 1)) & ^(align - 1)
-}
-
 // CopyArguments copies arguments from args to the arguments buffer, respecting Go's alignment rules.
 func CopyArguments[T any](shape gdextension.Shape, args gdextension.CallAccepts[T]) gdextension.Pointer {
-	setup()
-
-	offset := uint32(0)          // Track current offset in the arguments buffer
-	data := unsafe.Pointer(args) // Base pointer to args
-	totalSize := uint32(0)       // Track total size for limit check
-	shapeVal := shape            // Assuming shape is convertible to uint64
-
-	for i := 1; i < 16; i++ {
-		// Extract 4-bit code from shape
-		code := (shapeVal >> (i * 4)) & 0xF
-		var size = uint32(code.SizeResult())
-		if size == 0 {
-			return arguments
-		}
-
-		// Check total size limit
-		totalSize += size
-		if totalSize >= 64*64 {
-			panic("too many arguments")
-		}
-
-		// Align offset to min(size, 8) as per Go's 64-bit alignment rules
-		alignment := size
-		if alignment > 8 {
-			alignment = 8
-		}
-		offset = alignUp(offset, alignment)
-
-		// Copy argument to the aligned offset in the arguments buffer
-		switch size {
-		case 1:
-			gdextension.Host.Memory.Edit.Byte(arguments+gdextension.Pointer(offset), *(*uint8)(data))
-		case 2:
-			gdextension.Host.Memory.Edit.Uint16(arguments+gdextension.Pointer(offset), *(*uint16)(data))
-		case 4:
-			gdextension.Host.Memory.Edit.Uint32(arguments+gdextension.Pointer(offset), *(*uint32)(data))
-		case 8:
-			gdextension.Host.Memory.Edit.Uint64(arguments+gdextension.Pointer(offset), *(*uint64)(data))
-		case 12:
-			// Copy as 8 bytes + 4 bytes
-			gdextension.Host.Memory.Edit.Uint64(arguments+gdextension.Pointer(offset), *(*uint64)(data))
-			gdextension.Host.Memory.Edit.Uint32(arguments+gdextension.Pointer(offset+8), *(*uint32)(unsafe.Pointer(uintptr(data) + 8)))
-		case 16:
-			gdextension.Host.Memory.Edit.Bits128(arguments+gdextension.Pointer(offset), *(*[2]uint64)(data))
-		case 24:
-			// Copy as 8 + 8 + 8 bytes
-			gdextension.Host.Memory.Edit.Bits128(arguments+gdextension.Pointer(offset), *(*[2]uint64)(data))
-			gdextension.Host.Memory.Edit.Uint64(arguments+gdextension.Pointer(offset+16), *(*uint64)(unsafe.Pointer(uintptr(data) + 16)))
-		case 32:
-			gdextension.Host.Memory.Edit.Bits256(arguments+gdextension.Pointer(offset), *(*[4]uint64)(data))
-		case 36:
-			// Copy as 32 + 4 bytes
-			gdextension.Host.Memory.Edit.Bits256(arguments+gdextension.Pointer(offset), *(*[4]uint64)(data))
-			gdextension.Host.Memory.Edit.Uint32(arguments+gdextension.Pointer(offset+32), *(*uint32)(unsafe.Pointer(uintptr(data) + 32)))
-		case 40:
-			// Copy as 32 + 8 bytes
-			gdextension.Host.Memory.Edit.Bits256(arguments+gdextension.Pointer(offset), *(*[4]uint64)(data))
-			gdextension.Host.Memory.Edit.Uint64(arguments+gdextension.Pointer(offset+32), *(*uint64)(unsafe.Pointer(uintptr(data) + 32)))
-		case 48:
-			// Copy as 32 + 16 bytes
-			gdextension.Host.Memory.Edit.Bits256(arguments+gdextension.Pointer(offset), *(*[4]uint64)(data))
-			gdextension.Host.Memory.Edit.Bits128(arguments+gdextension.Pointer(offset+32), *(*[2]uint64)(unsafe.Pointer(uintptr(data) + 32)))
-		case 64:
-			gdextension.Host.Memory.Edit.Bits512(arguments+gdextension.Pointer(offset), *(*[8]uint64)(data))
-		case 72:
-			// Copy as 64 + 8 bytes
-			gdextension.Host.Memory.Edit.Bits512(arguments+gdextension.Pointer(offset), *(*[8]uint64)(data))
-			gdextension.Host.Memory.Edit.Uint64(arguments+gdextension.Pointer(offset+64), *(*uint64)(unsafe.Pointer(uintptr(data) + 64)))
-		case 96:
-			// Copy as 64 + 32 bytes
-			gdextension.Host.Memory.Edit.Bits512(arguments+gdextension.Pointer(offset), *(*[8]uint64)(data))
-			gdextension.Host.Memory.Edit.Bits256(arguments+gdextension.Pointer(offset+64), *(*[4]uint64)(unsafe.Pointer(uintptr(data) + 64)))
-		case 128:
-			// Copy as 64 + 64 bytes
-			gdextension.Host.Memory.Edit.Bits512(arguments+gdextension.Pointer(offset), *(*[8]uint64)(data))
-			gdextension.Host.Memory.Edit.Bits512(arguments+gdextension.Pointer(offset+64), *(*[8]uint64)(unsafe.Pointer(uintptr(data) + 64)))
-		default:
-			panic("unsupported argument size")
-		}
-
-		// Advance data pointer and offset
-		data = unsafe.Pointer(uintptr(data) + uintptr(size))
-		offset += size
+	if args == nil {
+		return 0
 	}
+	return copyIntoEngine(shape, unsafe.Pointer(args), arguments)
+}
 
-	return arguments
+// CopyReceiver copies the receiver into the receiver buffer, respecting Go's alignment rules.
+func CopyReceiver[T any](shape gdextension.Shape, self gdextension.CallMutates[T]) gdextension.Pointer {
+	if self == nil {
+		return 0
+	}
+	return copyIntoEngine(shape, unsafe.Pointer(self), receiver)
+}
+
+func copyIntoEngine(shape gdextension.Shape, args unsafe.Pointer, into gdextension.Pointer) gdextension.Pointer {
+	setup()
+	buf := unsafe.Slice((*byte)(args), shape.SizeArguments())
+	ptr := into
+	off := gdextension.Pointer(0)
+	for len(buf) > 0 {
+		switch {
+		case len(buf) >= 8:
+			gdextension.Host.Memory.Edit.Uint64(ptr+off, *(*uint64)(unsafe.Pointer(&buf[0])))
+			buf = buf[8:]
+			off += 8
+		case len(buf) >= 4:
+			gdextension.Host.Memory.Edit.Uint32(ptr+off, *(*uint32)(unsafe.Pointer(&buf[0])))
+			buf = buf[4:]
+			off += 4
+		case len(buf) >= 2:
+			gdextension.Host.Memory.Edit.Uint16(ptr+off, *(*uint16)(unsafe.Pointer(&buf[0])))
+			buf = buf[2:]
+			off += 2
+		case len(buf) >= 1:
+			gdextension.Host.Memory.Edit.Byte(ptr+off, *(*uint8)(unsafe.Pointer(&buf[0])))
+			buf = buf[1:]
+			off += 1
+		}
+	}
+	return ptr
 }
 
 func MakeResult(shape gdextension.Shape) gdextension.Pointer {
 	setup()
-	current++
-	return results[current-1]
+	// alternating between two buffers for results
+	if current == 0 {
+		current = 1
+	} else {
+		current = 0
+	}
+	gdextension.Host.Memory.Clear(results[current], shape.SizeResult())
+	return results[current]
 }
 
-func LoadResult[T any](shape gdextension.Shape, result gdextension.CallReturns[T], from gdextension.Pointer) {
+func LoadResult[T ~unsafe.Pointer](shape gdextension.Shape, result T, from gdextension.Pointer) {
 	setup()
-	current--
 	data := unsafe.Pointer(result)
 	done := 0
 	size := shape.SizeResult()
@@ -165,4 +125,55 @@ func CopyVariants[T any](args gdextension.CallAccepts[T], n int) gdextension.Poi
 
 func Int64frombits(bits uint64) int64 {
 	return *(*int64)(unsafe.Pointer(&bits))
+}
+
+func CopyBufferToEngine(buf []byte) gdextension.Pointer {
+	ptr := gdextension.Host.Memory.Malloc(len(buf))
+	off := gdextension.Pointer(0)
+	for len(buf) > 0 {
+		switch {
+		case len(buf) >= 8:
+			gdextension.Host.Memory.Edit.Uint64(ptr+off, *(*uint64)(unsafe.Pointer(&buf[0])))
+			buf = buf[8:]
+			off += 8
+		case len(buf) >= 4:
+			gdextension.Host.Memory.Edit.Uint32(ptr+off, *(*uint32)(unsafe.Pointer(&buf[0])))
+			buf = buf[4:]
+			off += 4
+		case len(buf) >= 2:
+			gdextension.Host.Memory.Edit.Uint16(ptr+off, *(*uint16)(unsafe.Pointer(&buf[0])))
+			buf = buf[2:]
+			off += 2
+		case len(buf) >= 1:
+			gdextension.Host.Memory.Edit.Byte(ptr+off, *(*uint8)(unsafe.Pointer(&buf[0])))
+			buf = buf[1:]
+			off += 1
+		}
+	}
+	return ptr
+}
+
+func CopyBufferToGo(ptr gdextension.Pointer, buf []byte) {
+	off := 0
+	for len(buf) > 0 {
+		switch {
+		case len(buf) >= 8:
+			*(*uint64)(unsafe.Pointer(&buf[0])) = gdextension.Host.Memory.Load.Uint64(ptr + gdextension.Pointer(off))
+			buf = buf[8:]
+			off += 8
+		case len(buf) >= 4:
+			*(*uint32)(unsafe.Pointer(&buf[0])) = gdextension.Host.Memory.Load.Uint32(ptr + gdextension.Pointer(off))
+			buf = buf[4:]
+			off += 4
+		case len(buf) >= 2:
+			*(*uint16)(unsafe.Pointer(&buf[0])) = gdextension.Host.Memory.Load.Uint16(ptr + gdextension.Pointer(off))
+			buf = buf[2:]
+			off += 2
+		case len(buf) >= 1:
+			*(*uint8)(unsafe.Pointer(&buf[0])) = gdextension.Host.Memory.Load.Byte(ptr + gdextension.Pointer(off))
+			buf = buf[1:]
+			off += 1
+		}
+	}
+	gdextension.Host.Memory.Free(ptr)
 }

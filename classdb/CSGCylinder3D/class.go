@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -57,7 +56,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -159,72 +157,72 @@ func (self Instance) SetMaterial(value Material.Instance) {
 
 //go:nosplit
 func (self class) SetRadius(radius float64) { //gd:CSGCylinder3D.set_radius
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGCylinder3D.Bind_set_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGCylinder3D.Bind_set_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:CSGCylinder3D.get_radius
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CSGCylinder3D.Bind_get_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGCylinder3D.Bind_get_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeight(height float64) { //gd:CSGCylinder3D.set_height
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGCylinder3D.Bind_set_height, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height float64 }{height}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGCylinder3D.Bind_set_height), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height float64 }{height}))
 }
 
 //go:nosplit
 func (self class) GetHeight() float64 { //gd:CSGCylinder3D.get_height
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.CSGCylinder3D.Bind_get_height, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGCylinder3D.Bind_get_height), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSides(sides int64) { //gd:CSGCylinder3D.set_sides
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGCylinder3D.Bind_set_sides, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ sides int64 }{sides}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGCylinder3D.Bind_set_sides), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ sides int64 }{sides}))
 }
 
 //go:nosplit
 func (self class) GetSides() int64 { //gd:CSGCylinder3D.get_sides
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CSGCylinder3D.Bind_get_sides, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGCylinder3D.Bind_get_sides), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCone(cone bool) { //gd:CSGCylinder3D.set_cone
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGCylinder3D.Bind_set_cone, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cone bool }{cone}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGCylinder3D.Bind_set_cone), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cone bool }{cone}))
 }
 
 //go:nosplit
 func (self class) IsCone() bool { //gd:CSGCylinder3D.is_cone
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CSGCylinder3D.Bind_is_cone, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGCylinder3D.Bind_is_cone), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGCylinder3D.set_material
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGCylinder3D.Bind_set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGCylinder3D.Bind_set_material), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:CSGCylinder3D.get_material
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CSGCylinder3D.Bind_get_material, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGCylinder3D.Bind_get_material), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSmoothFaces(smooth_faces bool) { //gd:CSGCylinder3D.set_smooth_faces
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGCylinder3D.Bind_set_smooth_faces, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ smooth_faces bool }{smooth_faces}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGCylinder3D.Bind_set_smooth_faces), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ smooth_faces bool }{smooth_faces}))
 }
 
 //go:nosplit
 func (self class) GetSmoothFaces() bool { //gd:CSGCylinder3D.get_smooth_faces
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CSGCylinder3D.Bind_get_smooth_faces, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGCylinder3D.Bind_get_smooth_faces), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

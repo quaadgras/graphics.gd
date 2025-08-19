@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -327,14 +325,14 @@ func (self Instance) SetPointCount(value int) {
 
 //go:nosplit
 func (self class) GetPointCount() int64 { //gd:Curve2D.get_point_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Curve2D.Bind_get_point_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_get_point_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPointCount(count int64) { //gd:Curve2D.set_point_count
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve2D.Bind_set_point_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_set_point_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 /*
@@ -343,7 +341,7 @@ If [param index] is given, the new point is inserted before the existing point i
 */
 //go:nosplit
 func (self class) AddPoint(position Vector2.XY, in Vector2.XY, out Vector2.XY, index int64) { //gd:Curve2D.add_point
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve2D.Bind_add_point, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_add_point), 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		position Vector2.XY
 		in       Vector2.XY
 		out      Vector2.XY
@@ -356,7 +354,7 @@ Sets the position for the vertex [param idx]. If the index is out of bounds, the
 */
 //go:nosplit
 func (self class) SetPointPosition(idx int64, position Vector2.XY) { //gd:Curve2D.set_point_position
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve2D.Bind_set_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_set_point_position), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		idx      int64
 		position Vector2.XY
 	}{idx, position}))
@@ -367,7 +365,7 @@ Returns the position of the vertex [param idx]. If the index is out of bounds, t
 */
 //go:nosplit
 func (self class) GetPointPosition(idx int64) Vector2.XY { //gd:Curve2D.get_point_position
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Curve2D.Bind_get_point_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_get_point_position), gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -377,7 +375,7 @@ Sets the position of the control point leading to the vertex [param idx]. If the
 */
 //go:nosplit
 func (self class) SetPointIn(idx int64, position Vector2.XY) { //gd:Curve2D.set_point_in
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve2D.Bind_set_point_in, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_set_point_in), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		idx      int64
 		position Vector2.XY
 	}{idx, position}))
@@ -388,7 +386,7 @@ Returns the position of the control point leading to the vertex [param idx]. The
 */
 //go:nosplit
 func (self class) GetPointIn(idx int64) Vector2.XY { //gd:Curve2D.get_point_in
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Curve2D.Bind_get_point_in, gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_get_point_in), gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -398,7 +396,7 @@ Sets the position of the control point leading out of the vertex [param idx]. If
 */
 //go:nosplit
 func (self class) SetPointOut(idx int64, position Vector2.XY) { //gd:Curve2D.set_point_out
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve2D.Bind_set_point_out, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_set_point_out), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		idx      int64
 		position Vector2.XY
 	}{idx, position}))
@@ -409,7 +407,7 @@ Returns the position of the control point leading out of the vertex [param idx].
 */
 //go:nosplit
 func (self class) GetPointOut(idx int64) Vector2.XY { //gd:Curve2D.get_point_out
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Curve2D.Bind_get_point_out, gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_get_point_out), gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -419,7 +417,7 @@ Deletes the point [param idx] from the curve. Sends an error to the console if [
 */
 //go:nosplit
 func (self class) RemovePoint(idx int64) { //gd:Curve2D.remove_point
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve2D.Bind_remove_point, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_remove_point), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 }
 
 /*
@@ -427,7 +425,7 @@ Removes all points from the curve.
 */
 //go:nosplit
 func (self class) ClearPoints() { //gd:Curve2D.clear_points
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve2D.Bind_clear_points, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_clear_points), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -436,7 +434,7 @@ If [param idx] is out of bounds it is truncated to the first or last vertex, and
 */
 //go:nosplit
 func (self class) Sample(idx int64, t float64) Vector2.XY { //gd:Curve2D.sample
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Curve2D.Bind_sample, gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_sample), gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		idx int64
 		t   float64
 	}{idx, t}))
@@ -449,19 +447,19 @@ Returns the position at the vertex [param fofs]. It calls [method sample] using 
 */
 //go:nosplit
 func (self class) Samplef(fofs float64) Vector2.XY { //gd:Curve2D.samplef
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Curve2D.Bind_samplef, gdextension.SizeVector2|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fofs float64 }{fofs}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_samplef), gdextension.SizeVector2|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fofs float64 }{fofs}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBakeInterval(distance float64) { //gd:Curve2D.set_bake_interval
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Curve2D.Bind_set_bake_interval, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_set_bake_interval), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetBakeInterval() float64 { //gd:Curve2D.get_bake_interval
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Curve2D.Bind_get_bake_interval, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_get_bake_interval), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -471,7 +469,7 @@ Returns the total length of the curve, based on the cached points. Given enough 
 */
 //go:nosplit
 func (self class) GetBakedLength() float64 { //gd:Curve2D.get_baked_length
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Curve2D.Bind_get_baked_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_get_baked_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -483,7 +481,7 @@ Cubic interpolation tends to follow the curves better, but linear is faster (and
 */
 //go:nosplit
 func (self class) SampleBaked(offset float64, cubic bool) Vector2.XY { //gd:Curve2D.sample_baked
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Curve2D.Bind_sample_baked, gdextension.SizeVector2|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_sample_baked), gdextension.SizeVector2|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		offset float64
 		cubic  bool
 	}{offset, cubic}))
@@ -504,7 +502,7 @@ rotation = baked.get_rotation()
 */
 //go:nosplit
 func (self class) SampleBakedWithRotation(offset float64, cubic bool) Transform2D.OriginXY { //gd:Curve2D.sample_baked_with_rotation
-	var r_ret = gdunsafe.Call[Transform2D.OriginXY](self.AsObject(), gd.Global.Methods.Curve2D.Bind_sample_baked_with_rotation, gdextension.SizeTransform2D|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_sample_baked_with_rotation), gdextension.SizeTransform2D|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		offset float64
 		cubic  bool
 	}{offset, cubic}))
@@ -517,7 +515,7 @@ Returns the cache of points as a [PackedVector2Array].
 */
 //go:nosplit
 func (self class) GetBakedPoints() Packed.Array[Vector2.XY] { //gd:Curve2D.get_baked_points
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Curve2D.Bind_get_baked_points, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_get_baked_points), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -528,7 +526,7 @@ Returns the closest point on baked segments (in curve's local space) to [param t
 */
 //go:nosplit
 func (self class) GetClosestPoint(to_point Vector2.XY) Vector2.XY { //gd:Curve2D.get_closest_point
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Curve2D.Bind_get_closest_point, gdextension.SizeVector2|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ to_point Vector2.XY }{to_point}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_get_closest_point), gdextension.SizeVector2|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ to_point Vector2.XY }{to_point}))
 	var ret = r_ret
 	return ret
 }
@@ -539,7 +537,7 @@ Returns the closest offset to [param to_point]. This offset is meant to be used 
 */
 //go:nosplit
 func (self class) GetClosestOffset(to_point Vector2.XY) float64 { //gd:Curve2D.get_closest_offset
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Curve2D.Bind_get_closest_offset, gdextension.SizeFloat|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ to_point Vector2.XY }{to_point}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_get_closest_offset), gdextension.SizeFloat|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ to_point Vector2.XY }{to_point}))
 	var ret = r_ret
 	return ret
 }
@@ -552,7 +550,7 @@ This approximation makes straight segments between each point, then subdivides t
 */
 //go:nosplit
 func (self class) Tessellate(max_stages int64, tolerance_degrees float64) Packed.Array[Vector2.XY] { //gd:Curve2D.tessellate
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Curve2D.Bind_tessellate, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_tessellate), gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		max_stages        int64
 		tolerance_degrees float64
 	}{max_stages, tolerance_degrees}))
@@ -566,7 +564,7 @@ Returns a list of points along the curve, with almost uniform density. [param ma
 */
 //go:nosplit
 func (self class) TessellateEvenLength(max_stages int64, tolerance_length float64) Packed.Array[Vector2.XY] { //gd:Curve2D.tessellate_even_length
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Curve2D.Bind_tessellate_even_length, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Curve2D.Bind_tessellate_even_length), gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		max_stages       int64
 		tolerance_length float64
 	}{max_stages, tolerance_length}))

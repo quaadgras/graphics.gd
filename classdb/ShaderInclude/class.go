@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -113,12 +111,12 @@ func (self Instance) SetCode(value string) {
 
 //go:nosplit
 func (self class) SetCode(code String.Readable) { //gd:ShaderInclude.set_code
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ShaderInclude.Bind_set_code, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ code gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(code))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ShaderInclude.Bind_set_code), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ code gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(code))[0])}))
 }
 
 //go:nosplit
 func (self class) GetCode() String.Readable { //gd:ShaderInclude.get_code
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.ShaderInclude.Bind_get_code, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ShaderInclude.Bind_get_code), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

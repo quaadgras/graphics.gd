@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -142,48 +140,48 @@ func (self Instance) SetSubdivideDepth(value int) {
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:BoxMesh.set_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BoxMesh.Bind_set_size, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BoxMesh.Bind_set_size), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:BoxMesh.get_size
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.BoxMesh.Bind_get_size, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BoxMesh.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubdivideWidth(subdivide int64) { //gd:BoxMesh.set_subdivide_width
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BoxMesh.Bind_set_subdivide_width, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ subdivide int64 }{subdivide}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BoxMesh.Bind_set_subdivide_width), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ subdivide int64 }{subdivide}))
 }
 
 //go:nosplit
 func (self class) GetSubdivideWidth() int64 { //gd:BoxMesh.get_subdivide_width
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.BoxMesh.Bind_get_subdivide_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BoxMesh.Bind_get_subdivide_width), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubdivideHeight(divisions int64) { //gd:BoxMesh.set_subdivide_height
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BoxMesh.Bind_set_subdivide_height, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ divisions int64 }{divisions}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BoxMesh.Bind_set_subdivide_height), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ divisions int64 }{divisions}))
 }
 
 //go:nosplit
 func (self class) GetSubdivideHeight() int64 { //gd:BoxMesh.get_subdivide_height
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.BoxMesh.Bind_get_subdivide_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BoxMesh.Bind_get_subdivide_height), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubdivideDepth(divisions int64) { //gd:BoxMesh.set_subdivide_depth
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BoxMesh.Bind_set_subdivide_depth, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ divisions int64 }{divisions}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BoxMesh.Bind_set_subdivide_depth), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ divisions int64 }{divisions}))
 }
 
 //go:nosplit
 func (self class) GetSubdivideDepth() int64 { //gd:BoxMesh.get_subdivide_depth
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.BoxMesh.Bind_get_subdivide_depth, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BoxMesh.Bind_get_subdivide_depth), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

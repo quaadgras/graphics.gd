@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -133,31 +131,31 @@ Adds a [Control] node to the box as a spacer. If [param begin] is [code]true[/co
 */
 //go:nosplit
 func (self class) AddSpacer(begin bool) [1]gdclass.Control { //gd:BoxContainer.add_spacer
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.BoxContainer.Bind_add_spacer, gdextension.SizeObject|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ begin bool }{begin}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BoxContainer.Bind_add_spacer), gdextension.SizeObject|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ begin bool }{begin}))
 	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlignment(alignment AlignmentMode) { //gd:BoxContainer.set_alignment
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BoxContainer.Bind_set_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment AlignmentMode }{alignment}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BoxContainer.Bind_set_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment AlignmentMode }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetAlignment() AlignmentMode { //gd:BoxContainer.get_alignment
-	var r_ret = gdunsafe.Call[AlignmentMode](self.AsObject(), gd.Global.Methods.BoxContainer.Bind_get_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AlignmentMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BoxContainer.Bind_get_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVertical(vertical bool) { //gd:BoxContainer.set_vertical
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BoxContainer.Bind_set_vertical, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ vertical bool }{vertical}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BoxContainer.Bind_set_vertical), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ vertical bool }{vertical}))
 }
 
 //go:nosplit
 func (self class) IsVertical() bool { //gd:BoxContainer.is_vertical
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.BoxContainer.Bind_is_vertical, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BoxContainer.Bind_is_vertical), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

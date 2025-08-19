@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -331,7 +329,7 @@ Returns the current format being used by this texture. See [enum Image.Format] f
 */
 //go:nosplit
 func (self class) GetFormat() Image.Format { //gd:Texture3D.get_format
-	var r_ret = gdunsafe.Call[Image.Format](self.AsObject(), gd.Global.Methods.Texture3D.Bind_get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Image.Format](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Texture3D.Bind_get_format), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -341,7 +339,7 @@ Returns the [Texture3D]'s width in pixels. Width is typically represented by the
 */
 //go:nosplit
 func (self class) GetWidth() int64 { //gd:Texture3D.get_width
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Texture3D.Bind_get_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Texture3D.Bind_get_width), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -351,7 +349,7 @@ Returns the [Texture3D]'s height in pixels. Width is typically represented by th
 */
 //go:nosplit
 func (self class) GetHeight() int64 { //gd:Texture3D.get_height
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Texture3D.Bind_get_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Texture3D.Bind_get_height), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -361,7 +359,7 @@ Returns the [Texture3D]'s depth in pixels. Depth is typically represented by the
 */
 //go:nosplit
 func (self class) GetDepth() int64 { //gd:Texture3D.get_depth
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Texture3D.Bind_get_depth, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Texture3D.Bind_get_depth), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -371,7 +369,7 @@ Returns [code]true[/code] if the [Texture3D] has generated mipmaps.
 */
 //go:nosplit
 func (self class) HasMipmaps() bool { //gd:Texture3D.has_mipmaps
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Texture3D.Bind_has_mipmaps, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Texture3D.Bind_has_mipmaps), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -381,7 +379,7 @@ Returns the [Texture3D]'s data as an array of [Image]s. Each [Image] represents 
 */
 //go:nosplit
 func (self class) GetData() Array.Contains[[1]gdclass.Image] { //gd:Texture3D.get_data
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Texture3D.Bind_get_data, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Texture3D.Bind_get_data), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -391,7 +389,7 @@ Creates a placeholder version of this resource ([PlaceholderTexture3D]).
 */
 //go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture3D.create_placeholder
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Texture3D.Bind_create_placeholder, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Texture3D.Bind_create_placeholder), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }

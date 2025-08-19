@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -123,24 +121,24 @@ func (self Instance) SetB(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetA(a Vector2.XY) { //gd:SegmentShape2D.set_a
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SegmentShape2D.Bind_set_a, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ a Vector2.XY }{a}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_set_a), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ a Vector2.XY }{a}))
 }
 
 //go:nosplit
 func (self class) GetA() Vector2.XY { //gd:SegmentShape2D.get_a
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.SegmentShape2D.Bind_get_a, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_get_a), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetB(b Vector2.XY) { //gd:SegmentShape2D.set_b
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SegmentShape2D.Bind_set_b, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ b Vector2.XY }{b}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_set_b), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ b Vector2.XY }{b}))
 }
 
 //go:nosplit
 func (self class) GetB() Vector2.XY { //gd:SegmentShape2D.get_b
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.SegmentShape2D.Bind_get_b, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_get_b), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

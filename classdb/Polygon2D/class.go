@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -56,7 +55,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -285,156 +283,156 @@ func (self Instance) SetInternalVertexCount(value int) {
 
 //go:nosplit
 func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:Polygon2D.set_polygon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_polygon, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ polygon gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_polygon), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ polygon gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))}))
 }
 
 //go:nosplit
 func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:Polygon2D.get_polygon
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_polygon, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_polygon), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUv(uv Packed.Array[Vector2.XY]) { //gd:Polygon2D.set_uv
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_uv, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ uv gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uv)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_uv), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ uv gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uv)))}))
 }
 
 //go:nosplit
 func (self class) GetUv() Packed.Array[Vector2.XY] { //gd:Polygon2D.get_uv
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_uv, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_uv), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColor(color Color.RGBA) { //gd:Polygon2D.set_color
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetColor() Color.RGBA { //gd:Polygon2D.get_color
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPolygons(polygons Array.Any) { //gd:Polygon2D.set_polygons
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_polygons, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ polygons gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(polygons))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_polygons), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ polygons gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(polygons))[0])}))
 }
 
 //go:nosplit
 func (self class) GetPolygons() Array.Any { //gd:Polygon2D.get_polygons
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_polygons, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_polygons), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVertexColors(vertex_colors Packed.Array[Color.RGBA]) { //gd:Polygon2D.set_vertex_colors
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_vertex_colors, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ vertex_colors gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](vertex_colors)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_vertex_colors), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ vertex_colors gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](vertex_colors)))}))
 }
 
 //go:nosplit
 func (self class) GetVertexColors() Packed.Array[Color.RGBA] { //gd:Polygon2D.get_vertex_colors
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_vertex_colors, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_vertex_colors), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:Polygon2D.set_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:Polygon2D.get_texture
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureOffset(texture_offset Vector2.XY) { //gd:Polygon2D.set_texture_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_texture_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ texture_offset Vector2.XY }{texture_offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_texture_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ texture_offset Vector2.XY }{texture_offset}))
 }
 
 //go:nosplit
 func (self class) GetTextureOffset() Vector2.XY { //gd:Polygon2D.get_texture_offset
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_texture_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_texture_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureRotation(texture_rotation float64) { //gd:Polygon2D.set_texture_rotation
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_texture_rotation, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ texture_rotation float64 }{texture_rotation}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_texture_rotation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ texture_rotation float64 }{texture_rotation}))
 }
 
 //go:nosplit
 func (self class) GetTextureRotation() float64 { //gd:Polygon2D.get_texture_rotation
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_texture_rotation, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_texture_rotation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureScale(texture_scale Vector2.XY) { //gd:Polygon2D.set_texture_scale
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_texture_scale, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ texture_scale Vector2.XY }{texture_scale}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_texture_scale), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ texture_scale Vector2.XY }{texture_scale}))
 }
 
 //go:nosplit
 func (self class) GetTextureScale() Vector2.XY { //gd:Polygon2D.get_texture_scale
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_texture_scale, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_texture_scale), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInvertEnabled(invert bool) { //gd:Polygon2D.set_invert_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_invert_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ invert bool }{invert}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_invert_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ invert bool }{invert}))
 }
 
 //go:nosplit
 func (self class) GetInvertEnabled() bool { //gd:Polygon2D.get_invert_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_invert_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_invert_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAntialiased(antialiased bool) { //gd:Polygon2D.set_antialiased
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_antialiased, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ antialiased bool }{antialiased}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_antialiased), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ antialiased bool }{antialiased}))
 }
 
 //go:nosplit
 func (self class) GetAntialiased() bool { //gd:Polygon2D.get_antialiased
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_antialiased, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_antialiased), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInvertBorder(invert_border float64) { //gd:Polygon2D.set_invert_border
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_invert_border, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ invert_border float64 }{invert_border}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_invert_border), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ invert_border float64 }{invert_border}))
 }
 
 //go:nosplit
 func (self class) GetInvertBorder() float64 { //gd:Polygon2D.get_invert_border
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_invert_border, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_invert_border), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffset(offset Vector2.XY) { //gd:Polygon2D.set_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetOffset() Vector2.XY { //gd:Polygon2D.get_offset
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -444,7 +442,7 @@ Adds a bone with the specified [param path] and [param weights].
 */
 //go:nosplit
 func (self class) AddBone(path Path.ToNode, weights Packed.Array[float32]) { //gd:Polygon2D.add_bone
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_add_bone, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_add_bone), 0|(gdextension.SizeNodePath<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		path    gdextension.NodePath
 		weights gdextension.PackedArray
 	}{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))}))
@@ -455,7 +453,7 @@ Returns the number of bones in this [Polygon2D].
 */
 //go:nosplit
 func (self class) GetBoneCount() int64 { //gd:Polygon2D.get_bone_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_bone_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_bone_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -465,7 +463,7 @@ Returns the path to the node associated with the specified bone.
 */
 //go:nosplit
 func (self class) GetBonePath(index int64) Path.ToNode { //gd:Polygon2D.get_bone_path
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_bone_path, gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_bone_path), gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -475,7 +473,7 @@ Returns the weight values of the specified bone.
 */
 //go:nosplit
 func (self class) GetBoneWeights(index int64) Packed.Array[float32] { //gd:Polygon2D.get_bone_weights
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_bone_weights, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_bone_weights), gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -485,7 +483,7 @@ Removes the specified bone from this [Polygon2D].
 */
 //go:nosplit
 func (self class) EraseBone(index int64) { //gd:Polygon2D.erase_bone
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_erase_bone, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_erase_bone), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 /*
@@ -493,7 +491,7 @@ Removes all bones from this [Polygon2D].
 */
 //go:nosplit
 func (self class) ClearBones() { //gd:Polygon2D.clear_bones
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_clear_bones, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_clear_bones), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -501,7 +499,7 @@ Sets the path to the node associated with the specified bone.
 */
 //go:nosplit
 func (self class) SetBonePath(index int64, path Path.ToNode) { //gd:Polygon2D.set_bone_path
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_bone_path, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_bone_path), 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
 		index int64
 		path  gdextension.NodePath
 	}{index, gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
@@ -512,7 +510,7 @@ Sets the weight values for the specified bone.
 */
 //go:nosplit
 func (self class) SetBoneWeights(index int64, weights Packed.Array[float32]) { //gd:Polygon2D.set_bone_weights
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_bone_weights, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_bone_weights), 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		index   int64
 		weights gdextension.PackedArray
 	}{index, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))}))
@@ -520,24 +518,24 @@ func (self class) SetBoneWeights(index int64, weights Packed.Array[float32]) { /
 
 //go:nosplit
 func (self class) SetSkeleton(skeleton Path.ToNode) { //gd:Polygon2D.set_skeleton
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_skeleton, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ skeleton gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(skeleton))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_skeleton), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ skeleton gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(skeleton))[0])}))
 }
 
 //go:nosplit
 func (self class) GetSkeleton() Path.ToNode { //gd:Polygon2D.get_skeleton
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_skeleton, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_skeleton), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInternalVertexCount(internal_vertex_count int64) { //gd:Polygon2D.set_internal_vertex_count
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_set_internal_vertex_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ internal_vertex_count int64 }{internal_vertex_count}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_set_internal_vertex_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ internal_vertex_count int64 }{internal_vertex_count}))
 }
 
 //go:nosplit
 func (self class) GetInternalVertexCount() int64 { //gd:Polygon2D.get_internal_vertex_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Polygon2D.Bind_get_internal_vertex_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Polygon2D.Bind_get_internal_vertex_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

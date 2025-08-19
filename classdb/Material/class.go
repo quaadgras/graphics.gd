@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -247,24 +245,24 @@ func (class) _can_use_render_priority(impl func(ptr unsafe.Pointer) bool) (cb gd
 
 //go:nosplit
 func (self class) SetNextPass(next_pass [1]gdclass.Material) { //gd:Material.set_next_pass
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Material.Bind_set_next_pass, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ next_pass gdextension.Object }{gdextension.Object(gd.ObjectChecked(next_pass[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Material.Bind_set_next_pass), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ next_pass gdextension.Object }{gdextension.Object(gd.ObjectChecked(next_pass[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetNextPass() [1]gdclass.Material { //gd:Material.get_next_pass
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Material.Bind_get_next_pass, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Material.Bind_get_next_pass), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRenderPriority(priority int64) { //gd:Material.set_render_priority
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Material.Bind_set_render_priority, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Material.Bind_set_render_priority), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
 }
 
 //go:nosplit
 func (self class) GetRenderPriority() int64 { //gd:Material.get_render_priority
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Material.Bind_get_render_priority, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Material.Bind_get_render_priority), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -274,7 +272,7 @@ Only available when running in the editor. Opens a popup that visualizes the gen
 */
 //go:nosplit
 func (self class) InspectNativeShaderCode() { //gd:Material.inspect_native_shader_code
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Material.Bind_inspect_native_shader_code, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Material.Bind_inspect_native_shader_code), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -282,7 +280,7 @@ Creates a placeholder version of this resource ([PlaceholderMaterial]).
 */
 //go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Material.create_placeholder
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Material.Bind_create_placeholder, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Material.Bind_create_placeholder), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }

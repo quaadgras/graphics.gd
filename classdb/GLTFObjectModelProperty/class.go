@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -201,7 +199,7 @@ Appends a [NodePath] to [member node_paths]. This can be used by [GLTFDocumentEx
 */
 //go:nosplit
 func (self class) AppendNodePath(node_path Path.ToNode) { //gd:GLTFObjectModelProperty.append_node_path
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_append_node_path, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node_path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(node_path))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_append_node_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node_path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(node_path))[0])}))
 }
 
 /*
@@ -209,7 +207,7 @@ High-level wrapper over [method append_node_path] that handles the most common c
 */
 //go:nosplit
 func (self class) AppendPathToProperty(node_path Path.ToNode, prop_name String.Name) { //gd:GLTFObjectModelProperty.append_path_to_property
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_append_path_to_property, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_append_path_to_property), 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		node_path gdextension.NodePath
 		prop_name gdextension.StringName
 	}{gdextension.NodePath(pointers.Get(gd.InternalNodePath(node_path))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(prop_name))[0])}))
@@ -220,38 +218,38 @@ The GLTF accessor type associated with this property's [member object_model_type
 */
 //go:nosplit
 func (self class) GetAccessorType() GLTFAccessor.GLTFAccessorType { //gd:GLTFObjectModelProperty.get_accessor_type
-	var r_ret = gdunsafe.Call[GLTFAccessor.GLTFAccessorType](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_get_accessor_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GLTFAccessor.GLTFAccessorType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_get_accessor_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetGltfToGodotExpression() [1]gdclass.Expression { //gd:GLTFObjectModelProperty.get_gltf_to_godot_expression
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_get_gltf_to_godot_expression, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_get_gltf_to_godot_expression), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Expression{gd.PointerWithOwnershipTransferredToGo[gdclass.Expression](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGltfToGodotExpression(gltf_to_godot_expr [1]gdclass.Expression) { //gd:GLTFObjectModelProperty.set_gltf_to_godot_expression
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_set_gltf_to_godot_expression, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gltf_to_godot_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(gltf_to_godot_expr[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_set_gltf_to_godot_expression), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gltf_to_godot_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(gltf_to_godot_expr[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetGodotToGltfExpression() [1]gdclass.Expression { //gd:GLTFObjectModelProperty.get_godot_to_gltf_expression
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_get_godot_to_gltf_expression, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_get_godot_to_gltf_expression), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Expression{gd.PointerWithOwnershipTransferredToGo[gdclass.Expression](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGodotToGltfExpression(godot_to_gltf_expr [1]gdclass.Expression) { //gd:GLTFObjectModelProperty.set_godot_to_gltf_expression
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_set_godot_to_gltf_expression, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(godot_to_gltf_expr[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_set_godot_to_gltf_expression), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(godot_to_gltf_expr[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetNodePaths() Array.Contains[Path.ToNode] { //gd:GLTFObjectModelProperty.get_node_paths
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_get_node_paths, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_get_node_paths), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -261,31 +259,31 @@ Returns [code]true[/code] if [member node_paths] is not empty. This is used duri
 */
 //go:nosplit
 func (self class) HasNodePaths() bool { //gd:GLTFObjectModelProperty.has_node_paths
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_has_node_paths, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_has_node_paths), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNodePaths(node_paths Array.Contains[Path.ToNode]) { //gd:GLTFObjectModelProperty.set_node_paths
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_set_node_paths, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ node_paths gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(node_paths))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_set_node_paths), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ node_paths gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(node_paths))[0])}))
 }
 
 //go:nosplit
 func (self class) GetObjectModelType() GLTFObjectModelType { //gd:GLTFObjectModelProperty.get_object_model_type
-	var r_ret = gdunsafe.Call[GLTFObjectModelType](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_get_object_model_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GLTFObjectModelType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_get_object_model_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetObjectModelType(atype GLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_object_model_type
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_set_object_model_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype GLTFObjectModelType }{atype}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_set_object_model_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype GLTFObjectModelType }{atype}))
 }
 
 //go:nosplit
 func (self class) GetJsonPointers() Array.Contains[Packed.Strings] { //gd:GLTFObjectModelProperty.get_json_pointers
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_get_json_pointers, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_get_json_pointers), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Packed.Strings]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -295,26 +293,26 @@ Returns [code]true[/code] if [member json_pointers] is not empty. This is used d
 */
 //go:nosplit
 func (self class) HasJsonPointers() bool { //gd:GLTFObjectModelProperty.has_json_pointers
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_has_json_pointers, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_has_json_pointers), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJsonPointers(json_pointers Array.Contains[Packed.Strings]) { //gd:GLTFObjectModelProperty.set_json_pointers
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_set_json_pointers, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ json_pointers gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(json_pointers))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_set_json_pointers), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ json_pointers gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(json_pointers))[0])}))
 }
 
 //go:nosplit
 func (self class) GetVariantType() variant.Type { //gd:GLTFObjectModelProperty.get_variant_type
-	var r_ret = gdunsafe.Call[variant.Type](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_get_variant_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[variant.Type](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_get_variant_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVariantType(variant_type variant.Type) { //gd:GLTFObjectModelProperty.set_variant_type
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_set_variant_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ variant_type variant.Type }{variant_type}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_set_variant_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ variant_type variant.Type }{variant_type}))
 }
 
 /*
@@ -322,7 +320,7 @@ Sets the [member variant_type] and [member object_model_type] properties. This i
 */
 //go:nosplit
 func (self class) SetTypes(variant_type variant.Type, obj_model_type GLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_types
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFObjectModelProperty.Bind_set_types, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFObjectModelProperty.Bind_set_types), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		variant_type   variant.Type
 		obj_model_type GLTFObjectModelType
 	}{variant_type, obj_model_type}))

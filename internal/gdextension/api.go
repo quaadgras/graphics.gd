@@ -113,6 +113,7 @@ type API struct {
 		Malloc func(size int) Pointer               `gd:"memory_malloc"`
 		Sizeof func(name StringName) int            `gd:"memory_sizeof"`
 		Resize func(addr Pointer, size int) Pointer `gd:"memory_resize"`
+		Clear  func(addr Pointer, size int)         `gd:"memory_clear"`
 
 		Load struct {
 			Byte   func(addr Pointer) byte   `gd:"memory_load_byte"`
@@ -136,9 +137,33 @@ type API struct {
 		Error   func(text, code, fn, file string, line int32, notify_editor bool) `gd:"log_error"`
 		Warning func(text, code, fn, file string, line int32, notify_editor bool) `gd:"log_warning"`
 	}
-	Builtins struct {
-		Name func(utility StringName, hash int64) FunctionID                                  `gd:"builtin_name"`
-		Call func(fn FunctionID, result CallReturns[any], shape Shape, args CallAccepts[any]) `gd:"builtin_call"`
+	Builtin struct {
+		Types struct {
+			Name            func(vtype VariantType) String                                                                                                                                  `gd:"variant_type_name"`
+			Make            func(vtype VariantType, result CallReturns[Variant], arg_count int, args CallAccepts[Variant], err CallReturns[CallError])                                      `gd:"variant_type_make"`
+			Call            func(vtype VariantType, static StringName, result CallReturns[Variant], arg_count int, args CallAccepts[Variant], err CallReturns[CallError])                   `gd:"variant_type_call"`
+			Convertable     func(vtype VariantType, to VariantType, strict bool) bool                                                                                                       `gd:"variant_type_convertable"`
+			SetupArray      func(array Array, vtype VariantType, class_name StringName, script Variant)                                                                                     `gd:"variant_type_setup_array"`
+			SetupDictionary func(dict Dictionary, key_type VariantType, key_class_name StringName, key_script Variant, val_type VariantType, val_class_name StringName, val_script Variant) `gd:"variant_type_setup_dictionary"`
+			FetchConstant   func(vtype VariantType, constant StringName, result CallReturns[Variant])                                                                                       `gd:"variant_type_fetch_constant"`
+			Constructor     func(vtype VariantType, n int) FunctionID                                                                                                                       `gd:"variant_type_unsafe_constructor"`
+			Evaluator       func(op VariantOperator, a, b VariantType) FunctionID                                                                                                           `gd:"variant_type_evaluator"`
+			Setter          func(vtype VariantType, field StringName) FunctionID                                                                                                            `gd:"variant_type_setter"`
+			Getter          func(vtype VariantType, field StringName) FunctionID                                                                                                            `gd:"variant_type_getter"`
+			HasProperty     func(vtype VariantType, field StringName) bool                                                                                                                  `gd:"variant_type_has_property"`
+
+			Method func(vtype VariantType, builtin StringName, hash int64) MethodForBuiltinType `gd:"variant_type_builtin_method"`
+
+			Unsafe struct {
+				Call func(value CallMutates[any], fn MethodForBuiltinType, result CallReturns[any], shape Shape, args CallAccepts[any]) `gd:"variant_type_unsafe_call"`
+				Make func(constructor FunctionID, result CallReturns[any], shape Shape, args CallAccepts[any])                          `gd:"variant_type_unsafe_make"`
+				Free func(vtype VariantType, shape Shape, args CallAccepts[any])                                                        `gd:"variant_type_unsafe_free"`
+			}
+		}
+		Functions struct {
+			Name func(utility StringName, hash int64) FunctionID                                  `gd:"builtin_name"`
+			Call func(fn FunctionID, result CallReturns[any], shape Shape, args CallAccepts[any]) `gd:"builtin_call"`
+		}
 	}
 	Variants struct {
 		Zero func(result CallReturns[Variant])                                                                                                     `gd:"variant_zero"`
@@ -188,31 +213,10 @@ type API struct {
 			InternalPointer func(vtype VariantType, v Variant) Pointer `gd:"variant_unsafe_internal_pointer"`
 		}
 	}
-	VariantTypes struct {
-		Name            func(vtype VariantType) String                                                                                                                                  `gd:"variant_type_name"`
-		Make            func(vtype VariantType, result CallReturns[Variant], arg_count int, args CallAccepts[Variant], err CallReturns[CallError])                                      `gd:"variant_type_make"`
-		Call            func(vtype VariantType, static StringName, result CallReturns[Variant], arg_count int, args CallAccepts[Variant], err CallReturns[CallError])                   `gd:"variant_type_call"`
-		Convertable     func(vtype VariantType, to VariantType, strict bool) bool                                                                                                       `gd:"variant_type_convertable"`
-		SetupArray      func(array Array, vtype VariantType, class_name StringName, script Variant)                                                                                     `gd:"variant_type_setup_array"`
-		SetupDictionary func(dict Dictionary, key_type VariantType, key_class_name StringName, key_script Variant, val_type VariantType, val_class_name StringName, val_script Variant) `gd:"variant_type_setup_dictionary"`
-		FetchConstant   func(vtype VariantType, constant StringName, result CallReturns[Variant])                                                                                       `gd:"variant_type_fetch_constant"`
-		BuiltinMethod   func(vtype VariantType, builtin StringName, hash int64) FunctionID                                                                                              `gd:"variant_type_builtin_method"`
-		Constructor     func(vtype VariantType, n int) FunctionID                                                                                                                       `gd:"variant_type_unsafe_constructor"`
-		Evaluator       func(op VariantOperator, a, b VariantType) FunctionID                                                                                                           `gd:"variant_type_evaluator"`
-		Setter          func(vtype VariantType, field StringName) FunctionID                                                                                                            `gd:"variant_type_setter"`
-		Getter          func(vtype VariantType, field StringName) FunctionID                                                                                                            `gd:"variant_type_getter"`
-		HasProperty     func(vtype VariantType, field StringName) bool                                                                                                                  `gd:"variant_type_has_property"`
-
-		Unsafe struct {
-			Call func(fn FunctionID, result CallReturns[any], shape Shape, args CallAccepts[any])          `gd:"variant_type_unsafe_call"`
-			Make func(constructor FunctionID, result CallReturns[any], shape Shape, args CallAccepts[any]) `gd:"variant_type_unsafe_make"`
-			Free func(vtype VariantType, shape Shape, args CallAccepts[any])                               `gd:"variant_type_unsafe_free"`
-		}
-	}
 	Iterators struct {
-		Make func(v Variant, result CallReturns[Iterator], err CallReturns[CallError])                     `gd:"iterator_make"`
-		Next func(v Variant, result CallReturns[Iterator], iter Iterator, err CallReturns[CallError]) bool `gd:"iterator_next"`
-		Load func(v Variant, result CallReturns[Variant], iter Iterator, err CallReturns[CallError])       `gd:"iterator_load"`
+		Make func(v Variant, result CallReturns[Iterator], err CallReturns[CallError])               `gd:"iterator_make"`
+		Next func(v Variant, iter CallMutates[Iterator], err CallReturns[CallError]) bool            `gd:"iterator_next"`
+		Load func(v Variant, iter Iterator, result CallReturns[Variant], err CallReturns[CallError]) `gd:"iterator_load"`
 	}
 	Strings struct {
 		Access func(s String, idx int) rune    `gd:"string_access"`
@@ -297,11 +301,11 @@ type API struct {
 		Lookup func(Callable) CallableID                                          `gd:"callable_lookup"`
 	}
 	Objects struct {
-		Make func(name StringName) Object                                                                                                           `gd:"object_make"`
-		Call func(obj Object, method FunctionID, result CallReturns[Variant], arg_count int, args CallAccepts[Variant], err CallReturns[CallError]) `gd:"object_call"`
-		Name func(obj Object) StringName                                                                                                            `gd:"object_name"`
-		Type func(name StringName) ObjectType                                                                                                       `gd:"object_type"`
-		Cast func(obj Object, to ObjectType) Object                                                                                                 `gd:"object_cast"`
+		Make func(name StringName) Object                                                                                                               `gd:"object_make"`
+		Call func(obj Object, method MethodForClass, result CallReturns[Variant], arg_count int, args CallAccepts[Variant], err CallReturns[CallError]) `gd:"object_call"`
+		Name func(obj Object) StringName                                                                                                                `gd:"object_name"`
+		Type func(name StringName) ObjectType                                                                                                           `gd:"object_type"`
+		Cast func(obj Object, to ObjectType) Object                                                                                                     `gd:"object_cast"`
 
 		ID struct {
 			Get           func(obj Object) ObjectID `gd:"object_id"`
@@ -311,11 +315,11 @@ type API struct {
 		Global func(name StringName) Object `gd:"object_global"`
 
 		Method struct {
-			Lookup func(name StringName, method StringName, hash int64) FunctionID `gd:"object_method_lookup"`
+			Lookup func(name StringName, method StringName, hash int64) MethodForClass `gd:"object_method_lookup"`
 		}
 		Unsafe struct {
-			Call func(obj Object, fn FunctionID, result CallReturns[any], shape Shape, args CallAccepts[any]) `gd:"object_unsafe_call"`
-			Free func(obj Object)                                                                             `gd:"object_unsafe_free"`
+			Call func(obj Object, fn MethodForClass, result CallReturns[any], shape Shape, args CallAccepts[any]) `gd:"object_unsafe_call"`
+			Free func(obj Object)                                                                                 `gd:"object_unsafe_free"`
 		}
 		Script struct {
 			Make func(fn ExtensionInstanceID) ScriptInstance                                                                                          `gd:"object_script_make"`
@@ -429,6 +433,11 @@ type NodePath Pointer
 type Array Pointer
 type Dictionary Pointer
 type Callable [2]uint64
+type Signal [2]uint64
+
+type MethodForClass Pointer
+
+type MethodForBuiltinType Pointer
 
 type Object Pointer
 type ObjectType Pointer
@@ -454,6 +463,7 @@ type ScriptInstance Pointer
 
 type CallReturns[T any] unsafe.Pointer
 type CallAccepts[T any] unsafe.Pointer
+type CallMutates[T any] unsafe.Pointer
 
 type MaybeError struct{}
 
@@ -533,6 +543,25 @@ const (
 // Shape is used to correctly transfer data for unsafe calls into the engine.
 type Shape uint64
 
+func ShapeVariants(count int) Shape {
+	if count == 0 {
+		return 0
+	}
+	if count > 16 {
+		panic("ShapeVariants: count must be between 0 and 16")
+	}
+	var shape Shape
+	for i := 0; i < count; i++ {
+		shape |= SizeVariant << ((i + 1) * 4)
+	}
+	return shape
+}
+
+// ALIGN_UP aligns a value to the next multiple of align.
+func alignUp(value, align uint32) uint32 {
+	return (value + (align - 1)) & ^(align - 1)
+}
+
 func (shape Shape) SizeResult() (size int) {
 	switch shape & 0xF {
 	case SizeBytes0:
@@ -572,40 +601,60 @@ func (shape Shape) SizeResult() (size int) {
 
 func (shape Shape) SizeArguments() (size int) {
 	for i := 1; i < 16; i++ {
+		var alignment uint32 = 0
 		switch (shape >> (i * 4)) & 0xF {
 		case SizeBytes0:
-			continue
+			return size
 		case SizeBytes1:
+			alignment = 1
 			size += 1
 		case SizeBytes2:
+			alignment = 2
 			size += 2
 		case SizeBytes4:
+			alignment = 4
 			size += 4
 		case SizeBytes8:
+			alignment = 8
 			size += 8
 		case SizeBytes12:
+			alignment = 12
 			size += 12
 		case SizeBytes16:
+			alignment = 16
 			size += 16
 		case SizeBytes24:
+			alignment = 24
 			size += 24
 		case SizeBytes32:
+			alignment = 32
 			size += 32
 		case SizeBytes36:
+			alignment = 36
 			size += 36
 		case SizeBytes40:
+			alignment = 40
 			size += 40
 		case SizeBytes48:
+			alignment = 48
 			size += 48
 		case SizeBytes64:
+			alignment = 64
 			size += 64
 		case SizeBytes72:
+			alignment = 72
 			size += 72
 		case SizeBytes96:
+			alignment = 96
 			size += 96
 		case SizeBytes128:
+			alignment = 128
 			size += 128
 		}
+		if alignment > 8 {
+			alignment = 8
+		}
+		size = int(alignUp(uint32(size), alignment))
 	}
 	return
 }
@@ -632,7 +681,7 @@ const (
 type VariantType uint32
 
 func (vtype VariantType) String() string {
-	name := Host.VariantTypes.Name(vtype)
+	name := Host.Builtin.Types.Name(vtype)
 	var buf = make([]byte, 32)
 	n := Host.Strings.Encode.UTF8(name, buf)
 	return unsafe.String(&buf[0], min(n, len(buf)))

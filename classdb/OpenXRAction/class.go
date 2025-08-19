@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -132,36 +130,36 @@ func (self Instance) SetToplevelPaths(value []string) {
 
 //go:nosplit
 func (self class) SetLocalizedName(localized_name String.Readable) { //gd:OpenXRAction.set_localized_name
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAction.Bind_set_localized_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ localized_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(localized_name))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRAction.Bind_set_localized_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ localized_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(localized_name))[0])}))
 }
 
 //go:nosplit
 func (self class) GetLocalizedName() String.Readable { //gd:OpenXRAction.get_localized_name
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OpenXRAction.Bind_get_localized_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRAction.Bind_get_localized_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetActionType(action_type ActionType) { //gd:OpenXRAction.set_action_type
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAction.Bind_set_action_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ action_type ActionType }{action_type}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRAction.Bind_set_action_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ action_type ActionType }{action_type}))
 }
 
 //go:nosplit
 func (self class) GetActionType() ActionType { //gd:OpenXRAction.get_action_type
-	var r_ret = gdunsafe.Call[ActionType](self.AsObject(), gd.Global.Methods.OpenXRAction.Bind_get_action_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ActionType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRAction.Bind_get_action_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetToplevelPaths(toplevel_paths Packed.Strings) { //gd:OpenXRAction.set_toplevel_paths
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRAction.Bind_set_toplevel_paths, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ toplevel_paths gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(toplevel_paths)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRAction.Bind_set_toplevel_paths), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ toplevel_paths gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(toplevel_paths)))}))
 }
 
 //go:nosplit
 func (self class) GetToplevelPaths() Packed.Strings { //gd:OpenXRAction.get_toplevel_paths
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.OpenXRAction.Bind_get_toplevel_paths, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRAction.Bind_get_toplevel_paths), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

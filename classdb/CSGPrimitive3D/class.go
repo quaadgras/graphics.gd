@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -117,12 +115,12 @@ func (self Instance) SetFlipFaces(value bool) {
 
 //go:nosplit
 func (self class) SetFlipFaces(flip_faces bool) { //gd:CSGPrimitive3D.set_flip_faces
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CSGPrimitive3D.Bind_set_flip_faces, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip_faces bool }{flip_faces}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGPrimitive3D.Bind_set_flip_faces), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip_faces bool }{flip_faces}))
 }
 
 //go:nosplit
 func (self class) GetFlipFaces() bool { //gd:CSGPrimitive3D.get_flip_faces
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CSGPrimitive3D.Bind_get_flip_faces, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CSGPrimitive3D.Bind_get_flip_faces), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

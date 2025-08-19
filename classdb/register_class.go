@@ -172,8 +172,13 @@ func Register[T Class](exports ...any) {
 				maps.Copy(documentation, export)
 			case map[string]int:
 				for name, value := range export {
-					gd.Global.ClassDB.RegisterClassIntegerConstant(gd.Global.ExtensionToken,
-						className, gd.NewStringName(""), gd.NewStringName(name), int64(value), false)
+					gdextension.Host.ClassDB.Register.Constant(
+						gdextension.StringName(pointers.Get(className)[0]),
+						gdextension.StringName(pointers.Get(gd.NewStringName(""))[0]),
+						gdextension.StringName(pointers.Get(gd.NewStringName(name))[0]),
+						int64(value),
+						false,
+					)
 				}
 			case map[string]any:
 				for name, fn := range export {
@@ -519,7 +524,7 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 		}
 	}
 	if len(signals) > 0 {
-		go manageSignals(super[0].AsObject()[0].GetInstanceId(), chSignals)
+		go manageSignals(Object.Instance(super[0].AsObject()).ID(), chSignals)
 	}
 	return &instanceImplementation{
 		object:   pointers.Get(super[0])[0],

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -123,24 +121,24 @@ func (self Instance) SetAxisValue(value Float.X) {
 
 //go:nosplit
 func (self class) SetAxis(axis Input.JoyAxis) { //gd:InputEventJoypadMotion.set_axis
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventJoypadMotion.Bind_set_axis, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ axis Input.JoyAxis }{axis}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_set_axis), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ axis Input.JoyAxis }{axis}))
 }
 
 //go:nosplit
 func (self class) GetAxis() Input.JoyAxis { //gd:InputEventJoypadMotion.get_axis
-	var r_ret = gdunsafe.Call[Input.JoyAxis](self.AsObject(), gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.JoyAxis](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAxisValue(axis_value float64) { //gd:InputEventJoypadMotion.set_axis_value
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventJoypadMotion.Bind_set_axis_value, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ axis_value float64 }{axis_value}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_set_axis_value), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ axis_value float64 }{axis_value}))
 }
 
 //go:nosplit
 func (self class) GetAxisValue() float64 { //gd:InputEventJoypadMotion.get_axis_value
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis_value, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis_value), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

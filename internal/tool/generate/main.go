@@ -11,7 +11,6 @@ import (
 	"strings"
 
 	"graphics.gd/internal/gdjson"
-	"graphics.gd/internal/gdtype"
 )
 
 // LoadSpecification, either from a local file or by downloading
@@ -43,17 +42,6 @@ func LoadSpecification() (*gdjson.Specification, error) {
 		return nil, err
 	}
 	return &spec, nil
-}
-
-func hasNative(gdType string) bool {
-	switch gdType {
-	case "int", "float", "String", "bool",
-		"PackedStringArray", "PackedInt32Array", "PackedInt64Array",
-		"PackedFloat32Array", "PackedFloat64Array", "PackedVector2Array",
-		"PackedVector3Array", "PackedVector4Array", "PackedColorArray", "Variant":
-		return true
-	}
-	return false
 }
 
 func (classDB ClassDB) convertType(pkg, meta string, gdType string) string {
@@ -220,53 +208,6 @@ func convertName(fnName string) string {
 	return strings.Join(joins, "")
 }
 
-func genEnum(pkg string, decl, code io.Writer, prefix string, enum gdjson.Enum) {
-	name := prefix + strings.Replace(enum.Name, ".", "", -1)
-	if name == "Side" || name == "EulerOrder" {
-		return
-	}
-
-	if decl != nil {
-		fmt.Fprintln(decl)
-		fmt.Fprintf(decl, "type %v int64\n", name)
-
-		if code != nil {
-			fmt.Fprintln(code)
-		}
-
-		var topLevelPrefix = pkg
-		if topLevelPrefix == "internal" {
-			topLevelPrefix = "gd"
-		}
-		if code != nil {
-			fmt.Fprintf(code, "type %v = %v.%[1]v\n", name, topLevelPrefix)
-		}
-
-		if name == "GDExtensionInitializationLevel" || name == "VariantType" || name == "Error" {
-			genEnum(pkg, nil, decl, prefix, enum)
-		}
-	}
-	if code != nil {
-		if len(enum.Values) > 0 {
-			fmt.Fprintln(code)
-			fmt.Fprintf(code, "const (\n")
-			for _, value := range enum.Values {
-				n := prefix + convertName(value.Name)
-				if n == name {
-					n += "Default"
-				}
-				if value.Description != "" {
-					fmt.Fprint(code, "/*")
-					fmt.Fprint(code, value.Description)
-					fmt.Fprintln(code, "*/")
-				}
-				fmt.Fprintf(code, "\t%v %v = %v\n", n, name, value.Value)
-			}
-			fmt.Fprintf(code, ")\n")
-		}
-	}
-}
-
 type ClassDB map[string]gdjson.Class
 
 func (db ClassDB) nameOf(pkg, original string) string {
@@ -310,14 +251,6 @@ func (db ClassDB) genArgs(pkg string, method gdjson.Method) string {
 		args = append(args, fmt.Sprintf("%v %v", arg.Name, db.convertType(pkg, arg.Meta, arg.Type)))
 	}
 	return strings.Join(args, ", ")
-}
-
-func pascal(name string) string {
-	words := strings.Split(name, "_")
-	for i := range words {
-		words[i] = strings.Title(words[i])
-	}
-	return strings.Join(words, "")
 }
 
 func fixReserved(name string) string {
@@ -439,6 +372,7 @@ func generate() error {
 	fmt.Fprintln(out, `package gd`)
 	fmt.Fprintln(out)
 	fmt.Fprintln(out, `import "graphics.gd/internal/callframe"`)
+	fmt.Fprintln(out, `import "graphics.gd/internal/gdextension"`)
 	fmt.Fprintln(out)
 
 	core, err := os.Create("./internal/all.go")
@@ -560,19 +494,6 @@ func generate() error {
 	}
 	fmt.Fprintf(out, "}\n")
 
-	fmt.Fprintf(out, "type builtin struct{\n")
-	for _, class := range spec.BuiltinClasses {
-		fmt.Fprintf(out, "\t%v struct{\n", class.Name)
-		for _, method := range class.Methods {
-			if method.Name == "map" {
-				method.Name = "map_"
-			}
-			fmt.Fprintf(out, "\t\t%v func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) `hash:\"%v\"`\n", method.Name, method.Hash)
-		}
-		fmt.Fprintf(out, "\t}\n")
-	}
-	fmt.Fprintf(out, "}\n")
-
 	fmt.Fprintf(out, "type typeset struct{\n")
 	fmt.Fprintf(out, "\tcreation struct{\n")
 	for _, class := range spec.BuiltinClasses {
@@ -616,9 +537,6 @@ func generate() error {
 	fmt.Fprintf(out, "\tdestruct struct{\n")
 	for _, class := range spec.BuiltinClasses {
 		fmt.Fprintf(out, "\t\t%v func(callframe.Addr)\n", class.Name)
-		for _, method := range class.Methods {
-			classDB.methodCall(core, "internal", class, method, callBuiltin)
-		}
 	}
 	fmt.Fprintf(out, "\t}\n")
 	fmt.Fprintf(out, "}\n")
@@ -647,7 +565,7 @@ func generate() error {
 			if method.IsVirtual {
 				continue
 			}
-			fmt.Fprintf(out, "\t\tBind_%v MethodBind `hash:\"%v\"`\n", method.Name, method.Hash)
+			fmt.Fprintf(out, "\t\tBind_%v gdextension.MethodForClass `hash:\"%v\"`\n", method.Name, method.Hash)
 		}
 		fmt.Fprintf(out, "\t}\n")
 	}
@@ -670,11 +588,6 @@ func generate() error {
 		}
 		if class.Inherits != "" {
 			fmt.Fprintf(w, "\n\n//go:nosplit\nfunc (self %[1]v) AsObject() [1]Object { return (*(*[1]Object)(unsafe.Pointer(&self))) }\n", class.Name)
-		}
-		if class.Name == "Object" || class.Name == "RefCounted" {
-			for _, method := range class.Methods {
-				classDB.methodCall(w, pkg, class, method, callDefault)
-			}
 		}
 		fmt.Fprintf(w, "\nfunc (self %[1]v) Virtual(name string) reflect.Value { return reflect.Value{} }\n", class.Name)
 	}
@@ -720,212 +633,6 @@ const (
 	callBuiltin
 	callUtility
 )
-
-func (classDB ClassDB) methodCall(w io.Writer, pkg string, class gdjson.Class, method gdjson.Method, ctype callType) {
-	if ctype == callDefault && method.IsVararg {
-		return
-	}
-
-	switch class.Name {
-	case "Float", "Int", "Vector2", "Vector2i", "Rect2", "Rect2i", "Vector3", "Vector3i",
-		"Transform2D", "Vector4", "Vector4i", "Plane", "Quaternion", "AABB", "Basis", "Transform3D",
-		"RID", "Projection", "Color":
-		return
-	}
-	result := classDB.convertType(pkg, method.ReturnValue.Meta, method.ReturnValue.Type)
-	if method.ReturnType != "" {
-		result = classDB.convertType(pkg, "", method.ReturnType)
-	}
-	ptrKind, isPtr := classDB.isPointer(result)
-
-	prefix := ""
-	if pkg != "internal" {
-		prefix = "gd."
-	}
-
-	fmt.Fprintln(w)
-	if method.Description != "" {
-		fmt.Fprintln(w, "/*")
-		fmt.Fprint(w, method.Description)
-		fmt.Fprintln(w, "\n*/")
-	}
-
-	if method.IsVirtual {
-		fmt.Fprintf(w, "func (%s) %s(impl func(ptr unsafe.Pointer", class.Name, method.Name)
-		for _, arg := range method.Arguments {
-			fmt.Fprint(w, ", ")
-			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertType(pkg, arg.Meta, arg.Type))
-		}
-		fmt.Fprintf(w, ") %v, api *"+prefix+"API) (cb "+prefix+"ExtensionClassCallVirtualFunc) {\n", result)
-		fmt.Fprint(w, "\treturn func(class "+prefix+"ExtensionClass, p_args "+prefix+"Address, p_back "+prefix+"Address) {\n")
-		for i, arg := range method.Arguments {
-			var argType = classDB.convertType(pkg, arg.Meta, arg.Type)
-
-			_, ok := classDB[arg.Type]
-			if ok {
-				fmt.Fprintf(w, "\t\tvar %v %v\n", fixReserved(arg.Name), argType)
-				fmt.Fprintf(w, "\t\t%v.SetPointer(mmm.Let["+prefix+"Pointer]([2]uintptr{"+prefix+"UnsafeGet[uintptr](p_args,%d)}))\n", fixReserved(arg.Name), i)
-				continue
-			}
-
-			argPtrKind, argIsPtr := classDB.isPointer(argType)
-			if argIsPtr {
-				fmt.Fprintf(w, "\t\tvar %v = %v\n", fixReserved(arg.Name),
-					fmt.Sprintf(prefix+"UnsafeGet[%v](p_args,%d)", argPtrKind, i))
-			} else {
-				fmt.Fprintf(w, "\t\tvar %v = "+prefix+"UnsafeGet[%v](p_args,%d)\n", fixReserved(arg.Name), argType, i)
-			}
-		}
-		fmt.Fprintf(w, "\t\tself := reflect.ValueOf(class).UnsafePointer()\n")
-		if result != "" {
-			fmt.Fprintf(w, "\t\tret := ")
-		}
-		fmt.Fprintf(w, "impl(self")
-		for _, arg := range method.Arguments {
-			fmt.Fprint(w, ", ")
-			fmt.Fprintf(w, "%v", fixReserved(arg.Name))
-		}
-		fmt.Fprintf(w, ")\n")
-		if result != "" {
-			ret := gdtype.Name(result).ToUnderlying("ret")
-			if isPtr {
-				_, ok := classDB[result]
-				if ok || result == "gd.Object" {
-					ret = fmt.Sprintf("pointers.End(%s.AsPointer())", ret)
-				} else {
-					ret = fmt.Sprintf("pointers.End(%s)", ret)
-				}
-			}
-			fmt.Fprintf(w, "\t\t"+prefix+"UnsafeSet(p_back, %s)\n", ret)
-		}
-		fmt.Fprintf(w, "\t}\n")
-		fmt.Fprintf(w, "}\n")
-		return
-	}
-	if class.Name == "JavaClassWrapper" || class.Name == "JavaScriptBridge" {
-		return
-	}
-	fmt.Fprintf(w, "//go:nosplit\nfunc (self %v) %v(", class.Name, convertName(method.Name))
-	if method.Name == "select" {
-		method.Name = "select_"
-	}
-	if method.Name == "map" {
-		method.Name = "map_"
-	}
-
-	for i, arg := range method.Arguments {
-		if i > 0 {
-			fmt.Fprint(w, ", ")
-		}
-		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertType(pkg, arg.Meta, arg.Type))
-	}
-	if method.IsVararg {
-		if len(method.Arguments) > 0 {
-			fmt.Fprint(w, ", ")
-		}
-		fmt.Fprint(w, "args ..."+prefix+"Variant")
-	}
-	fmt.Fprintf(w, ") %v {\n", result)
-	fmt.Fprintf(w, "\tvar frame = callframe.New()\n")
-	for _, arg := range method.Arguments {
-		_, ok := classDB[arg.Type]
-		if ok {
-			switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name][arg.Name]; semantics {
-			case gdjson.OwnershipTransferred, gdjson.LifetimeBoundToClass:
-				fmt.Fprintf(w, "\tcallframe.Arg(frame, pointers.End(%v.AsPointer())[0])\n", fixReserved(arg.Name))
-			case gdjson.RefCountedManagement, gdjson.IsTemporaryReference, gdjson.MustAssertInstanceID, gdjson.ReversesTheOwnership:
-				fmt.Fprintf(w, "\tcallframe.Arg(frame, pointers.Get(%v.AsPointer())[0])\n", fixReserved(arg.Name))
-			default:
-				panic("unknown ownership: " + fmt.Sprint(semantics))
-			}
-			continue
-		}
-
-		argType := classDB.convertType(pkg, arg.Meta, arg.Type)
-		_, argIsPtr := classDB.isPointer(argType)
-		if argIsPtr {
-			fmt.Fprintf(w, "\tcallframe.Arg(frame, pointers.Get(%v))\n", fixReserved(arg.Name))
-		} else {
-			fmt.Fprintf(w, "\tcallframe.Arg(frame, %v)\n", fixReserved(arg.Name))
-		}
-	}
-	if method.IsVararg {
-		fmt.Fprintf(w, "\tfor _, arg := range args {\n")
-		fmt.Fprintf(w, "\t\tcallframe.Arg(frame, pointers.Get(arg))\n")
-		fmt.Fprintf(w, "\t}\n")
-	}
-	if isPtr {
-		fmt.Fprintf(w, "\tvar r_ret = callframe.Ret[%v](frame)\n", ptrKind)
-	} else {
-		if result != "" {
-			fmt.Fprintf(w, "\tvar r_ret = callframe.Ret[%v](frame)\n", result)
-		} else {
-			fmt.Fprintf(w, "\tvar r_ret = callframe.Nil\n")
-		}
-	}
-	if ctype == callBuiltin {
-		var self = "callframe.Nil"
-		if !method.IsStatic {
-			fmt.Fprintf(w, "\tvar p_self = callframe.Arg(frame, pointers.Get(self))\n")
-			self = "p_self.Addr()"
-		}
-		if method.IsVararg {
-			fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Addr(), int32(len(args))+%d)\n", class.Name, method.Name, self, len(method.Arguments))
-		} else {
-			fmt.Fprintf(w, "\tGlobal.builtin.%v.%v(%s, frame.Array(0), r_ret.Addr(), %d)\n", class.Name, method.Name, self, len(method.Arguments))
-		}
-		if strings.HasPrefix(class.Name, "Packed") {
-			fmt.Fprintf(w, "\tpointers.Set(self, p_self.Get())\n")
-		}
-	} else {
-		if method.IsVararg {
-			fmt.Fprintf(w, "\tif len(args) > 0 { panic(`varargs not supported for class methods yet`); }\n")
-		}
-		fmt.Fprintf(w, "\tGlobal.Object.MethodBindPointerCall(Global.Methods.%v.Bind_%v, self.AsObject(), frame.Array(0), r_ret.Addr())\n", class.Name, method.Name)
-	}
-
-	if isPtr {
-		_, ok := classDB[result]
-		if ok || result == "gd.Object" {
-			switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name]["return value"]; semantics {
-			case gdjson.RefCountedManagement, gdjson.OwnershipTransferred:
-				fmt.Fprintf(w, "\tvar ret %v = "+prefix+"PointerWithOwnershipTransferredToGo[Object](r_ret.Get())\n", result)
-			case gdjson.LifetimeBoundToClass:
-				fmt.Fprintf(w, "\tvar ret %v ="+prefix+"PointerLifetimeBoundTo[Object](self.AsObject(), r_ret.Get())\n", result)
-			case gdjson.MustAssertInstanceID:
-				fmt.Fprintf(w, "\tvar ret %v ="+prefix+"PointerMustAssertInstanceID[Object](r_ret.Get())\n", result)
-			default:
-				panic("unknown ownership: " + fmt.Sprint(semantics))
-			}
-
-		} else {
-			if strings.HasPrefix(result, "ArrayOf") {
-				fmt.Fprint(w, "\tvar ret = pointers.New[Array](r_ret.Get())\n")
-			} else if strings.HasPrefix(result, "gd.ArrayOf") {
-				fmt.Fprint(w, "\tvar ret = pointers.New[gd.Array](r_ret.Get())\n")
-			} else {
-				fmt.Fprintf(w, "\tvar ret = pointers.New[%v](r_ret.Get())\n", result)
-			}
-		}
-	} else if result != "" {
-		fmt.Fprintf(w, "\tvar ret = r_ret.Get()\n")
-	}
-	fmt.Fprintf(w, "\tframe.Free()\n")
-	if result != "" {
-		if strings.HasPrefix(result, "ArrayOf") || strings.HasPrefix(result, "gd.ArrayOf") {
-			result = strings.ReplaceAll(result, "gd.ArrayOf", "gd.TypedArray")
-			result = strings.ReplaceAll(result, "ArrayOf", "TypedArray")
-			fmt.Fprintf(w, "\treturn %s(ret)\n", result)
-		} else {
-			fmt.Fprintf(w, "\treturn ret\n")
-		}
-	}
-	/*if result != "" {
-		fmt.Fprintf(w, "\tvar ret %v\n", result)
-		fmt.Fprintf(w, "\treturn ret\n")
-	}*/
-	fmt.Fprintf(w, "}")
-}
 
 func main() {
 	if err := generate(); err != nil {

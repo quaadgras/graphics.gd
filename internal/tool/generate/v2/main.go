@@ -10,6 +10,7 @@ import (
 	"slices"
 	"strings"
 
+	"graphics.gd/internal/gdfunc"
 	"graphics.gd/internal/gdjson"
 	"graphics.gd/internal/gdtype"
 	"graphics.gd/variant/String"
@@ -148,7 +149,6 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import "slices"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/pointers"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/callframe"`)
-	fmt.Fprintln(file, `import "graphics.gd/internal/gdunsafe"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/gdextension"`)
 	fmt.Fprintln(file, `import gd "graphics.gd/internal"`)
 	fmt.Fprintln(file, `import "graphics.gd/internal/gdclass"`)
@@ -186,7 +186,6 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, "var _ Angle.Radians")
 	fmt.Fprintln(file, "var _ Euler.Radians")
 	fmt.Fprintln(file, "var _ gdextension.Object")
-	fmt.Fprintln(file, "var _ = gdunsafe.Use{}")
 	fmt.Fprintln(file, "var _ = slices.Delete[[]struct{}, struct{}]")
 	fmt.Fprintln(file)
 	var local_enums = make(map[string]bool)
@@ -398,7 +397,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		}
 		classDB.properties(file, class, singleton)
 		for _, method := range class.Methods {
-			classDB.methodCall(file, class.Package, class, method, callDefault)
+			gdfunc.Generate(file, classDB, class.Package, class, method, gdfunc.TypeDefault)
 		}
 		for _, signal := range class.Signals {
 			classDB.signalCall(file, class, signal, singleton)

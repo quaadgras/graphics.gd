@@ -20,6 +20,22 @@ func init() {
 		gd_array_set                               js.Value
 		gd_builtin_name                            js.Value
 		gd_builtin_call                            js.Value
+		gd_variant_type_name                       js.Value
+		gd_variant_type_make                       js.Value
+		gd_variant_type_call                       js.Value
+		gd_variant_type_convertable                js.Value
+		gd_variant_type_setup_array                js.Value
+		gd_variant_type_setup_dictionary           js.Value
+		gd_variant_type_fetch_constant             js.Value
+		gd_variant_type_unsafe_constructor         js.Value
+		gd_variant_type_evaluator                  js.Value
+		gd_variant_type_setter                     js.Value
+		gd_variant_type_getter                     js.Value
+		gd_variant_type_has_property               js.Value
+		gd_variant_type_builtin_method             js.Value
+		gd_variant_type_unsafe_call                js.Value
+		gd_variant_type_unsafe_make                js.Value
+		gd_variant_type_unsafe_free                js.Value
 		gd_callable_create                         js.Value
 		gd_callable_lookup                         js.Value
 		gd_classdb_FileAccess_write                js.Value
@@ -63,6 +79,7 @@ func init() {
 		gd_memory_malloc                           js.Value
 		gd_memory_sizeof                           js.Value
 		gd_memory_resize                           js.Value
+		gd_memory_clear                            js.Value
 		gd_memory_free                             js.Value
 		gd_memory_edit_byte                        js.Value
 		gd_memory_edit_u16                         js.Value
@@ -137,22 +154,6 @@ func init() {
 		gd_string_encode_wide                      js.Value
 		gd_string_intern_latin1                    js.Value
 		gd_string_intern_utf8                      js.Value
-		gd_variant_type_name                       js.Value
-		gd_variant_type_make                       js.Value
-		gd_variant_type_call                       js.Value
-		gd_variant_type_convertable                js.Value
-		gd_variant_type_setup_array                js.Value
-		gd_variant_type_setup_dictionary           js.Value
-		gd_variant_type_fetch_constant             js.Value
-		gd_variant_type_builtin_method             js.Value
-		gd_variant_type_unsafe_constructor         js.Value
-		gd_variant_type_evaluator                  js.Value
-		gd_variant_type_setter                     js.Value
-		gd_variant_type_getter                     js.Value
-		gd_variant_type_has_property               js.Value
-		gd_variant_type_unsafe_call                js.Value
-		gd_variant_type_unsafe_make                js.Value
-		gd_variant_type_unsafe_free                js.Value
 		gd_variant_zero                            js.Value
 		gd_variant_copy                            js.Value
 		gd_variant_call                            js.Value
@@ -199,6 +200,22 @@ func init() {
 		gd_array_set = GD.Get("array_set")
 		gd_builtin_name = GD.Get("builtin_name")
 		gd_builtin_call = GD.Get("builtin_call")
+		gd_variant_type_name = GD.Get("variant_type_name")
+		gd_variant_type_make = GD.Get("variant_type_make")
+		gd_variant_type_call = GD.Get("variant_type_call")
+		gd_variant_type_convertable = GD.Get("variant_type_convertable")
+		gd_variant_type_setup_array = GD.Get("variant_type_setup_array")
+		gd_variant_type_setup_dictionary = GD.Get("variant_type_setup_dictionary")
+		gd_variant_type_fetch_constant = GD.Get("variant_type_fetch_constant")
+		gd_variant_type_unsafe_constructor = GD.Get("variant_type_unsafe_constructor")
+		gd_variant_type_evaluator = GD.Get("variant_type_evaluator")
+		gd_variant_type_setter = GD.Get("variant_type_setter")
+		gd_variant_type_getter = GD.Get("variant_type_getter")
+		gd_variant_type_has_property = GD.Get("variant_type_has_property")
+		gd_variant_type_builtin_method = GD.Get("variant_type_builtin_method")
+		gd_variant_type_unsafe_call = GD.Get("variant_type_unsafe_call")
+		gd_variant_type_unsafe_make = GD.Get("variant_type_unsafe_make")
+		gd_variant_type_unsafe_free = GD.Get("variant_type_unsafe_free")
 		gd_callable_create = GD.Get("callable_create")
 		gd_callable_lookup = GD.Get("callable_lookup")
 		gd_classdb_FileAccess_write = GD.Get("classdb_FileAccess_write")
@@ -242,6 +259,7 @@ func init() {
 		gd_memory_malloc = GD.Get("memory_malloc")
 		gd_memory_sizeof = GD.Get("memory_sizeof")
 		gd_memory_resize = GD.Get("memory_resize")
+		gd_memory_clear = GD.Get("memory_clear")
 		gd_memory_free = GD.Get("memory_free")
 		gd_memory_edit_byte = GD.Get("memory_edit_byte")
 		gd_memory_edit_u16 = GD.Get("memory_edit_u16")
@@ -316,22 +334,6 @@ func init() {
 		gd_string_encode_wide = GD.Get("string_encode_wide")
 		gd_string_intern_latin1 = GD.Get("string_intern_latin1")
 		gd_string_intern_utf8 = GD.Get("string_intern_utf8")
-		gd_variant_type_name = GD.Get("variant_type_name")
-		gd_variant_type_make = GD.Get("variant_type_make")
-		gd_variant_type_call = GD.Get("variant_type_call")
-		gd_variant_type_convertable = GD.Get("variant_type_convertable")
-		gd_variant_type_setup_array = GD.Get("variant_type_setup_array")
-		gd_variant_type_setup_dictionary = GD.Get("variant_type_setup_dictionary")
-		gd_variant_type_fetch_constant = GD.Get("variant_type_fetch_constant")
-		gd_variant_type_builtin_method = GD.Get("variant_type_builtin_method")
-		gd_variant_type_unsafe_constructor = GD.Get("variant_type_unsafe_constructor")
-		gd_variant_type_evaluator = GD.Get("variant_type_evaluator")
-		gd_variant_type_setter = GD.Get("variant_type_setter")
-		gd_variant_type_getter = GD.Get("variant_type_getter")
-		gd_variant_type_has_property = GD.Get("variant_type_has_property")
-		gd_variant_type_unsafe_call = GD.Get("variant_type_unsafe_call")
-		gd_variant_type_unsafe_make = GD.Get("variant_type_unsafe_make")
-		gd_variant_type_unsafe_free = GD.Get("variant_type_unsafe_free")
 		gd_variant_zero = GD.Get("variant_zero")
 		gd_variant_copy = GD.Get("variant_copy")
 		gd_variant_call = GD.Get("variant_call")
@@ -536,17 +538,118 @@ func init() {
 		gd_array_set.Invoke(uint32(p0), p1, math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[2]))))
 		return
 	}
-	gdextension.Host.Builtins.Name = func(p0 gdextension.StringName, p1 int64) (result gdextension.FunctionID) {
+	gdextension.Host.Builtin.Functions.Name = func(p0 gdextension.StringName, p1 int64) (result gdextension.FunctionID) {
 		setup()
 		result = gdextension.FunctionID(gd_builtin_name.Invoke(uint32(p0), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1)))).Int())
 		return
 	}
-	gdextension.Host.Builtins.Call = func(p0 gdextension.FunctionID, p1 gdextension.CallReturns[interface{}], shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
+	gdextension.Host.Builtin.Functions.Call = func(p0 gdextension.FunctionID, p1 gdextension.CallReturns[interface{}], shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
 		setup()
 		mem1 := gdmemory.MakeResult(shape)
 		mem3 := gdmemory.CopyArguments(shape, p3)
 		gd_builtin_call.Invoke(uint32(p0), uint32(mem1), math.Float64frombits(*(*uint64)(unsafe.Pointer(&shape))), uint32(mem3))
 		gdmemory.LoadResult(shape, p1, mem1)
+		return
+	}
+	gdextension.Host.Builtin.Types.Name = func(p0 gdextension.VariantType) (result gdextension.String) {
+		setup()
+		result = gdextension.String(gd_variant_type_name.Invoke(uint32(p0)).Int())
+		return
+	}
+	gdextension.Host.Builtin.Types.Make = func(p0 gdextension.VariantType, p1 gdextension.CallReturns[gdextension.Variant], p2 int, p3 gdextension.CallAccepts[gdextension.Variant], p4 gdextension.CallReturns[gdextension.CallError]) {
+		setup()
+		mem1 := gdmemory.MakeResult(gdextension.SizeBytes24)
+		mem3 := gdmemory.CopyVariants(p3, p2)
+		mem4 := gdmemory.MakeResult(gdextension.SizeBytes12)
+		gd_variant_type_make.Invoke(uint32(p0), uint32(mem1), p2, uint32(mem3), uint32(mem4))
+		gdmemory.LoadResult(gdextension.SizeBytes24, p1, mem1)
+		gdmemory.LoadResult(gdextension.SizeBytes12, p4, mem4)
+		return
+	}
+	gdextension.Host.Builtin.Types.Call = func(p0 gdextension.VariantType, p1 gdextension.StringName, p2 gdextension.CallReturns[gdextension.Variant], p3 int, p4 gdextension.CallAccepts[gdextension.Variant], p5 gdextension.CallReturns[gdextension.CallError]) {
+		setup()
+		mem2 := gdmemory.MakeResult(gdextension.SizeBytes24)
+		mem4 := gdmemory.CopyVariants(p4, p3)
+		mem5 := gdmemory.MakeResult(gdextension.SizeBytes12)
+		gd_variant_type_call.Invoke(uint32(p0), uint32(p1), uint32(mem2), p3, uint32(mem4), uint32(mem5))
+		gdmemory.LoadResult(gdextension.SizeBytes24, p2, mem2)
+		gdmemory.LoadResult(gdextension.SizeBytes12, p5, mem5)
+		return
+	}
+	gdextension.Host.Builtin.Types.Convertable = func(p0 gdextension.VariantType, p1 gdextension.VariantType, p2 bool) (result bool) {
+		setup()
+		result = bool(gd_variant_type_convertable.Invoke(uint32(p0), uint32(p1), p2).Bool())
+		return
+	}
+	gdextension.Host.Builtin.Types.SetupArray = func(p0 gdextension.Array, p1 gdextension.VariantType, p2 gdextension.StringName, p3 gdextension.Variant) {
+		setup()
+		gd_variant_type_setup_array.Invoke(uint32(p0), uint32(p1), uint32(p2), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p3[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p3[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p3[2]))))
+		return
+	}
+	gdextension.Host.Builtin.Types.SetupDictionary = func(p0 gdextension.Dictionary, p1 gdextension.VariantType, p2 gdextension.StringName, p3 gdextension.Variant, p4 gdextension.VariantType, p5 gdextension.StringName, p6 gdextension.Variant) {
+		setup()
+		gd_variant_type_setup_dictionary.Invoke(uint32(p0), uint32(p1), uint32(p2), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p3[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p3[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p3[2]))), uint32(p4), uint32(p5), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p6[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p6[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p6[2]))))
+		return
+	}
+	gdextension.Host.Builtin.Types.FetchConstant = func(p0 gdextension.VariantType, p1 gdextension.StringName, p2 gdextension.CallReturns[gdextension.Variant]) {
+		setup()
+		mem2 := gdmemory.MakeResult(gdextension.SizeBytes24)
+		gd_variant_type_fetch_constant.Invoke(uint32(p0), uint32(p1), uint32(mem2))
+		gdmemory.LoadResult(gdextension.SizeBytes24, p2, mem2)
+		return
+	}
+	gdextension.Host.Builtin.Types.Constructor = func(p0 gdextension.VariantType, p1 int) (result gdextension.FunctionID) {
+		setup()
+		result = gdextension.FunctionID(gd_variant_type_unsafe_constructor.Invoke(uint32(p0), p1).Int())
+		return
+	}
+	gdextension.Host.Builtin.Types.Evaluator = func(p0 gdextension.VariantOperator, p1 gdextension.VariantType, p2 gdextension.VariantType) (result gdextension.FunctionID) {
+		setup()
+		result = gdextension.FunctionID(gd_variant_type_evaluator.Invoke(uint32(p0), uint32(p1), uint32(p2)).Int())
+		return
+	}
+	gdextension.Host.Builtin.Types.Setter = func(p0 gdextension.VariantType, p1 gdextension.StringName) (result gdextension.FunctionID) {
+		setup()
+		result = gdextension.FunctionID(gd_variant_type_setter.Invoke(uint32(p0), uint32(p1)).Int())
+		return
+	}
+	gdextension.Host.Builtin.Types.Getter = func(p0 gdextension.VariantType, p1 gdextension.StringName) (result gdextension.FunctionID) {
+		setup()
+		result = gdextension.FunctionID(gd_variant_type_getter.Invoke(uint32(p0), uint32(p1)).Int())
+		return
+	}
+	gdextension.Host.Builtin.Types.HasProperty = func(p0 gdextension.VariantType, p1 gdextension.StringName) (result bool) {
+		setup()
+		result = bool(gd_variant_type_has_property.Invoke(uint32(p0), uint32(p1)).Bool())
+		return
+	}
+	gdextension.Host.Builtin.Types.Method = func(p0 gdextension.VariantType, p1 gdextension.StringName, p2 int64) (result gdextension.MethodForBuiltinType) {
+		setup()
+		result = gdextension.MethodForBuiltinType(gd_variant_type_builtin_method.Invoke(uint32(p0), uint32(p1), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2)))).Int())
+		return
+	}
+	gdextension.Host.Builtin.Types.Unsafe.Call = func(p0 gdextension.CallMutates[interface{}], p1 gdextension.MethodForBuiltinType, p2 gdextension.CallReturns[interface{}], shape gdextension.Shape, p4 gdextension.CallAccepts[interface{}]) {
+		setup()
+		mem0 := gdmemory.CopyReceiver(shape, p0)
+		mem2 := gdmemory.MakeResult(shape)
+		mem4 := gdmemory.CopyArguments(shape, p4)
+		gd_variant_type_unsafe_call.Invoke(uint32(mem0), uint32(p1), uint32(mem2), math.Float64frombits(*(*uint64)(unsafe.Pointer(&shape))), uint32(mem4))
+		gdmemory.LoadResult(shape>>4, p0, mem0)
+		gdmemory.LoadResult(shape, p2, mem2)
+		return
+	}
+	gdextension.Host.Builtin.Types.Unsafe.Make = func(p0 gdextension.FunctionID, p1 gdextension.CallReturns[interface{}], shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
+		setup()
+		mem1 := gdmemory.MakeResult(shape)
+		mem3 := gdmemory.CopyArguments(shape, p3)
+		gd_variant_type_unsafe_make.Invoke(uint32(p0), uint32(mem1), math.Float64frombits(*(*uint64)(unsafe.Pointer(&shape))), uint32(mem3))
+		gdmemory.LoadResult(shape, p1, mem1)
+		return
+	}
+	gdextension.Host.Builtin.Types.Unsafe.Free = func(p0 gdextension.VariantType, shape gdextension.Shape, p2 gdextension.CallAccepts[interface{}]) {
+		setup()
+		mem2 := gdmemory.CopyArguments(shape, p2)
+		gd_variant_type_unsafe_free.Invoke(uint32(p0), math.Float64frombits(*(*uint64)(unsafe.Pointer(&shape))), uint32(mem2))
 		return
 	}
 	gdextension.Host.Callables.Create = func(p0 gdextension.CallableID, p1 gdextension.ObjectID, p2 gdextension.CallReturns[gdextension.Callable]) {
@@ -563,18 +666,16 @@ func init() {
 	}
 	gdextension.Host.ClassDB.FileAccess.Write = func(p0 gdextension.Object, p1 []byte) {
 		setup()
-		buf1 := js.Global().Get("Uint8Array").New(len(p1))
-		js.CopyBytesToJS(buf1, p1)
-		gd_classdb_FileAccess_write.Invoke(uint32(p0), buf1, len(p1))
-		js.CopyBytesToGo(p1, buf1)
+		buf1 := gdmemory.CopyBufferToEngine(p1)
+		gd_classdb_FileAccess_write.Invoke(uint32(p0), uint32(buf1), len(p1))
+		gdmemory.CopyBufferToGo(buf1, p1)
 		return
 	}
 	gdextension.Host.ClassDB.FileAccess.Read = func(p0 gdextension.Object, p1 []byte) (result int) {
 		setup()
-		buf1 := js.Global().Get("Uint8Array").New(len(p1))
-		js.CopyBytesToJS(buf1, p1)
-		result = int(gd_classdb_FileAccess_read.Invoke(uint32(p0), buf1, len(p1)).Int())
-		js.CopyBytesToGo(p1, buf1)
+		buf1 := gdmemory.CopyBufferToEngine(p1)
+		result = int(gd_classdb_FileAccess_read.Invoke(uint32(p0), uint32(buf1), len(p1)).Int())
+		gdmemory.CopyBufferToGo(buf1, p1)
 		return
 	}
 	gdextension.Host.ClassDB.Image.Unsafe = func(p0 gdextension.Object) (result gdextension.Pointer) {
@@ -705,10 +806,9 @@ func init() {
 	}
 	gdextension.Host.ClassDB.XMLParser.Load = func(p0 gdextension.Object, p1 []byte) (result int) {
 		setup()
-		buf1 := js.Global().Get("Uint8Array").New(len(p1))
-		js.CopyBytesToJS(buf1, p1)
-		result = int(gd_classdb_XMLParser_load.Invoke(uint32(p0), buf1, len(p1)).Int())
-		js.CopyBytesToGo(p1, buf1)
+		buf1 := gdmemory.CopyBufferToEngine(p1)
+		result = int(gd_classdb_XMLParser_load.Invoke(uint32(p0), uint32(buf1), len(p1)).Int())
+		gdmemory.CopyBufferToGo(buf1, p1)
 		return
 	}
 	gdextension.Host.Dictionaries.Get = func(p0 gdextension.Dictionary, p1 gdextension.Variant, p2 gdextension.CallReturns[gdextension.Variant]) {
@@ -747,21 +847,21 @@ func init() {
 		gdmemory.LoadResult(gdextension.SizeBytes12, p2, mem2)
 		return
 	}
-	gdextension.Host.Iterators.Next = func(p0 gdextension.Variant, p1 gdextension.CallReturns[gdextension.Iterator], p2 gdextension.Iterator, p3 gdextension.CallReturns[gdextension.CallError]) (result bool) {
+	gdextension.Host.Iterators.Next = func(p0 gdextension.Variant, p1 gdextension.CallMutates[gdextension.Iterator], p2 gdextension.CallReturns[gdextension.CallError]) (result bool) {
 		setup()
-		mem1 := gdmemory.MakeResult(gdextension.SizeBytes24)
-		mem3 := gdmemory.MakeResult(gdextension.SizeBytes12)
-		result = bool(gd_iterator_next.Invoke(math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[2]))), uint32(mem1), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[2]))), uint32(mem3)).Bool())
+		mem1 := gdmemory.CopyReceiver(gdextension.SizeBytes24, p1)
+		mem2 := gdmemory.MakeResult(gdextension.SizeBytes12)
+		result = bool(gd_iterator_next.Invoke(math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[2]))), uint32(mem1), uint32(mem2)).Bool())
 		gdmemory.LoadResult(gdextension.SizeBytes24, p1, mem1)
-		gdmemory.LoadResult(gdextension.SizeBytes12, p3, mem3)
+		gdmemory.LoadResult(gdextension.SizeBytes12, p2, mem2)
 		return
 	}
-	gdextension.Host.Iterators.Load = func(p0 gdextension.Variant, p1 gdextension.CallReturns[gdextension.Variant], p2 gdextension.Iterator, p3 gdextension.CallReturns[gdextension.CallError]) {
+	gdextension.Host.Iterators.Load = func(p0 gdextension.Variant, p1 gdextension.Iterator, p2 gdextension.CallReturns[gdextension.Variant], p3 gdextension.CallReturns[gdextension.CallError]) {
 		setup()
-		mem1 := gdmemory.MakeResult(gdextension.SizeBytes24)
+		mem2 := gdmemory.MakeResult(gdextension.SizeBytes24)
 		mem3 := gdmemory.MakeResult(gdextension.SizeBytes12)
-		gd_iterator_load.Invoke(math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[2]))), uint32(mem1), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2[2]))), uint32(mem3))
-		gdmemory.LoadResult(gdextension.SizeBytes24, p1, mem1)
+		gd_iterator_load.Invoke(math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[2]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1[2]))), uint32(mem2), uint32(mem3))
+		gdmemory.LoadResult(gdextension.SizeBytes24, p2, mem2)
 		gdmemory.LoadResult(gdextension.SizeBytes12, p3, mem3)
 		return
 	}
@@ -788,6 +888,11 @@ func init() {
 	gdextension.Host.Memory.Resize = func(p0 gdextension.Pointer, p1 int) (result gdextension.Pointer) {
 		setup()
 		result = gdextension.Pointer(gd_memory_resize.Invoke(uint32(p0), p1).Int())
+		return
+	}
+	gdextension.Host.Memory.Clear = func(p0 gdextension.Pointer, p1 int) {
+		setup()
+		gd_memory_clear.Invoke(uint32(p0), p1)
 		return
 	}
 	gdextension.Host.Memory.Free = func(p0 gdextension.Pointer) {
@@ -855,7 +960,7 @@ func init() {
 		result = gdextension.Object(gd_object_make.Invoke(uint32(p0)).Int())
 		return
 	}
-	gdextension.Host.Objects.Call = func(p0 gdextension.Object, p1 gdextension.FunctionID, p2 gdextension.CallReturns[gdextension.Variant], p3 int, p4 gdextension.CallAccepts[gdextension.Variant], p5 gdextension.CallReturns[gdextension.CallError]) {
+	gdextension.Host.Objects.Call = func(p0 gdextension.Object, p1 gdextension.MethodForClass, p2 gdextension.CallReturns[gdextension.Variant], p3 int, p4 gdextension.CallAccepts[gdextension.Variant], p5 gdextension.CallReturns[gdextension.CallError]) {
 		setup()
 		mem2 := gdmemory.MakeResult(gdextension.SizeBytes24)
 		mem4 := gdmemory.CopyVariants(p4, p3)
@@ -915,9 +1020,9 @@ func init() {
 		result = gdextension.ObjectID(math.Float64bits(gd_object_id_inside_variant.Invoke(math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[2])))).Float()))
 		return
 	}
-	gdextension.Host.Objects.Method.Lookup = func(p0 gdextension.StringName, p1 gdextension.StringName, p2 int64) (result gdextension.FunctionID) {
+	gdextension.Host.Objects.Method.Lookup = func(p0 gdextension.StringName, p1 gdextension.StringName, p2 int64) (result gdextension.MethodForClass) {
 		setup()
-		result = gdextension.FunctionID(gd_object_method_lookup.Invoke(uint32(p0), uint32(p1), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2)))).Int())
+		result = gdextension.MethodForClass(gd_object_method_lookup.Invoke(uint32(p0), uint32(p1), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2)))).Int())
 		return
 	}
 	gdextension.Host.Objects.Script.Make = func(p0 gdextension.ExtensionInstanceID) (result gdextension.ScriptInstance) {
@@ -965,7 +1070,7 @@ func init() {
 		gd_object_script_placeholder_update.Invoke(uint32(p0), uint32(p1), uint32(p2))
 		return
 	}
-	gdextension.Host.Objects.Unsafe.Call = func(p0 gdextension.Object, p1 gdextension.FunctionID, p2 gdextension.CallReturns[interface{}], shape gdextension.Shape, p4 gdextension.CallAccepts[interface{}]) {
+	gdextension.Host.Objects.Unsafe.Call = func(p0 gdextension.Object, p1 gdextension.MethodForClass, p2 gdextension.CallReturns[interface{}], shape gdextension.Shape, p4 gdextension.CallAccepts[interface{}]) {
 		setup()
 		mem2 := gdmemory.MakeResult(shape)
 		mem4 := gdmemory.CopyArguments(shape, p4)
@@ -1141,42 +1246,37 @@ func init() {
 	}
 	gdextension.Host.Strings.Encode.Latin1 = func(p0 gdextension.String, p1 []byte) (result int) {
 		setup()
-		buf1 := js.Global().Get("Uint8Array").New(len(p1))
-		js.CopyBytesToJS(buf1, p1)
-		result = int(gd_string_encode_latin1.Invoke(uint32(p0), buf1, len(p1)).Int())
-		js.CopyBytesToGo(p1, buf1)
+		buf1 := gdmemory.CopyBufferToEngine(p1)
+		result = int(gd_string_encode_latin1.Invoke(uint32(p0), uint32(buf1), len(p1)).Int())
+		gdmemory.CopyBufferToGo(buf1, p1)
 		return
 	}
 	gdextension.Host.Strings.Encode.UTF8 = func(p0 gdextension.String, p1 []byte) (result int) {
 		setup()
-		buf1 := js.Global().Get("Uint8Array").New(len(p1))
-		js.CopyBytesToJS(buf1, p1)
-		result = int(gd_string_encode_utf8.Invoke(uint32(p0), buf1, len(p1)).Int())
-		js.CopyBytesToGo(p1, buf1)
+		buf1 := gdmemory.CopyBufferToEngine(p1)
+		result = int(gd_string_encode_utf8.Invoke(uint32(p0), uint32(buf1), len(p1)).Int())
+		gdmemory.CopyBufferToGo(buf1, p1)
 		return
 	}
 	gdextension.Host.Strings.Encode.UTF16 = func(p0 gdextension.String, p1 []byte) (result int) {
 		setup()
-		buf1 := js.Global().Get("Uint8Array").New(len(p1))
-		js.CopyBytesToJS(buf1, p1)
-		result = int(gd_string_encode_utf16.Invoke(uint32(p0), buf1, len(p1)).Int())
-		js.CopyBytesToGo(p1, buf1)
+		buf1 := gdmemory.CopyBufferToEngine(p1)
+		result = int(gd_string_encode_utf16.Invoke(uint32(p0), uint32(buf1), len(p1)).Int())
+		gdmemory.CopyBufferToGo(buf1, p1)
 		return
 	}
 	gdextension.Host.Strings.Encode.UTF32 = func(p0 gdextension.String, p1 []byte) (result int) {
 		setup()
-		buf1 := js.Global().Get("Uint8Array").New(len(p1))
-		js.CopyBytesToJS(buf1, p1)
-		result = int(gd_string_encode_utf32.Invoke(uint32(p0), buf1, len(p1)).Int())
-		js.CopyBytesToGo(p1, buf1)
+		buf1 := gdmemory.CopyBufferToEngine(p1)
+		result = int(gd_string_encode_utf32.Invoke(uint32(p0), uint32(buf1), len(p1)).Int())
+		gdmemory.CopyBufferToGo(buf1, p1)
 		return
 	}
 	gdextension.Host.Strings.Encode.Wide = func(p0 gdextension.String, p1 []byte) (result int) {
 		setup()
-		buf1 := js.Global().Get("Uint8Array").New(len(p1))
-		js.CopyBytesToJS(buf1, p1)
-		result = int(gd_string_encode_wide.Invoke(uint32(p0), buf1, len(p1)).Int())
-		js.CopyBytesToGo(p1, buf1)
+		buf1 := gdmemory.CopyBufferToEngine(p1)
+		result = int(gd_string_encode_wide.Invoke(uint32(p0), uint32(buf1), len(p1)).Int())
+		gdmemory.CopyBufferToGo(buf1, p1)
 		return
 	}
 	gdextension.Host.Strings.Intern.Latin1 = func(p0 string) (result gdextension.StringName) {
@@ -1187,105 +1287,6 @@ func init() {
 	gdextension.Host.Strings.Intern.UTF8 = func(p0 string) (result gdextension.StringName) {
 		setup()
 		result = gdextension.StringName(gd_string_intern_utf8.Invoke(string(p0), len(p0)).Int())
-		return
-	}
-	gdextension.Host.VariantTypes.Name = func(p0 gdextension.VariantType) (result gdextension.String) {
-		setup()
-		result = gdextension.String(gd_variant_type_name.Invoke(uint32(p0)).Int())
-		return
-	}
-	gdextension.Host.VariantTypes.Make = func(p0 gdextension.VariantType, p1 gdextension.CallReturns[gdextension.Variant], p2 int, p3 gdextension.CallAccepts[gdextension.Variant], p4 gdextension.CallReturns[gdextension.CallError]) {
-		setup()
-		mem1 := gdmemory.MakeResult(gdextension.SizeBytes24)
-		mem3 := gdmemory.CopyVariants(p3, p2)
-		mem4 := gdmemory.MakeResult(gdextension.SizeBytes12)
-		gd_variant_type_make.Invoke(uint32(p0), uint32(mem1), p2, uint32(mem3), uint32(mem4))
-		gdmemory.LoadResult(gdextension.SizeBytes24, p1, mem1)
-		gdmemory.LoadResult(gdextension.SizeBytes12, p4, mem4)
-		return
-	}
-	gdextension.Host.VariantTypes.Call = func(p0 gdextension.VariantType, p1 gdextension.StringName, p2 gdextension.CallReturns[gdextension.Variant], p3 int, p4 gdextension.CallAccepts[gdextension.Variant], p5 gdextension.CallReturns[gdextension.CallError]) {
-		setup()
-		mem2 := gdmemory.MakeResult(gdextension.SizeBytes24)
-		mem4 := gdmemory.CopyVariants(p4, p3)
-		mem5 := gdmemory.MakeResult(gdextension.SizeBytes12)
-		gd_variant_type_call.Invoke(uint32(p0), uint32(p1), uint32(mem2), p3, uint32(mem4), uint32(mem5))
-		gdmemory.LoadResult(gdextension.SizeBytes24, p2, mem2)
-		gdmemory.LoadResult(gdextension.SizeBytes12, p5, mem5)
-		return
-	}
-	gdextension.Host.VariantTypes.Convertable = func(p0 gdextension.VariantType, p1 gdextension.VariantType, p2 bool) (result bool) {
-		setup()
-		result = bool(gd_variant_type_convertable.Invoke(uint32(p0), uint32(p1), p2).Bool())
-		return
-	}
-	gdextension.Host.VariantTypes.SetupArray = func(p0 gdextension.Array, p1 gdextension.VariantType, p2 gdextension.StringName, p3 gdextension.Variant) {
-		setup()
-		gd_variant_type_setup_array.Invoke(uint32(p0), uint32(p1), uint32(p2), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p3[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p3[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p3[2]))))
-		return
-	}
-	gdextension.Host.VariantTypes.SetupDictionary = func(p0 gdextension.Dictionary, p1 gdextension.VariantType, p2 gdextension.StringName, p3 gdextension.Variant, p4 gdextension.VariantType, p5 gdextension.StringName, p6 gdextension.Variant) {
-		setup()
-		gd_variant_type_setup_dictionary.Invoke(uint32(p0), uint32(p1), uint32(p2), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p3[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p3[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p3[2]))), uint32(p4), uint32(p5), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p6[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p6[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p6[2]))))
-		return
-	}
-	gdextension.Host.VariantTypes.FetchConstant = func(p0 gdextension.VariantType, p1 gdextension.StringName, p2 gdextension.CallReturns[gdextension.Variant]) {
-		setup()
-		mem2 := gdmemory.MakeResult(gdextension.SizeBytes24)
-		gd_variant_type_fetch_constant.Invoke(uint32(p0), uint32(p1), uint32(mem2))
-		gdmemory.LoadResult(gdextension.SizeBytes24, p2, mem2)
-		return
-	}
-	gdextension.Host.VariantTypes.BuiltinMethod = func(p0 gdextension.VariantType, p1 gdextension.StringName, p2 int64) (result gdextension.FunctionID) {
-		setup()
-		result = gdextension.FunctionID(gd_variant_type_builtin_method.Invoke(uint32(p0), uint32(p1), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p2)))).Int())
-		return
-	}
-	gdextension.Host.VariantTypes.Constructor = func(p0 gdextension.VariantType, p1 int) (result gdextension.FunctionID) {
-		setup()
-		result = gdextension.FunctionID(gd_variant_type_unsafe_constructor.Invoke(uint32(p0), p1).Int())
-		return
-	}
-	gdextension.Host.VariantTypes.Evaluator = func(p0 gdextension.VariantOperator, p1 gdextension.VariantType, p2 gdextension.VariantType) (result gdextension.FunctionID) {
-		setup()
-		result = gdextension.FunctionID(gd_variant_type_evaluator.Invoke(uint32(p0), uint32(p1), uint32(p2)).Int())
-		return
-	}
-	gdextension.Host.VariantTypes.Setter = func(p0 gdextension.VariantType, p1 gdextension.StringName) (result gdextension.FunctionID) {
-		setup()
-		result = gdextension.FunctionID(gd_variant_type_setter.Invoke(uint32(p0), uint32(p1)).Int())
-		return
-	}
-	gdextension.Host.VariantTypes.Getter = func(p0 gdextension.VariantType, p1 gdextension.StringName) (result gdextension.FunctionID) {
-		setup()
-		result = gdextension.FunctionID(gd_variant_type_getter.Invoke(uint32(p0), uint32(p1)).Int())
-		return
-	}
-	gdextension.Host.VariantTypes.HasProperty = func(p0 gdextension.VariantType, p1 gdextension.StringName) (result bool) {
-		setup()
-		result = bool(gd_variant_type_has_property.Invoke(uint32(p0), uint32(p1)).Bool())
-		return
-	}
-	gdextension.Host.VariantTypes.Unsafe.Call = func(p0 gdextension.FunctionID, p1 gdextension.CallReturns[interface{}], shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
-		setup()
-		mem1 := gdmemory.MakeResult(shape)
-		mem3 := gdmemory.CopyArguments(shape, p3)
-		gd_variant_type_unsafe_call.Invoke(uint32(p0), uint32(mem1), math.Float64frombits(*(*uint64)(unsafe.Pointer(&shape))), uint32(mem3))
-		gdmemory.LoadResult(shape, p1, mem1)
-		return
-	}
-	gdextension.Host.VariantTypes.Unsafe.Make = func(p0 gdextension.FunctionID, p1 gdextension.CallReturns[interface{}], shape gdextension.Shape, p3 gdextension.CallAccepts[interface{}]) {
-		setup()
-		mem1 := gdmemory.MakeResult(shape)
-		mem3 := gdmemory.CopyArguments(shape, p3)
-		gd_variant_type_unsafe_make.Invoke(uint32(p0), uint32(mem1), math.Float64frombits(*(*uint64)(unsafe.Pointer(&shape))), uint32(mem3))
-		gdmemory.LoadResult(shape, p1, mem1)
-		return
-	}
-	gdextension.Host.VariantTypes.Unsafe.Free = func(p0 gdextension.VariantType, shape gdextension.Shape, p2 gdextension.CallAccepts[interface{}]) {
-		setup()
-		mem2 := gdmemory.CopyArguments(shape, p2)
-		gd_variant_type_unsafe_free.Invoke(uint32(p0), math.Float64frombits(*(*uint64)(unsafe.Pointer(&shape))), uint32(mem2))
 		return
 	}
 	gdextension.Host.Variants.Zero = func(p0 gdextension.CallReturns[gdextension.Variant]) {

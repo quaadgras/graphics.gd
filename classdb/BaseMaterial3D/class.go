@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -1045,372 +1043,372 @@ func (self Instance) SetDistanceFadeMaxDistance(value Float.X) {
 
 //go:nosplit
 func (self class) SetAlbedo(albedo Color.RGBA) { //gd:BaseMaterial3D.set_albedo
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_albedo, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ albedo Color.RGBA }{albedo}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_albedo), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ albedo Color.RGBA }{albedo}))
 }
 
 //go:nosplit
 func (self class) GetAlbedo() Color.RGBA { //gd:BaseMaterial3D.get_albedo
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_albedo, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_albedo), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransparency(transparency Transparency) { //gd:BaseMaterial3D.set_transparency
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_transparency, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ transparency Transparency }{transparency}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_transparency), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ transparency Transparency }{transparency}))
 }
 
 //go:nosplit
 func (self class) GetTransparency() Transparency { //gd:BaseMaterial3D.get_transparency
-	var r_ret = gdunsafe.Call[Transparency](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_transparency, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transparency](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_transparency), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaAntialiasing(alpha_aa AlphaAntiAliasing) { //gd:BaseMaterial3D.set_alpha_antialiasing
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_antialiasing, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alpha_aa AlphaAntiAliasing }{alpha_aa}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_antialiasing), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alpha_aa AlphaAntiAliasing }{alpha_aa}))
 }
 
 //go:nosplit
 func (self class) GetAlphaAntialiasing() AlphaAntiAliasing { //gd:BaseMaterial3D.get_alpha_antialiasing
-	var r_ret = gdunsafe.Call[AlphaAntiAliasing](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_antialiasing, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AlphaAntiAliasing](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_antialiasing), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaAntialiasingEdge(edge float64) { //gd:BaseMaterial3D.set_alpha_antialiasing_edge
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_antialiasing_edge, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ edge float64 }{edge}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_antialiasing_edge), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ edge float64 }{edge}))
 }
 
 //go:nosplit
 func (self class) GetAlphaAntialiasingEdge() float64 { //gd:BaseMaterial3D.get_alpha_antialiasing_edge
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_antialiasing_edge, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_antialiasing_edge), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShadingMode(shading_mode ShadingMode) { //gd:BaseMaterial3D.set_shading_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_shading_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shading_mode ShadingMode }{shading_mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_shading_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shading_mode ShadingMode }{shading_mode}))
 }
 
 //go:nosplit
 func (self class) GetShadingMode() ShadingMode { //gd:BaseMaterial3D.get_shading_mode
-	var r_ret = gdunsafe.Call[ShadingMode](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_shading_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ShadingMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_shading_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpecular(specular float64) { //gd:BaseMaterial3D.set_specular
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_specular, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ specular float64 }{specular}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_specular), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ specular float64 }{specular}))
 }
 
 //go:nosplit
 func (self class) GetSpecular() float64 { //gd:BaseMaterial3D.get_specular
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_specular, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_specular), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMetallic(metallic float64) { //gd:BaseMaterial3D.set_metallic
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_metallic, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ metallic float64 }{metallic}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_metallic), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ metallic float64 }{metallic}))
 }
 
 //go:nosplit
 func (self class) GetMetallic() float64 { //gd:BaseMaterial3D.get_metallic
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_metallic, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_metallic), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRoughness(roughness float64) { //gd:BaseMaterial3D.set_roughness
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_roughness, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ roughness float64 }{roughness}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_roughness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ roughness float64 }{roughness}))
 }
 
 //go:nosplit
 func (self class) GetRoughness() float64 { //gd:BaseMaterial3D.get_roughness
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_roughness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_roughness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmission(emission Color.RGBA) { //gd:BaseMaterial3D.set_emission
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_emission, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ emission Color.RGBA }{emission}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_emission), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ emission Color.RGBA }{emission}))
 }
 
 //go:nosplit
 func (self class) GetEmission() Color.RGBA { //gd:BaseMaterial3D.get_emission
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_emission, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_emission), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionEnergyMultiplier(emission_energy_multiplier float64) { //gd:BaseMaterial3D.set_emission_energy_multiplier
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_emission_energy_multiplier, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ emission_energy_multiplier float64 }{emission_energy_multiplier}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_emission_energy_multiplier), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ emission_energy_multiplier float64 }{emission_energy_multiplier}))
 }
 
 //go:nosplit
 func (self class) GetEmissionEnergyMultiplier() float64 { //gd:BaseMaterial3D.get_emission_energy_multiplier
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_emission_energy_multiplier, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_emission_energy_multiplier), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionIntensity(emission_energy_multiplier float64) { //gd:BaseMaterial3D.set_emission_intensity
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_emission_intensity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ emission_energy_multiplier float64 }{emission_energy_multiplier}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_emission_intensity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ emission_energy_multiplier float64 }{emission_energy_multiplier}))
 }
 
 //go:nosplit
 func (self class) GetEmissionIntensity() float64 { //gd:BaseMaterial3D.get_emission_intensity
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_emission_intensity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_emission_intensity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNormalScale(normal_scale float64) { //gd:BaseMaterial3D.set_normal_scale
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_normal_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ normal_scale float64 }{normal_scale}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_normal_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ normal_scale float64 }{normal_scale}))
 }
 
 //go:nosplit
 func (self class) GetNormalScale() float64 { //gd:BaseMaterial3D.get_normal_scale
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_normal_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_normal_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRim(rim float64) { //gd:BaseMaterial3D.set_rim
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_rim, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ rim float64 }{rim}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_rim), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ rim float64 }{rim}))
 }
 
 //go:nosplit
 func (self class) GetRim() float64 { //gd:BaseMaterial3D.get_rim
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_rim, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_rim), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRimTint(rim_tint float64) { //gd:BaseMaterial3D.set_rim_tint
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_rim_tint, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ rim_tint float64 }{rim_tint}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_rim_tint), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ rim_tint float64 }{rim_tint}))
 }
 
 //go:nosplit
 func (self class) GetRimTint() float64 { //gd:BaseMaterial3D.get_rim_tint
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_rim_tint, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_rim_tint), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClearcoat(clearcoat float64) { //gd:BaseMaterial3D.set_clearcoat
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_clearcoat, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ clearcoat float64 }{clearcoat}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_clearcoat), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ clearcoat float64 }{clearcoat}))
 }
 
 //go:nosplit
 func (self class) GetClearcoat() float64 { //gd:BaseMaterial3D.get_clearcoat
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_clearcoat, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_clearcoat), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClearcoatRoughness(clearcoat_roughness float64) { //gd:BaseMaterial3D.set_clearcoat_roughness
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_clearcoat_roughness, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ clearcoat_roughness float64 }{clearcoat_roughness}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_clearcoat_roughness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ clearcoat_roughness float64 }{clearcoat_roughness}))
 }
 
 //go:nosplit
 func (self class) GetClearcoatRoughness() float64 { //gd:BaseMaterial3D.get_clearcoat_roughness
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_clearcoat_roughness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_clearcoat_roughness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAnisotropy(anisotropy float64) { //gd:BaseMaterial3D.set_anisotropy
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_anisotropy, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ anisotropy float64 }{anisotropy}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_anisotropy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ anisotropy float64 }{anisotropy}))
 }
 
 //go:nosplit
 func (self class) GetAnisotropy() float64 { //gd:BaseMaterial3D.get_anisotropy
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_anisotropy, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_anisotropy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeightmapScale(heightmap_scale float64) { //gd:BaseMaterial3D.set_heightmap_scale
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ heightmap_scale float64 }{heightmap_scale}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ heightmap_scale float64 }{heightmap_scale}))
 }
 
 //go:nosplit
 func (self class) GetHeightmapScale() float64 { //gd:BaseMaterial3D.get_heightmap_scale
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubsurfaceScatteringStrength(strength float64) { //gd:BaseMaterial3D.set_subsurface_scattering_strength
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_subsurface_scattering_strength, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_subsurface_scattering_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
 }
 
 //go:nosplit
 func (self class) GetSubsurfaceScatteringStrength() float64 { //gd:BaseMaterial3D.get_subsurface_scattering_strength
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_subsurface_scattering_strength, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_subsurface_scattering_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransmittanceColor(color Color.RGBA) { //gd:BaseMaterial3D.set_transmittance_color
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_transmittance_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_transmittance_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetTransmittanceColor() Color.RGBA { //gd:BaseMaterial3D.get_transmittance_color
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransmittanceDepth(depth float64) { //gd:BaseMaterial3D.set_transmittance_depth
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_transmittance_depth, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ depth float64 }{depth}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_transmittance_depth), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ depth float64 }{depth}))
 }
 
 //go:nosplit
 func (self class) GetTransmittanceDepth() float64 { //gd:BaseMaterial3D.get_transmittance_depth
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_depth, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_depth), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransmittanceBoost(boost float64) { //gd:BaseMaterial3D.set_transmittance_boost
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_transmittance_boost, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ boost float64 }{boost}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_transmittance_boost), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ boost float64 }{boost}))
 }
 
 //go:nosplit
 func (self class) GetTransmittanceBoost() float64 { //gd:BaseMaterial3D.get_transmittance_boost
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_boost, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_transmittance_boost), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBacklight(backlight Color.RGBA) { //gd:BaseMaterial3D.set_backlight
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_backlight, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ backlight Color.RGBA }{backlight}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_backlight), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ backlight Color.RGBA }{backlight}))
 }
 
 //go:nosplit
 func (self class) GetBacklight() Color.RGBA { //gd:BaseMaterial3D.get_backlight
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_backlight, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_backlight), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRefraction(refraction float64) { //gd:BaseMaterial3D.set_refraction
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_refraction, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ refraction float64 }{refraction}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_refraction), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ refraction float64 }{refraction}))
 }
 
 //go:nosplit
 func (self class) GetRefraction() float64 { //gd:BaseMaterial3D.get_refraction
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_refraction, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_refraction), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPointSize(point_size float64) { //gd:BaseMaterial3D.set_point_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_point_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ point_size float64 }{point_size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_point_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ point_size float64 }{point_size}))
 }
 
 //go:nosplit
 func (self class) GetPointSize() float64 { //gd:BaseMaterial3D.get_point_size
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_point_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_point_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDetailUv(detail_uv DetailUV) { //gd:BaseMaterial3D.set_detail_uv
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_detail_uv, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ detail_uv DetailUV }{detail_uv}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_detail_uv), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ detail_uv DetailUV }{detail_uv}))
 }
 
 //go:nosplit
 func (self class) GetDetailUv() DetailUV { //gd:BaseMaterial3D.get_detail_uv
-	var r_ret = gdunsafe.Call[DetailUV](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_detail_uv, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DetailUV](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_detail_uv), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlendMode(blend_mode BlendMode) { //gd:BaseMaterial3D.set_blend_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_blend_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ blend_mode BlendMode }{blend_mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_blend_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ blend_mode BlendMode }{blend_mode}))
 }
 
 //go:nosplit
 func (self class) GetBlendMode() BlendMode { //gd:BaseMaterial3D.get_blend_mode
-	var r_ret = gdunsafe.Call[BlendMode](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_blend_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BlendMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_blend_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepthDrawMode(depth_draw_mode DepthDrawMode) { //gd:BaseMaterial3D.set_depth_draw_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_depth_draw_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ depth_draw_mode DepthDrawMode }{depth_draw_mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_depth_draw_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ depth_draw_mode DepthDrawMode }{depth_draw_mode}))
 }
 
 //go:nosplit
 func (self class) GetDepthDrawMode() DepthDrawMode { //gd:BaseMaterial3D.get_depth_draw_mode
-	var r_ret = gdunsafe.Call[DepthDrawMode](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_depth_draw_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DepthDrawMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_depth_draw_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCullMode(cull_mode CullMode) { //gd:BaseMaterial3D.set_cull_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_cull_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cull_mode CullMode }{cull_mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_cull_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cull_mode CullMode }{cull_mode}))
 }
 
 //go:nosplit
 func (self class) GetCullMode() CullMode { //gd:BaseMaterial3D.get_cull_mode
-	var r_ret = gdunsafe.Call[CullMode](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_cull_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[CullMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_cull_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDiffuseMode(diffuse_mode DiffuseMode) { //gd:BaseMaterial3D.set_diffuse_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_diffuse_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ diffuse_mode DiffuseMode }{diffuse_mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_diffuse_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ diffuse_mode DiffuseMode }{diffuse_mode}))
 }
 
 //go:nosplit
 func (self class) GetDiffuseMode() DiffuseMode { //gd:BaseMaterial3D.get_diffuse_mode
-	var r_ret = gdunsafe.Call[DiffuseMode](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_diffuse_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DiffuseMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_diffuse_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpecularMode(specular_mode SpecularMode) { //gd:BaseMaterial3D.set_specular_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_specular_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ specular_mode SpecularMode }{specular_mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_specular_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ specular_mode SpecularMode }{specular_mode}))
 }
 
 //go:nosplit
 func (self class) GetSpecularMode() SpecularMode { //gd:BaseMaterial3D.get_specular_mode
-	var r_ret = gdunsafe.Call[SpecularMode](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_specular_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SpecularMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_specular_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1420,7 +1418,7 @@ If [code]true[/code], enables the specified flag. Flags are optional behavior th
 */
 //go:nosplit
 func (self class) SetFlag(flag Flags, enable bool) { //gd:BaseMaterial3D.set_flag
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_flag, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_flag), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		flag   Flags
 		enable bool
 	}{flag, enable}))
@@ -1431,19 +1429,19 @@ Returns [code]true[/code], if the specified flag is enabled. See [enum Flags] en
 */
 //go:nosplit
 func (self class) GetFlag(flag Flags) bool { //gd:BaseMaterial3D.get_flag
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_flag, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flags }{flag}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_flag), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flags }{flag}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureFilter(mode TextureFilter) { //gd:BaseMaterial3D.set_texture_filter
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_texture_filter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode TextureFilter }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_texture_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode TextureFilter }{mode}))
 }
 
 //go:nosplit
 func (self class) GetTextureFilter() TextureFilter { //gd:BaseMaterial3D.get_texture_filter
-	var r_ret = gdunsafe.Call[TextureFilter](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_texture_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextureFilter](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_texture_filter), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1453,7 +1451,7 @@ If [code]true[/code], enables the specified [enum Feature]. Many features that a
 */
 //go:nosplit
 func (self class) SetFeature(feature Feature, enable bool) { //gd:BaseMaterial3D.set_feature
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_feature, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_feature), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		feature Feature
 		enable  bool
 	}{feature, enable}))
@@ -1464,7 +1462,7 @@ Returns [code]true[/code], if the specified [enum Feature] is enabled.
 */
 //go:nosplit
 func (self class) GetFeature(feature Feature) bool { //gd:BaseMaterial3D.get_feature
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ feature Feature }{feature}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_feature), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ feature Feature }{feature}))
 	var ret = r_ret
 	return ret
 }
@@ -1474,7 +1472,7 @@ Sets the texture for the slot specified by [param param]. See [enum TextureParam
 */
 //go:nosplit
 func (self class) SetTexture(param TextureParam, texture [1]gdclass.Texture2D) { //gd:BaseMaterial3D.set_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_texture), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		param   TextureParam
 		texture gdextension.Object
 	}{param, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
@@ -1485,403 +1483,403 @@ Returns the [Texture2D] associated with the specified [enum TextureParam].
 */
 //go:nosplit
 func (self class) GetTexture(param TextureParam) [1]gdclass.Texture2D { //gd:BaseMaterial3D.get_texture
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_texture, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param TextureParam }{param}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_texture), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param TextureParam }{param}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDetailBlendMode(detail_blend_mode BlendMode) { //gd:BaseMaterial3D.set_detail_blend_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_detail_blend_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ detail_blend_mode BlendMode }{detail_blend_mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_detail_blend_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ detail_blend_mode BlendMode }{detail_blend_mode}))
 }
 
 //go:nosplit
 func (self class) GetDetailBlendMode() BlendMode { //gd:BaseMaterial3D.get_detail_blend_mode
-	var r_ret = gdunsafe.Call[BlendMode](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_detail_blend_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BlendMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_detail_blend_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUv1Scale(scale Vector3.XYZ) { //gd:BaseMaterial3D.set_uv1_scale
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_uv1_scale, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ scale Vector3.XYZ }{scale}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_uv1_scale), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ scale Vector3.XYZ }{scale}))
 }
 
 //go:nosplit
 func (self class) GetUv1Scale() Vector3.XYZ { //gd:BaseMaterial3D.get_uv1_scale
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_scale, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_scale), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUv1Offset(offset Vector3.XYZ) { //gd:BaseMaterial3D.set_uv1_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_uv1_offset, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_uv1_offset), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
 }
 
 //go:nosplit
 func (self class) GetUv1Offset() Vector3.XYZ { //gd:BaseMaterial3D.get_uv1_offset
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_offset, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_offset), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUv1TriplanarBlendSharpness(sharpness float64) { //gd:BaseMaterial3D.set_uv1_triplanar_blend_sharpness
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_uv1_triplanar_blend_sharpness, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sharpness float64 }{sharpness}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_uv1_triplanar_blend_sharpness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sharpness float64 }{sharpness}))
 }
 
 //go:nosplit
 func (self class) GetUv1TriplanarBlendSharpness() float64 { //gd:BaseMaterial3D.get_uv1_triplanar_blend_sharpness
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_triplanar_blend_sharpness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_uv1_triplanar_blend_sharpness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUv2Scale(scale Vector3.XYZ) { //gd:BaseMaterial3D.set_uv2_scale
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_uv2_scale, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ scale Vector3.XYZ }{scale}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_uv2_scale), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ scale Vector3.XYZ }{scale}))
 }
 
 //go:nosplit
 func (self class) GetUv2Scale() Vector3.XYZ { //gd:BaseMaterial3D.get_uv2_scale
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_scale, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_scale), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUv2Offset(offset Vector3.XYZ) { //gd:BaseMaterial3D.set_uv2_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_uv2_offset, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_uv2_offset), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
 }
 
 //go:nosplit
 func (self class) GetUv2Offset() Vector3.XYZ { //gd:BaseMaterial3D.get_uv2_offset
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_offset, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_offset), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUv2TriplanarBlendSharpness(sharpness float64) { //gd:BaseMaterial3D.set_uv2_triplanar_blend_sharpness
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_uv2_triplanar_blend_sharpness, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sharpness float64 }{sharpness}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_uv2_triplanar_blend_sharpness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sharpness float64 }{sharpness}))
 }
 
 //go:nosplit
 func (self class) GetUv2TriplanarBlendSharpness() float64 { //gd:BaseMaterial3D.get_uv2_triplanar_blend_sharpness
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_triplanar_blend_sharpness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_uv2_triplanar_blend_sharpness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBillboardMode(mode BillboardMode) { //gd:BaseMaterial3D.set_billboard_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_billboard_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode BillboardMode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_billboard_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode BillboardMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetBillboardMode() BillboardMode { //gd:BaseMaterial3D.get_billboard_mode
-	var r_ret = gdunsafe.Call[BillboardMode](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_billboard_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BillboardMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_billboard_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimHFrames(frames int64) { //gd:BaseMaterial3D.set_particles_anim_h_frames
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_particles_anim_h_frames, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_particles_anim_h_frames), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimHFrames() int64 { //gd:BaseMaterial3D.get_particles_anim_h_frames
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_h_frames, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_h_frames), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimVFrames(frames int64) { //gd:BaseMaterial3D.set_particles_anim_v_frames
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_particles_anim_v_frames, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_particles_anim_v_frames), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimVFrames() int64 { //gd:BaseMaterial3D.get_particles_anim_v_frames
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_v_frames, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_v_frames), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimLoop(loop bool) { //gd:BaseMaterial3D.set_particles_anim_loop
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_particles_anim_loop, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ loop bool }{loop}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_particles_anim_loop), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ loop bool }{loop}))
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimLoop() bool { //gd:BaseMaterial3D.get_particles_anim_loop
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_loop, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_particles_anim_loop), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeightmapDeepParallax(enable bool) { //gd:BaseMaterial3D.set_heightmap_deep_parallax
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsHeightmapDeepParallaxEnabled() bool { //gd:BaseMaterial3D.is_heightmap_deep_parallax_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_is_heightmap_deep_parallax_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_is_heightmap_deep_parallax_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeightmapDeepParallaxMinLayers(layer int64) { //gd:BaseMaterial3D.set_heightmap_deep_parallax_min_layers
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_min_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_min_layers), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
 }
 
 //go:nosplit
 func (self class) GetHeightmapDeepParallaxMinLayers() int64 { //gd:BaseMaterial3D.get_heightmap_deep_parallax_min_layers
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_min_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_min_layers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeightmapDeepParallaxMaxLayers(layer int64) { //gd:BaseMaterial3D.set_heightmap_deep_parallax_max_layers
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_max_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_max_layers), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
 }
 
 //go:nosplit
 func (self class) GetHeightmapDeepParallaxMaxLayers() int64 { //gd:BaseMaterial3D.get_heightmap_deep_parallax_max_layers
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_max_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_max_layers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeightmapDeepParallaxFlipTangent(flip bool) { //gd:BaseMaterial3D.set_heightmap_deep_parallax_flip_tangent
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_flip_tangent, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip bool }{flip}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_flip_tangent), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip bool }{flip}))
 }
 
 //go:nosplit
 func (self class) GetHeightmapDeepParallaxFlipTangent() bool { //gd:BaseMaterial3D.get_heightmap_deep_parallax_flip_tangent
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_flip_tangent, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_flip_tangent), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeightmapDeepParallaxFlipBinormal(flip bool) { //gd:BaseMaterial3D.set_heightmap_deep_parallax_flip_binormal
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_flip_binormal, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip bool }{flip}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_heightmap_deep_parallax_flip_binormal), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip bool }{flip}))
 }
 
 //go:nosplit
 func (self class) GetHeightmapDeepParallaxFlipBinormal() bool { //gd:BaseMaterial3D.get_heightmap_deep_parallax_flip_binormal
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_flip_binormal, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_heightmap_deep_parallax_flip_binormal), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGrow(amount float64) { //gd:BaseMaterial3D.set_grow
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_grow, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_grow), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetGrow() float64 { //gd:BaseMaterial3D.get_grow
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_grow, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_grow), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionOperator(operator EmissionOperator) { //gd:BaseMaterial3D.set_emission_operator
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_emission_operator, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ operator EmissionOperator }{operator}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_emission_operator), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ operator EmissionOperator }{operator}))
 }
 
 //go:nosplit
 func (self class) GetEmissionOperator() EmissionOperator { //gd:BaseMaterial3D.get_emission_operator
-	var r_ret = gdunsafe.Call[EmissionOperator](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_emission_operator, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[EmissionOperator](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_emission_operator), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAoLightAffect(amount float64) { //gd:BaseMaterial3D.set_ao_light_affect
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_ao_light_affect, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_ao_light_affect), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetAoLightAffect() float64 { //gd:BaseMaterial3D.get_ao_light_affect
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_ao_light_affect, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_ao_light_affect), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaScissorThreshold(threshold float64) { //gd:BaseMaterial3D.set_alpha_scissor_threshold
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_scissor_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_scissor_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
 }
 
 //go:nosplit
 func (self class) GetAlphaScissorThreshold() float64 { //gd:BaseMaterial3D.get_alpha_scissor_threshold
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_scissor_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_scissor_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaHashScale(threshold float64) { //gd:BaseMaterial3D.set_alpha_hash_scale
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_hash_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_alpha_hash_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
 }
 
 //go:nosplit
 func (self class) GetAlphaHashScale() float64 { //gd:BaseMaterial3D.get_alpha_hash_scale
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_hash_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_alpha_hash_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGrowEnabled(enable bool) { //gd:BaseMaterial3D.set_grow_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_grow_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_grow_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsGrowEnabled() bool { //gd:BaseMaterial3D.is_grow_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_is_grow_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_is_grow_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMetallicTextureChannel(channel TextureChannel) { //gd:BaseMaterial3D.set_metallic_texture_channel
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_metallic_texture_channel, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ channel TextureChannel }{channel}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_metallic_texture_channel), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ channel TextureChannel }{channel}))
 }
 
 //go:nosplit
 func (self class) GetMetallicTextureChannel() TextureChannel { //gd:BaseMaterial3D.get_metallic_texture_channel
-	var r_ret = gdunsafe.Call[TextureChannel](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_metallic_texture_channel, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextureChannel](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_metallic_texture_channel), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRoughnessTextureChannel(channel TextureChannel) { //gd:BaseMaterial3D.set_roughness_texture_channel
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_roughness_texture_channel, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ channel TextureChannel }{channel}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_roughness_texture_channel), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ channel TextureChannel }{channel}))
 }
 
 //go:nosplit
 func (self class) GetRoughnessTextureChannel() TextureChannel { //gd:BaseMaterial3D.get_roughness_texture_channel
-	var r_ret = gdunsafe.Call[TextureChannel](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_roughness_texture_channel, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextureChannel](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_roughness_texture_channel), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAoTextureChannel(channel TextureChannel) { //gd:BaseMaterial3D.set_ao_texture_channel
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_ao_texture_channel, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ channel TextureChannel }{channel}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_ao_texture_channel), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ channel TextureChannel }{channel}))
 }
 
 //go:nosplit
 func (self class) GetAoTextureChannel() TextureChannel { //gd:BaseMaterial3D.get_ao_texture_channel
-	var r_ret = gdunsafe.Call[TextureChannel](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_ao_texture_channel, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextureChannel](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_ao_texture_channel), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRefractionTextureChannel(channel TextureChannel) { //gd:BaseMaterial3D.set_refraction_texture_channel
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_refraction_texture_channel, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ channel TextureChannel }{channel}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_refraction_texture_channel), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ channel TextureChannel }{channel}))
 }
 
 //go:nosplit
 func (self class) GetRefractionTextureChannel() TextureChannel { //gd:BaseMaterial3D.get_refraction_texture_channel
-	var r_ret = gdunsafe.Call[TextureChannel](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_refraction_texture_channel, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextureChannel](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_refraction_texture_channel), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProximityFadeEnabled(enabled bool) { //gd:BaseMaterial3D.set_proximity_fade_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_proximity_fade_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_proximity_fade_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsProximityFadeEnabled() bool { //gd:BaseMaterial3D.is_proximity_fade_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_is_proximity_fade_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_is_proximity_fade_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProximityFadeDistance(distance float64) { //gd:BaseMaterial3D.set_proximity_fade_distance
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_proximity_fade_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_proximity_fade_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetProximityFadeDistance() float64 { //gd:BaseMaterial3D.get_proximity_fade_distance
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_proximity_fade_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_proximity_fade_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMsdfPixelRange(arange float64) { //gd:BaseMaterial3D.set_msdf_pixel_range
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_msdf_pixel_range, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ arange float64 }{arange}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_msdf_pixel_range), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ arange float64 }{arange}))
 }
 
 //go:nosplit
 func (self class) GetMsdfPixelRange() float64 { //gd:BaseMaterial3D.get_msdf_pixel_range
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_msdf_pixel_range, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_msdf_pixel_range), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMsdfOutlineSize(size float64) { //gd:BaseMaterial3D.set_msdf_outline_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_msdf_outline_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_msdf_outline_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetMsdfOutlineSize() float64 { //gd:BaseMaterial3D.get_msdf_outline_size
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_msdf_outline_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_msdf_outline_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDistanceFade(mode DistanceFadeMode) { //gd:BaseMaterial3D.set_distance_fade
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_distance_fade, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode DistanceFadeMode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_distance_fade), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode DistanceFadeMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetDistanceFade() DistanceFadeMode { //gd:BaseMaterial3D.get_distance_fade
-	var r_ret = gdunsafe.Call[DistanceFadeMode](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DistanceFadeMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDistanceFadeMaxDistance(distance float64) { //gd:BaseMaterial3D.set_distance_fade_max_distance
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_distance_fade_max_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_distance_fade_max_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetDistanceFadeMaxDistance() float64 { //gd:BaseMaterial3D.get_distance_fade_max_distance
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade_max_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade_max_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDistanceFadeMinDistance(distance float64) { //gd:BaseMaterial3D.set_distance_fade_min_distance
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_set_distance_fade_min_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_set_distance_fade_min_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetDistanceFadeMinDistance() float64 { //gd:BaseMaterial3D.get_distance_fade_min_distance
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade_min_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.BaseMaterial3D.Bind_get_distance_fade_min_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

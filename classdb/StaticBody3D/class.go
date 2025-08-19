@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -56,7 +55,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -135,36 +133,36 @@ func (self Instance) SetConstantAngularVelocity(value Vector3.XYZ) {
 
 //go:nosplit
 func (self class) SetConstantLinearVelocity(vel Vector3.XYZ) { //gd:StaticBody3D.set_constant_linear_velocity
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.StaticBody3D.Bind_set_constant_linear_velocity, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ vel Vector3.XYZ }{vel}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StaticBody3D.Bind_set_constant_linear_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ vel Vector3.XYZ }{vel}))
 }
 
 //go:nosplit
 func (self class) SetConstantAngularVelocity(vel Vector3.XYZ) { //gd:StaticBody3D.set_constant_angular_velocity
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.StaticBody3D.Bind_set_constant_angular_velocity, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ vel Vector3.XYZ }{vel}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StaticBody3D.Bind_set_constant_angular_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ vel Vector3.XYZ }{vel}))
 }
 
 //go:nosplit
 func (self class) GetConstantLinearVelocity() Vector3.XYZ { //gd:StaticBody3D.get_constant_linear_velocity
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.StaticBody3D.Bind_get_constant_linear_velocity, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StaticBody3D.Bind_get_constant_linear_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetConstantAngularVelocity() Vector3.XYZ { //gd:StaticBody3D.get_constant_angular_velocity
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.StaticBody3D.Bind_get_constant_angular_velocity, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StaticBody3D.Bind_get_constant_angular_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclass.PhysicsMaterial) { //gd:StaticBody3D.set_physics_material_override
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.StaticBody3D.Bind_set_physics_material_override, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(physics_material_override[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StaticBody3D.Bind_set_physics_material_override), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(physics_material_override[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial { //gd:StaticBody3D.get_physics_material_override
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.StaticBody3D.Bind_get_physics_material_override, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StaticBody3D.Bind_get_physics_material_override), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret)}
 	return ret
 }

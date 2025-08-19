@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -50,7 +49,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -182,7 +180,7 @@ Returns [constant OK] on success, or [constant ERR_CANT_CREATE] on failure.
 */
 //go:nosplit
 func (self class) Start(callable Callable.Function, priority Priority) Error.Code { //gd:Thread.start
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Thread.Bind_start, gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_start), gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		callable gdextension.Callable
 		priority Priority
 	}{gdextension.Callable(pointers.Get(gd.InternalCallable(callable))), priority}))
@@ -195,7 +193,7 @@ Returns the current [Thread]'s ID, uniquely identifying it among all threads. If
 */
 //go:nosplit
 func (self class) GetId() String.Readable { //gd:Thread.get_id
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Thread.Bind_get_id, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_get_id), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -205,7 +203,7 @@ Returns [code]true[/code] if this [Thread] has been started. Once started, this 
 */
 //go:nosplit
 func (self class) IsStarted() bool { //gd:Thread.is_started
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Thread.Bind_is_started, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_is_started), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -216,7 +214,7 @@ To check if a [Thread] is joinable, use [method is_started].
 */
 //go:nosplit
 func (self class) IsAlive() bool { //gd:Thread.is_alive
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Thread.Bind_is_alive, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_is_alive), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -228,7 +226,7 @@ To determine if this can be called without blocking the calling thread, check if
 */
 //go:nosplit
 func (self class) WaitToFinish() variant.Any { //gd:Thread.wait_to_finish
-	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.Thread.Bind_wait_to_finish, gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_wait_to_finish), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -244,7 +242,7 @@ Because of that, there may be cases where the user may want to disable them ([pa
 */
 //go:nosplit
 func (self class) SetThreadSafetyChecksEnabled(enabled bool) { //gd:Thread.set_thread_safety_checks_enabled
-	gdunsafe.CallStatic[struct{}](gd.Global.Methods.Thread.Bind_set_thread_safety_checks_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.CallStatic[struct{}](gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_set_thread_safety_checks_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 func (self class) AsThread() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsThread() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

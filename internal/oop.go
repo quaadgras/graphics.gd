@@ -9,6 +9,7 @@ import (
 	"sync"
 	"unsafe"
 
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 )
 
@@ -55,7 +56,7 @@ func PointerBorrowedTemporarily[T pointers.Generic[T, [3]uint64]](ptr EnginePoin
 
 func PointerWithOwnershipTransferredToGodot[T pointers.Generic[T, [3]uint64]](ptr T) EnginePointer {
 	raw := pointers.Get(ptr)
-	pointers.Set(ptr, [3]uint64{raw[0], uint64(Global.Object.GetInstanceID([1]Object{pointers.Raw[Object]([3]uint64{raw[0]})}))})
+	pointers.Set(ptr, [3]uint64{raw[0], uint64(gdextension.Host.Objects.ID.Get(gdextension.Object(raw[0])))})
 	pointers.Lay(ptr)
 	if raw[1] != 0 {
 		panic("illegal transfer of ownership from Go -> Godot")
@@ -67,7 +68,7 @@ func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uint64]](ptr EnginePoi
 	if ptr == 0 {
 		return T{}
 	}
-	return pointers.Let[T]([3]uint64{uint64(ptr), uint64(Global.Object.GetInstanceID([1]Object{pointers.Raw[Object]([3]uint64{uint64(ptr)})}))})
+	return pointers.Let[T]([3]uint64{uint64(ptr), uint64(gdextension.Host.Objects.ID.Get(gdextension.Object(ptr)))})
 }
 
 func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uint64]](obj [1]Object, ptr EnginePointer) T {
@@ -77,7 +78,7 @@ func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uint64]](obj [1]Object, ptr
 	return pointers.Let[T]([3]uint64{uint64(ptr), 0})
 }
 
-func ObjectChecked(obj [1]Object) EnginePointer {
+func ObjectChecked(obj [1]Object) gdextension.Object {
 	raw := pointers.Get(obj[0])
 	if !obj[0].IsAlive(raw) {
 		panic("use after free")
@@ -85,7 +86,7 @@ func ObjectChecked(obj [1]Object) EnginePointer {
 	if raw == [3]uint64{} {
 		panic("object pointer is nil")
 	}
-	return EnginePointer(raw[0])
+	return gdextension.Object(raw[0])
 }
 
 func (self Object) AsObject() [1]Object {
@@ -100,7 +101,7 @@ func (self RefCounted) Free() {
 }
 
 func (self Object) IsAlive(raw [3]uint64) bool {
-	return raw[1] == 0 || Global.Object.GetInstanceFromID(ObjectID(raw[1])) != [1]Object{}
+	return raw[1] == 0 || gdextension.Host.Objects.Lookup(gdextension.ObjectID(raw[1])) != 0
 }
 
 func (self Object) Free() {

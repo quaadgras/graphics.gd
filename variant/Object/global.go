@@ -33,9 +33,13 @@ func HasMethod(object Any, method string) bool { //gd:Object.has_method
 
 // Call calls the method on the object and returns the result.
 func Call(object Any, method string, args ...any) any { //gd:Object.call
-	array := gd.NewArray()
+	var converted []gd.Variant
 	for _, arg := range args {
-		array.PushBack(gd.NewVariant(arg))
+		converted = append(converted, gd.NewVariant(arg))
 	}
-	return object.AsObject()[0].Callv(gd.NewStringName(method), array).Interface()
+	result, err := object.AsObject()[0].Call(gd.NewStringName(method), converted...)
+	if err != nil {
+		panic(err)
+	}
+	return result.Interface()
 }

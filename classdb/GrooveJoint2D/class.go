@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -123,24 +121,24 @@ func (self Instance) SetInitialOffset(value Float.X) {
 
 //go:nosplit
 func (self class) SetLength(length float64) { //gd:GrooveJoint2D.set_length
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GrooveJoint2D.Bind_set_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GrooveJoint2D.Bind_set_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetLength() float64 { //gd:GrooveJoint2D.get_length
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.GrooveJoint2D.Bind_get_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GrooveJoint2D.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInitialOffset(offset float64) { //gd:GrooveJoint2D.set_initial_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GrooveJoint2D.Bind_set_initial_offset, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GrooveJoint2D.Bind_set_initial_offset), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
 }
 
 //go:nosplit
 func (self class) GetInitialOffset() float64 { //gd:GrooveJoint2D.get_initial_offset
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.GrooveJoint2D.Bind_get_initial_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GrooveJoint2D.Bind_get_initial_offset), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

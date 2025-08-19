@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -56,7 +55,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -128,24 +126,24 @@ func (self Instance) SetTexture(value Texture3D.Instance) {
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:GPUParticlesAttractorVectorField3D.set_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_set_size, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_set_size), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesAttractorVectorField3D.get_size
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_get_size, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture3D) { //gd:GPUParticlesAttractorVectorField3D.set_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture3D { //gd:GPUParticlesAttractorVectorField3D.get_texture
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_get_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesAttractorVectorField3D.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture3D](r_ret)}
 	return ret
 }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -376,7 +374,7 @@ Returns the [EditorDebuggerSession] with the given [param id].
 */
 //go:nosplit
 func (self class) GetSession(id int64) [1]gdclass.EditorDebuggerSession { //gd:EditorDebuggerPlugin.get_session
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorDebuggerPlugin.Bind_get_session, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorDebuggerPlugin.Bind_get_session), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = [1]gdclass.EditorDebuggerSession{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorDebuggerSession](r_ret)}
 	return ret
 }
@@ -387,7 +385,7 @@ Returns an array of [EditorDebuggerSession] currently available to this debugger
 */
 //go:nosplit
 func (self class) GetSessions() Array.Any { //gd:EditorDebuggerPlugin.get_sessions
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorDebuggerPlugin.Bind_get_sessions, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorDebuggerPlugin.Bind_get_sessions), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

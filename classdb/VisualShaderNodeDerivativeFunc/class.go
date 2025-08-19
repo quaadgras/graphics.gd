@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -130,36 +128,36 @@ func (self Instance) SetPrecision(value Precision) {
 
 //go:nosplit
 func (self class) SetOpType(atype OpType) { //gd:VisualShaderNodeDerivativeFunc.set_op_type
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_op_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype OpType }{atype}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_op_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype OpType }{atype}))
 }
 
 //go:nosplit
 func (self class) GetOpType() OpType { //gd:VisualShaderNodeDerivativeFunc.get_op_type
-	var r_ret = gdunsafe.Call[OpType](self.AsObject(), gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_op_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[OpType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_op_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeDerivativeFunc.set_function
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_function, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn Function }{fn}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_function), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn Function }{fn}))
 }
 
 //go:nosplit
 func (self class) GetFunction() Function { //gd:VisualShaderNodeDerivativeFunc.get_function
-	var r_ret = gdunsafe.Call[Function](self.AsObject(), gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_function, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Function](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_function), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrecision(precision Precision) { //gd:VisualShaderNodeDerivativeFunc.set_precision
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_precision, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ precision Precision }{precision}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_precision), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ precision Precision }{precision}))
 }
 
 //go:nosplit
 func (self class) GetPrecision() Precision { //gd:VisualShaderNodeDerivativeFunc.get_precision
-	var r_ret = gdunsafe.Call[Precision](self.AsObject(), gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_precision, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Precision](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_precision), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

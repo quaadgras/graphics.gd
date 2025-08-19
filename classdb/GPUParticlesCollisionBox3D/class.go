@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -119,12 +117,12 @@ func (self Instance) SetSize(value Vector3.XYZ) {
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:GPUParticlesCollisionBox3D.set_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GPUParticlesCollisionBox3D.Bind_set_size, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionBox3D.Bind_set_size), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesCollisionBox3D.get_size
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.GPUParticlesCollisionBox3D.Bind_get_size, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionBox3D.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

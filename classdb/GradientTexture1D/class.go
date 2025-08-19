@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -128,29 +126,29 @@ func (self Instance) SetUseHdr(value bool) {
 
 //go:nosplit
 func (self class) SetGradient(gradient [1]gdclass.Gradient) { //gd:GradientTexture1D.set_gradient
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GradientTexture1D.Bind_set_gradient, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gradient[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GradientTexture1D.Bind_set_gradient), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gradient[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetGradient() [1]gdclass.Gradient { //gd:GradientTexture1D.get_gradient
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GradientTexture1D.Bind_get_gradient, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GradientTexture1D.Bind_get_gradient), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWidth(width int64) { //gd:GradientTexture1D.set_width
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GradientTexture1D.Bind_set_width, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ width int64 }{width}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GradientTexture1D.Bind_set_width), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ width int64 }{width}))
 }
 
 //go:nosplit
 func (self class) SetUseHdr(enabled bool) { //gd:GradientTexture1D.set_use_hdr
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GradientTexture1D.Bind_set_use_hdr, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GradientTexture1D.Bind_set_use_hdr), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsUsingHdr() bool { //gd:GradientTexture1D.is_using_hdr
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GradientTexture1D.Bind_is_using_hdr, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GradientTexture1D.Bind_is_using_hdr), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

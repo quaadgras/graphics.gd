@@ -25,6 +25,7 @@ import (
 	"path"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"strings"
 	"time"
 
@@ -244,28 +245,26 @@ func wrap() error {
 				return xray.New(err)
 			}
 			path := filepath.Join(graphics, "..", "releases", "js", "wasm", "wasm_exec.js")
-			if _, err := os.Stat(path); os.IsNotExist(err) {
-				GOROOT := golang.CMD.Env.GOROOT()
-				wasm_exec, err := os.Open(filepath.Join(GOROOT, "lib", "wasm", "wasm_exec.js"))
-				if err != nil && !os.IsNotExist(err) {
-					return xray.New(err)
-				}
-				err1 := err
+			GOROOT := golang.CMD.Env.GOROOT()
+			wasm_exec, err := os.Open(filepath.Join(GOROOT, "lib", "wasm", "wasm_exec.js"))
+			if err != nil && !os.IsNotExist(err) {
+				return xray.New(err)
+			}
+			err1 := err
+			if err != nil {
+				wasm_exec, err = os.Open(filepath.Join(GOROOT, "misc", "wasm", "wasm_exec.js"))
 				if err != nil {
-					wasm_exec, err = os.Open(filepath.Join(GOROOT, "misc", "wasm", "wasm_exec.js"))
-					if err != nil {
-						return xray.New(errors.Join(err1, err))
-					}
+					return xray.New(errors.Join(err1, err))
 				}
-				defer wasm_exec.Close()
-				out, err := os.Create(path)
-				if err != nil {
-					return xray.New(err)
-				}
-				defer out.Close()
-				if _, err := io.Copy(out, wasm_exec); err != nil {
-					return xray.New(err)
-				}
+			}
+			defer wasm_exec.Close()
+			out, err := os.Create(path)
+			if err != nil {
+				return xray.New(err)
+			}
+			defer out.Close()
+			if _, err := io.Copy(out, wasm_exec); err != nil {
+				return xray.New(err)
 			}
 			template_path := filepath.Join(graphics, ".godot", "godot.web.template_release.wasm32.zip")
 			stat, statErr := os.Stat(template_path)
@@ -570,6 +569,32 @@ func wrap() error {
 			if PORT == "" {
 				PORT = "8080"
 			}
+
+			args := []string{`"js"`}
+			for _, arg := range os.Args[2:] {
+				switch arg {
+				case "-bench", "-benchmem", "-benchtime", "blockprofile",
+					"-blockprofilerate", "-count", "-coverprofile", "-cpu",
+					"-cpuprofile", "-failfast", "-fullpath", "-fuzz", "-fuzzcachedir",
+					"-fuzzminimizetime", "-fuzztime", "-fuzzworker", "-gocoverdir",
+					"-list", "-memprofile", "-memprofilerate", "-mutexprofile",
+					"-mutexprofilefraction", "-outputdir", "-paniconexit0",
+					"-parallel", "-run", "-short", "-shuffle", "-skip", "-testlogfile",
+					"-timeout", "-trace", "-v":
+					args = append(args, strconv.Quote("-test."+strings.TrimPrefix(arg, "-")))
+				default:
+					args = append(args, strconv.Quote(arg))
+				}
+			}
+			wasm_exec, err := os.ReadFile(graphics + "/../releases/" + GOOS + "/" + GOARCH + "/wasm_exec.js")
+			if err != nil {
+				return xray.New(err)
+			}
+			wasm_exec = bytes.ReplaceAll(wasm_exec, []byte("this.argv = [\"js\"]"), []byte("this.argv = ["+strings.Join(args, ", ")+"]"))
+			if err := os.WriteFile(graphics+"/../releases/"+GOOS+"/"+GOARCH+"/wasm_exec.js", wasm_exec, 0644); err != nil {
+				return xray.New(err)
+			}
+
 			fmt.Println("gd: serving wasm/js on http://localhost:" + PORT)
 			http.Handle("/", WebServer{http.FileServer(http.Dir(filepath.Join(graphics + "/../releases/" + GOOS + "/" + GOARCH)))})
 			return xray.New(http.ListenAndServe(":"+PORT, nil))

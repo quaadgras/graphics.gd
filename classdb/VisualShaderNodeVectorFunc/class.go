@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -115,12 +113,12 @@ func (self Instance) SetFunction(value Function) {
 
 //go:nosplit
 func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeVectorFunc.set_function
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeVectorFunc.Bind_set_function, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn Function }{fn}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVectorFunc.Bind_set_function), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn Function }{fn}))
 }
 
 //go:nosplit
 func (self class) GetFunction() Function { //gd:VisualShaderNodeVectorFunc.get_function
-	var r_ret = gdunsafe.Call[Function](self.AsObject(), gd.Global.Methods.VisualShaderNodeVectorFunc.Bind_get_function, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Function](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVectorFunc.Bind_get_function), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

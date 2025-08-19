@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -114,12 +112,12 @@ func (self Instance) SetCompositorEffects(value []CompositorEffect.Instance) {
 
 //go:nosplit
 func (self class) SetCompositorEffects(compositor_effects Array.Contains[[1]gdclass.CompositorEffect]) { //gd:Compositor.set_compositor_effects
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Compositor.Bind_set_compositor_effects, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ compositor_effects gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(compositor_effects))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Compositor.Bind_set_compositor_effects), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ compositor_effects gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(compositor_effects))[0])}))
 }
 
 //go:nosplit
 func (self class) GetCompositorEffects() Array.Contains[[1]gdclass.CompositorEffect] { //gd:Compositor.get_compositor_effects
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Compositor.Bind_get_compositor_effects, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Compositor.Bind_get_compositor_effects), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.CompositorEffect]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

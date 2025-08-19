@@ -7,6 +7,7 @@ import (
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
+	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
 )
@@ -101,7 +102,7 @@ type signalChan struct {
 	rvalue reflect.Value
 }
 
-func manageSignals(instance gd.Int, signals []signalChan) {
+func manageSignals(instance Object.ID, signals []signalChan) {
 	var cases = make([]reflect.SelectCase, len(signals))
 	for i, signal := range signals {
 		cases[i] = reflect.SelectCase{
@@ -120,7 +121,7 @@ func manageSignals(instance gd.Int, signals []signalChan) {
 		}
 		signal := signals[chosen]
 		gd.NewCallable(func() {
-			lookup := gd.Global.Object.GetInstanceFromID(gd.ObjectID(instance))
+			lookup := Object.ID(instance).Instance()
 			if lookup == ([1]gd.Object{}) {
 				panic("manageSignals: object freed")
 			}

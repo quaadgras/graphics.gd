@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -177,108 +175,108 @@ func (self Instance) SetSimplifyEpsilon(value Float.X) {
 
 //go:nosplit
 func (self class) SetPathfindingAlgorithm(pathfinding_algorithm PathfindingAlgorithm) { //gd:NavigationPathQueryParameters2D.set_pathfinding_algorithm
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_pathfinding_algorithm, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pathfinding_algorithm PathfindingAlgorithm }{pathfinding_algorithm}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_pathfinding_algorithm), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pathfinding_algorithm PathfindingAlgorithm }{pathfinding_algorithm}))
 }
 
 //go:nosplit
 func (self class) GetPathfindingAlgorithm() PathfindingAlgorithm { //gd:NavigationPathQueryParameters2D.get_pathfinding_algorithm
-	var r_ret = gdunsafe.Call[PathfindingAlgorithm](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_pathfinding_algorithm, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PathfindingAlgorithm](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_pathfinding_algorithm), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathPostprocessing(path_postprocessing PathPostProcessing) { //gd:NavigationPathQueryParameters2D.set_path_postprocessing
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_path_postprocessing, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ path_postprocessing PathPostProcessing }{path_postprocessing}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_path_postprocessing), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ path_postprocessing PathPostProcessing }{path_postprocessing}))
 }
 
 //go:nosplit
 func (self class) GetPathPostprocessing() PathPostProcessing { //gd:NavigationPathQueryParameters2D.get_path_postprocessing
-	var r_ret = gdunsafe.Call[PathPostProcessing](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_path_postprocessing, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PathPostProcessing](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_path_postprocessing), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMap(mapping RID.Any) { //gd:NavigationPathQueryParameters2D.set_map
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_map, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_map), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 }
 
 //go:nosplit
 func (self class) GetMap() RID.Any { //gd:NavigationPathQueryParameters2D.get_map
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_map, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_map), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStartPosition(start_position Vector2.XY) { //gd:NavigationPathQueryParameters2D.set_start_position
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_start_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ start_position Vector2.XY }{start_position}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_start_position), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ start_position Vector2.XY }{start_position}))
 }
 
 //go:nosplit
 func (self class) GetStartPosition() Vector2.XY { //gd:NavigationPathQueryParameters2D.get_start_position
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_start_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_start_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTargetPosition(target_position Vector2.XY) { //gd:NavigationPathQueryParameters2D.set_target_position
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_target_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ target_position Vector2.XY }{target_position}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_target_position), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ target_position Vector2.XY }{target_position}))
 }
 
 //go:nosplit
 func (self class) GetTargetPosition() Vector2.XY { //gd:NavigationPathQueryParameters2D.get_target_position
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_target_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_target_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationLayers(navigation_layers int64) { //gd:NavigationPathQueryParameters2D.set_navigation_layers
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_navigation_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ navigation_layers int64 }{navigation_layers}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_navigation_layers), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ navigation_layers int64 }{navigation_layers}))
 }
 
 //go:nosplit
 func (self class) GetNavigationLayers() int64 { //gd:NavigationPathQueryParameters2D.get_navigation_layers
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_navigation_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_navigation_layers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMetadataFlags(flags PathMetadataFlags) { //gd:NavigationPathQueryParameters2D.set_metadata_flags
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_metadata_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags PathMetadataFlags }{flags}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_metadata_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags PathMetadataFlags }{flags}))
 }
 
 //go:nosplit
 func (self class) GetMetadataFlags() PathMetadataFlags { //gd:NavigationPathQueryParameters2D.get_metadata_flags
-	var r_ret = gdunsafe.Call[PathMetadataFlags](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_metadata_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PathMetadataFlags](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_metadata_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSimplifyPath(enabled bool) { //gd:NavigationPathQueryParameters2D.set_simplify_path
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_simplify_path, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_simplify_path), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetSimplifyPath() bool { //gd:NavigationPathQueryParameters2D.get_simplify_path
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_simplify_path, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_simplify_path), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSimplifyEpsilon(epsilon float64) { //gd:NavigationPathQueryParameters2D.set_simplify_epsilon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_simplify_epsilon, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ epsilon float64 }{epsilon}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_simplify_epsilon), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ epsilon float64 }{epsilon}))
 }
 
 //go:nosplit
 func (self class) GetSimplifyEpsilon() float64 { //gd:NavigationPathQueryParameters2D.get_simplify_epsilon
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_simplify_epsilon, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_simplify_epsilon), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

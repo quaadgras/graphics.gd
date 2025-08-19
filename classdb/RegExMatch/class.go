@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -50,7 +49,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -173,7 +171,7 @@ func (self Instance) Strings() []string {
 
 //go:nosplit
 func (self class) GetSubject() String.Readable { //gd:RegExMatch.get_subject
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RegExMatch.Bind_get_subject, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RegExMatch.Bind_get_subject), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -183,21 +181,21 @@ Returns the number of capturing groups.
 */
 //go:nosplit
 func (self class) GetGroupCount() int64 { //gd:RegExMatch.get_group_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RegExMatch.Bind_get_group_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RegExMatch.Bind_get_group_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetNames() Dictionary.Any { //gd:RegExMatch.get_names
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RegExMatch.Bind_get_names, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RegExMatch.Bind_get_names), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetStrings() Packed.Strings { //gd:RegExMatch.get_strings
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.RegExMatch.Bind_get_strings, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RegExMatch.Bind_get_strings), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -208,7 +206,7 @@ Returns an empty string if the group did not match or doesn't exist.
 */
 //go:nosplit
 func (self class) GetString(name variant.Any) String.Readable { //gd:RegExMatch.get_string
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.RegExMatch.Bind_get_string, gdextension.SizeString|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ name gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(name)))}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RegExMatch.Bind_get_string), gdextension.SizeString|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ name gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(name)))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -219,7 +217,7 @@ Returns -1 if the group did not match or doesn't exist.
 */
 //go:nosplit
 func (self class) GetStart(name variant.Any) int64 { //gd:RegExMatch.get_start
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RegExMatch.Bind_get_start, gdextension.SizeInt|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ name gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(name)))}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RegExMatch.Bind_get_start), gdextension.SizeInt|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ name gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(name)))}))
 	var ret = r_ret
 	return ret
 }
@@ -230,7 +228,7 @@ Returns -1 if the group did not match or doesn't exist.
 */
 //go:nosplit
 func (self class) GetEnd(name variant.Any) int64 { //gd:RegExMatch.get_end
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RegExMatch.Bind_get_end, gdextension.SizeInt|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ name gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(name)))}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RegExMatch.Bind_get_end), gdextension.SizeInt|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ name gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(name)))}))
 	var ret = r_ret
 	return ret
 }

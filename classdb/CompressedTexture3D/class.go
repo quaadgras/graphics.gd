@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -120,14 +118,14 @@ Loads the texture from the specified [param path].
 */
 //go:nosplit
 func (self class) Load(path String.Readable) Error.Code { //gd:CompressedTexture3D.load
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CompressedTexture3D.Bind_load, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CompressedTexture3D.Bind_load), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) GetLoadPath() String.Readable { //gd:CompressedTexture3D.get_load_path
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.CompressedTexture3D.Bind_get_load_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CompressedTexture3D.Bind_get_load_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

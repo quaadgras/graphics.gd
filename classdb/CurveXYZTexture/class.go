@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -137,41 +135,41 @@ func (self Instance) SetCurveZ(value Curve.Instance) {
 
 //go:nosplit
 func (self class) SetWidth(width int64) { //gd:CurveXYZTexture.set_width
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CurveXYZTexture.Bind_set_width, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ width int64 }{width}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CurveXYZTexture.Bind_set_width), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ width int64 }{width}))
 }
 
 //go:nosplit
 func (self class) SetCurveX(curve [1]gdclass.Curve) { //gd:CurveXYZTexture.set_curve_x
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CurveXYZTexture.Bind_set_curve_x, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CurveXYZTexture.Bind_set_curve_x), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetCurveX() [1]gdclass.Curve { //gd:CurveXYZTexture.get_curve_x
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CurveXYZTexture.Bind_get_curve_x, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_x), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurveY(curve [1]gdclass.Curve) { //gd:CurveXYZTexture.set_curve_y
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CurveXYZTexture.Bind_set_curve_y, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CurveXYZTexture.Bind_set_curve_y), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetCurveY() [1]gdclass.Curve { //gd:CurveXYZTexture.get_curve_y
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CurveXYZTexture.Bind_get_curve_y, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_y), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurveZ(curve [1]gdclass.Curve) { //gd:CurveXYZTexture.set_curve_z
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CurveXYZTexture.Bind_set_curve_z, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CurveXYZTexture.Bind_set_curve_z), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetCurveZ() [1]gdclass.Curve { //gd:CurveXYZTexture.get_curve_z
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CurveXYZTexture.Bind_get_curve_z, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CurveXYZTexture.Bind_get_curve_z), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }

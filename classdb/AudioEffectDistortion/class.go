@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -147,60 +145,60 @@ func (self Instance) SetPostGain(value Float.X) {
 
 //go:nosplit
 func (self class) SetMode(mode Mode) { //gd:AudioEffectDistortion.set_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectDistortion.Bind_set_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_set_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetMode() Mode { //gd:AudioEffectDistortion.get_mode
-	var r_ret = gdunsafe.Call[Mode](self.AsObject(), gd.Global.Methods.AudioEffectDistortion.Bind_get_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Mode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_get_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPreGain(pre_gain float64) { //gd:AudioEffectDistortion.set_pre_gain
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectDistortion.Bind_set_pre_gain, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pre_gain float64 }{pre_gain}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_set_pre_gain), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pre_gain float64 }{pre_gain}))
 }
 
 //go:nosplit
 func (self class) GetPreGain() float64 { //gd:AudioEffectDistortion.get_pre_gain
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectDistortion.Bind_get_pre_gain, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_get_pre_gain), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeepHfHz(keep_hf_hz float64) { //gd:AudioEffectDistortion.set_keep_hf_hz
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectDistortion.Bind_set_keep_hf_hz, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ keep_hf_hz float64 }{keep_hf_hz}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_set_keep_hf_hz), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ keep_hf_hz float64 }{keep_hf_hz}))
 }
 
 //go:nosplit
 func (self class) GetKeepHfHz() float64 { //gd:AudioEffectDistortion.get_keep_hf_hz
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectDistortion.Bind_get_keep_hf_hz, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_get_keep_hf_hz), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrive(drive float64) { //gd:AudioEffectDistortion.set_drive
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectDistortion.Bind_set_drive, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ drive float64 }{drive}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_set_drive), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ drive float64 }{drive}))
 }
 
 //go:nosplit
 func (self class) GetDrive() float64 { //gd:AudioEffectDistortion.get_drive
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectDistortion.Bind_get_drive, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_get_drive), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPostGain(post_gain float64) { //gd:AudioEffectDistortion.set_post_gain
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectDistortion.Bind_set_post_gain, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ post_gain float64 }{post_gain}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_set_post_gain), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ post_gain float64 }{post_gain}))
 }
 
 //go:nosplit
 func (self class) GetPostGain() float64 { //gd:AudioEffectDistortion.get_post_gain
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectDistortion.Bind_get_post_gain, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_get_post_gain), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

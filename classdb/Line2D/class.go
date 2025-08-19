@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -58,7 +57,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -278,12 +276,12 @@ func (self Instance) SetAntialiased(value bool) {
 
 //go:nosplit
 func (self class) SetPoints(points Packed.Array[Vector2.XY]) { //gd:Line2D.set_points
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_points, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ points gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_points), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ points gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))}))
 }
 
 //go:nosplit
 func (self class) GetPoints() Packed.Array[Vector2.XY] { //gd:Line2D.get_points
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_points, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_points), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -293,7 +291,7 @@ Overwrites the position of the point at the given [param index] with the supplie
 */
 //go:nosplit
 func (self class) SetPointPosition(index int64, position Vector2.XY) { //gd:Line2D.set_point_position
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_point_position), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		index    int64
 		position Vector2.XY
 	}{index, position}))
@@ -304,7 +302,7 @@ Returns the position of the point at index [param index].
 */
 //go:nosplit
 func (self class) GetPointPosition(index int64) Vector2.XY { //gd:Line2D.get_point_position
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_point_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_point_position), gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -314,7 +312,7 @@ Returns the number of points in the polyline.
 */
 //go:nosplit
 func (self class) GetPointCount() int64 { //gd:Line2D.get_point_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_point_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_point_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -325,7 +323,7 @@ If [param index] is given, the new point is inserted before the existing point i
 */
 //go:nosplit
 func (self class) AddPoint(position Vector2.XY, index int64) { //gd:Line2D.add_point
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_add_point, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_add_point), 0|(gdextension.SizeVector2<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		position Vector2.XY
 		index    int64
 	}{position, index}))
@@ -336,7 +334,7 @@ Removes the point at index [param index] from the polyline.
 */
 //go:nosplit
 func (self class) RemovePoint(index int64) { //gd:Line2D.remove_point
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_remove_point, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_remove_point), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 /*
@@ -344,161 +342,161 @@ Removes all points from the polyline, making it empty.
 */
 //go:nosplit
 func (self class) ClearPoints() { //gd:Line2D.clear_points
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_clear_points, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_clear_points), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetClosed(closed bool) { //gd:Line2D.set_closed
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_closed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ closed bool }{closed}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_closed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ closed bool }{closed}))
 }
 
 //go:nosplit
 func (self class) IsClosed() bool { //gd:Line2D.is_closed
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Line2D.Bind_is_closed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_is_closed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWidth(width float64) { //gd:Line2D.set_width
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_width, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ width float64 }{width}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_width), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ width float64 }{width}))
 }
 
 //go:nosplit
 func (self class) GetWidth() float64 { //gd:Line2D.get_width
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_width, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_width), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:Line2D.set_curve
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_curve), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetCurve() [1]gdclass.Curve { //gd:Line2D.get_curve
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_curve, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_curve), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultColor(color Color.RGBA) { //gd:Line2D.set_default_color
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_default_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_default_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetDefaultColor() Color.RGBA { //gd:Line2D.get_default_color
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_default_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_default_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGradient(color [1]gdclass.Gradient) { //gd:Line2D.set_gradient
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_gradient, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ color gdextension.Object }{gdextension.Object(gd.ObjectChecked(color[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_gradient), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ color gdextension.Object }{gdextension.Object(gd.ObjectChecked(color[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetGradient() [1]gdclass.Gradient { //gd:Line2D.get_gradient
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_gradient, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_gradient), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:Line2D.set_texture
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:Line2D.get_texture
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureMode(mode LineTextureMode) { //gd:Line2D.set_texture_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_texture_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode LineTextureMode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_texture_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode LineTextureMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetTextureMode() LineTextureMode { //gd:Line2D.get_texture_mode
-	var r_ret = gdunsafe.Call[LineTextureMode](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_texture_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[LineTextureMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_texture_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJointMode(mode LineJointMode) { //gd:Line2D.set_joint_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_joint_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode LineJointMode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_joint_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode LineJointMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetJointMode() LineJointMode { //gd:Line2D.get_joint_mode
-	var r_ret = gdunsafe.Call[LineJointMode](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_joint_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[LineJointMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_joint_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBeginCapMode(mode LineCapMode) { //gd:Line2D.set_begin_cap_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_begin_cap_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode LineCapMode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_begin_cap_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode LineCapMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetBeginCapMode() LineCapMode { //gd:Line2D.get_begin_cap_mode
-	var r_ret = gdunsafe.Call[LineCapMode](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_begin_cap_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[LineCapMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_begin_cap_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEndCapMode(mode LineCapMode) { //gd:Line2D.set_end_cap_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_end_cap_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode LineCapMode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_end_cap_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode LineCapMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetEndCapMode() LineCapMode { //gd:Line2D.get_end_cap_mode
-	var r_ret = gdunsafe.Call[LineCapMode](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_end_cap_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[LineCapMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_end_cap_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSharpLimit(limit float64) { //gd:Line2D.set_sharp_limit
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_sharp_limit, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ limit float64 }{limit}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_sharp_limit), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ limit float64 }{limit}))
 }
 
 //go:nosplit
 func (self class) GetSharpLimit() float64 { //gd:Line2D.get_sharp_limit
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_sharp_limit, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_sharp_limit), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRoundPrecision(precision int64) { //gd:Line2D.set_round_precision
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_round_precision, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ precision int64 }{precision}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_round_precision), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ precision int64 }{precision}))
 }
 
 //go:nosplit
 func (self class) GetRoundPrecision() int64 { //gd:Line2D.get_round_precision
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_round_precision, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_round_precision), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAntialiased(antialiased bool) { //gd:Line2D.set_antialiased
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Line2D.Bind_set_antialiased, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ antialiased bool }{antialiased}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_set_antialiased), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ antialiased bool }{antialiased}))
 }
 
 //go:nosplit
 func (self class) GetAntialiased() bool { //gd:Line2D.get_antialiased
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Line2D.Bind_get_antialiased, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Line2D.Bind_get_antialiased), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

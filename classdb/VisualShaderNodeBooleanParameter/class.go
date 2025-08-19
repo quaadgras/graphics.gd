@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -123,24 +121,24 @@ func (self Instance) SetDefaultValue(value bool) {
 
 //go:nosplit
 func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeBooleanParameter.set_default_value_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeBooleanParameter.Bind_set_default_value_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBooleanParameter.Bind_set_default_value_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeBooleanParameter.is_default_value_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.VisualShaderNodeBooleanParameter.Bind_is_default_value_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBooleanParameter.Bind_is_default_value_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultValue(value bool) { //gd:VisualShaderNodeBooleanParameter.set_default_value
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeBooleanParameter.Bind_set_default_value, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ value bool }{value}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBooleanParameter.Bind_set_default_value), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ value bool }{value}))
 }
 
 //go:nosplit
 func (self class) GetDefaultValue() bool { //gd:VisualShaderNodeBooleanParameter.get_default_value
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.VisualShaderNodeBooleanParameter.Bind_get_default_value, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBooleanParameter.Bind_get_default_value), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -288,7 +286,7 @@ Returns the minimum size that this stylebox can be shrunk to.
 */
 //go:nosplit
 func (self class) GetMinimumSize() Vector2.XY { //gd:StyleBox.get_minimum_size
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.StyleBox.Bind_get_minimum_size, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBox.Bind_get_minimum_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -298,7 +296,7 @@ Sets the default value of the specified [enum Side] to [param offset] pixels.
 */
 //go:nosplit
 func (self class) SetContentMargin(margin Rect2.Side, offset float64) { //gd:StyleBox.set_content_margin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.StyleBox.Bind_set_content_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBox.Bind_set_content_margin), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		margin Rect2.Side
 		offset float64
 	}{margin, offset}))
@@ -309,7 +307,7 @@ Sets the default margin to [param offset] pixels for all sides.
 */
 //go:nosplit
 func (self class) SetContentMarginAll(offset float64) { //gd:StyleBox.set_content_margin_all
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.StyleBox.Bind_set_content_margin_all, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBox.Bind_set_content_margin_all), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
 }
 
 /*
@@ -317,7 +315,7 @@ Returns the default margin of the specified [enum Side].
 */
 //go:nosplit
 func (self class) GetContentMargin(margin Rect2.Side) float64 { //gd:StyleBox.get_content_margin
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.StyleBox.Bind_get_content_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBox.Bind_get_content_margin), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
 	var ret = r_ret
 	return ret
 }
@@ -328,7 +326,7 @@ Positive values reduce size inwards, unlike [Control]'s margin values.
 */
 //go:nosplit
 func (self class) GetMargin(margin Rect2.Side) float64 { //gd:StyleBox.get_margin
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.StyleBox.Bind_get_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBox.Bind_get_margin), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
 	var ret = r_ret
 	return ret
 }
@@ -338,7 +336,7 @@ Returns the "offset" of a stylebox. This helper function returns a value equival
 */
 //go:nosplit
 func (self class) GetOffset() Vector2.XY { //gd:StyleBox.get_offset
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.StyleBox.Bind_get_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBox.Bind_get_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -349,7 +347,7 @@ The [RID] value can either be the result of [method CanvasItem.get_canvas_item] 
 */
 //go:nosplit
 func (self class) Draw(canvas_item RID.Any, rect Rect2.PositionSize) { //gd:StyleBox.draw
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.StyleBox.Bind_draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBox.Bind_draw), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8), unsafe.Pointer(&struct {
 		canvas_item RID.Any
 		rect        Rect2.PositionSize
 	}{canvas_item, rect}))
@@ -360,7 +358,7 @@ Returns the [CanvasItem] that handles its [constant CanvasItem.NOTIFICATION_DRAW
 */
 //go:nosplit
 func (self class) GetCurrentItemDrawn() [1]gdclass.CanvasItem { //gd:StyleBox.get_current_item_drawn
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.StyleBox.Bind_get_current_item_drawn, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBox.Bind_get_current_item_drawn), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.CanvasItem{gd.PointerMustAssertInstanceID[gdclass.CanvasItem](r_ret)}
 	return ret
 }
@@ -370,7 +368,7 @@ Test a position in a rectangle, return whether it passes the mask test.
 */
 //go:nosplit
 func (self class) TestMask(point Vector2.XY, rect Rect2.PositionSize) bool { //gd:StyleBox.test_mask
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.StyleBox.Bind_test_mask, gdextension.SizeBool|(gdextension.SizeVector2<<4)|(gdextension.SizeRect2<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.StyleBox.Bind_test_mask), gdextension.SizeBool|(gdextension.SizeVector2<<4)|(gdextension.SizeRect2<<8), unsafe.Pointer(&struct {
 		point Vector2.XY
 		rect  Rect2.PositionSize
 	}{point, rect}))

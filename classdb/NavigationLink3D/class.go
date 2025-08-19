@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -228,19 +226,19 @@ Returns the [RID] of this link on the [NavigationServer3D].
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:NavigationLink3D.get_rid
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_get_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_get_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:NavigationLink3D.set_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_set_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_set_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsEnabled() bool { //gd:NavigationLink3D.is_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_is_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_is_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -250,7 +248,7 @@ Sets the [RID] of the navigation map this link should use. By default the link w
 */
 //go:nosplit
 func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationLink3D.set_navigation_map
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_set_navigation_map, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ navigation_map RID.Any }{navigation_map}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_set_navigation_map), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ navigation_map RID.Any }{navigation_map}))
 }
 
 /*
@@ -258,31 +256,31 @@ Returns the current navigation map [RID] used by this link.
 */
 //go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:NavigationLink3D.get_navigation_map
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_get_navigation_map, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_get_navigation_map), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBidirectional(bidirectional bool) { //gd:NavigationLink3D.set_bidirectional
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_set_bidirectional, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ bidirectional bool }{bidirectional}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_set_bidirectional), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ bidirectional bool }{bidirectional}))
 }
 
 //go:nosplit
 func (self class) IsBidirectional() bool { //gd:NavigationLink3D.is_bidirectional
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_is_bidirectional, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_is_bidirectional), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationLayers(navigation_layers int64) { //gd:NavigationLink3D.set_navigation_layers
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_set_navigation_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ navigation_layers int64 }{navigation_layers}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_set_navigation_layers), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ navigation_layers int64 }{navigation_layers}))
 }
 
 //go:nosplit
 func (self class) GetNavigationLayers() int64 { //gd:NavigationLink3D.get_navigation_layers
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_get_navigation_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_get_navigation_layers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -292,7 +290,7 @@ Based on [param value], enables or disables the specified layer in the [member n
 */
 //go:nosplit
 func (self class) SetNavigationLayerValue(layer_number int64, value bool) { //gd:NavigationLink3D.set_navigation_layer_value
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_set_navigation_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_set_navigation_layer_value), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value}))
@@ -303,31 +301,31 @@ Returns whether or not the specified layer of the [member navigation_layers] bit
 */
 //go:nosplit
 func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:NavigationLink3D.get_navigation_layer_value
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_get_navigation_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_get_navigation_layer_value), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStartPosition(position Vector3.XYZ) { //gd:NavigationLink3D.set_start_position
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_set_start_position, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ position Vector3.XYZ }{position}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_set_start_position), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ position Vector3.XYZ }{position}))
 }
 
 //go:nosplit
 func (self class) GetStartPosition() Vector3.XYZ { //gd:NavigationLink3D.get_start_position
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_get_start_position, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_get_start_position), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEndPosition(position Vector3.XYZ) { //gd:NavigationLink3D.set_end_position
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_set_end_position, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ position Vector3.XYZ }{position}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_set_end_position), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ position Vector3.XYZ }{position}))
 }
 
 //go:nosplit
 func (self class) GetEndPosition() Vector3.XYZ { //gd:NavigationLink3D.get_end_position
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_get_end_position, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_get_end_position), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -337,7 +335,7 @@ Sets the [member start_position] that is relative to the link from a global [par
 */
 //go:nosplit
 func (self class) SetGlobalStartPosition(position Vector3.XYZ) { //gd:NavigationLink3D.set_global_start_position
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_set_global_start_position, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ position Vector3.XYZ }{position}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_set_global_start_position), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ position Vector3.XYZ }{position}))
 }
 
 /*
@@ -345,7 +343,7 @@ Returns the [member start_position] that is relative to the link as a global pos
 */
 //go:nosplit
 func (self class) GetGlobalStartPosition() Vector3.XYZ { //gd:NavigationLink3D.get_global_start_position
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_get_global_start_position, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_get_global_start_position), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -355,7 +353,7 @@ Sets the [member end_position] that is relative to the link from a global [param
 */
 //go:nosplit
 func (self class) SetGlobalEndPosition(position Vector3.XYZ) { //gd:NavigationLink3D.set_global_end_position
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_set_global_end_position, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ position Vector3.XYZ }{position}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_set_global_end_position), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ position Vector3.XYZ }{position}))
 }
 
 /*
@@ -363,31 +361,31 @@ Returns the [member end_position] that is relative to the link as a global posit
 */
 //go:nosplit
 func (self class) GetGlobalEndPosition() Vector3.XYZ { //gd:NavigationLink3D.get_global_end_position
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_get_global_end_position, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_get_global_end_position), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnterCost(enter_cost float64) { //gd:NavigationLink3D.set_enter_cost
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_set_enter_cost, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ enter_cost float64 }{enter_cost}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_set_enter_cost), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ enter_cost float64 }{enter_cost}))
 }
 
 //go:nosplit
 func (self class) GetEnterCost() float64 { //gd:NavigationLink3D.get_enter_cost
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_get_enter_cost, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_get_enter_cost), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTravelCost(travel_cost float64) { //gd:NavigationLink3D.set_travel_cost
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_set_travel_cost, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ travel_cost float64 }{travel_cost}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_set_travel_cost), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ travel_cost float64 }{travel_cost}))
 }
 
 //go:nosplit
 func (self class) GetTravelCost() float64 { //gd:NavigationLink3D.get_travel_cost
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationLink3D.Bind_get_travel_cost, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationLink3D.Bind_get_travel_cost), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

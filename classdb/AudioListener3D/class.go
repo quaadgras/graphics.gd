@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -138,7 +136,7 @@ Enables the listener. This will override the current camera's listener.
 */
 //go:nosplit
 func (self class) MakeCurrent() { //gd:AudioListener3D.make_current
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioListener3D.Bind_make_current, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioListener3D.Bind_make_current), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -146,7 +144,7 @@ Disables the listener to use the current camera's listener instead.
 */
 //go:nosplit
 func (self class) ClearCurrent() { //gd:AudioListener3D.clear_current
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioListener3D.Bind_clear_current, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioListener3D.Bind_clear_current), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -155,7 +153,7 @@ Returns [code]true[/code] if the listener was made current using [method make_cu
 */
 //go:nosplit
 func (self class) IsCurrent() bool { //gd:AudioListener3D.is_current
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AudioListener3D.Bind_is_current, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioListener3D.Bind_is_current), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -165,7 +163,7 @@ Returns the listener's global orthonormalized [Transform3D].
 */
 //go:nosplit
 func (self class) GetListenerTransform() Transform3D.BasisOrigin { //gd:AudioListener3D.get_listener_transform
-	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.AudioListener3D.Bind_get_listener_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioListener3D.Bind_get_listener_transform), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }

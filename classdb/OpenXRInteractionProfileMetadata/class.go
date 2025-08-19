@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -138,7 +136,7 @@ Allows for renaming old interaction profile paths to new paths to maintain backw
 */
 //go:nosplit
 func (self class) RegisterProfileRename(old_name String.Readable, new_name String.Readable) { //gd:OpenXRInteractionProfileMetadata.register_profile_rename
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_profile_rename, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_profile_rename), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		old_name gdextension.String
 		new_name gdextension.String
 	}{gdextension.String(pointers.Get(gd.InternalString(old_name))[0]), gdextension.String(pointers.Get(gd.InternalString(new_name))[0])}))
@@ -151,7 +149,7 @@ When a top level path ends up being bound by OpenXR, a [XRPositionalTracker] is 
 */
 //go:nosplit
 func (self class) RegisterTopLevelPath(display_name String.Readable, openxr_path String.Readable, openxr_extension_name String.Readable) { //gd:OpenXRInteractionProfileMetadata.register_top_level_path
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_top_level_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_top_level_path), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		display_name          gdextension.String
 		openxr_path           gdextension.String
 		openxr_extension_name gdextension.String
@@ -164,7 +162,7 @@ Registers an interaction profile using its OpenXR designation (e.g. [code]/inter
 */
 //go:nosplit
 func (self class) RegisterInteractionProfile(display_name String.Readable, openxr_path String.Readable, openxr_extension_name String.Readable) { //gd:OpenXRInteractionProfileMetadata.register_interaction_profile
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_interaction_profile, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_interaction_profile), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		display_name          gdextension.String
 		openxr_path           gdextension.String
 		openxr_extension_name gdextension.String
@@ -176,7 +174,7 @@ Registers an input/output path for the given [param interaction_profile]. The pr
 */
 //go:nosplit
 func (self class) RegisterIoPath(interaction_profile String.Readable, display_name String.Readable, toplevel_path String.Readable, openxr_path String.Readable, openxr_extension_name String.Readable, action_type OpenXRAction.ActionType) { //gd:OpenXRInteractionProfileMetadata.register_io_path
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_io_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_io_path), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
 		interaction_profile   gdextension.String
 		display_name          gdextension.String
 		toplevel_path         gdextension.String

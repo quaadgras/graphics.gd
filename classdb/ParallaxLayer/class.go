@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -133,36 +131,36 @@ func (self Instance) SetMotionMirroring(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetMotionScale(scale Vector2.XY) { //gd:ParallaxLayer.set_motion_scale
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParallaxLayer.Bind_set_motion_scale, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxLayer.Bind_set_motion_scale), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
 }
 
 //go:nosplit
 func (self class) GetMotionScale() Vector2.XY { //gd:ParallaxLayer.get_motion_scale
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.ParallaxLayer.Bind_get_motion_scale, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxLayer.Bind_get_motion_scale), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMotionOffset(offset Vector2.XY) { //gd:ParallaxLayer.set_motion_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParallaxLayer.Bind_set_motion_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxLayer.Bind_set_motion_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetMotionOffset() Vector2.XY { //gd:ParallaxLayer.get_motion_offset
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.ParallaxLayer.Bind_get_motion_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxLayer.Bind_get_motion_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMirroring(mirror Vector2.XY) { //gd:ParallaxLayer.set_mirroring
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ParallaxLayer.Bind_set_mirroring, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ mirror Vector2.XY }{mirror}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxLayer.Bind_set_mirroring), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ mirror Vector2.XY }{mirror}))
 }
 
 //go:nosplit
 func (self class) GetMirroring() Vector2.XY { //gd:ParallaxLayer.get_mirroring
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.ParallaxLayer.Bind_get_mirroring, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ParallaxLayer.Bind_get_mirroring), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

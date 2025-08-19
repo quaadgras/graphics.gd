@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -159,12 +157,12 @@ func (class) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.Vide
 
 //go:nosplit
 func (self class) SetFile(file String.Readable) { //gd:VideoStream.set_file
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VideoStream.Bind_set_file, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(file))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VideoStream.Bind_set_file), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(file))[0])}))
 }
 
 //go:nosplit
 func (self class) GetFile() String.Readable { //gd:VideoStream.get_file
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.VideoStream.Bind_get_file, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VideoStream.Bind_get_file), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

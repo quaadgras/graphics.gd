@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -157,72 +155,72 @@ func (self Instance) SetCurve(value Curve.Instance) {
 
 //go:nosplit
 func (self class) SetSize(size float64) { //gd:RibbonTrailMesh.set_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_set_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RibbonTrailMesh.Bind_set_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() float64 { //gd:RibbonTrailMesh.get_size
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_get_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RibbonTrailMesh.Bind_get_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSections(sections int64) { //gd:RibbonTrailMesh.set_sections
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_set_sections, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ sections int64 }{sections}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RibbonTrailMesh.Bind_set_sections), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ sections int64 }{sections}))
 }
 
 //go:nosplit
 func (self class) GetSections() int64 { //gd:RibbonTrailMesh.get_sections
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_get_sections, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RibbonTrailMesh.Bind_get_sections), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSectionLength(section_length float64) { //gd:RibbonTrailMesh.set_section_length
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_set_section_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ section_length float64 }{section_length}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RibbonTrailMesh.Bind_set_section_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ section_length float64 }{section_length}))
 }
 
 //go:nosplit
 func (self class) GetSectionLength() float64 { //gd:RibbonTrailMesh.get_section_length
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_get_section_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RibbonTrailMesh.Bind_get_section_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSectionSegments(section_segments int64) { //gd:RibbonTrailMesh.set_section_segments
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_set_section_segments, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ section_segments int64 }{section_segments}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RibbonTrailMesh.Bind_set_section_segments), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ section_segments int64 }{section_segments}))
 }
 
 //go:nosplit
 func (self class) GetSectionSegments() int64 { //gd:RibbonTrailMesh.get_section_segments
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_get_section_segments, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RibbonTrailMesh.Bind_get_section_segments), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:RibbonTrailMesh.set_curve
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_set_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RibbonTrailMesh.Bind_set_curve), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetCurve() [1]gdclass.Curve { //gd:RibbonTrailMesh.get_curve
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_get_curve, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RibbonTrailMesh.Bind_get_curve), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShape(shape Shape) { //gd:RibbonTrailMesh.set_shape
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_set_shape, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shape Shape }{shape}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RibbonTrailMesh.Bind_set_shape), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shape Shape }{shape}))
 }
 
 //go:nosplit
 func (self class) GetShape() Shape { //gd:RibbonTrailMesh.get_shape
-	var r_ret = gdunsafe.Call[Shape](self.AsObject(), gd.Global.Methods.RibbonTrailMesh.Bind_get_shape, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Shape](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RibbonTrailMesh.Bind_get_shape), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

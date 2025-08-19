@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -203,19 +201,19 @@ Returns the [RID] of this obstacle on the [NavigationServer2D].
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:NavigationObstacle2D.get_rid
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_get_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_get_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAvoidanceEnabled(enabled bool) { //gd:NavigationObstacle2D.set_avoidance_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_set_avoidance_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_set_avoidance_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetAvoidanceEnabled() bool { //gd:NavigationObstacle2D.get_avoidance_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_get_avoidance_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_get_avoidance_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -225,7 +223,7 @@ Sets the [RID] of the navigation map this NavigationObstacle node should use and
 */
 //go:nosplit
 func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationObstacle2D.set_navigation_map
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_set_navigation_map, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ navigation_map RID.Any }{navigation_map}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_set_navigation_map), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ navigation_map RID.Any }{navigation_map}))
 }
 
 /*
@@ -233,55 +231,55 @@ Returns the [RID] of the navigation map for this NavigationObstacle node. This f
 */
 //go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:NavigationObstacle2D.get_navigation_map
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_get_navigation_map, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_get_navigation_map), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRadius(radius float64) { //gd:NavigationObstacle2D.set_radius
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_set_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_set_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:NavigationObstacle2D.get_radius
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_get_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_get_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVelocity(velocity Vector2.XY) { //gd:NavigationObstacle2D.set_velocity
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_set_velocity, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_set_velocity), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetVelocity() Vector2.XY { //gd:NavigationObstacle2D.get_velocity
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_get_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_get_velocity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVertices(vertices Packed.Array[Vector2.XY]) { //gd:NavigationObstacle2D.set_vertices
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_set_vertices, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ vertices gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_set_vertices), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ vertices gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices)))}))
 }
 
 //go:nosplit
 func (self class) GetVertices() Packed.Array[Vector2.XY] { //gd:NavigationObstacle2D.get_vertices
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_get_vertices, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_get_vertices), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAvoidanceLayers(layers int64) { //gd:NavigationObstacle2D.set_avoidance_layers
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_set_avoidance_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layers int64 }{layers}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_set_avoidance_layers), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layers int64 }{layers}))
 }
 
 //go:nosplit
 func (self class) GetAvoidanceLayers() int64 { //gd:NavigationObstacle2D.get_avoidance_layers
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_get_avoidance_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_get_avoidance_layers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -291,7 +289,7 @@ Based on [param value], enables or disables the specified layer in the [member a
 */
 //go:nosplit
 func (self class) SetAvoidanceLayerValue(layer_number int64, value bool) { //gd:NavigationObstacle2D.set_avoidance_layer_value
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_set_avoidance_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_set_avoidance_layer_value), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value}))
@@ -302,31 +300,31 @@ Returns whether or not the specified layer of the [member avoidance_layers] bitm
 */
 //go:nosplit
 func (self class) GetAvoidanceLayerValue(layer_number int64) bool { //gd:NavigationObstacle2D.get_avoidance_layer_value
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_get_avoidance_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_get_avoidance_layer_value), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAffectNavigationMesh(enabled bool) { //gd:NavigationObstacle2D.set_affect_navigation_mesh
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_set_affect_navigation_mesh, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_set_affect_navigation_mesh), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetAffectNavigationMesh() bool { //gd:NavigationObstacle2D.get_affect_navigation_mesh
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_get_affect_navigation_mesh, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_get_affect_navigation_mesh), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCarveNavigationMesh(enabled bool) { //gd:NavigationObstacle2D.set_carve_navigation_mesh
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_set_carve_navigation_mesh, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_set_carve_navigation_mesh), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetCarveNavigationMesh() bool { //gd:NavigationObstacle2D.get_carve_navigation_mesh
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.NavigationObstacle2D.Bind_get_carve_navigation_mesh, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationObstacle2D.Bind_get_carve_navigation_mesh), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

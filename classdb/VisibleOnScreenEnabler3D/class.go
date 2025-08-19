@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -125,24 +123,24 @@ func (self Instance) SetEnableNodePath(value string) {
 
 //go:nosplit
 func (self class) SetEnableMode(mode EnableMode) { //gd:VisibleOnScreenEnabler3D.set_enable_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_set_enable_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode EnableMode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_set_enable_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode EnableMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetEnableMode() EnableMode { //gd:VisibleOnScreenEnabler3D.get_enable_mode
-	var r_ret = gdunsafe.Call[EnableMode](self.AsObject(), gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_get_enable_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[EnableMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_get_enable_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableNodePath(path Path.ToNode) { //gd:VisibleOnScreenEnabler3D.set_enable_node_path
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_set_enable_node_path, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_set_enable_node_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
 }
 
 //go:nosplit
 func (self class) GetEnableNodePath() Path.ToNode { //gd:VisibleOnScreenEnabler3D.get_enable_node_path
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_get_enable_node_path, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_get_enable_node_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

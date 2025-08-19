@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -128,17 +126,17 @@ Based on the set of points provided, this assigns the [member points] property u
 */
 //go:nosplit
 func (self class) SetPointCloud(point_cloud Packed.Array[Vector2.XY]) { //gd:ConvexPolygonShape2D.set_point_cloud
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ConvexPolygonShape2D.Bind_set_point_cloud, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ point_cloud gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](point_cloud)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConvexPolygonShape2D.Bind_set_point_cloud), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ point_cloud gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](point_cloud)))}))
 }
 
 //go:nosplit
 func (self class) SetPoints(points Packed.Array[Vector2.XY]) { //gd:ConvexPolygonShape2D.set_points
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ConvexPolygonShape2D.Bind_set_points, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ points gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConvexPolygonShape2D.Bind_set_points), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ points gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))}))
 }
 
 //go:nosplit
 func (self class) GetPoints() Packed.Array[Vector2.XY] { //gd:ConvexPolygonShape2D.get_points
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ConvexPolygonShape2D.Bind_get_points, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConvexPolygonShape2D.Bind_get_points), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

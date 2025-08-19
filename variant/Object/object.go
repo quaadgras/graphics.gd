@@ -7,6 +7,8 @@ import (
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
+	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/pointers"
 	"graphics.gd/variant"
 	"graphics.gd/variant/Error"
 	"graphics.gd/variant/Signal"
@@ -20,7 +22,7 @@ func (id ID) Instance() Instance {
 	if id == 0 {
 		return Nil
 	}
-	return Instance(gd.Global.Object.GetInstanceFromID(gd.ObjectID(id)))
+	return Instance([1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](gd.EnginePointer(gdextension.Host.Objects.Lookup(gdextension.ObjectID(id))))})
 }
 
 type Notification int
@@ -112,7 +114,7 @@ func (obj Instance) CanTranslateMessages() bool {
 // ID returns the object's unique instance ID. This ID can be saved in EncodedObjectAsID, and can be used
 // to retrieve this object instance with [ID.Instance].
 func (obj Instance) ID() ID {
-	return ID(obj[0].GetInstanceId())
+	return ID(gdextension.Host.Objects.ID.Get(gdextension.Object(pointers.Get(obj[0])[0])))
 }
 
 // ScriptInstance returns the object's Script instance, or false if no script is attached.

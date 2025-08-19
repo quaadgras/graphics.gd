@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -134,36 +132,36 @@ func (self Instance) SetSteering(value Float.X) {
 
 //go:nosplit
 func (self class) SetEngineForce(engine_force float64) { //gd:VehicleBody3D.set_engine_force
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VehicleBody3D.Bind_set_engine_force, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ engine_force float64 }{engine_force}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VehicleBody3D.Bind_set_engine_force), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ engine_force float64 }{engine_force}))
 }
 
 //go:nosplit
 func (self class) GetEngineForce() float64 { //gd:VehicleBody3D.get_engine_force
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.VehicleBody3D.Bind_get_engine_force, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VehicleBody3D.Bind_get_engine_force), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBrake(brake float64) { //gd:VehicleBody3D.set_brake
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VehicleBody3D.Bind_set_brake, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ brake float64 }{brake}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VehicleBody3D.Bind_set_brake), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ brake float64 }{brake}))
 }
 
 //go:nosplit
 func (self class) GetBrake() float64 { //gd:VehicleBody3D.get_brake
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.VehicleBody3D.Bind_get_brake, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VehicleBody3D.Bind_get_brake), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSteering(steering float64) { //gd:VehicleBody3D.set_steering
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VehicleBody3D.Bind_set_steering, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ steering float64 }{steering}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VehicleBody3D.Bind_set_steering), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ steering float64 }{steering}))
 }
 
 //go:nosplit
 func (self class) GetSteering() float64 { //gd:VehicleBody3D.get_steering
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.VehicleBody3D.Bind_get_steering, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VehicleBody3D.Bind_get_steering), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

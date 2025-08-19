@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -127,31 +125,31 @@ func (self Instance) SetPressed(value bool) {
 
 //go:nosplit
 func (self class) SetButtonIndex(button_index Input.JoyButton) { //gd:InputEventJoypadButton.set_button_index
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventJoypadButton.Bind_set_button_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ button_index Input.JoyButton }{button_index}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadButton.Bind_set_button_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ button_index Input.JoyButton }{button_index}))
 }
 
 //go:nosplit
 func (self class) GetButtonIndex() Input.JoyButton { //gd:InputEventJoypadButton.get_button_index
-	var r_ret = gdunsafe.Call[Input.JoyButton](self.AsObject(), gd.Global.Methods.InputEventJoypadButton.Bind_get_button_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.JoyButton](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadButton.Bind_get_button_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressure(pressure float64) { //gd:InputEventJoypadButton.set_pressure
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventJoypadButton.Bind_set_pressure, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pressure float64 }{pressure}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadButton.Bind_set_pressure), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pressure float64 }{pressure}))
 }
 
 //go:nosplit
 func (self class) GetPressure() float64 { //gd:InputEventJoypadButton.get_pressure
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.InputEventJoypadButton.Bind_get_pressure, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadButton.Bind_get_pressure), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressed(pressed bool) { //gd:InputEventJoypadButton.set_pressed
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventJoypadButton.Bind_set_pressed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadButton.Bind_set_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
 }
 func (self class) AsInputEventJoypadButton() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsInputEventJoypadButton() Instance {

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -56,7 +55,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -150,7 +148,7 @@ Prefills required fields to configure the ScriptCreateDialog for use.
 */
 //go:nosplit
 func (self class) Config(inherits String.Readable, path String.Readable, built_in_enabled bool, load_enabled bool) { //gd:ScriptCreateDialog.config
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ScriptCreateDialog.Bind_config, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ScriptCreateDialog.Bind_config), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		inherits         gdextension.String
 		path             gdextension.String
 		built_in_enabled bool

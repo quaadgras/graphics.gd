@@ -1,7 +1,6 @@
 package startup
 
 import (
-	"math"
 	"syscall/js"
 	"unsafe"
 
@@ -213,10 +212,6 @@ func linkJS(API *gd.API) {
 			base.Pointer()[1] = uint32(read_result_buffer.Invoke(1, 0, 1).Int())
 		}
 	}
-	classdb_get_method_bind := dlsym("classdb_get_method_bind")
-	API.ClassDB.GetMethodBind = func(class, method gd.StringName, hash gd.Int) gd.MethodBind {
-		return gd.MethodBind(classdb_get_method_bind.Invoke(pointers.Get(class)[0], pointers.Get(method)[0], *(*float64)(unsafe.Pointer(&hash))).Int())
-	}
 	classdb_register_extension_class3 := dlsym("classdb_register_extension_class3")
 	API.ClassDB.RegisterClass = func(library gd.ExtensionToken, name, extends gd.StringName, info_go gd.ClassInterface) {
 		info := js.Global().Get("Object").New()
@@ -241,61 +236,6 @@ func linkJS(API *gd.API) {
 	classdb_construct_object := dlsym("classdb_construct_object")
 	API.ClassDB.ConstructObject = func(class gd.StringName) [1]gd.Object {
 		return [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(classdb_construct_object.Invoke(pointers.Get(class)[0]).Int())})}
-	}
-	object_method_bind_call := dlsym("object_bind_method_call")
-	API.Object.MethodBindCall = func(method gd.MethodBind, obj [1]gd.Object, arg ...gd.Variant) (gd.Variant, error) {
-		if obj == [1]gd.Object{} {
-			panic("nil gd.Object dereference")
-		}
-		var self uint32
-		if obj != ([1]gd.Object{}) {
-			self = uint32(pointers.Get(obj[0])[0])
-		}
-		if self == 0 {
-			panic("nil gd.Object dereference")
-		}
-		for i, v := range arg {
-			raw := pointers.Get(v)
-			buf := *(*[6]uint32)(unsafe.Pointer(&raw))
-			for j := 0; j < len(buf); j++ {
-				write_params_buffer.Invoke(0, i, j, buf[j])
-			}
-		}
-		object_method_bind_call.Invoke(uint32(method), self, uint32(len(arg)))
-		var raw [6]uint32
-		for i := 0; i < len(raw); i++ {
-			raw[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
-		}
-		return pointers.New[gd.Variant](*(*[3]uint64)(unsafe.Pointer(&raw))), nil
-	}
-	object_get_instance_from_id := dlsym("object_get_instance_from_id")
-	API.Object.GetInstanceFromID = func(id gd.ObjectID) [1]gd.Object {
-		var ret = object_get_instance_from_id.Invoke(math.Float64frombits(uint64(id))).Int()
-		if ret == 0 {
-			return [1]gd.Object{}
-		}
-		return [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](gd.EnginePointer(ret))}
-	}
-	object_method_bind_ptrcall := dlsym("object_method_bind_ptrcall")
-	API.Object.MethodBindPointerCall = func(method gd.MethodBind, obj [1]gd.Object, arg callframe.Args, ret callframe.Addr) {
-		var self [3]uint64
-		if obj != ([1]gd.Object{}) {
-			self = pointers.Get(obj[0])
-		}
-		if self[1] != 0 {
-			var ret = object_get_instance_from_id.Invoke(math.Float64frombits(self[1])).Int()
-			if ret == 0 {
-				panic("use after free")
-			}
-		}
-		writeCallFrameArguments(0, arg)
-		object_method_bind_ptrcall.Invoke(uint32(method), self[0])
-		readCallFrameResult(0, ret)
-	}
-	API.Object.MethodBindPointerCallStatic = func(method gd.MethodBind, arg callframe.Args, ret callframe.Addr) {
-		writeCallFrameArguments(0, arg)
-		object_method_bind_ptrcall.Invoke(uint32(method), 0)
-		readCallFrameResult(0, ret)
 	}
 	global_get_singleton := dlsym("global_get_singleton")
 	API.Object.GetSingleton = func(name gd.StringName) [1]gd.Object {
@@ -416,10 +356,6 @@ func linkJS(API *gd.API) {
 	object_set_instance_binding := dlsym("object_set_instance_binding")
 	API.Object.SetInstanceBinding = func(o [1]gd.Object, et gd.ExtensionToken, a any, ibt gd.InstanceBindingType) {
 		object_set_instance_binding.Invoke(pointers.Get(o[0])[0], uint32(et), 0, 0)
-	}
-	object_get_instance_id := dlsym("object_get_instance_id")
-	API.Object.GetInstanceID = func(o [1]gd.Object) gd.ObjectID {
-		return gd.ObjectID(math.Float64bits(object_get_instance_id.Invoke(pointers.Get(o[0])[0]).Float()))
 	}
 	object_cast_to := dlsym("object_cast_to")
 	API.Object.CastTo = func(o [1]gd.Object, sn gd.ClassTag) [1]gd.Object {

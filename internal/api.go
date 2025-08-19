@@ -60,19 +60,14 @@ type API struct {
 	PackedVector3Array PackedFunctionsFor[PackedVector3Array, Vector3]
 	PackedVector4Array PackedFunctionsFor[PackedVector4Array, Vector4]
 	Object             struct {
-		MethodBindCall              func(method MethodBind, obj [1]Object, arg ...Variant) (Variant, error)
-		MethodBindPointerCall       func(method MethodBind, obj [1]Object, arg callframe.Args, ret callframe.Addr)
-		MethodBindPointerCallStatic func(method MethodBind, arg callframe.Args, ret callframe.Addr)
-		Destroy                     func([1]Object)
-		GetSingleton                func(name StringName) [1]Object
-		GetInstanceBinding          func([1]Object, ExtensionToken, InstanceBindingType) any
-		SetInstanceBinding          func([1]Object, ExtensionToken, any, InstanceBindingType)
-		FreeInstanceBinding         func([1]Object, ExtensionToken)
-		SetInstance                 func([1]Object, StringName, ObjectInterface)
-		GetClassName                func([1]Object, ExtensionToken) String
-		CastTo                      func([1]Object, ClassTag) [1]Object
-		GetInstanceID               func([1]Object) ObjectID
-		GetInstanceFromID           func(ObjectID) [1]Object
+		Destroy             func([1]Object)
+		GetSingleton        func(name StringName) [1]Object
+		GetInstanceBinding  func([1]Object, ExtensionToken, InstanceBindingType) any
+		SetInstanceBinding  func([1]Object, ExtensionToken, any, InstanceBindingType)
+		FreeInstanceBinding func([1]Object, ExtensionToken)
+		SetInstance         func([1]Object, StringName, ObjectInterface)
+		GetClassName        func([1]Object, ExtensionToken) String
+		CastTo              func([1]Object, ClassTag) [1]Object
 	}
 	Callables struct {
 		Create func(fn func(...Variant) (Variant, error)) Callable
@@ -81,11 +76,9 @@ type API struct {
 	ClassDB struct {
 		ConstructObject func(StringName) [1]Object
 		GetClassTag     func(StringName) ClassTag
-		GetMethodBind   func(class, method StringName, hash Int) MethodBind
 
 		RegisterClass                 func(library ExtensionToken, name, extends StringName, info ClassInterface)
 		RegisterClassMethod           func(library ExtensionToken, class StringName, info Method)
-		RegisterClassIntegerConstant  func(library ExtensionToken, class, enum, name StringName, value int64, bitfield bool)
 		RegisterClassProperty         func(library ExtensionToken, class StringName, info PropertyInfo, getter, setter StringName)
 		RegisterClassPropertyIndexed  func(library ExtensionToken, class StringName, info PropertyInfo, getter, setter StringName, index int64)
 		RegisterClassPropertyGroup    func(library ExtensionToken, class StringName, group, prefix String)

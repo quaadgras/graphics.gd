@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -114,12 +112,12 @@ func (self Instance) SetFlags(value EmitFlags) {
 
 //go:nosplit
 func (self class) SetFlags(flags EmitFlags) { //gd:VisualShaderNodeParticleEmit.set_flags
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeParticleEmit.Bind_set_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags EmitFlags }{flags}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleEmit.Bind_set_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags EmitFlags }{flags}))
 }
 
 //go:nosplit
 func (self class) GetFlags() EmitFlags { //gd:VisualShaderNodeParticleEmit.get_flags
-	var r_ret = gdunsafe.Call[EmitFlags](self.AsObject(), gd.Global.Methods.VisualShaderNodeParticleEmit.Bind_get_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[EmitFlags](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleEmit.Bind_get_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

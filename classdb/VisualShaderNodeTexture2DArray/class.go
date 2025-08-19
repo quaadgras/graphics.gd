@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -116,12 +114,12 @@ func (self Instance) SetTextureArray(value TextureLayered.Instance) {
 
 //go:nosplit
 func (self class) SetTextureArray(value [1]gdclass.TextureLayered) { //gd:VisualShaderNodeTexture2DArray.set_texture_array
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTexture2DArray.Bind_set_texture_array, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(value[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture2DArray.Bind_set_texture_array), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(value[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTextureArray() [1]gdclass.TextureLayered { //gd:VisualShaderNodeTexture2DArray.get_texture_array
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.VisualShaderNodeTexture2DArray.Bind_get_texture_array, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture2DArray.Bind_get_texture_array), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TextureLayered{gd.PointerWithOwnershipTransferredToGo[gdclass.TextureLayered](r_ret)}
 	return ret
 }

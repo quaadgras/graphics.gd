@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -338,7 +336,7 @@ Connects to the given URL. TLS certificates will be verified against the hostnam
 */
 //go:nosplit
 func (self class) ConnectToUrl(url String.Readable, tls_client_options [1]gdclass.TLSOptions) Error.Code { //gd:WebSocketPeer.connect_to_url
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_connect_to_url, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_connect_to_url), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		url                gdextension.String
 		tls_client_options gdextension.Object
 	}{gdextension.String(pointers.Get(gd.InternalString(url))[0]), gdextension.Object(gd.ObjectChecked(tls_client_options[0].AsObject()))}))
@@ -352,7 +350,7 @@ Accepts a peer connection performing the HTTP handshake as a WebSocket server. T
 */
 //go:nosplit
 func (self class) AcceptStream(stream [1]gdclass.StreamPeer) Error.Code { //gd:WebSocketPeer.accept_stream
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_accept_stream, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_accept_stream), gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -362,7 +360,7 @@ Sends the given [param message] using the desired [param write_mode]. When sendi
 */
 //go:nosplit
 func (self class) Send(message Packed.Bytes, write_mode WriteMode) Error.Code { //gd:WebSocketPeer.send
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_send, gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_send), gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		message    gdextension.PackedArray
 		write_mode WriteMode
 	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](message)))), write_mode}))
@@ -375,7 +373,7 @@ Sends the given [param message] using WebSocket text mode. Prefer this method ov
 */
 //go:nosplit
 func (self class) SendText(message String.Readable) Error.Code { //gd:WebSocketPeer.send_text
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_send_text, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ message gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(message))[0])}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_send_text), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ message gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(message))[0])}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -385,7 +383,7 @@ Returns [code]true[/code] if the last received packet was sent as a text payload
 */
 //go:nosplit
 func (self class) WasStringPacket() bool { //gd:WebSocketPeer.was_string_packet
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_was_string_packet, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_was_string_packet), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -395,7 +393,7 @@ Updates the connection state and receive incoming packets. Call this function re
 */
 //go:nosplit
 func (self class) Poll() { //gd:WebSocketPeer.poll
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_poll, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_poll), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -405,7 +403,7 @@ Closes this WebSocket connection. [param code] is the status code for the closur
 */
 //go:nosplit
 func (self class) Close(code int64, reason String.Readable) { //gd:WebSocketPeer.close
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_close, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_close), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		code   int64
 		reason gdextension.String
 	}{code, gdextension.String(pointers.Get(gd.InternalString(reason))[0])}))
@@ -417,7 +415,7 @@ Returns the IP address of the connected peer.
 */
 //go:nosplit
 func (self class) GetConnectedHost() String.Readable { //gd:WebSocketPeer.get_connected_host
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_connected_host, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_connected_host), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -428,7 +426,7 @@ Returns the remote port of the connected peer.
 */
 //go:nosplit
 func (self class) GetConnectedPort() int64 { //gd:WebSocketPeer.get_connected_port
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_connected_port, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_connected_port), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -438,7 +436,7 @@ Returns the selected WebSocket sub-protocol for this connection or an empty stri
 */
 //go:nosplit
 func (self class) GetSelectedProtocol() String.Readable { //gd:WebSocketPeer.get_selected_protocol
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_selected_protocol, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_selected_protocol), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -448,7 +446,7 @@ Returns the URL requested by this peer. The URL is derived from the [code]url[/c
 */
 //go:nosplit
 func (self class) GetRequestedUrl() String.Readable { //gd:WebSocketPeer.get_requested_url
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_requested_url, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_requested_url), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -459,7 +457,7 @@ Disable Nagle's algorithm on the underlying TCP socket (default). See [method St
 */
 //go:nosplit
 func (self class) SetNoDelay(enabled bool) { //gd:WebSocketPeer.set_no_delay
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_set_no_delay, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_set_no_delay), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 /*
@@ -467,7 +465,7 @@ Returns the current amount of data in the outbound websocket buffer. [b]Note:[/b
 */
 //go:nosplit
 func (self class) GetCurrentOutboundBufferedAmount() int64 { //gd:WebSocketPeer.get_current_outbound_buffered_amount
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_current_outbound_buffered_amount, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_current_outbound_buffered_amount), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -477,7 +475,7 @@ Returns the ready state of the connection. See [enum State].
 */
 //go:nosplit
 func (self class) GetReadyState() State { //gd:WebSocketPeer.get_ready_state
-	var r_ret = gdunsafe.Call[State](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_ready_state, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[State](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_ready_state), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -487,7 +485,7 @@ Returns the received WebSocket close frame status code, or [code]-1[/code] when 
 */
 //go:nosplit
 func (self class) GetCloseCode() int64 { //gd:WebSocketPeer.get_close_code
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_close_code, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_close_code), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -497,79 +495,79 @@ Returns the received WebSocket close frame status reason string. Only call this 
 */
 //go:nosplit
 func (self class) GetCloseReason() String.Readable { //gd:WebSocketPeer.get_close_reason
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_close_reason, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_close_reason), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetSupportedProtocols() Packed.Strings { //gd:WebSocketPeer.get_supported_protocols
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_supported_protocols, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_supported_protocols), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSupportedProtocols(protocols Packed.Strings) { //gd:WebSocketPeer.set_supported_protocols
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_set_supported_protocols, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ protocols gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(protocols)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_set_supported_protocols), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ protocols gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(protocols)))}))
 }
 
 //go:nosplit
 func (self class) GetHandshakeHeaders() Packed.Strings { //gd:WebSocketPeer.get_handshake_headers
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_handshake_headers, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_handshake_headers), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHandshakeHeaders(protocols Packed.Strings) { //gd:WebSocketPeer.set_handshake_headers
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_set_handshake_headers, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ protocols gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(protocols)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_set_handshake_headers), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ protocols gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(protocols)))}))
 }
 
 //go:nosplit
 func (self class) GetInboundBufferSize() int64 { //gd:WebSocketPeer.get_inbound_buffer_size
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_inbound_buffer_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_inbound_buffer_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInboundBufferSize(buffer_size int64) { //gd:WebSocketPeer.set_inbound_buffer_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_set_inbound_buffer_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ buffer_size int64 }{buffer_size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_set_inbound_buffer_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ buffer_size int64 }{buffer_size}))
 }
 
 //go:nosplit
 func (self class) GetOutboundBufferSize() int64 { //gd:WebSocketPeer.get_outbound_buffer_size
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_outbound_buffer_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_outbound_buffer_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOutboundBufferSize(buffer_size int64) { //gd:WebSocketPeer.set_outbound_buffer_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_set_outbound_buffer_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ buffer_size int64 }{buffer_size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_set_outbound_buffer_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ buffer_size int64 }{buffer_size}))
 }
 
 //go:nosplit
 func (self class) SetMaxQueuedPackets(buffer_size int64) { //gd:WebSocketPeer.set_max_queued_packets
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_set_max_queued_packets, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ buffer_size int64 }{buffer_size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_set_max_queued_packets), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ buffer_size int64 }{buffer_size}))
 }
 
 //go:nosplit
 func (self class) GetMaxQueuedPackets() int64 { //gd:WebSocketPeer.get_max_queued_packets
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_max_queued_packets, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_max_queued_packets), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeartbeatInterval(interval float64) { //gd:WebSocketPeer.set_heartbeat_interval
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_set_heartbeat_interval, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ interval float64 }{interval}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_set_heartbeat_interval), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ interval float64 }{interval}))
 }
 
 //go:nosplit
 func (self class) GetHeartbeatInterval() float64 { //gd:WebSocketPeer.get_heartbeat_interval
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.WebSocketPeer.Bind_get_heartbeat_interval, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.WebSocketPeer.Bind_get_heartbeat_interval), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

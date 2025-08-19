@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -124,24 +122,24 @@ func (self Instance) SetDefaultValue(value Transform3D.BasisOrigin) {
 
 //go:nosplit
 func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeTransformParameter.set_default_value_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTransformParameter.Bind_set_default_value_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTransformParameter.Bind_set_default_value_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeTransformParameter.is_default_value_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.VisualShaderNodeTransformParameter.Bind_is_default_value_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTransformParameter.Bind_is_default_value_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultValue(value Transform3D.BasisOrigin) { //gd:VisualShaderNodeTransformParameter.set_default_value
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.VisualShaderNodeTransformParameter.Bind_set_default_value, 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ value Transform3D.BasisOrigin }{gd.Transposed(value)}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTransformParameter.Bind_set_default_value), 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ value Transform3D.BasisOrigin }{gd.Transposed(value)}))
 }
 
 //go:nosplit
 func (self class) GetDefaultValue() Transform3D.BasisOrigin { //gd:VisualShaderNodeTransformParameter.get_default_value
-	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.VisualShaderNodeTransformParameter.Bind_get_default_value, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTransformParameter.Bind_get_default_value), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }

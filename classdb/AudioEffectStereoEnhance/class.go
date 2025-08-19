@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -130,36 +128,36 @@ func (self Instance) SetSurround(value Float.X) {
 
 //go:nosplit
 func (self class) SetPanPullout(amount float64) { //gd:AudioEffectStereoEnhance.set_pan_pullout
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectStereoEnhance.Bind_set_pan_pullout, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectStereoEnhance.Bind_set_pan_pullout), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetPanPullout() float64 { //gd:AudioEffectStereoEnhance.get_pan_pullout
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectStereoEnhance.Bind_get_pan_pullout, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectStereoEnhance.Bind_get_pan_pullout), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTimePullout(amount float64) { //gd:AudioEffectStereoEnhance.set_time_pullout
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectStereoEnhance.Bind_set_time_pullout, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectStereoEnhance.Bind_set_time_pullout), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetTimePullout() float64 { //gd:AudioEffectStereoEnhance.get_time_pullout
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectStereoEnhance.Bind_get_time_pullout, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectStereoEnhance.Bind_get_time_pullout), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSurround(amount float64) { //gd:AudioEffectStereoEnhance.set_surround
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioEffectStereoEnhance.Bind_set_surround, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectStereoEnhance.Bind_set_surround), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetSurround() float64 { //gd:AudioEffectStereoEnhance.get_surround
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioEffectStereoEnhance.Bind_get_surround, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioEffectStereoEnhance.Bind_get_surround), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

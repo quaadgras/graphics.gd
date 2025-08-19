@@ -9,7 +9,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -162,7 +160,7 @@ Bakes the [param navigation_mesh] with source geometry collected starting from t
 */
 //go:nosplit
 func (self class) Bake(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) { //gd:NavigationMeshGenerator.bake
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshGenerator.Bind_bake, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshGenerator.Bind_bake), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		navigation_mesh gdextension.Object
 		root_node       gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject()))}))
@@ -173,7 +171,7 @@ Removes all polygons and vertices from the provided [param navigation_mesh] reso
 */
 //go:nosplit
 func (self class) Clear(navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationMeshGenerator.clear
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshGenerator.Bind_clear, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshGenerator.Bind_clear), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))}))
 }
 
 /*
@@ -183,7 +181,7 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 */
 //go:nosplit
 func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback Callable.Function) { //gd:NavigationMeshGenerator.parse_source_geometry_data
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshGenerator.Bind_parse_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeCallable<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshGenerator.Bind_parse_source_geometry_data), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeCallable<<16), unsafe.Pointer(&struct {
 		navigation_mesh      gdextension.Object
 		source_geometry_data gdextension.Object
 		root_node            gdextension.Object
@@ -196,7 +194,7 @@ Bakes the provided [param navigation_mesh] with the data from the provided [para
 */
 //go:nosplit
 func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback Callable.Function) { //gd:NavigationMeshGenerator.bake_from_source_geometry_data
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.NavigationMeshGenerator.Bind_bake_from_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshGenerator.Bind_bake_from_source_geometry_data), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
 		navigation_mesh      gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable

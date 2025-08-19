@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -158,29 +156,29 @@ This method does nothing.
 */
 //go:nosplit
 func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:CollisionShape3D.resource_changed
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_resource_changed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape3D.Bind_resource_changed), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:CollisionShape3D.set_shape
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape3D.Bind_set_shape), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetShape() [1]gdclass.Shape3D { //gd:CollisionShape3D.get_shape
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_get_shape, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape3D.Bind_get_shape), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Shape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape3D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisabled(enable bool) { //gd:CollisionShape3D.set_disabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_set_disabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape3D.Bind_set_disabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDisabled() bool { //gd:CollisionShape3D.is_disabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_is_disabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape3D.Bind_is_disabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -190,29 +188,29 @@ Sets the collision shape's shape to the addition of all its convexed [MeshInstan
 */
 //go:nosplit
 func (self class) MakeConvexFromSiblings() { //gd:CollisionShape3D.make_convex_from_siblings
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_make_convex_from_siblings, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape3D.Bind_make_convex_from_siblings), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetDebugColor(color Color.RGBA) { //gd:CollisionShape3D.set_debug_color
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_set_debug_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape3D.Bind_set_debug_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetDebugColor() Color.RGBA { //gd:CollisionShape3D.get_debug_color
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_get_debug_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape3D.Bind_get_debug_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableDebugFill(enable bool) { //gd:CollisionShape3D.set_enable_debug_fill
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_set_enable_debug_fill, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape3D.Bind_set_enable_debug_fill), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetEnableDebugFill() bool { //gd:CollisionShape3D.get_enable_debug_fill
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CollisionShape3D.Bind_get_enable_debug_fill, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CollisionShape3D.Bind_get_enable_debug_fill), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

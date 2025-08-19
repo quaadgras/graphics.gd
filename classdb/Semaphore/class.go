@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -50,7 +49,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -141,7 +139,7 @@ Waits for the [Semaphore], if its value is zero, blocks until non-zero.
 */
 //go:nosplit
 func (self class) Wait() { //gd:Semaphore.wait
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Semaphore.Bind_wait, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Semaphore.Bind_wait), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -149,7 +147,7 @@ Like [method wait], but won't block, so if the value is zero, fails immediately 
 */
 //go:nosplit
 func (self class) TryWait() bool { //gd:Semaphore.try_wait
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Semaphore.Bind_try_wait, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Semaphore.Bind_try_wait), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -159,7 +157,7 @@ Lowers the [Semaphore], allowing one thread in, or more if [param count] is spec
 */
 //go:nosplit
 func (self class) Post(count int64) { //gd:Semaphore.post
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Semaphore.Bind_post, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Semaphore.Bind_post), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 func (self class) AsSemaphore() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsSemaphore() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

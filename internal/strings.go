@@ -50,6 +50,9 @@ func (s String) String() string {
 	if pointers.Get(s) == ([1]EnginePointer{}) {
 		return ""
 	}
+	if s.Length() == 0 {
+		return ""
+	}
 	var buf = make([]byte, s.Length())
 	gdextension.Host.Strings.Encode.UTF8(gdextension.String(pointers.Get(s)[0]), buf)
 	return unsafe.String(&buf[0], len(buf))
@@ -170,21 +173,23 @@ func (StringProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringType.
 	return StringType.Rune(gdextension.Host.Strings.Access(gdextension.String(pointers.Get(pointers.Load[String](raw))[0]), 0)), 0, StringType.Via(StringProxy{}, pointers.Pack(next))
 }
 func (StringProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Readable {
-	s := gdextension.String(pointers.Get(pointers.Load[String](raw))[0])
-	s = gdextension.Host.Strings.Append.Rune(s, rune(r))
-	return StringType.Via(StringProxy{}, pointers.Pack(pointers.New[String]([1]EnginePointer{EnginePointer(s)})))
+	s := pointers.Load[String](raw)
+	str := s.Substr(0, s.Length())
+	pointers.Set(str, [1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.Rune(gdextension.String(pointers.Get(str)[0]), rune(r)))})
+	return StringType.Via(StringProxy{}, pointers.Pack(str))
 }
 func (StringProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Readable {
-	s := gdextension.String(pointers.Get(pointers.Load[String](raw))[0])
-	s2 := gdextension.String(pointers.Get(pointers.Load[String](raw2))[0])
-	s = gdextension.Host.Strings.Append.String(s, s2)
-	return StringType.Via(StringProxy{}, pointers.Pack(pointers.New[String]([1]EnginePointer{EnginePointer(s)})))
+	s := pointers.Load[String](raw)
+	s2 := pointers.Load[String](raw2)
+	sub := s.Substr(0, s.Length())
+	pointers.Set(sub, [1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.String(gdextension.String(pointers.Get(sub)[0]), gdextension.String(pointers.Get(s2)[0])))})
+	return StringType.Via(StringProxy{}, pointers.Pack(sub))
 }
 func (StringProxy) AppendString(raw complex128, str string) StringType.Readable {
-	s := gdextension.String(pointers.Get(pointers.Load[String](raw))[0])
-	s2 := gdextension.String(pointers.Get(NewString(str))[0])
-	s = gdextension.Host.Strings.Append.String(s, s2)
-	return StringType.Via(StringProxy{}, pointers.Pack(pointers.New[String]([1]EnginePointer{EnginePointer(s)})))
+	s := pointers.Load[String](raw)
+	sub := s.Substr(0, s.Length())
+	pointers.Set(sub, [1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.String(gdextension.String(pointers.Get(sub)[0]), gdextension.String(pointers.Get(NewString(str))[0])))})
+	return StringType.Via(StringProxy{}, pointers.Pack(sub))
 }
 func (StringProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {
 	return int(pointers.Load[String](raw).CasecmpTo(pointers.Load[String](raw2)))
@@ -226,22 +231,21 @@ func (NodePathProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringTyp
 func (NodePathProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Readable {
 	s := pointers.Load[NodePath](raw)
 	str := s.InternalString()
-	s = pointers.New[String]([1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.Rune(gdextension.String(pointers.Get(str)[0]), rune(r)))}).NodePath()
-	return StringType.Via(NodePathProxy{}, pointers.Pack(s))
+	pointers.Set(str, [1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.Rune(gdextension.String(pointers.Get(str)[0]), rune(r)))})
+	return StringType.Via(NodePathProxy{}, pointers.Pack(str.NodePath()))
 }
 func (NodePathProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Readable {
-	s := pointers.Load[NodePath](raw).InternalString()
-	s2 := pointers.Load[NodePath](raw2).InternalString()
-	gdextension.Host.Strings.Append.String(gdextension.String(pointers.Get(s)[0]), gdextension.String(pointers.Get(s2)[0]))
-	r := pointers.New[String]([1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.String(gdextension.String(pointers.Get(s)[0]), gdextension.String(pointers.Get(s2)[0])))}).NodePath()
-	return StringType.Via(NodePathProxy{}, pointers.Pack(r))
+	s := pointers.Load[NodePath](raw)
+	s2 := pointers.Load[NodePath](raw2)
+	sub := s.InternalString()
+	pointers.Set(sub, [1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.String(gdextension.String(pointers.Get(sub)[0]), gdextension.String(pointers.Get(s2.InternalString())[0])))})
+	return StringType.Via(StringNameProxy{}, pointers.Pack(sub.NodePath()))
 }
 func (NodePathProxy) AppendString(raw complex128, str string) StringType.Readable {
-	s := pointers.Load[NodePath](raw).InternalString()
-	s2 := NewString(str)
-	gdextension.Host.Strings.Append.String(gdextension.String(pointers.Get(s)[0]), gdextension.String(pointers.Get(s2)[0]))
-	r := pointers.New[String]([1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.String(gdextension.String(pointers.Get(s)[0]), gdextension.String(pointers.Get(s2)[0])))}).NodePath()
-	return StringType.Via(NodePathProxy{}, pointers.Pack(r))
+	s := pointers.Load[NodePath](raw)
+	sub := s.InternalString()
+	pointers.Set(sub, [1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.String(gdextension.String(pointers.Get(sub)[0]), gdextension.String(pointers.Get(NewString(str))[0])))})
+	return StringType.Via(NodePathProxy{}, pointers.Pack(sub.NodePath()))
 }
 func (NodePathProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {
 	return int(pointers.Load[NodePath](raw).InternalString().CasecmpTo(pointers.Load[NodePath](raw2).InternalString()))
@@ -284,21 +288,21 @@ func (StringNameProxy) DecodeRune(raw complex128) (StringType.Rune, int, StringT
 func (StringNameProxy) AppendRune(raw complex128, r StringType.Rune) StringType.Readable {
 	s := pointers.Load[StringName](raw)
 	str := s.Substr(0, s.Length())
-	result := pointers.New[String]([1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.Rune(gdextension.String(pointers.Get(str)[0]), rune(r)))})
-	return StringType.Via(StringNameProxy{}, pointers.Pack(result.StringName()))
+	pointers.Set(str, [1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.Rune(gdextension.String(pointers.Get(str)[0]), rune(r)))})
+	return StringType.Via(StringNameProxy{}, pointers.Pack(str.StringName()))
 }
 func (StringNameProxy) AppendOther(raw complex128, api StringType.API, raw2 complex128) StringType.Readable {
 	s := pointers.Load[StringName](raw)
-	s2 := pointers.Load[StringName](raw2)
+	s2 := pointers.Load[StringName](raw2).String()
 	sub := s.Substr(0, s.Length())
-	result := pointers.New[String]([1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.String(gdextension.String(pointers.Get(sub)[0]), gdextension.String(pointers.Get(s2)[0])))})
-	return StringType.Via(StringNameProxy{}, pointers.Pack(result.StringName()))
+	pointers.Set(sub, [1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.String(gdextension.String(pointers.Get(sub)[0]), gdextension.String(pointers.Get(NewString(s2))[0])))})
+	return StringType.Via(StringNameProxy{}, pointers.Pack(sub.StringName()))
 }
 func (StringNameProxy) AppendString(raw complex128, str string) StringType.Readable {
 	s := pointers.Load[StringName](raw)
 	sub := s.Substr(0, s.Length())
-	result := pointers.New[String]([1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.String(gdextension.String(pointers.Get(sub)[0]), gdextension.String(pointers.Get(NewString(str))[0])))})
-	return StringType.Via(StringNameProxy{}, pointers.Pack(result.StringName()))
+	pointers.Set(sub, [1]EnginePointer{EnginePointer(gdextension.Host.Strings.Append.String(gdextension.String(pointers.Get(sub)[0]), gdextension.String(pointers.Get(NewString(str))[0])))})
+	return StringType.Via(StringNameProxy{}, pointers.Pack(sub.StringName()))
 }
 func (StringNameProxy) CompareOther(raw complex128, other_api StringType.API, raw2 complex128) int {
 	other := pointers.Load[StringName](raw2)

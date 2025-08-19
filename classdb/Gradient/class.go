@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -206,7 +204,7 @@ Adds the specified color to the gradient, with the specified offset.
 */
 //go:nosplit
 func (self class) AddPoint(offset float64, color Color.RGBA) { //gd:Gradient.add_point
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Gradient.Bind_add_point, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_add_point), 0|(gdextension.SizeFloat<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		offset float64
 		color  Color.RGBA
 	}{offset, color}))
@@ -217,7 +215,7 @@ Removes the color at index [param point].
 */
 //go:nosplit
 func (self class) RemovePoint(point int64) { //gd:Gradient.remove_point
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Gradient.Bind_remove_point, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ point int64 }{point}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_remove_point), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ point int64 }{point}))
 }
 
 /*
@@ -225,7 +223,7 @@ Sets the offset for the gradient color at index [param point].
 */
 //go:nosplit
 func (self class) SetOffset(point int64, offset float64) { //gd:Gradient.set_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Gradient.Bind_set_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_set_offset), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		point  int64
 		offset float64
 	}{point, offset}))
@@ -236,7 +234,7 @@ Returns the offset of the gradient color at index [param point].
 */
 //go:nosplit
 func (self class) GetOffset(point int64) float64 { //gd:Gradient.get_offset
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Gradient.Bind_get_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ point int64 }{point}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_get_offset), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ point int64 }{point}))
 	var ret = r_ret
 	return ret
 }
@@ -247,7 +245,7 @@ Reverses/mirrors the gradient.
 */
 //go:nosplit
 func (self class) Reverse() { //gd:Gradient.reverse
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Gradient.Bind_reverse, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_reverse), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -255,7 +253,7 @@ Sets the color of the gradient color at index [param point].
 */
 //go:nosplit
 func (self class) SetColor(point int64, color Color.RGBA) { //gd:Gradient.set_color
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Gradient.Bind_set_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_set_color), 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		point int64
 		color Color.RGBA
 	}{point, color}))
@@ -266,7 +264,7 @@ Returns the color of the gradient color at index [param point].
 */
 //go:nosplit
 func (self class) GetColor(point int64) Color.RGBA { //gd:Gradient.get_color
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.Gradient.Bind_get_color, gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ point int64 }{point}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_get_color), gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ point int64 }{point}))
 	var ret = r_ret
 	return ret
 }
@@ -276,7 +274,7 @@ Returns the interpolated color specified by [param offset].
 */
 //go:nosplit
 func (self class) Sample(offset float64) Color.RGBA { //gd:Gradient.sample
-	var r_ret = gdunsafe.Call[Color.RGBA](self.AsObject(), gd.Global.Methods.Gradient.Bind_sample, gdextension.SizeColor|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	var r_ret = gdextension.Call[Color.RGBA](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_sample), gdextension.SizeColor|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
 	var ret = r_ret
 	return ret
 }
@@ -286,55 +284,55 @@ Returns the number of colors in the gradient.
 */
 //go:nosplit
 func (self class) GetPointCount() int64 { //gd:Gradient.get_point_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Gradient.Bind_get_point_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_get_point_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffsets(offsets Packed.Array[float32]) { //gd:Gradient.set_offsets
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Gradient.Bind_set_offsets, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ offsets gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](offsets)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_set_offsets), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ offsets gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](offsets)))}))
 }
 
 //go:nosplit
 func (self class) GetOffsets() Packed.Array[float32] { //gd:Gradient.get_offsets
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Gradient.Bind_get_offsets, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_get_offsets), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColors(colors Packed.Array[Color.RGBA]) { //gd:Gradient.set_colors
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Gradient.Bind_set_colors, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ colors gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_set_colors), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ colors gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))}))
 }
 
 //go:nosplit
 func (self class) GetColors() Packed.Array[Color.RGBA] { //gd:Gradient.get_colors
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.Gradient.Bind_get_colors, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_get_colors), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInterpolationMode(interpolation_mode InterpolationMode) { //gd:Gradient.set_interpolation_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Gradient.Bind_set_interpolation_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ interpolation_mode InterpolationMode }{interpolation_mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_set_interpolation_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ interpolation_mode InterpolationMode }{interpolation_mode}))
 }
 
 //go:nosplit
 func (self class) GetInterpolationMode() InterpolationMode { //gd:Gradient.get_interpolation_mode
-	var r_ret = gdunsafe.Call[InterpolationMode](self.AsObject(), gd.Global.Methods.Gradient.Bind_get_interpolation_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[InterpolationMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_get_interpolation_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInterpolationColorSpace(interpolation_color_space ColorSpace) { //gd:Gradient.set_interpolation_color_space
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Gradient.Bind_set_interpolation_color_space, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ interpolation_color_space ColorSpace }{interpolation_color_space}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_set_interpolation_color_space), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ interpolation_color_space ColorSpace }{interpolation_color_space}))
 }
 
 //go:nosplit
 func (self class) GetInterpolationColorSpace() ColorSpace { //gd:Gradient.get_interpolation_color_space
-	var r_ret = gdunsafe.Call[ColorSpace](self.AsObject(), gd.Global.Methods.Gradient.Bind_get_interpolation_color_space, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ColorSpace](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_get_interpolation_color_space), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

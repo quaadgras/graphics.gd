@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -266,7 +264,7 @@ The way undo operation are ordered in actions is dictated by [param backward_und
 */
 //go:nosplit
 func (self class) CreateAction(name String.Readable, merge_mode UndoRedo.MergeMode, custom_context [1]gd.Object, backward_undo_ops bool) { //gd:EditorUndoRedoManager.create_action
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorUndoRedoManager.Bind_create_action, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_create_action), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		name              gdextension.String
 		merge_mode        UndoRedo.MergeMode
 		custom_context    gdextension.Object
@@ -279,7 +277,7 @@ Commits the action. If [param execute] is [code]true[/code] (default), all "do" 
 */
 //go:nosplit
 func (self class) CommitAction(execute bool) { //gd:EditorUndoRedoManager.commit_action
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorUndoRedoManager.Bind_commit_action, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ execute bool }{execute}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_commit_action), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ execute bool }{execute}))
 }
 
 /*
@@ -287,7 +285,7 @@ Returns [code]true[/code] if the [EditorUndoRedoManager] is currently committing
 */
 //go:nosplit
 func (self class) IsCommittingAction() bool { //gd:EditorUndoRedoManager.is_committing_action
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorUndoRedoManager.Bind_is_committing_action, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_is_committing_action), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -298,7 +296,7 @@ This method should only be used when absolutely necessary, otherwise it might ca
 */
 //go:nosplit
 func (self class) ForceFixedHistory() { //gd:EditorUndoRedoManager.force_fixed_history
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorUndoRedoManager.Bind_force_fixed_history, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_force_fixed_history), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -307,8 +305,8 @@ If this is the first operation, the [param object] will be used to deduce target
 */
 //go:nosplit
 func (self class) AddDoMethod(obj [1]gd.Object, method String.Name, args ...gd.Variant) { //gd:EditorUndoRedoManager.add_do_method
-	var fixed = [...]gd.Variant{gd.NewVariant(obj), gd.NewVariant(method)}
-	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_method, self.AsObject(), append(fixed[:], args...)...)
+	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(obj))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
+	ret, err := gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_method).Call(gdextension.Object(gd.ObjectChecked(self.AsObject())), fixed[:]...)
 	if err != nil {
 		panic(err)
 	}
@@ -321,8 +319,8 @@ If this is the first operation, the [param object] will be used to deduce target
 */
 //go:nosplit
 func (self class) AddUndoMethod(obj [1]gd.Object, method String.Name, args ...gd.Variant) { //gd:EditorUndoRedoManager.add_undo_method
-	var fixed = [...]gd.Variant{gd.NewVariant(obj), gd.NewVariant(method)}
-	ret, err := gd.Global.Object.MethodBindCall(gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_method, self.AsObject(), append(fixed[:], args...)...)
+	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(obj))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
+	ret, err := gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_method).Call(gdextension.Object(gd.ObjectChecked(self.AsObject())), fixed[:]...)
 	if err != nil {
 		panic(err)
 	}
@@ -335,7 +333,7 @@ If this is the first operation, the [param object] will be used to deduce target
 */
 //go:nosplit
 func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value variant.Any) { //gd:EditorUndoRedoManager.add_do_property
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_property, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_property), 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		obj      gdextension.Object
 		property gdextension.StringName
 		value    gdextension.Variant
@@ -348,7 +346,7 @@ If this is the first operation, the [param object] will be used to deduce target
 */
 //go:nosplit
 func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value variant.Any) { //gd:EditorUndoRedoManager.add_undo_property
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_property, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_property), 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		obj      gdextension.Object
 		property gdextension.StringName
 		value    gdextension.Variant
@@ -360,7 +358,7 @@ Register a reference for "do" that will be erased if the "do" history is lost. T
 */
 //go:nosplit
 func (self class) AddDoReference(obj [1]gd.Object) { //gd:EditorUndoRedoManager.add_do_reference
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_reference, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_add_do_reference), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))}))
 }
 
 /*
@@ -368,7 +366,7 @@ Register a reference for "undo" that will be erased if the "undo" history is los
 */
 //go:nosplit
 func (self class) AddUndoReference(obj [1]gd.Object) { //gd:EditorUndoRedoManager.add_undo_reference
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_reference, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_add_undo_reference), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))}))
 }
 
 /*
@@ -376,7 +374,7 @@ Returns the history ID deduced from the given [param object]. It can be used wit
 */
 //go:nosplit
 func (self class) GetObjectHistoryId(obj [1]gd.Object) int64 { //gd:EditorUndoRedoManager.get_object_history_id
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.EditorUndoRedoManager.Bind_get_object_history_id, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_get_object_history_id), gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -388,7 +386,7 @@ Best used with [method get_object_history_id]. This method is only provided in c
 */
 //go:nosplit
 func (self class) GetHistoryUndoRedo(id int64) [1]gdclass.UndoRedo { //gd:EditorUndoRedoManager.get_history_undo_redo
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorUndoRedoManager.Bind_get_history_undo_redo, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_get_history_undo_redo), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = [1]gdclass.UndoRedo{gd.PointerLifetimeBoundTo[gdclass.UndoRedo](self.AsObject(), r_ret)}
 	return ret
 }
@@ -405,7 +403,7 @@ undo_redo.clear_history(undo_redo.get_object_history_id(scene_root))
 */
 //go:nosplit
 func (self class) ClearHistory(id int64, increase_version bool) { //gd:EditorUndoRedoManager.clear_history
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorUndoRedoManager.Bind_clear_history, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_clear_history), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		id               int64
 		increase_version bool
 	}{id, increase_version}))

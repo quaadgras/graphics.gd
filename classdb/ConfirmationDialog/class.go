@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -137,19 +135,19 @@ Returns the cancel button.
 */
 //go:nosplit
 func (self class) GetCancelButton() [1]gdclass.Button { //gd:ConfirmationDialog.get_cancel_button
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.ConfirmationDialog.Bind_get_cancel_button, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConfirmationDialog.Bind_get_cancel_button), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Button{gd.PointerLifetimeBoundTo[gdclass.Button](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCancelButtonText(text String.Readable) { //gd:ConfirmationDialog.set_cancel_button_text
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ConfirmationDialog.Bind_set_cancel_button_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConfirmationDialog.Bind_set_cancel_button_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 //go:nosplit
 func (self class) GetCancelButtonText() String.Readable { //gd:ConfirmationDialog.get_cancel_button_text
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.ConfirmationDialog.Bind_get_cancel_button_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConfirmationDialog.Bind_get_cancel_button_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

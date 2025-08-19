@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -179,7 +177,7 @@ Saves a key to the given [param path]. If [param public_only] is [code]true[/cod
 */
 //go:nosplit
 func (self class) Save(path String.Readable, public_only bool) Error.Code { //gd:CryptoKey.save
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CryptoKey.Bind_save, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_save), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path        gdextension.String
 		public_only bool
 	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), public_only}))
@@ -193,7 +191,7 @@ Loads a key from [param path]. If [param public_only] is [code]true[/code], only
 */
 //go:nosplit
 func (self class) Load(path String.Readable, public_only bool) Error.Code { //gd:CryptoKey.load
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CryptoKey.Bind_load, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_load), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path        gdextension.String
 		public_only bool
 	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), public_only}))
@@ -206,7 +204,7 @@ Returns [code]true[/code] if this CryptoKey only has the public part, and not th
 */
 //go:nosplit
 func (self class) IsPublicOnly() bool { //gd:CryptoKey.is_public_only
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.CryptoKey.Bind_is_public_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_is_public_only), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -216,7 +214,7 @@ Returns a string containing the key in PEM format. If [param public_only] is [co
 */
 //go:nosplit
 func (self class) SaveToString(public_only bool) String.Readable { //gd:CryptoKey.save_to_string
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.CryptoKey.Bind_save_to_string, gdextension.SizeString|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ public_only bool }{public_only}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_save_to_string), gdextension.SizeString|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ public_only bool }{public_only}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -226,7 +224,7 @@ Loads a key from the given [param string_key]. If [param public_only] is [code]t
 */
 //go:nosplit
 func (self class) LoadFromString(string_key String.Readable, public_only bool) Error.Code { //gd:CryptoKey.load_from_string
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.CryptoKey.Bind_load_from_string, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_load_from_string), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		string_key  gdextension.String
 		public_only bool
 	}{gdextension.String(pointers.Get(gd.InternalString(string_key))[0]), public_only}))

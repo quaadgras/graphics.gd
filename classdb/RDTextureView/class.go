@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -145,60 +143,60 @@ func (self Instance) SetSwizzleA(value Rendering.TextureSwizzle) {
 
 //go:nosplit
 func (self class) SetFormatOverride(p_member Rendering.DataFormat) { //gd:RDTextureView.set_format_override
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureView.Bind_set_format_override, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.DataFormat }{p_member}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDTextureView.Bind_set_format_override), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.DataFormat }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetFormatOverride() Rendering.DataFormat { //gd:RDTextureView.get_format_override
-	var r_ret = gdunsafe.Call[Rendering.DataFormat](self.AsObject(), gd.Global.Methods.RDTextureView.Bind_get_format_override, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.DataFormat](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDTextureView.Bind_get_format_override), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSwizzleR(p_member Rendering.TextureSwizzle) { //gd:RDTextureView.set_swizzle_r
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureView.Bind_set_swizzle_r, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSwizzle }{p_member}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDTextureView.Bind_set_swizzle_r), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSwizzle }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetSwizzleR() Rendering.TextureSwizzle { //gd:RDTextureView.get_swizzle_r
-	var r_ret = gdunsafe.Call[Rendering.TextureSwizzle](self.AsObject(), gd.Global.Methods.RDTextureView.Bind_get_swizzle_r, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.TextureSwizzle](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDTextureView.Bind_get_swizzle_r), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSwizzleG(p_member Rendering.TextureSwizzle) { //gd:RDTextureView.set_swizzle_g
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureView.Bind_set_swizzle_g, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSwizzle }{p_member}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDTextureView.Bind_set_swizzle_g), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSwizzle }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetSwizzleG() Rendering.TextureSwizzle { //gd:RDTextureView.get_swizzle_g
-	var r_ret = gdunsafe.Call[Rendering.TextureSwizzle](self.AsObject(), gd.Global.Methods.RDTextureView.Bind_get_swizzle_g, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.TextureSwizzle](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDTextureView.Bind_get_swizzle_g), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSwizzleB(p_member Rendering.TextureSwizzle) { //gd:RDTextureView.set_swizzle_b
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureView.Bind_set_swizzle_b, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSwizzle }{p_member}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDTextureView.Bind_set_swizzle_b), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSwizzle }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetSwizzleB() Rendering.TextureSwizzle { //gd:RDTextureView.get_swizzle_b
-	var r_ret = gdunsafe.Call[Rendering.TextureSwizzle](self.AsObject(), gd.Global.Methods.RDTextureView.Bind_get_swizzle_b, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.TextureSwizzle](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDTextureView.Bind_get_swizzle_b), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSwizzleA(p_member Rendering.TextureSwizzle) { //gd:RDTextureView.set_swizzle_a
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RDTextureView.Bind_set_swizzle_a, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSwizzle }{p_member}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDTextureView.Bind_set_swizzle_a), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSwizzle }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetSwizzleA() Rendering.TextureSwizzle { //gd:RDTextureView.get_swizzle_a
-	var r_ret = gdunsafe.Call[Rendering.TextureSwizzle](self.AsObject(), gd.Global.Methods.RDTextureView.Bind_get_swizzle_a, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.TextureSwizzle](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RDTextureView.Bind_get_swizzle_a), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

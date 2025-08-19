@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -50,7 +49,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -220,7 +218,7 @@ Start the AES context in the given [param mode]. A [param key] of either 16 or 3
 */
 //go:nosplit
 func (self class) Start(mode Mode, key Packed.Bytes, iv Packed.Bytes) Error.Code { //gd:AESContext.start
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AESContext.Bind_start, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AESContext.Bind_start), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
 		mode Mode
 		key  gdextension.PackedArray
 		iv   gdextension.PackedArray
@@ -235,7 +233,7 @@ Run the desired operation for this AES context. Will return a [PackedByteArray] 
 */
 //go:nosplit
 func (self class) Update(src Packed.Bytes) Packed.Bytes { //gd:AESContext.update
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.AESContext.Bind_update, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ src gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](src))))}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AESContext.Bind_update), gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ src gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](src))))}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -246,7 +244,7 @@ Get the current IV state for this context (IV gets updated when calling [method 
 */
 //go:nosplit
 func (self class) GetIvState() Packed.Bytes { //gd:AESContext.get_iv_state
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.AESContext.Bind_get_iv_state, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AESContext.Bind_get_iv_state), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -256,7 +254,7 @@ Close this AES context so it can be started again. See [method start].
 */
 //go:nosplit
 func (self class) Finish() { //gd:AESContext.finish
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AESContext.Bind_finish, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AESContext.Bind_finish), 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsAESContext() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsAESContext() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

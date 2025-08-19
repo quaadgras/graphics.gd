@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -179,108 +177,108 @@ func (self Instance) SetCollideWithAreas(value bool) {
 
 //go:nosplit
 func (self class) SetShape(shape [1]gdclass.Resource) { //gd:PhysicsShapeQueryParameters3D.set_shape
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_shape), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetShape() [1]gdclass.Resource { //gd:PhysicsShapeQueryParameters3D.get_shape
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_shape, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_shape), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShapeRid(shape RID.Any) { //gd:PhysicsShapeQueryParameters3D.set_shape_rid
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_shape_rid, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shape RID.Any }{shape}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_shape_rid), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shape RID.Any }{shape}))
 }
 
 //go:nosplit
 func (self class) GetShapeRid() RID.Any { //gd:PhysicsShapeQueryParameters3D.get_shape_rid
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_shape_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_shape_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransform(transform Transform3D.BasisOrigin) { //gd:PhysicsShapeQueryParameters3D.set_transform
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_transform, 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ transform Transform3D.BasisOrigin }{gd.Transposed(transform)}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_transform), 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ transform Transform3D.BasisOrigin }{gd.Transposed(transform)}))
 }
 
 //go:nosplit
 func (self class) GetTransform() Transform3D.BasisOrigin { //gd:PhysicsShapeQueryParameters3D.get_transform
-	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_transform), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMotion(motion Vector3.XYZ) { //gd:PhysicsShapeQueryParameters3D.set_motion
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_motion, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ motion Vector3.XYZ }{motion}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_motion), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ motion Vector3.XYZ }{motion}))
 }
 
 //go:nosplit
 func (self class) GetMotion() Vector3.XYZ { //gd:PhysicsShapeQueryParameters3D.get_motion
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_motion, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_motion), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMargin(margin float64) { //gd:PhysicsShapeQueryParameters3D.set_margin
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_margin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_margin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
 }
 
 //go:nosplit
 func (self class) GetMargin() float64 { //gd:PhysicsShapeQueryParameters3D.get_margin
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_margin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_margin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(collision_mask int64) { //gd:PhysicsShapeQueryParameters3D.set_collision_mask
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_collision_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_mask int64 }{collision_mask}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_collision_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_mask int64 }{collision_mask}))
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:PhysicsShapeQueryParameters3D.get_collision_mask
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_collision_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_collision_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExclude(exclude Array.Contains[RID.Any]) { //gd:PhysicsShapeQueryParameters3D.set_exclude
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_exclude, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ exclude gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(exclude))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_exclude), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ exclude gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(exclude))[0])}))
 }
 
 //go:nosplit
 func (self class) GetExclude() Array.Contains[RID.Any] { //gd:PhysicsShapeQueryParameters3D.get_exclude
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_exclude, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_get_exclude), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollideWithBodies(enable bool) { //gd:PhysicsShapeQueryParameters3D.set_collide_with_bodies
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_collide_with_bodies, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_collide_with_bodies), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:PhysicsShapeQueryParameters3D.is_collide_with_bodies_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_is_collide_with_bodies_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_is_collide_with_bodies_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollideWithAreas(enable bool) { //gd:PhysicsShapeQueryParameters3D.set_collide_with_areas
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_collide_with_areas, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_set_collide_with_areas), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsCollideWithAreasEnabled() bool { //gd:PhysicsShapeQueryParameters3D.is_collide_with_areas_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_is_collide_with_areas_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PhysicsShapeQueryParameters3D.Bind_is_collide_with_areas_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

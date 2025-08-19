@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -283,24 +281,24 @@ func (self Instance) SetCollideWithBodies(value bool) {
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:RayCast2D.set_enabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_set_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_set_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsEnabled() bool { //gd:RayCast2D.is_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_is_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_is_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTargetPosition(local_point Vector2.XY) { //gd:RayCast2D.set_target_position
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_set_target_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ local_point Vector2.XY }{local_point}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_set_target_position), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ local_point Vector2.XY }{local_point}))
 }
 
 //go:nosplit
 func (self class) GetTargetPosition() Vector2.XY { //gd:RayCast2D.get_target_position
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_get_target_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_get_target_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -310,7 +308,7 @@ Returns whether any object is intersecting with the ray's vector (considering th
 */
 //go:nosplit
 func (self class) IsColliding() bool { //gd:RayCast2D.is_colliding
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_is_colliding, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_is_colliding), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -321,7 +319,7 @@ Updates the collision information for the ray immediately, without waiting for t
 */
 //go:nosplit
 func (self class) ForceRaycastUpdate() { //gd:RayCast2D.force_raycast_update
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_force_raycast_update, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_force_raycast_update), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -329,7 +327,7 @@ Returns the first object that the ray intersects, or [code]null[/code] if no obj
 */
 //go:nosplit
 func (self class) GetCollider() [1]gd.Object { //gd:RayCast2D.get_collider
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_get_collider, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_get_collider), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -339,7 +337,7 @@ Returns the [RID] of the first object that the ray intersects, or an empty [RID]
 */
 //go:nosplit
 func (self class) GetColliderRid() RID.Any { //gd:RayCast2D.get_collider_rid
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_get_collider_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_get_collider_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -364,7 +362,7 @@ var shape = target.ShapeOwnerGetOwner(ownerId);
 */
 //go:nosplit
 func (self class) GetColliderShape() int64 { //gd:RayCast2D.get_collider_shape
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_get_collider_shape, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_get_collider_shape), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -375,7 +373,7 @@ Returns the collision point at which the ray intersects the closest object, in t
 */
 //go:nosplit
 func (self class) GetCollisionPoint() Vector2.XY { //gd:RayCast2D.get_collision_point
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_get_collision_point, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_get_collision_point), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -386,7 +384,7 @@ Returns the normal of the intersecting object's shape at the collision point, or
 */
 //go:nosplit
 func (self class) GetCollisionNormal() Vector2.XY { //gd:RayCast2D.get_collision_normal
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_get_collision_normal, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_get_collision_normal), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -396,7 +394,7 @@ Adds a collision exception so the ray does not report collisions with the specif
 */
 //go:nosplit
 func (self class) AddExceptionRid(rid RID.Any) { //gd:RayCast2D.add_exception_rid
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_add_exception_rid, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_add_exception_rid), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 }
 
 /*
@@ -404,7 +402,7 @@ Adds a collision exception so the ray does not report collisions with the specif
 */
 //go:nosplit
 func (self class) AddException(node [1]gdclass.CollisionObject2D) { //gd:RayCast2D.add_exception
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_add_exception, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_add_exception), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))}))
 }
 
 /*
@@ -412,7 +410,7 @@ Removes a collision exception so the ray does report collisions with the specifi
 */
 //go:nosplit
 func (self class) RemoveExceptionRid(rid RID.Any) { //gd:RayCast2D.remove_exception_rid
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_remove_exception_rid, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_remove_exception_rid), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 }
 
 /*
@@ -420,7 +418,7 @@ Removes a collision exception so the ray does report collisions with the specifi
 */
 //go:nosplit
 func (self class) RemoveException(node [1]gdclass.CollisionObject2D) { //gd:RayCast2D.remove_exception
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_remove_exception, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_remove_exception), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 
 /*
@@ -428,17 +426,17 @@ Removes all collision exceptions for this ray.
 */
 //go:nosplit
 func (self class) ClearExceptions() { //gd:RayCast2D.clear_exceptions
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_clear_exceptions, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_clear_exceptions), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:RayCast2D.set_collision_mask
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_set_collision_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_set_collision_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:RayCast2D.get_collision_mask
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_get_collision_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_get_collision_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -448,7 +446,7 @@ Based on [param value], enables or disables the specified layer in the [member c
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:RayCast2D.set_collision_mask_value
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_set_collision_mask_value), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value}))
@@ -459,55 +457,55 @@ Returns whether or not the specified layer of the [member collision_mask] is ena
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:RayCast2D.get_collision_mask_value
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_get_collision_mask_value), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExcludeParentBody(mask bool) { //gd:RayCast2D.set_exclude_parent_body
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_set_exclude_parent_body, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ mask bool }{mask}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_set_exclude_parent_body), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ mask bool }{mask}))
 }
 
 //go:nosplit
 func (self class) GetExcludeParentBody() bool { //gd:RayCast2D.get_exclude_parent_body
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_get_exclude_parent_body, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_get_exclude_parent_body), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollideWithAreas(enable bool) { //gd:RayCast2D.set_collide_with_areas
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_set_collide_with_areas, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_set_collide_with_areas), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsCollideWithAreasEnabled() bool { //gd:RayCast2D.is_collide_with_areas_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_is_collide_with_areas_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_is_collide_with_areas_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollideWithBodies(enable bool) { //gd:RayCast2D.set_collide_with_bodies
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_set_collide_with_bodies, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_set_collide_with_bodies), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:RayCast2D.is_collide_with_bodies_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_is_collide_with_bodies_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_is_collide_with_bodies_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHitFromInside(enable bool) { //gd:RayCast2D.set_hit_from_inside
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_set_hit_from_inside, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_set_hit_from_inside), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsHitFromInsideEnabled() bool { //gd:RayCast2D.is_hit_from_inside_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.RayCast2D.Bind_is_hit_from_inside_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.RayCast2D.Bind_is_hit_from_inside_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -119,12 +117,12 @@ func (self Instance) SetSegments(value []Vector2.XY) {
 
 //go:nosplit
 func (self class) SetSegments(segments Packed.Array[Vector2.XY]) { //gd:ConcavePolygonShape2D.set_segments
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.ConcavePolygonShape2D.Bind_set_segments, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ segments gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](segments)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConcavePolygonShape2D.Bind_set_segments), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ segments gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](segments)))}))
 }
 
 //go:nosplit
 func (self class) GetSegments() Packed.Array[Vector2.XY] { //gd:ConcavePolygonShape2D.get_segments
-	var r_ret = gdunsafe.Call[gd.PackedPointers](self.AsObject(), gd.Global.Methods.ConcavePolygonShape2D.Bind_get_segments, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.ConcavePolygonShape2D.Bind_get_segments), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

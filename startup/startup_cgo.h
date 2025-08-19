@@ -320,9 +320,6 @@ static inline pointer object_cast_to(pointer fn, pointer p_o, pointer p_class_ta
 static inline uint64_t object_get_instance_id(pointer fn, pointer p_o) {
 	return ((GDExtensionInterfaceObjectGetInstanceId)fn)((GDExtensionObjectPtr)p_o);
 }
-static inline pointer object_get_instance_from_id(pointer fn, pointer p_id) {
-	return (pointer)((GDExtensionInterfaceObjectGetInstanceFromId)fn)(p_id);
-}
 static inline pointer ref_get_object(pointer fn, pointer p_r) {
 	return (pointer)((GDExtensionInterfaceRefGetObject)fn)((GDExtensionRefPtr)p_r);
 }

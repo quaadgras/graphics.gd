@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -117,12 +115,12 @@ func (self Instance) SetPosition(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetPosition(position Vector2.XY) { //gd:InputEventGesture.set_position
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventGesture.Bind_set_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventGesture.Bind_set_position), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:InputEventGesture.get_position
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.InputEventGesture.Bind_get_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventGesture.Bind_get_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -57,7 +56,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -241,144 +239,144 @@ func (self Instance) SetLanguage(value string) {
 
 //go:nosplit
 func (self class) SetText(text String.Readable) { //gd:Button.set_text
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_set_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 //go:nosplit
 func (self class) GetText() String.Readable { //gd:Button.get_text
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Button.Bind_get_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_get_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:Button.set_text_overrun_behavior
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_set_text_overrun_behavior), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior}))
 }
 
 //go:nosplit
 func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:Button.get_text_overrun_behavior
-	var r_ret = gdunsafe.Call[TextServer.OverrunBehavior](self.AsObject(), gd.Global.Methods.Button.Bind_get_text_overrun_behavior, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.OverrunBehavior](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_get_text_overrun_behavior), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:Button.set_autowrap_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_autowrap_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_set_autowrap_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode}))
 }
 
 //go:nosplit
 func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:Button.get_autowrap_mode
-	var r_ret = gdunsafe.Call[TextServer.AutowrapMode](self.AsObject(), gd.Global.Methods.Button.Bind_get_autowrap_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.AutowrapMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_get_autowrap_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextDirection(direction Control.TextDirection) { //gd:Button.set_text_direction
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_text_direction, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Control.TextDirection }{direction}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_set_text_direction), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Control.TextDirection }{direction}))
 }
 
 //go:nosplit
 func (self class) GetTextDirection() Control.TextDirection { //gd:Button.get_text_direction
-	var r_ret = gdunsafe.Call[Control.TextDirection](self.AsObject(), gd.Global.Methods.Button.Bind_get_text_direction, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Control.TextDirection](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_get_text_direction), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:Button.set_language
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_language, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_set_language), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:Button.get_language
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Button.Bind_get_language, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_get_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetButtonIcon(texture [1]gdclass.Texture2D) { //gd:Button.set_button_icon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_button_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_set_button_icon), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetButtonIcon() [1]gdclass.Texture2D { //gd:Button.get_button_icon
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Button.Bind_get_button_icon, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_get_button_icon), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlat(enabled bool) { //gd:Button.set_flat
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_flat, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_set_flat), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFlat() bool { //gd:Button.is_flat
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Button.Bind_is_flat, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_is_flat), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClipText(enabled bool) { //gd:Button.set_clip_text
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_clip_text, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_set_clip_text), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetClipText() bool { //gd:Button.get_clip_text
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Button.Bind_get_clip_text, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_get_clip_text), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextAlignment(alignment GUI.HorizontalAlignment) { //gd:Button.set_text_alignment
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_text_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_set_text_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetTextAlignment() GUI.HorizontalAlignment { //gd:Button.get_text_alignment
-	var r_ret = gdunsafe.Call[GUI.HorizontalAlignment](self.AsObject(), gd.Global.Methods.Button.Bind_get_text_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_get_text_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIconAlignment(icon_alignment GUI.HorizontalAlignment) { //gd:Button.set_icon_alignment
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_icon_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ icon_alignment GUI.HorizontalAlignment }{icon_alignment}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_set_icon_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ icon_alignment GUI.HorizontalAlignment }{icon_alignment}))
 }
 
 //go:nosplit
 func (self class) GetIconAlignment() GUI.HorizontalAlignment { //gd:Button.get_icon_alignment
-	var r_ret = gdunsafe.Call[GUI.HorizontalAlignment](self.AsObject(), gd.Global.Methods.Button.Bind_get_icon_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_get_icon_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVerticalIconAlignment(vertical_icon_alignment GUI.VerticalAlignment) { //gd:Button.set_vertical_icon_alignment
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_vertical_icon_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ vertical_icon_alignment GUI.VerticalAlignment }{vertical_icon_alignment}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_set_vertical_icon_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ vertical_icon_alignment GUI.VerticalAlignment }{vertical_icon_alignment}))
 }
 
 //go:nosplit
 func (self class) GetVerticalIconAlignment() GUI.VerticalAlignment { //gd:Button.get_vertical_icon_alignment
-	var r_ret = gdunsafe.Call[GUI.VerticalAlignment](self.AsObject(), gd.Global.Methods.Button.Bind_get_vertical_icon_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.VerticalAlignment](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_get_vertical_icon_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExpandIcon(enabled bool) { //gd:Button.set_expand_icon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Button.Bind_set_expand_icon, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_set_expand_icon), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsExpandIcon() bool { //gd:Button.is_expand_icon
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Button.Bind_is_expand_icon, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Button.Bind_is_expand_icon), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

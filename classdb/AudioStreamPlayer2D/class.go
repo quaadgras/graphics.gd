@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -56,7 +55,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -275,48 +273,48 @@ func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) {
 
 //go:nosplit
 func (self class) SetStream(stream [1]gdclass.AudioStream) { //gd:AudioStreamPlayer2D.set_stream
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_stream, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_stream), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetStream() [1]gdclass.AudioStream { //gd:AudioStreamPlayer2D.get_stream
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_stream, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_stream), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.AudioStream{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStream](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumeDb(volume_db float64) { //gd:AudioStreamPlayer2D.set_volume_db
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_volume_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume_db float64 }{volume_db}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_volume_db), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume_db float64 }{volume_db}))
 }
 
 //go:nosplit
 func (self class) GetVolumeDb() float64 { //gd:AudioStreamPlayer2D.get_volume_db
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_volume_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_volume_db), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumeLinear(volume_linear float64) { //gd:AudioStreamPlayer2D.set_volume_linear
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_volume_linear, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume_linear float64 }{volume_linear}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_volume_linear), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume_linear float64 }{volume_linear}))
 }
 
 //go:nosplit
 func (self class) GetVolumeLinear() float64 { //gd:AudioStreamPlayer2D.get_volume_linear
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_volume_linear, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_volume_linear), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPitchScale(pitch_scale float64) { //gd:AudioStreamPlayer2D.set_pitch_scale
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_pitch_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pitch_scale float64 }{pitch_scale}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_pitch_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pitch_scale float64 }{pitch_scale}))
 }
 
 //go:nosplit
 func (self class) GetPitchScale() float64 { //gd:AudioStreamPlayer2D.get_pitch_scale
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_pitch_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_pitch_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -326,7 +324,7 @@ Queues the audio to play on the next physics frame, from the given position [par
 */
 //go:nosplit
 func (self class) Play(from_position float64) { //gd:AudioStreamPlayer2D.play
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_play, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ from_position float64 }{from_position}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_play), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ from_position float64 }{from_position}))
 }
 
 /*
@@ -334,7 +332,7 @@ Sets the position from which audio will be played, in seconds.
 */
 //go:nosplit
 func (self class) SeekTo(to_position float64) { //gd:AudioStreamPlayer2D.seek
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_seek, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ to_position float64 }{to_position}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_seek), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ to_position float64 }{to_position}))
 }
 
 /*
@@ -342,12 +340,12 @@ Stops the audio.
 */
 //go:nosplit
 func (self class) Stop() { //gd:AudioStreamPlayer2D.stop
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_stop, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_stop), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) IsPlaying() bool { //gd:AudioStreamPlayer2D.is_playing
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_is_playing, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_is_playing), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -357,108 +355,108 @@ Returns the position in the [AudioStream].
 */
 //go:nosplit
 func (self class) GetPlaybackPosition() float64 { //gd:AudioStreamPlayer2D.get_playback_position
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_playback_position, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_playback_position), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBus(bus String.Name) { //gd:AudioStreamPlayer2D.set_bus
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_bus, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ bus gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(bus))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_bus), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ bus gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(bus))[0])}))
 }
 
 //go:nosplit
 func (self class) GetBus() String.Name { //gd:AudioStreamPlayer2D.get_bus
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_bus, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_bus), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoplay(enable bool) { //gd:AudioStreamPlayer2D.set_autoplay
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_autoplay, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_autoplay), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsAutoplayEnabled() bool { //gd:AudioStreamPlayer2D.is_autoplay_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_is_autoplay_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_is_autoplay_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlaying(enable bool) { //gd:AudioStreamPlayer2D.set_playing
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_playing, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_playing), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) SetMaxDistance(pixels float64) { //gd:AudioStreamPlayer2D.set_max_distance
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_max_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pixels float64 }{pixels}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_max_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pixels float64 }{pixels}))
 }
 
 //go:nosplit
 func (self class) GetMaxDistance() float64 { //gd:AudioStreamPlayer2D.get_max_distance
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_max_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_max_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAttenuation(curve float64) { //gd:AudioStreamPlayer2D.set_attenuation
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_attenuation, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ curve float64 }{curve}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_attenuation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ curve float64 }{curve}))
 }
 
 //go:nosplit
 func (self class) GetAttenuation() float64 { //gd:AudioStreamPlayer2D.get_attenuation
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_attenuation, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_attenuation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAreaMask(mask int64) { //gd:AudioStreamPlayer2D.set_area_mask
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_area_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_area_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetAreaMask() int64 { //gd:AudioStreamPlayer2D.get_area_mask
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_area_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_area_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStreamPaused(pause bool) { //gd:AudioStreamPlayer2D.set_stream_paused
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_stream_paused, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pause bool }{pause}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_stream_paused), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pause bool }{pause}))
 }
 
 //go:nosplit
 func (self class) GetStreamPaused() bool { //gd:AudioStreamPlayer2D.get_stream_paused
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_stream_paused, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_stream_paused), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxPolyphony(max_polyphony int64) { //gd:AudioStreamPlayer2D.set_max_polyphony
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_max_polyphony, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_polyphony int64 }{max_polyphony}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_max_polyphony), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_polyphony int64 }{max_polyphony}))
 }
 
 //go:nosplit
 func (self class) GetMaxPolyphony() int64 { //gd:AudioStreamPlayer2D.get_max_polyphony
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_max_polyphony, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_max_polyphony), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPanningStrength(panning_strength float64) { //gd:AudioStreamPlayer2D.set_panning_strength
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_panning_strength, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ panning_strength float64 }{panning_strength}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_panning_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ panning_strength float64 }{panning_strength}))
 }
 
 //go:nosplit
 func (self class) GetPanningStrength() float64 { //gd:AudioStreamPlayer2D.get_panning_strength
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_panning_strength, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_panning_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -468,7 +466,7 @@ Returns whether the [AudioStreamPlayer] can return the [AudioStreamPlayback] obj
 */
 //go:nosplit
 func (self class) HasStreamPlayback() bool { //gd:AudioStreamPlayer2D.has_stream_playback
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_has_stream_playback, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_has_stream_playback), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -478,19 +476,19 @@ Returns the [AudioStreamPlayback] object associated with this [AudioStreamPlayer
 */
 //go:nosplit
 func (self class) GetStreamPlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStreamPlayer2D.get_stream_playback
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_stream_playback, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_stream_playback), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamPlayback](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlaybackType(playback_type AudioServer.PlaybackType) { //gd:AudioStreamPlayer2D.set_playback_type
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_set_playback_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ playback_type AudioServer.PlaybackType }{playback_type}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_set_playback_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ playback_type AudioServer.PlaybackType }{playback_type}))
 }
 
 //go:nosplit
 func (self class) GetPlaybackType() AudioServer.PlaybackType { //gd:AudioStreamPlayer2D.get_playback_type
-	var r_ret = gdunsafe.Call[AudioServer.PlaybackType](self.AsObject(), gd.Global.Methods.AudioStreamPlayer2D.Bind_get_playback_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AudioServer.PlaybackType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlayer2D.Bind_get_playback_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -57,7 +56,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -368,7 +366,7 @@ Adds an item, with text [param label] and (optionally) [param id]. If no [param 
 */
 //go:nosplit
 func (self class) AddItem(label String.Readable, id int64) { //gd:OptionButton.add_item
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_add_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_add_item), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		label gdextension.String
 		id    int64
 	}{gdextension.String(pointers.Get(gd.InternalString(label))[0]), id}))
@@ -379,7 +377,7 @@ Adds an item, with a [param texture] icon, text [param label] and (optionally) [
 */
 //go:nosplit
 func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readable, id int64) { //gd:OptionButton.add_icon_item
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_add_icon_item, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_add_icon_item), 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		texture gdextension.Object
 		label   gdextension.String
 		id      int64
@@ -391,7 +389,7 @@ Sets the text of the item at index [param idx].
 */
 //go:nosplit
 func (self class) SetItemText(idx int64, text String.Readable) { //gd:OptionButton.set_item_text
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_set_item_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_set_item_text), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		idx  int64
 		text gdextension.String
 	}{idx, gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
@@ -402,7 +400,7 @@ Sets the icon of the item at index [param idx].
 */
 //go:nosplit
 func (self class) SetItemIcon(idx int64, texture [1]gdclass.Texture2D) { //gd:OptionButton.set_item_icon
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_set_item_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_set_item_icon), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		idx     int64
 		texture gdextension.Object
 	}{idx, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
@@ -414,7 +412,7 @@ Disabled items are drawn differently in the dropdown and are not selectable by t
 */
 //go:nosplit
 func (self class) SetItemDisabled(idx int64, disabled bool) { //gd:OptionButton.set_item_disabled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_set_item_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_set_item_disabled), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		idx      int64
 		disabled bool
 	}{idx, disabled}))
@@ -425,7 +423,7 @@ Sets the ID of the item at index [param idx].
 */
 //go:nosplit
 func (self class) SetItemId(idx int64, id int64) { //gd:OptionButton.set_item_id
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_set_item_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_set_item_id), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		idx int64
 		id  int64
 	}{idx, id}))
@@ -436,7 +434,7 @@ Sets the metadata of an item. Metadata may be of any type and can be used to sto
 */
 //go:nosplit
 func (self class) SetItemMetadata(idx int64, metadata variant.Any) { //gd:OptionButton.set_item_metadata
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_set_item_metadata, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_set_item_metadata), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		idx      int64
 		metadata gdextension.Variant
 	}{idx, gdextension.Variant(pointers.Get(gd.InternalVariant(metadata)))}))
@@ -447,7 +445,7 @@ Sets the tooltip of the item at index [param idx].
 */
 //go:nosplit
 func (self class) SetItemTooltip(idx int64, tooltip String.Readable) { //gd:OptionButton.set_item_tooltip
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_set_item_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_set_item_tooltip), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		idx     int64
 		tooltip gdextension.String
 	}{idx, gdextension.String(pointers.Get(gd.InternalString(tooltip))[0])}))
@@ -458,7 +456,7 @@ Returns the text of the item at index [param idx].
 */
 //go:nosplit
 func (self class) GetItemText(idx int64) String.Readable { //gd:OptionButton.get_item_text
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OptionButton.Bind_get_item_text, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_get_item_text), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -468,7 +466,7 @@ Returns the icon of the item at index [param idx].
 */
 //go:nosplit
 func (self class) GetItemIcon(idx int64) [1]gdclass.Texture2D { //gd:OptionButton.get_item_icon
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OptionButton.Bind_get_item_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_get_item_icon), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -478,7 +476,7 @@ Returns the ID of the item at index [param idx].
 */
 //go:nosplit
 func (self class) GetItemId(idx int64) int64 { //gd:OptionButton.get_item_id
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OptionButton.Bind_get_item_id, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_get_item_id), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -488,7 +486,7 @@ Returns the index of the item with the given [param id].
 */
 //go:nosplit
 func (self class) GetItemIndex(id int64) int64 { //gd:OptionButton.get_item_index
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OptionButton.Bind_get_item_index, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_get_item_index), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = r_ret
 	return ret
 }
@@ -498,7 +496,7 @@ Retrieves the metadata of an item. Metadata may be any type and can be used to s
 */
 //go:nosplit
 func (self class) GetItemMetadata(idx int64) variant.Any { //gd:OptionButton.get_item_metadata
-	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.OptionButton.Bind_get_item_metadata, gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_get_item_metadata), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -508,7 +506,7 @@ Returns the tooltip of the item at index [param idx].
 */
 //go:nosplit
 func (self class) GetItemTooltip(idx int64) String.Readable { //gd:OptionButton.get_item_tooltip
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.OptionButton.Bind_get_item_tooltip, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_get_item_tooltip), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -518,7 +516,7 @@ Returns [code]true[/code] if the item at index [param idx] is disabled.
 */
 //go:nosplit
 func (self class) IsItemDisabled(idx int64) bool { //gd:OptionButton.is_item_disabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OptionButton.Bind_is_item_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_is_item_disabled), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -528,7 +526,7 @@ Returns [code]true[/code] if the item at index [param idx] is marked as a separa
 */
 //go:nosplit
 func (self class) IsItemSeparator(idx int64) bool { //gd:OptionButton.is_item_separator
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OptionButton.Bind_is_item_separator, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_is_item_separator), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -538,7 +536,7 @@ Adds a separator to the list of items. Separators help to group items, and can o
 */
 //go:nosplit
 func (self class) AddSeparator(text String.Readable) { //gd:OptionButton.add_separator
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_add_separator, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_add_separator), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
 }
 
 /*
@@ -546,7 +544,7 @@ Clears all the items in the [OptionButton].
 */
 //go:nosplit
 func (self class) Clear() { //gd:OptionButton.clear
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_clear, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -555,12 +553,12 @@ Passing [code]-1[/code] as the index deselects any currently selected item.
 */
 //go:nosplit
 func (self class) Select(idx int64) { //gd:OptionButton.select_
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_select_, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_select_), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 }
 
 //go:nosplit
 func (self class) GetSelected() int64 { //gd:OptionButton.get_selected
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OptionButton.Bind_get_selected, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_get_selected), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -570,7 +568,7 @@ Returns the ID of the selected item, or [code]-1[/code] if no item is selected.
 */
 //go:nosplit
 func (self class) GetSelectedId() int64 { //gd:OptionButton.get_selected_id
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OptionButton.Bind_get_selected_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_get_selected_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -580,7 +578,7 @@ Gets the metadata of the selected item. Metadata for items can be set using [met
 */
 //go:nosplit
 func (self class) GetSelectedMetadata() variant.Any { //gd:OptionButton.get_selected_metadata
-	var r_ret = gdunsafe.Call[[3]uint64](self.AsObject(), gd.Global.Methods.OptionButton.Bind_get_selected_metadata, gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[3]uint64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_get_selected_metadata), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -590,7 +588,7 @@ Removes the item at index [param idx].
 */
 //go:nosplit
 func (self class) RemoveItem(idx int64) { //gd:OptionButton.remove_item
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_remove_item, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_remove_item), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 }
 
 /*
@@ -599,7 +597,7 @@ Returns the [PopupMenu] contained in this button.
 */
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.PopupMenu { //gd:OptionButton.get_popup
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.OptionButton.Bind_get_popup, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_get_popup), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
@@ -609,17 +607,17 @@ Adjusts popup position and sizing for the [OptionButton], then shows the [PopupM
 */
 //go:nosplit
 func (self class) ShowPopup() { //gd:OptionButton.show_popup
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_show_popup, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_show_popup), 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetItemCount(count int64) { //gd:OptionButton.set_item_count
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_set_item_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_set_item_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 //go:nosplit
 func (self class) GetItemCount() int64 { //gd:OptionButton.get_item_count
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OptionButton.Bind_get_item_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_get_item_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -629,7 +627,7 @@ Returns [code]true[/code] if this button contains at least one item which is not
 */
 //go:nosplit
 func (self class) HasSelectableItems() bool { //gd:OptionButton.has_selectable_items
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OptionButton.Bind_has_selectable_items, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_has_selectable_items), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -640,31 +638,31 @@ Returns [code]-1[/code] if no item is found.
 */
 //go:nosplit
 func (self class) GetSelectableItem(from_last bool) int64 { //gd:OptionButton.get_selectable_item
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.OptionButton.Bind_get_selectable_item, gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ from_last bool }{from_last}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_get_selectable_item), gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ from_last bool }{from_last}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFitToLongestItem(fit bool) { //gd:OptionButton.set_fit_to_longest_item
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_set_fit_to_longest_item, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ fit bool }{fit}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_set_fit_to_longest_item), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ fit bool }{fit}))
 }
 
 //go:nosplit
 func (self class) IsFitToLongestItem() bool { //gd:OptionButton.is_fit_to_longest_item
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OptionButton.Bind_is_fit_to_longest_item, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_is_fit_to_longest_item), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowReselect(allow bool) { //gd:OptionButton.set_allow_reselect
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_set_allow_reselect, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_set_allow_reselect), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
 }
 
 //go:nosplit
 func (self class) GetAllowReselect() bool { //gd:OptionButton.get_allow_reselect
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.OptionButton.Bind_get_allow_reselect, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_get_allow_reselect), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -674,7 +672,7 @@ If [code]true[/code], shortcuts are disabled and cannot be used to trigger the b
 */
 //go:nosplit
 func (self class) SetDisableShortcuts(disabled bool) { //gd:OptionButton.set_disable_shortcuts
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OptionButton.Bind_set_disable_shortcuts, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disabled bool }{disabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OptionButton.Bind_set_disable_shortcuts), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disabled bool }{disabled}))
 }
 func (self Instance) OnItemSelected(cb func(index int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), 0)

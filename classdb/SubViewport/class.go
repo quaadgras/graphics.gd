@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -53,7 +52,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -148,60 +146,60 @@ func (self Instance) SetRenderTargetUpdateMode(value UpdateMode) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2i.XY) { //gd:SubViewport.set_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SubViewport.Bind_set_size, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewport.Bind_set_size), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector2i.XY { //gd:SubViewport.get_size
-	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.SubViewport.Bind_get_size, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewport.Bind_get_size), gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSize2dOverride(size Vector2i.XY) { //gd:SubViewport.set_size_2d_override
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SubViewport.Bind_set_size_2d_override, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewport.Bind_set_size_2d_override), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize2dOverride() Vector2i.XY { //gd:SubViewport.get_size_2d_override
-	var r_ret = gdunsafe.Call[Vector2i.XY](self.AsObject(), gd.Global.Methods.SubViewport.Bind_get_size_2d_override, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewport.Bind_get_size_2d_override), gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSize2dOverrideStretch(enable bool) { //gd:SubViewport.set_size_2d_override_stretch
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SubViewport.Bind_set_size_2d_override_stretch, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewport.Bind_set_size_2d_override_stretch), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSize2dOverrideStretchEnabled() bool { //gd:SubViewport.is_size_2d_override_stretch_enabled
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.SubViewport.Bind_is_size_2d_override_stretch_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewport.Bind_is_size_2d_override_stretch_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpdateMode(mode UpdateMode) { //gd:SubViewport.set_update_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SubViewport.Bind_set_update_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode UpdateMode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewport.Bind_set_update_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode UpdateMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetUpdateMode() UpdateMode { //gd:SubViewport.get_update_mode
-	var r_ret = gdunsafe.Call[UpdateMode](self.AsObject(), gd.Global.Methods.SubViewport.Bind_get_update_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[UpdateMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewport.Bind_get_update_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClearMode(mode ClearMode) { //gd:SubViewport.set_clear_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.SubViewport.Bind_set_clear_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ClearMode }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewport.Bind_set_clear_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ClearMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetClearMode() ClearMode { //gd:SubViewport.get_clear_mode
-	var r_ret = gdunsafe.Call[ClearMode](self.AsObject(), gd.Global.Methods.SubViewport.Bind_get_clear_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ClearMode](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubViewport.Bind_get_clear_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

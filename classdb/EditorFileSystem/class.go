@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -175,7 +173,7 @@ Gets the root directory object.
 */
 //go:nosplit
 func (self class) GetFilesystem() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorFileSystem.Bind_get_filesystem, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_get_filesystem), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerLifetimeBoundTo[gdclass.EditorFileSystemDirectory](self.AsObject(), r_ret)}
 	return ret
 }
@@ -185,7 +183,7 @@ Returns [code]true[/code] if the filesystem is being scanned.
 */
 //go:nosplit
 func (self class) IsScanning() bool { //gd:EditorFileSystem.is_scanning
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.EditorFileSystem.Bind_is_scanning, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_is_scanning), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -195,7 +193,7 @@ Returns the scan progress for 0 to 1 if the FS is being scanned.
 */
 //go:nosplit
 func (self class) GetScanningProgress() float64 { //gd:EditorFileSystem.get_scanning_progress
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.EditorFileSystem.Bind_get_scanning_progress, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_get_scanning_progress), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -205,7 +203,7 @@ Scan the filesystem for changes.
 */
 //go:nosplit
 func (self class) Scan() { //gd:EditorFileSystem.scan
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorFileSystem.Bind_scan, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_scan), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -213,7 +211,7 @@ Check if the source of any imported resource changed.
 */
 //go:nosplit
 func (self class) ScanSources() { //gd:EditorFileSystem.scan_sources
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorFileSystem.Bind_scan_sources, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_scan_sources), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -222,7 +220,7 @@ This will not import the file. To reimport, call [method reimport_files] or [met
 */
 //go:nosplit
 func (self class) UpdateFile(path String.Readable) { //gd:EditorFileSystem.update_file
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorFileSystem.Bind_update_file, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_update_file), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 }
 
 /*
@@ -230,7 +228,7 @@ Returns a view into the filesystem at [param path].
 */
 //go:nosplit
 func (self class) GetFilesystemPath(path String.Readable) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem_path
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorFileSystem.Bind_get_filesystem_path, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_get_filesystem_path), gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerLifetimeBoundTo[gdclass.EditorFileSystemDirectory](self.AsObject(), r_ret)}
 	return ret
 }
@@ -240,7 +238,7 @@ Returns the resource type of the file, given the full path. This returns a strin
 */
 //go:nosplit
 func (self class) GetFileType(path String.Readable) String.Readable { //gd:EditorFileSystem.get_file_type
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.EditorFileSystem.Bind_get_file_type, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_get_file_type), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -252,7 +250,7 @@ If the file type changed or the file was newly created, use [method update_file]
 */
 //go:nosplit
 func (self class) ReimportFiles(files Packed.Strings) { //gd:EditorFileSystem.reimport_files
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.EditorFileSystem.Bind_reimport_files, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ files gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(files)))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_reimport_files), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ files gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(files)))}))
 }
 func (self Instance) OnFilesystemChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("filesystem_changed"), gd.NewCallable(cb), 0)

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -229,7 +227,7 @@ Creates a new GLTFPhysicsShape instance from the given Godot [CollisionShape3D] 
 */
 //go:nosplit
 func (self class) FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_node
-	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.GLTFPhysicsShape.Bind_from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape_node[0].AsObject()))}))
+	var r_ret = gdextension.CallStatic[gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_from_node), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape_node[0].AsObject()))}))
 	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret)}
 	return ret
 }
@@ -239,7 +237,7 @@ Converts this GLTFPhysicsShape instance into a Godot [CollisionShape3D] node.
 */
 //go:nosplit
 func (self class) ToNode(cache_shapes bool) [1]gdclass.CollisionShape3D { //gd:GLTFPhysicsShape.to_node
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_to_node, gdextension.SizeObject|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cache_shapes bool }{cache_shapes}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_to_node), gdextension.SizeObject|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cache_shapes bool }{cache_shapes}))
 	var ret = [1]gdclass.CollisionShape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.CollisionShape3D](r_ret)}
 	return ret
 }
@@ -249,7 +247,7 @@ Creates a new GLTFPhysicsShape instance from the given Godot [Shape3D] resource.
 */
 //go:nosplit
 func (self class) FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_resource
-	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.GLTFPhysicsShape.Bind_from_resource, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape_resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape_resource[0].AsObject()))}))
+	var r_ret = gdextension.CallStatic[gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_from_resource), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape_resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape_resource[0].AsObject()))}))
 	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret)}
 	return ret
 }
@@ -259,7 +257,7 @@ Converts this GLTFPhysicsShape instance into a Godot [Shape3D] resource.
 */
 //go:nosplit
 func (self class) ToResource(cache_shapes bool) [1]gdclass.Shape3D { //gd:GLTFPhysicsShape.to_resource
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_to_resource, gdextension.SizeObject|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cache_shapes bool }{cache_shapes}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_to_resource), gdextension.SizeObject|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cache_shapes bool }{cache_shapes}))
 	var ret = [1]gdclass.Shape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape3D](r_ret)}
 	return ret
 }
@@ -269,7 +267,7 @@ Creates a new GLTFPhysicsShape instance by parsing the given [Dictionary].
 */
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_dictionary
-	var r_ret = gdunsafe.CallStatic[gd.EnginePointer](gd.Global.Methods.GLTFPhysicsShape.Bind_from_dictionary, gdextension.SizeObject|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ dictionary gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(dictionary))[0])}))
+	var r_ret = gdextension.CallStatic[gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_from_dictionary), gdextension.SizeObject|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ dictionary gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(dictionary))[0])}))
 	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret)}
 	return ret
 }
@@ -279,93 +277,93 @@ Serializes this GLTFPhysicsShape instance into a [Dictionary] in the format defi
 */
 //go:nosplit
 func (self class) ToDictionary() Dictionary.Any { //gd:GLTFPhysicsShape.to_dictionary
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_to_dictionary, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_to_dictionary), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetShapeType() String.Readable { //gd:GLTFPhysicsShape.get_shape_type
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_get_shape_type, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_get_shape_type), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShapeType(shape_type String.Readable) { //gd:GLTFPhysicsShape.set_shape_type
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_set_shape_type, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ shape_type gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(shape_type))[0])}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_set_shape_type), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ shape_type gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(shape_type))[0])}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:GLTFPhysicsShape.get_size
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_get_size, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:GLTFPhysicsShape.set_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_set_size, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_set_size), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:GLTFPhysicsShape.get_radius
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_get_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_get_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRadius(radius float64) { //gd:GLTFPhysicsShape.set_radius
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_set_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_set_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetHeight() float64 { //gd:GLTFPhysicsShape.get_height
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_get_height, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_get_height), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeight(height float64) { //gd:GLTFPhysicsShape.set_height
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_set_height, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height float64 }{height}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_set_height), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height float64 }{height}))
 }
 
 //go:nosplit
 func (self class) GetIsTrigger() bool { //gd:GLTFPhysicsShape.get_is_trigger
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_get_is_trigger, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_get_is_trigger), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIsTrigger(is_trigger bool) { //gd:GLTFPhysicsShape.set_is_trigger
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_set_is_trigger, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ is_trigger bool }{is_trigger}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_set_is_trigger), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ is_trigger bool }{is_trigger}))
 }
 
 //go:nosplit
 func (self class) GetMeshIndex() int64 { //gd:GLTFPhysicsShape.get_mesh_index
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_get_mesh_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_get_mesh_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMeshIndex(mesh_index int64) { //gd:GLTFPhysicsShape.set_mesh_index
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_set_mesh_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mesh_index int64 }{mesh_index}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_set_mesh_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mesh_index int64 }{mesh_index}))
 }
 
 //go:nosplit
 func (self class) GetImporterMesh() [1]gdclass.ImporterMesh { //gd:GLTFPhysicsShape.get_importer_mesh
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_get_importer_mesh, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_get_importer_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.ImporterMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ImporterMesh](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetImporterMesh(importer_mesh [1]gdclass.ImporterMesh) { //gd:GLTFPhysicsShape.set_importer_mesh
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.GLTFPhysicsShape.Bind_set_importer_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ importer_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(importer_mesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsShape.Bind_set_importer_mesh), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ importer_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(importer_mesh[0].AsObject()))}))
 }
 func (self class) AsGLTFPhysicsShape() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGLTFPhysicsShape() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

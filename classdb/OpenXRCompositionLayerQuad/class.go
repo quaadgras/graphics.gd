@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -54,7 +53,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -115,12 +113,12 @@ func (self Instance) SetQuadSize(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetQuadSize(size Vector2.XY) { //gd:OpenXRCompositionLayerQuad.set_quad_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.OpenXRCompositionLayerQuad.Bind_set_quad_size, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerQuad.Bind_set_quad_size), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
 }
 
 //go:nosplit
 func (self class) GetQuadSize() Vector2.XY { //gd:OpenXRCompositionLayerQuad.get_quad_size
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.OpenXRCompositionLayerQuad.Bind_get_quad_size, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerQuad.Bind_get_quad_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

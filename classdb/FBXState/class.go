@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -114,14 +112,14 @@ func (self Instance) SetAllowGeometryHelperNodes(value bool) {
 
 //go:nosplit
 func (self class) GetAllowGeometryHelperNodes() bool { //gd:FBXState.get_allow_geometry_helper_nodes
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.FBXState.Bind_get_allow_geometry_helper_nodes, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FBXState.Bind_get_allow_geometry_helper_nodes), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowGeometryHelperNodes(allow bool) { //gd:FBXState.set_allow_geometry_helper_nodes
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.FBXState.Bind_set_allow_geometry_helper_nodes, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.FBXState.Bind_set_allow_geometry_helper_nodes), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
 }
 func (self class) AsFBXState() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsFBXState() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

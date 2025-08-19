@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -56,7 +55,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -143,46 +141,46 @@ func (self Instance) SetDoubleClick(value bool) {
 
 //go:nosplit
 func (self class) SetFactor(factor float64) { //gd:InputEventMouseButton.set_factor
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMouseButton.Bind_set_factor, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ factor float64 }{factor}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseButton.Bind_set_factor), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ factor float64 }{factor}))
 }
 
 //go:nosplit
 func (self class) GetFactor() float64 { //gd:InputEventMouseButton.get_factor
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.InputEventMouseButton.Bind_get_factor, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseButton.Bind_get_factor), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetButtonIndex(button_index Input.MouseButton) { //gd:InputEventMouseButton.set_button_index
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMouseButton.Bind_set_button_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ button_index Input.MouseButton }{button_index}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseButton.Bind_set_button_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ button_index Input.MouseButton }{button_index}))
 }
 
 //go:nosplit
 func (self class) GetButtonIndex() Input.MouseButton { //gd:InputEventMouseButton.get_button_index
-	var r_ret = gdunsafe.Call[Input.MouseButton](self.AsObject(), gd.Global.Methods.InputEventMouseButton.Bind_get_button_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.MouseButton](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseButton.Bind_get_button_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressed(pressed bool) { //gd:InputEventMouseButton.set_pressed
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMouseButton.Bind_set_pressed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseButton.Bind_set_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
 }
 
 //go:nosplit
 func (self class) SetCanceled(canceled bool) { //gd:InputEventMouseButton.set_canceled
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMouseButton.Bind_set_canceled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ canceled bool }{canceled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseButton.Bind_set_canceled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ canceled bool }{canceled}))
 }
 
 //go:nosplit
 func (self class) SetDoubleClick(double_click bool) { //gd:InputEventMouseButton.set_double_click
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.InputEventMouseButton.Bind_set_double_click, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ double_click bool }{double_click}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseButton.Bind_set_double_click), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ double_click bool }{double_click}))
 }
 
 //go:nosplit
 func (self class) IsDoubleClick() bool { //gd:InputEventMouseButton.is_double_click
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.InputEventMouseButton.Bind_is_double_click, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseButton.Bind_is_double_click), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

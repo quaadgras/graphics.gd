@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -55,7 +54,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -117,12 +115,12 @@ func (self Instance) SetMultimesh(value MultiMesh.Instance) {
 
 //go:nosplit
 func (self class) SetMultimesh(multimesh [1]gdclass.MultiMesh) { //gd:MultiMeshInstance3D.set_multimesh
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.MultiMeshInstance3D.Bind_set_multimesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ multimesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(multimesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.MultiMeshInstance3D.Bind_set_multimesh), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ multimesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(multimesh[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetMultimesh() [1]gdclass.MultiMesh { //gd:MultiMeshInstance3D.get_multimesh
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.MultiMeshInstance3D.Bind_get_multimesh, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.MultiMeshInstance3D.Bind_get_multimesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.MultiMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiMesh](r_ret)}
 	return ret
 }

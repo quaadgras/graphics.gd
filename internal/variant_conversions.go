@@ -434,7 +434,7 @@ func newArray(val reflect.Value) Array {
 		panic("gd.Variant: unsupported array element type " + val.Type().Elem().String())
 	}
 	var array = NewArray()
-	gdextension.Host.VariantTypes.SetupArray(gdextension.Array(pointers.Get(array)[0]), vtype, 0, [3]uint64{})
+	gdextension.Host.Builtin.Types.SetupArray(gdextension.Array(pointers.Get(array)[0]), vtype, 0, [3]uint64{})
 	array.Resize(Int(val.Len()))
 	for i := 0; i < val.Len(); i++ {
 		array.SetIndex(Int(i), NewVariant(val.Index(i).Interface()))
@@ -543,7 +543,7 @@ func (variant Variant) Interface() any {
 		array := variantAsPointerType[PackedColorArray](variant, vtype)
 		return PackedType.Array[Color](ArrayType.Through(PackedProxy[PackedColorArray, Color]{}, pointers.Pack(array)))
 	default:
-		panic("gd.Variant.Interface: invalid variant type " + fmt.Sprint(vtype))
+		panic("gd.Variant.Interface: invalid variant type " + fmt.Sprint(uint32(vtype)))
 	}
 }
 

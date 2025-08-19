@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -52,7 +51,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -184,7 +182,7 @@ Returns [code]true[/code] if the animation for the given [param node_info] is lo
 */
 //go:nosplit
 func (self class) IsLooping(node_info Packed.Array[float32]) bool { //gd:AnimationNodeExtension.is_looping
-	var r_ret = gdunsafe.CallStatic[bool](gd.Global.Methods.AnimationNodeExtension.Bind_is_looping, gdextension.SizeBool|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ node_info gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info)))}))
+	var r_ret = gdextension.CallStatic[bool](gdextension.MethodForClass(gd.Global.Methods.AnimationNodeExtension.Bind_is_looping), gdextension.SizeBool|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ node_info gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info)))}))
 	var ret = r_ret
 	return ret
 }
@@ -194,7 +192,7 @@ Returns the animation's remaining time for the given node info. For looping anim
 */
 //go:nosplit
 func (self class) GetRemainingTime(node_info Packed.Array[float32], break_loop bool) float64 { //gd:AnimationNodeExtension.get_remaining_time
-	var r_ret = gdunsafe.CallStatic[float64](gd.Global.Methods.AnimationNodeExtension.Bind_get_remaining_time, gdextension.SizeFloat|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[float64](gdextension.MethodForClass(gd.Global.Methods.AnimationNodeExtension.Bind_get_remaining_time), gdextension.SizeFloat|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		node_info  gdextension.PackedArray
 		break_loop bool
 	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info))), break_loop}))

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -115,7 +113,7 @@ Creates/returns a cached uniform set based on the provided uniforms for a given 
 */
 //go:nosplit
 func (self class) GetCache(shader RID.Any, set int64, uniforms Array.Contains[[1]gdclass.RDUniform]) RID.Any { //gd:UniformSetCacheRD.get_cache
-	var r_ret = gdunsafe.CallStatic[RID.Any](gd.Global.Methods.UniformSetCacheRD.Bind_get_cache, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[RID.Any](gdextension.MethodForClass(gd.Global.Methods.UniformSetCacheRD.Bind_get_cache), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12), unsafe.Pointer(&struct {
 		shader   RID.Any
 		set      int64
 		uniforms gdextension.Array

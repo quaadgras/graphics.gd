@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -145,7 +143,7 @@ Packs the given container into a binary representation. The [param value] must b
 */
 //go:nosplit
 func (self class) Pack(value variant.Any) Error.Code { //gd:PackedDataContainer.pack
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PackedDataContainer.Bind_pack, gdextension.SizeInt|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PackedDataContainer.Bind_pack), gdextension.SizeInt|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -155,7 +153,7 @@ Returns the size of the packed container (see [method Array.size] and [method Di
 */
 //go:nosplit
 func (self class) Size() int64 { //gd:PackedDataContainer.size
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.PackedDataContainer.Bind_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.PackedDataContainer.Bind_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }

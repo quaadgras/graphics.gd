@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -51,7 +50,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -116,7 +114,7 @@ Sets the time in seconds after which the [SubtweenTweener] will start running th
 */
 //go:nosplit
 func (self class) SetDelay(delay float64) [1]gdclass.SubtweenTweener { //gd:SubtweenTweener.set_delay
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.SubtweenTweener.Bind_set_delay, gdextension.SizeObject|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ delay float64 }{delay}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.SubtweenTweener.Bind_set_delay), gdextension.SizeObject|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ delay float64 }{delay}))
 	var ret = [1]gdclass.SubtweenTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.SubtweenTweener](r_ret)}
 	return ret
 }

@@ -8,7 +8,6 @@ import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdunsafe"
 import "graphics.gd/internal/gdextension"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
@@ -60,7 +59,6 @@ var _ Float.X
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
-var _ = gdunsafe.Use{}
 var _ = slices.Delete[[]struct{}, struct{}]
 
 /*
@@ -386,7 +384,7 @@ Returns a normal vector in world space, that is the result of projecting a point
 */
 //go:nosplit
 func (self class) ProjectRayNormal(screen_point Vector2.XY) Vector3.XYZ { //gd:Camera3D.project_ray_normal
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Camera3D.Bind_project_ray_normal, gdextension.SizeVector3|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ screen_point Vector2.XY }{screen_point}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_project_ray_normal), gdextension.SizeVector3|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ screen_point Vector2.XY }{screen_point}))
 	var ret = r_ret
 	return ret
 }
@@ -396,7 +394,7 @@ Returns a normal vector from the screen point location directed along the camera
 */
 //go:nosplit
 func (self class) ProjectLocalRayNormal(screen_point Vector2.XY) Vector3.XYZ { //gd:Camera3D.project_local_ray_normal
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Camera3D.Bind_project_local_ray_normal, gdextension.SizeVector3|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ screen_point Vector2.XY }{screen_point}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_project_local_ray_normal), gdextension.SizeVector3|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ screen_point Vector2.XY }{screen_point}))
 	var ret = r_ret
 	return ret
 }
@@ -406,7 +404,7 @@ Returns a 3D position in world space, that is the result of projecting a point o
 */
 //go:nosplit
 func (self class) ProjectRayOrigin(screen_point Vector2.XY) Vector3.XYZ { //gd:Camera3D.project_ray_origin
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Camera3D.Bind_project_ray_origin, gdextension.SizeVector3|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ screen_point Vector2.XY }{screen_point}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_project_ray_origin), gdextension.SizeVector3|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ screen_point Vector2.XY }{screen_point}))
 	var ret = r_ret
 	return ret
 }
@@ -423,7 +421,7 @@ control.position = get_viewport().get_camera_3d().unproject_position(global_tran
 */
 //go:nosplit
 func (self class) UnprojectPosition(world_point Vector3.XYZ) Vector2.XY { //gd:Camera3D.unproject_position
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Camera3D.Bind_unproject_position, gdextension.SizeVector2|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ world_point Vector3.XYZ }{world_point}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_unproject_position), gdextension.SizeVector2|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ world_point Vector3.XYZ }{world_point}))
 	var ret = r_ret
 	return ret
 }
@@ -434,7 +432,7 @@ Returns [code]true[/code] if the given position is behind the camera (the blue p
 */
 //go:nosplit
 func (self class) IsPositionBehind(world_point Vector3.XYZ) bool { //gd:Camera3D.is_position_behind
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Camera3D.Bind_is_position_behind, gdextension.SizeBool|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ world_point Vector3.XYZ }{world_point}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_is_position_behind), gdextension.SizeBool|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ world_point Vector3.XYZ }{world_point}))
 	var ret = r_ret
 	return ret
 }
@@ -444,7 +442,7 @@ Returns the 3D point in world space that maps to the given 2D coordinate in the 
 */
 //go:nosplit
 func (self class) ProjectPosition(screen_point Vector2.XY, z_depth float64) Vector3.XYZ { //gd:Camera3D.project_position
-	var r_ret = gdunsafe.Call[Vector3.XYZ](self.AsObject(), gd.Global.Methods.Camera3D.Bind_project_position, gdextension.SizeVector3|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector3.XYZ](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_project_position), gdextension.SizeVector3|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		screen_point Vector2.XY
 		z_depth      float64
 	}{screen_point, z_depth}))
@@ -457,7 +455,7 @@ Sets the camera projection to perspective mode (see [constant PROJECTION_PERSPEC
 */
 //go:nosplit
 func (self class) SetPerspective(fov float64, z_near float64, z_far float64) { //gd:Camera3D.set_perspective
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_perspective, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_perspective), 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		fov    float64
 		z_near float64
 		z_far  float64
@@ -469,7 +467,7 @@ Sets the camera projection to orthogonal mode (see [constant PROJECTION_ORTHOGON
 */
 //go:nosplit
 func (self class) SetOrthogonal(size float64, z_near float64, z_far float64) { //gd:Camera3D.set_orthogonal
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_orthogonal, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_orthogonal), 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		size   float64
 		z_near float64
 		z_far  float64
@@ -481,7 +479,7 @@ Sets the camera projection to frustum mode (see [constant PROJECTION_FRUSTUM]), 
 */
 //go:nosplit
 func (self class) SetFrustum(size float64, offset Vector2.XY, z_near float64, z_far float64) { //gd:Camera3D.set_frustum
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_frustum, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_frustum), 0|(gdextension.SizeFloat<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
 		size   float64
 		offset Vector2.XY
 		z_near float64
@@ -494,7 +492,7 @@ Makes this camera the current camera for the [Viewport] (see class description).
 */
 //go:nosplit
 func (self class) MakeCurrent() { //gd:Camera3D.make_current
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_make_current, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_make_current), 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -502,17 +500,17 @@ If this is the current camera, remove it from being current. If [param enable_ne
 */
 //go:nosplit
 func (self class) ClearCurrent(enable_next bool) { //gd:Camera3D.clear_current
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_clear_current, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable_next bool }{enable_next}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_clear_current), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable_next bool }{enable_next}))
 }
 
 //go:nosplit
 func (self class) SetCurrent(enabled bool) { //gd:Camera3D.set_current
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_current, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_current), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsCurrent() bool { //gd:Camera3D.is_current
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Camera3D.Bind_is_current, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_is_current), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -522,7 +520,7 @@ Returns the transform of the camera plus the vertical ([member v_offset]) and ho
 */
 //go:nosplit
 func (self class) GetCameraTransform() Transform3D.BasisOrigin { //gd:Camera3D.get_camera_transform
-	var r_ret = gdunsafe.Call[Transform3D.BasisOrigin](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_camera_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_camera_transform), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -532,175 +530,175 @@ Returns the projection matrix that this camera uses to render to its associated 
 */
 //go:nosplit
 func (self class) GetCameraProjection() Projection.XYZW { //gd:Camera3D.get_camera_projection
-	var r_ret = gdunsafe.Call[Projection.XYZW](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_camera_projection, gdextension.SizeProjection, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Projection.XYZW](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_camera_projection), gdextension.SizeProjection, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetFov() float64 { //gd:Camera3D.get_fov
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_fov, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_fov), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetFrustumOffset() Vector2.XY { //gd:Camera3D.get_frustum_offset
-	var r_ret = gdunsafe.Call[Vector2.XY](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_frustum_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_frustum_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetSize() float64 { //gd:Camera3D.get_size
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetFar() float64 { //gd:Camera3D.get_far
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_far, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_far), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetNear() float64 { //gd:Camera3D.get_near
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_near, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_near), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFov(fov float64) { //gd:Camera3D.set_fov
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_fov, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fov float64 }{fov}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_fov), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fov float64 }{fov}))
 }
 
 //go:nosplit
 func (self class) SetFrustumOffset(offset Vector2.XY) { //gd:Camera3D.set_frustum_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_frustum_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_frustum_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) SetSize(size float64) { //gd:Camera3D.set_size
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
 }
 
 //go:nosplit
 func (self class) SetFar(far float64) { //gd:Camera3D.set_far
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_far, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ far float64 }{far}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_far), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ far float64 }{far}))
 }
 
 //go:nosplit
 func (self class) SetNear(near float64) { //gd:Camera3D.set_near
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_near, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ near float64 }{near}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_near), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ near float64 }{near}))
 }
 
 //go:nosplit
 func (self class) GetProjection() ProjectionType { //gd:Camera3D.get_projection
-	var r_ret = gdunsafe.Call[ProjectionType](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_projection, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ProjectionType](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_projection), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProjection(mode ProjectionType) { //gd:Camera3D.set_projection
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_projection, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ProjectionType }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_projection), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ProjectionType }{mode}))
 }
 
 //go:nosplit
 func (self class) SetHOffset(offset float64) { //gd:Camera3D.set_h_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_h_offset, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_h_offset), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
 }
 
 //go:nosplit
 func (self class) GetHOffset() float64 { //gd:Camera3D.get_h_offset
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_h_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_h_offset), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVOffset(offset float64) { //gd:Camera3D.set_v_offset
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_v_offset, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_v_offset), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
 }
 
 //go:nosplit
 func (self class) GetVOffset() float64 { //gd:Camera3D.get_v_offset
-	var r_ret = gdunsafe.Call[float64](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_v_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_v_offset), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCullMask(mask int64) { //gd:Camera3D.set_cull_mask
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_cull_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_cull_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetCullMask() int64 { //gd:Camera3D.get_cull_mask
-	var r_ret = gdunsafe.Call[int64](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_cull_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_cull_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:Camera3D.set_environment
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_environment), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetEnvironment() [1]gdclass.Environment { //gd:Camera3D.get_environment
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_environment, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_environment), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Environment{gd.PointerWithOwnershipTransferredToGo[gdclass.Environment](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAttributes(env [1]gdclass.CameraAttributes) { //gd:Camera3D.set_attributes
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_attributes), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetAttributes() [1]gdclass.CameraAttributes { //gd:Camera3D.get_attributes
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_attributes, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_attributes), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.CameraAttributes{gd.PointerWithOwnershipTransferredToGo[gdclass.CameraAttributes](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCompositor(compositor [1]gdclass.Compositor) { //gd:Camera3D.set_compositor
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_compositor, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ compositor gdextension.Object }{gdextension.Object(gd.ObjectChecked(compositor[0].AsObject()))}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_compositor), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ compositor gdextension.Object }{gdextension.Object(gd.ObjectChecked(compositor[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetCompositor() [1]gdclass.Compositor { //gd:Camera3D.get_compositor
-	var r_ret = gdunsafe.Call[gd.EnginePointer](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_compositor, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_compositor), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Compositor{gd.PointerWithOwnershipTransferredToGo[gdclass.Compositor](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeepAspectMode(mode KeepAspect) { //gd:Camera3D.set_keep_aspect_mode
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_keep_aspect_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode KeepAspect }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_keep_aspect_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode KeepAspect }{mode}))
 }
 
 //go:nosplit
 func (self class) GetKeepAspectMode() KeepAspect { //gd:Camera3D.get_keep_aspect_mode
-	var r_ret = gdunsafe.Call[KeepAspect](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_keep_aspect_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[KeepAspect](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_keep_aspect_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDopplerTracking(mode DopplerTracking) { //gd:Camera3D.set_doppler_tracking
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_doppler_tracking, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode DopplerTracking }{mode}))
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_doppler_tracking), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode DopplerTracking }{mode}))
 }
 
 //go:nosplit
 func (self class) GetDopplerTracking() DopplerTracking { //gd:Camera3D.get_doppler_tracking
-	var r_ret = gdunsafe.Call[DopplerTracking](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_doppler_tracking, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DopplerTracking](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_doppler_tracking), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -710,7 +708,7 @@ Returns the camera's frustum planes in world space units as an array of [Plane]s
 */
 //go:nosplit
 func (self class) GetFrustum() Array.Contains[Plane.NormalD] { //gd:Camera3D.get_frustum
-	var r_ret = gdunsafe.Call[[1]gd.EnginePointer](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_frustum, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[[1]gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_frustum), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -720,7 +718,7 @@ Returns [code]true[/code] if the given position is inside the camera's frustum (
 */
 //go:nosplit
 func (self class) IsPositionInFrustum(world_point Vector3.XYZ) bool { //gd:Camera3D.is_position_in_frustum
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Camera3D.Bind_is_position_in_frustum, gdextension.SizeBool|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ world_point Vector3.XYZ }{world_point}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_is_position_in_frustum), gdextension.SizeBool|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ world_point Vector3.XYZ }{world_point}))
 	var ret = r_ret
 	return ret
 }
@@ -730,7 +728,7 @@ Returns the camera's RID from the [RenderingServer].
 */
 //go:nosplit
 func (self class) GetCameraRid() RID.Any { //gd:Camera3D.get_camera_rid
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_camera_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_camera_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -740,7 +738,7 @@ Returns the RID of a pyramid shape encompassing the camera's view frustum, ignor
 */
 //go:nosplit
 func (self class) GetPyramidShapeRid() RID.Any { //gd:Camera3D.get_pyramid_shape_rid
-	var r_ret = gdunsafe.Call[RID.Any](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_pyramid_shape_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_pyramid_shape_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -750,7 +748,7 @@ Based on [param value], enables or disables the specified layer in the [member c
 */
 //go:nosplit
 func (self class) SetCullMaskValue(layer_number int64, value bool) { //gd:Camera3D.set_cull_mask_value
-	gdunsafe.Call[struct{}](self.AsObject(), gd.Global.Methods.Camera3D.Bind_set_cull_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_set_cull_mask_value), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value}))
@@ -761,7 +759,7 @@ Returns whether or not the specified layer of the [member cull_mask] is enabled,
 */
 //go:nosplit
 func (self class) GetCullMaskValue(layer_number int64) bool { //gd:Camera3D.get_cull_mask_value
-	var r_ret = gdunsafe.Call[bool](self.AsObject(), gd.Global.Methods.Camera3D.Bind_get_cull_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gdextension.Object(gd.ObjectChecked(self.AsObject())), gdextension.MethodForClass(gd.Global.Methods.Camera3D.Bind_get_cull_mask_value), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
 	var ret = r_ret
 	return ret
 }
