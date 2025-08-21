@@ -9,6 +9,7 @@ import (
 
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/AudioEffectInstance"
+	"graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
@@ -32,6 +33,13 @@ func TestGetGodotVersion(t *testing.T) {
 	}
 	if version.String() == "" {
 		t.Fail()
+	}
+}
+
+func TestUtilities(t *testing.T) {
+	id := Resource.AllocateID()
+	if id != Resource.AllocateID()-1 {
+		t.Fatal("Resource.AllocateID did not return the expected value")
 	}
 }
 

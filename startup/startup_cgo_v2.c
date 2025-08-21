@@ -508,10 +508,10 @@ uint8_t prepare_callframe(int skip, void **frame, UINT64 shape, ANY args) {
     return 16-skip;
 }
 
-uintptr_t gd_builtin_name(uintptr_t name, INT64 hash) { return (uintptr_t)gdextension_variant_get_ptr_utility_function((GDExtensionConstStringNamePtr)name, INT64_FROM(hash));}
-void gd_builtin_call(uintptr_t fn, void *result, UINT64 shape, ANY args) {
+uintptr_t gd_builtin_name(uintptr_t name, INT64 hash) { return (uintptr_t)gdextension_variant_get_ptr_utility_function((GDExtensionConstStringNamePtr)&name, INT64_FROM(hash));}
+void gd_builtin_call(uintptr_t fn, ANY result, UINT64 shape, ANY args) {
     void *points[16]; uint8_t argc = prepare_callframe(1, &points[0], shape, args);
-    ((GDExtensionPtrUtilityFunction)fn)(result, (GDExtensionConstTypePtr*)&points[0], argc);
+    ((GDExtensionPtrUtilityFunction)fn)((GDExtensionTypePtr)result, (GDExtensionConstTypePtr*)&points[0], argc);
 }
 
 void gd_callable_create(uintptr_t id, UINT64 object, ANY result) {
@@ -1013,8 +1013,8 @@ void gd_object_extension_close(uintptr_t obj) {
     gdextension_object_free_instance_binding((GDExtensionObjectPtr)obj, cgo_library);
 };
 
-uint64_t gd_object_id(uintptr_t obj) {
-    return gdextension_object_get_instance_id((GDExtensionObjectPtr)obj);
+UINT64 gd_object_id(uintptr_t obj) {
+    return UINT64_MAKE(gdextension_object_get_instance_id((GDExtensionObjectPtr)obj));
 };
 
 UINT64 gd_object_id_inside_variant(UINT64 v1, UINT64 v2, UINT64 v3) {

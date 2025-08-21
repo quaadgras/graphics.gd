@@ -60,7 +60,6 @@ type API struct {
 	PackedVector3Array PackedFunctionsFor[PackedVector3Array, Vector3]
 	PackedVector4Array PackedFunctionsFor[PackedVector4Array, Vector4]
 	Object             struct {
-		Destroy             func([1]Object)
 		GetInstanceBinding  func([1]Object, ExtensionToken, InstanceBindingType) any
 		SetInstanceBinding  func([1]Object, ExtensionToken, any, InstanceBindingType)
 		FreeInstanceBinding func([1]Object, ExtensionToken)

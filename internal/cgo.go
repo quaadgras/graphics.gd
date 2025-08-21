@@ -12,7 +12,6 @@ import (
 // function pointers that are looked up at runtime and used for
 // calling methods on classes.
 type cache struct {
-	utility utility
 	builtin builtin
 	typeset typeset
 	variant variant

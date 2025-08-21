@@ -22,7 +22,6 @@ func (Godot *API) Init(level GDExtensionInitializationLevel) {
 	if level == GDExtensionInitializationLevelScene {
 		Godot.linkTypeset()
 		Godot.linkVariant()
-		Godot.linkUtility()
 		Godot.linkBuiltin()
 		Godot.linkSingletons()
 		Godot.linkMethods(false)
@@ -43,22 +42,6 @@ func (Godot *API) linkSingletons() {
 		field := rvalue.Type().Field(i)
 		raw := pointers.Get(NewStringName(field.Name))
 		rvalue.Field(i).Set(reflect.ValueOf(pointers.Raw[StringName](raw)))
-	}
-}
-
-// linkUtility, each field of cache.utility is a function value that
-// needs to be loaded in dynamically.
-func (Godot *API) linkUtility() {
-	rvalue := reflect.ValueOf(&Godot.utility).Elem()
-	for i := 0; i < rvalue.NumField(); i++ {
-		field := rvalue.Type().Field(i)
-		value := reflect.NewAt(field.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset))
-		name := NewStringName(field.Name)
-		hash, err := strconv.ParseInt(field.Tag.Get("hash"), 10, 64)
-		if err != nil {
-			panic("gdextension.Link: invalid gd.API utility function hash for " + field.Name + ": " + err.Error())
-		}
-		*(value.Interface().(*func(ret callframe.Addr, args callframe.Args, c int32))) = Godot.Variants.GetPointerUtilityFunction(name, Int(hash))
 	}
 }
 

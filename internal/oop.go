@@ -84,13 +84,25 @@ func ObjectChecked(obj [1]Object) gdextension.Object {
 		panic("use after free")
 	}
 	if raw == [3]uint64{} {
-		panic("object pointer is nil")
+		return 0
 	}
 	return gdextension.Object(raw[0])
 }
 
 func (self Object) AsObject() [1]Object {
 	return [1]Object{self}
+}
+
+func (class Object) Virtual(s string) reflect.Value {
+	return reflect.Value{}
+}
+
+func (self RefCounted) AsObject() [1]Object {
+	return *(*[1]Object)(unsafe.Pointer(&self))
+}
+
+func (class RefCounted) Virtual(s string) reflect.Value {
+	return reflect.Value{}
 }
 
 func (self RefCounted) Free() {
@@ -117,10 +129,10 @@ func (self Object) Free() {
 	ref := Global.Object.CastTo(this, Global.refCountedClassTag)
 	if ref != ([1]Object{}) {
 		if (*(*RefCounted)(unsafe.Pointer(&ref))).Unreference() {
-			Global.Object.Destroy(this)
+			gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
 		}
 	} else {
-		Global.Object.Destroy(this)
+		gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
 	}
 }
 

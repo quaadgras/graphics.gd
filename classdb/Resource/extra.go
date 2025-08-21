@@ -22,15 +22,25 @@ type ID = gd.RID
 // Remains valid even if the resource is relocated or renamed.
 type UID int
 
+var (
+	rid_allocate_id       gdextension.FunctionID
+	rid_allocate_id_setup = sync.OnceFunc(func() {
+		rid_allocate_id = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("rid_allocate_id"))[0]), 701202648)
+	})
+)
+
 // New allocates a unique ID which can be used by the implementation to construct an RID.
 // This is used mainly from native extensions to implement servers.
 func AllocateID() ID { //gd:rid_allocate_id
-	return gd.RidFromInt64(gd.RidAllocateId())
+	rid_allocate_id_setup()
+	var id int64
+	gdextension.Host.Builtin.Functions.Call(rid_allocate_id, gdextension.CallReturns[any](&id), gdextension.SizeInt, nil)
+	return Int64(id)
 }
 
 // Int64 returns a resource ID from the given int64.
 func Int64(id int64) ID { //gd:rid_from_int64
-	return gd.RidFromInt64(gd.Int(id))
+	return *(*gd.RID)(unsafe.Pointer(&id))
 }
 
 var preloaded_resources []gd.RefCounted
@@ -45,7 +55,7 @@ func init() {
 		gd.RegisterCleanup(func() {
 			for _, resource := range preloaded_resources {
 				if resource.Unreference() {
-					gd.Global.Object.Destroy(resource.AsObject())
+					gdextension.Host.Objects.Unsafe.Free(gdextension.Object(pointers.Get(resource.AsObject()[0])[0]))
 				}
 			}
 		})

@@ -268,7 +268,7 @@ func wrap() error {
 			}
 			template_path := filepath.Join(graphics, ".godot", "godot.web.template_release.wasm32.zip")
 			stat, statErr := os.Stat(template_path)
-			resp, err := http.Get("https://graphics.gd/godot.web.template_release.wasm32.zip")
+			resp, err := http.Get("https://release.graphics.gd/godot.web.template_release.wasm32.zip")
 			if err != nil && !os.IsNotExist(err) {
 				return xray.New(err)
 			} else {
@@ -279,7 +279,7 @@ func wrap() error {
 				return xray.New(err)
 			}
 			if (os.IsNotExist(statErr) || (statErr == nil && last_modified.After(stat.ModTime()))) && resp.Body != nil {
-				fmt.Println("gd: downloading latest graphics.gd/godot.web.template_release.wasm32.zip")
+				fmt.Println("gd: downloading latest https://release.graphics.gd/godot.web.template_release.wasm32.zip")
 				data, err := io.ReadAll(resp.Body)
 				if err != nil {
 					return xray.New(err)

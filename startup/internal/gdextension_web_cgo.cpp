@@ -508,13 +508,13 @@ uint8_t prepare_callframe(int skip, void **frame, UINT64 shape, ANY args) {
     return 16-skip;
 }
 
-uintptr_t gd_builtin_name(uintptr_t name, INT64 hash) { return (uintptr_t)gdextension_variant_get_ptr_utility_function((GDExtensionConstStringNamePtr)name, INT64_FROM(hash));}
+uintptr_t gd_builtin_name(uintptr_t name, INT64 hash) { return (uintptr_t)gdextension_variant_get_ptr_utility_function((GDExtensionConstStringNamePtr)&name, INT64_FROM(hash));}
 void gd_builtin_call(uintptr_t fn, void *result, UINT64 shape, ANY args) {
     void *points[16]; uint8_t argc = prepare_callframe(1, &points[0], shape, args);
     ((GDExtensionPtrUtilityFunction)fn)(result, (GDExtensionConstTypePtr*)&points[0], argc);
 }
 
-void gd_callable_create(uintptr_t id, UINT64 object, void *result) {
+void gd_callable_create(uintptr_t id, UINT64 object, ANY result) {
     GDExtensionCallableCustomInfo2 info = {
         .callable_userdata = (void *)id,
         .token = cgo_library,
@@ -528,7 +528,7 @@ void gd_callable_create(uintptr_t id, UINT64 object, void *result) {
         .to_string_func = cgo_callable_to_string_func,
         .get_argument_count_func = cgo_callable_get_argument_count_func,
     };
-    gdextension_callable_custom_create2((uint64_t *)result+sizeof(uint64_t), &info);
+    gdextension_callable_custom_create2((uint64_t *)result, &info);
 }
 
 uintptr_t gd_callable_lookup(UINT64 a, UINT64 b) {
@@ -570,7 +570,7 @@ uintptr_t gd_method_list_make(INT length) {
     return (uintptr_t)list;
 };
 
-void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uint32_t method_flags, bool has_return_value, uintptr_t return_value_info, uint32_t argument_count, uintptr_t arguments_info, INT default_argument_count, void *default_arguments) {
+void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uint32_t method_flags, bool has_return_value, uintptr_t return_value_info, uint32_t argument_count, uintptr_t arguments_info, INT default_argument_count, ANY default_arguments) {
     method_list *list = (method_list *)list_p;
     GDExtensionClassMethodInfo *info = &list->info[list->push++];
     property_list *return_value = (property_list *)return_value_info;

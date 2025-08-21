@@ -386,20 +386,6 @@ func linkCGO(API *gd.API) {
 	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
 	API.PackedVector3Array = makePackedFunctions[gd.PackedVector3Array, gd.Vector3]("vector3_array")
 	API.PackedVector4Array = makePackedFunctions[gd.PackedVector4Array, gd.Vector4]("vector4_array")
-	object_destroy := dlsymGD("object_destroy")
-	API.Object.Destroy = func(o [1]gd.Object) {
-		if o == [1]gd.Object{} {
-			panic("nil gd.Object dereference")
-		}
-		var self = pointers.Get(o[0])
-		if self[0] == 0 {
-			panic("nil gd.Object dereference")
-		}
-		C.object_destroy(
-			C.uintptr_t(uintptr(object_destroy)),
-			C.uintptr_t(self[0]),
-		)
-	}
 	object_get_instance_binding := dlsymGD("object_get_instance_binding")
 	API.Object.GetInstanceBinding = func(o [1]gd.Object, et gd.ExtensionToken, ibt gd.InstanceBindingType) any {
 		var self = pointers.Get(o[0])

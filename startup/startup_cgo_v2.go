@@ -651,10 +651,7 @@ func init() {
 		G float32
 		B float32
 		A float32
-	}]) {
-		C.gd_packed_color_array_access(C.uintptr_t(p0[0]), C.uintptr_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2))
-		return
-	}
+	}]) { C.gd_packed_color_array_access(C.uintptr_t(p0[0]), C.uintptr_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2)); return }
 	gdextension.Host.Packed.Float32s.Unsafe = func(p0 gdextension.PackedArray) (result gdextension.Pointer) {
 		result = gdextension.Pointer(C.gd_packed_float32_array_unsafe(C.uintptr_t(p0[0]), C.uintptr_t(p0[1])))
 		return
@@ -702,10 +699,7 @@ func init() {
 	gdextension.Host.Packed.Vector2s.Access = func(p0 gdextension.PackedArray, p1 int, p2 gdextension.CallReturns[struct {
 		X float32
 		Y float32
-	}]) {
-		C.gd_packed_vector2_array_access(C.uintptr_t(p0[0]), C.uintptr_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2))
-		return
-	}
+	}]) { C.gd_packed_vector2_array_access(C.uintptr_t(p0[0]), C.uintptr_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2)); return }
 	gdextension.Host.Packed.Vector3s.Unsafe = func(p0 gdextension.PackedArray) (result gdextension.Pointer) {
 		result = gdextension.Pointer(C.gd_packed_vector3_array_unsafe(C.uintptr_t(p0[0]), C.uintptr_t(p0[1])))
 		return
@@ -714,10 +708,7 @@ func init() {
 		X float32
 		Y float32
 		Z float32
-	}]) {
-		C.gd_packed_vector3_array_access(C.uintptr_t(p0[0]), C.uintptr_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2))
-		return
-	}
+	}]) { C.gd_packed_vector3_array_access(C.uintptr_t(p0[0]), C.uintptr_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2)); return }
 	gdextension.Host.Packed.Vector4s.Unsafe = func(p0 gdextension.PackedArray) (result gdextension.Pointer) {
 		result = gdextension.Pointer(C.gd_packed_vector4_array_unsafe(C.uintptr_t(p0[0]), C.uintptr_t(p0[1])))
 		return
@@ -727,10 +718,7 @@ func init() {
 		Y float32
 		Z float32
 		W float32
-	}]) {
-		C.gd_packed_vector4_array_access(C.uintptr_t(p0[0]), C.uintptr_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2))
-		return
-	}
+	}]) { C.gd_packed_vector4_array_access(C.uintptr_t(p0[0]), C.uintptr_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2)); return }
 	gdextension.Host.RefCounted.Get = func(p0 gdextension.RefCounted) (result gdextension.Object) {
 		result = gdextension.Object(C.gd_ref_get_object(C.uintptr_t(p0)))
 		return

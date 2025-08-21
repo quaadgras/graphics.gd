@@ -1,11 +1,12 @@
 package Engine
 
 import (
-	"fmt"
 	"runtime"
+	"sync"
 
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/pointers"
 )
 
 // Version returns the version of the Engine.
@@ -13,10 +14,32 @@ func Version() gd.Version {
 	return gd.Global.GetGodotVersion()
 }
 
+var (
+	print_fn,
+	print_rich_fn,
+	print_err_fn,
+	print_verbose_fn,
+	push_error_fn,
+	push_warning_fn gdextension.FunctionID
+	print_setup = sync.OnceFunc(func() {
+		print_fn = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("print"))[0]), 2648703342)
+		print_rich_fn = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("print_rich"))[0]), 2648703342)
+		print_err_fn = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("printerr"))[0]), 2648703342)
+		print_verbose_fn = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("print_verbose"))[0]), 2648703342)
+		push_error_fn = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("push_error"))[0]), 2648703342)
+		push_warning_fn = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("push_warning"))[0]), 2648703342)
+	})
+)
+
 // Println converts one or more arguments of any type to string in the best way
 // possible and prints them to the console.
 func Println(v ...any) { //gd:print
-	gd.Print(gd.NewVariant(fmt.Sprint(v...)))
+	print_setup()
+	var variants []gdextension.Variant
+	for _, value := range v {
+		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(value))))
+	}
+	gdextension.Host.Builtin.Functions.Call(print_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
 }
 
 // PrintRich converts one or more arguments of any type to string in the best way possible
@@ -36,24 +59,44 @@ func Println(v ...any) { //gd:print
 // code is represented with faint text but without any font change. Unsupported tags are left
 // as-is in standard output.
 func PrintRich(v ...any) { //gd:print_rich
-	gd.PrintRich(gd.NewVariant(fmt.Sprint(v...)))
+	print_setup()
+	var variants []gdextension.Variant
+	for _, value := range v {
+		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(value))))
+	}
+	gdextension.Host.Builtin.Functions.Call(print_rich_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
 }
 
 // Log prints one or more arguments to strings in the best way possible to standard error line
 func Log(v ...any) { //gd:printerr
-	gd.Printerr(gd.NewVariant(fmt.Sprint(v...)))
+	print_setup()
+	var variants []gdextension.Variant
+	for _, value := range v {
+		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(value))))
+	}
+	gdextension.Host.Builtin.Functions.Call(print_err_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
 }
 
 // Logv prints if verbose mode is enabled (OS.is_stdout_verbose returning true), converts one or
 // more arguments of any type to string in the best way possible and prints them to the console.
 func Logv(v ...any) { //gd:print_verbose
-	gd.PrintVerbose(gd.NewVariant(fmt.Sprint(v...)))
+	print_setup()
+	var variants []gdextension.Variant
+	for _, value := range v {
+		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(value))))
+	}
+	gdextension.Host.Builtin.Functions.Call(print_verbose_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
 }
 
 // Print prints one or more arguments to strings in the best way possible to the OS terminal.
 // Unlike print, no newline is automatically added at the end.
 func Print(v ...any) { //gd:prints printraw printt
-	gd.Print(gd.NewVariant(fmt.Sprint(v...)))
+	print_setup()
+	var variants []gdextension.Variant
+	for _, value := range v {
+		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(value))))
+	}
+	gdextension.Host.Builtin.Functions.Call(print_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
 }
 
 // Raise pushes an error message to Godot's built-in debugger and to the OS terminal.
@@ -63,11 +106,19 @@ func Raise(err error) { //gd:push_error
 		name := runtime.FuncForPC(pc).Name()
 		gdextension.Host.Log.Error(err.Error(), "", name, file, int32(line), false)
 	} else {
-		gd.PushError(gd.NewVariant(err.Error()))
+		print_setup()
+		var variants []gdextension.Variant
+		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(err.Error()))))
+		gdextension.Host.Builtin.Functions.Call(push_error_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
 	}
 }
 
 // RaiseWarning pushes a warning message to Godot's built-in debugger and to the OS terminal.
 func RaiseWarning(v ...any) { //gd:push_warning
-	gd.PushWarning(gd.NewVariant(fmt.Sprint(v...)))
+	print_setup()
+	var variants []gdextension.Variant
+	for _, value := range v {
+		variants = append(variants, gdextension.Variant(pointers.Get(gd.NewVariant(value))))
+	}
+	gdextension.Host.Builtin.Functions.Call(push_warning_fn, nil, gdextension.ShapeVariants(len(variants)), gdextension.CallAccepts[any](&variants[0]))
 }

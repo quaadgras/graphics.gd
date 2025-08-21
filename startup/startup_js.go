@@ -361,10 +361,6 @@ func linkJS(API *gd.API) {
 		}
 		return o
 	}
-	object_destroy := dlsym("object_destroy")
-	API.Object.Destroy = func(o [1]gd.Object) {
-		object_destroy.Invoke(pointers.Get(o[0])[0])
-	}
 	API.PackedByteArray = makePackedFunctions[gd.PackedByteArray, byte]("byte_array")
 	API.PackedInt32Array = makePackedFunctions[gd.PackedInt32Array, int32]("int32_array")
 	API.PackedByteArray = makePackedFunctions[gd.PackedByteArray, byte]("byte_array")
