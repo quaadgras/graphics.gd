@@ -21,7 +21,6 @@ import (
 func (Godot *API) Init(level GDExtensionInitializationLevel) {
 	if level == GDExtensionInitializationLevelScene {
 		Godot.linkTypeset()
-		Godot.linkVariant()
 		Godot.linkBuiltin()
 		Godot.linkSingletons()
 		Godot.linkMethods(false)
@@ -178,12 +177,5 @@ func (Godot *API) linkTypesetDestruct() {
 		value := reflect.NewAt(field.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset))
 		vtype, _ := variantTypeFromName(field.Name)
 		*(value.Interface().(*func(callframe.Addr))) = Godot.Variants.GetPointerDestructor(vtype)
-	}
-}
-
-func (Godot *API) linkVariant() {
-	for i := VariantType(1); i < TypeMax; i++ {
-		Godot.variant.FromType[i] = Godot.Variants.FromTypeConstructor(i)
-		Godot.variant.IntoType[i] = Godot.Variants.ToTypeConstructor(i)
 	}
 }

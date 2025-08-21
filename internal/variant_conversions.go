@@ -5,6 +5,7 @@ package gd
 import (
 	"fmt"
 	"reflect"
+	"unsafe"
 
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/gdextension"
@@ -38,7 +39,7 @@ func CutVariant(v any, cut bool) Variant {
 		return Variant{}
 	}
 	var frame = callframe.New()
-	var ret = callframe.Ret[VariantPointers](frame)
+	var ret gdextension.Variant
 	if enum, ok := v.(Enum.Any); ok {
 		v = enum.Int()
 	}
@@ -46,14 +47,14 @@ func CutVariant(v any, cut bool) Variant {
 	value := reflect.ValueOf(v)
 	switch rtype.Kind() {
 	case reflect.Bool:
-		var arg = callframe.Arg(frame, value.Bool())
-		Global.variant.FromType[TypeBool](ret, arg.Addr())
+		var arg = value.Bool()
+		ret.LoadNative(TypeBool, gdextension.SizeBool, unsafe.Pointer(&arg))
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		var arg = callframe.Arg(frame, Int(value.Int()))
-		Global.variant.FromType[TypeInt](ret, arg.Addr())
+		var arg = Int(value.Int())
+		ret.LoadNative(TypeInt, gdextension.SizeInt, unsafe.Pointer(&arg))
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32:
-		var arg = callframe.Arg(frame, Int(value.Uint()))
-		Global.variant.FromType[TypeInt](ret, arg.Addr())
+		var arg = Int(value.Uint())
+		ret.LoadNative(TypeInt, gdextension.SizeInt, unsafe.Pointer(&arg))
 	case reflect.Uint64:
 		if instance := value.MethodByName("Instance"); instance.IsValid() && instance.Type().NumOut() == 2 && instance.Type().NumIn() == 0 {
 			result := instance.Call(nil)
@@ -64,21 +65,21 @@ func CutVariant(v any, cut bool) Variant {
 			if pointers.Get(obj[0]) == ([3]uint64{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(obj[0], cut))
-			Global.variant.FromType[TypeObject](ret, arg.Addr())
+			var arg = gdextension.Object(pointers.Cut(obj[0], cut)[0])
+			ret.LoadNative(TypeObject, gdextension.SizeObject, unsafe.Pointer(&arg))
 		} else {
-			var arg = callframe.Arg(frame, RID(value.Uint()))
-			Global.variant.FromType[TypeRID](ret, arg.Addr())
+			var arg = RID(value.Uint())
+			ret.LoadNative(TypeRID, gdextension.SizeRID, unsafe.Pointer(&arg))
 		}
 	case reflect.Float32, reflect.Float64:
-		var arg = callframe.Arg(frame, Float(value.Float()))
-		Global.variant.FromType[TypeFloat](ret, arg.Addr())
+		var arg = Float(value.Float())
+		ret.LoadNative(TypeFloat, gdextension.SizeFloat, unsafe.Pointer(&arg))
 	case reflect.Complex64, reflect.Complex128:
-		var arg = callframe.Arg(frame, Vector2{
+		var arg = Vector2{
 			X: FloatType.X(real(value.Complex())),
 			Y: FloatType.X(imag(value.Complex())),
-		})
-		Global.variant.FromType[TypeVector2](ret, arg.Addr())
+		}
+		ret.LoadNative(TypeVector2, gdextension.SizeVector2, unsafe.Pointer(&arg))
 	case reflect.Pointer:
 		if value.IsNil() {
 			return Variant{}
@@ -88,8 +89,8 @@ func CutVariant(v any, cut bool) Variant {
 			if pointers.Get(obj[0]) == ([3]uint64{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Get(obj[0]))
-			Global.variant.FromType[TypeObject](ret, arg.Addr())
+			var arg = gdextension.Object(pointers.Get(obj[0])[0])
+			ret.LoadNative(TypeObject, gdextension.SizeObject, unsafe.Pointer(&arg))
 		} else {
 			return NewVariant(value.Elem().Interface())
 		}
@@ -99,308 +100,307 @@ func CutVariant(v any, cut bool) Variant {
 			if pointers.Get(obj[0]) == ([3]uint64{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(obj[0], cut))
-			Global.variant.FromType[TypeObject](ret, arg.Addr())
+			var arg = gdextension.Object(pointers.Cut(obj[0], cut)[0])
+			ret.LoadNative(TypeObject, gdextension.SizeObject, unsafe.Pointer(&arg))
 		} else {
-			var arg = callframe.Arg(frame, pointers.Cut(newArray(value), cut))
-			Global.variant.FromType[TypeArray](ret, arg.Addr())
+			var arg = gdextension.Array(pointers.Cut(newArray(value), cut)[0])
+			ret.LoadNative(TypeArray, gdextension.SizeArray, unsafe.Pointer(&arg))
 		}
 	case reflect.Slice:
 		switch value := value.Interface().(type) {
 		case []byte:
-			var arg = callframe.Arg(frame, pointers.Cut(NewPackedByteSlice(value), cut))
-			Global.variant.FromType[TypePackedByteArray](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(NewPackedByteSlice(value), cut))
+			ret.LoadNative(TypePackedByteArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case []int32:
-			var arg = callframe.Arg(frame, pointers.Cut(NewPackedInt32Slice(value), cut))
-			Global.variant.FromType[TypePackedInt32Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(NewPackedInt32Slice(value), cut))
+			ret.LoadNative(TypePackedInt32Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case []int64:
-			var arg = callframe.Arg(frame, pointers.Cut(NewPackedInt64Slice(value), cut))
-			Global.variant.FromType[TypePackedInt64Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(NewPackedInt64Slice(value), cut))
+			ret.LoadNative(TypePackedInt64Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case []float32:
-			var arg = callframe.Arg(frame, pointers.Cut(NewPackedFloat32Slice(value), cut))
-			Global.variant.FromType[TypePackedFloat32Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(NewPackedFloat32Slice(value), cut))
+			ret.LoadNative(TypePackedFloat32Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case []float64:
-			var arg = callframe.Arg(frame, pointers.Cut(NewPackedFloat64Slice(value), cut))
-			Global.variant.FromType[TypePackedFloat64Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(NewPackedFloat64Slice(value), cut))
+			ret.LoadNative(TypePackedFloat64Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case []string:
-			var arg = callframe.Arg(frame, pointers.Cut(NewPackedStringSlice(value), cut))
-			Global.variant.FromType[TypePackedStringArray](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(NewPackedStringSlice(value), cut))
+			ret.LoadNative(TypePackedStringArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case []StringType.Readable:
-			var arg = callframe.Arg(frame, pointers.Cut(NewPackedReadableStringSlice(value), cut))
-			Global.variant.FromType[TypePackedStringArray](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(NewPackedReadableStringSlice(value), cut))
+			ret.LoadNative(TypePackedStringArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case []Vector2:
-			var arg = callframe.Arg(frame, pointers.Cut(NewPackedVector2Slice(value), cut))
-			Global.variant.FromType[TypePackedVector2Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(NewPackedVector2Slice(value), cut))
+			ret.LoadNative(TypePackedVector2Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case []Vector3:
-			var arg = callframe.Arg(frame, pointers.Cut(NewPackedVector3Slice(value), cut))
-			Global.variant.FromType[TypePackedVector3Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(NewPackedVector3Slice(value), cut))
+			ret.LoadNative(TypePackedVector3Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case []Color:
-			var arg = callframe.Arg(frame, pointers.Cut(NewPackedColorSlice(value), cut))
-			Global.variant.FromType[TypePackedColorArray](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(NewPackedColorSlice(value), cut))
+			ret.LoadNative(TypePackedColorArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case []Vector4:
-			var arg = callframe.Arg(frame, pointers.Cut(NewPackedVector4Slice(value), cut))
-			Global.variant.FromType[TypePackedVector4Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(NewPackedVector4Slice(value), cut))
+			ret.LoadNative(TypePackedVector4Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		default:
-			var arg = callframe.Arg(frame, pointers.Cut(newArray(reflect.ValueOf(value)), cut))
-			Global.variant.FromType[TypeArray](ret, arg.Addr())
+			var arg = gdextension.Array(pointers.Cut(newArray(reflect.ValueOf(value)), cut)[0])
+			ret.LoadNative(TypeArray, gdextension.SizeArray, unsafe.Pointer(&arg))
 		}
 	case reflect.Func:
 		if value.IsNil() {
 			return Variant{}
 		}
-		var arg = callframe.Arg(frame, NewCallable(value))
-		Global.variant.FromType[TypeCallable](ret, arg.Addr())
+		var arg = gdextension.Callable(pointers.Get(NewCallable(value)))
+		ret.LoadNative(TypeCallable, gdextension.SizeCallable, unsafe.Pointer(&arg))
 	case reflect.Map:
 		if value.IsNil() {
 			return Variant{}
 		}
-		var arg = callframe.Arg(frame, pointers.Cut(newDictionary(value), cut))
-		Global.variant.FromType[TypeDictionary](ret, arg.Addr())
+		var arg = gdextension.Dictionary(pointers.Cut(newDictionary(value), cut)[0])
+		ret.LoadNative(TypeDictionary, gdextension.SizeDictionary, unsafe.Pointer(&arg))
 	case reflect.String:
 		switch rtype {
 		case reflect.TypeFor[Path.ToNode]():
 			var s = NewString(value.String()).NodePath()
-			var arg = callframe.Arg(frame, pointers.Cut(s, cut))
-			Global.variant.FromType[TypeNodePath](ret, arg.Addr())
+			var arg = gdextension.NodePath(pointers.Cut(s, cut)[0])
+			ret.LoadNative(TypeNodePath, gdextension.SizeNodePath, unsafe.Pointer(&arg))
 		case reflect.TypeFor[StringType.Name]():
 			var s = NewStringName(value.String())
-			var arg = callframe.Arg(frame, pointers.Cut(s, cut))
-			Global.variant.FromType[TypeStringName](ret, arg.Addr())
+			var arg = gdextension.StringName(pointers.Cut(s, cut)[0])
+			ret.LoadNative(TypeStringName, gdextension.SizeStringName, unsafe.Pointer(&arg))
 		case reflect.TypeFor[StringType.Readable]():
 			var s = NewString(value.String())
-			var arg = callframe.Arg(frame, pointers.Cut(s, cut))
-			Global.variant.FromType[TypeString](ret, arg.Addr())
+			var arg = gdextension.String(pointers.Cut(s, cut)[0])
+			ret.LoadNative(TypeString, gdextension.SizeString, unsafe.Pointer(&arg))
 		default:
 			var s = NewString(value.String())
-			var arg = callframe.Arg(frame, pointers.Cut(s, cut))
-			Global.variant.FromType[TypeString](ret, arg.Addr())
+			var arg = gdextension.String(pointers.Cut(s, cut)[0])
+			ret.LoadNative(TypeString, gdextension.SizeString, unsafe.Pointer(&arg))
 		}
 	case reflect.Struct:
 		switch val := v.(type) {
 		case PackedType.Bytes:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalPacked[PackedByteArray, byte](PackedType.Array[byte](val)), cut))
-			Global.variant.FromType[TypePackedByteArray](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(InternalPacked[PackedByteArray, byte](PackedType.Array[byte](val)), cut))
+			ret.LoadNative(TypePackedByteArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedType.Array[byte]:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalPacked[PackedByteArray, byte](val), cut))
-			Global.variant.FromType[TypePackedByteArray](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(InternalPacked[PackedByteArray, byte](val), cut))
+			ret.LoadNative(TypePackedByteArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedType.Array[int32]:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalPacked[PackedInt32Array, int32](val), cut))
-			Global.variant.FromType[TypePackedInt32Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(InternalPacked[PackedInt32Array, int32](val), cut))
+			ret.LoadNative(TypePackedInt32Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedType.Array[int64]:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalPacked[PackedInt64Array, int64](val), cut))
-			Global.variant.FromType[TypePackedInt64Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(InternalPacked[PackedInt64Array, int64](val), cut))
+			ret.LoadNative(TypePackedInt64Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedType.Array[float32]:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalPacked[PackedFloat32Array, float32](val), cut))
-			Global.variant.FromType[TypePackedFloat32Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(InternalPacked[PackedFloat32Array, float32](val), cut))
+			ret.LoadNative(TypePackedFloat32Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedType.Array[float64]:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalPacked[PackedFloat64Array, float64](val), cut))
-			Global.variant.FromType[TypePackedFloat64Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(InternalPacked[PackedFloat64Array, float64](val), cut))
+			ret.LoadNative(TypePackedFloat64Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedType.Strings:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalPackedStrings(val), cut))
-			Global.variant.FromType[TypePackedStringArray](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(InternalPackedStrings(val), cut))
+			ret.LoadNative(TypePackedStringArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedType.Array[Vector2]:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalPacked[PackedVector2Array, Vector2](val), cut))
-			Global.variant.FromType[TypePackedVector2Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(InternalPacked[PackedVector2Array, Vector2](val), cut))
+			ret.LoadNative(TypePackedVector2Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedType.Array[Vector3]:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalPacked[PackedVector3Array, Vector3](val), cut))
-			Global.variant.FromType[TypePackedVector3Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(InternalPacked[PackedVector3Array, Vector3](val), cut))
+			ret.LoadNative(TypePackedVector3Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedType.Array[Color]:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalPacked[PackedColorArray, Color](val), cut))
-			Global.variant.FromType[TypePackedColorArray](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(InternalPacked[PackedColorArray, Color](val), cut))
+			ret.LoadNative(TypePackedColorArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedType.Array[Vector4]:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalPacked[PackedVector4Array, Vector4](val), cut))
-			Global.variant.FromType[TypePackedVector4Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(InternalPacked[PackedVector4Array, Vector4](val), cut))
+			ret.LoadNative(TypePackedVector4Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case ArrayType.Any:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalArray(val), cut))
-			Global.variant.FromType[TypeArray](ret, arg.Addr())
+			var arg = gdextension.Array(pointers.Cut(InternalArray(val), cut)[0])
+			ret.LoadNative(TypeArray, gdextension.SizeArray, unsafe.Pointer(&arg))
 		case ArrayType.Interface:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalArray(val.Any()), cut))
-			Global.variant.FromType[TypeArray](ret, arg.Addr())
+			var arg = gdextension.Array(pointers.Cut(InternalArray(val.Any()), cut)[0])
+			ret.LoadNative(TypeArray, gdextension.SizeArray, unsafe.Pointer(&arg))
 		case DictionaryType.Any:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalDictionary(val), cut))
-			Global.variant.FromType[TypeDictionary](ret, arg.Addr())
+			var arg = gdextension.Dictionary(pointers.Cut(InternalDictionary(val), cut)[0])
+			ret.LoadNative(TypeDictionary, gdextension.SizeDictionary, unsafe.Pointer(&arg))
 		case DictionaryType.Interface:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalDictionary(val.Any()), cut))
-			Global.variant.FromType[TypeDictionary](ret, arg.Addr())
+			var arg = gdextension.Dictionary(pointers.Cut(InternalDictionary(val.Any()), cut)[0])
+			ret.LoadNative(TypeDictionary, gdextension.SizeDictionary, unsafe.Pointer(&arg))
 		case StringType.Readable:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalString(val), cut))
-			Global.variant.FromType[TypeString](ret, arg.Addr())
+			var arg = gdextension.String(pointers.Cut(InternalString(val), cut)[0])
+			ret.LoadNative(TypeString, gdextension.SizeString, unsafe.Pointer(&arg))
 		case Path.ToNode:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalNodePath(val), cut))
-			Global.variant.FromType[TypeNodePath](ret, arg.Addr())
+			var arg = gdextension.NodePath(pointers.Cut(InternalNodePath(val), cut)[0])
+			ret.LoadNative(TypeNodePath, gdextension.SizeNodePath, unsafe.Pointer(&arg))
 		case StringType.Name:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalStringName(val), cut))
-			Global.variant.FromType[TypeStringName](ret, arg.Addr())
+			var arg = gdextension.StringName(pointers.Cut(InternalStringName(val), cut)[0])
+			ret.LoadNative(TypeStringName, gdextension.SizeStringName, unsafe.Pointer(&arg))
 		case CallableType.Function:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalCallable(val), cut))
-			Global.variant.FromType[TypeCallable](ret, arg.Addr())
+			var arg = gdextension.Callable(pointers.Cut(InternalCallable(val), cut))
+			ret.LoadNative(TypeCallable, gdextension.SizeCallable, unsafe.Pointer(&arg))
 		case SignalType.Any:
-			var arg = callframe.Arg(frame, pointers.Cut(InternalSignal(val), cut))
-			Global.variant.FromType[TypeSignal](ret, arg.Addr())
+			var arg = gdextension.Signal(pointers.Cut(InternalSignal(val), cut))
+			ret.LoadNative(TypeSignal, gdextension.SizeSignal, unsafe.Pointer(&arg))
 		case Variant:
 			return val
 		case VariantPkg.Any:
 			return NewVariant(val.Interface())
 		case Vector2:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeVector2](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeVector2, gdextension.SizeVector2, unsafe.Pointer(&arg))
 		case Vector2i:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeVector2i](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeVector2i, gdextension.SizeVector2i, unsafe.Pointer(&arg))
 		case Rect2:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeRect2](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeRect2, gdextension.SizeRect2, unsafe.Pointer(&arg))
 		case Rect2i:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeRect2i](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeRect2i, gdextension.SizeRect2i, unsafe.Pointer(&arg))
 		case Vector3:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeVector3](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeVector3, gdextension.SizeVector3, unsafe.Pointer(&arg))
 		case Euler.Radians:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeVector3](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeVector3, gdextension.SizeVector3, unsafe.Pointer(&arg))
 		case Euler.Degrees:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeVector3](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeVector3, gdextension.SizeVector3, unsafe.Pointer(&arg))
 		case Vector3i:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeVector3i](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeVector3i, gdextension.SizeVector3i, unsafe.Pointer(&arg))
 		case Transform2D:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeTransform2D](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeTransform2D, gdextension.SizeTransform2D, unsafe.Pointer(&arg))
 		case Vector4:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeVector4](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeVector4, gdextension.SizeVector4, unsafe.Pointer(&arg))
 		case Vector4i:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeVector4i](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeVector4i, gdextension.SizeVector4i, unsafe.Pointer(&arg))
 		case Plane:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypePlane](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypePlane, gdextension.SizePlane, unsafe.Pointer(&arg))
 		case Quaternion:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeQuaternion](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeQuaternion, gdextension.SizeQuaternion, unsafe.Pointer(&arg))
 		case AABB:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeAABB](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeAABB, gdextension.SizeAABB, unsafe.Pointer(&arg))
 		case Basis:
-			var arg = callframe.Arg(frame, BasisType.Transposed(val))
-			Global.variant.FromType[TypeBasis](ret, arg.Addr())
+			var arg = BasisType.Transposed(val)
+			ret.LoadNative(TypeBasis, gdextension.SizeBasis, unsafe.Pointer(&arg))
 		case Transform3D:
-			var arg = callframe.Arg(frame, Transposed(val))
-			Global.variant.FromType[TypeTransform3D](ret, arg.Addr())
+			var arg = Transposed(val)
+			ret.LoadNative(TypeTransform3D, gdextension.SizeTransform3D, unsafe.Pointer(&arg))
 		case Projection:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeProjection](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeProjection, gdextension.SizeProjection, unsafe.Pointer(&arg))
 		case Color:
-			var arg = callframe.Arg(frame, val)
-			Global.variant.FromType[TypeColor](ret, arg.Addr())
+			var arg = val
+			ret.LoadNative(TypeColor, gdextension.SizeColor, unsafe.Pointer(&arg))
 		case String:
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypeString](ret, arg.Addr())
+			var arg = gdextension.String(pointers.Cut(val, cut)[0])
+			ret.LoadNative(TypeString, gdextension.SizeString, unsafe.Pointer(&arg))
 		case StringName:
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypeStringName](ret, arg.Addr())
+			var arg = gdextension.StringName(pointers.Cut(val, cut)[0])
+			ret.LoadNative(TypeStringName, gdextension.SizeStringName, unsafe.Pointer(&arg))
 		case NodePath:
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypeStringName](ret, arg.Addr())
+			var arg = gdextension.NodePath(pointers.Cut(val, cut)[0])
+			ret.LoadNative(TypeNodePath, gdextension.SizeNodePath, unsafe.Pointer(&arg))
 		case Object:
-
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypeObject](ret, arg.Addr())
+			var arg = gdextension.Object(pointers.Cut(val, cut)[0])
+			ret.LoadNative(TypeObject, gdextension.SizeObject, unsafe.Pointer(&arg))
 		case Callable:
 			if pointers.Get(val) == ([2]uint64{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypeCallable](ret, arg.Addr())
+			var arg = gdextension.Callable(pointers.Cut(val, cut))
+			ret.LoadNative(TypeCallable, gdextension.SizeCallable, unsafe.Pointer(&arg))
 		case Signal:
 			if pointers.Get(val) == ([2]uint64{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypeSignal](ret, arg.Addr())
+			var arg = gdextension.Signal(pointers.Cut(val, cut))
+			ret.LoadNative(TypeSignal, gdextension.SizeSignal, unsafe.Pointer(&arg))
 		case Dictionary:
 			if pointers.Get(val) == ([1]EnginePointer{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypeDictionary](ret, arg.Addr())
+			var arg = gdextension.Dictionary(pointers.Cut(val, cut)[0])
+			ret.LoadNative(TypeDictionary, gdextension.SizeDictionary, unsafe.Pointer(&arg))
 		case Array:
 			if pointers.Get(val) == ([1]EnginePointer{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypeArray](ret, arg.Addr())
+			var arg = gdextension.Array(pointers.Cut(val, cut)[0])
+			ret.LoadNative(TypeArray, gdextension.SizeArray, unsafe.Pointer(&arg))
 		case PackedByteArray:
 			if pointers.Get(val) == (PackedPointers{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypePackedByteArray](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(val, cut))
+			ret.LoadNative(TypePackedByteArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedInt32Array:
 			if pointers.Get(val) == (PackedPointers{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypePackedInt32Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(val, cut))
+			ret.LoadNative(TypePackedInt32Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedInt64Array:
 			if pointers.Get(val) == (PackedPointers{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypePackedInt64Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(val, cut))
+			ret.LoadNative(TypePackedInt64Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedFloat32Array:
 			if pointers.Get(val) == (PackedPointers{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypePackedFloat32Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(val, cut))
+			ret.LoadNative(TypePackedFloat32Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedFloat64Array:
 			if pointers.Get(val) == (PackedPointers{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypePackedFloat64Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(val, cut))
+			ret.LoadNative(TypePackedFloat64Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedStringArray:
 			if pointers.Get(val) == (PackedPointers{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypePackedStringArray](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(val, cut))
+			ret.LoadNative(TypePackedStringArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedVector2Array:
 			if pointers.Get(val) == (PackedPointers{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypePackedVector2Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(val, cut))
+			ret.LoadNative(TypePackedVector2Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedVector3Array:
 			if pointers.Get(val) == (PackedPointers{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypePackedVector3Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(val, cut))
+			ret.LoadNative(TypePackedVector3Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedVector4Array:
 			if pointers.Get(val) == (PackedPointers{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypePackedVector4Array](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(val, cut))
+			ret.LoadNative(TypePackedVector4Array, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedColorArray:
 			if pointers.Get(val) == (PackedPointers{}) {
 				return Variant{}
 			}
-			var arg = callframe.Arg(frame, pointers.Cut(val, cut))
-			Global.variant.FromType[TypePackedColorArray](ret, arg.Addr())
+			var arg = gdextension.ToPackedArray(pointers.Cut(val, cut))
+			ret.LoadNative(TypePackedColorArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		default:
-			var arg = callframe.Arg(frame, pointers.Cut(newDictionary(value), cut))
-			Global.variant.FromType[TypeDictionary](ret, arg.Addr())
+			var arg = gdextension.Dictionary(pointers.Cut(newDictionary(value), cut)[0])
+			ret.LoadNative(TypeDictionary, gdextension.SizeDictionary, unsafe.Pointer(&arg))
 		}
 
 	default:
 		panic("gd.Variant: unsupported type " + reflect.TypeOf(v).String())
 	}
-	var variant = pointers.New[Variant](ret.Get())
+	var variant = pointers.New[Variant]([3]uint64(ret))
 	frame.Free()
 	return variant
 }
@@ -548,48 +548,23 @@ func (variant Variant) Interface() any {
 }
 
 func variantAsValueType[T comparable](variant Variant, vtype VariantType) T {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[T](frame)
-	Global.variant.IntoType[vtype](r_ret.Addr(), callframe.Arg(frame, pointers.Get(variant)))
-	var ret = r_ret.Get()
-	frame.Free()
-	return ret
+	return gdextension.LoadNative[T](vtype, gdextension.Variant(pointers.Get(variant)))
 }
 
 func variantAsPointerType[T pointers.Generic[T, Size], Size pointers.Size](variant Variant, vtype VariantType) T {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Size](frame)
-	Global.variant.IntoType[vtype](r_ret.Addr(), callframe.Arg(frame, pointers.Get(variant)))
-	var ret = r_ret.Get()
-	frame.Free()
-	return pointers.New[T](ret)
+	return pointers.New[T](gdextension.LoadNative[Size](vtype, gdextension.Variant(pointers.Get(variant))))
 }
 
 func variantAsObject(variant Variant) Object {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[EnginePointer](frame)
-	Global.variant.IntoType[TypeObject](r_ret.Addr(), callframe.Arg(frame, pointers.Get(variant)))
-	var ret = r_ret.Get()
-	frame.Free()
-	return PointerMustAssertInstanceID[Object](EnginePointer(ret))
+	return PointerMustAssertInstanceID[Object](gdextension.LoadNative[EnginePointer](TypeObject, gdextension.Variant(pointers.Get(variant))))
 }
 
 func LetVariantAsObject(variant Variant) Object {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[EnginePointer](frame)
-	Global.variant.IntoType[TypeObject](r_ret.Addr(), callframe.Arg(frame, pointers.Get(variant)))
-	var ret = r_ret.Get()
-	frame.Free()
-	return pointers.Let[Object]([3]uint64{uint64(ret)})
+	return pointers.Let[Object]([3]uint64{uint64(gdextension.LoadNative[EnginePointer](TypeObject, gdextension.Variant(pointers.Get(variant))))})
 }
 
 func LetVariantAsPointerType[T pointers.Generic[T, Size], Size pointers.Size](variant Variant, vtype VariantType) T {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[Size](frame)
-	Global.variant.IntoType[vtype](r_ret.Addr(), callframe.Arg(frame, pointers.Get(variant)))
-	var ret = r_ret.Get()
-	frame.Free()
-	return pointers.Let[T](ret)
+	return pointers.Let[T](gdextension.LoadNative[Size](vtype, gdextension.Variant(pointers.Get(variant))))
 }
 
 var ObjectAs = func(name string, ptr Object) any {

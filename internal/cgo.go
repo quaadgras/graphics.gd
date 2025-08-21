@@ -4,8 +4,6 @@ package gd
 
 import (
 	"structs"
-
-	"graphics.gd/internal/callframe"
 )
 
 // cache is responsible for keeping a local copy for the various
@@ -14,13 +12,7 @@ import (
 type cache struct {
 	builtin builtin
 	typeset typeset
-	variant variant
 	Methods methods
-}
-
-type variant struct {
-	FromType [TypeMax]func(ret callframe.Ptr[[3]uint64], arg callframe.Addr)
-	IntoType [TypeMax]func(ret callframe.Addr, arg callframe.Ptr[[3]uint64])
 }
 
 type ObjectID uint64

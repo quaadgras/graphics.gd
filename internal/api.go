@@ -26,23 +26,11 @@ type API struct {
 	GetGodotVersion func() Version
 
 	Variants struct {
-		FromTypeConstructor       func(VariantType) func(ret callframe.Ptr[VariantPointers], arg callframe.Addr)
-		ToTypeConstructor         func(VariantType) func(ret callframe.Addr, arg callframe.Ptr[VariantPointers])
-		PointerOperatorEvaluator  func(op Operator, a, b VariantType) func(a, b, ret callframe.Addr)
-		GetPointerBuiltinMethod   func(VariantType, StringName, Int) func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32)
-		GetPointerConstructor     func(vtype VariantType, index int32) func(base callframe.Addr, args callframe.Args)
-		GetPointerDestructor      func(VariantType) func(base callframe.Addr)
-		Construct                 func(t VariantType, args ...Variant) (Variant, error)
-		GetPointerSetter          func(VariantType, StringName) func(base, arg callframe.Addr)
-		GetPointerGetter          func(VariantType, StringName) func(base, ret callframe.Addr)
-		GetPointerIndexedSetter   func(VariantType) func(base callframe.Addr, index Int, arg callframe.Addr)
-		GetPointerIndexedGetter   func(VariantType) func(base callframe.Addr, index Int, ret callframe.Addr)
-		GetPointerKeyedSetter     func(VariantType) func(base, key, arg callframe.Addr)
-		GetPointerKeyedGetter     func(VariantType) func(base, key, ret callframe.Addr)
-		GetPointerKeyedChecker    func(VariantType) func(base, key callframe.Addr) uint32
-		GetConstantValue          func(t VariantType, name StringName) Variant
-		GetPointerUtilityFunction func(name StringName, hash Int) func(ret callframe.Addr, args callframe.Args, c int32)
-		GetObjectInstanceID       func(self Variant) ObjectID
+		PointerOperatorEvaluator func(op Operator, a, b VariantType) func(a, b, ret callframe.Addr)
+		GetPointerConstructor    func(vtype VariantType, index int32) func(base callframe.Addr, args callframe.Args)
+		GetPointerDestructor     func(VariantType) func(base callframe.Addr)
+		Construct                func(t VariantType, args ...Variant) (Variant, error)
+		GetObjectInstanceID      func(self Variant) ObjectID
 	}
 	PackedByteArray    PackedFunctionsFor[PackedByteArray, byte]
 	PackedColorArray   PackedFunctionsFor[PackedColorArray, Color]
@@ -64,7 +52,6 @@ type API struct {
 		SetInstanceBinding  func([1]Object, ExtensionToken, any, InstanceBindingType)
 		FreeInstanceBinding func([1]Object, ExtensionToken)
 		SetInstance         func([1]Object, StringName, ObjectInterface)
-		GetClassName        func([1]Object, ExtensionToken) String
 		CastTo              func([1]Object, ClassTag) [1]Object
 	}
 	Callables struct {

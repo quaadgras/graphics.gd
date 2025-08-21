@@ -169,49 +169,6 @@ func linkJS(API *gd.API) {
 			call_variant_get_ptr_destructor.Invoke(fn)
 		}
 	}
-	get_variant_from_type_constructor := dlsym("get_variant_from_type_constructor")
-	call_variant_from_type_constructor := dlsym("call_variant_from_type_constructor")
-	API.Variants.FromTypeConstructor = func(vt gd.VariantType) func(ret callframe.Ptr[gd.VariantPointers], arg callframe.Addr) {
-		fn := get_variant_from_type_constructor.Invoke(uint32(vt))
-		return func(ret callframe.Ptr[gd.VariantPointers], arg callframe.Addr) {
-			writeCallFrameArgument(0, 0, arg)
-			call_variant_from_type_constructor.Invoke(fn)
-			readCallFrameResult(0, ret.Addr())
-		}
-	}
-	get_variant_to_type_constructor := dlsym("get_variant_to_type_constructor")
-	call_variant_to_type_constructor := dlsym("call_variant_to_type_constructor")
-	API.Variants.ToTypeConstructor = func(vt gd.VariantType) func(ret callframe.Addr, arg callframe.Ptr[gd.VariantPointers]) {
-		fn := get_variant_to_type_constructor.Invoke(uint32(vt))
-		return func(ret callframe.Addr, arg callframe.Ptr[gd.VariantPointers]) {
-			writeCallFrameArgument(0, 0, arg.Addr())
-			call_variant_to_type_constructor.Invoke(fn)
-			readCallFrameResult(0, ret)
-		}
-	}
-	variant_get_ptr_utility_function := dlsym("variant_get_ptr_utility_function")
-	call_variant_get_ptr_utility_function := dlsym("call_variant_get_ptr_utility_function")
-	API.Variants.GetPointerUtilityFunction = func(name gd.StringName, hash gd.Int) func(ret callframe.Addr, args callframe.Args, c int32) {
-		fn := variant_get_ptr_utility_function.Invoke(pointers.Get(name)[0], *(*float64)(unsafe.Pointer(&hash)))
-		return func(ret callframe.Addr, args callframe.Args, c int32) {
-			writeCallFrameArguments(0, args)
-			call_variant_get_ptr_utility_function.Invoke(fn, c)
-			readCallFrameResult(0, ret)
-		}
-	}
-	variant_get_ptr_builtin_method := dlsym("variant_get_ptr_builtin_method")
-	call_variant_get_ptr_builtin_method := dlsym("call_variant_get_ptr_builtin_method")
-	API.Variants.GetPointerBuiltinMethod = func(vt gd.VariantType, sn gd.StringName, hash gd.Int) func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) {
-		fn := variant_get_ptr_builtin_method.Invoke(uint32(vt), pointers.Get(sn)[0], *(*float64)(unsafe.Pointer(&hash)))
-		return func(base callframe.Addr, args callframe.Args, ret callframe.Addr, c int32) {
-			writeCallFrameArgument(1, 0, base)
-			writeCallFrameArguments(0, args)
-			call_variant_get_ptr_builtin_method.Invoke(fn, c)
-			readCallFrameResult(0, ret)
-			base.Pointer()[0] = uint32(read_result_buffer.Invoke(1, 0, 0).Int())
-			base.Pointer()[1] = uint32(read_result_buffer.Invoke(1, 0, 1).Int())
-		}
-	}
 	classdb_register_extension_class3 := dlsym("classdb_register_extension_class3")
 	API.ClassDB.RegisterClass = func(library gd.ExtensionToken, name, extends gd.StringName, info_go gd.ClassInterface) {
 		info := js.Global().Get("Object").New()

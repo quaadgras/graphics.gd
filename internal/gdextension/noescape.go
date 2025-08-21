@@ -38,3 +38,29 @@ func call_noescape(object Object, method MethodForClass, result unsafe.Pointer, 
 func call(object Object, method MethodForClass, result unsafe.Pointer, shape Shape, args unsafe.Pointer) {
 	Host.Objects.Unsafe.Call(object, method, CallReturns[any](result), shape, CallAccepts[any](args))
 }
+
+func (v *Variant) LoadNative(vtype VariantType, size Shape, ptr unsafe.Pointer) {
+	variant_from_native_noescape(vtype, v, size, ptr)
+}
+
+//go:noescape
+func variant_from_native_noescape(vtype VariantType, result *Variant, size Shape, ptr unsafe.Pointer)
+
+//go:linkname variant_from_native graphics.gd/internal/gdextension.variant_from_native_noescape
+func variant_from_native(vtype VariantType, result *Variant, size Shape, ptr unsafe.Pointer) {
+	Host.Variants.Unsafe.FromNative(vtype, CallReturns[Variant](result), SizeVariant|size<<4, CallAccepts[any](ptr))
+}
+
+func LoadNative[T any](vtype VariantType, variant Variant) T {
+	var result T
+	variant_into_native_noescape(vtype, variant, unsafe.Pointer(&result), SizeOf[T]())
+	return result
+}
+
+//go:noescape
+func variant_into_native_noescape(vtype VariantType, variant Variant, ptr unsafe.Pointer, size Shape)
+
+//go:linkname variant_into_native graphics.gd/internal/gdextension.variant_into_native_noescape
+func variant_into_native(vtype VariantType, variant Variant, ptr unsafe.Pointer, size Shape) {
+	Host.Variants.Unsafe.MakeNative(vtype, variant, SizeVariant|size<<4, CallReturns[any](ptr))
+}

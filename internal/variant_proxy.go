@@ -3,8 +3,8 @@ package gd
 import (
 	"iter"
 	"reflect"
+	"unsafe"
 
-	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
@@ -106,173 +106,111 @@ func (VariantProxy) New(val any) complex128 {
 	return pointers.Pack(NewVariant(val))
 }
 func (VariantProxy) NewBool(val bool) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeBool](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeBool, gdextension.SizeBool, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewInt(val int64) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeInt](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeInt, gdextension.SizeInt, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewFloat(val float64) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeFloat](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeFloat, gdextension.SizeFloat, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewVector2(val Vector2Type.XY) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeVector2](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeVector2, gdextension.SizeVector2, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewVector2i(val Vector2iType.XY) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeVector2i](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeVector2i, gdextension.SizeVector2i, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewRect2(val Rect2Type.PositionSize) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeRect2](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeRect2, gdextension.SizeRect2, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewRect2i(val Rect2iType.PositionSize) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeRect2i](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeRect2i, gdextension.SizeRect2i, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewVector3(val Vector3Type.XYZ) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeVector2](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeVector3, gdextension.SizeVector3, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewVector3i(val Vector3iType.XYZ) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeVector3i](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeVector3i, gdextension.SizeVector3i, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewTransform2D(val Transform2DType.OriginXY) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeTransform2D](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeTransform2D, gdextension.SizeTransform2D, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewVector4(val Vector4Type.XYZW) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeVector4](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeVector4, gdextension.SizeVector4, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewVector4i(val Vector4iType.XYZW) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeVector4i](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeVector4i, gdextension.SizeVector4i, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewPlane(val PlaneType.NormalD) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypePlane](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypePlane, gdextension.SizePlane, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewQuaternion(val QuaternionType.IJKX) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeQuaternion](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeQuaternion, gdextension.SizeQuaternion, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewAABB(val AABBType.PositionSize) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeAABB](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeAABB, gdextension.SizeAABB, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewBasis(val BasisType.XYZ) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeBasis](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeBasis, gdextension.SizeBasis, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewTransform3D(val Transform3DType.BasisOrigin) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeTransform3D](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeTransform3D, gdextension.SizeTransform3D, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewProjection(val ProjectionType.XYZW) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeProjection](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeProjection, gdextension.SizeProjection, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewColor(val ColorType.RGBA) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeColor](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeColor, gdextension.SizeColor, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewRID(val RIDType.Any) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, val)
-	Global.variant.FromType[TypeRID](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	ret.LoadNative(TypeRID, gdextension.SizeRID, unsafe.Pointer(&val))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 
 func (VariantProxy) NewBytes(val []byte) complex128 {
-	var frame = callframe.New()
-	defer frame.Free()
-	var ret = callframe.Ret[VariantPointers](frame)
-	var arg = callframe.Arg(frame, NewPackedByteSlice(val))
-	Global.variant.FromType[TypePackedByteArray](ret, arg.Addr())
-	return pointers.Pack(pointers.New[Variant](ret.Get()))
+	var ret gdextension.Variant
+	var arr = gdextension.ToPackedArray(pointers.Get(NewPackedByteSlice(val)))
+	ret.LoadNative(TypePackedByteArray, gdextension.SizePackedArray, unsafe.Pointer(&arr))
+	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 
 func (VariantProxy) Convert(raw complex128, rtype reflect.Type) reflect.Value {

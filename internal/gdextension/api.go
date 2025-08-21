@@ -2,6 +2,7 @@
 package gdextension
 
 import (
+	"reflect"
 	"structs"
 	"unsafe"
 
@@ -596,6 +597,43 @@ func (shape Shape) SizeResult() (size int) {
 		return 96
 	default:
 		return 128
+	}
+}
+
+func SizeOf[T any]() Shape {
+	switch unsafe.Sizeof([1]T{}[0]) {
+	case 1:
+		return SizeBytes1
+	case 2:
+		return SizeBytes2
+	case 4:
+		return SizeBytes4
+	case 8:
+		return SizeBytes8
+	case 12:
+		return SizeBytes12
+	case 16:
+		return SizeBytes16
+	case 24:
+		return SizeBytes24
+	case 32:
+		return SizeBytes32
+	case 36:
+		return SizeBytes36
+	case 40:
+		return SizeBytes40
+	case 48:
+		return SizeBytes48
+	case 64:
+		return SizeBytes64
+	case 72:
+		return SizeBytes72
+	case 96:
+		return SizeBytes96
+	case 128:
+		return SizeBytes128
+	default:
+		panic("SizeOf: unsupported type " + reflect.TypeFor[T]().String())
 	}
 }
 
