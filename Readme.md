@@ -74,7 +74,7 @@ the `go` command directly:
 go build -o example.so -buildmode=c-shared
 ```
 
-## Documentation
+## More Documentation
 
 Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide)!
 
