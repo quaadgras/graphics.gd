@@ -1,4 +1,4 @@
-# Graphics GD [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd)
+# Graphics GD [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd) [the.graphics.gd/guide](https://the.graphics.gd/guide)
 
 A safe performant way to work with graphics and game development in Go by
 building on top of any Open Source, actively maintained GDExtension hosts (ie. Godot 4.4).
@@ -12,7 +12,7 @@ _Why use graphics.gd?_
 * After the first build, recompile quickly, with an experience similar to a scripting language.
 * Cross-compile builds targeting windows/linux/macos from any platform.
 
-Not just a wrapper! graphics.gd has been holistically designed and curated from the ground up to provide a 
+Not just a wrapper! graphics.gd has been holistically designed and curated from the ground up to provide a
 cohesive way to interface with the underlying engine.
 
 We would love you to take part in our [active discussions](https://github.com/quaadgras/graphics.gd/discussions)
