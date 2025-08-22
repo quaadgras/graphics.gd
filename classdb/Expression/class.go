@@ -190,9 +190,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Expression"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Expression"))))})}
 	casted := Instance{*(*gdclass.Expression)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -204,8 +205,8 @@ You can optionally specify names of variables that may appear in the expression 
 func (self class) Parse(expression String.Readable, input_names Packed.Strings) Error.Code { //gd:Expression.parse
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_parse), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		expression  gdextension.String
-		input_names gdextension.PackedArray
-	}{gdextension.String(pointers.Get(gd.InternalString(expression))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(input_names)))}))
+		input_names gdextension.PackedArray[gdextension.String]
+	}{pointers.Get(gd.InternalString(expression)), pointers.Get(gd.InternalPackedStrings(input_names))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -216,12 +217,12 @@ If you defined input variables in [method parse], you can specify their values i
 */
 //go:nosplit
 func (self class) Execute(inputs Array.Any, base_instance [1]gd.Object, show_error bool, const_calls_only bool) variant.Any { //gd:Expression.execute
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_execute), gdextension.SizeVariant|(gdextension.SizeArray<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_execute), gdextension.SizeVariant|(gdextension.SizeArray<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		inputs           gdextension.Array
 		base_instance    gdextension.Object
 		show_error       bool
 		const_calls_only bool
-	}{gdextension.Array(pointers.Get(gd.InternalArray(inputs))[0]), gdextension.Object(gd.ObjectChecked(base_instance[0].AsObject())), show_error, const_calls_only}))
+	}{pointers.Get(gd.InternalArray(inputs)), gdextension.Object(gd.ObjectChecked(base_instance[0].AsObject())), show_error, const_calls_only}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -241,7 +242,7 @@ Returns the error text if [method parse] or [method execute] has failed.
 */
 //go:nosplit
 func (self class) GetErrorText() String.Readable { //gd:Expression.get_error_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_get_error_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_get_error_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

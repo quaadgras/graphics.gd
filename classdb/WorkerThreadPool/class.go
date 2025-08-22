@@ -119,7 +119,7 @@ var self [1]gdclass.WorkerThreadPool
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.WorkerThreadPool)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.WorkerThreadPool)))})
 	self = *(*[1]gdclass.WorkerThreadPool)(unsafe.Pointer(&obj))
 }
 
@@ -237,7 +237,7 @@ func (self class) AddTask(action Callable.Function, high_priority bool, descript
 		action        gdextension.Callable
 		high_priority bool
 		description   gdextension.String
-	}{gdextension.Callable(pointers.Get(gd.InternalCallable(action))), high_priority, gdextension.String(pointers.Get(gd.InternalString(description))[0])}))
+	}{pointers.Get(gd.InternalCallable(action)), high_priority, pointers.Get(gd.InternalString(description))}))
 	var ret = r_ret
 	return ret
 }
@@ -280,7 +280,7 @@ func (self class) AddGroupTask(action Callable.Function, elements int64, tasks_n
 		tasks_needed  int64
 		high_priority bool
 		description   gdextension.String
-	}{gdextension.Callable(pointers.Get(gd.InternalCallable(action))), elements, tasks_needed, high_priority, gdextension.String(pointers.Get(gd.InternalString(description))[0])}))
+	}{pointers.Get(gd.InternalCallable(action)), elements, tasks_needed, high_priority, pointers.Get(gd.InternalString(description))}))
 	var ret = r_ret
 	return ret
 }

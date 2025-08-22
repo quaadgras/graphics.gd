@@ -2,12 +2,19 @@
 
 package gdextension
 
-import "unsafe"
+import (
+	"unsafe"
 
-type Pointer uint32
+	"graphics.gd/variant/Color"
+	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector3"
+	"graphics.gd/variant/Vector4"
+)
+
+type Pointer = uint32
 type Returns[T any] uint32
 type Accepts[T any] uint32
-type PackedArray [2]Pointer
+type PackedArray[T byte | int32 | int64 | float32 | float64 | Color.RGBA | Vector2.XY | Vector3.XYZ | Vector4.XYZW | String] [1]uint64
 
 const (
 	SizeString      Shape = SizeBytes4
@@ -20,6 +27,6 @@ const (
 	SizePointer     Shape = SizeBytes4
 )
 
-func ToPackedArray(p [1]uint64) PackedArray {
-	return *(*PackedArray)(unsafe.Pointer(&p))
+func (p PackedArray[T]) JS() [2]uint32 {
+	return *(*[2]uint32)(unsafe.Pointer(&p))
 }

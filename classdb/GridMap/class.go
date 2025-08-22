@@ -288,8 +288,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GridMap"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("GridMap"))))})}
 	casted := Instance{*(*gdclass.GridMap)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -474,7 +475,7 @@ func (self class) SetPhysicsMaterial(material [1]gdclass.PhysicsMaterial) { //gd
 
 //go:nosplit
 func (self class) GetPhysicsMaterial() [1]gdclass.PhysicsMaterial { //gd:GridMap.get_physics_material
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMap.Bind_get_physics_material), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMap.Bind_get_physics_material), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret)}
 	return ret
 }
@@ -517,7 +518,7 @@ func (self class) SetMeshLibrary(mesh_library [1]gdclass.MeshLibrary) { //gd:Gri
 
 //go:nosplit
 func (self class) GetMeshLibrary() [1]gdclass.MeshLibrary { //gd:GridMap.get_mesh_library
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMap.Bind_get_mesh_library), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMap.Bind_get_mesh_library), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.MeshLibrary{gd.PointerWithOwnershipTransferredToGo[gdclass.MeshLibrary](r_ret)}
 	return ret
 }
@@ -699,7 +700,7 @@ Returns an array of [Vector3] with the non-empty cell coordinates in the grid ma
 */
 //go:nosplit
 func (self class) GetUsedCells() Array.Contains[Vector3i.XYZ] { //gd:GridMap.get_used_cells
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMap.Bind_get_used_cells), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMap.Bind_get_used_cells), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Vector3i.XYZ]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -709,7 +710,7 @@ Returns an array of all cells with the given item index specified in [param item
 */
 //go:nosplit
 func (self class) GetUsedCellsByItem(item int64) Array.Contains[Vector3i.XYZ] { //gd:GridMap.get_used_cells_by_item
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMap.Bind_get_used_cells_by_item), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ item int64 }{item}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMap.Bind_get_used_cells_by_item), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ item int64 }{item}))
 	var ret = Array.Through(gd.ArrayProxy[Vector3i.XYZ]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -719,7 +720,7 @@ Returns an array of [Transform3D] and [Mesh] references corresponding to the non
 */
 //go:nosplit
 func (self class) GetMeshes() Array.Any { //gd:GridMap.get_meshes
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMap.Bind_get_meshes), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMap.Bind_get_meshes), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -729,7 +730,7 @@ Returns an array of [ArrayMesh]es and [Transform3D] references of all bake meshe
 */
 //go:nosplit
 func (self class) GetBakeMeshes() Array.Any { //gd:GridMap.get_bake_meshes
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMap.Bind_get_bake_meshes), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMap.Bind_get_bake_meshes), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

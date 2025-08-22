@@ -79,7 +79,7 @@ var self [1]gdclass.EngineDebugger
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.EngineDebugger)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.EngineDebugger)))})
 	self = *(*[1]gdclass.EngineDebugger)(unsafe.Pointer(&obj))
 }
 
@@ -326,7 +326,7 @@ func (self class) RegisterProfiler(name String.Name, profiler [1]gdclass.EngineP
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_register_profiler), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		profiler gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(profiler[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(profiler[0].AsObject()))}))
 }
 
 /*
@@ -334,7 +334,7 @@ Unregisters a profiler with given [param name].
 */
 //go:nosplit
 func (self class) UnregisterProfiler(name String.Name) { //gd:EngineDebugger.unregister_profiler
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_unregister_profiler), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_unregister_profiler), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -342,7 +342,7 @@ Returns [code]true[/code] if a profiler with the given name is present and activ
 */
 //go:nosplit
 func (self class) IsProfiling(name String.Name) bool { //gd:EngineDebugger.is_profiling
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_is_profiling), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_is_profiling), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -352,7 +352,7 @@ Returns [code]true[/code] if a profiler with the given name is present otherwise
 */
 //go:nosplit
 func (self class) HasProfiler(name String.Name) bool { //gd:EngineDebugger.has_profiler
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_has_profiler), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_has_profiler), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -365,7 +365,7 @@ func (self class) ProfilerAddFrameData(name String.Name, data Array.Any) { //gd:
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_profiler_add_frame_data), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		name gdextension.StringName
 		data gdextension.Array
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalArray(data))}))
 }
 
 /*
@@ -377,7 +377,7 @@ func (self class) ProfilerEnable(name String.Name, enable bool, arguments Array.
 		name      gdextension.StringName
 		enable    bool
 		arguments gdextension.Array
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), enable, gdextension.Array(pointers.Get(gd.InternalArray(arguments))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), enable, pointers.Get(gd.InternalArray(arguments))}))
 }
 
 /*
@@ -390,7 +390,7 @@ func (self class) RegisterMessageCapture(name String.Name, callable Callable.Fun
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_register_message_capture), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		callable gdextension.Callable
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalCallable(callable))}))
 }
 
 /*
@@ -398,7 +398,7 @@ Unregisters the message capture with given [param name].
 */
 //go:nosplit
 func (self class) UnregisterMessageCapture(name String.Name) { //gd:EngineDebugger.unregister_message_capture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_unregister_message_capture), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_unregister_message_capture), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -406,7 +406,7 @@ Returns [code]true[/code] if a capture with the given name is present otherwise 
 */
 //go:nosplit
 func (self class) HasCapture(name String.Name) bool { //gd:EngineDebugger.has_capture
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_has_capture), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_has_capture), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -427,7 +427,7 @@ func (self class) SendMessage(message String.Readable, data Array.Any) { //gd:En
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_send_message), 0|(gdextension.SizeString<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		message gdextension.String
 		data    gdextension.Array
-	}{gdextension.String(pointers.Get(gd.InternalString(message))[0]), gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
+	}{pointers.Get(gd.InternalString(message)), pointers.Get(gd.InternalArray(data))}))
 }
 
 /*
@@ -497,7 +497,7 @@ func (self class) IsBreakpoint(line int64, source String.Name) bool { //gd:Engin
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_is_breakpoint), gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		line   int64
 		source gdextension.StringName
-	}{line, gdextension.StringName(pointers.Get(gd.InternalStringName(source))[0])}))
+	}{line, pointers.Get(gd.InternalStringName(source))}))
 	var ret = r_ret
 	return ret
 }
@@ -520,7 +520,7 @@ func (self class) InsertBreakpoint(line int64, source String.Name) { //gd:Engine
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_insert_breakpoint), 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		line   int64
 		source gdextension.StringName
-	}{line, gdextension.StringName(pointers.Get(gd.InternalStringName(source))[0])}))
+	}{line, pointers.Get(gd.InternalStringName(source))}))
 }
 
 /*
@@ -531,7 +531,7 @@ func (self class) RemoveBreakpoint(line int64, source String.Name) { //gd:Engine
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EngineDebugger.Bind_remove_breakpoint), 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		line   int64
 		source gdextension.StringName
-	}{line, gdextension.StringName(pointers.Get(gd.InternalStringName(source))[0])}))
+	}{line, pointers.Get(gd.InternalStringName(source))}))
 }
 
 /*

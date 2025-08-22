@@ -150,9 +150,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImageTextureLayered"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ImageTextureLayered"))))})}
 	casted := Instance{*(*gdclass.ImageTextureLayered)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -195,7 +196,7 @@ ResourceSaver.save(cubemap_array, "res://cubemap_array.res", ResourceSaver.FLAG_
 */
 //go:nosplit
 func (self class) CreateFromImages(images Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTextureLayered.create_from_images
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTextureLayered.Bind_create_from_images), gdextension.SizeInt|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ images gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(images))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTextureLayered.Bind_create_from_images), gdextension.SizeInt|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ images gdextension.Array }{pointers.Get(gd.InternalArray(images))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

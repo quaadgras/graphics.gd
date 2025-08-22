@@ -250,8 +250,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MeshInstance3D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("MeshInstance3D"))))})}
 	casted := Instance{*(*gdclass.MeshInstance3D)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -286,19 +287,19 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MeshInstance3D.set_mesh
 
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:MeshInstance3D.get_mesh
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_get_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_get_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkeletonPath(skeleton_path Path.ToNode) { //gd:MeshInstance3D.set_skeleton_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_set_skeleton_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ skeleton_path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(skeleton_path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_set_skeleton_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ skeleton_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(skeleton_path))}))
 }
 
 //go:nosplit
 func (self class) GetSkeletonPath() Path.ToNode { //gd:MeshInstance3D.get_skeleton_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_get_skeleton_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_get_skeleton_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -310,7 +311,7 @@ func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:MeshInstance3D.set_skin
 
 //go:nosplit
 func (self class) GetSkin() [1]gdclass.Skin { //gd:MeshInstance3D.get_skin
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_get_skin), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_get_skin), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret)}
 	return ret
 }
@@ -320,7 +321,7 @@ Returns the internal [SkinReference] containing the skeleton's [RID] attached to
 */
 //go:nosplit
 func (self class) GetSkinReference() [1]gdclass.SkinReference { //gd:MeshInstance3D.get_skin_reference
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_get_skin_reference), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_get_skin_reference), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SkinReference{gd.PointerWithOwnershipTransferredToGo[gdclass.SkinReference](r_ret)}
 	return ret
 }
@@ -353,7 +354,7 @@ Returns the override [Material] for the specified [param surface] of the [Mesh] 
 */
 //go:nosplit
 func (self class) GetSurfaceOverrideMaterial(surface int64) [1]gdclass.Material { //gd:MeshInstance3D.get_surface_override_material
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_get_surface_override_material), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface int64 }{surface}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_get_surface_override_material), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface int64 }{surface}))
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
@@ -364,7 +365,7 @@ Returns [code]null[/code] if no material is active, including when [member mesh]
 */
 //go:nosplit
 func (self class) GetActiveMaterial(surface int64) [1]gdclass.Material { //gd:MeshInstance3D.get_active_material
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_get_active_material), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface int64 }{surface}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_get_active_material), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface int64 }{surface}))
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
@@ -413,7 +414,7 @@ Returns the index of the blend shape with the given [param name]. Returns [code]
 */
 //go:nosplit
 func (self class) FindBlendShapeByName(name String.Name) int64 { //gd:MeshInstance3D.find_blend_shape_by_name
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_find_blend_shape_by_name), gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_find_blend_shape_by_name), gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -453,7 +454,7 @@ Takes a snapshot from the current [ArrayMesh] with all blend shapes applied acco
 */
 //go:nosplit
 func (self class) BakeMeshFromCurrentBlendShapeMix(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_blend_shape_mix
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_bake_mesh_from_current_blend_shape_mix), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ existing gdextension.Object }{gdextension.Object(gd.ObjectChecked(existing[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_bake_mesh_from_current_blend_shape_mix), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ existing gdextension.Object }{gdextension.Object(gd.ObjectChecked(existing[0].AsObject()))}))
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }
@@ -464,7 +465,7 @@ Takes a snapshot of the current animated skeleton pose of the skinned mesh and b
 */
 //go:nosplit
 func (self class) BakeMeshFromCurrentSkeletonPose(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_skeleton_pose
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_bake_mesh_from_current_skeleton_pose), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ existing gdextension.Object }{gdextension.Object(gd.ObjectChecked(existing[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshInstance3D.Bind_bake_mesh_from_current_skeleton_pose), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ existing gdextension.Object }{gdextension.Object(gd.ObjectChecked(existing[0].AsObject()))}))
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }

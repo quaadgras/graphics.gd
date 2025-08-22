@@ -7,10 +7,7 @@ import (
 	"structs"
 	"unsafe"
 
-	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/pointers"
-	PackedType "graphics.gd/variant/Packed"
 
 	"runtime.link/api"
 )
@@ -25,29 +22,7 @@ type API struct {
 
 	GetGodotVersion func() Version
 
-	Variants struct {
-		PointerOperatorEvaluator func(op Operator, a, b VariantType) func(a, b, ret callframe.Addr)
-		GetPointerConstructor    func(vtype VariantType, index int32) func(base callframe.Addr, args callframe.Args)
-		GetPointerDestructor     func(VariantType) func(base callframe.Addr)
-		Construct                func(t VariantType, args ...Variant) (Variant, error)
-		GetObjectInstanceID      func(self Variant) ObjectID
-	}
-	PackedByteArray    PackedFunctionsFor[PackedByteArray, byte]
-	PackedColorArray   PackedFunctionsFor[PackedColorArray, Color]
-	PackedFloat32Array PackedFunctionsFor[PackedFloat32Array, float32]
-	PackedFloat64Array PackedFunctionsFor[PackedFloat64Array, float64]
-	PackedInt32Array   PackedFunctionsFor[PackedInt32Array, int32]
-	PackedInt64Array   PackedFunctionsFor[PackedInt64Array, int64]
-	PackedStringArray  struct {
-		Index         func(PackedStringArray, Int) String
-		SetIndex      func(PackedStringArray, Int, String)
-		CopyAsSlice   func(PackedStringArray) []String
-		CopyFromSlice func(PackedStringArray, []String)
-	}
-	PackedVector2Array PackedFunctionsFor[PackedVector2Array, Vector2]
-	PackedVector3Array PackedFunctionsFor[PackedVector3Array, Vector3]
-	PackedVector4Array PackedFunctionsFor[PackedVector4Array, Vector4]
-	Object             struct {
+	Object struct {
 		GetInstanceBinding  func([1]Object, ExtensionToken, InstanceBindingType) any
 		SetInstanceBinding  func([1]Object, ExtensionToken, any, InstanceBindingType)
 		FreeInstanceBinding func([1]Object, ExtensionToken)
@@ -59,17 +34,13 @@ type API struct {
 		Get    func(Callable) (func(...Variant) (Variant, error), bool)
 	}
 	ClassDB struct {
-		ConstructObject func(StringName) [1]Object
-		GetClassTag     func(StringName) ClassTag
+		GetClassTag func(StringName) ClassTag
 
-		RegisterClass                 func(library ExtensionToken, name, extends StringName, info ClassInterface)
-		RegisterClassMethod           func(library ExtensionToken, class StringName, info Method)
-		RegisterClassProperty         func(library ExtensionToken, class StringName, info PropertyInfo, getter, setter StringName)
-		RegisterClassPropertyIndexed  func(library ExtensionToken, class StringName, info PropertyInfo, getter, setter StringName, index int64)
-		RegisterClassPropertyGroup    func(library ExtensionToken, class StringName, group, prefix String)
-		RegisterClassPropertySubGroup func(library ExtensionToken, class StringName, subGroup, prefix String)
-		RegisterClassSignal           func(library ExtensionToken, class, signal StringName, args []PropertyInfo)
-		UnregisterClass               func(library ExtensionToken, class StringName)
+		RegisterClass                func(library ExtensionToken, name, extends StringName, info ClassInterface)
+		RegisterClassMethod          func(library ExtensionToken, class StringName, info Method)
+		RegisterClassProperty        func(library ExtensionToken, class StringName, info PropertyInfo, getter, setter StringName)
+		RegisterClassPropertyIndexed func(library ExtensionToken, class StringName, info PropertyInfo, getter, setter StringName, index int64)
+		RegisterClassSignal          func(library ExtensionToken, class, signal StringName, args []PropertyInfo)
 	}
 
 	GetLibraryPath func(ExtensionToken) String
@@ -84,28 +55,6 @@ type API struct {
 
 	// extensions instances are mapped here.
 	Singletons singletons
-}
-
-type Packed[T any, V PackedType.Type] interface {
-	PackedByteArray | PackedInt32Array | PackedInt64Array | PackedFloat32Array |
-		PackedFloat64Array | PackedStringArray |
-		PackedVector2Array | PackedVector3Array | PackedVector4Array |
-		PackedColorArray
-
-	pointers.Generic[T, PackedPointers]
-
-	New() T
-	Len() int
-	Resize(Int) Int
-	Index(Int) V
-	SetIndex(Int, V)
-}
-
-type PackedFunctionsFor[T Packed[T, V], V PackedType.Type] struct {
-	Index         func(T, Int) V
-	SetIndex      func(T, Int, V)
-	CopyAsSlice   func(T) []V
-	CopyFromSlice func(T, []V)
 }
 
 type (

@@ -167,7 +167,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Instance) _get_child_by_name(impl func(ptr unsafe.Pointer, name string) Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name.String())
@@ -185,7 +185,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Instance) _get_parameter_default_value(impl func(ptr unsafe.Pointer, parameter string) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(parameter))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter.String())
@@ -203,7 +203,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (Instance) _is_parameter_read_only(impl func(ptr unsafe.Pointer, parameter string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(parameter))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter.String())
@@ -398,9 +398,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNode"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AnimationNode"))))})}
 	casted := Instance{*(*gdclass.AnimationNode)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -449,7 +450,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _get_child_by_name(impl func(ptr unsafe.Pointer, name String.Name) [1]gdclass.AnimationNode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, name)
@@ -467,7 +468,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _get_parameter_default_value(impl func(ptr unsafe.Pointer, parameter String.Name) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(parameter))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter)
@@ -485,7 +486,7 @@ When inheriting from [AnimationRootNode], implement this virtual method to retur
 */
 func (class) _is_parameter_read_only(impl func(ptr unsafe.Pointer, parameter String.Name) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(parameter))
 		self := reflect.ValueOf(class).UnsafePointer()
 		ret := impl(self, parameter)
@@ -542,7 +543,7 @@ Adds an input to the animation node. This is only useful for animation nodes cre
 */
 //go:nosplit
 func (self class) AddInput(name String.Readable) bool { //gd:AnimationNode.add_input
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_add_input), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_add_input), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -563,7 +564,7 @@ func (self class) SetInputName(input int64, name String.Readable) bool { //gd:An
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_set_input_name), gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		input int64
 		name  gdextension.String
-	}{input, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	}{input, pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -573,7 +574,7 @@ Gets the name of an input by index.
 */
 //go:nosplit
 func (self class) GetInputName(input int64) String.Readable { //gd:AnimationNode.get_input_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_get_input_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input int64 }{input}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_get_input_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input int64 }{input}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -593,7 +594,7 @@ Returns the input index which corresponds to [param name]. If not found, returns
 */
 //go:nosplit
 func (self class) FindInput(name String.Readable) int64 { //gd:AnimationNode.find_input
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_find_input), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_find_input), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -606,7 +607,7 @@ func (self class) SetFilterPath(path Path.ToNode, enable bool) { //gd:AnimationN
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_set_filter_path), 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path   gdextension.NodePath
 		enable bool
-	}{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0]), enable}))
+	}{pointers.Get(gd.InternalNodePath(path)), enable}))
 }
 
 /*
@@ -614,7 +615,7 @@ Returns [code]true[/code] if the given path is filtered.
 */
 //go:nosplit
 func (self class) IsPathFiltered(path Path.ToNode) bool { //gd:AnimationNode.is_path_filtered
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_is_path_filtered), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_is_path_filtered), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -666,7 +667,7 @@ func (self class) BlendAnimation(animation String.Name, time float64, delta floa
 		is_external_seeking bool
 		blend               float64
 		looped_flag         Animation.LoopedFlag
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(animation))[0]), time, delta, seeked, is_external_seeking, blend, looped_flag}))
+	}{pointers.Get(gd.InternalStringName(animation)), time, delta, seeked, is_external_seeking, blend, looped_flag}))
 }
 
 /*
@@ -684,7 +685,7 @@ func (self class) BlendNode(name String.Name, node [1]gdclass.AnimationNode, tim
 		filter              FilterAction
 		sync                bool
 		test_only           bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(node[0].AsObject())), time, seek, is_external_seeking, blend, filter, sync, test_only}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(node[0].AsObject())), time, seek, is_external_seeking, blend, filter, sync, test_only}))
 	var ret = r_ret
 	return ret
 }
@@ -716,7 +717,7 @@ func (self class) SetParameter(name String.Name, value variant.Any) { //gd:Anima
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_set_parameter), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		name  gdextension.StringName
 		value gdextension.Variant
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -724,7 +725,7 @@ Gets the value of a parameter. Parameters are custom local memory used for your 
 */
 //go:nosplit
 func (self class) GetParameter(name String.Name) variant.Any { //gd:AnimationNode.get_parameter
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_get_parameter), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNode.Bind_get_parameter), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

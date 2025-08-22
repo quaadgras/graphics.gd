@@ -79,7 +79,7 @@ var self [1]gdclass.PhysicsServer2DManager
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.PhysicsServer2DManager)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.PhysicsServer2DManager)))})
 	self = *(*[1]gdclass.PhysicsServer2DManager)(unsafe.Pointer(&obj))
 }
 
@@ -122,7 +122,7 @@ func (self class) RegisterServer(name String.Readable, create_callback Callable.
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer2DManager.Bind_register_server), 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		name            gdextension.String
 		create_callback gdextension.Callable
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(create_callback)))}))
+	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(create_callback))}))
 }
 
 /*
@@ -133,7 +133,7 @@ func (self class) SetDefaultServer(name String.Readable, priority int64) { //gd:
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer2DManager.Bind_set_default_server), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		name     gdextension.String
 		priority int64
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), priority}))
+	}{pointers.Get(gd.InternalString(name)), priority}))
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

@@ -786,9 +786,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Animation"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Animation"))))})}
 	casted := Instance{*(*gdclass.Animation)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -866,7 +867,7 @@ Gets the path of a track. For more information on the path format, see [method t
 */
 //go:nosplit
 func (self class) TrackGetPath(track_idx int64) Path.ToNode { //gd:Animation.track_get_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_track_get_path), gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ track_idx int64 }{track_idx}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_track_get_path), gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ track_idx int64 }{track_idx}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -880,7 +881,7 @@ func (self class) TrackSetPath(track_idx int64, path Path.ToNode) { //gd:Animati
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_track_set_path), 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
 		track_idx int64
 		path      gdextension.NodePath
-	}{track_idx, gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	}{track_idx, pointers.Get(gd.InternalNodePath(path))}))
 }
 
 /*
@@ -891,7 +892,7 @@ func (self class) FindTrack(path Path.ToNode, atype TrackType) int64 { //gd:Anim
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_find_track), gdextension.SizeInt|(gdextension.SizeNodePath<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		path  gdextension.NodePath
 		atype TrackType
-	}{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0]), atype}))
+	}{pointers.Get(gd.InternalNodePath(path)), atype}))
 	var ret = r_ret
 	return ret
 }
@@ -1189,7 +1190,7 @@ Returns the value of a given key in a given track.
 */
 //go:nosplit
 func (self class) TrackGetKeyValue(track_idx int64, key_idx int64) variant.Any { //gd:Animation.track_get_key_value
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_track_get_key_value), gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_track_get_key_value), gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		track_idx int64
 		key_idx   int64
 	}{track_idx, key_idx}))
@@ -1308,7 +1309,7 @@ A [param backward] mainly affects the direction of key retrieval of the track wi
 */
 //go:nosplit
 func (self class) ValueTrackInterpolate(track_idx int64, time_sec float64, backward bool) variant.Any { //gd:Animation.value_track_interpolate
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_value_track_interpolate), gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_value_track_interpolate), gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		track_idx int64
 		time_sec  float64
 		backward  bool
@@ -1322,7 +1323,7 @@ Returns the method name of a method track.
 */
 //go:nosplit
 func (self class) MethodTrackGetName(track_idx int64, key_idx int64) String.Name { //gd:Animation.method_track_get_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_method_track_get_name), gdextension.SizeStringName|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_method_track_get_name), gdextension.SizeStringName|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		track_idx int64
 		key_idx   int64
 	}{track_idx, key_idx}))
@@ -1335,7 +1336,7 @@ Returns the arguments values to be called on a method track for a given key in a
 */
 //go:nosplit
 func (self class) MethodTrackGetParams(track_idx int64, key_idx int64) Array.Any { //gd:Animation.method_track_get_params
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_method_track_get_params), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_method_track_get_params), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		track_idx int64
 		key_idx   int64
 	}{track_idx, key_idx}))
@@ -1508,7 +1509,7 @@ Returns the audio stream of the key identified by [param key_idx]. The [param tr
 */
 //go:nosplit
 func (self class) AudioTrackGetKeyStream(track_idx int64, key_idx int64) [1]gdclass.Resource { //gd:Animation.audio_track_get_key_stream
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_audio_track_get_key_stream), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_audio_track_get_key_stream), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		track_idx int64
 		key_idx   int64
 	}{track_idx, key_idx}))
@@ -1574,7 +1575,7 @@ func (self class) AnimationTrackInsertKey(track_idx int64, time float64, animati
 		track_idx int64
 		time      float64
 		animation gdextension.StringName
-	}{track_idx, time, gdextension.StringName(pointers.Get(gd.InternalStringName(animation))[0])}))
+	}{track_idx, time, pointers.Get(gd.InternalStringName(animation))}))
 	var ret = r_ret
 	return ret
 }
@@ -1588,7 +1589,7 @@ func (self class) AnimationTrackSetKeyAnimation(track_idx int64, key_idx int64, 
 		track_idx int64
 		key_idx   int64
 		animation gdextension.StringName
-	}{track_idx, key_idx, gdextension.StringName(pointers.Get(gd.InternalStringName(animation))[0])}))
+	}{track_idx, key_idx, pointers.Get(gd.InternalStringName(animation))}))
 }
 
 /*
@@ -1596,7 +1597,7 @@ Returns the animation name at the key identified by [param key_idx]. The [param 
 */
 //go:nosplit
 func (self class) AnimationTrackGetKeyAnimation(track_idx int64, key_idx int64) String.Name { //gd:Animation.animation_track_get_key_animation
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_animation_track_get_key_animation), gdextension.SizeStringName|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_animation_track_get_key_animation), gdextension.SizeStringName|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		track_idx int64
 		key_idx   int64
 	}{track_idx, key_idx}))
@@ -1612,7 +1613,7 @@ func (self class) AddMarker(name String.Name, time float64) { //gd:Animation.add
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_add_marker), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		name gdextension.StringName
 		time float64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), time}))
+	}{pointers.Get(gd.InternalStringName(name)), time}))
 }
 
 /*
@@ -1620,7 +1621,7 @@ Removes the marker with the given name from this Animation.
 */
 //go:nosplit
 func (self class) RemoveMarker(name String.Name) { //gd:Animation.remove_marker
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_remove_marker), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_remove_marker), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -1628,7 +1629,7 @@ Returns [code]true[/code] if this Animation contains a marker with the given nam
 */
 //go:nosplit
 func (self class) HasMarker(name String.Name) bool { //gd:Animation.has_marker
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_has_marker), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_has_marker), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -1638,7 +1639,7 @@ Returns the name of the marker located at the given time.
 */
 //go:nosplit
 func (self class) GetMarkerAtTime(time float64) String.Name { //gd:Animation.get_marker_at_time
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_get_marker_at_time), gdextension.SizeStringName|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_get_marker_at_time), gdextension.SizeStringName|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -1648,7 +1649,7 @@ Returns the closest marker that comes after the given time. If no such marker ex
 */
 //go:nosplit
 func (self class) GetNextMarker(time float64) String.Name { //gd:Animation.get_next_marker
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_get_next_marker), gdextension.SizeStringName|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_get_next_marker), gdextension.SizeStringName|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -1658,7 +1659,7 @@ Returns the closest marker that comes before the given time. If no such marker e
 */
 //go:nosplit
 func (self class) GetPrevMarker(time float64) String.Name { //gd:Animation.get_prev_marker
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_get_prev_marker), gdextension.SizeStringName|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_get_prev_marker), gdextension.SizeStringName|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -1668,7 +1669,7 @@ Returns the given marker's time.
 */
 //go:nosplit
 func (self class) GetMarkerTime(name String.Name) float64 { //gd:Animation.get_marker_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_get_marker_time), gdextension.SizeFloat|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_get_marker_time), gdextension.SizeFloat|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -1688,7 +1689,7 @@ Returns the given marker's color.
 */
 //go:nosplit
 func (self class) GetMarkerColor(name String.Name) Color.RGBA { //gd:Animation.get_marker_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_get_marker_color), gdextension.SizeColor|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_get_marker_color), gdextension.SizeColor|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -1701,7 +1702,7 @@ func (self class) SetMarkerColor(name String.Name, color Color.RGBA) { //gd:Anim
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Animation.Bind_set_marker_color), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		name  gdextension.StringName
 		color Color.RGBA
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), color}))
+	}{pointers.Get(gd.InternalStringName(name)), color}))
 }
 
 //go:nosplit

@@ -264,9 +264,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextLine"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TextLine"))))})}
 	casted := Instance{*(*gdclass.TextLine)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -404,7 +405,7 @@ Override ranges should cover full source text without overlaps. BiDi algorithm w
 */
 //go:nosplit
 func (self class) SetBidiOverride(override Array.Any) { //gd:TextLine.set_bidi_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_bidi_override), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ override gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(override))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_bidi_override), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ override gdextension.Array }{pointers.Get(gd.InternalArray(override))}))
 }
 
 /*
@@ -418,7 +419,7 @@ func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_siz
 		font_size int64
 		language  gdextension.String
 		meta      gdextension.Variant
-	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size, gdextension.String(pointers.Get(gd.InternalString(language))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))}))
+	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size, pointers.Get(gd.InternalString(language)), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))}))
 	var ret = r_ret
 	return ret
 }
@@ -483,7 +484,9 @@ Aligns text to the given tab-stops.
 */
 //go:nosplit
 func (self class) TabAlign(tab_stops Packed.Array[float32]) { //gd:TextLine.tab_align
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_tab_align), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ tab_stops gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_tab_align), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		tab_stops gdextension.PackedArray[float32]
+	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))}))
 }
 
 //go:nosplit
@@ -512,12 +515,12 @@ func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:Tex
 
 //go:nosplit
 func (self class) SetEllipsisChar(char String.Readable) { //gd:TextLine.set_ellipsis_char
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_ellipsis_char), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ char gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(char))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_ellipsis_char), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ char gdextension.String }{pointers.Get(gd.InternalString(char))}))
 }
 
 //go:nosplit
 func (self class) GetEllipsisChar() String.Readable { //gd:TextLine.get_ellipsis_char
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_ellipsis_char), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_ellipsis_char), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -527,7 +530,7 @@ Returns array of inline objects.
 */
 //go:nosplit
 func (self class) GetObjects() Array.Any { //gd:TextLine.get_objects
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_objects), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_objects), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

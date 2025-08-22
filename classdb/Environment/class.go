@@ -117,9 +117,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Environment"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Environment"))))})}
 	casted := Instance{*(*gdclass.Environment)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -870,7 +871,7 @@ func (self class) SetSky(sky [1]gdclass.Sky) { //gd:Environment.set_sky
 
 //go:nosplit
 func (self class) GetSky() [1]gdclass.Sky { //gd:Environment.get_sky
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sky), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_sky), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Sky{gd.PointerWithOwnershipTransferredToGo[gdclass.Sky](r_ret)}
 	return ret
 }
@@ -1587,7 +1588,7 @@ func (self class) SetGlowMap(mode [1]gdclass.Texture) { //gd:Environment.set_glo
 
 //go:nosplit
 func (self class) GetGlowMap() [1]gdclass.Texture { //gd:Environment.get_glow_map
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_map), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_glow_map), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture](r_ret)}
 	return ret
 }
@@ -1959,7 +1960,7 @@ func (self class) SetAdjustmentColorCorrection(color_correction [1]gdclass.Textu
 
 //go:nosplit
 func (self class) GetAdjustmentColorCorrection() [1]gdclass.Texture { //gd:Environment.get_adjustment_color_correction
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_adjustment_color_correction), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Environment.Bind_get_adjustment_color_correction), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture](r_ret)}
 	return ret
 }

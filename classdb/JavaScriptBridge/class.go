@@ -79,7 +79,7 @@ var self [1]gdclass.JavaScriptBridge
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.JavaScriptBridge)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.JavaScriptBridge)))})
 	self = *(*[1]gdclass.JavaScriptBridge)(unsafe.Pointer(&obj))
 }
 
@@ -217,10 +217,10 @@ If [param use_global_execution_context] is [code]true[/code], the code will be e
 */
 //go:nosplit
 func (self class) Eval(code String.Readable, use_global_execution_context bool) variant.Any { //gd:JavaScriptBridge.eval
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JavaScriptBridge.Bind_eval), gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JavaScriptBridge.Bind_eval), gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		code                         gdextension.String
 		use_global_execution_context bool
-	}{gdextension.String(pointers.Get(gd.InternalString(code))[0]), use_global_execution_context}))
+	}{pointers.Get(gd.InternalString(code)), use_global_execution_context}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -230,7 +230,7 @@ Returns an interface to a JavaScript object that can be used by scripts. The [pa
 */
 //go:nosplit
 func (self class) GetInterface(intf String.Readable) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JavaScriptBridge.Bind_get_interface), gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ intf gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(intf))[0])}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JavaScriptBridge.Bind_get_interface), gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ intf gdextension.String }{pointers.Get(gd.InternalString(intf))}))
 	var ret = [1]gdclass.JavaScriptObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaScriptObject](r_ret)}
 	return ret
 }
@@ -241,7 +241,7 @@ Creates a reference to a [Callable] that can be used as a callback by JavaScript
 */
 //go:nosplit
 func (self class) CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.create_callback
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JavaScriptBridge.Bind_create_callback), gdextension.SizeObject|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JavaScriptBridge.Bind_create_callback), gdextension.SizeObject|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))}))
 	var ret = [1]gdclass.JavaScriptObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaScriptObject](r_ret)}
 	return ret
 }
@@ -288,10 +288,10 @@ Prompts the user to download a file containing the specified [param buffer]. The
 //go:nosplit
 func (self class) DownloadBuffer(buffer Packed.Bytes, name String.Readable, mime String.Readable) { //gd:JavaScriptBridge.download_buffer
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JavaScriptBridge.Bind_download_buffer), 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
-		buffer gdextension.PackedArray
+		buffer gdextension.PackedArray[byte]
 		name   gdextension.String
 		mime   gdextension.String
-	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))), gdextension.String(pointers.Get(gd.InternalString(name))[0]), gdextension.String(pointers.Get(gd.InternalString(mime))[0])}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))), pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalString(mime))}))
 }
 
 /*

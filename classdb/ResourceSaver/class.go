@@ -80,7 +80,7 @@ var self [1]gdclass.ResourceSaver
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.ResourceSaver)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.ResourceSaver)))})
 	self = *(*[1]gdclass.ResourceSaver)(unsafe.Pointer(&obj))
 }
 
@@ -183,7 +183,7 @@ func (self class) Save(resource [1]gdclass.Resource, path String.Readable, flags
 		resource gdextension.Object
 		path     gdextension.String
 		flags    SaverFlags
-	}{gdextension.Object(gd.ObjectChecked(resource[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(path))[0]), flags}))
+	}{gdextension.Object(gd.ObjectChecked(resource[0].AsObject())), pointers.Get(gd.InternalString(path)), flags}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -226,7 +226,7 @@ func (self class) GetResourceIdForPath(path String.Readable, generate bool) int6
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourceSaver.Bind_get_resource_id_for_path), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path     gdextension.String
 		generate bool
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), generate}))
+	}{pointers.Get(gd.InternalString(path)), generate}))
 	var ret = r_ret
 	return ret
 }

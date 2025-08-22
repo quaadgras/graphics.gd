@@ -150,9 +150,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeExtension"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AnimationNodeExtension"))))})}
 	casted := Instance{*(*gdclass.AnimationNodeExtension)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -182,7 +183,9 @@ Returns [code]true[/code] if the animation for the given [param node_info] is lo
 */
 //go:nosplit
 func (self class) IsLooping(node_info Packed.Array[float32]) bool { //gd:AnimationNodeExtension.is_looping
-	var r_ret = gdextension.CallStatic[bool](gdextension.MethodForClass(gd.Global.Methods.AnimationNodeExtension.Bind_is_looping), gdextension.SizeBool|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ node_info gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info)))}))
+	var r_ret = gdextension.CallStatic[bool](gdextension.MethodForClass(gd.Global.Methods.AnimationNodeExtension.Bind_is_looping), gdextension.SizeBool|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		node_info gdextension.PackedArray[float32]
+	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info))}))
 	var ret = r_ret
 	return ret
 }
@@ -193,9 +196,9 @@ Returns the animation's remaining time for the given node info. For looping anim
 //go:nosplit
 func (self class) GetRemainingTime(node_info Packed.Array[float32], break_loop bool) float64 { //gd:AnimationNodeExtension.get_remaining_time
 	var r_ret = gdextension.CallStatic[float64](gdextension.MethodForClass(gd.Global.Methods.AnimationNodeExtension.Bind_get_remaining_time), gdextension.SizeFloat|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
-		node_info  gdextension.PackedArray
+		node_info  gdextension.PackedArray[float32]
 		break_loop bool
-	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info))), break_loop}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info)), break_loop}))
 	var ret = r_ret
 	return ret
 }

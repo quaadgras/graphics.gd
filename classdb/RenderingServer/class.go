@@ -99,7 +99,7 @@ var self [1]gdclass.RenderingServer
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.RenderingServer)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.RenderingServer)))})
 	self = *(*[1]gdclass.RenderingServer)(unsafe.Pointer(&obj))
 }
 
@@ -4656,7 +4656,7 @@ func (self class) Texture2dLayeredCreate(layers Array.Contains[[1]gdclass.Image]
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_layered_create), gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		layers       gdextension.Array
 		layered_type TextureLayeredType
-	}{gdextension.Array(pointers.Get(gd.InternalArray(layers))[0]), layered_type}))
+	}{pointers.Get(gd.InternalArray(layers)), layered_type}))
 	var ret = r_ret
 	return ret
 }
@@ -4673,7 +4673,7 @@ func (self class) Texture3dCreate(format Image.Format, width int64, height int64
 		depth   int64
 		mipmaps bool
 		data    gdextension.Array
-	}{format, width, height, depth, mipmaps, gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
+	}{format, width, height, depth, mipmaps, pointers.Get(gd.InternalArray(data))}))
 	var ret = r_ret
 	return ret
 }
@@ -4730,7 +4730,7 @@ func (self class) Texture3dUpdate(texture RID.Any, data Array.Contains[[1]gdclas
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_3d_update), 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		texture RID.Any
 		data    gdextension.Array
-	}{texture, gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
+	}{texture, pointers.Get(gd.InternalArray(data))}))
 }
 
 /*
@@ -4790,7 +4790,7 @@ $Sprite2D.texture = texture
 */
 //go:nosplit
 func (self class) Texture2dGet(texture RID.Any) [1]gdclass.Image { //gd:RenderingServer.texture_2d_get
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_get), gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_get), gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
@@ -4800,7 +4800,7 @@ Returns an [Image] instance from the given [param texture] [RID] and [param laye
 */
 //go:nosplit
 func (self class) Texture2dLayerGet(texture RID.Any, layer int64) [1]gdclass.Image { //gd:RenderingServer.texture_2d_layer_get
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_layer_get), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_2d_layer_get), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		texture RID.Any
 		layer   int64
 	}{texture, layer}))
@@ -4813,7 +4813,7 @@ Returns 3D texture data as an array of [Image]s for the specified texture [RID].
 */
 //go:nosplit
 func (self class) Texture3dGet(texture RID.Any) Array.Contains[[1]gdclass.Image] { //gd:RenderingServer.texture_3d_get
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_3d_get), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_3d_get), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -4843,12 +4843,12 @@ func (self class) TextureSetPath(texture RID.Any, path String.Readable) { //gd:R
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_set_path), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		texture RID.Any
 		path    gdextension.String
-	}{texture, gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	}{texture, pointers.Get(gd.InternalString(path))}))
 }
 
 //go:nosplit
 func (self class) TextureGetPath(texture RID.Any) String.Readable { //gd:RenderingServer.texture_get_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_get_path), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_texture_get_path), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4931,7 +4931,7 @@ func (self class) ShaderSetCode(shader RID.Any, code String.Readable) { //gd:Ren
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_set_code), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		shader RID.Any
 		code   gdextension.String
-	}{shader, gdextension.String(pointers.Get(gd.InternalString(code))[0])}))
+	}{shader, pointers.Get(gd.InternalString(code))}))
 }
 
 /*
@@ -4942,7 +4942,7 @@ func (self class) ShaderSetPathHint(shader RID.Any, path String.Readable) { //gd
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_set_path_hint), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		shader RID.Any
 		path   gdextension.String
-	}{shader, gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	}{shader, pointers.Get(gd.InternalString(path))}))
 }
 
 /*
@@ -4950,7 +4950,7 @@ Returns a shader's source code as a string.
 */
 //go:nosplit
 func (self class) ShaderGetCode(shader RID.Any) String.Readable { //gd:RenderingServer.shader_get_code
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_get_code), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shader RID.Any }{shader}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_get_code), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shader RID.Any }{shader}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4960,7 +4960,7 @@ Returns the parameters of a shader.
 */
 //go:nosplit
 func (self class) GetShaderParameterList(shader RID.Any) Array.Contains[Dictionary.Any] { //gd:RenderingServer.get_shader_parameter_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_shader_parameter_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shader RID.Any }{shader}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_shader_parameter_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shader RID.Any }{shader}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -4970,10 +4970,10 @@ Returns the default value for the specified shader uniform. This is usually the 
 */
 //go:nosplit
 func (self class) ShaderGetParameterDefault(shader RID.Any, name String.Name) variant.Any { //gd:RenderingServer.shader_get_parameter_default
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_get_parameter_default), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_shader_get_parameter_default), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		shader RID.Any
 		name   gdextension.StringName
-	}{shader, gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	}{shader, pointers.Get(gd.InternalStringName(name))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -4989,7 +4989,7 @@ func (self class) ShaderSetDefaultTextureParameter(shader RID.Any, name String.N
 		name    gdextension.StringName
 		texture RID.Any
 		index   int64
-	}{shader, gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), texture, index}))
+	}{shader, pointers.Get(gd.InternalStringName(name)), texture, index}))
 }
 
 /*
@@ -5002,7 +5002,7 @@ func (self class) ShaderGetDefaultTextureParameter(shader RID.Any, name String.N
 		shader RID.Any
 		name   gdextension.StringName
 		index  int64
-	}{shader, gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), index}))
+	}{shader, pointers.Get(gd.InternalStringName(name)), index}))
 	var ret = r_ret
 	return ret
 }
@@ -5039,7 +5039,7 @@ func (self class) MaterialSetParam(material RID.Any, parameter String.Name, valu
 		material  RID.Any
 		parameter gdextension.StringName
 		value     gdextension.Variant
-	}{material, gdextension.StringName(pointers.Get(gd.InternalStringName(parameter))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{material, pointers.Get(gd.InternalStringName(parameter)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -5047,10 +5047,10 @@ Returns the value of a certain material's parameter.
 */
 //go:nosplit
 func (self class) MaterialGetParam(material RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.material_get_param
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_get_param), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_material_get_param), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		material  RID.Any
 		parameter gdextension.StringName
-	}{material, gdextension.StringName(pointers.Get(gd.InternalStringName(parameter))[0])}))
+	}{material, pointers.Get(gd.InternalStringName(parameter))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -5082,7 +5082,7 @@ func (self class) MeshCreateFromSurfaces(surfaces Array.Contains[Dictionary.Any]
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_create_from_surfaces), gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		surfaces          gdextension.Array
 		blend_shape_count int64
-	}{gdextension.Array(pointers.Get(gd.InternalArray(surfaces))[0]), blend_shape_count}))
+	}{pointers.Get(gd.InternalArray(surfaces)), blend_shape_count}))
 	var ret = r_ret
 	return ret
 }
@@ -5171,7 +5171,7 @@ func (self class) MeshAddSurface(mesh RID.Any, surface Dictionary.Any) { //gd:Re
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_add_surface), 0|(gdextension.SizeRID<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
 		mesh    RID.Any
 		surface gdextension.Dictionary
-	}{mesh, gdextension.Dictionary(pointers.Get(gd.InternalDictionary(surface))[0])}))
+	}{mesh, pointers.Get(gd.InternalDictionary(surface))}))
 }
 
 //go:nosplit
@@ -5183,7 +5183,7 @@ func (self class) MeshAddSurfaceFromArrays(mesh RID.Any, primitive PrimitiveType
 		blend_shapes    gdextension.Array
 		lods            gdextension.Dictionary
 		compress_format ArrayFormat
-	}{mesh, primitive, gdextension.Array(pointers.Get(gd.InternalArray(arrays))[0]), gdextension.Array(pointers.Get(gd.InternalArray(blend_shapes))[0]), gdextension.Dictionary(pointers.Get(gd.InternalDictionary(lods))[0]), compress_format}))
+	}{mesh, primitive, pointers.Get(gd.InternalArray(arrays)), pointers.Get(gd.InternalArray(blend_shapes)), pointers.Get(gd.InternalDictionary(lods)), compress_format}))
 }
 
 /*
@@ -5244,7 +5244,7 @@ func (self class) MeshSurfaceGetMaterial(mesh RID.Any, surface int64) RID.Any { 
 
 //go:nosplit
 func (self class) MeshGetSurface(mesh RID.Any, surface int64) Dictionary.Any { //gd:RenderingServer.mesh_get_surface
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_get_surface), gdextension.SizeDictionary|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_get_surface), gdextension.SizeDictionary|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		mesh    RID.Any
 		surface int64
 	}{mesh, surface}))
@@ -5257,7 +5257,7 @@ Returns a mesh's surface's buffer arrays.
 */
 //go:nosplit
 func (self class) MeshSurfaceGetArrays(mesh RID.Any, surface int64) Array.Any { //gd:RenderingServer.mesh_surface_get_arrays
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_arrays), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_arrays), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		mesh    RID.Any
 		surface int64
 	}{mesh, surface}))
@@ -5270,7 +5270,7 @@ Returns a mesh's surface's arrays for blend shapes.
 */
 //go:nosplit
 func (self class) MeshSurfaceGetBlendShapeArrays(mesh RID.Any, surface int64) Array.Contains[Array.Any] { //gd:RenderingServer.mesh_surface_get_blend_shape_arrays
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_blend_shape_arrays), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_mesh_surface_get_blend_shape_arrays), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		mesh    RID.Any
 		surface int64
 	}{mesh, surface}))
@@ -5334,8 +5334,8 @@ func (self class) MeshSurfaceUpdateVertexRegion(mesh RID.Any, surface int64, off
 		mesh    RID.Any
 		surface int64
 		offset  int64
-		data    gdextension.PackedArray
-	}{mesh, surface, offset, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+		data    gdextension.PackedArray[byte]
+	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 }
 
 //go:nosplit
@@ -5344,8 +5344,8 @@ func (self class) MeshSurfaceUpdateAttributeRegion(mesh RID.Any, surface int64, 
 		mesh    RID.Any
 		surface int64
 		offset  int64
-		data    gdextension.PackedArray
-	}{mesh, surface, offset, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+		data    gdextension.PackedArray[byte]
+	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 }
 
 //go:nosplit
@@ -5354,8 +5354,8 @@ func (self class) MeshSurfaceUpdateSkinRegion(mesh RID.Any, surface int64, offse
 		mesh    RID.Any
 		surface int64
 		offset  int64
-		data    gdextension.PackedArray
-	}{mesh, surface, offset, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+		data    gdextension.PackedArray[byte]
+	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 }
 
 //go:nosplit
@@ -5597,8 +5597,8 @@ Instance transforms are in row-major order. Specifically:
 func (self class) MultimeshSetBuffer(multimesh RID.Any, buffer Packed.Array[float32]) { //gd:RenderingServer.multimesh_set_buffer
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_buffer), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		multimesh RID.Any
-		buffer    gdextension.PackedArray
-	}{multimesh, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer)))}))
+		buffer    gdextension.PackedArray[float32]
+	}{multimesh, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer))}))
 }
 
 /*
@@ -5656,9 +5656,9 @@ Takes both an array of current data and an array of data for the previous physic
 func (self class) MultimeshSetBufferInterpolated(multimesh RID.Any, buffer Packed.Array[float32], buffer_previous Packed.Array[float32]) { //gd:RenderingServer.multimesh_set_buffer_interpolated
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_multimesh_set_buffer_interpolated), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
 		multimesh       RID.Any
-		buffer          gdextension.PackedArray
-		buffer_previous gdextension.PackedArray
-	}{multimesh, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_previous)))}))
+		buffer          gdextension.PackedArray[float32]
+		buffer_previous gdextension.PackedArray[float32]
+	}{multimesh, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer)), pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_previous))}))
 }
 
 /*
@@ -6374,11 +6374,11 @@ func (self class) VoxelGiAllocateData(voxel_gi RID.Any, to_cell_xform Transform3
 		to_cell_xform  Transform3D.BasisOrigin
 		aabb           AABB.PositionSize
 		octree_size    Vector3i.XYZ
-		octree_cells   gdextension.PackedArray
-		data_cells     gdextension.PackedArray
-		distance_field gdextension.PackedArray
-		level_counts   gdextension.PackedArray
-	}{voxel_gi, gd.Transposed(to_cell_xform), aabb, octree_size, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells)))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data_cells)))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](distance_field)))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](level_counts)))}))
+		octree_cells   gdextension.PackedArray[byte]
+		data_cells     gdextension.PackedArray[byte]
+		distance_field gdextension.PackedArray[byte]
+		level_counts   gdextension.PackedArray[int32]
+	}{voxel_gi, gd.Transposed(to_cell_xform), aabb, octree_size, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data_cells))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](distance_field))), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](level_counts))}))
 }
 
 //go:nosplit
@@ -6563,11 +6563,11 @@ func (self class) LightmapSetProbeInterior(lightmap RID.Any, interior bool) { //
 func (self class) LightmapSetProbeCaptureData(lightmap RID.Any, points Packed.Array[Vector3.XYZ], point_sh Packed.Array[Color.RGBA], tetrahedra Packed.Array[int32], bsp_tree Packed.Array[int32]) { //gd:RenderingServer.lightmap_set_probe_capture_data
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_lightmap_set_probe_capture_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20), unsafe.Pointer(&struct {
 		lightmap   RID.Any
-		points     gdextension.PackedArray
-		point_sh   gdextension.PackedArray
-		tetrahedra gdextension.PackedArray
-		bsp_tree   gdextension.PackedArray
-	}{lightmap, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](point_sh))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](tetrahedra))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bsp_tree)))}))
+		points     gdextension.PackedArray[Vector3.XYZ]
+		point_sh   gdextension.PackedArray[Color.RGBA]
+		tetrahedra gdextension.PackedArray[int32]
+		bsp_tree   gdextension.PackedArray[int32]
+	}{lightmap, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](point_sh)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](tetrahedra)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bsp_tree))}))
 }
 
 //go:nosplit
@@ -6878,7 +6878,7 @@ func (self class) ParticlesSetTrailBindPoses(particles RID.Any, bind_poses Array
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_particles_set_trail_bind_poses), 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		particles  RID.Any
 		bind_poses gdextension.Array
-	}{particles, gdextension.Array(pointers.Get(gd.InternalArray(bind_poses))[0])}))
+	}{particles, pointers.Get(gd.InternalArray(bind_poses))}))
 }
 
 /*
@@ -7186,7 +7186,7 @@ func (self class) VisibilityNotifierSetCallbacks(notifier RID.Any, enter_callabl
 		notifier       RID.Any
 		enter_callable gdextension.Callable
 		exit_callable  gdextension.Callable
-	}{notifier, gdextension.Callable(pointers.Get(gd.InternalCallable(enter_callable))), gdextension.Callable(pointers.Get(gd.InternalCallable(exit_callable)))}))
+	}{notifier, pointers.Get(gd.InternalCallable(enter_callable)), pointers.Get(gd.InternalCallable(exit_callable))}))
 }
 
 /*
@@ -7208,9 +7208,9 @@ Sets the mesh data for the given occluder RID, which controls the shape of the o
 func (self class) OccluderSetMesh(occluder RID.Any, vertices Packed.Array[Vector3.XYZ], indices Packed.Array[int32]) { //gd:RenderingServer.occluder_set_mesh
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_occluder_set_mesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
 		occluder RID.Any
-		vertices gdextension.PackedArray
-		indices  gdextension.PackedArray
-	}{occluder, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices)))}))
+		vertices gdextension.PackedArray[Vector3.XYZ]
+		indices  gdextension.PackedArray[int32]
+	}{occluder, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))}))
 }
 
 /*
@@ -8003,7 +8003,7 @@ Generates and returns an [Image] containing the radiance map for the specified [
 */
 //go:nosplit
 func (self class) SkyBakePanorama(sky RID.Any, energy float64, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.sky_bake_panorama
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sky_bake_panorama), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeVector2i<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_sky_bake_panorama), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeVector2i<<16), unsafe.Pointer(&struct {
 		sky             RID.Any
 		energy          float64
 		bake_irradiance bool
@@ -8044,7 +8044,7 @@ func (self class) CompositorEffectSetCallback(effect RID.Any, callback_type Comp
 		effect        RID.Any
 		callback_type CompositorEffectCallbackType
 		callback      gdextension.Callable
-	}{effect, callback_type, gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{effect, callback_type, pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -8078,7 +8078,7 @@ func (self class) CompositorSetCompositorEffects(compositor RID.Any, effects Arr
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_compositor_set_compositor_effects), 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		compositor RID.Any
 		effects    gdextension.Array
-	}{compositor, gdextension.Array(pointers.Get(gd.InternalArray(effects))[0])}))
+	}{compositor, pointers.Get(gd.InternalArray(effects))}))
 }
 
 /*
@@ -8205,7 +8205,7 @@ func (self class) EnvironmentSetGlow(env RID.Any, enable bool, levels Packed.Arr
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_set_glow), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeFloat<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44)|(gdextension.SizeFloat<<48)|(gdextension.SizeRID<<52), unsafe.Pointer(&struct {
 		env                 RID.Any
 		enable              bool
-		levels              gdextension.PackedArray
+		levels              gdextension.PackedArray[float32]
 		intensity           float64
 		strength            float64
 		mix                 float64
@@ -8216,7 +8216,7 @@ func (self class) EnvironmentSetGlow(env RID.Any, enable bool, levels Packed.Arr
 		hdr_luminance_cap   float64
 		glow_map_strength   float64
 		glow_map            RID.Any
-	}{env, enable, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](levels))), intensity, strength, mix, bloom_threshold, blend_mode, hdr_bleed_threshold, hdr_bleed_scale, hdr_luminance_cap, glow_map_strength, glow_map}))
+	}{env, enable, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](levels)), intensity, strength, mix, bloom_threshold, blend_mode, hdr_bleed_threshold, hdr_bleed_scale, hdr_luminance_cap, glow_map_strength, glow_map}))
 }
 
 /*
@@ -8444,7 +8444,7 @@ Generates and returns an [Image] containing the radiance map for the specified [
 */
 //go:nosplit
 func (self class) EnvironmentBakePanorama(environment RID.Any, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.environment_bake_panorama
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_bake_panorama), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeVector2i<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_environment_bake_panorama), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeVector2i<<12), unsafe.Pointer(&struct {
 		environment     RID.Any
 		bake_irradiance bool
 		size            Vector2i.XY
@@ -8936,7 +8936,7 @@ func (self class) InstanceGeometrySetShaderParameter(instance RID.Any, parameter
 		instance  RID.Any
 		parameter gdextension.StringName
 		value     gdextension.Variant
-	}{instance, gdextension.StringName(pointers.Get(gd.InternalStringName(parameter))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{instance, pointers.Get(gd.InternalStringName(parameter)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -8945,10 +8945,10 @@ Returns the value of the per-instance shader uniform from the specified 3D geome
 */
 //go:nosplit
 func (self class) InstanceGeometryGetShaderParameter(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.instance_geometry_get_shader_parameter
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		instance  RID.Any
 		parameter gdextension.StringName
-	}{instance, gdextension.StringName(pointers.Get(gd.InternalStringName(parameter))[0])}))
+	}{instance, pointers.Get(gd.InternalStringName(parameter))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -8958,10 +8958,10 @@ Returns the default value of the per-instance shader uniform from the specified 
 */
 //go:nosplit
 func (self class) InstanceGeometryGetShaderParameterDefaultValue(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.instance_geometry_get_shader_parameter_default_value
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_default_value), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_default_value), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		instance  RID.Any
 		parameter gdextension.StringName
-	}{instance, gdextension.StringName(pointers.Get(gd.InternalStringName(parameter))[0])}))
+	}{instance, pointers.Get(gd.InternalStringName(parameter))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -8971,7 +8971,7 @@ Returns a dictionary of per-instance shader uniform names of the per-instance sh
 */
 //go:nosplit
 func (self class) InstanceGeometryGetShaderParameterList(instance RID.Any) Array.Contains[Dictionary.Any] { //gd:RenderingServer.instance_geometry_get_shader_parameter_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ instance RID.Any }{instance}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instance_geometry_get_shader_parameter_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ instance RID.Any }{instance}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -9014,7 +9014,7 @@ func (self class) InstancesCullConvex(convex Array.Contains[Plane.NormalD], scen
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_instances_cull_convex), gdextension.SizePackedArray|(gdextension.SizeArray<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		convex   gdextension.Array
 		scenario RID.Any
-	}{gdextension.Array(pointers.Get(gd.InternalArray(convex))[0]), scenario}))
+	}{pointers.Get(gd.InternalArray(convex)), scenario}))
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -9024,11 +9024,11 @@ Bakes the material data of the Mesh passed in the [param base] parameter with op
 */
 //go:nosplit
 func (self class) BakeRenderUv2(base RID.Any, material_overrides Array.Contains[RID.Any], image_size Vector2i.XY) Array.Contains[[1]gdclass.Image] { //gd:RenderingServer.bake_render_uv2
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_bake_render_uv2), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeVector2i<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_bake_render_uv2), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeVector2i<<12), unsafe.Pointer(&struct {
 		base               RID.Any
 		material_overrides gdextension.Array
 		image_size         Vector2i.XY
-	}{base, gdextension.Array(pointers.Get(gd.InternalArray(material_overrides))[0]), image_size}))
+	}{base, pointers.Get(gd.InternalArray(material_overrides)), image_size}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -9355,11 +9355,11 @@ Draws a 2D polyline on the [CanvasItem] pointed to by the [param item] [RID]. Se
 func (self class) CanvasItemAddPolyline(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width float64, antialiased bool) { //gd:RenderingServer.canvas_item_add_polyline
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_polyline), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		item        RID.Any
-		points      gdextension.PackedArray
-		colors      gdextension.PackedArray
+		points      gdextension.PackedArray[Vector2.XY]
+		colors      gdextension.PackedArray[Color.RGBA]
 		width       float64
 		antialiased bool
-	}{item, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))), width, antialiased}))
+	}{item, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), width, antialiased}))
 }
 
 /*
@@ -9369,11 +9369,11 @@ Draws a 2D multiline on the [CanvasItem] pointed to by the [param item] [RID]. S
 func (self class) CanvasItemAddMultiline(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width float64, antialiased bool) { //gd:RenderingServer.canvas_item_add_multiline
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_multiline), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		item        RID.Any
-		points      gdextension.PackedArray
-		colors      gdextension.PackedArray
+		points      gdextension.PackedArray[Vector2.XY]
+		colors      gdextension.PackedArray[Color.RGBA]
 		width       float64
 		antialiased bool
-	}{item, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))), width, antialiased}))
+	}{item, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), width, antialiased}))
 }
 
 /*
@@ -9491,11 +9491,11 @@ Draws a 2D primitive on the [CanvasItem] pointed to by the [param item] [RID]. S
 func (self class) CanvasItemAddPrimitive(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture RID.Any) { //gd:RenderingServer.canvas_item_add_primitive
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_primitive), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizeRID<<20), unsafe.Pointer(&struct {
 		item    RID.Any
-		points  gdextension.PackedArray
-		colors  gdextension.PackedArray
-		uvs     gdextension.PackedArray
+		points  gdextension.PackedArray[Vector2.XY]
+		colors  gdextension.PackedArray[Color.RGBA]
+		uvs     gdextension.PackedArray[Vector2.XY]
 		texture RID.Any
-	}{item, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))), texture}))
+	}{item, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), texture}))
 }
 
 /*
@@ -9506,11 +9506,11 @@ Draws a 2D polygon on the [CanvasItem] pointed to by the [param item] [RID]. If 
 func (self class) CanvasItemAddPolygon(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture RID.Any) { //gd:RenderingServer.canvas_item_add_polygon
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_polygon), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizeRID<<20), unsafe.Pointer(&struct {
 		item    RID.Any
-		points  gdextension.PackedArray
-		colors  gdextension.PackedArray
-		uvs     gdextension.PackedArray
+		points  gdextension.PackedArray[Vector2.XY]
+		colors  gdextension.PackedArray[Color.RGBA]
+		uvs     gdextension.PackedArray[Vector2.XY]
 		texture RID.Any
-	}{item, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))), texture}))
+	}{item, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), texture}))
 }
 
 /*
@@ -9521,15 +9521,15 @@ Draws a triangle array on the [CanvasItem] pointed to by the [param item] [RID].
 func (self class) CanvasItemAddTriangleArray(item RID.Any, indices Packed.Array[int32], points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], bones Packed.Array[int32], weights Packed.Array[float32], texture RID.Any, count int64) { //gd:RenderingServer.canvas_item_add_triangle_array
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_add_triangle_array), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeRID<<32)|(gdextension.SizeInt<<36), unsafe.Pointer(&struct {
 		item    RID.Any
-		indices gdextension.PackedArray
-		points  gdextension.PackedArray
-		colors  gdextension.PackedArray
-		uvs     gdextension.PackedArray
-		bones   gdextension.PackedArray
-		weights gdextension.PackedArray
+		indices gdextension.PackedArray[int32]
+		points  gdextension.PackedArray[Vector2.XY]
+		colors  gdextension.PackedArray[Color.RGBA]
+		uvs     gdextension.PackedArray[Vector2.XY]
+		bones   gdextension.PackedArray[int32]
+		weights gdextension.PackedArray[float32]
 		texture RID.Any
 		count   int64
-	}{item, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bones))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights))), texture, count}))
+	}{item, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](uvs)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bones)), pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)), texture, count}))
 }
 
 /*
@@ -9712,7 +9712,7 @@ func (self class) CanvasItemSetInstanceShaderParameter(instance RID.Any, paramet
 		instance  RID.Any
 		parameter gdextension.StringName
 		value     gdextension.Variant
-	}{instance, gdextension.StringName(pointers.Get(gd.InternalStringName(parameter))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{instance, pointers.Get(gd.InternalStringName(parameter)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -9720,10 +9720,10 @@ Returns the value of the per-instance shader uniform from the specified canvas i
 */
 //go:nosplit
 func (self class) CanvasItemGetInstanceShaderParameter(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		instance  RID.Any
 		parameter gdextension.StringName
-	}{instance, gdextension.StringName(pointers.Get(gd.InternalStringName(parameter))[0])}))
+	}{instance, pointers.Get(gd.InternalStringName(parameter))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -9733,10 +9733,10 @@ Returns the default value of the per-instance shader uniform from the specified 
 */
 //go:nosplit
 func (self class) CanvasItemGetInstanceShaderParameterDefaultValue(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_default_value
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter_default_value), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter_default_value), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		instance  RID.Any
 		parameter gdextension.StringName
-	}{instance, gdextension.StringName(pointers.Get(gd.InternalStringName(parameter))[0])}))
+	}{instance, pointers.Get(gd.InternalStringName(parameter))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -9747,7 +9747,7 @@ The returned dictionary is in PropertyInfo format, with the keys [code]name[/cod
 */
 //go:nosplit
 func (self class) CanvasItemGetInstanceShaderParameterList(instance RID.Any) Array.Contains[Dictionary.Any] { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ instance RID.Any }{instance}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_item_get_instance_shader_parameter_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ instance RID.Any }{instance}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -9764,7 +9764,7 @@ func (self class) CanvasItemSetVisibilityNotifier(item RID.Any, enable bool, are
 		area           Rect2.PositionSize
 		enter_callable gdextension.Callable
 		exit_callable  gdextension.Callable
-	}{item, enable, area, gdextension.Callable(pointers.Get(gd.InternalCallable(enter_callable))), gdextension.Callable(pointers.Get(gd.InternalCallable(exit_callable)))}))
+	}{item, enable, area, pointers.Get(gd.InternalCallable(enter_callable)), pointers.Get(gd.InternalCallable(exit_callable))}))
 }
 
 /*
@@ -10175,9 +10175,9 @@ Sets the shape of the occluder polygon.
 func (self class) CanvasOccluderPolygonSetShape(occluder_polygon RID.Any, shape Packed.Array[Vector2.XY], closed bool) { //gd:RenderingServer.canvas_occluder_polygon_set_shape
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_canvas_occluder_polygon_set_shape), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		occluder_polygon RID.Any
-		shape            gdextension.PackedArray
+		shape            gdextension.PackedArray[Vector2.XY]
 		closed           bool
-	}{occluder_polygon, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](shape))), closed}))
+	}{occluder_polygon, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](shape)), closed}))
 }
 
 /*
@@ -10209,7 +10209,7 @@ func (self class) GlobalShaderParameterAdd(name String.Name, atype GlobalShaderP
 		name          gdextension.StringName
 		atype         GlobalShaderParameterType
 		default_value gdextension.Variant
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), atype, gdextension.Variant(pointers.Get(gd.InternalVariant(default_value)))}))
+	}{pointers.Get(gd.InternalStringName(name)), atype, gdextension.Variant(pointers.Get(gd.InternalVariant(default_value)))}))
 }
 
 /*
@@ -10217,7 +10217,7 @@ Removes the global shader uniform specified by [param name].
 */
 //go:nosplit
 func (self class) GlobalShaderParameterRemove(name String.Name) { //gd:RenderingServer.global_shader_parameter_remove
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_remove), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_remove), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -10226,7 +10226,7 @@ Returns the list of global shader uniform names.
 */
 //go:nosplit
 func (self class) GlobalShaderParameterGetList() Array.Contains[String.Name] { //gd:RenderingServer.global_shader_parameter_get_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -10239,7 +10239,7 @@ func (self class) GlobalShaderParameterSet(name String.Name, value variant.Any) 
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_set), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		name  gdextension.StringName
 		value gdextension.Variant
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -10250,7 +10250,7 @@ func (self class) GlobalShaderParameterSetOverride(name String.Name, value varia
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_set_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		name  gdextension.StringName
 		value gdextension.Variant
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -10259,7 +10259,7 @@ Returns the value of the global shader uniform specified by [param name].
 */
 //go:nosplit
 func (self class) GlobalShaderParameterGet(name String.Name) variant.Any { //gd:RenderingServer.global_shader_parameter_get
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -10270,7 +10270,7 @@ Returns the type associated to the global shader uniform specified by [param nam
 */
 //go:nosplit
 func (self class) GlobalShaderParameterGetType(name String.Name) GlobalShaderParameterType { //gd:RenderingServer.global_shader_parameter_get_type
-	var r_ret = gdextension.Call[GlobalShaderParameterType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_type), gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[GlobalShaderParameterType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_global_shader_parameter_get_type), gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -10288,7 +10288,7 @@ Schedules a callback to the given callable after a frame has been drawn.
 */
 //go:nosplit
 func (self class) RequestFrameDrawnCallback(callable Callable.Function) { //gd:RenderingServer.request_frame_drawn_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_request_frame_drawn_callback), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_request_frame_drawn_callback), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))}))
 }
 
 /*
@@ -10327,7 +10327,7 @@ Returns the name of the video adapter (e.g. "GeForce GTX 1080/PCIe/SSE2").
 */
 //go:nosplit
 func (self class) GetVideoAdapterName() String.Readable { //gd:RenderingServer.get_video_adapter_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -10338,7 +10338,7 @@ Returns the vendor of the video adapter (e.g. "NVIDIA Corporation").
 */
 //go:nosplit
 func (self class) GetVideoAdapterVendor() String.Readable { //gd:RenderingServer.get_video_adapter_vendor
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_vendor), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_vendor), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -10360,7 +10360,7 @@ Returns the version of the graphics video adapter [i]currently in use[/i] (e.g. 
 */
 //go:nosplit
 func (self class) GetVideoAdapterApiVersion() String.Readable { //gd:RenderingServer.get_video_adapter_api_version
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_api_version), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_video_adapter_api_version), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -10371,7 +10371,7 @@ The rendering driver is determined by [member ProjectSettings.rendering/renderin
 */
 //go:nosplit
 func (self class) GetCurrentRenderingDriverName() String.Readable { //gd:RenderingServer.get_current_rendering_driver_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_current_rendering_driver_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_current_rendering_driver_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -10382,7 +10382,7 @@ The rendering method is determined by [member ProjectSettings.rendering/renderer
 */
 //go:nosplit
 func (self class) GetCurrentRenderingMethod() String.Readable { //gd:RenderingServer.get_current_rendering_method
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_current_rendering_method), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_current_rendering_method), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -10479,7 +10479,7 @@ Returns [code]true[/code] if the OS supports a certain [param feature]. Features
 */
 //go:nosplit
 func (self class) HasOsFeature(feature String.Readable) bool { //gd:RenderingServer.has_os_feature
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_has_os_feature), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ feature gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(feature))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_has_os_feature), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ feature gdextension.String }{pointers.Get(gd.InternalString(feature))}))
 	var ret = r_ret
 	return ret
 }
@@ -10540,7 +10540,7 @@ Returns the global RenderingDevice.
 */
 //go:nosplit
 func (self class) GetRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.get_rendering_device
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_rendering_device), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_get_rendering_device), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.RenderingDevice{gd.PointerBorrowedTemporarily[gdclass.RenderingDevice](r_ret)}
 	return ret
 }
@@ -10551,7 +10551,7 @@ Creates a RenderingDevice that can be used to do draw and compute operations on 
 */
 //go:nosplit
 func (self class) CreateLocalRenderingDevice() [1]gdclass.RenderingDevice { //gd:RenderingServer.create_local_rendering_device
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_create_local_rendering_device), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_create_local_rendering_device), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.RenderingDevice{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderingDevice](r_ret)}
 	return ret
 }
@@ -10571,7 +10571,7 @@ As the RenderingServer actual logic may run on an separate thread, accessing its
 */
 //go:nosplit
 func (self class) CallOnRenderThread(callable Callable.Function) { //gd:RenderingServer.call_on_render_thread
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_call_on_render_thread), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingServer.Bind_call_on_render_thread), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))}))
 }
 
 /*

@@ -95,8 +95,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImporterMeshInstance3D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ImporterMeshInstance3D"))))})}
 	casted := Instance{*(*gdclass.ImporterMeshInstance3D)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -187,7 +188,7 @@ func (self class) SetMesh(mesh [1]gdclass.ImporterMesh) { //gd:ImporterMeshInsta
 
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.ImporterMesh { //gd:ImporterMeshInstance3D.get_mesh
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.ImporterMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ImporterMesh](r_ret)}
 	return ret
 }
@@ -199,19 +200,19 @@ func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:ImporterMeshInstance3D.se
 
 //go:nosplit
 func (self class) GetSkin() [1]gdclass.Skin { //gd:ImporterMeshInstance3D.get_skin
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_skin), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_skin), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkeletonPath(skeleton_path Path.ToNode) { //gd:ImporterMeshInstance3D.set_skeleton_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMeshInstance3D.Bind_set_skeleton_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ skeleton_path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(skeleton_path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMeshInstance3D.Bind_set_skeleton_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ skeleton_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(skeleton_path))}))
 }
 
 //go:nosplit
 func (self class) GetSkeletonPath() Path.ToNode { //gd:ImporterMeshInstance3D.get_skeleton_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_skeleton_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMeshInstance3D.Bind_get_skeleton_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

@@ -746,9 +746,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TileSet"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TileSet"))))})}
 	casted := Instance{*(*gdclass.TileSet)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -871,7 +872,7 @@ Returns the [TileSetSource] with ID [param source_id].
 */
 //go:nosplit
 func (self class) GetSource(source_id int64) [1]gdclass.TileSetSource { //gd:TileSet.get_source
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_source), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ source_id int64 }{source_id}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_source), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ source_id int64 }{source_id}))
 	var ret = [1]gdclass.TileSetSource{gd.PointerWithOwnershipTransferredToGo[gdclass.TileSetSource](r_ret)}
 	return ret
 }
@@ -1133,7 +1134,7 @@ Returns the physics material of bodies on the given TileSet's physics layer.
 */
 //go:nosplit
 func (self class) GetPhysicsLayerPhysicsMaterial(layer_index int64) [1]gdclass.PhysicsMaterial { //gd:TileSet.get_physics_layer_physics_material
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_physics_layer_physics_material), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_index int64 }{layer_index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_physics_layer_physics_material), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_index int64 }{layer_index}))
 	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret)}
 	return ret
 }
@@ -1249,7 +1250,7 @@ func (self class) SetTerrainName(terrain_set int64, terrain_index int64, name St
 		terrain_set   int64
 		terrain_index int64
 		name          gdextension.String
-	}{terrain_set, terrain_index, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	}{terrain_set, terrain_index, pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -1257,7 +1258,7 @@ Returns a terrain's name.
 */
 //go:nosplit
 func (self class) GetTerrainName(terrain_set int64, terrain_index int64) String.Readable { //gd:TileSet.get_terrain_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_terrain_name), gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_terrain_name), gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		terrain_set   int64
 		terrain_index int64
 	}{terrain_set, terrain_index}))
@@ -1417,7 +1418,7 @@ Returns the index of the custom data layer identified by the given name.
 */
 //go:nosplit
 func (self class) GetCustomDataLayerByName(layer_name String.Readable) int64 { //gd:TileSet.get_custom_data_layer_by_name
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_custom_data_layer_by_name), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ layer_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(layer_name))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_custom_data_layer_by_name), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ layer_name gdextension.String }{pointers.Get(gd.InternalString(layer_name))}))
 	var ret = r_ret
 	return ret
 }
@@ -1430,7 +1431,7 @@ func (self class) SetCustomDataLayerName(layer_index int64, layer_name String.Re
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_set_custom_data_layer_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		layer_index int64
 		layer_name  gdextension.String
-	}{layer_index, gdextension.String(pointers.Get(gd.InternalString(layer_name))[0])}))
+	}{layer_index, pointers.Get(gd.InternalString(layer_name))}))
 }
 
 /*
@@ -1438,7 +1439,7 @@ Returns if there is a custom data layer named [param layer_name].
 */
 //go:nosplit
 func (self class) HasCustomDataLayerByName(layer_name String.Readable) bool { //gd:TileSet.has_custom_data_layer_by_name
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_has_custom_data_layer_by_name), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ layer_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(layer_name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_has_custom_data_layer_by_name), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ layer_name gdextension.String }{pointers.Get(gd.InternalString(layer_name))}))
 	var ret = r_ret
 	return ret
 }
@@ -1448,7 +1449,7 @@ Returns the name of the custom data layer identified by the given index.
 */
 //go:nosplit
 func (self class) GetCustomDataLayerName(layer_index int64) String.Readable { //gd:TileSet.get_custom_data_layer_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_custom_data_layer_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_index int64 }{layer_index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_custom_data_layer_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_index int64 }{layer_index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1537,7 +1538,7 @@ If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
 //go:nosplit
 func (self class) GetCoordsLevelTileProxy(source_from int64, coords_from Vector2i.XY) Array.Any { //gd:TileSet.get_coords_level_tile_proxy
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_coords_level_tile_proxy), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_coords_level_tile_proxy), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
 		source_from int64
 		coords_from Vector2i.XY
 	}{source_from, coords_from}))
@@ -1592,7 +1593,7 @@ If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
 //go:nosplit
 func (self class) GetAlternativeLevelTileProxy(source_from int64, coords_from Vector2i.XY, alternative_from int64) Array.Any { //gd:TileSet.get_alternative_level_tile_proxy
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_alternative_level_tile_proxy), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_alternative_level_tile_proxy), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		source_from      int64
 		coords_from      Vector2i.XY
 		alternative_from int64
@@ -1634,7 +1635,7 @@ If no proxy corresponding to provided identifiers are found, returns the same va
 */
 //go:nosplit
 func (self class) MapTileProxy(source_from int64, coords_from Vector2i.XY, alternative_from int64) Array.Any { //gd:TileSet.map_tile_proxy
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_map_tile_proxy), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_map_tile_proxy), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		source_from      int64
 		coords_from      Vector2i.XY
 		alternative_from int64
@@ -1677,7 +1678,7 @@ Returns the [TileMapPattern] at the given [param index].
 */
 //go:nosplit
 func (self class) GetPattern(index int64) [1]gdclass.TileMapPattern { //gd:TileSet.get_pattern
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_pattern), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSet.Bind_get_pattern), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = [1]gdclass.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[gdclass.TileMapPattern](r_ret)}
 	return ret
 }

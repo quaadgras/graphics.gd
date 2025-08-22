@@ -101,9 +101,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioEffectCompressor"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioEffectCompressor"))))})}
 	casted := Instance{*(*gdclass.AudioEffectCompressor)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -237,12 +238,12 @@ func (self class) GetMix() float64 { //gd:AudioEffectCompressor.get_mix
 
 //go:nosplit
 func (self class) SetSidechain(sidechain String.Name) { //gd:AudioEffectCompressor.set_sidechain
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_set_sidechain), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ sidechain gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(sidechain))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_set_sidechain), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ sidechain gdextension.StringName }{pointers.Get(gd.InternalStringName(sidechain))}))
 }
 
 //go:nosplit
 func (self class) GetSidechain() String.Name { //gd:AudioEffectCompressor.get_sidechain
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_get_sidechain), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_get_sidechain), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

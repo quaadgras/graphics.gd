@@ -152,9 +152,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModification2DPhysicalBones"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SkeletonModification2DPhysicalBones"))))})}
 	casted := Instance{*(*gdclass.SkeletonModification2DPhysicalBones)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -187,7 +188,7 @@ func (self class) SetPhysicalBoneNode(joint_idx int64, physicalbone2d_node Path.
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_set_physical_bone_node), 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
 		joint_idx           int64
 		physicalbone2d_node gdextension.NodePath
-	}{joint_idx, gdextension.NodePath(pointers.Get(gd.InternalNodePath(physicalbone2d_node))[0])}))
+	}{joint_idx, pointers.Get(gd.InternalNodePath(physicalbone2d_node))}))
 }
 
 /*
@@ -195,7 +196,7 @@ Returns the [PhysicalBone2D] node at [param joint_idx].
 */
 //go:nosplit
 func (self class) GetPhysicalBoneNode(joint_idx int64) Path.ToNode { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_node
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_node), gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_node), gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -214,7 +215,7 @@ Optionally, an array of bone names can be passed to this function, and that will
 */
 //go:nosplit
 func (self class) StartSimulation(bones Array.Contains[String.Name]) { //gd:SkeletonModification2DPhysicalBones.start_simulation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_start_simulation), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(bones))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_start_simulation), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))}))
 }
 
 /*
@@ -223,7 +224,7 @@ Optionally, an array of bone names can be passed to this function, and that will
 */
 //go:nosplit
 func (self class) StopSimulation(bones Array.Contains[String.Name]) { //gd:SkeletonModification2DPhysicalBones.stop_simulation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_stop_simulation), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(bones))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_stop_simulation), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))}))
 }
 func (self class) AsSkeletonModification2DPhysicalBones() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

@@ -139,9 +139,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNode"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShaderNode"))))})}
 	casted := Instance{*(*gdclass.VisualShaderNode)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -208,7 +209,7 @@ Returns the default value of the input [param port].
 */
 //go:nosplit
 func (self class) GetInputPortDefaultValue(port int64) variant.Any { //gd:VisualShaderNode.get_input_port_default_value
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNode.Bind_get_input_port_default_value), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ port int64 }{port}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNode.Bind_get_input_port_default_value), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ port int64 }{port}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -234,7 +235,7 @@ Sets the default input ports values using an [Array] of the form [code][index0, 
 */
 //go:nosplit
 func (self class) SetDefaultInputValues(values Array.Any) { //gd:VisualShaderNode.set_default_input_values
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNode.Bind_set_default_input_values), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ values gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(values))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNode.Bind_set_default_input_values), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ values gdextension.Array }{pointers.Get(gd.InternalArray(values))}))
 }
 
 /*
@@ -242,7 +243,7 @@ Returns an [Array] containing default values for all of the input ports of the n
 */
 //go:nosplit
 func (self class) GetDefaultInputValues() Array.Any { //gd:VisualShaderNode.get_default_input_values
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNode.Bind_get_default_input_values), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNode.Bind_get_default_input_values), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

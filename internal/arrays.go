@@ -5,7 +5,6 @@ import (
 	"iter"
 	"reflect"
 
-	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
@@ -22,13 +21,13 @@ func IntsCollectAs[T, S ~int | ~int64 | ~int32](seq iter.Seq[S]) []T {
 
 func (a Array) Index(index int64) Variant {
 	var raw [3]uint64
-	gdextension.Host.Array.Get(gdextension.Array(pointers.Get(a)[0]), int(index), gdextension.CallReturns[gdextension.Variant](&raw[0]))
+	gdextension.Host.Array.Get(pointers.Get(a), int(index), gdextension.CallReturns[gdextension.Variant](&raw[0]))
 	return pointers.Raw[Variant](raw).Copy()
 }
 
 func (a Array) SetIndex(index int64, value Variant) {
 	raw, _ := pointers.End(value.Copy())
-	gdextension.Host.Array.Set(gdextension.Array(pointers.Get(a)[0]), int(index), raw)
+	gdextension.Host.Array.Set(pointers.Get(a), int(index), raw)
 }
 
 func (a Array) isArray() {}
@@ -37,9 +36,7 @@ func (a Array) end() { pointers.End(a) }
 
 func (a Array) Free() {
 	if ptr, ok := pointers.End(a); ok {
-		var frame = callframe.New()
-		Global.typeset.destruct.Array(callframe.Arg(frame, ptr).Addr())
-		frame.Free()
+		gdextension.Free(gdextension.TypeArray, &ptr)
 	}
 }
 
@@ -54,12 +51,7 @@ func (a Array) Iter() iter.Seq2[int64, Variant] {
 }
 
 func NewArray() Array {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]EnginePointer](frame)
-	Global.typeset.creation.Array[0](r_ret.Addr(), callframe.Args{})
-	var raw = r_ret.Get()
-	frame.Free()
-	return pointers.New[Array](raw)
+	return pointers.New[Array](gdextension.Make[gdextension.Array](Global.typeset.creation.Array[0], 0, nil))
 }
 
 func ArrayAs[S []T, T any](array Array) []T {

@@ -133,9 +133,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SkeletonModificationStack2D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SkeletonModificationStack2D"))))})}
 	casted := Instance{*(*gdclass.SkeletonModificationStack2D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -196,7 +197,7 @@ Returns the [SkeletonModification2D] at the passed-in index, [param mod_idx].
 */
 //go:nosplit
 func (self class) GetModification(mod_idx int64) [1]gdclass.SkeletonModification2D { //gd:SkeletonModificationStack2D.get_modification
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_modification), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mod_idx int64 }{mod_idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_modification), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mod_idx int64 }{mod_idx}))
 	var ret = [1]gdclass.SkeletonModification2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModification2D](r_ret)}
 	return ret
 }
@@ -279,7 +280,7 @@ Returns the [Skeleton2D] node that the SkeletonModificationStack2D is bound to.
 */
 //go:nosplit
 func (self class) GetSkeleton() [1]gdclass.Skeleton2D { //gd:SkeletonModificationStack2D.get_skeleton
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_skeleton), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModificationStack2D.Bind_get_skeleton), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Skeleton2D{gd.PointerMustAssertInstanceID[gdclass.Skeleton2D](r_ret)}
 	return ret
 }

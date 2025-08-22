@@ -168,9 +168,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorDebuggerSession"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorDebuggerSession"))))})}
 	casted := Instance{*(*gdclass.EditorDebuggerSession)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -182,7 +183,7 @@ func (self class) SendMessage(message String.Readable, data Array.Any) { //gd:Ed
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorDebuggerSession.Bind_send_message), 0|(gdextension.SizeString<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		message gdextension.String
 		data    gdextension.Array
-	}{gdextension.String(pointers.Get(gd.InternalString(message))[0]), gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
+	}{pointers.Get(gd.InternalString(message)), pointers.Get(gd.InternalArray(data))}))
 }
 
 /*
@@ -194,7 +195,7 @@ func (self class) ToggleProfiler(profiler String.Readable, enable bool, data Arr
 		profiler gdextension.String
 		enable   bool
 		data     gdextension.Array
-	}{gdextension.String(pointers.Get(gd.InternalString(profiler))[0]), enable, gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
+	}{pointers.Get(gd.InternalString(profiler)), enable, pointers.Get(gd.InternalArray(data))}))
 }
 
 /*
@@ -252,7 +253,7 @@ func (self class) SetBreakpoint(path String.Readable, line int64, enabled bool) 
 		path    gdextension.String
 		line    int64
 		enabled bool
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), line, enabled}))
+	}{pointers.Get(gd.InternalString(path)), line, enabled}))
 }
 func (self Instance) OnStarted(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("started"), gd.NewCallable(cb), 0)

@@ -124,9 +124,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("X509Certificate"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("X509Certificate"))))})}
 	casted := Instance{*(*gdclass.X509Certificate)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -135,7 +136,7 @@ Saves a certificate to the given [param path] (should be a "*.crt" file).
 */
 //go:nosplit
 func (self class) Save(path String.Readable) Error.Code { //gd:X509Certificate.save
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.X509Certificate.Bind_save), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.X509Certificate.Bind_save), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -145,7 +146,7 @@ Loads a certificate from [param path] ("*.crt" file).
 */
 //go:nosplit
 func (self class) Load(path String.Readable) Error.Code { //gd:X509Certificate.load
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.X509Certificate.Bind_load), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.X509Certificate.Bind_load), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -155,7 +156,7 @@ Returns a string representation of the certificate, or an empty string if the ce
 */
 //go:nosplit
 func (self class) SaveToString() String.Readable { //gd:X509Certificate.save_to_string
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.X509Certificate.Bind_save_to_string), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.X509Certificate.Bind_save_to_string), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -165,7 +166,7 @@ Loads a certificate from the given [param string].
 */
 //go:nosplit
 func (self class) LoadFromString(s String.Readable) Error.Code { //gd:X509Certificate.load_from_string
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.X509Certificate.Bind_load_from_string), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(s))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.X509Certificate.Bind_load_from_string), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

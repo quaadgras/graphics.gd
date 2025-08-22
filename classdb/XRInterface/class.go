@@ -253,9 +253,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRInterface"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("XRInterface"))))})}
 	casted := Instance{*(*gdclass.XRInterface)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -296,7 +297,7 @@ Returns the name of this interface ([code]"OpenXR"[/code], [code]"OpenVR"[/code]
 */
 //go:nosplit
 func (self class) GetName() String.Name { //gd:XRInterface.get_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -361,7 +362,7 @@ Returns a [Dictionary] with extra system info. Interfaces are expected to return
 */
 //go:nosplit
 func (self class) GetSystemInfo() Dictionary.Any { //gd:XRInterface.get_system_info
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_system_info), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_system_info), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -414,7 +415,7 @@ func (self class) TriggerHapticPulse(action_name String.Readable, tracker_name S
 		amplitude    float64
 		duration_sec float64
 		delay_sec    float64
-	}{gdextension.String(pointers.Get(gd.InternalString(action_name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(tracker_name))[0]), frequency, amplitude, duration_sec, delay_sec}))
+	}{pointers.Get(gd.InternalString(action_name)), pointers.Get(gd.InternalStringName(tracker_name)), frequency, amplitude, duration_sec, delay_sec}))
 }
 
 /*
@@ -551,7 +552,7 @@ Returns the an array of supported environment blend modes, see [enum XRInterface
 */
 //go:nosplit
 func (self class) GetSupportedEnvironmentBlendModes() Array.Any { //gd:XRInterface.get_supported_environment_blend_modes
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_supported_environment_blend_modes), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterface.Bind_get_supported_environment_blend_modes), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

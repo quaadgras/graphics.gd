@@ -193,9 +193,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SceneReplicationConfig"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SceneReplicationConfig"))))})}
 	casted := Instance{*(*gdclass.SceneReplicationConfig)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -204,7 +205,7 @@ Returns a list of synchronized property [NodePath]s.
 */
 //go:nosplit
 func (self class) GetProperties() Array.Contains[Path.ToNode] { //gd:SceneReplicationConfig.get_properties
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_get_properties), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_get_properties), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -218,7 +219,7 @@ func (self class) AddProperty(path Path.ToNode, index int64) { //gd:SceneReplica
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_add_property), 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		path  gdextension.NodePath
 		index int64
-	}{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0]), index}))
+	}{pointers.Get(gd.InternalNodePath(path)), index}))
 }
 
 /*
@@ -226,7 +227,7 @@ Returns [code]true[/code] if the given [param path] is configured for synchroniz
 */
 //go:nosplit
 func (self class) HasProperty(path Path.ToNode) bool { //gd:SceneReplicationConfig.has_property
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_has_property), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_has_property), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -236,7 +237,7 @@ Removes the property identified by the given [param path] from the configuration
 */
 //go:nosplit
 func (self class) RemoveProperty(path Path.ToNode) { //gd:SceneReplicationConfig.remove_property
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_remove_property), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_remove_property), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 }
 
 /*
@@ -244,7 +245,7 @@ Finds the index of the given [param path].
 */
 //go:nosplit
 func (self class) PropertyGetIndex(path Path.ToNode) int64 { //gd:SceneReplicationConfig.property_get_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_index), gdextension.SizeInt|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_index), gdextension.SizeInt|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -254,7 +255,7 @@ Returns [code]true[/code] if the property identified by the given [param path] i
 */
 //go:nosplit
 func (self class) PropertyGetSpawn(path Path.ToNode) bool { //gd:SceneReplicationConfig.property_get_spawn
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_spawn), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_spawn), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -267,7 +268,7 @@ func (self class) PropertySetSpawn(path Path.ToNode, enabled bool) { //gd:SceneR
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_set_spawn), 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path    gdextension.NodePath
 		enabled bool
-	}{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0]), enabled}))
+	}{pointers.Get(gd.InternalNodePath(path)), enabled}))
 }
 
 /*
@@ -275,7 +276,7 @@ Returns the replication mode for the property identified by the given [param pat
 */
 //go:nosplit
 func (self class) PropertyGetReplicationMode(path Path.ToNode) ReplicationMode { //gd:SceneReplicationConfig.property_get_replication_mode
-	var r_ret = gdextension.Call[ReplicationMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_replication_mode), gdextension.SizeInt|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	var r_ret = gdextension.Call[ReplicationMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_replication_mode), gdextension.SizeInt|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -288,7 +289,7 @@ func (self class) PropertySetReplicationMode(path Path.ToNode, mode ReplicationM
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_set_replication_mode), 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		path gdextension.NodePath
 		mode ReplicationMode
-	}{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0]), mode}))
+	}{pointers.Get(gd.InternalNodePath(path)), mode}))
 }
 
 /*
@@ -296,7 +297,7 @@ Returns [code]true[/code] if the property identified by the given [param path] i
 */
 //go:nosplit
 func (self class) PropertyGetSync(path Path.ToNode) bool { //gd:SceneReplicationConfig.property_get_sync
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_sync), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_sync), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -309,7 +310,7 @@ func (self class) PropertySetSync(path Path.ToNode, enabled bool) { //gd:SceneRe
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_set_sync), 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path    gdextension.NodePath
 		enabled bool
-	}{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0]), enabled}))
+	}{pointers.Get(gd.InternalNodePath(path)), enabled}))
 }
 
 /*
@@ -317,7 +318,7 @@ Returns [code]true[/code] if the property identified by the given [param path] i
 */
 //go:nosplit
 func (self class) PropertyGetWatch(path Path.ToNode) bool { //gd:SceneReplicationConfig.property_get_watch
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_watch), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_get_watch), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -330,7 +331,7 @@ func (self class) PropertySetWatch(path Path.ToNode, enabled bool) { //gd:SceneR
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneReplicationConfig.Bind_property_set_watch), 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path    gdextension.NodePath
 		enabled bool
-	}{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0]), enabled}))
+	}{pointers.Get(gd.InternalNodePath(path)), enabled}))
 }
 func (self class) AsSceneReplicationConfig() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsSceneReplicationConfig() Instance {

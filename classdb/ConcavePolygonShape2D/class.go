@@ -101,9 +101,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ConcavePolygonShape2D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ConcavePolygonShape2D"))))})}
 	casted := Instance{*(*gdclass.ConcavePolygonShape2D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -117,7 +118,9 @@ func (self Instance) SetSegments(value []Vector2.XY) {
 
 //go:nosplit
 func (self class) SetSegments(segments Packed.Array[Vector2.XY]) { //gd:ConcavePolygonShape2D.set_segments
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConcavePolygonShape2D.Bind_set_segments), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ segments gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](segments)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConcavePolygonShape2D.Bind_set_segments), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		segments gdextension.PackedArray[Vector2.XY]
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](segments))}))
 }
 
 //go:nosplit

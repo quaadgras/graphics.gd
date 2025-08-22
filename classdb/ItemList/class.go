@@ -498,8 +498,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ItemList"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ItemList"))))})}
 	casted := Instance{*(*gdclass.ItemList)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -642,7 +643,7 @@ func (self class) AddItem(text String.Readable, icon [1]gdclass.Texture2D, selec
 		text       gdextension.String
 		icon       gdextension.Object
 		selectable bool
-	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), selectable}))
+	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), selectable}))
 	var ret = r_ret
 	return ret
 }
@@ -668,7 +669,7 @@ func (self class) SetItemText(idx int64, text String.Readable) { //gd:ItemList.s
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_text), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		idx  int64
 		text gdextension.String
-	}{idx, gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	}{idx, pointers.Get(gd.InternalString(text))}))
 }
 
 /*
@@ -676,7 +677,7 @@ Returns the text associated with the specified index.
 */
 //go:nosplit
 func (self class) GetItemText(idx int64) String.Readable { //gd:ItemList.get_item_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_text), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_text), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -697,7 +698,7 @@ Returns the icon associated with the specified index.
 */
 //go:nosplit
 func (self class) GetItemIcon(idx int64) [1]gdclass.Texture2D { //gd:ItemList.get_item_icon
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_icon), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_icon), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -731,7 +732,7 @@ func (self class) SetItemLanguage(idx int64, language String.Readable) { //gd:It
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_language), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		idx      int64
 		language gdextension.String
-	}{idx, gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{idx, pointers.Get(gd.InternalString(language))}))
 }
 
 /*
@@ -739,7 +740,7 @@ Returns item's text language code.
 */
 //go:nosplit
 func (self class) GetItemLanguage(idx int64) String.Readable { //gd:ItemList.get_item_language
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_language), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_language), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -888,7 +889,7 @@ Returns the metadata value of the specified index.
 */
 //go:nosplit
 func (self class) GetItemMetadata(idx int64) variant.Any { //gd:ItemList.get_item_metadata
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_metadata), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_metadata), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -978,7 +979,7 @@ func (self class) SetItemTooltip(idx int64, tooltip String.Readable) { //gd:Item
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_tooltip), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		idx     int64
 		tooltip gdextension.String
-	}{idx, gdextension.String(pointers.Get(gd.InternalString(tooltip))[0])}))
+	}{idx, pointers.Get(gd.InternalString(tooltip))}))
 }
 
 /*
@@ -986,7 +987,7 @@ Returns the tooltip hint associated with the specified index.
 */
 //go:nosplit
 func (self class) GetItemTooltip(idx int64) String.Readable { //gd:ItemList.get_item_tooltip
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_tooltip), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_tooltip), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1281,7 +1282,7 @@ Returns the vertical scrollbar.
 */
 //go:nosplit
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ItemList.get_v_scroll_bar
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_v_scroll_bar), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_v_scroll_bar), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret)}
 	return ret
 }
@@ -1292,7 +1293,7 @@ Returns the horizontal scrollbar.
 */
 //go:nosplit
 func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ItemList.get_h_scroll_bar
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_h_scroll_bar), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_h_scroll_bar), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.HScrollBar{gd.PointerLifetimeBoundTo[gdclass.HScrollBar](self.AsObject(), r_ret)}
 	return ret
 }

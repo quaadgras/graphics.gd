@@ -262,8 +262,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CharacterBody2D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CharacterBody2D"))))})}
 	casted := Instance{*(*gdclass.CharacterBody2D)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -751,7 +752,7 @@ for (int i = 0; i < GetSlideCollisionCount(); i++)
 */
 //go:nosplit
 func (self class) GetSlideCollision(slide_idx int64) [1]gdclass.KinematicCollision2D { //gd:CharacterBody2D.get_slide_collision
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_slide_collision), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slide_idx int64 }{slide_idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_slide_collision), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slide_idx int64 }{slide_idx}))
 	var ret = [1]gdclass.KinematicCollision2D{gd.PointerWithOwnershipTransferredToGo[gdclass.KinematicCollision2D](r_ret)}
 	return ret
 }
@@ -761,7 +762,7 @@ Returns a [KinematicCollision2D], which contains information about the latest co
 */
 //go:nosplit
 func (self class) GetLastSlideCollision() [1]gdclass.KinematicCollision2D { //gd:CharacterBody2D.get_last_slide_collision
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_last_slide_collision), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_last_slide_collision), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.KinematicCollision2D{gd.PointerWithOwnershipTransferredToGo[gdclass.KinematicCollision2D](r_ret)}
 	return ret
 }

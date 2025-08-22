@@ -119,9 +119,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsRayQueryParameters3D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PhysicsRayQueryParameters3D"))))})}
 	casted := Instance{*(*gdclass.PhysicsRayQueryParameters3D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -198,12 +199,12 @@ var collision = get_world_3d().direct_space_state.intersect_ray(query)
 */
 //go:nosplit
 func (self class) Create(from Vector3.XYZ, to Vector3.XYZ, collision_mask int64, exclude Array.Contains[RID.Any]) [1]gdclass.PhysicsRayQueryParameters3D { //gd:PhysicsRayQueryParameters3D.create
-	var r_ret = gdextension.CallStatic[gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_create), gdextension.SizeObject|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeArray<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_create), gdextension.SizeObject|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeArray<<16), unsafe.Pointer(&struct {
 		from           Vector3.XYZ
 		to             Vector3.XYZ
 		collision_mask int64
 		exclude        gdextension.Array
-	}{from, to, collision_mask, gdextension.Array(pointers.Get(gd.InternalArray(exclude))[0])}))
+	}{from, to, collision_mask, pointers.Get(gd.InternalArray(exclude))}))
 	var ret = [1]gdclass.PhysicsRayQueryParameters3D{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsRayQueryParameters3D](r_ret)}
 	return ret
 }
@@ -246,12 +247,12 @@ func (self class) GetCollisionMask() int64 { //gd:PhysicsRayQueryParameters3D.ge
 
 //go:nosplit
 func (self class) SetExclude(exclude Array.Contains[RID.Any]) { //gd:PhysicsRayQueryParameters3D.set_exclude
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_exclude), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ exclude gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(exclude))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_set_exclude), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ exclude gdextension.Array }{pointers.Get(gd.InternalArray(exclude))}))
 }
 
 //go:nosplit
 func (self class) GetExclude() Array.Contains[RID.Any] { //gd:PhysicsRayQueryParameters3D.get_exclude
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_exclude), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsRayQueryParameters3D.Bind_get_exclude), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

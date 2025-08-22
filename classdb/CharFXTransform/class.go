@@ -98,9 +98,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CharFXTransform"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CharFXTransform"))))})}
 	casted := Instance{*(*gdclass.CharFXTransform)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -294,14 +295,14 @@ func (self class) SetColor(color Color.RGBA) { //gd:CharFXTransform.set_color
 
 //go:nosplit
 func (self class) GetEnvironment() Dictionary.Any { //gd:CharFXTransform.get_environment
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_get_environment), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_get_environment), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnvironment(environment Dictionary.Any) { //gd:CharFXTransform.set_environment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_environment), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ environment gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(environment))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_environment), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ environment gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(environment))}))
 }
 
 //go:nosplit

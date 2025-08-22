@@ -161,9 +161,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PCKPacker"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PCKPacker"))))})}
 	casted := Instance{*(*gdclass.PCKPacker)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -177,7 +178,7 @@ func (self class) PckStart(pck_path String.Readable, alignment int64, key String
 		alignment         int64
 		key               gdextension.String
 		encrypt_directory bool
-	}{gdextension.String(pointers.Get(gd.InternalString(pck_path))[0]), alignment, gdextension.String(pointers.Get(gd.InternalString(key))[0]), encrypt_directory}))
+	}{pointers.Get(gd.InternalString(pck_path)), alignment, pointers.Get(gd.InternalString(key)), encrypt_directory}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -191,7 +192,7 @@ func (self class) AddFile(target_path String.Readable, source_path String.Readab
 		target_path gdextension.String
 		source_path gdextension.String
 		encrypt     bool
-	}{gdextension.String(pointers.Get(gd.InternalString(target_path))[0]), gdextension.String(pointers.Get(gd.InternalString(source_path))[0]), encrypt}))
+	}{pointers.Get(gd.InternalString(target_path)), pointers.Get(gd.InternalString(source_path)), encrypt}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -201,7 +202,7 @@ Registers a file removal of the [param target_path] internal path to the PCK. Th
 */
 //go:nosplit
 func (self class) AddFileRemoval(target_path String.Readable) Error.Code { //gd:PCKPacker.add_file_removal
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PCKPacker.Bind_add_file_removal), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ target_path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(target_path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PCKPacker.Bind_add_file_removal), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ target_path gdextension.String }{pointers.Get(gd.InternalString(target_path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

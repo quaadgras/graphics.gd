@@ -413,8 +413,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Viewport"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Viewport"))))})}
 	casted := Instance{*(*gdclass.Viewport)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -801,7 +802,7 @@ func (self class) SetWorld2d(world_2d [1]gdclass.World2D) { //gd:Viewport.set_wo
 
 //go:nosplit
 func (self class) GetWorld2d() [1]gdclass.World2D { //gd:Viewport.get_world_2d
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_world_2d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_world_2d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.World2D{gd.PointerWithOwnershipTransferredToGo[gdclass.World2D](r_ret)}
 	return ret
 }
@@ -811,7 +812,7 @@ Returns the first valid [World2D] for this viewport, searching the [member world
 */
 //go:nosplit
 func (self class) FindWorld2d() [1]gdclass.World2D { //gd:Viewport.find_world_2d
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_find_world_2d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_find_world_2d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.World2D{gd.PointerWithOwnershipTransferredToGo[gdclass.World2D](r_ret)}
 	return ret
 }
@@ -1014,7 +1015,7 @@ func _ready():
 */
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.ViewportTexture { //gd:Viewport.get_texture
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.ViewportTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.ViewportTexture](r_ret)}
 	return ret
 }
@@ -1070,7 +1071,7 @@ Helper method which calls the [code]set_text()[/code] method on the currently fo
 */
 //go:nosplit
 func (self class) PushTextInput(text String.Readable) { //gd:Viewport.push_text_input
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_push_text_input), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_push_text_input), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
 }
 
 /*
@@ -1171,7 +1172,7 @@ Returns the drag data from the GUI, that was previously returned by [method Cont
 */
 //go:nosplit
 func (self class) GuiGetDragData() variant.Any { //gd:Viewport.gui_get_drag_data
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_gui_get_drag_data), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_gui_get_drag_data), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -1210,7 +1211,7 @@ Returns the currently focused [Control] within this viewport. If no [Control] is
 */
 //go:nosplit
 func (self class) GuiGetFocusOwner() [1]gdclass.Control { //gd:Viewport.gui_get_focus_owner
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_gui_get_focus_owner), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_gui_get_focus_owner), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
@@ -1221,7 +1222,7 @@ Typically the leaf [Control] node or deepest level of the subtree which claims h
 */
 //go:nosplit
 func (self class) GuiGetHoveredControl() [1]gdclass.Control { //gd:Viewport.gui_get_hovered_control
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_gui_get_hovered_control), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_gui_get_hovered_control), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
@@ -1384,7 +1385,7 @@ Returns a list of the visible embedded [Window]s inside the viewport.
 */
 //go:nosplit
 func (self class) GetEmbeddedSubwindows() Array.Contains[[1]gdclass.Window] { //gd:Viewport.get_embedded_subwindows
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_embedded_subwindows), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_embedded_subwindows), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Window]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1489,7 +1490,7 @@ Returns the currently active 2D audio listener. Returns [code]null[/code] if the
 */
 //go:nosplit
 func (self class) GetAudioListener2d() [1]gdclass.AudioListener2D { //gd:Viewport.get_audio_listener_2d
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_audio_listener_2d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_audio_listener_2d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.AudioListener2D{gd.PointerLifetimeBoundTo[gdclass.AudioListener2D](self.AsObject(), r_ret)}
 	return ret
 }
@@ -1499,7 +1500,7 @@ Returns the currently active 2D camera. Returns [code]null[/code] if there are n
 */
 //go:nosplit
 func (self class) GetCamera2d() [1]gdclass.Camera2D { //gd:Viewport.get_camera_2d
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_camera_2d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_camera_2d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Camera2D{gd.PointerMustAssertInstanceID[gdclass.Camera2D](r_ret)}
 	return ret
 }
@@ -1511,7 +1512,7 @@ func (self class) SetWorld3d(world_3d [1]gdclass.World3D) { //gd:Viewport.set_wo
 
 //go:nosplit
 func (self class) GetWorld3d() [1]gdclass.World3D { //gd:Viewport.get_world_3d
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_world_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_world_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.World3D{gd.PointerWithOwnershipTransferredToGo[gdclass.World3D](r_ret)}
 	return ret
 }
@@ -1521,7 +1522,7 @@ Returns the first valid [World3D] for this viewport, searching the [member world
 */
 //go:nosplit
 func (self class) FindWorld3d() [1]gdclass.World3D { //gd:Viewport.find_world_3d
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_find_world_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_find_world_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.World3D{gd.PointerWithOwnershipTransferredToGo[gdclass.World3D](r_ret)}
 	return ret
 }
@@ -1543,7 +1544,7 @@ Returns the currently active 3D audio listener. Returns [code]null[/code] if the
 */
 //go:nosplit
 func (self class) GetAudioListener3d() [1]gdclass.AudioListener3D { //gd:Viewport.get_audio_listener_3d
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_audio_listener_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_audio_listener_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.AudioListener3D{gd.PointerLifetimeBoundTo[gdclass.AudioListener3D](self.AsObject(), r_ret)}
 	return ret
 }
@@ -1553,7 +1554,7 @@ Returns the currently active 3D camera.
 */
 //go:nosplit
 func (self class) GetCamera3d() [1]gdclass.Camera3D { //gd:Viewport.get_camera_3d
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_camera_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_camera_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Camera3D{gd.PointerMustAssertInstanceID[gdclass.Camera3D](r_ret)}
 	return ret
 }
@@ -1685,7 +1686,7 @@ func (self class) SetVrsTexture(texture [1]gdclass.Texture2D) { //gd:Viewport.se
 
 //go:nosplit
 func (self class) GetVrsTexture() [1]gdclass.Texture2D { //gd:Viewport.get_vrs_texture
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_vrs_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_vrs_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }

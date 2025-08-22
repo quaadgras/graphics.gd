@@ -114,9 +114,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeFrame"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShaderNodeFrame"))))})}
 	casted := Instance{*(*gdclass.VisualShaderNodeFrame)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -162,12 +163,12 @@ func (self Instance) SetAttachedNodes(value []int32) {
 
 //go:nosplit
 func (self class) SetTitle(title String.Readable) { //gd:VisualShaderNodeFrame.set_title
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFrame.Bind_set_title), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ title gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(title))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFrame.Bind_set_title), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))}))
 }
 
 //go:nosplit
 func (self class) GetTitle() String.Readable { //gd:VisualShaderNodeFrame.get_title
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFrame.Bind_get_title), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFrame.Bind_get_title), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -226,7 +227,9 @@ func (self class) RemoveAttachedNode(node int64) { //gd:VisualShaderNodeFrame.re
 
 //go:nosplit
 func (self class) SetAttachedNodes(attached_nodes Packed.Array[int32]) { //gd:VisualShaderNodeFrame.set_attached_nodes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFrame.Bind_set_attached_nodes), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ attached_nodes gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](attached_nodes)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeFrame.Bind_set_attached_nodes), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		attached_nodes gdextension.PackedArray[int32]
+	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](attached_nodes))}))
 }
 
 //go:nosplit

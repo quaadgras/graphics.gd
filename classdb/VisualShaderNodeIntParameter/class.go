@@ -97,9 +97,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShaderNodeIntParameter"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShaderNodeIntParameter"))))})}
 	casted := Instance{*(*gdclass.VisualShaderNodeIntParameter)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -209,7 +210,9 @@ func (self class) GetStep() int64 { //gd:VisualShaderNodeIntParameter.get_step
 
 //go:nosplit
 func (self class) SetEnumNames(names Packed.Strings) { //gd:VisualShaderNodeIntParameter.set_enum_names
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_set_enum_names), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ names gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(names)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_set_enum_names), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		names gdextension.PackedArray[gdextension.String]
+	}{pointers.Get(gd.InternalPackedStrings(names))}))
 }
 
 //go:nosplit

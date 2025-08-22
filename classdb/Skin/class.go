@@ -126,9 +126,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Skin"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Skin"))))})}
 	casted := Instance{*(*gdclass.Skin)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -157,7 +158,7 @@ func (self class) AddNamedBind(name String.Readable, pose Transform3D.BasisOrigi
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_add_named_bind), 0|(gdextension.SizeString<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		name gdextension.String
 		pose Transform3D.BasisOrigin
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), gd.Transposed(pose)}))
+	}{pointers.Get(gd.InternalString(name)), gd.Transposed(pose)}))
 }
 
 //go:nosplit
@@ -180,12 +181,12 @@ func (self class) SetBindName(bind_index int64, name String.Name) { //gd:Skin.se
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_set_bind_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		bind_index int64
 		name       gdextension.StringName
-	}{bind_index, gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	}{bind_index, pointers.Get(gd.InternalStringName(name))}))
 }
 
 //go:nosplit
 func (self class) GetBindName(bind_index int64) String.Name { //gd:Skin.get_bind_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_get_bind_name), gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bind_index int64 }{bind_index}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_get_bind_name), gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bind_index int64 }{bind_index}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

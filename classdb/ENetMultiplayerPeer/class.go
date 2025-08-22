@@ -158,9 +158,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ENetMultiplayerPeer"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ENetMultiplayerPeer"))))})}
 	casted := Instance{*(*gdclass.ENetMultiplayerPeer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -196,7 +197,7 @@ func (self class) CreateClient(address String.Readable, port int64, channel_coun
 		in_bandwidth  int64
 		out_bandwidth int64
 		local_port    int64
-	}{gdextension.String(pointers.Get(gd.InternalString(address))[0]), port, channel_count, in_bandwidth, out_bandwidth, local_port}))
+	}{pointers.Get(gd.InternalString(address)), port, channel_count, in_bandwidth, out_bandwidth, local_port}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -230,12 +231,12 @@ The IP used when creating a server. This is set to the wildcard [code]"*"[/code]
 */
 //go:nosplit
 func (self class) SetBindIp(ip String.Readable) { //gd:ENetMultiplayerPeer.set_bind_ip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetMultiplayerPeer.Bind_set_bind_ip), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ ip gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(ip))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetMultiplayerPeer.Bind_set_bind_ip), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ ip gdextension.String }{pointers.Get(gd.InternalString(ip))}))
 }
 
 //go:nosplit
 func (self class) GetHost() [1]gdclass.ENetConnection { //gd:ENetMultiplayerPeer.get_host
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_host), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_host), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.ENetConnection{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetConnection](r_ret)}
 	return ret
 }
@@ -245,7 +246,7 @@ Returns the [ENetPacketPeer] associated to the given [param id].
 */
 //go:nosplit
 func (self class) GetPeer(id int64) [1]gdclass.ENetPacketPeer { //gd:ENetMultiplayerPeer.get_peer
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_peer), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_peer), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = [1]gdclass.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetPacketPeer](r_ret)}
 	return ret
 }

@@ -152,9 +152,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebSocketMultiplayerPeer"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("WebSocketMultiplayerPeer"))))})}
 	casted := Instance{*(*gdclass.WebSocketMultiplayerPeer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -215,7 +216,7 @@ func (self class) CreateClient(url String.Readable, tls_client_options [1]gdclas
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_create_client), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		url                gdextension.String
 		tls_client_options gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(url))[0]), gdextension.Object(gd.ObjectChecked(tls_client_options[0].AsObject()))}))
+	}{pointers.Get(gd.InternalString(url)), gdextension.Object(gd.ObjectChecked(tls_client_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -229,7 +230,7 @@ func (self class) CreateServer(port int64, bind_address String.Readable, tls_ser
 		port               int64
 		bind_address       gdextension.String
 		tls_server_options gdextension.Object
-	}{port, gdextension.String(pointers.Get(gd.InternalString(bind_address))[0]), gdextension.Object(gd.ObjectChecked(tls_server_options[0].AsObject()))}))
+	}{port, pointers.Get(gd.InternalString(bind_address)), gdextension.Object(gd.ObjectChecked(tls_server_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -239,7 +240,7 @@ Returns the [WebSocketPeer] associated to the given [param peer_id].
 */
 //go:nosplit
 func (self class) GetPeer(peer_id int64) [1]gdclass.WebSocketPeer { //gd:WebSocketMultiplayerPeer.get_peer
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_peer), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ peer_id int64 }{peer_id}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_peer), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ peer_id int64 }{peer_id}))
 	var ret = [1]gdclass.WebSocketPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.WebSocketPeer](r_ret)}
 	return ret
 }
@@ -249,7 +250,7 @@ Returns the IP address of the given peer.
 */
 //go:nosplit
 func (self class) GetPeerAddress(id int64) String.Readable { //gd:WebSocketMultiplayerPeer.get_peer_address
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_peer_address), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_get_peer_address), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -273,7 +274,9 @@ func (self class) GetSupportedProtocols() Packed.Strings { //gd:WebSocketMultipl
 
 //go:nosplit
 func (self class) SetSupportedProtocols(protocols Packed.Strings) { //gd:WebSocketMultiplayerPeer.set_supported_protocols
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_set_supported_protocols), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ protocols gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(protocols)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_set_supported_protocols), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		protocols gdextension.PackedArray[gdextension.String]
+	}{pointers.Get(gd.InternalPackedStrings(protocols))}))
 }
 
 //go:nosplit
@@ -285,7 +288,9 @@ func (self class) GetHandshakeHeaders() Packed.Strings { //gd:WebSocketMultiplay
 
 //go:nosplit
 func (self class) SetHandshakeHeaders(protocols Packed.Strings) { //gd:WebSocketMultiplayerPeer.set_handshake_headers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_set_handshake_headers), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ protocols gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(protocols)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebSocketMultiplayerPeer.Bind_set_handshake_headers), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		protocols gdextension.PackedArray[gdextension.String]
+	}{pointers.Get(gd.InternalPackedStrings(protocols))}))
 }
 
 //go:nosplit

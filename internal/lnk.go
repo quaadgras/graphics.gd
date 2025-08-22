@@ -10,7 +10,6 @@ import (
 	"strings"
 	"unsafe"
 
-	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 )
@@ -20,9 +19,10 @@ import (
 // care of this (and you won't need to call it yourself).
 func (Godot *API) Init(level GDExtensionInitializationLevel) {
 	if level == GDExtensionInitializationLevelScene {
-		Godot.linkTypeset()
 		Godot.linkBuiltin()
 		Godot.linkSingletons()
+		Godot.linkTypeset()
+		Godot.linkTypesetCreation()
 		Godot.linkMethods(false)
 		Linked = true
 	}
@@ -61,7 +61,7 @@ func (Godot *API) linkBuiltin() {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 			}
 			vtype, _ := variantTypeFromName(class.Name)
-			*(direct.Interface().(*gdextension.MethodForBuiltinType)) = gdextension.Host.Builtin.Types.Method(vtype, gdextension.StringName(pointers.Get(methodName)[0]), Int(hash))
+			*(direct.Interface().(*gdextension.MethodForBuiltinType)) = gdextension.Host.Builtin.Types.Method(vtype, pointers.Get(methodName), Int(hash))
 		}
 	}
 }
@@ -105,7 +105,7 @@ func (Godot *API) linkMethods(editor bool) {
 			if err != nil {
 				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 			}
-			bind := gdextension.Host.Objects.Method.Lookup(gdextension.StringName(pointers.Get(className)[0]), gdextension.StringName(pointers.Get(methodName)[0]), hash)
+			bind := gdextension.Host.Objects.Method.Lookup(pointers.Get(className), pointers.Get(methodName), hash)
 			if bind == 0 {
 				fmt.Println("null bind ", class.Name, method.Name)
 			}
@@ -119,10 +119,6 @@ func (Godot *API) linkMethods(editor bool) {
 
 func (Godot *API) linkTypeset() {
 	Godot.refCountedClassTag = Godot.ClassDB.GetClassTag(NewStringName("RefCounted"))
-
-	Godot.linkTypesetCreation()
-	Godot.linkTypesetOperator()
-	Godot.linkTypesetDestruct()
 }
 
 // linkTypesetCreation, each field is an array of constructors.
@@ -134,48 +130,7 @@ func (Godot *API) linkTypesetCreation() {
 		vtype, _ := variantTypeFromName(field.Name)
 		for i := 0; i < field.Type.Len(); i++ {
 			value := reflect.NewAt(field.Type.Elem(), unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset+uintptr(i)*esize))
-			*(value.Interface().(*func(callframe.Addr, callframe.Args))) = Godot.Variants.GetPointerConstructor(vtype, int32(i))
+			*(value.Interface().(*gdextension.FunctionID)) = gdextension.Host.Builtin.Types.Constructor(vtype, i)
 		}
-	}
-}
-
-// linkTypesetOperator, each field is a struct named after a builtin type, with a list of
-// operator fields, named after the operator, each field is either a function (no right
-// hand side) or a struct with a function field for each right hand side type.
-func (Godot *API) linkTypesetOperator() {
-	rvalue := reflect.ValueOf(&Godot.typeset.operator).Elem()
-	for i := 0; i < rvalue.NumField(); i++ {
-		class := rvalue.Type().Field(i)
-		value := reflect.NewAt(class.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), class.Offset))
-		vtype, _ := variantTypeFromName(class.Name)
-		for j := 0; j < class.Type.NumField(); j++ {
-			op := class.Type.Field(j)
-			otype := operatoTypeFromName(op.Name)
-			switch op.Type.Kind() {
-			case reflect.Func:
-				direct := value.Elem().Field(j).Addr().Interface().(*func(a, b, ret callframe.Addr))
-				*direct = Godot.Variants.PointerOperatorEvaluator(otype, vtype, TypeNil)
-			default:
-				for k := 0; k < op.Type.NumField(); k++ {
-					rhs := op.Type.Field(k)
-					rhsType, _ := variantTypeFromName(rhs.Name)
-					unsafe := reflect.NewAt(rhs.Type,
-						unsafe.Add(value.Elem().Field(j).Addr().UnsafePointer(), rhs.Offset))
-					direct := unsafe.Interface().(*func(a, b, ret callframe.Addr))
-					*direct = Godot.Variants.PointerOperatorEvaluator(otype, vtype, rhsType)
-				}
-			}
-		}
-	}
-}
-
-// linkTypesetDestruct, each field is a function value that needs to be loaded in dynamically.
-func (Godot *API) linkTypesetDestruct() {
-	rvalue := reflect.ValueOf(&Godot.typeset.destruct).Elem()
-	for i := 0; i < rvalue.NumField(); i++ {
-		field := rvalue.Type().Field(i)
-		value := reflect.NewAt(field.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), field.Offset))
-		vtype, _ := variantTypeFromName(field.Name)
-		*(value.Interface().(*func(callframe.Addr))) = Godot.Variants.GetPointerDestructor(vtype)
 	}
 }

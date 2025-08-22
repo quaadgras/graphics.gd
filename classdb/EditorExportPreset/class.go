@@ -272,9 +272,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorExportPreset"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorExportPreset"))))})}
 	casted := Instance{*(*gdclass.EditorExportPreset)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -283,7 +284,7 @@ Returns [code]true[/code] if preset has specified property.
 */
 //go:nosplit
 func (self class) Has(property String.Name) bool { //gd:EditorExportPreset.has
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_has), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ property gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_has), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ property gdextension.StringName }{pointers.Get(gd.InternalStringName(property))}))
 	var ret = r_ret
 	return ret
 }
@@ -303,7 +304,7 @@ Returns [Dictionary] of files selected in the "Resources" tab of the export dial
 */
 //go:nosplit
 func (self class) GetCustomizedFiles() Dictionary.Any { //gd:EditorExportPreset.get_customized_files
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_customized_files), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_customized_files), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -323,7 +324,7 @@ Returns [code]true[/code] if specified file is exported.
 */
 //go:nosplit
 func (self class) HasExportFile(path String.Readable) bool { //gd:EditorExportPreset.has_export_file
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_has_export_file), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_has_export_file), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -336,7 +337,7 @@ func (self class) GetFileExportMode(path String.Readable, def FileExportMode) Fi
 	var r_ret = gdextension.Call[FileExportMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_file_export_mode), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		path gdextension.String
 		def  FileExportMode
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), def}))
+	}{pointers.Get(gd.InternalString(path)), def}))
 	var ret = r_ret
 	return ret
 }
@@ -346,7 +347,7 @@ Returns export preset name.
 */
 //go:nosplit
 func (self class) GetPresetName() String.Readable { //gd:EditorExportPreset.get_preset_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_preset_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_preset_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -396,7 +397,7 @@ Returns file filters to include during export.
 */
 //go:nosplit
 func (self class) GetIncludeFilter() String.Readable { //gd:EditorExportPreset.get_include_filter
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_include_filter), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_include_filter), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -406,7 +407,7 @@ Returns file filters to exclude during export.
 */
 //go:nosplit
 func (self class) GetExcludeFilter() String.Readable { //gd:EditorExportPreset.get_exclude_filter
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_exclude_filter), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_exclude_filter), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -416,7 +417,7 @@ Returns string with a comma separated list of custom features.
 */
 //go:nosplit
 func (self class) GetCustomFeatures() String.Readable { //gd:EditorExportPreset.get_custom_features
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_custom_features), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_custom_features), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -436,7 +437,7 @@ Returns export target path.
 */
 //go:nosplit
 func (self class) GetExportPath() String.Readable { //gd:EditorExportPreset.get_export_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_export_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_export_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -446,7 +447,7 @@ Returns file filters to include during PCK encryption.
 */
 //go:nosplit
 func (self class) GetEncryptionInFilter() String.Readable { //gd:EditorExportPreset.get_encryption_in_filter
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_encryption_in_filter), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_encryption_in_filter), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -456,7 +457,7 @@ Returns file filters to exclude during PCK encryption.
 */
 //go:nosplit
 func (self class) GetEncryptionExFilter() String.Readable { //gd:EditorExportPreset.get_encryption_ex_filter
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_encryption_ex_filter), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_encryption_ex_filter), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -486,7 +487,7 @@ Returns PCK encryption key.
 */
 //go:nosplit
 func (self class) GetEncryptionKey() String.Readable { //gd:EditorExportPreset.get_encryption_key
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_encryption_key), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_encryption_key), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -506,10 +507,10 @@ Returns export option value or value of environment variable if it is set.
 */
 //go:nosplit
 func (self class) GetOrEnv(name String.Name, env_var String.Readable) variant.Any { //gd:EditorExportPreset.get_or_env
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_or_env), gdextension.SizeVariant|(gdextension.SizeStringName<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_or_env), gdextension.SizeVariant|(gdextension.SizeStringName<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		name    gdextension.StringName
 		env_var gdextension.String
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.String(pointers.Get(gd.InternalString(env_var))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalString(env_var))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -520,10 +521,10 @@ If [param windows_version] is [code]true[/code], formats the returned version nu
 */
 //go:nosplit
 func (self class) GetVersion(name String.Name, windows_version bool) String.Readable { //gd:EditorExportPreset.get_version
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_version), gdextension.SizeString|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPreset.Bind_get_version), gdextension.SizeString|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		name            gdextension.StringName
 		windows_version bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), windows_version}))
+	}{pointers.Get(gd.InternalStringName(name)), windows_version}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

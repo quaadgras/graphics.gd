@@ -78,7 +78,7 @@ var self [1]gdclass.InputMap
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.InputMap)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.InputMap)))})
 	self = *(*[1]gdclass.InputMap)(unsafe.Pointer(&obj))
 }
 
@@ -227,7 +227,7 @@ Returns [code]true[/code] if the [InputMap] has a registered action with the giv
 */
 //go:nosplit
 func (self class) HasAction(action String.Name) bool { //gd:InputMap.has_action
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_has_action), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_has_action), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))}))
 	var ret = r_ret
 	return ret
 }
@@ -237,7 +237,7 @@ Returns an array of all actions in the [InputMap].
 */
 //go:nosplit
 func (self class) GetActions() Array.Contains[String.Name] { //gd:InputMap.get_actions
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_get_actions), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_get_actions), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -251,7 +251,7 @@ func (self class) AddAction(action String.Name, deadzone float64) { //gd:InputMa
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_add_action), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		action   gdextension.StringName
 		deadzone float64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), deadzone}))
+	}{pointers.Get(gd.InternalStringName(action)), deadzone}))
 }
 
 /*
@@ -259,7 +259,7 @@ Removes an action from the [InputMap].
 */
 //go:nosplit
 func (self class) EraseAction(action String.Name) { //gd:InputMap.erase_action
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_erase_action), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_erase_action), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))}))
 }
 
 /*
@@ -270,7 +270,7 @@ func (self class) ActionSetDeadzone(action String.Name, deadzone float64) { //gd
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_action_set_deadzone), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		action   gdextension.StringName
 		deadzone float64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), deadzone}))
+	}{pointers.Get(gd.InternalStringName(action)), deadzone}))
 }
 
 /*
@@ -278,7 +278,7 @@ Returns a deadzone value for the action.
 */
 //go:nosplit
 func (self class) ActionGetDeadzone(action String.Name) float64 { //gd:InputMap.action_get_deadzone
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_action_get_deadzone), gdextension.SizeFloat|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0])}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_action_get_deadzone), gdextension.SizeFloat|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))}))
 	var ret = r_ret
 	return ret
 }
@@ -291,7 +291,7 @@ func (self class) ActionAddEvent(action String.Name, event [1]gdclass.InputEvent
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_action_add_event), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action gdextension.StringName
 		event  gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
 }
 
 /*
@@ -302,7 +302,7 @@ func (self class) ActionHasEvent(action String.Name, event [1]gdclass.InputEvent
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_action_has_event), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action gdextension.StringName
 		event  gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -315,7 +315,7 @@ func (self class) ActionEraseEvent(action String.Name, event [1]gdclass.InputEve
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_action_erase_event), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action gdextension.StringName
 		event  gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
 }
 
 /*
@@ -323,7 +323,7 @@ Removes all events from an action.
 */
 //go:nosplit
 func (self class) ActionEraseEvents(action String.Name) { //gd:InputMap.action_erase_events
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_action_erase_events), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_action_erase_events), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))}))
 }
 
 /*
@@ -332,7 +332,7 @@ Returns an array of [InputEvent]s associated with a given action.
 */
 //go:nosplit
 func (self class) ActionGetEvents(action String.Name) Array.Contains[[1]gdclass.InputEvent] { //gd:InputMap.action_get_events
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_action_get_events), gdextension.SizeArray|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0])}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputMap.Bind_action_get_events), gdextension.SizeArray|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.InputEvent]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -347,7 +347,7 @@ func (self class) EventIsAction(event [1]gdclass.InputEvent, action String.Name,
 		event       gdextension.Object
 		action      gdextension.StringName
 		exact_match bool
-	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), pointers.Get(gd.InternalStringName(action)), exact_match}))
 	var ret = r_ret
 	return ret
 }

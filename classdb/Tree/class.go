@@ -471,8 +471,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Tree"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Tree"))))})}
 	casted := Instance{*(*gdclass.Tree)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -595,7 +596,7 @@ The new item will be the [param index]-th child of parent, or it will be the las
 */
 //go:nosplit
 func (self class) CreateItem(parent [1]gdclass.TreeItem, index int64) [1]gdclass.TreeItem { //gd:Tree.create_item
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_create_item), gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_create_item), gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		parent gdextension.Object
 		index  int64
 	}{gdextension.Object(gd.ObjectChecked(parent[0].AsObject())), index}))
@@ -608,7 +609,7 @@ Returns the tree's root item, or [code]null[/code] if the tree is empty.
 */
 //go:nosplit
 func (self class) GetRoot() [1]gdclass.TreeItem { //gd:Tree.get_root
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_root), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_root), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
 	return ret
 }
@@ -715,7 +716,7 @@ If [param from] is [code]null[/code], this returns the first selected item.
 */
 //go:nosplit
 func (self class) GetNextSelected(from [1]gdclass.TreeItem) [1]gdclass.TreeItem { //gd:Tree.get_next_selected
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_next_selected), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(from[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_next_selected), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(from[0].AsObject()))}))
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
 	return ret
 }
@@ -727,7 +728,7 @@ To get the currently selected item(s), use [method get_next_selected].
 */
 //go:nosplit
 func (self class) GetSelected() [1]gdclass.TreeItem { //gd:Tree.get_selected
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_selected), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_selected), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
 	return ret
 }
@@ -822,7 +823,7 @@ public void OnTreeItemEdited()
 */
 //go:nosplit
 func (self class) GetEdited() [1]gdclass.TreeItem { //gd:Tree.get_edited
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_edited), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_edited), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
 	return ret
 }
@@ -878,7 +879,7 @@ Returns the tree item at the specified position (relative to the tree origin pos
 */
 //go:nosplit
 func (self class) GetItemAtPosition(position Vector2.XY) [1]gdclass.TreeItem { //gd:Tree.get_item_at_position
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_item_at_position), gdextension.SizeObject|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_item_at_position), gdextension.SizeObject|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 	var ret = [1]gdclass.TreeItem{gd.PointerMustAssertInstanceID[gdclass.TreeItem](r_ret)}
 	return ret
 }
@@ -945,7 +946,7 @@ func (self class) SetColumnTitle(column int64, title String.Readable) { //gd:Tre
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_column_title), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		column int64
 		title  gdextension.String
-	}{column, gdextension.String(pointers.Get(gd.InternalString(title))[0])}))
+	}{column, pointers.Get(gd.InternalString(title))}))
 }
 
 /*
@@ -953,7 +954,7 @@ Returns the column's title.
 */
 //go:nosplit
 func (self class) GetColumnTitle(column int64) String.Readable { //gd:Tree.get_column_title
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_column_title), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_column_title), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1008,7 +1009,7 @@ func (self class) SetColumnTitleLanguage(column int64, language String.Readable)
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_set_column_title_language), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		column   int64
 		language gdextension.String
-	}{column, gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{column, pointers.Get(gd.InternalString(language))}))
 }
 
 /*
@@ -1016,7 +1017,7 @@ Returns column title language code.
 */
 //go:nosplit
 func (self class) GetColumnTitleLanguage(column int64) String.Readable { //gd:Tree.get_column_title_language
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_column_title_language), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Tree.Bind_get_column_title_language), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ column int64 }{column}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

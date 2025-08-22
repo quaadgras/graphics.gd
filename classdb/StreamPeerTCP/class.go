@@ -171,9 +171,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StreamPeerTCP"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("StreamPeerTCP"))))})}
 	casted := Instance{*(*gdclass.StreamPeerTCP)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -186,7 +187,7 @@ func (self class) Bind(port int64, host String.Readable) Error.Code { //gd:Strea
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTCP.Bind_bind), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		port int64
 		host gdextension.String
-	}{port, gdextension.String(pointers.Get(gd.InternalString(host))[0])}))
+	}{port, pointers.Get(gd.InternalString(host))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -199,7 +200,7 @@ func (self class) ConnectToHost(host String.Readable, port int64) Error.Code { /
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTCP.Bind_connect_to_host), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		host gdextension.String
 		port int64
-	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), port}))
+	}{pointers.Get(gd.InternalString(host)), port}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -229,7 +230,7 @@ Returns the IP of this peer.
 */
 //go:nosplit
 func (self class) GetConnectedHost() String.Readable { //gd:StreamPeerTCP.get_connected_host
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTCP.Bind_get_connected_host), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTCP.Bind_get_connected_host), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

@@ -82,7 +82,7 @@ var self [1]gdclass.Input
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.Input)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.Input)))})
 	self = *(*[1]gdclass.Input)(unsafe.Pointer(&obj))
 }
 
@@ -793,7 +793,7 @@ func (self class) IsActionPressed(action String.Name, exact_match bool) bool { /
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_is_action_pressed), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
 	var ret = r_ret
 	return ret
 }
@@ -811,7 +811,7 @@ func (self class) IsActionJustPressed(action String.Name, exact_match bool) bool
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_is_action_just_pressed), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
 	var ret = r_ret
 	return ret
 }
@@ -827,7 +827,7 @@ func (self class) IsActionJustReleased(action String.Name, exact_match bool) boo
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_is_action_just_released), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
 	var ret = r_ret
 	return ret
 }
@@ -841,7 +841,7 @@ func (self class) GetActionStrength(action String.Name, exact_match bool) float6
 	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_get_action_strength), gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
 	var ret = r_ret
 	return ret
 }
@@ -855,7 +855,7 @@ func (self class) GetActionRawStrength(action String.Name, exact_match bool) flo
 	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_get_action_raw_strength), gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
 	var ret = r_ret
 	return ret
 }
@@ -869,7 +869,7 @@ func (self class) GetAxis(negative_action String.Name, positive_action String.Na
 	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_get_axis), gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		negative_action gdextension.StringName
 		positive_action gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(negative_action))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(positive_action))[0])}))
+	}{pointers.Get(gd.InternalStringName(negative_action)), pointers.Get(gd.InternalStringName(positive_action))}))
 	var ret = r_ret
 	return ret
 }
@@ -887,7 +887,7 @@ func (self class) GetVector(negative_x String.Name, positive_x String.Name, nega
 		negative_y gdextension.StringName
 		positive_y gdextension.StringName
 		deadzone   float64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(negative_x))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(positive_x))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(negative_y))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(positive_y))[0]), deadzone}))
+	}{pointers.Get(gd.InternalStringName(negative_x)), pointers.Get(gd.InternalStringName(positive_x)), pointers.Get(gd.InternalStringName(negative_y)), pointers.Get(gd.InternalStringName(positive_y)), deadzone}))
 	var ret = r_ret
 	return ret
 }
@@ -900,7 +900,7 @@ func (self class) AddJoyMapping(mapping String.Readable, update_existing bool) {
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_add_joy_mapping), 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		mapping         gdextension.String
 		update_existing bool
-	}{gdextension.String(pointers.Get(gd.InternalString(mapping))[0]), update_existing}))
+	}{pointers.Get(gd.InternalString(mapping)), update_existing}))
 }
 
 /*
@@ -909,7 +909,7 @@ On Android, Godot will map to an internal fallback mapping.
 */
 //go:nosplit
 func (self class) RemoveJoyMapping(guid String.Readable) { //gd:Input.remove_joy_mapping
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_remove_joy_mapping), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ guid gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(guid))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_remove_joy_mapping), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ guid gdextension.String }{pointers.Get(gd.InternalString(guid))}))
 }
 
 /*
@@ -940,7 +940,7 @@ Returns the name of the joypad at the specified device index, e.g. [code]PS4 Con
 */
 //go:nosplit
 func (self class) GetJoyName(device int64) String.Readable { //gd:Input.get_joy_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_get_joy_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_get_joy_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -951,7 +951,7 @@ On Windows, all XInput joypad GUIDs will be overridden by Godot to [code]__XINPU
 */
 //go:nosplit
 func (self class) GetJoyGuid(device int64) String.Readable { //gd:Input.get_joy_guid
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_get_joy_guid), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_get_joy_guid), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -971,7 +971,7 @@ On Linux:
 */
 //go:nosplit
 func (self class) GetJoyInfo(device int64) Dictionary.Any { //gd:Input.get_joy_info
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_get_joy_info), gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_get_joy_info), gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -995,7 +995,7 @@ Returns an [Array] containing the device IDs of all currently connected joypads.
 */
 //go:nosplit
 func (self class) GetConnectedJoypads() Array.Contains[int64] { //gd:Input.get_connected_joypads
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_get_connected_joypads), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_get_connected_joypads), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1207,7 +1207,7 @@ func (self class) ActionPress(action String.Name, strength float64) { //gd:Input
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_action_press), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		action   gdextension.StringName
 		strength float64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), strength}))
+	}{pointers.Get(gd.InternalStringName(action)), strength}))
 }
 
 /*
@@ -1215,7 +1215,7 @@ If the specified action is already pressed, this will release it.
 */
 //go:nosplit
 func (self class) ActionRelease(action String.Name) { //gd:Input.action_release
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_action_release), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Input.Bind_action_release), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))}))
 }
 
 /*

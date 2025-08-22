@@ -380,9 +380,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StreamPeer"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("StreamPeer"))))})}
 	casted := Instance{*(*gdclass.StreamPeer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -399,7 +400,7 @@ Sends a chunk of data through the connection, blocking if necessary until the da
 */
 //go:nosplit
 func (self class) PutData(data Packed.Bytes) Error.Code { //gd:StreamPeer.put_data
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_put_data), gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_put_data), gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -409,7 +410,7 @@ Sends a chunk of data through the connection. If all the data could not be sent 
 */
 //go:nosplit
 func (self class) PutPartialData(data Packed.Bytes) Array.Any { //gd:StreamPeer.put_partial_data
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_put_partial_data), gdextension.SizeArray|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_put_partial_data), gdextension.SizeArray|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -419,7 +420,7 @@ Returns a chunk data with the received bytes. The number of bytes to be received
 */
 //go:nosplit
 func (self class) GetData(bytes int64) Array.Any { //gd:StreamPeer.get_data
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_get_data), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bytes int64 }{bytes}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_get_data), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bytes int64 }{bytes}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -429,7 +430,7 @@ Returns a chunk data with the received bytes. The number of bytes to be received
 */
 //go:nosplit
 func (self class) GetPartialData(bytes int64) Array.Any { //gd:StreamPeer.get_partial_data
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_get_partial_data), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bytes int64 }{bytes}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_get_partial_data), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bytes int64 }{bytes}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -558,7 +559,7 @@ PutData("Hello World".ToAsciiBuffer());
 */
 //go:nosplit
 func (self class) PutString(value String.Readable) { //gd:StreamPeer.put_string
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_put_string), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ value gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(value))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_put_string), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ value gdextension.String }{pointers.Get(gd.InternalString(value))}))
 }
 
 /*
@@ -575,7 +576,7 @@ PutData("Hello World".ToUtf8Buffer());
 */
 //go:nosplit
 func (self class) PutUtf8String(value String.Readable) { //gd:StreamPeer.put_utf8_string
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_put_utf8_string), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ value gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(value))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_put_utf8_string), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ value gdextension.String }{pointers.Get(gd.InternalString(value))}))
 }
 
 /*
@@ -705,7 +706,7 @@ Gets an ASCII string with byte-length [param bytes] from the stream. If [param b
 */
 //go:nosplit
 func (self class) GetString(bytes int64) String.Readable { //gd:StreamPeer.get_string
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_get_string), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bytes int64 }{bytes}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_get_string), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bytes int64 }{bytes}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -715,7 +716,7 @@ Gets a UTF-8 string with byte-length [param bytes] from the stream (this decodes
 */
 //go:nosplit
 func (self class) GetUtf8String(bytes int64) String.Readable { //gd:StreamPeer.get_utf8_string
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_get_utf8_string), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bytes int64 }{bytes}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_get_utf8_string), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bytes int64 }{bytes}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -727,7 +728,7 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 */
 //go:nosplit
 func (self class) GetVar(allow_objects bool) variant.Any { //gd:StreamPeer.get_var
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_get_var), gdextension.SizeVariant|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow_objects bool }{allow_objects}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeer.Bind_get_var), gdextension.SizeVariant|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow_objects bool }{allow_objects}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

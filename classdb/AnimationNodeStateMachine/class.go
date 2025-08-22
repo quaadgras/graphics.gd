@@ -251,9 +251,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeStateMachine"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AnimationNodeStateMachine"))))})}
 	casted := Instance{*(*gdclass.AnimationNodeStateMachine)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -290,7 +291,7 @@ func (self class) AddNode(name String.Name, node [1]gdclass.AnimationNode, posit
 		name     gdextension.StringName
 		node     gdextension.Object
 		position Vector2.XY
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(node[0].AsObject())), position}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(node[0].AsObject())), position}))
 }
 
 /*
@@ -301,7 +302,7 @@ func (self class) ReplaceNode(name String.Name, node [1]gdclass.AnimationNode) {
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_replace_node), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name gdextension.StringName
 		node gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 
 /*
@@ -309,7 +310,7 @@ Returns the animation node with the given name.
 */
 //go:nosplit
 func (self class) GetNode(name String.Name) [1]gdclass.AnimationNode { //gd:AnimationNodeStateMachine.get_node
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = [1]gdclass.AnimationNode{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationNode](r_ret)}
 	return ret
 }
@@ -319,7 +320,7 @@ Deletes the given animation node from the graph.
 */
 //go:nosplit
 func (self class) RemoveNode(name String.Name) { //gd:AnimationNodeStateMachine.remove_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_remove_node), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_remove_node), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -330,7 +331,7 @@ func (self class) RenameNode(name String.Name, new_name String.Name) { //gd:Anim
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_rename_node), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		new_name gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(new_name))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(new_name))}))
 }
 
 /*
@@ -338,7 +339,7 @@ Returns [code]true[/code] if the graph contains the given animation node.
 */
 //go:nosplit
 func (self class) HasNode(name String.Name) bool { //gd:AnimationNodeStateMachine.has_node
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_has_node), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_has_node), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -348,7 +349,7 @@ Returns the given animation node's name.
 */
 //go:nosplit
 func (self class) GetNodeName(node [1]gdclass.AnimationNode) String.Name { //gd:AnimationNodeStateMachine.get_node_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node_name), gdextension.SizeStringName|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node_name), gdextension.SizeStringName|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -361,7 +362,7 @@ func (self class) SetNodePosition(name String.Name, position Vector2.XY) { //gd:
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_set_node_position), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		position Vector2.XY
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), position}))
+	}{pointers.Get(gd.InternalStringName(name)), position}))
 }
 
 /*
@@ -369,7 +370,7 @@ Returns the given animation node's coordinates. Used for display in the editor.
 */
 //go:nosplit
 func (self class) GetNodePosition(name String.Name) Vector2.XY { //gd:AnimationNodeStateMachine.get_node_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node_position), gdextension.SizeVector2|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_node_position), gdextension.SizeVector2|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -382,7 +383,7 @@ func (self class) HasTransition(from String.Name, to String.Name) bool { //gd:An
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_has_transition), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		from gdextension.StringName
 		to   gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(from))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(to))[0])}))
+	}{pointers.Get(gd.InternalStringName(from)), pointers.Get(gd.InternalStringName(to))}))
 	var ret = r_ret
 	return ret
 }
@@ -396,7 +397,7 @@ func (self class) AddTransition(from String.Name, to String.Name, transition [1]
 		from       gdextension.StringName
 		to         gdextension.StringName
 		transition gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(from))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(to))[0]), gdextension.Object(gd.ObjectChecked(transition[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(from)), pointers.Get(gd.InternalStringName(to)), gdextension.Object(gd.ObjectChecked(transition[0].AsObject()))}))
 }
 
 /*
@@ -404,7 +405,7 @@ Returns the given transition.
 */
 //go:nosplit
 func (self class) GetTransition(idx int64) [1]gdclass.AnimationNodeStateMachineTransition { //gd:AnimationNodeStateMachine.get_transition
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = [1]gdclass.AnimationNodeStateMachineTransition{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationNodeStateMachineTransition](r_ret)}
 	return ret
 }
@@ -414,7 +415,7 @@ Returns the given transition's start node.
 */
 //go:nosplit
 func (self class) GetTransitionFrom(idx int64) String.Name { //gd:AnimationNodeStateMachine.get_transition_from
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition_from), gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition_from), gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -424,7 +425,7 @@ Returns the given transition's end node.
 */
 //go:nosplit
 func (self class) GetTransitionTo(idx int64) String.Name { //gd:AnimationNodeStateMachine.get_transition_to
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition_to), gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_get_transition_to), gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -455,7 +456,7 @@ func (self class) RemoveTransition(from String.Name, to String.Name) { //gd:Anim
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeStateMachine.Bind_remove_transition), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		from gdextension.StringName
 		to   gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(from))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(to))[0])}))
+	}{pointers.Get(gd.InternalStringName(from)), pointers.Get(gd.InternalStringName(to))}))
 }
 
 /*

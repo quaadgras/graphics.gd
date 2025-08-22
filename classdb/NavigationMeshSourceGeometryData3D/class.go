@@ -169,9 +169,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationMeshSourceGeometryData3D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("NavigationMeshSourceGeometryData3D"))))})}
 	casted := Instance{*(*gdclass.NavigationMeshSourceGeometryData3D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -205,7 +206,9 @@ Sets the parsed source geometry data vertices. The vertices need to be matched w
 */
 //go:nosplit
 func (self class) SetVertices(vertices Packed.Array[float32]) { //gd:NavigationMeshSourceGeometryData3D.set_vertices
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_set_vertices), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ vertices gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](vertices)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_set_vertices), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		vertices gdextension.PackedArray[float32]
+	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](vertices))}))
 }
 
 /*
@@ -224,7 +227,9 @@ Sets the parsed source geometry data indices. The indices need to be matched wit
 */
 //go:nosplit
 func (self class) SetIndices(indices Packed.Array[int32]) { //gd:NavigationMeshSourceGeometryData3D.set_indices
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_set_indices), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ indices gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_set_indices), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		indices gdextension.PackedArray[int32]
+	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))}))
 }
 
 /*
@@ -243,9 +248,9 @@ Appends arrays of [param vertices] and [param indices] at the end of the existin
 //go:nosplit
 func (self class) AppendArrays(vertices Packed.Array[float32], indices Packed.Array[int32]) { //gd:NavigationMeshSourceGeometryData3D.append_arrays
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_append_arrays), 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
-		vertices gdextension.PackedArray
-		indices  gdextension.PackedArray
-	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](vertices))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices)))}))
+		vertices gdextension.PackedArray[float32]
+		indices  gdextension.PackedArray[int32]
+	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](vertices)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))}))
 }
 
 /*
@@ -285,7 +290,7 @@ func (self class) AddMeshArray(mesh_array Array.Any, xform Transform3D.BasisOrig
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_add_mesh_array), 0|(gdextension.SizeArray<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		mesh_array gdextension.Array
 		xform      Transform3D.BasisOrigin
-	}{gdextension.Array(pointers.Get(gd.InternalArray(mesh_array))[0]), gd.Transposed(xform)}))
+	}{pointers.Get(gd.InternalArray(mesh_array)), gd.Transposed(xform)}))
 }
 
 /*
@@ -294,9 +299,9 @@ Adds an array of vertex positions to the geometry data for navigation mesh bakin
 //go:nosplit
 func (self class) AddFaces(faces Packed.Array[Vector3.XYZ], xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_faces
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_add_faces), 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
-		faces gdextension.PackedArray
+		faces gdextension.PackedArray[Vector3.XYZ]
 		xform Transform3D.BasisOrigin
-	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](faces))), gd.Transposed(xform)}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](faces)), gd.Transposed(xform)}))
 }
 
 /*
@@ -313,11 +318,11 @@ Adds a projected obstruction shape to the source geometry. The [param vertices] 
 //go:nosplit
 func (self class) AddProjectedObstruction(vertices Packed.Array[Vector3.XYZ], elevation float64, height float64, carve bool) { //gd:NavigationMeshSourceGeometryData3D.add_projected_obstruction
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_add_projected_obstruction), 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
-		vertices  gdextension.PackedArray
+		vertices  gdextension.PackedArray[Vector3.XYZ]
 		elevation float64
 		height    float64
 		carve     bool
-	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))), elevation, height, carve}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)), elevation, height, carve}))
 }
 
 /*
@@ -341,7 +346,7 @@ Sets the projected obstructions with an Array of Dictionaries with the following
 */
 //go:nosplit
 func (self class) SetProjectedObstructions(projected_obstructions Array.Any) { //gd:NavigationMeshSourceGeometryData3D.set_projected_obstructions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_set_projected_obstructions), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ projected_obstructions gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(projected_obstructions))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_set_projected_obstructions), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ projected_obstructions gdextension.Array }{pointers.Get(gd.InternalArray(projected_obstructions))}))
 }
 
 /*
@@ -353,7 +358,7 @@ Returns the projected obstructions as an [Array] of dictionaries. Each [Dictiona
 */
 //go:nosplit
 func (self class) GetProjectedObstructions() Array.Any { //gd:NavigationMeshSourceGeometryData3D.get_projected_obstructions
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_get_projected_obstructions), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMeshSourceGeometryData3D.Bind_get_projected_obstructions), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Callable"
@@ -172,7 +173,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 			case gd.TypeFloat:
 				value = gd.UnsafeGet[float64](p_args, i-offset)
 			case gd.TypeString:
-				ptr := gd.UnsafeGet[[1]gd.EnginePointer](p_args, i-offset)
+				ptr := gd.UnsafeGet[gdextension.String](p_args, i-offset)
 				val := pointers.Let[gd.String](ptr)
 				value = val
 			case gd.TypeVector2:
@@ -208,11 +209,11 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 			case gd.TypeColor:
 				value = gd.UnsafeGet[gd.Color](p_args, i-offset)
 			case gd.TypeStringName:
-				ptr := gd.UnsafeGet[[1]gd.EnginePointer](p_args, i-offset)
+				ptr := gd.UnsafeGet[gdextension.StringName](p_args, i-offset)
 				val := pointers.Let[gd.StringName](ptr)
 				value = val
 			case gd.TypeNodePath:
-				ptr := gd.UnsafeGet[[1]gd.EnginePointer](p_args, i-offset)
+				ptr := gd.UnsafeGet[gdextension.NodePath](p_args, i-offset)
 				val := pointers.Let[gd.NodePath](ptr)
 				value = val
 			case gd.TypeRID:
@@ -231,11 +232,11 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 				val := pointers.Let[gd.Signal](ptr)
 				value = val
 			case gd.TypeDictionary:
-				ptr := gd.UnsafeGet[[1]gd.EnginePointer](p_args, i-offset)
+				ptr := gd.UnsafeGet[gdextension.Dictionary](p_args, i-offset)
 				val := pointers.Let[gd.Dictionary](ptr)
 				value = val
 			case gd.TypeArray:
-				ptr := gd.UnsafeGet[[1]gd.EnginePointer](p_args, i-offset)
+				ptr := gd.UnsafeGet[gdextension.Array](p_args, i-offset)
 				val := pointers.Let[gd.Array](ptr)
 				value = val
 			case gd.TypePackedByteArray:
@@ -308,7 +309,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 		case gd.Float:
 			gd.UnsafeSet[gd.Float](p_ret, val)
 		case gd.String:
-			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gdextension.String](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.Vector2:
 			gd.UnsafeSet[gd.Vector2](p_ret, val)
@@ -343,10 +344,10 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 		case gd.Color:
 			gd.UnsafeSet[gd.Color](p_ret, val)
 		case gd.StringName:
-			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gdextension.StringName](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.NodePath:
-			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gdextension.NodePath](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.Object:
 			gd.UnsafeSet[gd.EnginePointer](p_ret, gd.EnginePointer(pointers.Get(val)[0]))
@@ -367,10 +368,10 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 			gd.UnsafeSet[[2]uint64](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.Dictionary:
-			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gdextension.Dictionary](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.Array:
-			gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(val))
+			gd.UnsafeSet[gdextension.Array](p_ret, pointers.Get(val))
 			pointers.End(val)
 		case gd.PackedByteArray:
 			gd.UnsafeSet[gd.PackedPointers](p_ret, pointers.Get(val))
@@ -394,25 +395,25 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 			in := gd.InternalString(val)
 			raw, ok := pointers.End(in)
 			if ok {
-				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, raw)
+				gd.UnsafeSet[gdextension.String](p_ret, raw)
 			} else {
-				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(in))
+				gd.UnsafeSet[gdextension.String](p_ret, pointers.Get(in))
 			}
 		case String.Name:
 			in := gd.InternalStringName(val)
 			raw, ok := pointers.End(in)
 			if ok {
-				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, raw)
+				gd.UnsafeSet[gdextension.StringName](p_ret, raw)
 			} else {
-				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(in))
+				gd.UnsafeSet[gdextension.StringName](p_ret, pointers.Get(in))
 			}
 		case Path.ToNode:
 			in := gd.InternalNodePath(val)
 			raw, ok := pointers.End(in)
 			if ok {
-				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, raw)
+				gd.UnsafeSet[gdextension.NodePath](p_ret, raw)
 			} else {
-				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(in))
+				gd.UnsafeSet[gdextension.NodePath](p_ret, pointers.Get(in))
 			}
 		case Callable.Function:
 			in := gd.InternalCallable(val)
@@ -426,17 +427,17 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 			in := gd.InternalDictionary(val)
 			raw, ok := pointers.End(in)
 			if ok {
-				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, raw)
+				gd.UnsafeSet[gdextension.Dictionary](p_ret, raw)
 			} else {
-				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(in))
+				gd.UnsafeSet[gdextension.Dictionary](p_ret, pointers.Get(in))
 			}
 		case Array.Any:
 			in := gd.InternalArray(val)
 			raw, ok := pointers.End(in)
 			if ok {
-				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, raw)
+				gd.UnsafeSet[gdextension.Array](p_ret, raw)
 			} else {
-				gd.UnsafeSet[[1]gd.EnginePointer](p_ret, pointers.Get(in))
+				gd.UnsafeSet[gdextension.Array](p_ret, pointers.Get(in))
 			}
 		case Packed.Bytes:
 			in := gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](val))

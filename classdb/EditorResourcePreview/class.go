@@ -135,8 +135,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorResourcePreview"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorResourcePreview"))))})}
 	casted := Instance{*(*gdclass.EditorResourcePreview)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -151,7 +152,7 @@ func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Obje
 		receiver      gdextension.Object
 		receiver_func gdextension.StringName
 		userdata      gdextension.Variant
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), gdextension.StringName(pointers.Get(gd.InternalStringName(receiver_func))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
+	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
 }
 
 /*
@@ -165,7 +166,7 @@ func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, recei
 		receiver      gdextension.Object
 		receiver_func gdextension.StringName
 		userdata      gdextension.Variant
-	}{gdextension.Object(gd.ObjectChecked(resource[0].AsObject())), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), gdextension.StringName(pointers.Get(gd.InternalStringName(receiver_func))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
+	}{gdextension.Object(gd.ObjectChecked(resource[0].AsObject())), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
 }
 
 /*
@@ -189,7 +190,7 @@ Check if the resource changed, if so, it will be invalidated and the correspondi
 */
 //go:nosplit
 func (self class) CheckForInvalidation(path String.Readable) { //gd:EditorResourcePreview.check_for_invalidation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePreview.Bind_check_for_invalidation), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePreview.Bind_check_for_invalidation), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 }
 func (self Instance) OnPreviewInvalidated(cb func(path string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("preview_invalidated"), gd.NewCallable(cb), 0)

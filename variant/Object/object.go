@@ -22,7 +22,7 @@ func (id ID) Instance() Instance {
 	if id == 0 {
 		return Nil
 	}
-	return Instance([1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](gd.EnginePointer(gdextension.Host.Objects.Lookup(gdextension.ObjectID(id))))})
+	return Instance([1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](gdextension.Host.Objects.Lookup(gdextension.ObjectID(id)))})
 }
 
 type Notification int
@@ -91,7 +91,7 @@ type PropertyInfo struct {
 
 // New creates a new Object instance.
 func New() Instance {
-	return Instance(gd.Global.ClassDB.ConstructObject(gd.NewStringName("Object")))
+	return Instance([1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Object"))))})})
 }
 
 func (obj Instance) AsObject() [1]gd.Object          { return obj }

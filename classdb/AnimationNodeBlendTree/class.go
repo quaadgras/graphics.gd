@@ -171,9 +171,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationNodeBlendTree"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AnimationNodeBlendTree"))))})}
 	casted := Instance{*(*gdclass.AnimationNodeBlendTree)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -194,7 +195,7 @@ func (self class) AddNode(name String.Name, node [1]gdclass.AnimationNode, posit
 		name     gdextension.StringName
 		node     gdextension.Object
 		position Vector2.XY
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(node[0].AsObject())), position}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(node[0].AsObject())), position}))
 }
 
 /*
@@ -202,7 +203,7 @@ Returns the sub animation node with the specified [param name].
 */
 //go:nosplit
 func (self class) GetNode(name String.Name) [1]gdclass.AnimationNode { //gd:AnimationNodeBlendTree.get_node
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeBlendTree.Bind_get_node), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeBlendTree.Bind_get_node), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = [1]gdclass.AnimationNode{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationNode](r_ret)}
 	return ret
 }
@@ -212,7 +213,7 @@ Removes a sub animation node.
 */
 //go:nosplit
 func (self class) RemoveNode(name String.Name) { //gd:AnimationNodeBlendTree.remove_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeBlendTree.Bind_remove_node), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeBlendTree.Bind_remove_node), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -223,7 +224,7 @@ func (self class) RenameNode(name String.Name, new_name String.Name) { //gd:Anim
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeBlendTree.Bind_rename_node), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		new_name gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(new_name))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(new_name))}))
 }
 
 /*
@@ -231,7 +232,7 @@ Returns [code]true[/code] if a sub animation node with specified [param name] ex
 */
 //go:nosplit
 func (self class) HasNode(name String.Name) bool { //gd:AnimationNodeBlendTree.has_node
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeBlendTree.Bind_has_node), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeBlendTree.Bind_has_node), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -245,7 +246,7 @@ func (self class) ConnectNode(input_node String.Name, input_index int64, output_
 		input_node  gdextension.StringName
 		input_index int64
 		output_node gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(input_node))[0]), input_index, gdextension.StringName(pointers.Get(gd.InternalStringName(output_node))[0])}))
+	}{pointers.Get(gd.InternalStringName(input_node)), input_index, pointers.Get(gd.InternalStringName(output_node))}))
 }
 
 /*
@@ -256,7 +257,7 @@ func (self class) DisconnectNode(input_node String.Name, input_index int64) { //
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeBlendTree.Bind_disconnect_node), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		input_node  gdextension.StringName
 		input_index int64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(input_node))[0]), input_index}))
+	}{pointers.Get(gd.InternalStringName(input_node)), input_index}))
 }
 
 /*
@@ -267,7 +268,7 @@ func (self class) SetNodePosition(name String.Name, position Vector2.XY) { //gd:
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeBlendTree.Bind_set_node_position), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		position Vector2.XY
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), position}))
+	}{pointers.Get(gd.InternalStringName(name)), position}))
 }
 
 /*
@@ -275,7 +276,7 @@ Returns the position of the sub animation node with the specified [param name].
 */
 //go:nosplit
 func (self class) GetNodePosition(name String.Name) Vector2.XY { //gd:AnimationNodeBlendTree.get_node_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeBlendTree.Bind_get_node_position), gdextension.SizeVector2|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeBlendTree.Bind_get_node_position), gdextension.SizeVector2|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }

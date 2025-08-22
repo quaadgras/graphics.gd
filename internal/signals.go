@@ -4,8 +4,9 @@ package gd
 
 import (
 	"iter"
+	"unsafe"
 
-	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	CallableType "graphics.gd/variant/Callable"
@@ -17,21 +18,18 @@ import (
 
 func (s Signal) Free() {
 	if ptr, ok := pointers.End(s); ok {
-		var frame = callframe.New()
-		Global.typeset.destruct.Signal(callframe.Arg(frame, ptr).Addr())
-		frame.Free()
+		gdextension.Free(gdextension.TypeSignal, &ptr)
 	}
 }
 
 func NewSignalOf(object [1]Object, signal StringName) Signal {
-	var frame = callframe.New()
-	callframe.Arg(frame, pointers.Get(object[0]))
-	callframe.Arg(frame, pointers.Get(signal))
-	var r_ret = callframe.Ret[[2]uint64](frame)
-	Global.typeset.creation.Signal[2](r_ret.Addr(), frame.Array(0))
-	var raw = r_ret.Get()
-	frame.Free()
-	return pointers.New[Signal](raw)
+	return pointers.New[Signal](gdextension.Make[gdextension.Signal](Global.typeset.creation.Signal[2], gdextension.SizeObject<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
+		object gdextension.Object
+		signal gdextension.StringName
+	}{
+		object: gdextension.Object(pointers.Get(object[0])[0]),
+		signal: pointers.Get(signal),
+	})))
 }
 
 func InternalSignal(signal SignalType.Any) Signal {

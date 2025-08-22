@@ -489,9 +489,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("DirAccess"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("DirAccess"))))})}
 	casted := Instance{*(*gdclass.DirAccess)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -517,7 +518,7 @@ Returns [code]null[/code] if opening the directory failed. You can use [method g
 */
 //go:nosplit
 func (self class) Open(path String.Readable) [1]gdclass.DirAccess { //gd:DirAccess.open
-	var r_ret = gdextension.CallStatic[gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_open), gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_open), gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = [1]gdclass.DirAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.DirAccess](r_ret)}
 	return ret
 }
@@ -540,10 +541,10 @@ Returns [code]null[/code] if opening the directory failed. You can use [method g
 */
 //go:nosplit
 func (self class) CreateTemp(prefix String.Readable, keep bool) [1]gdclass.DirAccess { //gd:DirAccess.create_temp
-	var r_ret = gdextension.CallStatic[gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_create_temp), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_create_temp), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		prefix gdextension.String
 		keep   bool
-	}{gdextension.String(pointers.Get(gd.InternalString(prefix))[0]), keep}))
+	}{pointers.Get(gd.InternalString(prefix)), keep}))
 	var ret = [1]gdclass.DirAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.DirAccess](r_ret)}
 	return ret
 }
@@ -566,7 +567,7 @@ The name of the file or directory is returned (and not its full path). Once the 
 */
 //go:nosplit
 func (self class) GetNext() String.Readable { //gd:DirAccess.get_next
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_get_next), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_get_next), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -608,7 +609,7 @@ Use [method get_files] if you want more control of what gets included.
 */
 //go:nosplit
 func (self class) GetFilesAt(path String.Readable) Packed.Strings { //gd:DirAccess.get_files_at
-	var r_ret = gdextension.CallStatic[gd.PackedPointers](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_get_files_at), gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.CallStatic[gd.PackedPointers](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_get_files_at), gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -632,7 +633,7 @@ Use [method get_directories] if you want more control of what gets included.
 */
 //go:nosplit
 func (self class) GetDirectoriesAt(path String.Readable) Packed.Strings { //gd:DirAccess.get_directories_at
-	var r_ret = gdextension.CallStatic[gd.PackedPointers](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_get_directories_at), gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.CallStatic[gd.PackedPointers](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_get_directories_at), gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -658,7 +659,7 @@ On other platforms, or if the requested drive does not exist, the method returns
 */
 //go:nosplit
 func (self class) GetDriveName(idx int64) String.Readable { //gd:DirAccess.get_drive_name
-	var r_ret = gdextension.CallStatic[[1]gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_get_drive_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.CallStatic[gdextension.String](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_get_drive_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -680,7 +681,7 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
 func (self class) ChangeDir(to_dir String.Readable) Error.Code { //gd:DirAccess.change_dir
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_change_dir), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ to_dir gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(to_dir))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_change_dir), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ to_dir gdextension.String }{pointers.Get(gd.InternalString(to_dir))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -690,7 +691,7 @@ Returns the absolute path to the currently opened directory (e.g. [code]res://fo
 */
 //go:nosplit
 func (self class) GetCurrentDir(include_drive bool) String.Readable { //gd:DirAccess.get_current_dir
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_get_current_dir), gdextension.SizeString|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ include_drive bool }{include_drive}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_get_current_dir), gdextension.SizeString|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ include_drive bool }{include_drive}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -701,7 +702,7 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
 func (self class) MakeDir(path String.Readable) Error.Code { //gd:DirAccess.make_dir
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_make_dir), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_make_dir), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -711,7 +712,7 @@ Static version of [method make_dir]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) MakeDirAbsolute(path String.Readable) Error.Code { //gd:DirAccess.make_dir_absolute
-	var r_ret = gdextension.CallStatic[int64](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_make_dir_absolute), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.CallStatic[int64](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_make_dir_absolute), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -722,7 +723,7 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
 func (self class) MakeDirRecursive(path String.Readable) Error.Code { //gd:DirAccess.make_dir_recursive
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_make_dir_recursive), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_make_dir_recursive), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -732,7 +733,7 @@ Static version of [method make_dir_recursive]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) MakeDirRecursiveAbsolute(path String.Readable) Error.Code { //gd:DirAccess.make_dir_recursive_absolute
-	var r_ret = gdextension.CallStatic[int64](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_make_dir_recursive_absolute), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.CallStatic[int64](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_make_dir_recursive_absolute), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -744,7 +745,7 @@ For a static equivalent, use [method FileAccess.file_exists].
 */
 //go:nosplit
 func (self class) FileExists(path String.Readable) bool { //gd:DirAccess.file_exists
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_file_exists), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_file_exists), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -755,7 +756,7 @@ Returns whether the target directory exists. The argument can be relative to the
 */
 //go:nosplit
 func (self class) DirExists(path String.Readable) bool { //gd:DirAccess.dir_exists
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_dir_exists), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_dir_exists), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -766,7 +767,7 @@ Static version of [method dir_exists]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) DirExistsAbsolute(path String.Readable) bool { //gd:DirAccess.dir_exists_absolute
-	var r_ret = gdextension.CallStatic[bool](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_dir_exists_absolute), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.CallStatic[bool](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_dir_exists_absolute), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -792,7 +793,7 @@ func (self class) Copy(from String.Readable, to String.Readable, chmod_flags int
 		from        gdextension.String
 		to          gdextension.String
 		chmod_flags int64
-	}{gdextension.String(pointers.Get(gd.InternalString(from))[0]), gdextension.String(pointers.Get(gd.InternalString(to))[0]), chmod_flags}))
+	}{pointers.Get(gd.InternalString(from)), pointers.Get(gd.InternalString(to)), chmod_flags}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -806,7 +807,7 @@ func (self class) CopyAbsolute(from String.Readable, to String.Readable, chmod_f
 		from        gdextension.String
 		to          gdextension.String
 		chmod_flags int64
-	}{gdextension.String(pointers.Get(gd.InternalString(from))[0]), gdextension.String(pointers.Get(gd.InternalString(to))[0]), chmod_flags}))
+	}{pointers.Get(gd.InternalString(from)), pointers.Get(gd.InternalString(to)), chmod_flags}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -820,7 +821,7 @@ func (self class) Rename(from String.Readable, to String.Readable) Error.Code { 
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_rename), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		from gdextension.String
 		to   gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(from))[0]), gdextension.String(pointers.Get(gd.InternalString(to))[0])}))
+	}{pointers.Get(gd.InternalString(from)), pointers.Get(gd.InternalString(to))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -833,7 +834,7 @@ func (self class) RenameAbsolute(from String.Readable, to String.Readable) Error
 	var r_ret = gdextension.CallStatic[int64](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_rename_absolute), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		from gdextension.String
 		to   gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(from))[0]), gdextension.String(pointers.Get(gd.InternalString(to))[0])}))
+	}{pointers.Get(gd.InternalString(from)), pointers.Get(gd.InternalString(to))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -845,7 +846,7 @@ Returns one of the [enum Error] code constants ([constant OK] on success).
 */
 //go:nosplit
 func (self class) Remove(path String.Readable) Error.Code { //gd:DirAccess.remove
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_remove), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_remove), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -855,7 +856,7 @@ Static version of [method remove]. Supports only absolute paths.
 */
 //go:nosplit
 func (self class) RemoveAbsolute(path String.Readable) Error.Code { //gd:DirAccess.remove_absolute
-	var r_ret = gdextension.CallStatic[int64](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_remove_absolute), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.CallStatic[int64](gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_remove_absolute), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -866,7 +867,7 @@ Returns [code]true[/code] if the file or directory is a symbolic link, directory
 */
 //go:nosplit
 func (self class) IsLink(path String.Readable) bool { //gd:DirAccess.is_link
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_is_link), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_is_link), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -877,7 +878,7 @@ Returns target of the symbolic link.
 */
 //go:nosplit
 func (self class) ReadLink(path String.Readable) String.Readable { //gd:DirAccess.read_link
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_read_link), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_read_link), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -892,7 +893,7 @@ func (self class) CreateLink(source String.Readable, target String.Readable) Err
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_create_link), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		source gdextension.String
 		target gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(source))[0]), gdextension.String(pointers.Get(gd.InternalString(target))[0])}))
+	}{pointers.Get(gd.InternalString(source)), pointers.Get(gd.InternalString(target))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -903,7 +904,7 @@ Returns [code]true[/code] if the directory is a macOS bundle.
 */
 //go:nosplit
 func (self class) IsBundle(path String.Readable) bool { //gd:DirAccess.is_bundle
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_is_bundle), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_is_bundle), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -938,7 +939,7 @@ Returns [code]true[/code] if the file system or directory use case sensitive fil
 */
 //go:nosplit
 func (self class) IsCaseSensitive(path String.Readable) bool { //gd:DirAccess.is_case_sensitive
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_is_case_sensitive), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirAccess.Bind_is_case_sensitive), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = r_ret
 	return ret
 }

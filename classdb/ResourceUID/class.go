@@ -79,7 +79,7 @@ var self [1]gdclass.ResourceUID
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.ResourceUID)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.ResourceUID)))})
 	self = *(*[1]gdclass.ResourceUID)(unsafe.Pointer(&obj))
 }
 
@@ -172,7 +172,7 @@ Converts the given UID to a [code]uid://[/code] string value.
 */
 //go:nosplit
 func (self class) IdToText(id int64) String.Readable { //gd:ResourceUID.id_to_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourceUID.Bind_id_to_text), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourceUID.Bind_id_to_text), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -182,7 +182,7 @@ Extracts the UID value from the given [code]uid://[/code] string.
 */
 //go:nosplit
 func (self class) TextToId(text_id String.Readable) int64 { //gd:ResourceUID.text_to_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourceUID.Bind_text_to_id), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text_id gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text_id))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourceUID.Bind_text_to_id), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text_id gdextension.String }{pointers.Get(gd.InternalString(text_id))}))
 	var ret = r_ret
 	return ret
 }
@@ -217,7 +217,7 @@ func (self class) AddId(id int64, path String.Readable) { //gd:ResourceUID.add_i
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourceUID.Bind_add_id), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		id   int64
 		path gdextension.String
-	}{id, gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	}{id, pointers.Get(gd.InternalString(path))}))
 }
 
 /*
@@ -229,7 +229,7 @@ func (self class) SetId(id int64, path String.Readable) { //gd:ResourceUID.set_i
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourceUID.Bind_set_id), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		id   int64
 		path gdextension.String
-	}{id, gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	}{id, pointers.Get(gd.InternalString(path))}))
 }
 
 /*
@@ -238,7 +238,7 @@ Fails with an error if the UID does not exist, so be sure to check [method has_i
 */
 //go:nosplit
 func (self class) GetIdPath(id int64) String.Readable { //gd:ResourceUID.get_id_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourceUID.Bind_get_id_path), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ResourceUID.Bind_get_id_path), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

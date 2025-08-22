@@ -161,9 +161,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Gradient"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Gradient"))))})}
 	casted := Instance{*(*gdclass.Gradient)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -291,7 +292,9 @@ func (self class) GetPointCount() int64 { //gd:Gradient.get_point_count
 
 //go:nosplit
 func (self class) SetOffsets(offsets Packed.Array[float32]) { //gd:Gradient.set_offsets
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_set_offsets), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ offsets gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](offsets)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_set_offsets), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		offsets gdextension.PackedArray[float32]
+	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](offsets))}))
 }
 
 //go:nosplit
@@ -303,7 +306,9 @@ func (self class) GetOffsets() Packed.Array[float32] { //gd:Gradient.get_offsets
 
 //go:nosplit
 func (self class) SetColors(colors Packed.Array[Color.RGBA]) { //gd:Gradient.set_colors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_set_colors), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ colors gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Gradient.Bind_set_colors), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		colors gdextension.PackedArray[Color.RGBA]
+	}{pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))}))
 }
 
 //go:nosplit

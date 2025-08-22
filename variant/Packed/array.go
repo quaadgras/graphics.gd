@@ -5,6 +5,7 @@ import (
 	"iter"
 	"unsafe"
 
+	"graphics.gd/internal/gdextension"
 	GenericArray "graphics.gd/variant/Array"
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Vector2"
@@ -14,7 +15,7 @@ import (
 
 // Type supported by [Array].
 type Type interface {
-	~byte | ~Color.RGBA | ~float32 | ~float64 | ~int32 | ~int64 | ~Vector2.XY | ~Vector3.XYZ | ~Vector4.XYZW
+	~byte | ~Color.RGBA | ~float32 | ~float64 | ~int32 | ~int64 | ~Vector2.XY | ~Vector3.XYZ | ~Vector4.XYZW | gdextension.String
 }
 
 // Array contains comparable elements of type T Similar to [Array.Contains[T]] but for a supported [Type]

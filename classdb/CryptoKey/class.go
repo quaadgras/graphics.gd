@@ -165,9 +165,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CryptoKey"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CryptoKey"))))})}
 	casted := Instance{*(*gdclass.CryptoKey)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -180,7 +181,7 @@ func (self class) Save(path String.Readable, public_only bool) Error.Code { //gd
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_save), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path        gdextension.String
 		public_only bool
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), public_only}))
+	}{pointers.Get(gd.InternalString(path)), public_only}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -194,7 +195,7 @@ func (self class) Load(path String.Readable, public_only bool) Error.Code { //gd
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_load), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path        gdextension.String
 		public_only bool
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), public_only}))
+	}{pointers.Get(gd.InternalString(path)), public_only}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -214,7 +215,7 @@ Returns a string containing the key in PEM format. If [param public_only] is [co
 */
 //go:nosplit
 func (self class) SaveToString(public_only bool) String.Readable { //gd:CryptoKey.save_to_string
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_save_to_string), gdextension.SizeString|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ public_only bool }{public_only}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_save_to_string), gdextension.SizeString|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ public_only bool }{public_only}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -227,7 +228,7 @@ func (self class) LoadFromString(string_key String.Readable, public_only bool) E
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_load_from_string), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		string_key  gdextension.String
 		public_only bool
-	}{gdextension.String(pointers.Get(gd.InternalString(string_key))[0]), public_only}))
+	}{pointers.Get(gd.InternalString(string_key)), public_only}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

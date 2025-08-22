@@ -126,9 +126,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VoxelGIData"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VoxelGIData"))))})}
 	casted := Instance{*(*gdclass.VoxelGIData)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -194,11 +195,11 @@ func (self class) Allocate(to_cell_xform Transform3D.BasisOrigin, aabb AABB.Posi
 		to_cell_xform  Transform3D.BasisOrigin
 		aabb           AABB.PositionSize
 		octree_size    Vector3.XYZ
-		octree_cells   gdextension.PackedArray
-		data_cells     gdextension.PackedArray
-		distance_field gdextension.PackedArray
-		level_counts   gdextension.PackedArray
-	}{gd.Transposed(to_cell_xform), aabb, octree_size, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells)))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data_cells)))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](distance_field)))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](level_counts)))}))
+		octree_cells   gdextension.PackedArray[byte]
+		data_cells     gdextension.PackedArray[byte]
+		distance_field gdextension.PackedArray[byte]
+		level_counts   gdextension.PackedArray[int32]
+	}{gd.Transposed(to_cell_xform), aabb, octree_size, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data_cells))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](distance_field))), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](level_counts))}))
 }
 
 /*

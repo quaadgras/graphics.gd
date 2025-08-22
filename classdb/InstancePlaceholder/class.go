@@ -138,8 +138,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InstancePlaceholder"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("InstancePlaceholder"))))})}
 	casted := Instance{*(*gdclass.InstancePlaceholder)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -149,7 +150,7 @@ If [param with_order] is [code]true[/code], a key named [code].order[/code] (not
 */
 //go:nosplit
 func (self class) GetStoredValues(with_order bool) Dictionary.Any { //gd:InstancePlaceholder.get_stored_values
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InstancePlaceholder.Bind_get_stored_values), gdextension.SizeDictionary|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ with_order bool }{with_order}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InstancePlaceholder.Bind_get_stored_values), gdextension.SizeDictionary|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ with_order bool }{with_order}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -160,7 +161,7 @@ Call this method to actually load in the node. The created node will be placed a
 */
 //go:nosplit
 func (self class) CreateInstance(replace bool, custom_scene [1]gdclass.PackedScene) [1]gdclass.Node { //gd:InstancePlaceholder.create_instance
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InstancePlaceholder.Bind_create_instance), gdextension.SizeObject|(gdextension.SizeBool<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InstancePlaceholder.Bind_create_instance), gdextension.SizeObject|(gdextension.SizeBool<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		replace      bool
 		custom_scene gdextension.Object
 	}{replace, gdextension.Object(gd.ObjectChecked(custom_scene[0].AsObject()))}))
@@ -173,7 +174,7 @@ Gets the path to the [PackedScene] resource file that is loaded by default when 
 */
 //go:nosplit
 func (self class) GetInstancePath() String.Readable { //gd:InstancePlaceholder.get_instance_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InstancePlaceholder.Bind_get_instance_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InstancePlaceholder.Bind_get_instance_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

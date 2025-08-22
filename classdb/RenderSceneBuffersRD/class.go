@@ -346,9 +346,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderSceneBuffersRD"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RenderSceneBuffersRD"))))})}
 	casted := Instance{*(*gdclass.RenderSceneBuffersRD)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -360,7 +361,7 @@ func (self class) HasTexture(context String.Name, name String.Name) bool { //gd:
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersRD.Bind_has_texture), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		context gdextension.StringName
 		name    gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -381,7 +382,7 @@ func (self class) CreateTexture(context String.Name, name String.Name, data_form
 		mipmaps         int64
 		unique          bool
 		discardable     bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), data_format, usage_bits, texture_samples, size, layers, mipmaps, unique, discardable}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), data_format, usage_bits, texture_samples, size, layers, mipmaps, unique, discardable}))
 	var ret = r_ret
 	return ret
 }
@@ -397,7 +398,7 @@ func (self class) CreateTextureFromFormat(context String.Name, name String.Name,
 		format  gdextension.Object
 		view    gdextension.Object
 		unique  bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(format[0].AsObject())), gdextension.Object(gd.ObjectChecked(view[0].AsObject())), unique}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(format[0].AsObject())), gdextension.Object(gd.ObjectChecked(view[0].AsObject())), unique}))
 	var ret = r_ret
 	return ret
 }
@@ -412,7 +413,7 @@ func (self class) CreateTextureView(context String.Name, name String.Name, view_
 		name      gdextension.StringName
 		view_name gdextension.StringName
 		view      gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(view_name))[0]), gdextension.Object(gd.ObjectChecked(view[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(view_name)), gdextension.Object(gd.ObjectChecked(view[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -425,7 +426,7 @@ func (self class) GetTexture(context String.Name, name String.Name) RID.Any { //
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersRD.Bind_get_texture), gdextension.SizeRID|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		context gdextension.StringName
 		name    gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -435,10 +436,10 @@ Returns the texture format information with which a cached texture was created.
 */
 //go:nosplit
 func (self class) GetTextureFormat(context String.Name, name String.Name) [1]gdclass.RDTextureFormat { //gd:RenderSceneBuffersRD.get_texture_format
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersRD.Bind_get_texture_format), gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersRD.Bind_get_texture_format), gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		context gdextension.StringName
 		name    gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name))}))
 	var ret = [1]gdclass.RDTextureFormat{gd.PointerWithOwnershipTransferredToGo[gdclass.RDTextureFormat](r_ret)}
 	return ret
 }
@@ -455,7 +456,7 @@ func (self class) GetTextureSlice(context String.Name, name String.Name, layer i
 		mipmap  int64
 		layers  int64
 		mipmaps int64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), layer, mipmap, layers, mipmaps}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), layer, mipmap, layers, mipmaps}))
 	var ret = r_ret
 	return ret
 }
@@ -473,7 +474,7 @@ func (self class) GetTextureSliceView(context String.Name, name String.Name, lay
 		layers  int64
 		mipmaps int64
 		view    gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), layer, mipmap, layers, mipmaps, gdextension.Object(gd.ObjectChecked(view[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), layer, mipmap, layers, mipmaps, gdextension.Object(gd.ObjectChecked(view[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -487,7 +488,7 @@ func (self class) GetTextureSliceSize(context String.Name, name String.Name, mip
 		context gdextension.StringName
 		name    gdextension.StringName
 		mipmap  int64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), mipmap}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), mipmap}))
 	var ret = r_ret
 	return ret
 }
@@ -497,7 +498,7 @@ Frees all buffers related to this context.
 */
 //go:nosplit
 func (self class) ClearContext(context String.Name) { //gd:RenderSceneBuffersRD.clear_context
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersRD.Bind_clear_context), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ context gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersRD.Bind_clear_context), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ context gdextension.StringName }{pointers.Get(gd.InternalStringName(context))}))
 }
 
 /*

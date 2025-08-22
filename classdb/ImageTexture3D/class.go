@@ -113,9 +113,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImageTexture3D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ImageTexture3D"))))})}
 	casted := Instance{*(*gdclass.ImageTexture3D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -131,7 +132,7 @@ func (self class) Create(format Image.Format, width int64, height int64, depth i
 		depth       int64
 		use_mipmaps bool
 		data        gdextension.Array
-	}{format, width, height, depth, use_mipmaps, gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
+	}{format, width, height, depth, use_mipmaps, pointers.Get(gd.InternalArray(data))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -141,7 +142,7 @@ Replaces the texture's existing data with the layers specified in [param data]. 
 */
 //go:nosplit
 func (self class) Update(data Array.Contains[[1]gdclass.Image]) { //gd:ImageTexture3D.update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTexture3D.Bind_update), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ data gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTexture3D.Bind_update), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ data gdextension.Array }{pointers.Get(gd.InternalArray(data))}))
 }
 func (self class) AsImageTexture3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsImageTexture3D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

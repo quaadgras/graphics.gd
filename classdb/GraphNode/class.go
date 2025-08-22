@@ -376,8 +376,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GraphNode"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("GraphNode"))))})}
 	casted := Instance{*(*gdclass.GraphNode)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -410,12 +411,12 @@ func (class) _draw_port(impl func(ptr unsafe.Pointer, slot_index int64, position
 
 //go:nosplit
 func (self class) SetTitle(title String.Readable) { //gd:GraphNode.set_title
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphNode.Bind_set_title), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ title gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(title))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphNode.Bind_set_title), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))}))
 }
 
 //go:nosplit
 func (self class) GetTitle() String.Readable { //gd:GraphNode.get_title
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphNode.Bind_get_title), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphNode.Bind_get_title), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -425,7 +426,7 @@ Returns the [HBoxContainer] used for the title bar, only containing a [Label] fo
 */
 //go:nosplit
 func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphNode.get_titlebar_hbox
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphNode.Bind_get_titlebar_hbox), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphNode.Bind_get_titlebar_hbox), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.HBoxContainer{gd.PointerLifetimeBoundTo[gdclass.HBoxContainer](self.AsObject(), r_ret)}
 	return ret
 }
@@ -550,7 +551,7 @@ Returns the left (input) custom [Texture2D] of the slot with the given [param sl
 */
 //go:nosplit
 func (self class) GetSlotCustomIconLeft(slot_index int64) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_left
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_left), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_left), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -634,7 +635,7 @@ Returns the right (output) custom [Texture2D] of the slot with the given [param 
 */
 //go:nosplit
 func (self class) GetSlotCustomIconRight(slot_index int64) [1]gdclass.Texture2D { //gd:GraphNode.get_slot_custom_icon_right
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_right), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphNode.Bind_get_slot_custom_icon_right), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slot_index int64 }{slot_index}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }

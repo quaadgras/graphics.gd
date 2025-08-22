@@ -276,9 +276,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebRTCPeerConnection"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("WebRTCPeerConnection"))))})}
 	casted := Instance{*(*gdclass.WebRTCPeerConnection)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -287,7 +288,7 @@ Sets the [param extension_class] as the default [WebRTCPeerConnectionExtension] 
 */
 //go:nosplit
 func (self class) SetDefaultExtension(extension_class String.Name) { //gd:WebRTCPeerConnection.set_default_extension
-	gdextension.CallStatic[struct{}](gdextension.MethodForClass(gd.Global.Methods.WebRTCPeerConnection.Bind_set_default_extension), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ extension_class gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(extension_class))[0])}))
+	gdextension.CallStatic[struct{}](gdextension.MethodForClass(gd.Global.Methods.WebRTCPeerConnection.Bind_set_default_extension), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ extension_class gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_class))}))
 }
 
 /*
@@ -310,7 +311,7 @@ Valid [param configuration] options are:
 */
 //go:nosplit
 func (self class) Initialize(configuration Dictionary.Any) Error.Code { //gd:WebRTCPeerConnection.initialize
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCPeerConnection.Bind_initialize), gdextension.SizeInt|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ configuration gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(configuration))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCPeerConnection.Bind_initialize), gdextension.SizeInt|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ configuration gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(configuration))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -336,10 +337,10 @@ Valid [param options] are:
 */
 //go:nosplit
 func (self class) CreateDataChannel(label String.Readable, options Dictionary.Any) [1]gdclass.WebRTCDataChannel { //gd:WebRTCPeerConnection.create_data_channel
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCPeerConnection.Bind_create_data_channel), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCPeerConnection.Bind_create_data_channel), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
 		label   gdextension.String
 		options gdextension.Dictionary
-	}{gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Dictionary(pointers.Get(gd.InternalDictionary(options))[0])}))
+	}{pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalDictionary(options))}))
 	var ret = [1]gdclass.WebRTCDataChannel{gd.PointerWithOwnershipTransferredToGo[gdclass.WebRTCDataChannel](r_ret)}
 	return ret
 }
@@ -364,7 +365,7 @@ func (self class) SetLocalDescription(atype String.Readable, sdp String.Readable
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCPeerConnection.Bind_set_local_description), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		atype gdextension.String
 		sdp   gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(atype))[0]), gdextension.String(pointers.Get(gd.InternalString(sdp))[0])}))
+	}{pointers.Get(gd.InternalString(atype)), pointers.Get(gd.InternalString(sdp))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -379,7 +380,7 @@ func (self class) SetRemoteDescription(atype String.Readable, sdp String.Readabl
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCPeerConnection.Bind_set_remote_description), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		atype gdextension.String
 		sdp   gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(atype))[0]), gdextension.String(pointers.Get(gd.InternalString(sdp))[0])}))
+	}{pointers.Get(gd.InternalString(atype)), pointers.Get(gd.InternalString(sdp))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -393,7 +394,7 @@ func (self class) AddIceCandidate(media String.Readable, index int64, name Strin
 		media gdextension.String
 		index int64
 		name  gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(media))[0]), index, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	}{pointers.Get(gd.InternalString(media)), index, pointers.Get(gd.InternalString(name))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

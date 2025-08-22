@@ -95,15 +95,15 @@ func LoadResult[T ~unsafe.Pointer](shape gdextension.Shape, result T, from gdext
 			done += 8
 			size -= 8
 		case size >= 4:
-			*(*uint32)(unsafe.Pointer(result)) = gdextension.Host.Memory.Load.Uint32(from + gdextension.Pointer(done))
+			*(*uint32)(unsafe.Add(data, done)) = gdextension.Host.Memory.Load.Uint32(from + gdextension.Pointer(done))
 			done += 4
 			size -= 4
 		case size >= 2:
-			*(*uint16)(unsafe.Pointer(result)) = gdextension.Host.Memory.Load.Uint16(from + gdextension.Pointer(done))
+			*(*uint16)(unsafe.Add(data, done)) = gdextension.Host.Memory.Load.Uint16(from + gdextension.Pointer(done))
 			done += 2
 			size -= 2
 		case size >= 1:
-			*(*uint8)(unsafe.Pointer(result)) = gdextension.Host.Memory.Load.Byte(from + gdextension.Pointer(done))
+			*(*uint8)(unsafe.Add(data, done)) = gdextension.Host.Memory.Load.Byte(from + gdextension.Pointer(done))
 			done += 1
 			size -= 1
 		default:

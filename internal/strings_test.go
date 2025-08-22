@@ -16,7 +16,7 @@ func TestStrings(t *testing.T) {
 	if str.String() != "Hello, World!" {
 		t.Fail()
 	}
-	str = pointers.New[gd.String]([1]gd.EnginePointer{gd.EnginePointer(gdextension.Host.Strings.Append.String(gdextension.String(pointers.Get(str)[0]), gdextension.String(pointers.Get(gd.NewString(" from Go!"))[0])))})
+	str = pointers.New[gd.String](gdextension.Host.Strings.Append.String(pointers.Get(str), pointers.Get(gd.NewString(" from Go!"))))
 	if str.String() != "Hello, World! from Go!" {
 		t.Fail()
 	}

@@ -216,9 +216,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("BitMap"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("BitMap"))))})}
 	casted := Instance{*(*gdclass.BitMap)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -342,7 +343,7 @@ Returns an image of the same size as the bitmap and with a [enum Image.Format] o
 */
 //go:nosplit
 func (self class) ConvertToImage() [1]gdclass.Image { //gd:BitMap.convert_to_image
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_convert_to_image), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_convert_to_image), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
@@ -357,7 +358,7 @@ Rect2(Vector2(), get_size())
 */
 //go:nosplit
 func (self class) OpaqueToPolygons(rect Rect2i.PositionSize, epsilon float64) Array.Contains[Packed.Array[Vector2.XY]] { //gd:BitMap.opaque_to_polygons
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_opaque_to_polygons), gdextension.SizeArray|(gdextension.SizeRect2i<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_opaque_to_polygons), gdextension.SizeArray|(gdextension.SizeRect2i<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		rect    Rect2i.PositionSize
 		epsilon float64
 	}{rect, epsilon}))

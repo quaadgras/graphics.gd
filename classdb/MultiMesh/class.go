@@ -190,9 +190,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MultiMesh"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("MultiMesh"))))})}
 	casted := Instance{*(*gdclass.MultiMesh)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -275,7 +276,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MultiMesh.set_mesh
 
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:MultiMesh.get_mesh
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret)}
 	return ret
 }
@@ -481,7 +482,9 @@ func (self class) GetBuffer() Packed.Array[float32] { //gd:MultiMesh.get_buffer
 
 //go:nosplit
 func (self class) SetBuffer(buffer Packed.Array[float32]) { //gd:MultiMesh.set_buffer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_buffer), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_buffer), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		buffer gdextension.PackedArray[float32]
+	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer))}))
 }
 
 /*
@@ -492,9 +495,9 @@ When the order of instances is coherent, the simpler alternative of setting [mem
 //go:nosplit
 func (self class) SetBufferInterpolated(buffer_curr Packed.Array[float32], buffer_prev Packed.Array[float32]) { //gd:MultiMesh.set_buffer_interpolated
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_buffer_interpolated), 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
-		buffer_curr gdextension.PackedArray
-		buffer_prev gdextension.PackedArray
-	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_curr))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_prev)))}))
+		buffer_curr gdextension.PackedArray[float32]
+		buffer_prev gdextension.PackedArray[float32]
+	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_curr)), pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_prev))}))
 }
 func (self class) AsMultiMesh() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsMultiMesh() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

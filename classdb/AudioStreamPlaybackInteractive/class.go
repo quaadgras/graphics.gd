@@ -123,9 +123,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AudioStreamPlaybackInteractive"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioStreamPlaybackInteractive"))))})}
 	casted := Instance{*(*gdclass.AudioStreamPlaybackInteractive)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -134,7 +135,7 @@ Switch to a clip (by name).
 */
 //go:nosplit
 func (self class) SwitchToClipByName(clip_name String.Name) { //gd:AudioStreamPlaybackInteractive.switch_to_clip_by_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_switch_to_clip_by_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ clip_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(clip_name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_switch_to_clip_by_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ clip_name gdextension.StringName }{pointers.Get(gd.InternalStringName(clip_name))}))
 }
 
 /*

@@ -104,8 +104,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("XRVRS"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("XRVRS"))))})}
 	casted := Instance{*(*gdclass.XRVRS)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -177,8 +178,8 @@ The result will be cached, requesting a VRS texture with unchanged parameters an
 func (self class) MakeVrsTexture(target_size Vector2.XY, eye_foci Packed.Array[Vector2.XY]) RID.Any { //gd:XRVRS.make_vrs_texture
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRVRS.Bind_make_vrs_texture), gdextension.SizeRID|(gdextension.SizeVector2<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		target_size Vector2.XY
-		eye_foci    gdextension.PackedArray
-	}{target_size, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](eye_foci)))}))
+		eye_foci    gdextension.PackedArray[Vector2.XY]
+	}{target_size, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](eye_foci))}))
 	var ret = r_ret
 	return ret
 }

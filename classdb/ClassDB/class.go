@@ -77,7 +77,7 @@ var self [1]gdclass.ClassDB
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.ClassDB)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.ClassDB)))})
 	self = *(*[1]gdclass.ClassDB)(unsafe.Pointer(&obj))
 }
 
@@ -445,7 +445,7 @@ Returns the names of all the classes that directly or indirectly inherit from [p
 */
 //go:nosplit
 func (self class) GetInheritersFromClass(class_ String.Name) Packed.Strings { //gd:ClassDB.get_inheriters_from_class
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_get_inheriters_from_class), gdextension.SizePackedArray|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0])}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_get_inheriters_from_class), gdextension.SizePackedArray|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{pointers.Get(gd.InternalStringName(class_))}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -455,7 +455,7 @@ Returns the parent class of [param class].
 */
 //go:nosplit
 func (self class) GetParentClass(class_ String.Name) String.Name { //gd:ClassDB.get_parent_class
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_get_parent_class), gdextension.SizeStringName|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0])}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_get_parent_class), gdextension.SizeStringName|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{pointers.Get(gd.InternalStringName(class_))}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -465,7 +465,7 @@ Returns whether the specified [param class] is available or not.
 */
 //go:nosplit
 func (self class) ClassExists(class_ String.Name) bool { //gd:ClassDB.class_exists
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_exists), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_exists), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{pointers.Get(gd.InternalStringName(class_))}))
 	var ret = r_ret
 	return ret
 }
@@ -478,7 +478,7 @@ func (self class) IsParentClass(class_ String.Name, inherits String.Name) bool {
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_is_parent_class), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		class_   gdextension.StringName
 		inherits gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(inherits))[0])}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(inherits))}))
 	var ret = r_ret
 	return ret
 }
@@ -488,7 +488,7 @@ Returns [code]true[/code] if objects can be instantiated from the specified [par
 */
 //go:nosplit
 func (self class) CanInstantiate(class_ String.Name) bool { //gd:ClassDB.can_instantiate
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_can_instantiate), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_can_instantiate), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{pointers.Get(gd.InternalStringName(class_))}))
 	var ret = r_ret
 	return ret
 }
@@ -498,7 +498,7 @@ Creates an instance of [param class].
 */
 //go:nosplit
 func (self class) Instantiate(class_ String.Name) variant.Any { //gd:ClassDB.instantiate
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_instantiate), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0])}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_instantiate), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{pointers.Get(gd.InternalStringName(class_))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -508,7 +508,7 @@ Returns the API type of [param class]. See [enum APIType].
 */
 //go:nosplit
 func (self class) ClassGetApiType(class_ String.Name) APIType { //gd:ClassDB.class_get_api_type
-	var r_ret = gdextension.Call[APIType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_api_type), gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0])}))
+	var r_ret = gdextension.Call[APIType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_api_type), gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{pointers.Get(gd.InternalStringName(class_))}))
 	var ret = r_ret
 	return ret
 }
@@ -521,7 +521,7 @@ func (self class) ClassHasSignal(class_ String.Name, signal String.Name) bool { 
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_has_signal), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		class_ gdextension.StringName
 		signal gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(signal))[0])}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(signal))}))
 	var ret = r_ret
 	return ret
 }
@@ -531,10 +531,10 @@ Returns the [param signal] data of [param class] or its ancestry. The returned v
 */
 //go:nosplit
 func (self class) ClassGetSignal(class_ String.Name, signal String.Name) Dictionary.Any { //gd:ClassDB.class_get_signal
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_signal), gdextension.SizeDictionary|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_signal), gdextension.SizeDictionary|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		class_ gdextension.StringName
 		signal gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(signal))[0])}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(signal))}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -544,10 +544,10 @@ Returns an array with all the signals of [param class] or its ancestry if [param
 */
 //go:nosplit
 func (self class) ClassGetSignalList(class_ String.Name, no_inheritance bool) Array.Contains[Dictionary.Any] { //gd:ClassDB.class_get_signal_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_signal_list), gdextension.SizeArray|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_signal_list), gdextension.SizeArray|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		class_         gdextension.StringName
 		no_inheritance bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), no_inheritance}))
+	}{pointers.Get(gd.InternalStringName(class_)), no_inheritance}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -557,10 +557,10 @@ Returns an array with all the properties of [param class] or its ancestry if [pa
 */
 //go:nosplit
 func (self class) ClassGetPropertyList(class_ String.Name, no_inheritance bool) Array.Contains[Dictionary.Any] { //gd:ClassDB.class_get_property_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_property_list), gdextension.SizeArray|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_property_list), gdextension.SizeArray|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		class_         gdextension.StringName
 		no_inheritance bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), no_inheritance}))
+	}{pointers.Get(gd.InternalStringName(class_)), no_inheritance}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -570,10 +570,10 @@ Returns the getter method name of [param property] of [param class].
 */
 //go:nosplit
 func (self class) ClassGetPropertyGetter(class_ String.Name, property String.Name) String.Name { //gd:ClassDB.class_get_property_getter
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_property_getter), gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_property_getter), gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		class_   gdextension.StringName
 		property gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0])}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(property))}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -583,10 +583,10 @@ Returns the setter method name of [param property] of [param class].
 */
 //go:nosplit
 func (self class) ClassGetPropertySetter(class_ String.Name, property String.Name) String.Name { //gd:ClassDB.class_get_property_setter
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_property_setter), gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_property_setter), gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		class_   gdextension.StringName
 		property gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0])}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(property))}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -596,10 +596,10 @@ Returns the value of [param property] of [param object] or its ancestry.
 */
 //go:nosplit
 func (self class) ClassGetProperty(obj [1]gd.Object, property String.Name) variant.Any { //gd:ClassDB.class_get_property
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_property), gdextension.SizeVariant|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_property), gdextension.SizeVariant|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		obj      gdextension.Object
 		property gdextension.StringName
-	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), pointers.Get(gd.InternalStringName(property))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -613,7 +613,7 @@ func (self class) ClassSetProperty(obj [1]gd.Object, property String.Name, value
 		obj      gdextension.Object
 		property gdextension.StringName
 		value    gdextension.Variant
-	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -623,10 +623,10 @@ Returns the default value of [param property] of [param class] or its ancestor c
 */
 //go:nosplit
 func (self class) ClassGetPropertyDefaultValue(class_ String.Name, property String.Name) variant.Any { //gd:ClassDB.class_get_property_default_value
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_property_default_value), gdextension.SizeVariant|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_property_default_value), gdextension.SizeVariant|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		class_   gdextension.StringName
 		property gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0])}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(property))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -640,7 +640,7 @@ func (self class) ClassHasMethod(class_ String.Name, method String.Name, no_inhe
 		class_         gdextension.StringName
 		method         gdextension.StringName
 		no_inheritance bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(method))[0]), no_inheritance}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(method)), no_inheritance}))
 	var ret = r_ret
 	return ret
 }
@@ -654,7 +654,7 @@ func (self class) ClassGetMethodArgumentCount(class_ String.Name, method String.
 		class_         gdextension.StringName
 		method         gdextension.StringName
 		no_inheritance bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(method))[0]), no_inheritance}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(method)), no_inheritance}))
 	var ret = r_ret
 	return ret
 }
@@ -665,10 +665,10 @@ Returns an array with all the methods of [param class] or its ancestry if [param
 */
 //go:nosplit
 func (self class) ClassGetMethodList(class_ String.Name, no_inheritance bool) Array.Contains[Dictionary.Any] { //gd:ClassDB.class_get_method_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_method_list), gdextension.SizeArray|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_method_list), gdextension.SizeArray|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		class_         gdextension.StringName
 		no_inheritance bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), no_inheritance}))
+	}{pointers.Get(gd.InternalStringName(class_)), no_inheritance}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -694,7 +694,7 @@ func (self class) ClassGetIntegerConstantList(class_ String.Name, no_inheritance
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_integer_constant_list), gdextension.SizePackedArray|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		class_         gdextension.StringName
 		no_inheritance bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), no_inheritance}))
+	}{pointers.Get(gd.InternalStringName(class_)), no_inheritance}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -707,7 +707,7 @@ func (self class) ClassHasIntegerConstant(class_ String.Name, name String.Name) 
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_has_integer_constant), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		class_ gdextension.StringName
 		name   gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -720,7 +720,7 @@ func (self class) ClassGetIntegerConstant(class_ String.Name, name String.Name) 
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_integer_constant), gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		class_ gdextension.StringName
 		name   gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -734,7 +734,7 @@ func (self class) ClassHasEnum(class_ String.Name, name String.Name, no_inherita
 		class_         gdextension.StringName
 		name           gdextension.StringName
 		no_inheritance bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), no_inheritance}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(name)), no_inheritance}))
 	var ret = r_ret
 	return ret
 }
@@ -747,7 +747,7 @@ func (self class) ClassGetEnumList(class_ String.Name, no_inheritance bool) Pack
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_enum_list), gdextension.SizePackedArray|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		class_         gdextension.StringName
 		no_inheritance bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), no_inheritance}))
+	}{pointers.Get(gd.InternalStringName(class_)), no_inheritance}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -761,7 +761,7 @@ func (self class) ClassGetEnumConstants(class_ String.Name, enum String.Name, no
 		class_         gdextension.StringName
 		enum           gdextension.StringName
 		no_inheritance bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(enum))[0]), no_inheritance}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(enum)), no_inheritance}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -771,11 +771,11 @@ Returns which enum the integer constant [param name] of [param class] or its anc
 */
 //go:nosplit
 func (self class) ClassGetIntegerConstantEnum(class_ String.Name, name String.Name, no_inheritance bool) String.Name { //gd:ClassDB.class_get_integer_constant_enum
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_integer_constant_enum), gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_class_get_integer_constant_enum), gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		class_         gdextension.StringName
 		name           gdextension.StringName
 		no_inheritance bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), no_inheritance}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(name)), no_inheritance}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -789,7 +789,7 @@ func (self class) IsClassEnumBitfield(class_ String.Name, enum String.Name, no_i
 		class_         gdextension.StringName
 		enum           gdextension.StringName
 		no_inheritance bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(enum))[0]), no_inheritance}))
+	}{pointers.Get(gd.InternalStringName(class_)), pointers.Get(gd.InternalStringName(enum)), no_inheritance}))
 	var ret = r_ret
 	return ret
 }
@@ -799,7 +799,7 @@ Returns whether this [param class] is enabled or not.
 */
 //go:nosplit
 func (self class) IsClassEnabled(class_ String.Name) bool { //gd:ClassDB.is_class_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_is_class_enabled), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(class_))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ClassDB.Bind_is_class_enabled), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ class_ gdextension.StringName }{pointers.Get(gd.InternalStringName(class_))}))
 	var ret = r_ret
 	return ret
 }

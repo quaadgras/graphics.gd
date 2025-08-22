@@ -92,7 +92,7 @@ var self [1]gdclass.NavigationServer2D
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.NavigationServer2D)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.NavigationServer2D)))})
 	self = *(*[1]gdclass.NavigationServer2D)(unsafe.Pointer(&obj))
 }
 
@@ -1208,7 +1208,7 @@ Returns all created navigation map [RID]s on the NavigationServer. This returns 
 */
 //go:nosplit
 func (self class) GetMaps() Array.Contains[RID.Any] { //gd:NavigationServer2D.get_maps
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_get_maps), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_get_maps), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1375,7 +1375,7 @@ Returns all navigation link [RID]s that are currently assigned to the requested 
 */
 //go:nosplit
 func (self class) MapGetLinks(mapping RID.Any) Array.Contains[RID.Any] { //gd:NavigationServer2D.map_get_links
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_map_get_links), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_map_get_links), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1385,7 +1385,7 @@ Returns all navigation regions [RID]s that are currently assigned to the request
 */
 //go:nosplit
 func (self class) MapGetRegions(mapping RID.Any) Array.Contains[RID.Any] { //gd:NavigationServer2D.map_get_regions
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_map_get_regions), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_map_get_regions), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1395,7 +1395,7 @@ Returns all navigation agents [RID]s that are currently assigned to the requeste
 */
 //go:nosplit
 func (self class) MapGetAgents(mapping RID.Any) Array.Contains[RID.Any] { //gd:NavigationServer2D.map_get_agents
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_map_get_agents), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_map_get_agents), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1405,7 +1405,7 @@ Returns all navigation obstacle [RID]s that are currently assigned to the reques
 */
 //go:nosplit
 func (self class) MapGetObstacles(mapping RID.Any) Array.Contains[RID.Any] { //gd:NavigationServer2D.map_get_obstacles
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_map_get_obstacles), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_map_get_obstacles), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1478,7 +1478,7 @@ func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2
 		parameters gdextension.Object
 		result     gdextension.Object
 		callback   gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), gdextension.Object(gd.ObjectChecked(result[0].AsObject())), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), gdextension.Object(gd.ObjectChecked(result[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -2230,7 +2230,7 @@ func (self class) AgentSetAvoidanceCallback(agent RID.Any, callback Callable.Fun
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_agent_set_avoidance_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		agent    RID.Any
 		callback gdextension.Callable
-	}{agent, gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{agent, pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -2450,8 +2450,8 @@ Sets the outline vertices for the obstacle. If the vertices are winded in clockw
 func (self class) ObstacleSetVertices(obstacle RID.Any, vertices Packed.Array[Vector2.XY]) { //gd:NavigationServer2D.obstacle_set_vertices
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_obstacle_set_vertices), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		obstacle RID.Any
-		vertices gdextension.PackedArray
-	}{obstacle, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices)))}))
+		vertices gdextension.PackedArray[Vector2.XY]
+	}{obstacle, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices))}))
 }
 
 /*
@@ -2497,7 +2497,7 @@ func (self class) ParseSourceGeometryData(navigation_polygon [1]gdclass.Navigati
 		source_geometry_data gdextension.Object
 		root_node            gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject())), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -2509,7 +2509,7 @@ func (self class) BakeFromSourceGeometryData(navigation_polygon [1]gdclass.Navig
 		navigation_polygon   gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -2521,7 +2521,7 @@ func (self class) BakeFromSourceGeometryDataAsync(navigation_polygon [1]gdclass.
 		navigation_polygon   gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -2555,7 +2555,7 @@ func (self class) SourceGeometryParserSetCallback(parser RID.Any, callback Calla
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_source_geometry_parser_set_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		parser   RID.Any
 		callback gdextension.Callable
-	}{parser, gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{parser, pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -2565,9 +2565,9 @@ Path simplification can be helpful to mitigate various path following issues tha
 //go:nosplit
 func (self class) SimplifyPath(path Packed.Array[Vector2.XY], epsilon float64) Packed.Array[Vector2.XY] { //gd:NavigationServer2D.simplify_path
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer2D.Bind_simplify_path), gdextension.SizePackedArray|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
-		path    gdextension.PackedArray
+		path    gdextension.PackedArray[Vector2.XY]
 		epsilon float64
-	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](path))), epsilon}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](path)), epsilon}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

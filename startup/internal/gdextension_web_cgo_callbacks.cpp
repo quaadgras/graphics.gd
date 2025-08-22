@@ -37,7 +37,7 @@ uintptr_t go_on_callable_stringify(uintptr_t p0, void* p1) {
 int64_t go_on_callable_get_argument_count(uintptr_t p0, void* p1) {
 	return Go.call<int64_t>("on_callable_get_argument_count",p0, uintptr_t(p1));
 }
-void go_on_editor_class_in_use_detection(uintptr_t p0, uintptr_t p1, void* p2) {
+void go_on_editor_class_in_use_detection(double p0, double p1, void* p2) {
 	Go.call<void>("on_editor_class_in_use_detection",p0,p1, uintptr_t(p2));
 }
 uintptr_t go_on_extension_binding_created(uintptr_t p0) {

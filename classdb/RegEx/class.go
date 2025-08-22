@@ -258,9 +258,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RegEx"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RegEx"))))})}
 	casted := Instance{*(*gdclass.RegEx)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -269,10 +270,10 @@ Creates and compiles a new [RegEx] object. See also [method compile].
 */
 //go:nosplit
 func (self class) CreateFromString(pattern String.Readable, show_error bool) [1]gdclass.RegEx { //gd:RegEx.create_from_string
-	var r_ret = gdextension.CallStatic[gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.RegEx.Bind_create_from_string), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.RegEx.Bind_create_from_string), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		pattern    gdextension.String
 		show_error bool
-	}{gdextension.String(pointers.Get(gd.InternalString(pattern))[0]), show_error}))
+	}{pointers.Get(gd.InternalString(pattern)), show_error}))
 	var ret = [1]gdclass.RegEx{gd.PointerWithOwnershipTransferredToGo[gdclass.RegEx](r_ret)}
 	return ret
 }
@@ -293,7 +294,7 @@ func (self class) Compile(pattern String.Readable, show_error bool) Error.Code {
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RegEx.Bind_compile), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		pattern    gdextension.String
 		show_error bool
-	}{gdextension.String(pointers.Get(gd.InternalString(pattern))[0]), show_error}))
+	}{pointers.Get(gd.InternalString(pattern)), show_error}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -304,11 +305,11 @@ The region to search within can be specified with [param offset] and [param end]
 */
 //go:nosplit
 func (self class) Search(subject String.Readable, offset int64, end int64) [1]gdclass.RegExMatch { //gd:RegEx.search
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RegEx.Bind_search), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RegEx.Bind_search), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		subject gdextension.String
 		offset  int64
 		end     int64
-	}{gdextension.String(pointers.Get(gd.InternalString(subject))[0]), offset, end}))
+	}{pointers.Get(gd.InternalString(subject)), offset, end}))
 	var ret = [1]gdclass.RegExMatch{gd.PointerWithOwnershipTransferredToGo[gdclass.RegExMatch](r_ret)}
 	return ret
 }
@@ -319,11 +320,11 @@ The region to search within can be specified with [param offset] and [param end]
 */
 //go:nosplit
 func (self class) SearchAll(subject String.Readable, offset int64, end int64) Array.Contains[[1]gdclass.RegExMatch] { //gd:RegEx.search_all
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RegEx.Bind_search_all), gdextension.SizeArray|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RegEx.Bind_search_all), gdextension.SizeArray|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		subject gdextension.String
 		offset  int64
 		end     int64
-	}{gdextension.String(pointers.Get(gd.InternalString(subject))[0]), offset, end}))
+	}{pointers.Get(gd.InternalString(subject)), offset, end}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.RegExMatch]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -334,13 +335,13 @@ The region to search within can be specified with [param offset] and [param end]
 */
 //go:nosplit
 func (self class) Sub(subject String.Readable, replacement String.Readable, all bool, offset int64, end int64) String.Readable { //gd:RegEx.sub
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RegEx.Bind_sub), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RegEx.Bind_sub), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		subject     gdextension.String
 		replacement gdextension.String
 		all         bool
 		offset      int64
 		end         int64
-	}{gdextension.String(pointers.Get(gd.InternalString(subject))[0]), gdextension.String(pointers.Get(gd.InternalString(replacement))[0]), all, offset, end}))
+	}{pointers.Get(gd.InternalString(subject)), pointers.Get(gd.InternalString(replacement)), all, offset, end}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -360,7 +361,7 @@ Returns the original search pattern that was compiled.
 */
 //go:nosplit
 func (self class) GetPattern() String.Readable { //gd:RegEx.get_pattern
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RegEx.Bind_get_pattern), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RegEx.Bind_get_pattern), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

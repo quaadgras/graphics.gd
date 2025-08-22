@@ -100,9 +100,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ConvexPolygonShape3D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ConvexPolygonShape3D"))))})}
 	casted := Instance{*(*gdclass.ConvexPolygonShape3D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -116,7 +117,9 @@ func (self Instance) SetPoints(value []Vector3.XYZ) {
 
 //go:nosplit
 func (self class) SetPoints(points Packed.Array[Vector3.XYZ]) { //gd:ConvexPolygonShape3D.set_points
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConvexPolygonShape3D.Bind_set_points), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ points gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConvexPolygonShape3D.Bind_set_points), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		points gdextension.PackedArray[Vector3.XYZ]
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points))}))
 }
 
 //go:nosplit

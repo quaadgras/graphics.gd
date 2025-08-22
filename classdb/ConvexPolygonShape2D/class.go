@@ -107,9 +107,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ConvexPolygonShape2D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ConvexPolygonShape2D"))))})}
 	casted := Instance{*(*gdclass.ConvexPolygonShape2D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -126,12 +127,16 @@ Based on the set of points provided, this assigns the [member points] property u
 */
 //go:nosplit
 func (self class) SetPointCloud(point_cloud Packed.Array[Vector2.XY]) { //gd:ConvexPolygonShape2D.set_point_cloud
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConvexPolygonShape2D.Bind_set_point_cloud), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ point_cloud gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](point_cloud)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConvexPolygonShape2D.Bind_set_point_cloud), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		point_cloud gdextension.PackedArray[Vector2.XY]
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](point_cloud))}))
 }
 
 //go:nosplit
 func (self class) SetPoints(points Packed.Array[Vector2.XY]) { //gd:ConvexPolygonShape2D.set_points
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConvexPolygonShape2D.Bind_set_points), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ points gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConvexPolygonShape2D.Bind_set_points), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		points gdextension.PackedArray[Vector2.XY]
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))}))
 }
 
 //go:nosplit

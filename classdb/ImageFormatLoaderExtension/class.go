@@ -123,10 +123,10 @@ Loads the content of [param fileaccess] into the provided [param image].
 */
 func (Instance) _load_image(impl func(ptr unsafe.Pointer, image Image.Instance, fileaccess FileAccess.Instance, flags ImageFormatLoader.LoaderFlags, scale Float.X) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(image[0])
-		var fileaccess = [1]gdclass.FileAccess{pointers.New[gdclass.FileAccess]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
+		var fileaccess = [1]gdclass.FileAccess{pointers.New[gdclass.FileAccess]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
 
 		defer pointers.End(fileaccess[0])
 		var flags = gd.UnsafeGet[ImageFormatLoader.LoaderFlags](p_args, 2)
@@ -170,9 +170,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ImageFormatLoaderExtension"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ImageFormatLoaderExtension"))))})}
 	casted := Instance{*(*gdclass.ImageFormatLoaderExtension)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -197,10 +198,10 @@ Loads the content of [param fileaccess] into the provided [param image].
 */
 func (class) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags ImageFormatLoader.LoaderFlags, scale float64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(image[0])
-		var fileaccess = [1]gdclass.FileAccess{pointers.New[gdclass.FileAccess]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 1))})}
+		var fileaccess = [1]gdclass.FileAccess{pointers.New[gdclass.FileAccess]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
 
 		defer pointers.End(fileaccess[0])
 		var flags = gd.UnsafeGet[ImageFormatLoader.LoaderFlags](p_args, 2)

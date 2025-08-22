@@ -284,9 +284,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ENetConnection"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ENetConnection"))))})}
 	casted := Instance{*(*gdclass.ENetConnection)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -303,7 +304,7 @@ func (self class) CreateHostBound(bind_address String.Readable, bind_port int64,
 		max_channels  int64
 		in_bandwidth  int64
 		out_bandwidth int64
-	}{gdextension.String(pointers.Get(gd.InternalString(bind_address))[0]), bind_port, max_peers, max_channels, in_bandwidth, out_bandwidth}))
+	}{pointers.Get(gd.InternalString(bind_address)), bind_port, max_peers, max_channels, in_bandwidth, out_bandwidth}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -339,12 +340,12 @@ Initiates a connection to a foreign [param address] using the specified [param p
 */
 //go:nosplit
 func (self class) ConnectToHost(address String.Readable, port int64, channels int64, data int64) [1]gdclass.ENetPacketPeer { //gd:ENetConnection.connect_to_host
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetConnection.Bind_connect_to_host), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetConnection.Bind_connect_to_host), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		address  gdextension.String
 		port     int64
 		channels int64
 		data     int64
-	}{gdextension.String(pointers.Get(gd.InternalString(address))[0]), port, channels, data}))
+	}{pointers.Get(gd.InternalString(address)), port, channels, data}))
 	var ret = [1]gdclass.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetPacketPeer](r_ret)}
 	return ret
 }
@@ -356,7 +357,7 @@ Call this function regularly to handle connections, disconnections, and to recei
 */
 //go:nosplit
 func (self class) Service(timeout int64) Array.Any { //gd:ENetConnection.service
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetConnection.Bind_service), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ timeout int64 }{timeout}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetConnection.Bind_service), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ timeout int64 }{timeout}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -395,9 +396,9 @@ Queues a [param packet] to be sent to all peers associated with the host over th
 func (self class) Broadcast(channel int64, packet Packed.Bytes, flags int64) { //gd:ENetConnection.broadcast
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetConnection.Bind_broadcast), 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		channel int64
-		packet  gdextension.PackedArray
+		packet  gdextension.PackedArray[byte]
 		flags   int64
-	}{channel, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet)))), flags}))
+	}{channel, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet))), flags}))
 }
 
 /*
@@ -428,7 +429,7 @@ func (self class) DtlsClientSetup(hostname String.Readable, client_options [1]gd
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetConnection.Bind_dtls_client_setup), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		hostname       gdextension.String
 		client_options gdextension.Object
-	}{gdextension.String(pointers.Get(gd.InternalString(hostname))[0]), gdextension.Object(gd.ObjectChecked(client_options[0].AsObject()))}))
+	}{pointers.Get(gd.InternalString(hostname)), gdextension.Object(gd.ObjectChecked(client_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -478,7 +479,7 @@ Returns the list of peers associated with this host.
 */
 //go:nosplit
 func (self class) GetPeers() Array.Contains[[1]gdclass.ENetPacketPeer] { //gd:ENetConnection.get_peers
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetConnection.Bind_get_peers), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetConnection.Bind_get_peers), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.ENetPacketPeer]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -493,8 +494,8 @@ func (self class) SocketSend(destination_address String.Readable, destination_po
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetConnection.Bind_socket_send), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
 		destination_address gdextension.String
 		destination_port    int64
-		packet              gdextension.PackedArray
-	}{gdextension.String(pointers.Get(gd.InternalString(destination_address))[0]), destination_port, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet))))}))
+		packet              gdextension.PackedArray[byte]
+	}{pointers.Get(gd.InternalString(destination_address)), destination_port, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet)))}))
 }
 func (self class) AsENetConnection() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsENetConnection() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

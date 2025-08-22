@@ -307,9 +307,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VideoStreamPlayback"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VideoStreamPlayback"))))})}
 	casted := Instance{*(*gdclass.VideoStreamPlayback)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -466,9 +467,9 @@ Render [param num_frames] audio frames (of [method _get_channels] floats each) f
 func (self class) MixAudio(num_frames int64, buffer Packed.Array[float32], offset int64) int64 { //gd:VideoStreamPlayback.mix_audio
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayback.Bind_mix_audio), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		num_frames int64
-		buffer     gdextension.PackedArray
+		buffer     gdextension.PackedArray[float32]
 		offset     int64
-	}{num_frames, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer))), offset}))
+	}{num_frames, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer)), offset}))
 	var ret = r_ret
 	return ret
 }

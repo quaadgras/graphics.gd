@@ -79,7 +79,7 @@ var self [1]gdclass.OS
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.OS)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.OS)))})
 	self = *(*[1]gdclass.OS)(unsafe.Pointer(&obj))
 }
 
@@ -1215,7 +1215,7 @@ Returns the list of certification authorities trusted by the operating system as
 */
 //go:nosplit
 func (self class) GetSystemCaCertificates() String.Readable { //gd:OS.get_system_ca_certificates
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_system_ca_certificates), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_system_ca_certificates), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1261,7 +1261,7 @@ func (self class) Alert(text String.Readable, title String.Readable) { //gd:OS.a
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_alert), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		text  gdextension.String
 		title gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.String(pointers.Get(gd.InternalString(title))[0])}))
+	}{pointers.Get(gd.InternalString(text)), pointers.Get(gd.InternalString(title))}))
 }
 
 /*
@@ -1270,7 +1270,7 @@ Crashes the engine (or the editor if called within a [code]@tool[/code] script).
 */
 //go:nosplit
 func (self class) Crash(message String.Readable) { //gd:OS.crash
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_crash), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ message gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(message))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_crash), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ message gdextension.String }{pointers.Get(gd.InternalString(message))}))
 }
 
 //go:nosplit
@@ -1325,7 +1325,7 @@ Returns the full name of the CPU model on the host machine (e.g. [code]"Intel(R)
 */
 //go:nosplit
 func (self class) GetProcessorName() String.Readable { //gd:OS.get_processor_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_processor_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_processor_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1349,12 +1349,12 @@ The following aliases can be used to request default fonts: "sans-serif", "serif
 */
 //go:nosplit
 func (self class) GetSystemFontPath(font_name String.Readable, weight int64, stretch int64, italic bool) String.Readable { //gd:OS.get_system_font_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_system_font_path), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_system_font_path), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		font_name gdextension.String
 		weight    int64
 		stretch   int64
 		italic    bool
-	}{gdextension.String(pointers.Get(gd.InternalString(font_name))[0]), weight, stretch, italic}))
+	}{pointers.Get(gd.InternalString(font_name)), weight, stretch, italic}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1376,7 +1376,7 @@ func (self class) GetSystemFontPathForText(font_name String.Readable, text Strin
 		weight    int64
 		stretch   int64
 		italic    bool
-	}{gdextension.String(pointers.Get(gd.InternalString(font_name))[0]), gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.String(pointers.Get(gd.InternalString(locale))[0]), gdextension.String(pointers.Get(gd.InternalString(script))[0]), weight, stretch, italic}))
+	}{pointers.Get(gd.InternalString(font_name)), pointers.Get(gd.InternalString(text)), pointers.Get(gd.InternalString(locale)), pointers.Get(gd.InternalString(script)), weight, stretch, italic}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1387,7 +1387,7 @@ Returns the file path to the current engine executable.
 */
 //go:nosplit
 func (self class) GetExecutablePath() String.Readable { //gd:OS.get_executable_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_executable_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_executable_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1403,7 +1403,7 @@ Reads a user input as a UTF-8 encoded string from the standard input. This opera
 */
 //go:nosplit
 func (self class) ReadStringFromStdin(buffer_size int64) String.Readable { //gd:OS.read_string_from_stdin
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_read_string_from_stdin), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ buffer_size int64 }{buffer_size}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_read_string_from_stdin), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ buffer_size int64 }{buffer_size}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1492,11 +1492,11 @@ OS.Execute("CMD.exe", ["/C", "cd %TEMP% && dir"], output);
 func (self class) Execute(path String.Readable, arguments Packed.Strings, output Array.Any, read_stderr bool, open_console bool) int64 { //gd:OS.execute
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_execute), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		path         gdextension.String
-		arguments    gdextension.PackedArray
+		arguments    gdextension.PackedArray[gdextension.String]
 		output       gdextension.Array
 		read_stderr  bool
 		open_console bool
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(arguments))), gdextension.Array(pointers.Get(gd.InternalArray(output))[0]), read_stderr, open_console}))
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalPackedStrings(arguments)), pointers.Get(gd.InternalArray(output)), read_stderr, open_console}))
 	var ret = r_ret
 	return ret
 }
@@ -1516,11 +1516,11 @@ If the process cannot be created, this method returns an empty [Dictionary]. Oth
 */
 //go:nosplit
 func (self class) ExecuteWithPipe(path String.Readable, arguments Packed.Strings, blocking bool) Dictionary.Any { //gd:OS.execute_with_pipe
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_execute_with_pipe), gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_execute_with_pipe), gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		path      gdextension.String
-		arguments gdextension.PackedArray
+		arguments gdextension.PackedArray[gdextension.String]
 		blocking  bool
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(arguments))), blocking}))
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalPackedStrings(arguments)), blocking}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -1546,9 +1546,9 @@ See [method execute] if you wish to run an external command and retrieve the res
 func (self class) CreateProcess(path String.Readable, arguments Packed.Strings, open_console bool) int64 { //gd:OS.create_process
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_create_process), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		path         gdextension.String
-		arguments    gdextension.PackedArray
+		arguments    gdextension.PackedArray[gdextension.String]
 		open_console bool
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(arguments))), open_console}))
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalPackedStrings(arguments)), open_console}))
 	var ret = r_ret
 	return ret
 }
@@ -1561,7 +1561,9 @@ See [method create_process] if you wish to run a different process.
 */
 //go:nosplit
 func (self class) CreateInstance(arguments Packed.Strings) int64 { //gd:OS.create_instance
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_create_instance), gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ arguments gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(arguments)))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_create_instance), gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		arguments gdextension.PackedArray[gdextension.String]
+	}{pointers.Get(gd.InternalPackedStrings(arguments))}))
 	var ret = r_ret
 	return ret
 }
@@ -1590,7 +1592,7 @@ Use [method ProjectSettings.globalize_path] to convert a [code]res://[/code] or 
 */
 //go:nosplit
 func (self class) ShellOpen(uri String.Readable) Error.Code { //gd:OS.shell_open
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_shell_open), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ uri gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(uri))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_shell_open), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ uri gdextension.String }{pointers.Get(gd.InternalString(uri))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1606,7 +1608,7 @@ func (self class) ShellShowInFileManager(file_or_dir_path String.Readable, open_
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_shell_show_in_file_manager), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		file_or_dir_path gdextension.String
 		open_folder      bool
-	}{gdextension.String(pointers.Get(gd.InternalString(file_or_dir_path))[0]), open_folder}))
+	}{pointers.Get(gd.InternalString(file_or_dir_path)), open_folder}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1652,7 +1654,7 @@ Returns [code]true[/code] if the environment variable with the name [param varia
 */
 //go:nosplit
 func (self class) HasEnvironment(variable String.Readable) bool { //gd:OS.has_environment
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_has_environment), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ variable gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(variable))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_has_environment), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ variable gdextension.String }{pointers.Get(gd.InternalString(variable))}))
 	var ret = r_ret
 	return ret
 }
@@ -1664,7 +1666,7 @@ Returns the value of the given environment variable, or an empty string if [para
 */
 //go:nosplit
 func (self class) GetEnvironment(variable String.Readable) String.Readable { //gd:OS.get_environment
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_environment), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ variable gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(variable))[0])}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_environment), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ variable gdextension.String }{pointers.Get(gd.InternalString(variable))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1678,7 +1680,7 @@ func (self class) SetEnvironment(variable String.Readable, value String.Readable
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_set_environment), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		variable gdextension.String
 		value    gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(variable))[0]), gdextension.String(pointers.Get(gd.InternalString(value))[0])}))
+	}{pointers.Get(gd.InternalString(variable)), pointers.Get(gd.InternalString(value))}))
 }
 
 /*
@@ -1687,7 +1689,7 @@ Removes the given environment variable from the current environment, if it exist
 */
 //go:nosplit
 func (self class) UnsetEnvironment(variable String.Readable) { //gd:OS.unset_environment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_unset_environment), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ variable gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(variable))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_unset_environment), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ variable gdextension.String }{pointers.Get(gd.InternalString(variable))}))
 }
 
 /*
@@ -1748,7 +1750,7 @@ switch (OS.GetName())
 */
 //go:nosplit
 func (self class) GetName() String.Readable { //gd:OS.get_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1761,7 +1763,7 @@ Returns the same value as [method get_name] for other platforms.
 */
 //go:nosplit
 func (self class) GetDistributionName() String.Readable { //gd:OS.get_distribution_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_distribution_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_distribution_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1776,7 +1778,7 @@ Returns the exact production and build version of the operating system. This is 
 */
 //go:nosplit
 func (self class) GetVersion() String.Readable { //gd:OS.get_version
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_version), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_version), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1787,7 +1789,7 @@ Returns the branded version used in marketing, followed by the build number (on 
 */
 //go:nosplit
 func (self class) GetVersionAlias() String.Readable { //gd:OS.get_version_alias
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_version_alias), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_version_alias), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1878,8 +1880,8 @@ This method can be used to apply setting changes that require a restart. See als
 func (self class) SetRestartOnExit(restart bool, arguments Packed.Strings) { //gd:OS.set_restart_on_exit
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_set_restart_on_exit), 0|(gdextension.SizeBool<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		restart   bool
-		arguments gdextension.PackedArray
-	}{restart, gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(arguments)))}))
+		arguments gdextension.PackedArray[gdextension.String]
+	}{restart, pointers.Get(gd.InternalPackedStrings(arguments))}))
 }
 
 /*
@@ -1933,7 +1935,7 @@ If you want only the language code and not the fully specified locale from the O
 */
 //go:nosplit
 func (self class) GetLocale() String.Readable { //gd:OS.get_locale
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_locale), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_locale), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1944,7 +1946,7 @@ This can be used to narrow down fully specified locale strings to only the "comm
 */
 //go:nosplit
 func (self class) GetLocaleLanguage() String.Readable { //gd:OS.get_locale_language
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_locale_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_locale_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1955,7 +1957,7 @@ Returns the model name of the current device.
 */
 //go:nosplit
 func (self class) GetModelName() String.Readable { //gd:OS.get_model_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_model_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_model_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2022,7 +2024,7 @@ Returns a [Dictionary] containing information about the current memory with the 
 */
 //go:nosplit
 func (self class) GetMemoryInfo() Dictionary.Any { //gd:OS.get_memory_info
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_memory_info), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_memory_info), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -2046,7 +2048,7 @@ OS.MoveToTrash(ProjectSettings.GlobalizePath(fileToRemove));
 */
 //go:nosplit
 func (self class) MoveToTrash(path String.Readable) Error.Code { //gd:OS.move_to_trash
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_move_to_trash), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_move_to_trash), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -2063,7 +2065,7 @@ Not to be confused with [method get_data_dir], which returns the [i]global[/i] (
 */
 //go:nosplit
 func (self class) GetUserDataDir() String.Readable { //gd:OS.get_user_data_dir
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_user_data_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_user_data_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2075,7 +2077,7 @@ Returns the path to commonly used folders across different platforms, as defined
 */
 //go:nosplit
 func (self class) GetSystemDir(dir SystemDir, shared_storage bool) String.Readable { //gd:OS.get_system_dir
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_system_dir), gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_system_dir), gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		dir            SystemDir
 		shared_storage bool
 	}{dir, shared_storage}))
@@ -2090,7 +2092,7 @@ Not to be confused with [method get_user_data_dir], which returns the [i]project
 */
 //go:nosplit
 func (self class) GetConfigDir() String.Readable { //gd:OS.get_config_dir
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_config_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_config_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2102,7 +2104,7 @@ Not to be confused with [method get_user_data_dir], which returns the [i]project
 */
 //go:nosplit
 func (self class) GetDataDir() String.Readable { //gd:OS.get_data_dir
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_data_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_data_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2114,7 +2116,7 @@ Not to be confused with [method get_user_data_dir], which returns the [i]project
 */
 //go:nosplit
 func (self class) GetCacheDir() String.Readable { //gd:OS.get_cache_dir
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_cache_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_cache_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2124,7 +2126,7 @@ Returns the [i]global[/i] temporary data directory according to the operating sy
 */
 //go:nosplit
 func (self class) GetTempDir() String.Readable { //gd:OS.get_temp_dir
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_temp_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_temp_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2136,7 +2138,7 @@ Returns a string that is unique to the device.
 */
 //go:nosplit
 func (self class) GetUniqueId() String.Readable { //gd:OS.get_unique_id
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_unique_id), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_unique_id), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2159,7 +2161,7 @@ See also [method find_keycode_from_string], [member InputEventKey.keycode], and 
 */
 //go:nosplit
 func (self class) GetKeycodeString(code Input.Key) String.Readable { //gd:OS.get_keycode_string
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_keycode_string), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ code Input.Key }{code}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_get_keycode_string), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ code Input.Key }{code}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2208,7 +2210,7 @@ See also [method get_keycode_string].
 */
 //go:nosplit
 func (self class) FindKeycodeFromString(s String.Readable) Input.Key { //gd:OS.find_keycode_from_string
-	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_find_keycode_from_string), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(s))[0])}))
+	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_find_keycode_from_string), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))}))
 	var ret = r_ret
 	return ret
 }
@@ -2227,7 +2229,7 @@ Assigns the given name to the current thread. Returns [constant ERR_UNAVAILABLE]
 */
 //go:nosplit
 func (self class) SetThreadName(name String.Readable) Error.Code { //gd:OS.set_thread_name
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_set_thread_name), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_set_thread_name), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -2261,7 +2263,7 @@ Returns [code]true[/code] if the feature for the given feature tag is supported 
 */
 //go:nosplit
 func (self class) HasFeature(tag_name String.Readable) bool { //gd:OS.has_feature
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_has_feature), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ tag_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(tag_name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_has_feature), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ tag_name gdextension.String }{pointers.Get(gd.InternalString(tag_name))}))
 	var ret = r_ret
 	return ret
 }
@@ -2287,7 +2289,7 @@ The [param name] must be the full permission name. For example:
 */
 //go:nosplit
 func (self class) RequestPermission(name String.Readable) bool { //gd:OS.request_permission
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_request_permission), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OS.Bind_request_permission), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }

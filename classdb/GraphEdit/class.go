@@ -172,7 +172,7 @@ func _is_in_input_hotzone(in_node, in_port, mouse_position):
 */
 func (Instance) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[int64](p_args, 1)
 		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
@@ -198,7 +198,7 @@ func _is_in_output_hotzone(in_node, in_port, mouse_position):
 */
 func (Instance) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[int64](p_args, 1)
 		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
@@ -249,10 +249,10 @@ public override bool _IsNodeHoverValid(StringName fromNode, int fromPort, String
 */
 func (Instance) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node string, from_port int, to_node string, to_port int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(from_node))
 		var from_port = gd.UnsafeGet[int64](p_args, 1)
-		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2)))))
+		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 2)))))
 		defer pointers.End(gd.InternalStringName(to_node))
 		var to_port = gd.UnsafeGet[int64](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -513,8 +513,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("GraphEdit"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("GraphEdit"))))})}
 	casted := Instance{*(*gdclass.GraphEdit)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -727,7 +728,7 @@ func _is_in_input_hotzone(in_node, in_port, mouse_position):
 */
 func (class) _is_in_input_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Object, in_port int64, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[int64](p_args, 1)
 		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
@@ -753,7 +754,7 @@ func _is_in_output_hotzone(in_node, in_port, mouse_position):
 */
 func (class) _is_in_output_hotzone(impl func(ptr unsafe.Pointer, in_node [1]gd.Object, in_port int64, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var in_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(in_node[0])
 		var in_port = gd.UnsafeGet[int64](p_args, 1)
 		var mouse_position = gd.UnsafeGet[Vector2.XY](p_args, 2)
@@ -804,10 +805,10 @@ public override bool _IsNodeHoverValid(StringName fromNode, int fromPort, String
 */
 func (class) _is_node_hover_valid(impl func(ptr unsafe.Pointer, from_node String.Name, from_port int64, to_node String.Name, to_port int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 0)))))
+		var from_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(from_node))
 		var from_port = gd.UnsafeGet[int64](p_args, 1)
-		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[[1]gd.EnginePointer](p_args, 2)))))
+		var to_node = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 2)))))
 		defer pointers.End(gd.InternalStringName(to_node))
 		var to_port = gd.UnsafeGet[int64](p_args, 3)
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -828,7 +829,7 @@ func (self class) ConnectNode(from_node String.Name, from_port int64, to_node St
 		to_node    gdextension.StringName
 		to_port    int64
 		keep_alive bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(from_node))[0]), from_port, gdextension.StringName(pointers.Get(gd.InternalStringName(to_node))[0]), to_port, keep_alive}))
+	}{pointers.Get(gd.InternalStringName(from_node)), from_port, pointers.Get(gd.InternalStringName(to_node)), to_port, keep_alive}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -843,7 +844,7 @@ func (self class) IsNodeConnected(from_node String.Name, from_port int64, to_nod
 		from_port int64
 		to_node   gdextension.StringName
 		to_port   int64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(from_node))[0]), from_port, gdextension.StringName(pointers.Get(gd.InternalStringName(to_node))[0]), to_port}))
+	}{pointers.Get(gd.InternalStringName(from_node)), from_port, pointers.Get(gd.InternalStringName(to_node)), to_port}))
 	var ret = r_ret
 	return ret
 }
@@ -858,7 +859,7 @@ func (self class) DisconnectNode(from_node String.Name, from_port int64, to_node
 		from_port int64
 		to_node   gdextension.StringName
 		to_port   int64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(from_node))[0]), from_port, gdextension.StringName(pointers.Get(gd.InternalStringName(to_node))[0]), to_port}))
+	}{pointers.Get(gd.InternalStringName(from_node)), from_port, pointers.Get(gd.InternalStringName(to_node)), to_port}))
 }
 
 /*
@@ -872,17 +873,17 @@ func (self class) SetConnectionActivity(from_node String.Name, from_port int64, 
 		to_node   gdextension.StringName
 		to_port   int64
 		amount    float64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(from_node))[0]), from_port, gdextension.StringName(pointers.Get(gd.InternalStringName(to_node))[0]), to_port, amount}))
+	}{pointers.Get(gd.InternalStringName(from_node)), from_port, pointers.Get(gd.InternalStringName(to_node)), to_port, amount}))
 }
 
 //go:nosplit
 func (self class) SetConnections(connections Array.Contains[Dictionary.Any]) { //gd:GraphEdit.set_connections
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_set_connections), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ connections gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(connections))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_set_connections), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ connections gdextension.Array }{pointers.Get(gd.InternalArray(connections))}))
 }
 
 //go:nosplit
 func (self class) GetConnectionList() Array.Contains[Dictionary.Any] { //gd:GraphEdit.get_connection_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_get_connection_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_get_connection_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -895,7 +896,7 @@ func (self class) GetConnectionCount(from_node String.Name, from_port int64) int
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_get_connection_count), gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		from_node gdextension.StringName
 		from_port int64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(from_node))[0]), from_port}))
+	}{pointers.Get(gd.InternalStringName(from_node)), from_port}))
 	var ret = r_ret
 	return ret
 }
@@ -921,7 +922,7 @@ var connection = get_closest_connection_at_point(mouse_event.get_position())
 */
 //go:nosplit
 func (self class) GetClosestConnectionAtPoint(point Vector2.XY, max_distance float64) Dictionary.Any { //gd:GraphEdit.get_closest_connection_at_point
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_get_closest_connection_at_point), gdextension.SizeDictionary|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_get_closest_connection_at_point), gdextension.SizeDictionary|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		point        Vector2.XY
 		max_distance float64
 	}{point, max_distance}))
@@ -944,7 +945,7 @@ A connection is represented as a [Dictionary] in the form of:
 */
 //go:nosplit
 func (self class) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) Array.Contains[Dictionary.Any] { //gd:GraphEdit.get_connections_intersecting_with_rect
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_get_connections_intersecting_with_rect), gdextension.SizeArray|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_get_connections_intersecting_with_rect), gdextension.SizeArray|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1070,7 +1071,7 @@ func (self class) AttachGraphElementToFrame(element String.Name, frame_ String.N
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_attach_graph_element_to_frame), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		element gdextension.StringName
 		frame_  gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(element))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(frame_))[0])}))
+	}{pointers.Get(gd.InternalStringName(element)), pointers.Get(gd.InternalStringName(frame_))}))
 }
 
 /*
@@ -1078,7 +1079,7 @@ Detaches the [param element] [GraphElement] from the [GraphFrame] it is currentl
 */
 //go:nosplit
 func (self class) DetachGraphElementFromFrame(element String.Name) { //gd:GraphEdit.detach_graph_element_from_frame
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_detach_graph_element_from_frame), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ element gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(element))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_detach_graph_element_from_frame), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ element gdextension.StringName }{pointers.Get(gd.InternalStringName(element))}))
 }
 
 /*
@@ -1086,7 +1087,7 @@ Returns the [GraphFrame] that contains the [GraphElement] with the given name.
 */
 //go:nosplit
 func (self class) GetElementFrame(element String.Name) [1]gdclass.GraphFrame { //gd:GraphEdit.get_element_frame
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_get_element_frame), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ element gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(element))[0])}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_get_element_frame), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ element gdextension.StringName }{pointers.Get(gd.InternalStringName(element))}))
 	var ret = [1]gdclass.GraphFrame{gd.PointerLifetimeBoundTo[gdclass.GraphFrame](self.AsObject(), r_ret)}
 	return ret
 }
@@ -1096,7 +1097,7 @@ Returns an array of node names that are attached to the [GraphFrame] with the gi
 */
 //go:nosplit
 func (self class) GetAttachedNodesOfFrame(frame_ String.Name) Array.Contains[String.Name] { //gd:GraphEdit.get_attached_nodes_of_frame
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_get_attached_nodes_of_frame), gdextension.SizeArray|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ frame_ gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(frame_))[0])}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_get_attached_nodes_of_frame), gdextension.SizeArray|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ frame_ gdextension.StringName }{pointers.Get(gd.InternalStringName(frame_))}))
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1371,7 +1372,7 @@ Gets the [HBoxContainer] that contains the zooming and grid snap controls in the
 */
 //go:nosplit
 func (self class) GetMenuHbox() [1]gdclass.HBoxContainer { //gd:GraphEdit.get_menu_hbox
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_get_menu_hbox), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphEdit.Bind_get_menu_hbox), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.HBoxContainer{gd.PointerLifetimeBoundTo[gdclass.HBoxContainer](self.AsObject(), r_ret)}
 	return ret
 }

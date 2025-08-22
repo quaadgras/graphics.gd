@@ -437,9 +437,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MeshDataTool"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("MeshDataTool"))))})}
 	casted := Instance{*(*gdclass.MeshDataTool)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -651,8 +652,8 @@ Sets the bones of the given vertex.
 func (self class) SetVertexBones(idx int64, bones Packed.Array[int32]) { //gd:MeshDataTool.set_vertex_bones
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshDataTool.Bind_set_vertex_bones), 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		idx   int64
-		bones gdextension.PackedArray
-	}{idx, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bones)))}))
+		bones gdextension.PackedArray[int32]
+	}{idx, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](bones))}))
 }
 
 /*
@@ -672,8 +673,8 @@ Sets the bone weights of the given vertex.
 func (self class) SetVertexWeights(idx int64, weights Packed.Array[float32]) { //gd:MeshDataTool.set_vertex_weights
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshDataTool.Bind_set_vertex_weights), 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		idx     int64
-		weights gdextension.PackedArray
-	}{idx, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights)))}))
+		weights gdextension.PackedArray[float32]
+	}{idx, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights))}))
 }
 
 /*
@@ -702,7 +703,7 @@ Returns the metadata associated with the given vertex.
 */
 //go:nosplit
 func (self class) GetVertexMeta(idx int64) variant.Any { //gd:MeshDataTool.get_vertex_meta
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshDataTool.Bind_get_vertex_meta), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshDataTool.Bind_get_vertex_meta), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -767,7 +768,7 @@ Returns meta information assigned to given edge.
 */
 //go:nosplit
 func (self class) GetEdgeMeta(idx int64) variant.Any { //gd:MeshDataTool.get_edge_meta
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshDataTool.Bind_get_edge_meta), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshDataTool.Bind_get_edge_meta), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -828,7 +829,7 @@ Returns the metadata associated with the given face.
 */
 //go:nosplit
 func (self class) GetFaceMeta(idx int64) variant.Any { //gd:MeshDataTool.get_face_meta
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshDataTool.Bind_get_face_meta), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshDataTool.Bind_get_face_meta), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -856,7 +857,7 @@ Returns the material assigned to the [Mesh].
 */
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:MeshDataTool.get_material
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshDataTool.Bind_get_material), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshDataTool.Bind_get_material), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }

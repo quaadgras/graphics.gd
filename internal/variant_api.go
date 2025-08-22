@@ -44,21 +44,21 @@ func (variant Variant) Call(method StringName, args ...Variant) (Variant, error)
 		converted = append(converted, gdextension.Variant(pointers.Get(args[i])))
 	}
 	var err gdextension.CallError
-	gdextension.Host.Variants.Call(pointers.Get(variant), gdextension.StringName(pointers.Get(method)[0]), gdextension.CallReturns[gdextension.Variant](&raw), len(args), gdextension.CallAccepts[gdextension.Variant](&converted[0]), gdextension.CallReturns[gdextension.CallError](&err))
+	gdextension.Host.Variants.Call(pointers.Get(variant), pointers.Get(method), gdextension.CallReturns[gdextension.Variant](&raw), len(args), gdextension.CallAccepts[gdextension.Variant](&converted[0]), gdextension.CallReturns[gdextension.CallError](&err))
 	return pointers.New[Variant](raw), err.Err()
 }
 
 // Iterator returns an iterator for the variant.
 func (variant Variant) Iterator() Iterator {
 	var err gdextension.CallError
-	var raw [3]uint64
+	var raw gdextension.Iterator
 	gdextension.Host.Iterators.Make(pointers.Get(variant), gdextension.CallReturns[gdextension.Iterator](&raw), gdextension.CallReturns[gdextension.CallError](&err))
 	if err.Type != 0 {
 		panic("failed to initialize iterator")
 	}
 	return Iterator{
 		self: variant,
-		iter: pointers.New[Variant](raw),
+		iter: pointers.New[iterator](raw),
 	}
 }
 

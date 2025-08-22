@@ -1,12 +1,28 @@
 package gd
 
 import (
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	ArrayType "graphics.gd/variant/Array"
 	ArrayVariant "graphics.gd/variant/Array"
 	PackedType "graphics.gd/variant/Packed"
 	StringType "graphics.gd/variant/String"
 )
+
+type Packed[T any, V gdextension.Packable] interface {
+	PackedByteArray | PackedInt32Array | PackedInt64Array | PackedFloat32Array |
+		PackedFloat64Array | PackedStringArray |
+		PackedVector2Array | PackedVector3Array | PackedVector4Array |
+		PackedColorArray
+
+	pointers.Generic[T, gdextension.PackedArray[V]]
+
+	New() T
+	Len() int
+	Resize(Int) Int
+	Index(Int) V
+	SetIndex(Int, V)
+}
 
 func (p PackedByteArray) New() PackedByteArray       { return NewPackedByteArray() }
 func (p PackedFloat32Array) New() PackedFloat32Array { return NewPackedFloat32Array() }
@@ -18,7 +34,7 @@ func (p PackedVector2Array) New() PackedVector2Array { return NewPackedVector2Ar
 func (p PackedVector3Array) New() PackedVector3Array { return NewPackedVector3Array() }
 func (p PackedVector4Array) New() PackedVector4Array { return NewPackedVector4Array() }
 
-func InternalPacked[P Packed[P, V], V PackedType.Type](array PackedType.Array[V]) P {
+func InternalPacked[P Packed[P, V], V gdextension.Packable](array PackedType.Array[V]) P {
 	_, state := ArrayVariant.As(ArrayType.Contains[V](array), NewPackedProxy[P, V])
 	return pointers.Load[P, PackedPointers](state)
 }
@@ -28,12 +44,12 @@ func InternalPackedStrings(array PackedType.Strings) PackedStringArray {
 	return pointers.Load[PackedStringArray](state)
 }
 
-func NewPackedProxy[P Packed[P, V], V PackedType.Type]() (PackedProxy[P, V], complex128) {
+func NewPackedProxy[P Packed[P, V], V gdextension.Packable]() (PackedProxy[P, V], complex128) {
 	array := [1]P{}[0].New()
 	return PackedProxy[P, V]{}, pointers.Pack[P, PackedPointers](array)
 }
 
-type PackedProxy[P Packed[P, V], V PackedType.Type] struct{}
+type PackedProxy[P Packed[P, V], V gdextension.Packable] struct{}
 
 func (PackedProxy[P, V]) Any(raw complex128) ArrayType.Any {
 	panic("cannot convert packed array to any array! NOT IMPLEMENTED")

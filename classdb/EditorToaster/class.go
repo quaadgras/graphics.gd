@@ -117,8 +117,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorToaster"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorToaster"))))})}
 	casted := Instance{*(*gdclass.EditorToaster)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -131,7 +132,7 @@ func (self class) PushToast(message String.Readable, severity Severity, tooltip 
 		message  gdextension.String
 		severity Severity
 		tooltip  gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(message))[0]), severity, gdextension.String(pointers.Get(gd.InternalString(tooltip))[0])}))
+	}{pointers.Get(gd.InternalString(message)), severity, pointers.Get(gd.InternalString(tooltip))}))
 }
 func (self class) AsEditorToaster() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorToaster() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

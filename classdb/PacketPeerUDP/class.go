@@ -269,9 +269,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PacketPeerUDP"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PacketPeerUDP"))))})}
 	casted := Instance{*(*gdclass.PacketPeerUDP)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -287,7 +288,7 @@ func (self class) Bind(port int64, bind_address String.Readable, recv_buf_size i
 		port          int64
 		bind_address  gdextension.String
 		recv_buf_size int64
-	}{port, gdextension.String(pointers.Get(gd.InternalString(bind_address))[0]), recv_buf_size}))
+	}{port, pointers.Get(gd.InternalString(bind_address)), recv_buf_size}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -360,7 +361,7 @@ func (self class) ConnectToHost(host String.Readable, port int64) Error.Code { /
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerUDP.Bind_connect_to_host), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		host gdextension.String
 		port int64
-	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), port}))
+	}{pointers.Get(gd.InternalString(host)), port}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -380,7 +381,7 @@ Returns the IP of the remote peer that sent the last packet(that was received wi
 */
 //go:nosplit
 func (self class) GetPacketIp() String.Readable { //gd:PacketPeerUDP.get_packet_ip
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerUDP.Bind_get_packet_ip), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerUDP.Bind_get_packet_ip), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -414,7 +415,7 @@ func (self class) SetDestAddress(host String.Readable, port int64) Error.Code { 
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerUDP.Bind_set_dest_address), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		host gdextension.String
 		port int64
-	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), port}))
+	}{pointers.Get(gd.InternalString(host)), port}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -438,7 +439,7 @@ func (self class) JoinMulticastGroup(multicast_address String.Readable, interfac
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerUDP.Bind_join_multicast_group), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		multicast_address gdextension.String
 		interface_name    gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(multicast_address))[0]), gdextension.String(pointers.Get(gd.InternalString(interface_name))[0])}))
+	}{pointers.Get(gd.InternalString(multicast_address)), pointers.Get(gd.InternalString(interface_name))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -451,7 +452,7 @@ func (self class) LeaveMulticastGroup(multicast_address String.Readable, interfa
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerUDP.Bind_leave_multicast_group), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		multicast_address gdextension.String
 		interface_name    gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(multicast_address))[0]), gdextension.String(pointers.Get(gd.InternalString(interface_name))[0])}))
+	}{pointers.Get(gd.InternalString(multicast_address)), pointers.Get(gd.InternalString(interface_name))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

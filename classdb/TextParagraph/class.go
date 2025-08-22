@@ -398,9 +398,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextParagraph"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TextParagraph"))))})}
 	casted := Instance{*(*gdclass.TextParagraph)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -530,12 +531,12 @@ func (self class) GetDirection() TextServer.Direction { //gd:TextParagraph.get_d
 
 //go:nosplit
 func (self class) SetCustomPunctuation(custom_punctuation String.Readable) { //gd:TextParagraph.set_custom_punctuation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_set_custom_punctuation), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ custom_punctuation gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(custom_punctuation))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_set_custom_punctuation), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ custom_punctuation gdextension.String }{pointers.Get(gd.InternalString(custom_punctuation))}))
 }
 
 //go:nosplit
 func (self class) GetCustomPunctuation() String.Readable { //gd:TextParagraph.get_custom_punctuation
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_get_custom_punctuation), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_get_custom_punctuation), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -582,7 +583,7 @@ Override ranges should cover full source text without overlaps. BiDi algorithm w
 */
 //go:nosplit
 func (self class) SetBidiOverride(override Array.Any) { //gd:TextParagraph.set_bidi_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_set_bidi_override), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ override gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(override))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_set_bidi_override), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ override gdextension.Array }{pointers.Get(gd.InternalArray(override))}))
 }
 
 /*
@@ -596,7 +597,7 @@ func (self class) SetDropcap(text String.Readable, font [1]gdclass.Font, font_si
 		font_size       int64
 		dropcap_margins Rect2.PositionSize
 		language        gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size, dropcap_margins, gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size, dropcap_margins, pointers.Get(gd.InternalString(language))}))
 	var ret = r_ret
 	return ret
 }
@@ -620,7 +621,7 @@ func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_siz
 		font_size int64
 		language  gdextension.String
 		meta      gdextension.Variant
-	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size, gdextension.String(pointers.Get(gd.InternalString(language))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))}))
+	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size, pointers.Get(gd.InternalString(language)), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))}))
 	var ret = r_ret
 	return ret
 }
@@ -673,7 +674,9 @@ Aligns paragraph to the given tab-stops.
 */
 //go:nosplit
 func (self class) TabAlign(tab_stops Packed.Array[float32]) { //gd:TextParagraph.tab_align
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_tab_align), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ tab_stops gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_tab_align), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		tab_stops gdextension.PackedArray[float32]
+	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))}))
 }
 
 //go:nosplit
@@ -714,12 +717,12 @@ func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:Tex
 
 //go:nosplit
 func (self class) SetEllipsisChar(char String.Readable) { //gd:TextParagraph.set_ellipsis_char
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_set_ellipsis_char), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ char gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(char))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_set_ellipsis_char), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ char gdextension.String }{pointers.Get(gd.InternalString(char))}))
 }
 
 //go:nosplit
 func (self class) GetEllipsisChar() String.Readable { //gd:TextParagraph.get_ellipsis_char
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_get_ellipsis_char), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_get_ellipsis_char), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -825,7 +828,7 @@ Returns array of inline objects in the line.
 */
 //go:nosplit
 func (self class) GetLineObjects(line int64) Array.Any { //gd:TextParagraph.get_line_objects
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_get_line_objects), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextParagraph.Bind_get_line_objects), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

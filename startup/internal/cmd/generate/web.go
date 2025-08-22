@@ -160,8 +160,12 @@ func generate_startup_js() error {
 			arg := fn.Type.In(i)
 			switch arg.Kind() {
 			case reflect.Array:
+				length := arg.Len()
+				if strings.HasPrefix(arg.Name(), "PackedArray[") {
+					length = 1
+				}
 				fmt.Fprintf(f, "%s{", toGoValue(arg))
-				for j := 0; j < arg.Len(); j++ {
+				for j := 0; j < length; j++ {
 					if j > 0 {
 						fmt.Fprint(f, ", ")
 					}
@@ -214,6 +218,9 @@ func generate_startup_js() error {
 			if arg.Kind() == reflect.Slice {
 				fmt.Fprintf(f, "\t\tbuf%d := gdmemory.CopyBufferToEngine(p%[1]d)\n", i)
 			}
+			if strings.HasPrefix(arg.Name(), "PackedArray[") {
+				fmt.Fprintf(f, "\t\tpak%d := p%[1]d.JS()\n", i)
+			}
 			if arg.Kind() == reflect.UnsafePointer {
 				switch arg {
 				case reflect.TypeFor[gdextension.CallAccepts[any]]():
@@ -243,6 +250,8 @@ func generate_startup_js() error {
 				fmt.Fprintf(f, "\t\tresult = %s(math.Float64bits(", goTypeOf(result))
 			case reflect.Int64:
 				fmt.Fprintf(f, "\t\tresult = %s(gdmemory.Int64frombits(math.Float64bits(", goTypeOf(result))
+			case reflect.Array:
+				fmt.Fprintf(f, "\t\tresult = %s{%s(", goTypeOf(result), goTypeOf(result.Elem()))
 			default:
 				fmt.Fprintf(f, "\t\tresult = %s(", goTypeOf(result))
 			}
@@ -255,11 +264,16 @@ func generate_startup_js() error {
 			arg := fn.Type.In(i)
 			switch arg.Kind() {
 			case reflect.Array:
-				for j := 0; j < arg.Len(); j++ {
-					if j > 0 {
-						fmt.Fprint(f, ", ")
+				var length = arg.Len()
+				if strings.HasPrefix(arg.Name(), "PackedArray[") {
+					fmt.Fprintf(f, "pak%d[0], pak%[1]d[1]", i)
+				} else {
+					for j := range length {
+						if j > 0 {
+							fmt.Fprint(f, ", ")
+						}
+						fmt.Fprint(f, toJSValue(fmt.Sprintf("p%d[%d]", i, j), arg.Elem()))
 					}
-					fmt.Fprint(f, toJSValue(fmt.Sprintf("p%d[%d]", i, j), arg.Elem()))
 				}
 			case reflect.String:
 				fmt.Fprintf(f, "string(p%d), len(p%[1]d)", i)
@@ -272,21 +286,37 @@ func generate_startup_js() error {
 			}
 		}
 		if result := getReturn(fn.Type); result != nil {
-			fmt.Fprint(f, ")")
+
 			switch result.Kind() {
 			case reflect.Uint8, reflect.Uintptr, reflect.Int32, reflect.Uint32, reflect.UnsafePointer, reflect.Uint16, reflect.Int:
-				fmt.Fprintf(f, ".Int()")
+				fmt.Fprintf(f, ").Int())")
 			case reflect.Float32, reflect.Float64:
-				fmt.Fprintf(f, ".Float()")
+				fmt.Fprintf(f, ").Float())")
 			case reflect.Bool:
-				fmt.Fprintf(f, ".Bool()")
+				fmt.Fprintf(f, ").Bool())")
 			case reflect.Int64:
-				fmt.Fprintf(f, ".Float()))")
+				fmt.Fprintf(f, ").Float())))")
 			case reflect.Uint64:
-				fmt.Fprintf(f, ".Float())")
+				fmt.Fprintf(f, ").Float()))")
+			case reflect.Array:
+				fmt.Fprintf(f, ")")
+				switch result.Elem().Kind() {
+				case reflect.Uint8, reflect.Uintptr, reflect.Int32, reflect.Uint32, reflect.UnsafePointer, reflect.Uint16, reflect.Int:
+					fmt.Fprintf(f, ".Int()")
+				case reflect.Float32, reflect.Float64:
+					fmt.Fprintf(f, ".Float()")
+				case reflect.Bool:
+					fmt.Fprintf(f, ".Bool()")
+				}
+				fmt.Fprintf(f, ")}")
+
+			default:
+				fmt.Fprintf(f, "))")
 			}
+		} else {
+			fmt.Fprint(f, ")")
 		}
-		fmt.Fprint(f, ")\n")
+		fmt.Fprintln(f)
 		for i := range fn.NumIn() {
 			arg := fn.Type.In(i)
 			if arg.Kind() == reflect.Slice {
@@ -344,8 +374,8 @@ func fromJS(rtype reflect.Type, value string) string {
 }
 
 func toJSValue(value string, rtype reflect.Type) string {
-	if rtype == reflect.TypeFor[gdextension.PackedArray]() {
-		return toJSValue(value, reflect.TypeFor[[2]uint32]())
+	if strings.HasPrefix(rtype.Name(), "PackedArray[") {
+		return toJSValue(value, reflect.TypeFor[[1]uint64]())
 	}
 	if rtype == reflect.TypeFor[gdextension.Pointer]() {
 		return toJSValue(value, reflect.TypeFor[uint32]())

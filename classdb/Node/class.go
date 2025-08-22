@@ -292,7 +292,7 @@ For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] 
 */
 func (Instance) _input(impl func(ptr unsafe.Pointer, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -309,7 +309,7 @@ This method can be used to handle shortcuts. For generic GUI events, use [method
 */
 func (Instance) _shortcut_input(impl func(ptr unsafe.Pointer, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -326,7 +326,7 @@ For gameplay input, this method is usually a better fit than [method _input], as
 */
 func (Instance) _unhandled_input(impl func(ptr unsafe.Pointer, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -344,7 +344,7 @@ For gameplay input, this and [method _unhandled_input] are usually a better fit 
 */
 func (Instance) _unhandled_key_input(impl func(ptr unsafe.Pointer, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1445,8 +1445,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Node"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Node"))))})}
 	casted := Instance{*(*gdclass.Node)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -1667,7 +1668,7 @@ For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] 
 */
 func (class) _input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1684,7 +1685,7 @@ This method can be used to handle shortcuts. For generic GUI events, use [method
 */
 func (class) _shortcut_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1701,7 +1702,7 @@ For gameplay input, this method is usually a better fit than [method _input], as
 */
 func (class) _unhandled_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1719,7 +1720,7 @@ For gameplay input, this and [method _unhandled_input] are usually a better fit 
 */
 func (class) _unhandled_key_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gd.EnginePointer](p_args, 0))})}
+		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(event[0])
 		self := reflect.ValueOf(class).UnsafePointer()
@@ -1752,12 +1753,12 @@ func (self class) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) 
 
 //go:nosplit
 func (self class) SetName(name String.Readable) { //gd:Node.set_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 //go:nosplit
 func (self class) GetName() String.Name { //gd:Node.get_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -1833,7 +1834,7 @@ If [param include_internal] is [code]false[/code], excludes internal children fr
 */
 //go:nosplit
 func (self class) GetChildren(include_internal bool) Array.Contains[[1]gdclass.Node] { //gd:Node.get_children
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_children), gdextension.SizeArray|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ include_internal bool }{include_internal}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_children), gdextension.SizeArray|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ include_internal bool }{include_internal}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1854,7 +1855,7 @@ var c = get_child(-1).name # c is "Last"
 */
 //go:nosplit
 func (self class) GetChild(idx int64, include_internal bool) [1]gdclass.Node { //gd:Node.get_child
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_child), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_child), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		idx              int64
 		include_internal bool
 	}{idx, include_internal}))
@@ -1867,7 +1868,7 @@ Returns [code]true[/code] if the [param path] points to a valid node. See also [
 */
 //go:nosplit
 func (self class) HasNode(path Path.ToNode) bool { //gd:Node.has_node
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_has_node), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_has_node), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -1906,7 +1907,7 @@ GetNode("/root/MyGame");
 */
 //go:nosplit
 func (self class) GetNode(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_node), gdextension.SizeObject|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_node), gdextension.SizeObject|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -1916,7 +1917,7 @@ Fetches a node by [NodePath]. Similar to [method get_node], but does not generat
 */
 //go:nosplit
 func (self class) GetNodeOrNull(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node_or_null
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_node_or_null), gdextension.SizeObject|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_node_or_null), gdextension.SizeObject|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -1926,7 +1927,7 @@ Returns this node's parent node, or [code]null[/code] if the node doesn't have a
 */
 //go:nosplit
 func (self class) GetParent() [1]gdclass.Node { //gd:Node.get_parent
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_parent), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_parent), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -1940,11 +1941,11 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 */
 //go:nosplit
 func (self class) FindChild(pattern String.Readable, recursive bool, owned bool) [1]gdclass.Node { //gd:Node.find_child
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_find_child), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_find_child), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		pattern   gdextension.String
 		recursive bool
 		owned     bool
-	}{gdextension.String(pointers.Get(gd.InternalString(pattern))[0]), recursive, owned}))
+	}{pointers.Get(gd.InternalString(pattern)), recursive, owned}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -1959,12 +1960,12 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 */
 //go:nosplit
 func (self class) FindChildren(pattern String.Readable, atype String.Readable, recursive bool, owned bool) Array.Contains[[1]gdclass.Node] { //gd:Node.find_children
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_find_children), gdextension.SizeArray|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_find_children), gdextension.SizeArray|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		pattern   gdextension.String
 		atype     gdextension.String
 		recursive bool
 		owned     bool
-	}{gdextension.String(pointers.Get(gd.InternalString(pattern))[0]), gdextension.String(pointers.Get(gd.InternalString(atype))[0]), recursive, owned}))
+	}{pointers.Get(gd.InternalString(pattern)), pointers.Get(gd.InternalString(atype)), recursive, owned}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1975,7 +1976,7 @@ Finds the first ancestor of this node whose [member name] matches [param pattern
 */
 //go:nosplit
 func (self class) FindParent(pattern String.Readable) [1]gdclass.Node { //gd:Node.find_parent
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_find_parent), gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ pattern gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(pattern))[0])}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_find_parent), gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ pattern gdextension.String }{pointers.Get(gd.InternalString(pattern))}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -1985,7 +1986,7 @@ Returns [code]true[/code] if [param path] points to a valid node and its subname
 */
 //go:nosplit
 func (self class) HasNodeAndResource(path Path.ToNode) bool { //gd:Node.has_node_and_resource
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_has_node_and_resource), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_has_node_and_resource), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -2033,7 +2034,7 @@ GD.Print(c[2]);             // Prints ^":region"
 */
 //go:nosplit
 func (self class) GetNodeAndResource(path Path.ToNode) Array.Any { //gd:Node.get_node_and_resource
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_node_and_resource), gdextension.SizeArray|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_node_and_resource), gdextension.SizeArray|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -2083,7 +2084,7 @@ Returns the node's absolute path, relative to the [member SceneTree.root]. If th
 */
 //go:nosplit
 func (self class) GetPath() Path.ToNode { //gd:Node.get_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -2095,7 +2096,7 @@ If [param use_unique_path] is [code]true[/code], returns the shortest path accou
 */
 //go:nosplit
 func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) Path.ToNode { //gd:Node.get_path_to
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_path_to), gdextension.SizeNodePath|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_path_to), gdextension.SizeNodePath|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		node            gdextension.Object
 		use_unique_path bool
 	}{gdextension.Object(gd.ObjectChecked(node[0].AsObject())), use_unique_path}))
@@ -2114,7 +2115,7 @@ func (self class) AddToGroup(group String.Name, persistent bool) { //gd:Node.add
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_add_to_group), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		group      gdextension.StringName
 		persistent bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(group))[0]), persistent}))
+	}{pointers.Get(gd.InternalStringName(group)), persistent}))
 }
 
 /*
@@ -2122,7 +2123,7 @@ Removes the node from the given [param group]. Does nothing if the node is not i
 */
 //go:nosplit
 func (self class) RemoveFromGroup(group String.Name) { //gd:Node.remove_from_group
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_remove_from_group), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(group))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_remove_from_group), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))}))
 }
 
 /*
@@ -2130,7 +2131,7 @@ Returns [code]true[/code] if this node has been added to the given [param group]
 */
 //go:nosplit
 func (self class) IsInGroup(group String.Name) bool { //gd:Node.is_in_group
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_in_group), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(group))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_in_group), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))}))
 	var ret = r_ret
 	return ret
 }
@@ -2172,7 +2173,7 @@ foreach (string group in GetGroups())
 */
 //go:nosplit
 func (self class) GetGroups() Array.Contains[String.Name] { //gd:Node.get_groups
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_groups), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_groups), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -2184,7 +2185,7 @@ func (self class) SetOwner(owner [1]gdclass.Node) { //gd:Node.set_owner
 
 //go:nosplit
 func (self class) GetOwner() [1]gdclass.Node { //gd:Node.get_owner
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_owner), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_owner), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -2248,7 +2249,7 @@ TheGame/SplashScreen/Camera2D
 */
 //go:nosplit
 func (self class) GetTreeString() String.Readable { //gd:Node.get_tree_string
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_tree_string), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_tree_string), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2267,19 +2268,19 @@ May print, for example:
 */
 //go:nosplit
 func (self class) GetTreeStringPretty() String.Readable { //gd:Node.get_tree_string_pretty
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_tree_string_pretty), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_tree_string_pretty), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSceneFilePath(scene_file_path String.Readable) { //gd:Node.set_scene_file_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_scene_file_path), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ scene_file_path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(scene_file_path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_scene_file_path), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ scene_file_path gdextension.String }{pointers.Get(gd.InternalString(scene_file_path))}))
 }
 
 //go:nosplit
 func (self class) GetSceneFilePath() String.Readable { //gd:Node.get_scene_file_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_scene_file_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_scene_file_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2302,7 +2303,7 @@ func (self class) PropagateCall(method String.Name, args Array.Any, parent_first
 		method       gdextension.StringName
 		args         gdextension.Array
 		parent_first bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(method))[0]), gdextension.Array(pointers.Get(gd.InternalArray(args))[0]), parent_first}))
+	}{pointers.Get(gd.InternalStringName(method)), pointers.Get(gd.InternalArray(args)), parent_first}))
 }
 
 /*
@@ -2658,7 +2659,7 @@ Returns the [Window] that contains this node. If the node is in the main window,
 */
 //go:nosplit
 func (self class) GetWindow() [1]gdclass.Window { //gd:Node.get_window
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_window), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_window), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret)}
 	return ret
 }
@@ -2668,7 +2669,7 @@ Returns the [Window] that contains this node, or the last exclusive child in a c
 */
 //go:nosplit
 func (self class) GetLastExclusiveWindow() [1]gdclass.Window { //gd:Node.get_last_exclusive_window
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_last_exclusive_window), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_last_exclusive_window), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret)}
 	return ret
 }
@@ -2678,7 +2679,7 @@ Returns the [SceneTree] that contains this node. If this node is not inside the 
 */
 //go:nosplit
 func (self class) GetTree() [1]gdclass.SceneTree { //gd:Node.get_tree
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_tree), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_tree), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SceneTree{gd.PointerMustAssertInstanceID[gdclass.SceneTree](r_ret)}
 	return ret
 }
@@ -2699,7 +2700,7 @@ The Tween will start automatically on the next process frame or physics frame (d
 */
 //go:nosplit
 func (self class) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_create_tween), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_create_tween), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -2710,7 +2711,7 @@ Duplicates the node, returning a new node with all of its properties, signals, g
 */
 //go:nosplit
 func (self class) Duplicate(flags int64) [1]gdclass.Node { //gd:Node.duplicate
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_duplicate), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags int64 }{flags}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_duplicate), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags int64 }{flags}))
 	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret)}
 	return ret
 }
@@ -2772,7 +2773,7 @@ Returns the node's closest [Viewport] ancestor, if the node is inside the tree. 
 */
 //go:nosplit
 func (self class) GetViewport() [1]gdclass.Viewport { //gd:Node.get_viewport
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_viewport), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_viewport), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Viewport{gd.PointerMustAssertInstanceID[gdclass.Viewport](r_ret)}
 	return ret
 }
@@ -2843,7 +2844,7 @@ func (self class) IsMultiplayerAuthority() bool { //gd:Node.is_multiplayer_autho
 
 //go:nosplit
 func (self class) GetMultiplayer() [1]gdclass.MultiplayerAPI { //gd:Node.get_multiplayer
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_multiplayer), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_multiplayer), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerAPI](r_ret)}
 	return ret
 }
@@ -2861,7 +2862,7 @@ func (self class) RpcConfig(method String.Name, config variant.Any) { //gd:Node.
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_rpc_config), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		method gdextension.StringName
 		config gdextension.Variant
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(method))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(config)))}))
+	}{pointers.Get(gd.InternalStringName(method)), gdextension.Variant(pointers.Get(gd.InternalVariant(config)))}))
 }
 
 /*
@@ -2869,19 +2870,19 @@ Returns a [Dictionary] mapping method names to their RPC configuration defined f
 */
 //go:nosplit
 func (self class) GetRpcConfig() variant.Any { //gd:Node.get_rpc_config
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_rpc_config), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_rpc_config), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditorDescription(editor_description String.Readable) { //gd:Node.set_editor_description
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_editor_description), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ editor_description gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(editor_description))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_editor_description), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ editor_description gdextension.String }{pointers.Get(gd.InternalString(editor_description))}))
 }
 
 //go:nosplit
 func (self class) GetEditorDescription() String.Readable { //gd:Node.get_editor_description
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_editor_description), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_editor_description), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2906,10 +2907,10 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_game
 */
 //go:nosplit
 func (self class) Atr(message String.Readable, context String.Name) String.Readable { //gd:Node.atr
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_atr), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_atr), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		message gdextension.String
 		context gdextension.StringName
-	}{gdextension.String(pointers.Get(gd.InternalString(message))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0])}))
+	}{pointers.Get(gd.InternalString(message)), pointers.Get(gd.InternalStringName(context))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2924,12 +2925,12 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 */
 //go:nosplit
 func (self class) AtrN(message String.Readable, plural_message String.Name, n int64, context String.Name) String.Readable { //gd:Node.atr_n
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_atr_n), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_atr_n), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), unsafe.Pointer(&struct {
 		message        gdextension.String
 		plural_message gdextension.StringName
 		n              int64
 		context        gdextension.StringName
-	}{gdextension.String(pointers.Get(gd.InternalString(message))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(plural_message))[0]), n, gdextension.StringName(pointers.Get(gd.InternalStringName(context))[0])}))
+	}{pointers.Get(gd.InternalString(message)), pointers.Get(gd.InternalStringName(plural_message)), n, pointers.Get(gd.InternalStringName(context))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2992,7 +2993,7 @@ func (self class) SetDeferredThreadGroup(property String.Name, value variant.Any
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_deferred_thread_group), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		property gdextension.StringName
 		value    gdextension.Variant
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -3024,7 +3025,7 @@ func (self class) SetThreadSafe(property String.Name, value variant.Any) { //gd:
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_thread_safe), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		property gdextension.StringName
 		value    gdextension.Variant
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*

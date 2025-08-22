@@ -5,7 +5,6 @@ import (
 	"iter"
 	"reflect"
 
-	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
@@ -14,29 +13,22 @@ import (
 
 func (d Dictionary) Index(key Variant) Variant {
 	var raw [3]uint64
-	gdextension.Host.Dictionaries.Get(gdextension.Dictionary(pointers.Get(d)[0]), pointers.Get(key), gdextension.CallReturns[gdextension.Variant](&raw))
+	gdextension.Host.Dictionaries.Get(pointers.Get(d), pointers.Get(key), gdextension.CallReturns[gdextension.Variant](&raw))
 	return pointers.Raw[Variant](raw).Copy()
 }
 
 func (d Dictionary) SetIndex(key Variant, value Variant) {
-	gdextension.Host.Dictionaries.Set(gdextension.Dictionary(pointers.Get(d)[0]), pointers.Get(key), pointers.Get(value))
+	gdextension.Host.Dictionaries.Set(pointers.Get(d), pointers.Get(key), pointers.Get(value))
 }
 
 func (d Dictionary) Free() {
 	if ptr, ok := pointers.End(d); ok {
-		var frame = callframe.New()
-		Global.typeset.destruct.Dictionary(callframe.Arg(frame, ptr).Addr())
-		frame.Free()
+		gdextension.Free(gdextension.TypeDictionary, &ptr)
 	}
 }
 
 func NewDictionary() Dictionary {
-	var frame = callframe.New()
-	var r_ret = callframe.Ret[[1]EnginePointer](frame)
-	Global.typeset.creation.Dictionary[0](r_ret.Addr(), callframe.Args{})
-	var raw = r_ret.Get()
-	frame.Free()
-	return pointers.New[Dictionary](raw)
+	return pointers.New[Dictionary](gdextension.Make[gdextension.Dictionary](Global.typeset.creation.Dictionary[0], 0, nil))
 }
 
 func InternalDictionary[K comparable, V any](dict DictionaryType.Map[K, V]) Dictionary {

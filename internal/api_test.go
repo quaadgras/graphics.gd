@@ -3,24 +3,29 @@
 package gd_test
 
 import (
-	"os"
 	"testing"
 	"unsafe"
 
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/AudioEffectInstance"
+	"graphics.gd/classdb/Engine"
 	"graphics.gd/classdb/Resource"
+	"graphics.gd/classdb/SceneTree"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/startup"
+	"graphics.gd/variant/Object"
 )
 
 func TestMain(m *testing.M) {
 	classdb.Register[Converter]()
 	classdb.Register[CustomConverterObject]()
 	startup.LoadingScene()
-	os.Exit(m.Run())
+	m.Run()
+	if tree, ok := Object.As[SceneTree.Instance](Engine.GetMainLoop()); ok {
+		tree.Quit()
+	}
 }
 
 func TestGetGodotVersion(t *testing.T) {
@@ -60,7 +65,7 @@ func TestNativeStructSize(t *testing.T) {
 		"PhysicsServer3DExtensionMotionCollision": unsafe.Sizeof(gd.PhysicsServer3DExtensionMotionCollision{}),
 		"PhysicsServer3DExtensionMotionResult":    unsafe.Sizeof(gd.PhysicsServer3DExtensionMotionResult{}),
 	} {
-		if size := gdextension.Host.Memory.Sizeof(gdextension.StringName(pointers.Get(gd.NewStringName(name))[0])); uintptr(size) != expectation {
+		if size := gdextension.Host.Memory.Sizeof(pointers.Get(gd.NewStringName(name))); uintptr(size) != expectation {
 			t.Fatalf("Our size of %v is %v, but Godot's is %v", name, expectation, size)
 		}
 	}

@@ -147,8 +147,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorCommandPalette"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorCommandPalette"))))})}
 	casted := Instance{*(*gdclass.EditorCommandPalette)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -166,7 +167,7 @@ func (self class) AddCommand(command_name String.Readable, key_name String.Reada
 		key_name        gdextension.String
 		binded_callable gdextension.Callable
 		shortcut_text   gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(command_name))[0]), gdextension.String(pointers.Get(gd.InternalString(key_name))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(binded_callable))), gdextension.String(pointers.Get(gd.InternalString(shortcut_text))[0])}))
+	}{pointers.Get(gd.InternalString(command_name)), pointers.Get(gd.InternalString(key_name)), pointers.Get(gd.InternalCallable(binded_callable)), pointers.Get(gd.InternalString(shortcut_text))}))
 }
 
 /*
@@ -175,7 +176,7 @@ Removes the custom command from EditorCommandPalette.
 */
 //go:nosplit
 func (self class) RemoveCommand(key_name String.Readable) { //gd:EditorCommandPalette.remove_command
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorCommandPalette.Bind_remove_command), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ key_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(key_name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorCommandPalette.Bind_remove_command), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ key_name gdextension.String }{pointers.Get(gd.InternalString(key_name))}))
 }
 func (self class) AsEditorCommandPalette() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorCommandPalette() Instance { return *((*Instance)(unsafe.Pointer(&self))) }

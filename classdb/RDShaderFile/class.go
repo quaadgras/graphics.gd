@@ -134,9 +134,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RDShaderFile"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RDShaderFile"))))})}
 	casted := Instance{*(*gdclass.RDShaderFile)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -156,7 +157,7 @@ func (self class) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV, version String.
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_set_bytecode), 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		bytecode gdextension.Object
 		version  gdextension.StringName
-	}{gdextension.Object(gd.ObjectChecked(bytecode[0].AsObject())), gdextension.StringName(pointers.Get(gd.InternalStringName(version))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(bytecode[0].AsObject())), pointers.Get(gd.InternalStringName(version))}))
 }
 
 /*
@@ -164,7 +165,7 @@ Returns the SPIR-V intermediate representation for the specified shader [param v
 */
 //go:nosplit
 func (self class) GetSpirv(version String.Name) [1]gdclass.RDShaderSPIRV { //gd:RDShaderFile.get_spirv
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_spirv), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ version gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(version))[0])}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_spirv), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ version gdextension.StringName }{pointers.Get(gd.InternalStringName(version))}))
 	var ret = [1]gdclass.RDShaderSPIRV{gd.PointerWithOwnershipTransferredToGo[gdclass.RDShaderSPIRV](r_ret)}
 	return ret
 }
@@ -174,19 +175,19 @@ Returns the list of compiled versions for this shader.
 */
 //go:nosplit
 func (self class) GetVersionList() Array.Contains[String.Name] { //gd:RDShaderFile.get_version_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_version_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_version_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBaseError(error String.Readable) { //gd:RDShaderFile.set_base_error
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_set_base_error), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ error gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(error))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_set_base_error), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ error gdextension.String }{pointers.Get(gd.InternalString(error))}))
 }
 
 //go:nosplit
 func (self class) GetBaseError() String.Readable { //gd:RDShaderFile.get_base_error
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_base_error), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_base_error), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

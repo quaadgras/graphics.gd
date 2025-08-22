@@ -56,7 +56,6 @@ func TestArrayConversions(t *testing.T) {
 	}
 	pointers.Cycle()
 	pointers.Cycle()
-	pointers.Cycle()
 }
 
 func BenchmarkAllocsForArrayReturnedByEngine(t *testing.B) {

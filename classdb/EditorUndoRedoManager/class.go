@@ -251,8 +251,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("EditorUndoRedoManager"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorUndoRedoManager"))))})}
 	casted := Instance{*(*gdclass.EditorUndoRedoManager)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -269,7 +270,7 @@ func (self class) CreateAction(name String.Readable, merge_mode UndoRedo.MergeMo
 		merge_mode        UndoRedo.MergeMode
 		custom_context    gdextension.Object
 		backward_undo_ops bool
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), merge_mode, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(custom_context[0].AsObject()[0])), backward_undo_ops}))
+	}{pointers.Get(gd.InternalString(name)), merge_mode, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(custom_context[0].AsObject()[0])), backward_undo_ops}))
 }
 
 /*
@@ -337,7 +338,7 @@ func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value va
 		obj      gdextension.Object
 		property gdextension.StringName
 		value    gdextension.Variant
-	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0])), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -350,7 +351,7 @@ func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value 
 		obj      gdextension.Object
 		property gdextension.StringName
 		value    gdextension.Variant
-	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0])), gdextension.StringName(pointers.Get(gd.InternalStringName(property))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0])), pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -386,7 +387,7 @@ Best used with [method get_object_history_id]. This method is only provided in c
 */
 //go:nosplit
 func (self class) GetHistoryUndoRedo(id int64) [1]gdclass.UndoRedo { //gd:EditorUndoRedoManager.get_history_undo_redo
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_get_history_undo_redo), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorUndoRedoManager.Bind_get_history_undo_redo), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = [1]gdclass.UndoRedo{gd.PointerLifetimeBoundTo[gdclass.UndoRedo](self.AsObject(), r_ret)}
 	return ret
 }

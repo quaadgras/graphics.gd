@@ -209,9 +209,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CodeHighlighter"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CodeHighlighter"))))})}
 	casted := Instance{*(*gdclass.CodeHighlighter)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -280,7 +281,7 @@ func (self class) AddKeywordColor(keyword String.Readable, color Color.RGBA) { /
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_add_keyword_color), 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		keyword gdextension.String
 		color   Color.RGBA
-	}{gdextension.String(pointers.Get(gd.InternalString(keyword))[0]), color}))
+	}{pointers.Get(gd.InternalString(keyword)), color}))
 }
 
 /*
@@ -288,7 +289,7 @@ Removes the keyword.
 */
 //go:nosplit
 func (self class) RemoveKeywordColor(keyword String.Readable) { //gd:CodeHighlighter.remove_keyword_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_remove_keyword_color), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ keyword gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(keyword))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_remove_keyword_color), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ keyword gdextension.String }{pointers.Get(gd.InternalString(keyword))}))
 }
 
 /*
@@ -296,7 +297,7 @@ Returns [code]true[/code] if the keyword exists, else [code]false[/code].
 */
 //go:nosplit
 func (self class) HasKeywordColor(keyword String.Readable) bool { //gd:CodeHighlighter.has_keyword_color
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_has_keyword_color), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ keyword gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(keyword))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_has_keyword_color), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ keyword gdextension.String }{pointers.Get(gd.InternalString(keyword))}))
 	var ret = r_ret
 	return ret
 }
@@ -306,14 +307,14 @@ Returns the color for a keyword.
 */
 //go:nosplit
 func (self class) GetKeywordColor(keyword String.Readable) Color.RGBA { //gd:CodeHighlighter.get_keyword_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_get_keyword_color), gdextension.SizeColor|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ keyword gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(keyword))[0])}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_get_keyword_color), gdextension.SizeColor|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ keyword gdextension.String }{pointers.Get(gd.InternalString(keyword))}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeywordColors(keywords Dictionary.Any) { //gd:CodeHighlighter.set_keyword_colors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_set_keyword_colors), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ keywords gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(keywords))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_set_keyword_colors), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ keywords gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(keywords))}))
 }
 
 /*
@@ -326,7 +327,7 @@ func (self class) ClearKeywordColors() { //gd:CodeHighlighter.clear_keyword_colo
 
 //go:nosplit
 func (self class) GetKeywordColors() Dictionary.Any { //gd:CodeHighlighter.get_keyword_colors
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_get_keyword_colors), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_get_keyword_colors), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -341,7 +342,7 @@ func (self class) AddMemberKeywordColor(member_keyword String.Readable, color Co
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_add_member_keyword_color), 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		member_keyword gdextension.String
 		color          Color.RGBA
-	}{gdextension.String(pointers.Get(gd.InternalString(member_keyword))[0]), color}))
+	}{pointers.Get(gd.InternalString(member_keyword)), color}))
 }
 
 /*
@@ -349,7 +350,7 @@ Removes the member keyword.
 */
 //go:nosplit
 func (self class) RemoveMemberKeywordColor(member_keyword String.Readable) { //gd:CodeHighlighter.remove_member_keyword_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_remove_member_keyword_color), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ member_keyword gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(member_keyword))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_remove_member_keyword_color), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ member_keyword gdextension.String }{pointers.Get(gd.InternalString(member_keyword))}))
 }
 
 /*
@@ -357,7 +358,7 @@ Returns [code]true[/code] if the member keyword exists, else [code]false[/code].
 */
 //go:nosplit
 func (self class) HasMemberKeywordColor(member_keyword String.Readable) bool { //gd:CodeHighlighter.has_member_keyword_color
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_has_member_keyword_color), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ member_keyword gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(member_keyword))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_has_member_keyword_color), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ member_keyword gdextension.String }{pointers.Get(gd.InternalString(member_keyword))}))
 	var ret = r_ret
 	return ret
 }
@@ -367,14 +368,14 @@ Returns the color for a member keyword.
 */
 //go:nosplit
 func (self class) GetMemberKeywordColor(member_keyword String.Readable) Color.RGBA { //gd:CodeHighlighter.get_member_keyword_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_get_member_keyword_color), gdextension.SizeColor|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ member_keyword gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(member_keyword))[0])}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_get_member_keyword_color), gdextension.SizeColor|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ member_keyword gdextension.String }{pointers.Get(gd.InternalString(member_keyword))}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMemberKeywordColors(member_keyword Dictionary.Any) { //gd:CodeHighlighter.set_member_keyword_colors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_set_member_keyword_colors), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ member_keyword gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(member_keyword))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_set_member_keyword_colors), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ member_keyword gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(member_keyword))}))
 }
 
 /*
@@ -387,7 +388,7 @@ func (self class) ClearMemberKeywordColors() { //gd:CodeHighlighter.clear_member
 
 //go:nosplit
 func (self class) GetMemberKeywordColors() Dictionary.Any { //gd:CodeHighlighter.get_member_keyword_colors
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_get_member_keyword_colors), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_get_member_keyword_colors), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -403,7 +404,7 @@ func (self class) AddColorRegion(start_key String.Readable, end_key String.Reada
 		end_key   gdextension.String
 		color     Color.RGBA
 		line_only bool
-	}{gdextension.String(pointers.Get(gd.InternalString(start_key))[0]), gdextension.String(pointers.Get(gd.InternalString(end_key))[0]), color, line_only}))
+	}{pointers.Get(gd.InternalString(start_key)), pointers.Get(gd.InternalString(end_key)), color, line_only}))
 }
 
 /*
@@ -411,7 +412,7 @@ Removes the color region that uses that start key.
 */
 //go:nosplit
 func (self class) RemoveColorRegion(start_key String.Readable) { //gd:CodeHighlighter.remove_color_region
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_remove_color_region), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ start_key gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(start_key))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_remove_color_region), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))}))
 }
 
 /*
@@ -419,14 +420,14 @@ Returns [code]true[/code] if the start key exists, else [code]false[/code].
 */
 //go:nosplit
 func (self class) HasColorRegion(start_key String.Readable) bool { //gd:CodeHighlighter.has_color_region
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_has_color_region), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ start_key gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(start_key))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_has_color_region), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColorRegions(color_regions Dictionary.Any) { //gd:CodeHighlighter.set_color_regions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_set_color_regions), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ color_regions gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(color_regions))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_set_color_regions), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ color_regions gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(color_regions))}))
 }
 
 /*
@@ -439,7 +440,7 @@ func (self class) ClearColorRegions() { //gd:CodeHighlighter.clear_color_regions
 
 //go:nosplit
 func (self class) GetColorRegions() Dictionary.Any { //gd:CodeHighlighter.get_color_regions
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_get_color_regions), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeHighlighter.Bind_get_color_regions), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

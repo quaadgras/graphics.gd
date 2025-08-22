@@ -101,8 +101,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StatusIndicator"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("StatusIndicator"))))})}
 	casted := Instance{*(*gdclass.StatusIndicator)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -140,12 +141,12 @@ func (self Instance) SetVisible(value bool) {
 
 //go:nosplit
 func (self class) SetTooltip(tooltip String.Readable) { //gd:StatusIndicator.set_tooltip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StatusIndicator.Bind_set_tooltip), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ tooltip gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(tooltip))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StatusIndicator.Bind_set_tooltip), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ tooltip gdextension.String }{pointers.Get(gd.InternalString(tooltip))}))
 }
 
 //go:nosplit
 func (self class) GetTooltip() String.Readable { //gd:StatusIndicator.get_tooltip
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StatusIndicator.Bind_get_tooltip), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StatusIndicator.Bind_get_tooltip), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -157,7 +158,7 @@ func (self class) SetIcon(texture [1]gdclass.Texture2D) { //gd:StatusIndicator.s
 
 //go:nosplit
 func (self class) GetIcon() [1]gdclass.Texture2D { //gd:StatusIndicator.get_icon
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StatusIndicator.Bind_get_icon), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StatusIndicator.Bind_get_icon), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -176,12 +177,12 @@ func (self class) IsVisible() bool { //gd:StatusIndicator.is_visible
 
 //go:nosplit
 func (self class) SetMenu(menu Path.ToNode) { //gd:StatusIndicator.set_menu
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StatusIndicator.Bind_set_menu), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ menu gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(menu))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StatusIndicator.Bind_set_menu), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ menu gdextension.NodePath }{pointers.Get(gd.InternalNodePath(menu))}))
 }
 
 //go:nosplit
 func (self class) GetMenu() Path.ToNode { //gd:StatusIndicator.get_menu
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StatusIndicator.Bind_get_menu), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StatusIndicator.Bind_get_menu), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

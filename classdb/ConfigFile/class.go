@@ -318,9 +318,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ConfigFile"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ConfigFile"))))})}
 	casted := Instance{*(*gdclass.ConfigFile)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -333,7 +334,7 @@ func (self class) SetValue(section String.Readable, key String.Readable, value v
 		section gdextension.String
 		key     gdextension.String
 		value   gdextension.Variant
-	}{gdextension.String(pointers.Get(gd.InternalString(section))[0]), gdextension.String(pointers.Get(gd.InternalString(key))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{pointers.Get(gd.InternalString(section)), pointers.Get(gd.InternalString(key)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -341,11 +342,11 @@ Returns the current value for the specified section and key. If either the secti
 */
 //go:nosplit
 func (self class) GetValue(section String.Readable, key String.Readable, def variant.Any) variant.Any { //gd:ConfigFile.get_value
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_get_value), gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_get_value), gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		section gdextension.String
 		key     gdextension.String
 		def     gdextension.Variant
-	}{gdextension.String(pointers.Get(gd.InternalString(section))[0]), gdextension.String(pointers.Get(gd.InternalString(key))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(def)))}))
+	}{pointers.Get(gd.InternalString(section)), pointers.Get(gd.InternalString(key)), gdextension.Variant(pointers.Get(gd.InternalVariant(def)))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -355,7 +356,7 @@ Returns [code]true[/code] if the specified section exists.
 */
 //go:nosplit
 func (self class) HasSection(section String.Readable) bool { //gd:ConfigFile.has_section
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_has_section), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ section gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(section))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_has_section), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ section gdextension.String }{pointers.Get(gd.InternalString(section))}))
 	var ret = r_ret
 	return ret
 }
@@ -368,7 +369,7 @@ func (self class) HasSectionKey(section String.Readable, key String.Readable) bo
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_has_section_key), gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		section gdextension.String
 		key     gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(section))[0]), gdextension.String(pointers.Get(gd.InternalString(key))[0])}))
+	}{pointers.Get(gd.InternalString(section)), pointers.Get(gd.InternalString(key))}))
 	var ret = r_ret
 	return ret
 }
@@ -388,7 +389,7 @@ Returns an array of all defined key identifiers in the specified section. Raises
 */
 //go:nosplit
 func (self class) GetSectionKeys(section String.Readable) Packed.Strings { //gd:ConfigFile.get_section_keys
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_get_section_keys), gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ section gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(section))[0])}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_get_section_keys), gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ section gdextension.String }{pointers.Get(gd.InternalString(section))}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -398,7 +399,7 @@ Deletes the specified section along with all the key-value pairs inside. Raises 
 */
 //go:nosplit
 func (self class) EraseSection(section String.Readable) { //gd:ConfigFile.erase_section
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_erase_section), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ section gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(section))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_erase_section), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ section gdextension.String }{pointers.Get(gd.InternalString(section))}))
 }
 
 /*
@@ -409,7 +410,7 @@ func (self class) EraseSectionKey(section String.Readable, key String.Readable) 
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_erase_section_key), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		section gdextension.String
 		key     gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(section))[0]), gdextension.String(pointers.Get(gd.InternalString(key))[0])}))
+	}{pointers.Get(gd.InternalString(section)), pointers.Get(gd.InternalString(key))}))
 }
 
 /*
@@ -418,7 +419,7 @@ Returns [constant OK] on success, or one of the other [enum Error] values if the
 */
 //go:nosplit
 func (self class) Load(path String.Readable) Error.Code { //gd:ConfigFile.load
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_load), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_load), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -429,7 +430,7 @@ Returns [constant OK] on success, or one of the other [enum Error] values if the
 */
 //go:nosplit
 func (self class) Parse(data String.Readable) Error.Code { //gd:ConfigFile.parse
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_parse), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ data gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(data))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_parse), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ data gdextension.String }{pointers.Get(gd.InternalString(data))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -440,7 +441,7 @@ Returns [constant OK] on success, or one of the other [enum Error] values if the
 */
 //go:nosplit
 func (self class) Save(path String.Readable) Error.Code { //gd:ConfigFile.save
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_save), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_save), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -450,7 +451,7 @@ Obtain the text version of this config file (the same text that would be written
 */
 //go:nosplit
 func (self class) EncodeToText() String.Readable { //gd:ConfigFile.encode_to_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_encode_to_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_encode_to_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -463,8 +464,8 @@ Returns [constant OK] on success, or one of the other [enum Error] values if the
 func (self class) LoadEncrypted(path String.Readable, key Packed.Bytes) Error.Code { //gd:ConfigFile.load_encrypted
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_load_encrypted), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		path gdextension.String
-		key  gdextension.PackedArray
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))}))
+		key  gdextension.PackedArray[byte]
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -478,7 +479,7 @@ func (self class) LoadEncryptedPass(path String.Readable, password String.Readab
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_load_encrypted_pass), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		path     gdextension.String
 		password gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.String(pointers.Get(gd.InternalString(password))[0])}))
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalString(password))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -491,8 +492,8 @@ Returns [constant OK] on success, or one of the other [enum Error] values if the
 func (self class) SaveEncrypted(path String.Readable, key Packed.Bytes) Error.Code { //gd:ConfigFile.save_encrypted
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_save_encrypted), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		path gdextension.String
-		key  gdextension.PackedArray
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))))}))
+		key  gdextension.PackedArray[byte]
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -506,7 +507,7 @@ func (self class) SaveEncryptedPass(path String.Readable, password String.Readab
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ConfigFile.Bind_save_encrypted_pass), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		path     gdextension.String
 		password gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.String(pointers.Get(gd.InternalString(password))[0])}))
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalString(password))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

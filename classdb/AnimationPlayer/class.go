@@ -441,8 +441,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("AnimationPlayer"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AnimationPlayer"))))})}
 	casted := Instance{*(*gdclass.AnimationPlayer)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -542,7 +543,7 @@ func (self class) AnimationSetNext(animation_from String.Name, animation_to Stri
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_animation_set_next), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		animation_from gdextension.StringName
 		animation_to   gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(animation_from))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(animation_to))[0])}))
+	}{pointers.Get(gd.InternalStringName(animation_from)), pointers.Get(gd.InternalStringName(animation_to))}))
 }
 
 /*
@@ -550,7 +551,7 @@ Returns the key of the animation which is queued to play after the [param animat
 */
 //go:nosplit
 func (self class) AnimationGetNext(animation_from String.Name) String.Name { //gd:AnimationPlayer.animation_get_next
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_animation_get_next), gdextension.SizeStringName|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ animation_from gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(animation_from))[0])}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_animation_get_next), gdextension.SizeStringName|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ animation_from gdextension.StringName }{pointers.Get(gd.InternalStringName(animation_from))}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -564,7 +565,7 @@ func (self class) SetBlendTime(animation_from String.Name, animation_to String.N
 		animation_from gdextension.StringName
 		animation_to   gdextension.StringName
 		sec            float64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(animation_from))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(animation_to))[0]), sec}))
+	}{pointers.Get(gd.InternalStringName(animation_from)), pointers.Get(gd.InternalStringName(animation_to)), sec}))
 }
 
 /*
@@ -575,7 +576,7 @@ func (self class) GetBlendTime(animation_from String.Name, animation_to String.N
 	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_blend_time), gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		animation_from gdextension.StringName
 		animation_to   gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(animation_from))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(animation_to))[0])}))
+	}{pointers.Get(gd.InternalStringName(animation_from)), pointers.Get(gd.InternalStringName(animation_to))}))
 	var ret = r_ret
 	return ret
 }
@@ -653,7 +654,7 @@ func (self class) Play(name String.Name, custom_blend float64, custom_speed floa
 		custom_blend float64
 		custom_speed float64
 		from_end     bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), custom_blend, custom_speed, from_end}))
+	}{pointers.Get(gd.InternalStringName(name)), custom_blend, custom_speed, from_end}))
 }
 
 /*
@@ -669,7 +670,7 @@ func (self class) PlaySectionWithMarkers(name String.Name, start_marker String.N
 		custom_blend float64
 		custom_speed float64
 		from_end     bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(start_marker))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(end_marker))[0]), custom_blend, custom_speed, from_end}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(start_marker)), pointers.Get(gd.InternalStringName(end_marker)), custom_blend, custom_speed, from_end}))
 }
 
 /*
@@ -685,7 +686,7 @@ func (self class) PlaySection(name String.Name, start_time float64, end_time flo
 		custom_blend float64
 		custom_speed float64
 		from_end     bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), start_time, end_time, custom_blend, custom_speed, from_end}))
+	}{pointers.Get(gd.InternalStringName(name)), start_time, end_time, custom_blend, custom_speed, from_end}))
 }
 
 /*
@@ -697,7 +698,7 @@ func (self class) PlayBackwards(name String.Name, custom_blend float64) { //gd:A
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_play_backwards), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		name         gdextension.StringName
 		custom_blend float64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), custom_blend}))
+	}{pointers.Get(gd.InternalStringName(name)), custom_blend}))
 }
 
 /*
@@ -711,7 +712,7 @@ func (self class) PlaySectionWithMarkersBackwards(name String.Name, start_marker
 		start_marker gdextension.StringName
 		end_marker   gdextension.StringName
 		custom_blend float64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(start_marker))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(end_marker))[0]), custom_blend}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(start_marker)), pointers.Get(gd.InternalStringName(end_marker)), custom_blend}))
 }
 
 /*
@@ -725,7 +726,7 @@ func (self class) PlaySectionBackwards(name String.Name, start_time float64, end
 		start_time   float64
 		end_time     float64
 		custom_blend float64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), start_time, end_time, custom_blend}))
+	}{pointers.Get(gd.InternalStringName(name)), start_time, end_time, custom_blend}))
 }
 
 /*
@@ -749,7 +750,7 @@ func (self class) PlayWithCapture(name String.Name, duration float64, custom_ble
 		from_end     bool
 		trans_type   Tween.TransitionType
 		ease_type    Tween.EaseType
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), duration, custom_blend, custom_speed, from_end, trans_type, ease_type}))
+	}{pointers.Get(gd.InternalStringName(name)), duration, custom_blend, custom_speed, from_end, trans_type, ease_type}))
 }
 
 /*
@@ -783,24 +784,24 @@ func (self class) IsPlaying() bool { //gd:AnimationPlayer.is_playing
 
 //go:nosplit
 func (self class) SetCurrentAnimation(animation String.Readable) { //gd:AnimationPlayer.set_current_animation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_current_animation), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ animation gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(animation))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_current_animation), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))}))
 }
 
 //go:nosplit
 func (self class) GetCurrentAnimation() String.Readable { //gd:AnimationPlayer.get_current_animation
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAssignedAnimation(animation String.Readable) { //gd:AnimationPlayer.set_assigned_animation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_assigned_animation), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ animation gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(animation))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_assigned_animation), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))}))
 }
 
 //go:nosplit
 func (self class) GetAssignedAnimation() String.Readable { //gd:AnimationPlayer.get_assigned_animation
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_assigned_animation), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_assigned_animation), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -811,7 +812,7 @@ Queues an animation for playback once the current animation and all previously q
 */
 //go:nosplit
 func (self class) Queue(name String.Name) { //gd:AnimationPlayer.queue
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_queue), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_queue), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -857,12 +858,12 @@ func (self class) GetPlayingSpeed() float64 { //gd:AnimationPlayer.get_playing_s
 
 //go:nosplit
 func (self class) SetAutoplay(name String.Readable) { //gd:AnimationPlayer.set_autoplay
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_autoplay), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_autoplay), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 //go:nosplit
 func (self class) GetAutoplay() String.Readable { //gd:AnimationPlayer.get_autoplay
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_autoplay), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_autoplay), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -902,7 +903,7 @@ func (self class) SetSectionWithMarkers(start_marker String.Name, end_marker Str
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_section_with_markers), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		start_marker gdextension.StringName
 		end_marker   gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(start_marker))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(end_marker))[0])}))
+	}{pointers.Get(gd.InternalStringName(start_marker)), pointers.Get(gd.InternalStringName(end_marker))}))
 }
 
 /*
@@ -1009,7 +1010,7 @@ Sets the node which node path references will travel from.
 */
 //go:nosplit
 func (self class) SetRoot(path Path.ToNode) { //gd:AnimationPlayer.set_root
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_root), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_root), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 }
 
 /*
@@ -1017,7 +1018,7 @@ Returns the node which node path references will travel from.
 */
 //go:nosplit
 func (self class) GetRoot() Path.ToNode { //gd:AnimationPlayer.get_root
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_root), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_root), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

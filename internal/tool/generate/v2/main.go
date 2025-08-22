@@ -227,7 +227,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "var self [1]gdclass.%s\n", class.Name)
 			fmt.Fprintf(file, "var once sync.Once\n")
 			fmt.Fprintf(file, "func singleton() {\n")
-			fmt.Fprintf(file, "\tobj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.%s)[0])))})\n", class.Name)
+			fmt.Fprintf(file, "\tobj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.%s)))})\n", class.Name)
 			fmt.Fprintf(file, "\tself = *(*[1]gdclass.%s)(unsafe.Pointer(&obj))\n", class.Name)
 			fmt.Fprintf(file, "}\n")
 		} else {

@@ -250,9 +250,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("WebXRInterface"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("WebXRInterface"))))})}
 	casted := Instance{*(*gdclass.WebXRInterface)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -307,67 +308,67 @@ This method returns nothing, instead it emits the [signal session_supported] sig
 */
 //go:nosplit
 func (self class) IsSessionSupported(session_mode String.Readable) { //gd:WebXRInterface.is_session_supported
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_is_session_supported), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ session_mode gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(session_mode))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_is_session_supported), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ session_mode gdextension.String }{pointers.Get(gd.InternalString(session_mode))}))
 }
 
 //go:nosplit
 func (self class) SetSessionMode(session_mode String.Readable) { //gd:WebXRInterface.set_session_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_set_session_mode), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ session_mode gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(session_mode))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_set_session_mode), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ session_mode gdextension.String }{pointers.Get(gd.InternalString(session_mode))}))
 }
 
 //go:nosplit
 func (self class) GetSessionMode() String.Readable { //gd:WebXRInterface.get_session_mode
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_session_mode), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_session_mode), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRequiredFeatures(required_features String.Readable) { //gd:WebXRInterface.set_required_features
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_set_required_features), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ required_features gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(required_features))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_set_required_features), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ required_features gdextension.String }{pointers.Get(gd.InternalString(required_features))}))
 }
 
 //go:nosplit
 func (self class) GetRequiredFeatures() String.Readable { //gd:WebXRInterface.get_required_features
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_required_features), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_required_features), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOptionalFeatures(optional_features String.Readable) { //gd:WebXRInterface.set_optional_features
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_set_optional_features), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ optional_features gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(optional_features))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_set_optional_features), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ optional_features gdextension.String }{pointers.Get(gd.InternalString(optional_features))}))
 }
 
 //go:nosplit
 func (self class) GetOptionalFeatures() String.Readable { //gd:WebXRInterface.get_optional_features
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_optional_features), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_optional_features), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetReferenceSpaceType() String.Readable { //gd:WebXRInterface.get_reference_space_type
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_reference_space_type), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_reference_space_type), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetEnabledFeatures() String.Readable { //gd:WebXRInterface.get_enabled_features
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_enabled_features), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_enabled_features), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRequestedReferenceSpaceTypes(requested_reference_space_types String.Readable) { //gd:WebXRInterface.set_requested_reference_space_types
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_set_requested_reference_space_types), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ requested_reference_space_types gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(requested_reference_space_types))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_set_requested_reference_space_types), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ requested_reference_space_types gdextension.String }{pointers.Get(gd.InternalString(requested_reference_space_types))}))
 }
 
 //go:nosplit
 func (self class) GetRequestedReferenceSpaceTypes() String.Readable { //gd:WebXRInterface.get_requested_reference_space_types
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_requested_reference_space_types), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_requested_reference_space_types), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -395,7 +396,7 @@ Use this method to get information about the input source that triggered one of 
 */
 //go:nosplit
 func (self class) GetInputSourceTracker(input_source_id int64) [1]gdclass.XRControllerTracker { //gd:WebXRInterface.get_input_source_tracker
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_input_source_tracker), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input_source_id int64 }{input_source_id}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_input_source_tracker), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input_source_id int64 }{input_source_id}))
 	var ret = [1]gdclass.XRControllerTracker{gd.PointerWithOwnershipTransferredToGo[gdclass.XRControllerTracker](r_ret)}
 	return ret
 }
@@ -413,7 +414,7 @@ func (self class) GetInputSourceTargetRayMode(input_source_id int64) TargetRayMo
 
 //go:nosplit
 func (self class) GetVisibilityState() String.Readable { //gd:WebXRInterface.get_visibility_state
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_visibility_state), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_visibility_state), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -441,7 +442,7 @@ Returns display refresh rates supported by the current HMD. Only returned if thi
 */
 //go:nosplit
 func (self class) GetAvailableDisplayRefreshRates() Array.Any { //gd:WebXRInterface.get_available_display_refresh_rates
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_available_display_refresh_rates), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebXRInterface.Bind_get_available_display_refresh_rates), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

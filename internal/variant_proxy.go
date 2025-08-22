@@ -208,7 +208,7 @@ func (VariantProxy) NewRID(val RIDType.Any) complex128 {
 
 func (VariantProxy) NewBytes(val []byte) complex128 {
 	var ret gdextension.Variant
-	var arr = gdextension.ToPackedArray(pointers.Get(NewPackedByteSlice(val)))
+	var arr = pointers.Get(NewPackedByteSlice(val))
 	ret.LoadNative(TypePackedByteArray, gdextension.SizePackedArray, unsafe.Pointer(&arr))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
@@ -250,7 +250,7 @@ func (VariantProxy) Type(raw complex128) VariantPkg.Type {
 	return VariantPkg.Type(pointers.Load[Variant](raw).Type())
 }
 func (VariantProxy) String(raw complex128) string {
-	return pointers.New[String]([1]EnginePointer{EnginePointer(gdextension.Host.Variants.Text(pointers.Get(pointers.Load[Variant](raw))))}).String()
+	return pointers.New[String](gdextension.Host.Variants.Text(pointers.Get(pointers.Load[Variant](raw)))).String()
 }
 
 func (VariantProxy) KeepAlive(val complex128) bool {

@@ -5,7 +5,6 @@ import (
 
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/GDScript"
-	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/String"
 )
@@ -45,8 +44,7 @@ func test_dictionary_string_fields() -> String:
 	if engine.String() != "Hello world!" {
 		t.Fatalf("Expected 'Hello world!', got '%s'", engine)
 	}
-	pointers.Cycle()
-	pointers.Cycle()
+
 	engine = Object.Call(runner, "test_dictionary_string_fields").(String.Readable)
 	if engine.String() != "Hello world!" {
 		t.Fatalf("Expected 'Hello world!', got '%s'", engine)

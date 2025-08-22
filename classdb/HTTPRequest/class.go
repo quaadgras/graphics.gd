@@ -345,8 +345,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("HTTPRequest"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("HTTPRequest"))))})}
 	casted := Instance{*(*gdclass.HTTPRequest)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -416,10 +417,10 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 func (self class) Request(url String.Readable, custom_headers Packed.Strings, method HTTPClient.Method, request_data String.Readable) Error.Code { //gd:HTTPRequest.request
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_request), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
 		url            gdextension.String
-		custom_headers gdextension.PackedArray
+		custom_headers gdextension.PackedArray[gdextension.String]
 		method         HTTPClient.Method
 		request_data   gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(url))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(custom_headers))), method, gdextension.String(pointers.Get(gd.InternalString(request_data))[0])}))
+	}{pointers.Get(gd.InternalString(url)), pointers.Get(gd.InternalPackedStrings(custom_headers)), method, pointers.Get(gd.InternalString(request_data))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -432,10 +433,10 @@ Returns [constant OK] if request is successfully created. (Does not imply that t
 func (self class) RequestRaw(url String.Readable, custom_headers Packed.Strings, method HTTPClient.Method, request_data_raw Packed.Bytes) Error.Code { //gd:HTTPRequest.request_raw
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_request_raw), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
 		url              gdextension.String
-		custom_headers   gdextension.PackedArray
+		custom_headers   gdextension.PackedArray[gdextension.String]
 		method           HTTPClient.Method
-		request_data_raw gdextension.PackedArray
-	}{gdextension.String(pointers.Get(gd.InternalString(url))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(custom_headers))), method, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](request_data_raw))))}))
+		request_data_raw gdextension.PackedArray[byte]
+	}{pointers.Get(gd.InternalString(url)), pointers.Get(gd.InternalPackedStrings(custom_headers)), method, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](request_data_raw)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -516,12 +517,12 @@ func (self class) GetMaxRedirects() int64 { //gd:HTTPRequest.get_max_redirects
 
 //go:nosplit
 func (self class) SetDownloadFile(path String.Readable) { //gd:HTTPRequest.set_download_file
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_download_file), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_download_file), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 }
 
 //go:nosplit
 func (self class) GetDownloadFile() String.Readable { //gd:HTTPRequest.get_download_file
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_download_file), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_get_download_file), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -580,7 +581,7 @@ func (self class) SetHttpProxy(host String.Readable, port int64) { //gd:HTTPRequ
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_http_proxy), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		host gdextension.String
 		port int64
-	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), port}))
+	}{pointers.Get(gd.InternalString(host)), port}))
 }
 
 /*
@@ -592,7 +593,7 @@ func (self class) SetHttpsProxy(host String.Readable, port int64) { //gd:HTTPReq
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPRequest.Bind_set_https_proxy), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		host gdextension.String
 		port int64
-	}{gdextension.String(pointers.Get(gd.InternalString(host))[0]), port}))
+	}{pointers.Get(gd.InternalString(host)), port}))
 }
 func (self Instance) OnRequestCompleted(cb func(result int, response_code int, headers []string, body []byte)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("request_completed"), gd.NewCallable(cb), 0)

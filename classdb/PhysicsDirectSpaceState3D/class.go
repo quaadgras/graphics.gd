@@ -208,8 +208,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PhysicsDirectSpaceState3D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PhysicsDirectSpaceState3D"))))})}
 	casted := Instance{*(*gdclass.PhysicsDirectSpaceState3D)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -223,7 +224,7 @@ The number of intersections can be limited with the [param max_results] paramete
 */
 //go:nosplit
 func (self class) IntersectPoint(parameters [1]gdclass.PhysicsPointQueryParameters3D, max_results int64) Array.Contains[Dictionary.Any] { //gd:PhysicsDirectSpaceState3D.intersect_point
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_intersect_point), gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_intersect_point), gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		parameters  gdextension.Object
 		max_results int64
 	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), max_results}))
@@ -245,7 +246,7 @@ If the ray did not intersect anything, then an empty dictionary is returned inst
 */
 //go:nosplit
 func (self class) IntersectRay(parameters [1]gdclass.PhysicsRayQueryParameters3D) Dictionary.Any { //gd:PhysicsDirectSpaceState3D.intersect_ray
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_intersect_ray), gdextension.SizeDictionary|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_intersect_ray), gdextension.SizeDictionary|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject()))}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -261,7 +262,7 @@ The number of intersections can be limited with the [param max_results] paramete
 */
 //go:nosplit
 func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results int64) Array.Contains[Dictionary.Any] { //gd:PhysicsDirectSpaceState3D.intersect_shape
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_intersect_shape), gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_intersect_shape), gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		parameters  gdextension.Object
 		max_results int64
 	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), max_results}))
@@ -288,7 +289,7 @@ Returned points are a list of pairs of contact points. For each pair the first o
 */
 //go:nosplit
 func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters3D, max_results int64) Array.Contains[Vector3.XYZ] { //gd:PhysicsDirectSpaceState3D.collide_shape
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_collide_shape), gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_collide_shape), gdextension.SizeArray|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		parameters  gdextension.Object
 		max_results int64
 	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), max_results}))
@@ -309,7 +310,7 @@ If the shape did not intersect anything, then an empty dictionary is returned in
 */
 //go:nosplit
 func (self class) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters3D) Dictionary.Any { //gd:PhysicsDirectSpaceState3D.get_rest_info
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_get_rest_info), gdextension.SizeDictionary|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsDirectSpaceState3D.Bind_get_rest_info), gdextension.SizeDictionary|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parameters gdextension.Object }{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject()))}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

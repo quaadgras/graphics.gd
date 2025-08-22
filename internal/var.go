@@ -5,7 +5,6 @@ package gd
 import (
 	"reflect"
 
-	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 
@@ -61,9 +60,7 @@ func (c Callable) Free() {
 	if !ok {
 		return
 	}
-	var frame = callframe.New()
-	Global.typeset.destruct.Callable(callframe.Arg(frame, ptr).Addr())
-	frame.Free()
+	gdextension.Free(gdextension.TypeCallable, &ptr)
 }
 
 func (s Variant) Free() {
@@ -76,7 +73,15 @@ func (s Variant) Free() {
 
 type Iterator struct {
 	self Variant
-	iter Variant
+	iter iterator
+}
+
+type iterator pointers.Type[iterator, gdextension.Iterator]
+
+func (iter iterator) Free() {
+	if ptr, ok := pointers.End(iter); ok {
+		gdextension.Host.Variants.Unsafe.Free(gdextension.Variant(ptr))
+	}
 }
 
 func (iter Iterator) Next() bool {

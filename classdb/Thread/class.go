@@ -166,9 +166,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Thread"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Thread"))))})}
 	casted := Instance{*(*gdclass.Thread)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -183,7 +184,7 @@ func (self class) Start(callable Callable.Function, priority Priority) Error.Cod
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_start), gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		callable gdextension.Callable
 		priority Priority
-	}{gdextension.Callable(pointers.Get(gd.InternalCallable(callable))), priority}))
+	}{pointers.Get(gd.InternalCallable(callable)), priority}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -193,7 +194,7 @@ Returns the current [Thread]'s ID, uniquely identifying it among all threads. If
 */
 //go:nosplit
 func (self class) GetId() String.Readable { //gd:Thread.get_id
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_get_id), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_get_id), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -226,7 +227,7 @@ To determine if this can be called without blocking the calling thread, check if
 */
 //go:nosplit
 func (self class) WaitToFinish() variant.Any { //gd:Thread.wait_to_finish
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_wait_to_finish), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_wait_to_finish), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

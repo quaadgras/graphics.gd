@@ -389,8 +389,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SceneTree"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SceneTree"))))})}
 	casted := Instance{*(*gdclass.SceneTree)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -480,7 +481,7 @@ func (self Instance) SetPhysicsInterpolation(value bool) {
 
 //go:nosplit
 func (self class) GetRoot() [1]gdclass.Window { //gd:SceneTree.get_root
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_root), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_root), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret)}
 	return ret
 }
@@ -490,7 +491,7 @@ Returns [code]true[/code] if a node added to the given group [param name] exists
 */
 //go:nosplit
 func (self class) HasGroup(name String.Name) bool { //gd:SceneTree.has_group
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_has_group), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_has_group), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -562,7 +563,7 @@ func (self class) SetEditedSceneRoot(scene [1]gdclass.Node) { //gd:SceneTree.set
 
 //go:nosplit
 func (self class) GetEditedSceneRoot() [1]gdclass.Node { //gd:SceneTree.get_edited_scene_root
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_edited_scene_root), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_edited_scene_root), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -605,7 +606,7 @@ public async Task SomeFunction()
 */
 //go:nosplit
 func (self class) CreateTimer(time_sec float64, process_always bool, process_in_physics bool, ignore_time_scale bool) [1]gdclass.SceneTreeTimer { //gd:SceneTree.create_timer
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_create_timer), gdextension.SizeObject|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_create_timer), gdextension.SizeObject|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		time_sec           float64
 		process_always     bool
 		process_in_physics bool
@@ -621,7 +622,7 @@ Creates and returns a new [Tween] processed in this tree. The Tween will start a
 */
 //go:nosplit
 func (self class) CreateTween() [1]gdclass.Tween { //gd:SceneTree.create_tween
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_create_tween), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_create_tween), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -631,7 +632,7 @@ Returns an [Array] of currently existing [Tween]s in the tree, including paused 
 */
 //go:nosplit
 func (self class) GetProcessedTweens() Array.Contains[[1]gdclass.Tween] { //gd:SceneTree.get_processed_tweens
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_processed_tweens), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_processed_tweens), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Tween]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -715,7 +716,7 @@ func (self class) NotifyGroupFlags(call_flags int64, group String.Name, notifica
 		call_flags   int64
 		group        gdextension.StringName
 		notification int64
-	}{call_flags, gdextension.StringName(pointers.Get(gd.InternalStringName(group))[0]), notification}))
+	}{call_flags, pointers.Get(gd.InternalStringName(group)), notification}))
 }
 
 /*
@@ -729,7 +730,7 @@ func (self class) SetGroupFlags(call_flags int64, group String.Name, property St
 		group      gdextension.StringName
 		property   gdextension.String
 		value      gdextension.Variant
-	}{call_flags, gdextension.StringName(pointers.Get(gd.InternalStringName(group))[0]), gdextension.String(pointers.Get(gd.InternalString(property))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{call_flags, pointers.Get(gd.InternalStringName(group)), pointers.Get(gd.InternalString(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -756,7 +757,7 @@ func (self class) NotifyGroup(group String.Name, notification int64) { //gd:Scen
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_notify_group), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		group        gdextension.StringName
 		notification int64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(group))[0]), notification}))
+	}{pointers.Get(gd.InternalStringName(group)), notification}))
 }
 
 /*
@@ -770,7 +771,7 @@ func (self class) SetGroup(group String.Name, property String.Readable, value va
 		group    gdextension.StringName
 		property gdextension.String
 		value    gdextension.Variant
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(group))[0]), gdextension.String(pointers.Get(gd.InternalString(property))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{pointers.Get(gd.InternalStringName(group)), pointers.Get(gd.InternalString(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -778,7 +779,7 @@ Returns an [Array] containing all nodes inside this tree, that have been added t
 */
 //go:nosplit
 func (self class) GetNodesInGroup(group String.Name) Array.Contains[[1]gdclass.Node] { //gd:SceneTree.get_nodes_in_group
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_nodes_in_group), gdextension.SizeArray|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(group))[0])}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_nodes_in_group), gdextension.SizeArray|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -788,7 +789,7 @@ Returns the first [Node] found inside the tree, that has been added to the given
 */
 //go:nosplit
 func (self class) GetFirstNodeInGroup(group String.Name) [1]gdclass.Node { //gd:SceneTree.get_first_node_in_group
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_first_node_in_group), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(group))[0])}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_first_node_in_group), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -798,7 +799,7 @@ Returns the number of nodes assigned to the given group.
 */
 //go:nosplit
 func (self class) GetNodeCountInGroup(group String.Name) int64 { //gd:SceneTree.get_node_count_in_group
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_node_count_in_group), gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(group))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_node_count_in_group), gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))}))
 	var ret = r_ret
 	return ret
 }
@@ -810,7 +811,7 @@ func (self class) SetCurrentScene(child_node [1]gdclass.Node) { //gd:SceneTree.s
 
 //go:nosplit
 func (self class) GetCurrentScene() [1]gdclass.Node { //gd:SceneTree.get_current_scene
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_current_scene), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_current_scene), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -822,7 +823,7 @@ Returns [constant OK] on success, [constant ERR_CANT_OPEN] if the [param path] c
 */
 //go:nosplit
 func (self class) ChangeSceneToFile(path String.Readable) Error.Code { //gd:SceneTree.change_scene_to_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_change_scene_to_file), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_change_scene_to_file), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -870,7 +871,7 @@ func (self class) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI, root_pat
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_set_multiplayer), 0|(gdextension.SizeObject<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
 		multiplayer gdextension.Object
 		root_path   gdextension.NodePath
-	}{gdextension.Object(gd.ObjectChecked(multiplayer[0].AsObject())), gdextension.NodePath(pointers.Get(gd.InternalNodePath(root_path))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(multiplayer[0].AsObject())), pointers.Get(gd.InternalNodePath(root_path))}))
 }
 
 /*
@@ -878,7 +879,7 @@ Searches for the [MultiplayerAPI] configured for the given path, if one does not
 */
 //go:nosplit
 func (self class) GetMultiplayer(for_path Path.ToNode) [1]gdclass.MultiplayerAPI { //gd:SceneTree.get_multiplayer
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_multiplayer), gdextension.SizeObject|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ for_path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(for_path))[0])}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneTree.Bind_get_multiplayer), gdextension.SizeObject|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ for_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(for_path))}))
 	var ret = [1]gdclass.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerAPI](r_ret)}
 	return ret
 }

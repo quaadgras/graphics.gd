@@ -237,9 +237,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ENetPacketPeer"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ENetPacketPeer"))))})}
 	casted := Instance{*(*gdclass.ENetPacketPeer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -298,9 +299,9 @@ Queues a [param packet] to be sent over the specified [param channel]. See [code
 func (self class) Send(channel int64, packet Packed.Bytes, flags int64) Error.Code { //gd:ENetPacketPeer.send
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetPacketPeer.Bind_send), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		channel int64
-		packet  gdextension.PackedArray
+		packet  gdextension.PackedArray[byte]
 		flags   int64
-	}{channel, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet)))), flags}))
+	}{channel, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet))), flags}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -349,7 +350,7 @@ Returns the IP address of this peer.
 */
 //go:nosplit
 func (self class) GetRemoteAddress() String.Readable { //gd:ENetPacketPeer.get_remote_address
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_address), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetPacketPeer.Bind_get_remote_address), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

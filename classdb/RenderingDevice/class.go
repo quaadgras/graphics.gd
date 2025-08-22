@@ -1399,8 +1399,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("RenderingDevice"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RenderingDevice"))))})}
 	casted := Instance{*(*gdclass.RenderingDevice)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -1415,7 +1416,7 @@ func (self class) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdcla
 		format gdextension.Object
 		view   gdextension.Object
 		data   gdextension.Array
-	}{gdextension.Object(gd.ObjectChecked(format[0].AsObject())), gdextension.Object(gd.ObjectChecked(view[0].AsObject())), gdextension.Array(pointers.Get(gd.InternalArray(data))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(format[0].AsObject())), gdextension.Object(gd.ObjectChecked(view[0].AsObject())), pointers.Get(gd.InternalArray(data))}))
 	var ret = r_ret
 	return ret
 }
@@ -1483,8 +1484,8 @@ func (self class) TextureUpdate(texture RID.Any, layer int64, data Packed.Bytes)
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_texture_update), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
 		texture RID.Any
 		layer   int64
-		data    gdextension.PackedArray
-	}{texture, layer, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+		data    gdextension.PackedArray[byte]
+	}{texture, layer, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1524,7 +1525,7 @@ func (self class) TextureGetDataAsync(texture RID.Any, layer int64, callback Cal
 		texture  RID.Any
 		layer    int64
 		callback gdextension.Callable
-	}{texture, layer, gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{texture, layer, pointers.Get(gd.InternalCallable(callback))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1653,7 +1654,7 @@ Returns the data format used to create this texture.
 */
 //go:nosplit
 func (self class) TextureGetFormat(texture RID.Any) [1]gdclass.RDTextureFormat { //gd:RenderingDevice.texture_get_format
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_texture_get_format), gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_texture_get_format), gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture RID.Any }{texture}))
 	var ret = [1]gdclass.RDTextureFormat{gd.PointerWithOwnershipTransferredToGo[gdclass.RDTextureFormat](r_ret)}
 	return ret
 }
@@ -1678,7 +1679,7 @@ func (self class) FramebufferFormatCreate(attachments Array.Contains[[1]gdclass.
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_framebuffer_format_create), gdextension.SizeInt|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		attachments gdextension.Array
 		view_count  int64
-	}{gdextension.Array(pointers.Get(gd.InternalArray(attachments))[0]), view_count}))
+	}{pointers.Get(gd.InternalArray(attachments)), view_count}))
 	var ret = r_ret
 	return ret
 }
@@ -1692,7 +1693,7 @@ func (self class) FramebufferFormatCreateMultipass(attachments Array.Contains[[1
 		attachments gdextension.Array
 		passes      gdextension.Array
 		view_count  int64
-	}{gdextension.Array(pointers.Get(gd.InternalArray(attachments))[0]), gdextension.Array(pointers.Get(gd.InternalArray(passes))[0]), view_count}))
+	}{pointers.Get(gd.InternalArray(attachments)), pointers.Get(gd.InternalArray(passes)), view_count}))
 	var ret = r_ret
 	return ret
 }
@@ -1730,7 +1731,7 @@ func (self class) FramebufferCreate(textures Array.Contains[RID.Any], validate_w
 		textures             gdextension.Array
 		validate_with_format int64
 		view_count           int64
-	}{gdextension.Array(pointers.Get(gd.InternalArray(textures))[0]), validate_with_format, view_count}))
+	}{pointers.Get(gd.InternalArray(textures)), validate_with_format, view_count}))
 	var ret = r_ret
 	return ret
 }
@@ -1746,7 +1747,7 @@ func (self class) FramebufferCreateMultipass(textures Array.Contains[RID.Any], p
 		passes               gdextension.Array
 		validate_with_format int64
 		view_count           int64
-	}{gdextension.Array(pointers.Get(gd.InternalArray(textures))[0]), gdextension.Array(pointers.Get(gd.InternalArray(passes))[0]), validate_with_format, view_count}))
+	}{pointers.Get(gd.InternalArray(textures)), pointers.Get(gd.InternalArray(passes)), validate_with_format, view_count}))
 	var ret = r_ret
 	return ret
 }
@@ -1818,9 +1819,9 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 func (self class) VertexBufferCreate(size_bytes int64, data Packed.Bytes, creation_bits Rendering.BufferCreationBits) RID.Any { //gd:RenderingDevice.vertex_buffer_create
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_vertex_buffer_create), gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		size_bytes    int64
-		data          gdextension.PackedArray
+		data          gdextension.PackedArray[byte]
 		creation_bits Rendering.BufferCreationBits
-	}{size_bytes, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))), creation_bits}))
+	}{size_bytes, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))), creation_bits}))
 	var ret = r_ret
 	return ret
 }
@@ -1830,7 +1831,7 @@ Creates a new vertex format with the specified [param vertex_descriptions]. Retu
 */
 //go:nosplit
 func (self class) VertexFormatCreate(vertex_descriptions Array.Contains[[1]gdclass.RDVertexAttribute]) int64 { //gd:RenderingDevice.vertex_format_create
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_vertex_format_create), gdextension.SizeInt|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ vertex_descriptions gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(vertex_descriptions))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_vertex_format_create), gdextension.SizeInt|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ vertex_descriptions gdextension.Array }{pointers.Get(gd.InternalArray(vertex_descriptions))}))
 	var ret = r_ret
 	return ret
 }
@@ -1844,8 +1845,8 @@ func (self class) VertexArrayCreate(vertex_count int64, vertex_format int64, src
 		vertex_count  int64
 		vertex_format int64
 		src_buffers   gdextension.Array
-		offsets       gdextension.PackedArray
-	}{vertex_count, vertex_format, gdextension.Array(pointers.Get(gd.InternalArray(src_buffers))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](offsets)))}))
+		offsets       gdextension.PackedArray[int64]
+	}{vertex_count, vertex_format, pointers.Get(gd.InternalArray(src_buffers)), pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](offsets))}))
 	var ret = r_ret
 	return ret
 }
@@ -1859,10 +1860,10 @@ func (self class) IndexBufferCreate(size_indices int64, format Rendering.IndexBu
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_index_buffer_create), gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		size_indices        int64
 		format              Rendering.IndexBufferFormat
-		data                gdextension.PackedArray
+		data                gdextension.PackedArray[byte]
 		use_restart_indices bool
 		creation_bits       Rendering.BufferCreationBits
-	}{size_indices, format, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))), use_restart_indices, creation_bits}))
+	}{size_indices, format, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))), use_restart_indices, creation_bits}))
 	var ret = r_ret
 	return ret
 }
@@ -1888,7 +1889,7 @@ If [param allow_cache] is [code]true[/code], make use of the shader cache genera
 */
 //go:nosplit
 func (self class) ShaderCompileSpirvFromSource(shader_source [1]gdclass.RDShaderSource, allow_cache bool) [1]gdclass.RDShaderSPIRV { //gd:RenderingDevice.shader_compile_spirv_from_source
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_shader_compile_spirv_from_source), gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_shader_compile_spirv_from_source), gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		shader_source gdextension.Object
 		allow_cache   bool
 	}{gdextension.Object(gd.ObjectChecked(shader_source[0].AsObject())), allow_cache}))
@@ -1905,7 +1906,7 @@ func (self class) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShaderSPI
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_shader_compile_binary_from_spirv), gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		spirv_data gdextension.Object
 		name       gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(spirv_data[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(spirv_data[0].AsObject())), pointers.Get(gd.InternalString(name))}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -1919,7 +1920,7 @@ func (self class) ShaderCreateFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV, nam
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_shader_create_from_spirv), gdextension.SizeRID|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		spirv_data gdextension.Object
 		name       gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(spirv_data[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	}{gdextension.Object(gd.ObjectChecked(spirv_data[0].AsObject())), pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -1931,9 +1932,9 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 //go:nosplit
 func (self class) ShaderCreateFromBytecode(binary_data Packed.Bytes, placeholder_rid RID.Any) RID.Any { //gd:RenderingDevice.shader_create_from_bytecode
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_shader_create_from_bytecode), gdextension.SizeRID|(gdextension.SizePackedArray<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
-		binary_data     gdextension.PackedArray
+		binary_data     gdextension.PackedArray[byte]
 		placeholder_rid RID.Any
-	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](binary_data)))), placeholder_rid}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](binary_data))), placeholder_rid}))
 	var ret = r_ret
 	return ret
 }
@@ -1966,9 +1967,9 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 func (self class) UniformBufferCreate(size_bytes int64, data Packed.Bytes, creation_bits Rendering.BufferCreationBits) RID.Any { //gd:RenderingDevice.uniform_buffer_create
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_uniform_buffer_create), gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		size_bytes    int64
-		data          gdextension.PackedArray
+		data          gdextension.PackedArray[byte]
 		creation_bits Rendering.BufferCreationBits
-	}{size_bytes, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))), creation_bits}))
+	}{size_bytes, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))), creation_bits}))
 	var ret = r_ret
 	return ret
 }
@@ -1981,10 +1982,10 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 func (self class) StorageBufferCreate(size_bytes int64, data Packed.Bytes, usage Rendering.StorageBufferUsage, creation_bits Rendering.BufferCreationBits) RID.Any { //gd:RenderingDevice.storage_buffer_create
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_storage_buffer_create), gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		size_bytes    int64
-		data          gdextension.PackedArray
+		data          gdextension.PackedArray[byte]
 		usage         Rendering.StorageBufferUsage
 		creation_bits Rendering.BufferCreationBits
-	}{size_bytes, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))), usage, creation_bits}))
+	}{size_bytes, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))), usage, creation_bits}))
 	var ret = r_ret
 	return ret
 }
@@ -1998,8 +1999,8 @@ func (self class) TextureBufferCreate(size_bytes int64, format Rendering.DataFor
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_texture_buffer_create), gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
 		size_bytes int64
 		format     Rendering.DataFormat
-		data       gdextension.PackedArray
-	}{size_bytes, format, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+		data       gdextension.PackedArray[byte]
+	}{size_bytes, format, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 	var ret = r_ret
 	return ret
 }
@@ -2014,7 +2015,7 @@ func (self class) UniformSetCreate(uniforms Array.Contains[[1]gdclass.RDUniform]
 		uniforms   gdextension.Array
 		shader     RID.Any
 		shader_set int64
-	}{gdextension.Array(pointers.Get(gd.InternalArray(uniforms))[0]), shader, shader_set}))
+	}{pointers.Get(gd.InternalArray(uniforms)), shader, shader_set}))
 	var ret = r_ret
 	return ret
 }
@@ -2062,8 +2063,8 @@ func (self class) BufferUpdate(buffer RID.Any, offset int64, size_bytes int64, d
 		buffer     RID.Any
 		offset     int64
 		size_bytes int64
-		data       gdextension.PackedArray
-	}{buffer, offset, size_bytes, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+		data       gdextension.PackedArray[byte]
+	}{buffer, offset, size_bytes, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -2122,7 +2123,7 @@ func (self class) BufferGetDataAsync(buffer RID.Any, callback Callable.Function,
 		callback     gdextension.Callable
 		offset_bytes int64
 		size_bytes   int64
-	}{buffer, gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), offset_bytes, size_bytes}))
+	}{buffer, pointers.Get(gd.InternalCallable(callback)), offset_bytes, size_bytes}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -2156,7 +2157,7 @@ func (self class) RenderPipelineCreate(shader RID.Any, framebuffer_format int64,
 		dynamic_state_flags      Rendering.PipelineDynamicStateFlags
 		for_render_pass          int64
 		specialization_constants gdextension.Array
-	}{shader, framebuffer_format, vertex_format, primitive, gdextension.Object(gd.ObjectChecked(rasterization_state[0].AsObject())), gdextension.Object(gd.ObjectChecked(multisample_state[0].AsObject())), gdextension.Object(gd.ObjectChecked(stencil_state[0].AsObject())), gdextension.Object(gd.ObjectChecked(color_blend_state[0].AsObject())), dynamic_state_flags, for_render_pass, gdextension.Array(pointers.Get(gd.InternalArray(specialization_constants))[0])}))
+	}{shader, framebuffer_format, vertex_format, primitive, gdextension.Object(gd.ObjectChecked(rasterization_state[0].AsObject())), gdextension.Object(gd.ObjectChecked(multisample_state[0].AsObject())), gdextension.Object(gd.ObjectChecked(stencil_state[0].AsObject())), gdextension.Object(gd.ObjectChecked(color_blend_state[0].AsObject())), dynamic_state_flags, for_render_pass, pointers.Get(gd.InternalArray(specialization_constants))}))
 	var ret = r_ret
 	return ret
 }
@@ -2180,7 +2181,7 @@ func (self class) ComputePipelineCreate(shader RID.Any, specialization_constants
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_compute_pipeline_create), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		shader                   RID.Any
 		specialization_constants gdextension.Array
-	}{shader, gdextension.Array(pointers.Get(gd.InternalArray(specialization_constants))[0])}))
+	}{shader, pointers.Get(gd.InternalArray(specialization_constants))}))
 	var ret = r_ret
 	return ret
 }
@@ -2276,12 +2277,12 @@ func (self class) DrawListBegin(framebuffer RID.Any, draw_flags Rendering.DrawFl
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_draw_list_begin), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeRect2<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
 		framebuffer         RID.Any
 		draw_flags          Rendering.DrawFlags
-		clear_color_values  gdextension.PackedArray
+		clear_color_values  gdextension.PackedArray[Color.RGBA]
 		clear_depth_value   float64
 		clear_stencil_value int64
 		region              Rect2.PositionSize
 		breadcrumb          int64
-	}{framebuffer, draw_flags, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](clear_color_values))), clear_depth_value, clear_stencil_value, region, breadcrumb}))
+	}{framebuffer, draw_flags, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](clear_color_values)), clear_depth_value, clear_stencil_value, region, breadcrumb}))
 	var ret = r_ret
 	return ret
 }
@@ -2298,12 +2299,12 @@ func (self class) DrawListBeginSplit(framebuffer RID.Any, splits int64, initial_
 		final_color_action   Rendering.FinalAction
 		initial_depth_action Rendering.InitialAction
 		final_depth_action   Rendering.FinalAction
-		clear_color_values   gdextension.PackedArray
+		clear_color_values   gdextension.PackedArray[Color.RGBA]
 		clear_depth          float64
 		clear_stencil        int64
 		region               Rect2.PositionSize
 		storage_textures     gdextension.Array
-	}{framebuffer, splits, initial_color_action, final_color_action, initial_depth_action, final_depth_action, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](clear_color_values))), clear_depth, clear_stencil, region, gdextension.Array(pointers.Get(gd.InternalArray(storage_textures))[0])}))
+	}{framebuffer, splits, initial_color_action, final_color_action, initial_depth_action, final_depth_action, pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](clear_color_values)), clear_depth, clear_stencil, region, pointers.Get(gd.InternalArray(storage_textures))}))
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -2371,9 +2372,9 @@ Sets the push constant data to [param buffer] for the specified [param draw_list
 func (self class) DrawListSetPushConstant(draw_list int64, buffer Packed.Bytes, size_bytes int64) { //gd:RenderingDevice.draw_list_set_push_constant
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_draw_list_set_push_constant), 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		draw_list  int64
-		buffer     gdextension.PackedArray
+		buffer     gdextension.PackedArray[byte]
 		size_bytes int64
-	}{draw_list, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))), size_bytes}))
+	}{draw_list, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))), size_bytes}))
 }
 
 /*
@@ -2497,9 +2498,9 @@ Sets the push constant data to [param buffer] for the specified [param compute_l
 func (self class) ComputeListSetPushConstant(compute_list int64, buffer Packed.Bytes, size_bytes int64) { //gd:RenderingDevice.compute_list_set_push_constant
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_compute_list_set_push_constant), 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		compute_list int64
-		buffer       gdextension.PackedArray
+		buffer       gdextension.PackedArray[byte]
 		size_bytes   int64
-	}{compute_list, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))), size_bytes}))
+	}{compute_list, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))), size_bytes}))
 }
 
 /*
@@ -2568,7 +2569,7 @@ Creates a timestamp marker with the specified [param name]. This is used for per
 */
 //go:nosplit
 func (self class) CaptureTimestamp(name String.Readable) { //gd:RenderingDevice.capture_timestamp
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_capture_timestamp), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_capture_timestamp), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -2616,7 +2617,7 @@ Returns the timestamp's name for the rendering step specified by [param index]. 
 */
 //go:nosplit
 func (self class) GetCapturedTimestampName(index int64) String.Readable { //gd:RenderingDevice.get_captured_timestamp_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_captured_timestamp_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_captured_timestamp_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2695,7 +2696,7 @@ Create a new local [RenderingDevice]. This is most useful for performing compute
 */
 //go:nosplit
 func (self class) CreateLocalDevice() [1]gdclass.RenderingDevice { //gd:RenderingDevice.create_local_device
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_create_local_device), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_create_local_device), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.RenderingDevice{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderingDevice](r_ret)}
 	return ret
 }
@@ -2710,7 +2711,7 @@ func (self class) SetResourceName(id RID.Any, name String.Readable) { //gd:Rende
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_set_resource_name), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		id   RID.Any
 		name gdextension.String
-	}{id, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	}{id, pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -2722,7 +2723,7 @@ func (self class) DrawCommandBeginLabel(name String.Readable, color Color.RGBA) 
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_draw_command_begin_label), 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		name  gdextension.String
 		color Color.RGBA
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), color}))
+	}{pointers.Get(gd.InternalString(name)), color}))
 }
 
 /*
@@ -2733,7 +2734,7 @@ func (self class) DrawCommandInsertLabel(name String.Readable, color Color.RGBA)
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_draw_command_insert_label), 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		name  gdextension.String
 		color Color.RGBA
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), color}))
+	}{pointers.Get(gd.InternalString(name)), color}))
 }
 
 /*
@@ -2749,7 +2750,7 @@ Returns the vendor of the video adapter (e.g. "NVIDIA Corporation"). Equivalent 
 */
 //go:nosplit
 func (self class) GetDeviceVendorName() String.Readable { //gd:RenderingDevice.get_device_vendor_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_device_vendor_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_device_vendor_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2759,7 +2760,7 @@ Returns the name of the video adapter (e.g. "GeForce GTX 1080/PCIe/SSE2"). Equiv
 */
 //go:nosplit
 func (self class) GetDeviceName() String.Readable { //gd:RenderingDevice.get_device_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_device_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_device_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2769,7 +2770,7 @@ Returns the universally unique identifier for the pipeline cache. This is used t
 */
 //go:nosplit
 func (self class) GetDevicePipelineCacheUuid() String.Readable { //gd:RenderingDevice.get_device_pipeline_cache_uuid
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_device_pipeline_cache_uuid), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_device_pipeline_cache_uuid), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2803,7 +2804,7 @@ Returns a string with a performance report from the past frame. Updates every fr
 */
 //go:nosplit
 func (self class) GetPerfReport() String.Readable { //gd:RenderingDevice.get_perf_report
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_perf_report), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_perf_report), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2824,7 +2825,7 @@ This is only used by Vulkan in debug builds. Godot must also be started with the
 */
 //go:nosplit
 func (self class) GetDriverAndDeviceMemoryReport() String.Readable { //gd:RenderingDevice.get_driver_and_device_memory_report
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_driver_and_device_memory_report), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_driver_and_device_memory_report), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2841,7 +2842,7 @@ This is only used by Vulkan in debug builds. Godot must also be started with the
 */
 //go:nosplit
 func (self class) GetTrackedObjectName(type_index int64) String.Readable { //gd:RenderingDevice.get_tracked_object_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_tracked_object_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ type_index int64 }{type_index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderingDevice.Bind_get_tracked_object_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ type_index int64 }{type_index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

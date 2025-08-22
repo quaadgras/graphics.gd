@@ -1934,9 +1934,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextServer"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TextServer"))))})}
 	casted := Instance{*(*gdclass.TextServer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -1955,7 +1956,7 @@ Returns the name of the server interface.
 */
 //go:nosplit
 func (self class) GetName() String.Readable { //gd:TextServer.get_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_get_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_get_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1976,7 +1977,7 @@ Loads optional TextServer database (e.g. ICU break iterators and dictionaries).
 */
 //go:nosplit
 func (self class) LoadSupportData(filename String.Readable) bool { //gd:TextServer.load_support_data
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_load_support_data), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ filename gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(filename))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_load_support_data), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))}))
 	var ret = r_ret
 	return ret
 }
@@ -1986,7 +1987,7 @@ Returns default TextServer database (e.g. ICU break iterators and dictionaries) 
 */
 //go:nosplit
 func (self class) GetSupportDataFilename() String.Readable { //gd:TextServer.get_support_data_filename
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_get_support_data_filename), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_get_support_data_filename), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1996,7 +1997,7 @@ Returns TextServer database (e.g. ICU break iterators and dictionaries) descript
 */
 //go:nosplit
 func (self class) GetSupportDataInfo() String.Readable { //gd:TextServer.get_support_data_info
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_get_support_data_info), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_get_support_data_info), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2007,7 +2008,7 @@ Saves optional TextServer database (e.g. ICU break iterators and dictionaries) t
 */
 //go:nosplit
 func (self class) SaveSupportData(filename String.Readable) bool { //gd:TextServer.save_support_data
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_save_support_data), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ filename gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(filename))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_save_support_data), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))}))
 	var ret = r_ret
 	return ret
 }
@@ -2027,7 +2028,7 @@ Returns [code]true[/code] if locale is right-to-left.
 */
 //go:nosplit
 func (self class) IsLocaleRightToLeft(locale String.Readable) bool { //gd:TextServer.is_locale_right_to_left
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_is_locale_right_to_left), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ locale gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(locale))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_is_locale_right_to_left), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))}))
 	var ret = r_ret
 	return ret
 }
@@ -2037,7 +2038,7 @@ Converts readable feature, variation, script, or language name to OpenType tag.
 */
 //go:nosplit
 func (self class) NameToTag(name String.Readable) int64 { //gd:TextServer.name_to_tag
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_name_to_tag), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_name_to_tag), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -2047,7 +2048,7 @@ Converts OpenType tag to readable feature, variation, script, or language name.
 */
 //go:nosplit
 func (self class) TagToName(tag int64) String.Readable { //gd:TextServer.tag_to_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_tag_to_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tag int64 }{tag}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_tag_to_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tag int64 }{tag}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2097,8 +2098,8 @@ Sets font source data, e.g contents of the dynamic font source file.
 func (self class) FontSetData(font_rid RID.Any, data Packed.Bytes) { //gd:TextServer.font_set_data
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_set_data), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		font_rid RID.Any
-		data     gdextension.PackedArray
-	}{font_rid, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+		data     gdextension.PackedArray[byte]
+	}{font_rid, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 }
 
 /*
@@ -2162,7 +2163,7 @@ func (self class) FontSetName(font_rid RID.Any, name String.Readable) { //gd:Tex
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_set_name), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		font_rid RID.Any
 		name     gdextension.String
-	}{font_rid, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	}{font_rid, pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -2170,7 +2171,7 @@ Returns font family name.
 */
 //go:nosplit
 func (self class) FontGetName(font_rid RID.Any) String.Readable { //gd:TextServer.font_get_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_name), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_name), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2180,7 +2181,7 @@ Returns [Dictionary] with OpenType font name strings (localized font names, vers
 */
 //go:nosplit
 func (self class) FontGetOtNameStrings(font_rid RID.Any) Dictionary.Any { //gd:TextServer.font_get_ot_name_strings
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_ot_name_strings), gdextension.SizeDictionary|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_ot_name_strings), gdextension.SizeDictionary|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -2193,7 +2194,7 @@ func (self class) FontSetStyleName(font_rid RID.Any, name String.Readable) { //g
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_set_style_name), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		font_rid RID.Any
 		name     gdextension.String
-	}{font_rid, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	}{font_rid, pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -2201,7 +2202,7 @@ Returns font style name.
 */
 //go:nosplit
 func (self class) FontGetStyleName(font_rid RID.Any) String.Readable { //gd:TextServer.font_get_style_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_style_name), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_style_name), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2621,7 +2622,7 @@ func (self class) FontSetVariationCoordinates(font_rid RID.Any, variation_coordi
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_set_variation_coordinates), 0|(gdextension.SizeRID<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
 		font_rid              RID.Any
 		variation_coordinates gdextension.Dictionary
-	}{font_rid, gdextension.Dictionary(pointers.Get(gd.InternalDictionary(variation_coordinates))[0])}))
+	}{font_rid, pointers.Get(gd.InternalDictionary(variation_coordinates))}))
 }
 
 /*
@@ -2629,7 +2630,7 @@ Returns variation coordinates for the specified font cache entry. See [method fo
 */
 //go:nosplit
 func (self class) FontGetVariationCoordinates(font_rid RID.Any) Dictionary.Any { //gd:TextServer.font_get_variation_coordinates
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_variation_coordinates), gdextension.SizeDictionary|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_variation_coordinates), gdextension.SizeDictionary|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -2660,7 +2661,7 @@ Returns list of the font sizes in the cache. Each size is [Vector2i] with font s
 */
 //go:nosplit
 func (self class) FontGetSizeCacheList(font_rid RID.Any) Array.Contains[Vector2i.XY] { //gd:TextServer.font_get_size_cache_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_size_cache_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_size_cache_list), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
 	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -2865,7 +2866,7 @@ Returns font cache texture image data.
 */
 //go:nosplit
 func (self class) FontGetTextureImage(font_rid RID.Any, size Vector2i.XY, texture_index int64) [1]gdclass.Image { //gd:TextServer.font_get_texture_image
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_texture_image), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_texture_image), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		font_rid      RID.Any
 		size          Vector2i.XY
 		texture_index int64
@@ -2883,8 +2884,8 @@ func (self class) FontSetTextureOffsets(font_rid RID.Any, size Vector2i.XY, text
 		font_rid      RID.Any
 		size          Vector2i.XY
 		texture_index int64
-		offset        gdextension.PackedArray
-	}{font_rid, size, texture_index, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](offset)))}))
+		offset        gdextension.PackedArray[int32]
+	}{font_rid, size, texture_index, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](offset))}))
 }
 
 /*
@@ -3119,7 +3120,7 @@ Returns outline contours of the glyph as a [Dictionary] with the following conte
 */
 //go:nosplit
 func (self class) FontGetGlyphContours(font RID.Any, size int64, index int64) Dictionary.Any { //gd:TextServer.font_get_glyph_contours
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_glyph_contours), gdextension.SizeDictionary|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_glyph_contours), gdextension.SizeDictionary|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		font  RID.Any
 		size  int64
 		index int64
@@ -3133,7 +3134,7 @@ Returns list of the kerning overrides.
 */
 //go:nosplit
 func (self class) FontGetKerningList(font_rid RID.Any, size int64) Array.Contains[Vector2i.XY] { //gd:TextServer.font_get_kerning_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_kerning_list), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_kerning_list), gdextension.SizeArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		font_rid RID.Any
 		size     int64
 	}{font_rid, size}))
@@ -3238,7 +3239,7 @@ Returns a string containing all the characters available in the font.
 */
 //go:nosplit
 func (self class) FontGetSupportedChars(font_rid RID.Any) String.Readable { //gd:TextServer.font_get_supported_chars
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_supported_chars), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_supported_chars), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3321,7 +3322,7 @@ func (self class) FontIsLanguageSupported(font_rid RID.Any, language String.Read
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_is_language_supported), gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		font_rid RID.Any
 		language gdextension.String
-	}{font_rid, gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{font_rid, pointers.Get(gd.InternalString(language))}))
 	var ret = r_ret
 	return ret
 }
@@ -3335,7 +3336,7 @@ func (self class) FontSetLanguageSupportOverride(font_rid RID.Any, language Stri
 		font_rid  RID.Any
 		language  gdextension.String
 		supported bool
-	}{font_rid, gdextension.String(pointers.Get(gd.InternalString(language))[0]), supported}))
+	}{font_rid, pointers.Get(gd.InternalString(language)), supported}))
 }
 
 /*
@@ -3346,7 +3347,7 @@ func (self class) FontGetLanguageSupportOverride(font_rid RID.Any, language Stri
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_language_support_override), gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		font_rid RID.Any
 		language gdextension.String
-	}{font_rid, gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{font_rid, pointers.Get(gd.InternalString(language))}))
 	var ret = r_ret
 	return ret
 }
@@ -3359,7 +3360,7 @@ func (self class) FontRemoveLanguageSupportOverride(font_rid RID.Any, language S
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_remove_language_support_override), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		font_rid RID.Any
 		language gdextension.String
-	}{font_rid, gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{font_rid, pointers.Get(gd.InternalString(language))}))
 }
 
 /*
@@ -3380,7 +3381,7 @@ func (self class) FontIsScriptSupported(font_rid RID.Any, script String.Readable
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_is_script_supported), gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		font_rid RID.Any
 		script   gdextension.String
-	}{font_rid, gdextension.String(pointers.Get(gd.InternalString(script))[0])}))
+	}{font_rid, pointers.Get(gd.InternalString(script))}))
 	var ret = r_ret
 	return ret
 }
@@ -3394,7 +3395,7 @@ func (self class) FontSetScriptSupportOverride(font_rid RID.Any, script String.R
 		font_rid  RID.Any
 		script    gdextension.String
 		supported bool
-	}{font_rid, gdextension.String(pointers.Get(gd.InternalString(script))[0]), supported}))
+	}{font_rid, pointers.Get(gd.InternalString(script)), supported}))
 }
 
 /*
@@ -3405,7 +3406,7 @@ func (self class) FontGetScriptSupportOverride(font_rid RID.Any, script String.R
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_script_support_override), gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		font_rid RID.Any
 		script   gdextension.String
-	}{font_rid, gdextension.String(pointers.Get(gd.InternalString(script))[0])}))
+	}{font_rid, pointers.Get(gd.InternalString(script))}))
 	var ret = r_ret
 	return ret
 }
@@ -3418,7 +3419,7 @@ func (self class) FontRemoveScriptSupportOverride(font_rid RID.Any, script Strin
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_remove_script_support_override), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		font_rid RID.Any
 		script   gdextension.String
-	}{font_rid, gdextension.String(pointers.Get(gd.InternalString(script))[0])}))
+	}{font_rid, pointers.Get(gd.InternalString(script))}))
 }
 
 /*
@@ -3439,7 +3440,7 @@ func (self class) FontSetOpentypeFeatureOverrides(font_rid RID.Any, overrides Di
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_set_opentype_feature_overrides), 0|(gdextension.SizeRID<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
 		font_rid  RID.Any
 		overrides gdextension.Dictionary
-	}{font_rid, gdextension.Dictionary(pointers.Get(gd.InternalDictionary(overrides))[0])}))
+	}{font_rid, pointers.Get(gd.InternalDictionary(overrides))}))
 }
 
 /*
@@ -3447,7 +3448,7 @@ Returns font OpenType feature set override.
 */
 //go:nosplit
 func (self class) FontGetOpentypeFeatureOverrides(font_rid RID.Any) Dictionary.Any { //gd:TextServer.font_get_opentype_feature_overrides
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_opentype_feature_overrides), gdextension.SizeDictionary|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_get_opentype_feature_overrides), gdextension.SizeDictionary|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -3457,7 +3458,7 @@ Returns the dictionary of the supported OpenType features.
 */
 //go:nosplit
 func (self class) FontSupportedFeatureList(font_rid RID.Any) Dictionary.Any { //gd:TextServer.font_supported_feature_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_supported_feature_list), gdextension.SizeDictionary|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_supported_feature_list), gdextension.SizeDictionary|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -3467,7 +3468,7 @@ Returns the dictionary of the supported OpenType variation coordinates.
 */
 //go:nosplit
 func (self class) FontSupportedVariationList(font_rid RID.Any) Dictionary.Any { //gd:TextServer.font_supported_variation_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_supported_variation_list), gdextension.SizeDictionary|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_font_supported_variation_list), gdextension.SizeDictionary|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font_rid RID.Any }{font_rid}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -3582,7 +3583,7 @@ func (self class) ShapedTextSetBidiOverride(shaped RID.Any, override Array.Any) 
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_set_bidi_override), 0|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		shaped   RID.Any
 		override gdextension.Array
-	}{shaped, gdextension.Array(pointers.Get(gd.InternalArray(override))[0])}))
+	}{shaped, pointers.Get(gd.InternalArray(override))}))
 }
 
 /*
@@ -3593,7 +3594,7 @@ func (self class) ShapedTextSetCustomPunctuation(shaped RID.Any, punct String.Re
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_set_custom_punctuation), 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		shaped RID.Any
 		punct  gdextension.String
-	}{shaped, gdextension.String(pointers.Get(gd.InternalString(punct))[0])}))
+	}{shaped, pointers.Get(gd.InternalString(punct))}))
 }
 
 /*
@@ -3601,7 +3602,7 @@ Returns custom punctuation character list, used for word breaking. If set to emp
 */
 //go:nosplit
 func (self class) ShapedTextGetCustomPunctuation(shaped RID.Any) String.Readable { //gd:TextServer.shaped_text_get_custom_punctuation
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_get_custom_punctuation), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shaped RID.Any }{shaped}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_get_custom_punctuation), gdextension.SizeString|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shaped RID.Any }{shaped}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3730,7 +3731,7 @@ func (self class) ShapedTextAddString(shaped RID.Any, text String.Readable, font
 		opentype_features gdextension.Dictionary
 		language          gdextension.String
 		meta              gdextension.Variant
-	}{shaped, gdextension.String(pointers.Get(gd.InternalString(text))[0]), gdextension.Array(pointers.Get(gd.InternalArray(fonts))[0]), size, gdextension.Dictionary(pointers.Get(gd.InternalDictionary(opentype_features))[0]), gdextension.String(pointers.Get(gd.InternalString(language))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))}))
+	}{shaped, pointers.Get(gd.InternalString(text)), pointers.Get(gd.InternalArray(fonts)), size, pointers.Get(gd.InternalDictionary(opentype_features)), pointers.Get(gd.InternalString(language)), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))}))
 	var ret = r_ret
 	return ret
 }
@@ -3783,7 +3784,7 @@ Returns text span metadata.
 */
 //go:nosplit
 func (self class) ShapedGetSpanMeta(shaped RID.Any, index int64) variant.Any { //gd:TextServer.shaped_get_span_meta
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_get_span_meta), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_get_span_meta), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		shaped RID.Any
 		index  int64
 	}{shaped, index}))
@@ -3796,7 +3797,7 @@ Returns text embedded object key.
 */
 //go:nosplit
 func (self class) ShapedGetSpanEmbeddedObject(shaped RID.Any, index int64) variant.Any { //gd:TextServer.shaped_get_span_embedded_object
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_get_span_embedded_object), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_get_span_embedded_object), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		shaped RID.Any
 		index  int64
 	}{shaped, index}))
@@ -3815,7 +3816,7 @@ func (self class) ShapedSetSpanUpdateFont(shaped RID.Any, index int64, fonts Arr
 		fonts             gdextension.Array
 		size              int64
 		opentype_features gdextension.Dictionary
-	}{shaped, index, gdextension.Array(pointers.Get(gd.InternalArray(fonts))[0]), size, gdextension.Dictionary(pointers.Get(gd.InternalDictionary(opentype_features))[0])}))
+	}{shaped, index, pointers.Get(gd.InternalArray(fonts)), size, pointers.Get(gd.InternalDictionary(opentype_features))}))
 }
 
 /*
@@ -3863,8 +3864,8 @@ Aligns shaped text to the given tab-stops.
 func (self class) ShapedTextTabAlign(shaped RID.Any, tab_stops Packed.Array[float32]) float64 { //gd:TextServer.shaped_text_tab_align
 	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_tab_align), gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		shaped    RID.Any
-		tab_stops gdextension.PackedArray
-	}{shaped, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops)))}))
+		tab_stops gdextension.PackedArray[float32]
+	}{shaped, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))}))
 	var ret = r_ret
 	return ret
 }
@@ -3905,7 +3906,7 @@ Returns an array of glyphs in the visual order.
 */
 //go:nosplit
 func (self class) ShapedTextGetGlyphs(shaped RID.Any) Array.Contains[Dictionary.Any] { //gd:TextServer.shaped_text_get_glyphs
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_get_glyphs), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shaped RID.Any }{shaped}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_get_glyphs), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shaped RID.Any }{shaped}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -3915,7 +3916,7 @@ Returns text glyphs in the logical order.
 */
 //go:nosplit
 func (self class) ShapedTextSortLogical(shaped RID.Any) Array.Contains[Dictionary.Any] { //gd:TextServer.shaped_text_sort_logical
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_sort_logical), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shaped RID.Any }{shaped}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_sort_logical), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shaped RID.Any }{shaped}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -3947,11 +3948,11 @@ Breaks text to the lines and columns. Returns character ranges for each segment.
 func (self class) ShapedTextGetLineBreaksAdv(shaped RID.Any, width Packed.Array[float32], start int64, once bool, break_flags LineBreakFlag) Packed.Array[int32] { //gd:TextServer.shaped_text_get_line_breaks_adv
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_get_line_breaks_adv), gdextension.SizePackedArray|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		shaped      RID.Any
-		width       gdextension.PackedArray
+		width       gdextension.PackedArray[float32]
 		start       int64
 		once        bool
 		break_flags LineBreakFlag
-	}{shaped, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](width))), start, once, break_flags}))
+	}{shaped, pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](width)), start, once, break_flags}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -4010,7 +4011,7 @@ Returns array of the glyphs in the ellipsis.
 */
 //go:nosplit
 func (self class) ShapedTextGetEllipsisGlyphs(shaped RID.Any) Array.Contains[Dictionary.Any] { //gd:TextServer.shaped_text_get_ellipsis_glyphs
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_get_ellipsis_glyphs), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shaped RID.Any }{shaped}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_get_ellipsis_glyphs), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shaped RID.Any }{shaped}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -4042,7 +4043,7 @@ Returns array of inline objects.
 */
 //go:nosplit
 func (self class) ShapedTextGetObjects(shaped RID.Any) Array.Any { //gd:TextServer.shaped_text_get_objects
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_get_objects), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shaped RID.Any }{shaped}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_get_objects), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shaped RID.Any }{shaped}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -4153,7 +4154,7 @@ Returns shapes of the carets corresponding to the character offset [param positi
 */
 //go:nosplit
 func (self class) ShapedTextGetCarets(shaped RID.Any, position int64) Dictionary.Any { //gd:TextServer.shaped_text_get_carets
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_get_carets), gdextension.SizeDictionary|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_shaped_text_get_carets), gdextension.SizeDictionary|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		shaped   RID.Any
 		position int64
 	}{shaped, position}))
@@ -4340,10 +4341,10 @@ If [param language] is omitted, the active locale will be used.
 */
 //go:nosplit
 func (self class) FormatNumber(number String.Readable, language String.Readable) String.Readable { //gd:TextServer.format_number
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_format_number), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_format_number), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		number   gdextension.String
 		language gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(number))[0]), gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{pointers.Get(gd.InternalString(number)), pointers.Get(gd.InternalString(language))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4353,10 +4354,10 @@ Converts [param number] from the numeral systems used in [param language] to Wes
 */
 //go:nosplit
 func (self class) ParseNumber(number String.Readable, language String.Readable) String.Readable { //gd:TextServer.parse_number
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_parse_number), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_parse_number), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		number   gdextension.String
 		language gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(number))[0]), gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{pointers.Get(gd.InternalString(number)), pointers.Get(gd.InternalString(language))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4366,7 +4367,7 @@ Returns percent sign used in the [param language].
 */
 //go:nosplit
 func (self class) PercentSign(language String.Readable) String.Readable { //gd:TextServer.percent_sign
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_percent_sign), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_percent_sign), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4390,7 +4391,7 @@ func (self class) StringGetWordBreaks(s String.Readable, language String.Readabl
 		s              gdextension.String
 		language       gdextension.String
 		chars_per_line int64
-	}{gdextension.String(pointers.Get(gd.InternalString(s))[0]), gdextension.String(pointers.Get(gd.InternalString(language))[0]), chars_per_line}))
+	}{pointers.Get(gd.InternalString(s)), pointers.Get(gd.InternalString(language)), chars_per_line}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -4407,7 +4408,7 @@ func (self class) StringGetCharacterBreaks(s String.Readable, language String.Re
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_string_get_character_breaks), gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		s        gdextension.String
 		language gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(s))[0]), gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{pointers.Get(gd.InternalString(s)), pointers.Get(gd.InternalString(language))}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -4421,8 +4422,8 @@ Returns index of the first string in [param dict] which is visually confusable w
 func (self class) IsConfusable(s String.Readable, dict Packed.Strings) int64 { //gd:TextServer.is_confusable
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_is_confusable), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		s    gdextension.String
-		dict gdextension.PackedArray
-	}{gdextension.String(pointers.Get(gd.InternalString(s))[0]), gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(dict)))}))
+		dict gdextension.PackedArray[gdextension.String]
+	}{pointers.Get(gd.InternalString(s)), pointers.Get(gd.InternalPackedStrings(dict))}))
 	var ret = r_ret
 	return ret
 }
@@ -4433,7 +4434,7 @@ Returns [code]true[/code] if [param string] is likely to be an attempt at confus
 */
 //go:nosplit
 func (self class) SpoofCheck(s String.Readable) bool { //gd:TextServer.spoof_check
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_spoof_check), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(s))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_spoof_check), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))}))
 	var ret = r_ret
 	return ret
 }
@@ -4444,7 +4445,7 @@ Strips diacritics from the string.
 */
 //go:nosplit
 func (self class) StripDiacritics(s String.Readable) String.Readable { //gd:TextServer.strip_diacritics
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_strip_diacritics), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(s))[0])}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_strip_diacritics), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4462,7 +4463,7 @@ If the [constant FEATURE_UNICODE_IDENTIFIERS] feature is not supported, a valid 
 */
 //go:nosplit
 func (self class) IsValidIdentifier(s String.Readable) bool { //gd:TextServer.is_valid_identifier
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_is_valid_identifier), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(s))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_is_valid_identifier), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))}))
 	var ret = r_ret
 	return ret
 }
@@ -4484,10 +4485,10 @@ Returns the string converted to uppercase.
 */
 //go:nosplit
 func (self class) StringToUpper(s String.Readable, language String.Readable) String.Readable { //gd:TextServer.string_to_upper
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_string_to_upper), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_string_to_upper), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		s        gdextension.String
 		language gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(s))[0]), gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{pointers.Get(gd.InternalString(s)), pointers.Get(gd.InternalString(language))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4499,10 +4500,10 @@ Returns the string converted to lowercase.
 */
 //go:nosplit
 func (self class) StringToLower(s String.Readable, language String.Readable) String.Readable { //gd:TextServer.string_to_lower
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_string_to_lower), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_string_to_lower), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		s        gdextension.String
 		language gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(s))[0]), gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{pointers.Get(gd.InternalString(s)), pointers.Get(gd.InternalString(language))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4514,10 +4515,10 @@ Returns the string converted to title case.
 */
 //go:nosplit
 func (self class) StringToTitle(s String.Readable, language String.Readable) String.Readable { //gd:TextServer.string_to_title
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_string_to_title), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_string_to_title), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		s        gdextension.String
 		language gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(s))[0]), gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{pointers.Get(gd.InternalString(s)), pointers.Get(gd.InternalString(language))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4527,11 +4528,11 @@ Default implementation of the BiDi algorithm override function. See [enum Struct
 */
 //go:nosplit
 func (self class) ParseStructuredText(parser_type StructuredTextParser, args Array.Any, text String.Readable) Array.Contains[Vector3i.XYZ] { //gd:TextServer.parse_structured_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_parse_structured_text), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextServer.Bind_parse_structured_text), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		parser_type StructuredTextParser
 		args        gdextension.Array
 		text        gdextension.String
-	}{parser_type, gdextension.Array(pointers.Get(gd.InternalArray(args))[0]), gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	}{parser_type, pointers.Get(gd.InternalArray(args)), pointers.Get(gd.InternalString(text))}))
 	var ret = Array.Through(gd.ArrayProxy[Vector3i.XYZ]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

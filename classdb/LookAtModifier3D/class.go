@@ -123,8 +123,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("LookAtModifier3D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("LookAtModifier3D"))))})}
 	casted := Instance{*(*gdclass.LookAtModifier3D)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -362,24 +363,24 @@ func (self Instance) SetSecondaryNegativeDampThreshold(value Float.X) {
 
 //go:nosplit
 func (self class) SetTargetNode(target_node Path.ToNode) { //gd:LookAtModifier3D.set_target_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_target_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target_node gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(target_node))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_target_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target_node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_node))}))
 }
 
 //go:nosplit
 func (self class) GetTargetNode() Path.ToNode { //gd:LookAtModifier3D.get_target_node
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_target_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_target_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBoneName(bone_name String.Readable) { //gd:LookAtModifier3D.set_bone_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_bone_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bone_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(bone_name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_bone_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bone_name gdextension.String }{pointers.Get(gd.InternalString(bone_name))}))
 }
 
 //go:nosplit
 func (self class) GetBoneName() String.Readable { //gd:LookAtModifier3D.get_bone_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_bone_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_bone_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -458,12 +459,12 @@ func (self class) GetOriginFrom() OriginFrom { //gd:LookAtModifier3D.get_origin_
 
 //go:nosplit
 func (self class) SetOriginBoneName(bone_name String.Readable) { //gd:LookAtModifier3D.set_origin_bone_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_bone_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bone_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(bone_name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_bone_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bone_name gdextension.String }{pointers.Get(gd.InternalString(bone_name))}))
 }
 
 //go:nosplit
 func (self class) GetOriginBoneName() String.Readable { //gd:LookAtModifier3D.get_origin_bone_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_bone_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_bone_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -482,12 +483,12 @@ func (self class) GetOriginBone() int64 { //gd:LookAtModifier3D.get_origin_bone
 
 //go:nosplit
 func (self class) SetOriginExternalNode(external_node Path.ToNode) { //gd:LookAtModifier3D.set_origin_external_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_external_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ external_node gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(external_node))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_external_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ external_node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(external_node))}))
 }
 
 //go:nosplit
 func (self class) GetOriginExternalNode() Path.ToNode { //gd:LookAtModifier3D.get_origin_external_node
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_external_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_external_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

@@ -838,8 +838,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("PopupMenu"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PopupMenu"))))})}
 	casted := Instance{*(*gdclass.PopupMenu)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -955,7 +956,7 @@ func (self class) AddItem(label String.Readable, id int64, accel Input.Key) { //
 		label gdextension.String
 		id    int64
 		accel Input.Key
-	}{gdextension.String(pointers.Get(gd.InternalString(label))[0]), id, accel}))
+	}{pointers.Get(gd.InternalString(label)), id, accel}))
 }
 
 /*
@@ -969,7 +970,7 @@ func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readabl
 		label   gdextension.String
 		id      int64
 		accel   Input.Key
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(label))[0]), id, accel}))
+	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), pointers.Get(gd.InternalString(label)), id, accel}))
 }
 
 /*
@@ -983,7 +984,7 @@ func (self class) AddCheckItem(label String.Readable, id int64, accel Input.Key)
 		label gdextension.String
 		id    int64
 		accel Input.Key
-	}{gdextension.String(pointers.Get(gd.InternalString(label))[0]), id, accel}))
+	}{pointers.Get(gd.InternalString(label)), id, accel}))
 }
 
 /*
@@ -998,7 +999,7 @@ func (self class) AddIconCheckItem(texture [1]gdclass.Texture2D, label String.Re
 		label   gdextension.String
 		id      int64
 		accel   Input.Key
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(label))[0]), id, accel}))
+	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), pointers.Get(gd.InternalString(label)), id, accel}))
 }
 
 /*
@@ -1012,7 +1013,7 @@ func (self class) AddRadioCheckItem(label String.Readable, id int64, accel Input
 		label gdextension.String
 		id    int64
 		accel Input.Key
-	}{gdextension.String(pointers.Get(gd.InternalString(label))[0]), id, accel}))
+	}{pointers.Get(gd.InternalString(label)), id, accel}))
 }
 
 /*
@@ -1025,7 +1026,7 @@ func (self class) AddIconRadioCheckItem(texture [1]gdclass.Texture2D, label Stri
 		label   gdextension.String
 		id      int64
 		accel   Input.Key
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(label))[0]), id, accel}))
+	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), pointers.Get(gd.InternalString(label)), id, accel}))
 }
 
 /*
@@ -1057,7 +1058,7 @@ func (self class) AddMultistateItem(label String.Readable, max_states int64, def
 		default_state int64
 		id            int64
 		accel         Input.Key
-	}{gdextension.String(pointers.Get(gd.InternalString(label))[0]), max_states, default_state, id, accel}))
+	}{pointers.Get(gd.InternalString(label)), max_states, default_state, id, accel}))
 }
 
 /*
@@ -1157,7 +1158,7 @@ func (self class) AddSubmenuItem(label String.Readable, submenu String.Readable,
 		label   gdextension.String
 		submenu gdextension.String
 		id      int64
-	}{gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.String(pointers.Get(gd.InternalString(submenu))[0]), id}))
+	}{pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalString(submenu)), id}))
 }
 
 /*
@@ -1171,7 +1172,7 @@ func (self class) AddSubmenuNodeItem(label String.Readable, submenu [1]gdclass.P
 		label   gdextension.String
 		submenu gdextension.Object
 		id      int64
-	}{gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0])), id}))
+	}{pointers.Get(gd.InternalString(label)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0])), id}))
 }
 
 /*
@@ -1182,7 +1183,7 @@ func (self class) SetItemText(index int64, text String.Readable) { //gd:PopupMen
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_set_item_text), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		index int64
 		text  gdextension.String
-	}{index, gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	}{index, pointers.Get(gd.InternalString(text))}))
 }
 
 /*
@@ -1204,7 +1205,7 @@ func (self class) SetItemLanguage(index int64, language String.Readable) { //gd:
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_set_item_language), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		index    int64
 		language gdextension.String
-	}{index, gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	}{index, pointers.Get(gd.InternalString(language))}))
 }
 
 /*
@@ -1304,7 +1305,7 @@ func (self class) SetItemSubmenu(index int64, submenu String.Readable) { //gd:Po
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_set_item_submenu), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		index   int64
 		submenu gdextension.String
-	}{index, gdextension.String(pointers.Get(gd.InternalString(submenu))[0])}))
+	}{index, pointers.Get(gd.InternalString(submenu))}))
 }
 
 /*
@@ -1360,7 +1361,7 @@ func (self class) SetItemTooltip(index int64, tooltip String.Readable) { //gd:Po
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_set_item_tooltip), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		index   int64
 		tooltip gdextension.String
-	}{index, gdextension.String(pointers.Get(gd.InternalString(tooltip))[0])}))
+	}{index, pointers.Get(gd.InternalString(tooltip))}))
 }
 
 /*
@@ -1440,7 +1441,7 @@ Returns the text of the item at the given [param index].
 */
 //go:nosplit
 func (self class) GetItemText(index int64) String.Readable { //gd:PopupMenu.get_item_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_text), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_text), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1460,7 +1461,7 @@ Returns item's text language code.
 */
 //go:nosplit
 func (self class) GetItemLanguage(index int64) String.Readable { //gd:PopupMenu.get_item_language
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_language), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_language), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1470,7 +1471,7 @@ Returns the icon of the item at the given [param index].
 */
 //go:nosplit
 func (self class) GetItemIcon(index int64) [1]gdclass.Texture2D { //gd:PopupMenu.get_item_icon
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_icon), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_icon), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -1540,7 +1541,7 @@ Returns the metadata of the specified item, which might be of any type. You can 
 */
 //go:nosplit
 func (self class) GetItemMetadata(index int64) variant.Any { //gd:PopupMenu.get_item_metadata
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_metadata), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_metadata), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -1561,7 +1562,7 @@ Returns the submenu name of the item at the given [param index]. See [method add
 */
 //go:nosplit
 func (self class) GetItemSubmenu(index int64) String.Readable { //gd:PopupMenu.get_item_submenu
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_submenu), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_submenu), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1571,7 +1572,7 @@ Returns the submenu of the item at the given [param index], or [code]null[/code]
 */
 //go:nosplit
 func (self class) GetItemSubmenuNode(index int64) [1]gdclass.PopupMenu { //gd:PopupMenu.get_item_submenu_node
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_submenu_node), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_submenu_node), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
@@ -1623,7 +1624,7 @@ Returns the tooltip associated with the item at the given [param index].
 */
 //go:nosplit
 func (self class) GetItemTooltip(index int64) String.Readable { //gd:PopupMenu.get_item_tooltip
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_tooltip), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_tooltip), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1633,7 +1634,7 @@ Returns the [Shortcut] associated with the item at the given [param index].
 */
 //go:nosplit
 func (self class) GetItemShortcut(index int64) [1]gdclass.Shortcut { //gd:PopupMenu.get_item_shortcut
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_shortcut), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_get_item_shortcut), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = [1]gdclass.Shortcut{gd.PointerWithOwnershipTransferredToGo[gdclass.Shortcut](r_ret)}
 	return ret
 }
@@ -1725,7 +1726,7 @@ func (self class) AddSeparator(label String.Readable, id int64) { //gd:PopupMenu
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PopupMenu.Bind_add_separator), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		label gdextension.String
 		id    int64
-	}{gdextension.String(pointers.Get(gd.InternalString(label))[0]), id}))
+	}{pointers.Get(gd.InternalString(label)), id}))
 }
 
 /*

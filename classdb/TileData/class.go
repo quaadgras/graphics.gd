@@ -354,8 +354,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TileData"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TileData"))))})}
 	casted := Instance{*(*gdclass.TileData)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -490,7 +491,7 @@ func (self class) SetMaterial(material [1]gdclass.Material) { //gd:TileData.set_
 
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:TileData.get_material
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_get_material), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_get_material), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
@@ -601,7 +602,7 @@ The [param flip_h], [param flip_v], and [param transpose] parameters can be [cod
 */
 //go:nosplit
 func (self class) GetOccluderPolygon(layer_id int64, polygon_index int64, flip_h bool, flip_v bool, transpose bool) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder_polygon
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_get_occluder_polygon), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_get_occluder_polygon), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		layer_id      int64
 		polygon_index int64
 		flip_h        bool
@@ -629,7 +630,7 @@ Returns the occluder polygon of the tile for the TileSet occlusion layer with in
 */
 //go:nosplit
 func (self class) GetOccluder(layer_id int64, flip_h bool, flip_v bool, transpose bool) [1]gdclass.OccluderPolygon2D { //gd:TileData.get_occluder
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_get_occluder), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_get_occluder), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		layer_id  int64
 		flip_h    bool
 		flip_v    bool
@@ -729,8 +730,8 @@ func (self class) SetCollisionPolygonPoints(layer_id int64, polygon_index int64,
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_set_collision_polygon_points), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
 		layer_id      int64
 		polygon_index int64
-		polygon       gdextension.PackedArray
-	}{layer_id, polygon_index, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))}))
+		polygon       gdextension.PackedArray[Vector2.XY]
+	}{layer_id, polygon_index, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))}))
 }
 
 /*
@@ -868,7 +869,7 @@ Returns the navigation polygon of the tile for the TileSet navigation layer with
 */
 //go:nosplit
 func (self class) GetNavigationPolygon(layer_id int64, flip_h bool, flip_v bool, transpose bool) [1]gdclass.NavigationPolygon { //gd:TileData.get_navigation_polygon
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_get_navigation_polygon), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_get_navigation_polygon), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		layer_id  int64
 		flip_h    bool
 		flip_v    bool
@@ -898,7 +899,7 @@ func (self class) SetCustomData(layer_name String.Readable, value variant.Any) {
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_set_custom_data), 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		layer_name gdextension.String
 		value      gdextension.Variant
-	}{gdextension.String(pointers.Get(gd.InternalString(layer_name))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{pointers.Get(gd.InternalString(layer_name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -906,7 +907,7 @@ Returns the custom data value for custom data layer named [param layer_name]. To
 */
 //go:nosplit
 func (self class) GetCustomData(layer_name String.Readable) variant.Any { //gd:TileData.get_custom_data
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_get_custom_data), gdextension.SizeVariant|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ layer_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(layer_name))[0])}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_get_custom_data), gdextension.SizeVariant|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ layer_name gdextension.String }{pointers.Get(gd.InternalString(layer_name))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -916,7 +917,7 @@ Returns whether there exists a custom data layer named [param layer_name].
 */
 //go:nosplit
 func (self class) HasCustomData(layer_name String.Readable) bool { //gd:TileData.has_custom_data
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_has_custom_data), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ layer_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(layer_name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_has_custom_data), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ layer_name gdextension.String }{pointers.Get(gd.InternalString(layer_name))}))
 	var ret = r_ret
 	return ret
 }
@@ -937,7 +938,7 @@ Returns the custom data value for custom data layer with index [param layer_id].
 */
 //go:nosplit
 func (self class) GetCustomDataByLayerId(layer_id int64) variant.Any { //gd:TileData.get_custom_data_by_layer_id
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_get_custom_data_by_layer_id), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_id int64 }{layer_id}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileData.Bind_get_custom_data_by_layer_id), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_id int64 }{layer_id}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

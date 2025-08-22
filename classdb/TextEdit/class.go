@@ -1736,8 +1736,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TextEdit"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TextEdit"))))})}
 	casted := Instance{*(*gdclass.TextEdit)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -2205,12 +2206,12 @@ func (self class) GetTextDirection() Control.TextDirection { //gd:TextEdit.get_t
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:TextEdit.set_language
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_language), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_language), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:TextEdit.get_language
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2231,12 +2232,12 @@ func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParse
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:TextEdit.set_structured_text_bidi_override_options
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_structured_text_bidi_override_options), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(args))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_structured_text_bidi_override_options), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:TextEdit.get_structured_text_bidi_override_options
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_structured_text_bidi_override_options), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_structured_text_bidi_override_options), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -2371,12 +2372,12 @@ func (self class) Clear() { //gd:TextEdit.clear
 
 //go:nosplit
 func (self class) SetText(text String.Readable) { //gd:TextEdit.set_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
 }
 
 //go:nosplit
 func (self class) GetText() String.Readable { //gd:TextEdit.get_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2393,12 +2394,12 @@ func (self class) GetLineCount() int64 { //gd:TextEdit.get_line_count
 
 //go:nosplit
 func (self class) SetPlaceholder(text String.Readable) { //gd:TextEdit.set_placeholder
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_placeholder), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_placeholder), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
 }
 
 //go:nosplit
 func (self class) GetPlaceholder() String.Readable { //gd:TextEdit.get_placeholder
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_placeholder), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_placeholder), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2412,7 +2413,7 @@ func (self class) SetLine(line int64, new_text String.Readable) { //gd:TextEdit.
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_line), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		line     int64
 		new_text gdextension.String
-	}{line, gdextension.String(pointers.Get(gd.InternalString(new_text))[0])}))
+	}{line, pointers.Get(gd.InternalString(new_text))}))
 }
 
 /*
@@ -2420,7 +2421,7 @@ Returns the text of a specific line.
 */
 //go:nosplit
 func (self class) GetLine(line int64) String.Readable { //gd:TextEdit.get_line
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_line), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_line), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2430,7 +2431,7 @@ Returns line text as it is currently displayed, including IME composition string
 */
 //go:nosplit
 func (self class) GetLineWithIme(line int64) String.Readable { //gd:TextEdit.get_line_with_ime
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_line_with_ime), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_line_with_ime), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2498,7 +2499,7 @@ func (self class) InsertLineAt(line int64, text String.Readable) { //gd:TextEdit
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_insert_line_at), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		line int64
 		text gdextension.String
-	}{line, gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	}{line, pointers.Get(gd.InternalString(text))}))
 }
 
 /*
@@ -2521,7 +2522,7 @@ func (self class) InsertTextAtCaret(text String.Readable, caret_index int64) { /
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_insert_text_at_caret), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		text        gdextension.String
 		caret_index int64
-	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), caret_index}))
+	}{pointers.Get(gd.InternalString(text)), caret_index}))
 }
 
 /*
@@ -2537,7 +2538,7 @@ func (self class) InsertText(text String.Readable, line int64, column int64, bef
 		column                 int64
 		before_selection_begin bool
 		before_selection_end   bool
-	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), line, column, before_selection_begin, before_selection_end}))
+	}{pointers.Get(gd.InternalString(text)), line, column, before_selection_begin, before_selection_end}))
 }
 
 /*
@@ -2740,7 +2741,7 @@ Sets the search text. See [method set_search_flags].
 */
 //go:nosplit
 func (self class) SetSearchText(search_text String.Readable) { //gd:TextEdit.set_search_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_search_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ search_text gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(search_text))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_search_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ search_text gdextension.String }{pointers.Get(gd.InternalString(search_text))}))
 }
 
 /*
@@ -2780,7 +2781,7 @@ func (self class) Search(text String.Readable, flags int64, from_line int64, fro
 		flags       int64
 		from_line   int64
 		from_column int64
-	}{gdextension.String(pointers.Get(gd.InternalString(text))[0]), flags, from_line, from_column}))
+	}{pointers.Get(gd.InternalString(text)), flags, from_line, from_column}))
 	var ret = r_ret
 	return ret
 }
@@ -2790,7 +2791,7 @@ Provide custom tooltip text. The callback method must take the following args: [
 */
 //go:nosplit
 func (self class) SetTooltipRequestFunc(callback Callable.Function) { //gd:TextEdit.set_tooltip_request_func
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_tooltip_request_func), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callback gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_tooltip_request_func), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -2808,7 +2809,7 @@ Returns the word at [param position].
 */
 //go:nosplit
 func (self class) GetWordAtPos(position Vector2.XY) String.Readable { //gd:TextEdit.get_word_at_pos
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_word_at_pos), gdextension.SizeString|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_word_at_pos), gdextension.SizeString|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3195,7 +3196,7 @@ Returns a [String] text with the word under the caret's location.
 */
 //go:nosplit
 func (self class) GetWordUnderCaret(caret_index int64) String.Readable { //gd:TextEdit.get_word_under_caret
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_word_under_caret), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_word_under_caret), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3226,12 +3227,12 @@ func (self class) IsCustomWordSeparatorsEnabled() bool { //gd:TextEdit.is_custom
 
 //go:nosplit
 func (self class) SetCustomWordSeparators(custom_word_separators String.Readable) { //gd:TextEdit.set_custom_word_separators
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_custom_word_separators), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ custom_word_separators gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(custom_word_separators))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_custom_word_separators), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ custom_word_separators gdextension.String }{pointers.Get(gd.InternalString(custom_word_separators))}))
 }
 
 //go:nosplit
 func (self class) GetCustomWordSeparators() String.Readable { //gd:TextEdit.get_custom_word_separators
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_custom_word_separators), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_custom_word_separators), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3354,7 +3355,7 @@ Returns the text inside the selection of a caret, or all the carets if [param ca
 */
 //go:nosplit
 func (self class) GetSelectedText(caret_index int64) String.Readable { //gd:TextEdit.get_selected_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_selected_text), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_selected_text), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caret_index int64 }{caret_index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3381,7 +3382,7 @@ If a selection's end column ([method get_selection_to_column]) is at column [cod
 */
 //go:nosplit
 func (self class) GetLineRangesFromCarets(only_selections bool, merge_adjacent bool) Array.Contains[Vector2i.XY] { //gd:TextEdit.get_line_ranges_from_carets
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_line_ranges_from_carets), gdextension.SizeArray|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_line_ranges_from_carets), gdextension.SizeArray|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		only_selections bool
 		merge_adjacent  bool
 	}{only_selections, merge_adjacent}))
@@ -3585,7 +3586,7 @@ Returns the [VScrollBar] of the [TextEdit].
 */
 //go:nosplit
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:TextEdit.get_v_scroll_bar
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_v_scroll_bar), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_v_scroll_bar), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret)}
 	return ret
 }
@@ -3595,7 +3596,7 @@ Returns the [HScrollBar] used by [TextEdit].
 */
 //go:nosplit
 func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:TextEdit.get_h_scroll_bar
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_h_scroll_bar), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_h_scroll_bar), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.HScrollBar{gd.PointerLifetimeBoundTo[gdclass.HScrollBar](self.AsObject(), r_ret)}
 	return ret
 }
@@ -3865,7 +3866,7 @@ func (self class) SetGutterName(gutter int64, name String.Readable) { //gd:TextE
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_gutter_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		gutter int64
 		name   gdextension.String
-	}{gutter, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	}{gutter, pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -3873,7 +3874,7 @@ Returns the name of the gutter at the given index.
 */
 //go:nosplit
 func (self class) GetGutterName(gutter int64) String.Readable { //gd:TextEdit.get_gutter_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_gutter_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ gutter int64 }{gutter}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_gutter_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ gutter int64 }{gutter}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4002,7 +4003,7 @@ func (self class) SetGutterCustomDraw(column int64, draw_callback Callable.Funct
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_set_gutter_custom_draw), 0|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		column        int64
 		draw_callback gdextension.Callable
-	}{column, gdextension.Callable(pointers.Get(gd.InternalCallable(draw_callback)))}))
+	}{column, pointers.Get(gd.InternalCallable(draw_callback))}))
 }
 
 /*
@@ -4032,7 +4033,7 @@ Returns the metadata currently in [param gutter] at [param line].
 */
 //go:nosplit
 func (self class) GetLineGutterMetadata(line int64, gutter int64) variant.Any { //gd:TextEdit.get_line_gutter_metadata
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_line_gutter_metadata), gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_line_gutter_metadata), gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		line   int64
 		gutter int64
 	}{line, gutter}))
@@ -4049,7 +4050,7 @@ func (self class) SetLineGutterText(line int64, gutter int64, text String.Readab
 		line   int64
 		gutter int64
 		text   gdextension.String
-	}{line, gutter, gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	}{line, gutter, pointers.Get(gd.InternalString(text))}))
 }
 
 /*
@@ -4057,7 +4058,7 @@ Returns the text currently in [param gutter] at [param line]. This only works wh
 */
 //go:nosplit
 func (self class) GetLineGutterText(line int64, gutter int64) String.Readable { //gd:TextEdit.get_line_gutter_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_line_gutter_text), gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_line_gutter_text), gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		line   int64
 		gutter int64
 	}{line, gutter}))
@@ -4082,7 +4083,7 @@ Returns the icon currently in [param gutter] at [param line]. This only works wh
 */
 //go:nosplit
 func (self class) GetLineGutterIcon(line int64, gutter int64) [1]gdclass.Texture2D { //gd:TextEdit.get_line_gutter_icon
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_line_gutter_icon), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_line_gutter_icon), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		line   int64
 		gutter int64
 	}{line, gutter}))
@@ -4168,7 +4169,7 @@ func (self class) SetSyntaxHighlighter(syntax_highlighter [1]gdclass.SyntaxHighl
 
 //go:nosplit
 func (self class) GetSyntaxHighlighter() [1]gdclass.SyntaxHighlighter { //gd:TextEdit.get_syntax_highlighter
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_syntax_highlighter), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_syntax_highlighter), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SyntaxHighlighter{gd.PointerWithOwnershipTransferredToGo[gdclass.SyntaxHighlighter](r_ret)}
 	return ret
 }
@@ -4278,7 +4279,7 @@ public void OnItemPressed(int id)
 */
 //go:nosplit
 func (self class) GetMenu() [1]gdclass.PopupMenu { //gd:TextEdit.get_menu
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_menu), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextEdit.Bind_get_menu), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }

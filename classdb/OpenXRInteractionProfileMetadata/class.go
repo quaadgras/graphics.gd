@@ -126,8 +126,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRInteractionProfileMetadata"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("OpenXRInteractionProfileMetadata"))))})}
 	casted := Instance{*(*gdclass.OpenXRInteractionProfileMetadata)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -139,7 +140,7 @@ func (self class) RegisterProfileRename(old_name String.Readable, new_name Strin
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfileMetadata.Bind_register_profile_rename), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		old_name gdextension.String
 		new_name gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(old_name))[0]), gdextension.String(pointers.Get(gd.InternalString(new_name))[0])}))
+	}{pointers.Get(gd.InternalString(old_name)), pointers.Get(gd.InternalString(new_name))}))
 }
 
 /*
@@ -153,7 +154,7 @@ func (self class) RegisterTopLevelPath(display_name String.Readable, openxr_path
 		display_name          gdextension.String
 		openxr_path           gdextension.String
 		openxr_extension_name gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(display_name))[0]), gdextension.String(pointers.Get(gd.InternalString(openxr_path))[0]), gdextension.String(pointers.Get(gd.InternalString(openxr_extension_name))[0])}))
+	}{pointers.Get(gd.InternalString(display_name)), pointers.Get(gd.InternalString(openxr_path)), pointers.Get(gd.InternalString(openxr_extension_name))}))
 }
 
 /*
@@ -166,7 +167,7 @@ func (self class) RegisterInteractionProfile(display_name String.Readable, openx
 		display_name          gdextension.String
 		openxr_path           gdextension.String
 		openxr_extension_name gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(display_name))[0]), gdextension.String(pointers.Get(gd.InternalString(openxr_path))[0]), gdextension.String(pointers.Get(gd.InternalString(openxr_extension_name))[0])}))
+	}{pointers.Get(gd.InternalString(display_name)), pointers.Get(gd.InternalString(openxr_path)), pointers.Get(gd.InternalString(openxr_extension_name))}))
 }
 
 /*
@@ -181,7 +182,7 @@ func (self class) RegisterIoPath(interaction_profile String.Readable, display_na
 		openxr_path           gdextension.String
 		openxr_extension_name gdextension.String
 		action_type           OpenXRAction.ActionType
-	}{gdextension.String(pointers.Get(gd.InternalString(interaction_profile))[0]), gdextension.String(pointers.Get(gd.InternalString(display_name))[0]), gdextension.String(pointers.Get(gd.InternalString(toplevel_path))[0]), gdextension.String(pointers.Get(gd.InternalString(openxr_path))[0]), gdextension.String(pointers.Get(gd.InternalString(openxr_extension_name))[0]), action_type}))
+	}{pointers.Get(gd.InternalString(interaction_profile)), pointers.Get(gd.InternalString(display_name)), pointers.Get(gd.InternalString(toplevel_path)), pointers.Get(gd.InternalString(openxr_path)), pointers.Get(gd.InternalString(openxr_extension_name)), action_type}))
 }
 func (self class) AsOpenXRInteractionProfileMetadata() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

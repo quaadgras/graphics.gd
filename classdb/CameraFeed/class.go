@@ -215,9 +215,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CameraFeed"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CameraFeed"))))})}
 	casted := Instance{*(*gdclass.CameraFeed)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -289,7 +290,7 @@ Returns the camera's name.
 */
 //go:nosplit
 func (self class) GetName() String.Readable { //gd:CameraFeed.get_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraFeed.Bind_get_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraFeed.Bind_get_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -299,7 +300,7 @@ Sets the camera's name.
 */
 //go:nosplit
 func (self class) SetName(name String.Readable) { //gd:CameraFeed.set_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraFeed.Bind_set_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraFeed.Bind_set_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -381,7 +382,7 @@ func (self class) GetDatatype() FeedDataType { //gd:CameraFeed.get_datatype
 
 //go:nosplit
 func (self class) GetFormats() Array.Any { //gd:CameraFeed.get_formats
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraFeed.Bind_get_formats), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraFeed.Bind_get_formats), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -397,7 +398,7 @@ func (self class) SetFormat(index int64, parameters Dictionary.Any) bool { //gd:
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraFeed.Bind_set_format), gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
 		index      int64
 		parameters gdextension.Dictionary
-	}{index, gdextension.Dictionary(pointers.Get(gd.InternalDictionary(parameters))[0])}))
+	}{index, pointers.Get(gd.InternalDictionary(parameters))}))
 	var ret = r_ret
 	return ret
 }

@@ -189,8 +189,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SoftBody3D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SoftBody3D"))))})}
 	casted := Instance{*(*gdclass.SoftBody3D)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -360,12 +361,12 @@ func (self class) GetCollisionLayerValue(layer_number int64) bool { //gd:SoftBod
 
 //go:nosplit
 func (self class) SetParentCollisionIgnore(parent_collision_ignore Path.ToNode) { //gd:SoftBody3D.set_parent_collision_ignore
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SoftBody3D.Bind_set_parent_collision_ignore), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ parent_collision_ignore gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(parent_collision_ignore))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SoftBody3D.Bind_set_parent_collision_ignore), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ parent_collision_ignore gdextension.NodePath }{pointers.Get(gd.InternalNodePath(parent_collision_ignore))}))
 }
 
 //go:nosplit
 func (self class) GetParentCollisionIgnore() Path.ToNode { //gd:SoftBody3D.get_parent_collision_ignore
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SoftBody3D.Bind_get_parent_collision_ignore), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SoftBody3D.Bind_get_parent_collision_ignore), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -387,7 +388,7 @@ Returns an array of nodes that were added as collision exceptions for this body.
 */
 //go:nosplit
 func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody3D] { //gd:SoftBody3D.get_collision_exceptions
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SoftBody3D.Bind_get_collision_exceptions), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SoftBody3D.Bind_get_collision_exceptions), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.PhysicsBody3D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -500,7 +501,7 @@ func (self class) SetPointPinned(point_index int64, pinned bool, attachment_path
 		pinned          bool
 		attachment_path gdextension.NodePath
 		insert_at       int64
-	}{point_index, pinned, gdextension.NodePath(pointers.Get(gd.InternalNodePath(attachment_path))[0]), insert_at}))
+	}{point_index, pinned, pointers.Get(gd.InternalNodePath(attachment_path)), insert_at}))
 }
 
 /*

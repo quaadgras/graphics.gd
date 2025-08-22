@@ -155,9 +155,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("NavigationMesh"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("NavigationMesh"))))})}
 	casted := Instance{*(*gdclass.NavigationMesh)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -432,12 +433,12 @@ func (self class) GetSourceGeometryMode() SourceGeometryMode { //gd:NavigationMe
 
 //go:nosplit
 func (self class) SetSourceGroupName(mask String.Name) { //gd:NavigationMesh.set_source_group_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_source_group_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ mask gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(mask))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_source_group_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ mask gdextension.StringName }{pointers.Get(gd.InternalStringName(mask))}))
 }
 
 //go:nosplit
 func (self class) GetSourceGroupName() String.Name { //gd:NavigationMesh.get_source_group_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_source_group_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_get_source_group_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -675,7 +676,9 @@ Sets the vertices that can be then indexed to create polygons with the [method a
 */
 //go:nosplit
 func (self class) SetVertices(vertices Packed.Array[Vector3.XYZ]) { //gd:NavigationMesh.set_vertices
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_vertices), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ vertices gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_set_vertices), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		vertices gdextension.PackedArray[Vector3.XYZ]
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))}))
 }
 
 /*
@@ -693,7 +696,9 @@ Adds a polygon using the indices of the vertices you get when calling [method ge
 */
 //go:nosplit
 func (self class) AddPolygon(polygon Packed.Array[int32]) { //gd:NavigationMesh.add_polygon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_add_polygon), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ polygon gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](polygon)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationMesh.Bind_add_polygon), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		polygon gdextension.PackedArray[int32]
+	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](polygon))}))
 }
 
 /*

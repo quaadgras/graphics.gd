@@ -856,8 +856,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Window"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Window"))))})}
 	casted := Instance{*(*gdclass.Window)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -1146,12 +1147,12 @@ func (class) _get_contents_minimum_size(impl func(ptr unsafe.Pointer) Vector2.XY
 
 //go:nosplit
 func (self class) SetTitle(title String.Readable) { //gd:Window.set_title
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_set_title), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ title gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(title))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_set_title), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))}))
 }
 
 //go:nosplit
 func (self class) GetTitle() String.Readable { //gd:Window.get_title
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_title), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_title), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1595,7 +1596,9 @@ func (self class) IsUsingFontOversampling() bool { //gd:Window.is_using_font_ove
 
 //go:nosplit
 func (self class) SetMousePassthroughPolygon(polygon Packed.Array[Vector2.XY]) { //gd:Window.set_mouse_passthrough_polygon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_set_mouse_passthrough_polygon), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ polygon gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_set_mouse_passthrough_polygon), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		polygon gdextension.PackedArray[Vector2.XY]
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))}))
 }
 
 //go:nosplit
@@ -1632,19 +1635,19 @@ func (self class) SetTheme(theme [1]gdclass.Theme) { //gd:Window.set_theme
 
 //go:nosplit
 func (self class) GetTheme() [1]gdclass.Theme { //gd:Window.get_theme
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetThemeTypeVariation(theme_type String.Name) { //gd:Window.set_theme_type_variation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_set_theme_type_variation), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ theme_type gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_set_theme_type_variation), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ theme_type gdextension.StringName }{pointers.Get(gd.InternalStringName(theme_type))}))
 }
 
 //go:nosplit
 func (self class) GetThemeTypeVariation() String.Name { //gd:Window.get_theme_type_variation
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme_type_variation), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme_type_variation), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -1674,7 +1677,7 @@ func (self class) AddThemeIconOverride(name String.Name, texture [1]gdclass.Text
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_add_theme_icon_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name    gdextension.StringName
 		texture gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*
@@ -1686,7 +1689,7 @@ func (self class) AddThemeStyleboxOverride(name String.Name, stylebox [1]gdclass
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_add_theme_stylebox_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		stylebox gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(stylebox[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(stylebox[0].AsObject()))}))
 }
 
 /*
@@ -1698,7 +1701,7 @@ func (self class) AddThemeFontOverride(name String.Name, font [1]gdclass.Font) {
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_add_theme_font_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name gdextension.StringName
 		font gdextension.Object
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 /*
@@ -1710,7 +1713,7 @@ func (self class) AddThemeFontSizeOverride(name String.Name, font_size int64) { 
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_add_theme_font_size_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		name      gdextension.StringName
 		font_size int64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), font_size}))
+	}{pointers.Get(gd.InternalStringName(name)), font_size}))
 }
 
 /*
@@ -1722,7 +1725,7 @@ func (self class) AddThemeColorOverride(name String.Name, color Color.RGBA) { //
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_add_theme_color_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		name  gdextension.StringName
 		color Color.RGBA
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), color}))
+	}{pointers.Get(gd.InternalStringName(name)), color}))
 }
 
 /*
@@ -1734,7 +1737,7 @@ func (self class) AddThemeConstantOverride(name String.Name, constant int64) { /
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_add_theme_constant_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		constant int64
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), constant}))
+	}{pointers.Get(gd.InternalStringName(name)), constant}))
 }
 
 /*
@@ -1742,7 +1745,7 @@ Removes a local override for a theme icon with the specified [param name] previo
 */
 //go:nosplit
 func (self class) RemoveThemeIconOverride(name String.Name) { //gd:Window.remove_theme_icon_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_remove_theme_icon_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_remove_theme_icon_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -1750,7 +1753,7 @@ Removes a local override for a theme [StyleBox] with the specified [param name] 
 */
 //go:nosplit
 func (self class) RemoveThemeStyleboxOverride(name String.Name) { //gd:Window.remove_theme_stylebox_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_remove_theme_stylebox_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_remove_theme_stylebox_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -1758,7 +1761,7 @@ Removes a local override for a theme [Font] with the specified [param name] prev
 */
 //go:nosplit
 func (self class) RemoveThemeFontOverride(name String.Name) { //gd:Window.remove_theme_font_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_remove_theme_font_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_remove_theme_font_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -1766,7 +1769,7 @@ Removes a local override for a theme font size with the specified [param name] p
 */
 //go:nosplit
 func (self class) RemoveThemeFontSizeOverride(name String.Name) { //gd:Window.remove_theme_font_size_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_remove_theme_font_size_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_remove_theme_font_size_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -1774,7 +1777,7 @@ Removes a local override for a theme [Color] with the specified [param name] pre
 */
 //go:nosplit
 func (self class) RemoveThemeColorOverride(name String.Name) { //gd:Window.remove_theme_color_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_remove_theme_color_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_remove_theme_color_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -1782,7 +1785,7 @@ Removes a local override for a theme constant with the specified [param name] pr
 */
 //go:nosplit
 func (self class) RemoveThemeConstantOverride(name String.Name) { //gd:Window.remove_theme_constant_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_remove_theme_constant_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_remove_theme_constant_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -1791,10 +1794,10 @@ See [method Control.get_theme_color] for details.
 */
 //go:nosplit
 func (self class) GetThemeIcon(name String.Name, theme_type String.Name) [1]gdclass.Texture2D { //gd:Window.get_theme_icon
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme_icon), gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme_icon), gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -1805,10 +1808,10 @@ See [method Control.get_theme_color] for details.
 */
 //go:nosplit
 func (self class) GetThemeStylebox(name String.Name, theme_type String.Name) [1]gdclass.StyleBox { //gd:Window.get_theme_stylebox
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme_stylebox), gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme_stylebox), gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
 	var ret = [1]gdclass.StyleBox{gd.PointerWithOwnershipTransferredToGo[gdclass.StyleBox](r_ret)}
 	return ret
 }
@@ -1819,10 +1822,10 @@ See [method Control.get_theme_color] for details.
 */
 //go:nosplit
 func (self class) GetThemeFont(name String.Name, theme_type String.Name) [1]gdclass.Font { //gd:Window.get_theme_font
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme_font), gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme_font), gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
 	return ret
 }
@@ -1836,7 +1839,7 @@ func (self class) GetThemeFontSize(name String.Name, theme_type String.Name) int
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme_font_size), gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
 	var ret = r_ret
 	return ret
 }
@@ -1850,7 +1853,7 @@ func (self class) GetThemeColor(name String.Name, theme_type String.Name) Color.
 	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme_color), gdextension.SizeColor|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
 	var ret = r_ret
 	return ret
 }
@@ -1864,7 +1867,7 @@ func (self class) GetThemeConstant(name String.Name, theme_type String.Name) int
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme_constant), gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
 	var ret = r_ret
 	return ret
 }
@@ -1875,7 +1878,7 @@ See [method add_theme_icon_override].
 */
 //go:nosplit
 func (self class) HasThemeIconOverride(name String.Name) bool { //gd:Window.has_theme_icon_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_icon_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_icon_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -1886,7 +1889,7 @@ See [method add_theme_stylebox_override].
 */
 //go:nosplit
 func (self class) HasThemeStyleboxOverride(name String.Name) bool { //gd:Window.has_theme_stylebox_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_stylebox_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_stylebox_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -1897,7 +1900,7 @@ See [method add_theme_font_override].
 */
 //go:nosplit
 func (self class) HasThemeFontOverride(name String.Name) bool { //gd:Window.has_theme_font_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_font_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_font_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -1908,7 +1911,7 @@ See [method add_theme_font_size_override].
 */
 //go:nosplit
 func (self class) HasThemeFontSizeOverride(name String.Name) bool { //gd:Window.has_theme_font_size_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_font_size_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_font_size_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -1919,7 +1922,7 @@ See [method add_theme_color_override].
 */
 //go:nosplit
 func (self class) HasThemeColorOverride(name String.Name) bool { //gd:Window.has_theme_color_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_color_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_color_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -1930,7 +1933,7 @@ See [method add_theme_constant_override].
 */
 //go:nosplit
 func (self class) HasThemeConstantOverride(name String.Name) bool { //gd:Window.has_theme_constant_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_constant_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_constant_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -1944,7 +1947,7 @@ func (self class) HasThemeIcon(name String.Name, theme_type String.Name) bool { 
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_icon), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
 	var ret = r_ret
 	return ret
 }
@@ -1958,7 +1961,7 @@ func (self class) HasThemeStylebox(name String.Name, theme_type String.Name) boo
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_stylebox), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
 	var ret = r_ret
 	return ret
 }
@@ -1972,7 +1975,7 @@ func (self class) HasThemeFont(name String.Name, theme_type String.Name) bool { 
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_font), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
 	var ret = r_ret
 	return ret
 }
@@ -1986,7 +1989,7 @@ func (self class) HasThemeFontSize(name String.Name, theme_type String.Name) boo
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_font_size), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
 	var ret = r_ret
 	return ret
 }
@@ -2000,7 +2003,7 @@ func (self class) HasThemeColor(name String.Name, theme_type String.Name) bool {
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_color), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
 	var ret = r_ret
 	return ret
 }
@@ -2014,7 +2017,7 @@ func (self class) HasThemeConstant(name String.Name, theme_type String.Name) boo
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_has_theme_constant), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0]), gdextension.StringName(pointers.Get(gd.InternalStringName(theme_type))[0])}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
 	var ret = r_ret
 	return ret
 }
@@ -2036,7 +2039,7 @@ See [method Control.get_theme_color] for details.
 */
 //go:nosplit
 func (self class) GetThemeDefaultFont() [1]gdclass.Font { //gd:Window.get_theme_default_font
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme_default_font), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Window.Bind_get_theme_default_font), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
 	return ret
 }

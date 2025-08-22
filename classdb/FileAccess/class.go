@@ -763,9 +763,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FileAccess"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("FileAccess"))))})}
 	casted := Instance{*(*gdclass.FileAccess)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -783,10 +784,10 @@ Returns [code]null[/code] if opening the file failed. You can use [method get_op
 */
 //go:nosplit
 func (self class) Open(path String.Readable, flags ModeFlags) [1]gdclass.FileAccess { //gd:FileAccess.open
-	var r_ret = gdextension.CallStatic[gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_open), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_open), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		path  gdextension.String
 		flags ModeFlags
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), flags}))
+	}{pointers.Get(gd.InternalString(path)), flags}))
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret)}
 	return ret
 }
@@ -798,12 +799,12 @@ Returns [code]null[/code] if opening the file failed. You can use [method get_op
 */
 //go:nosplit
 func (self class) OpenEncrypted(path String.Readable, mode_flags ModeFlags, key Packed.Bytes, iv Packed.Bytes) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
-	var r_ret = gdextension.CallStatic[gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_open_encrypted), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_open_encrypted), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
 		path       gdextension.String
 		mode_flags ModeFlags
-		key        gdextension.PackedArray
-		iv         gdextension.PackedArray
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), mode_flags, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key)))), gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](iv))))}))
+		key        gdextension.PackedArray[byte]
+		iv         gdextension.PackedArray[byte]
+	}{pointers.Get(gd.InternalString(path)), mode_flags, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](iv)))}))
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret)}
 	return ret
 }
@@ -814,11 +815,11 @@ Returns [code]null[/code] if opening the file failed. You can use [method get_op
 */
 //go:nosplit
 func (self class) OpenEncryptedWithPass(path String.Readable, mode_flags ModeFlags, pass String.Readable) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted_with_pass
-	var r_ret = gdextension.CallStatic[gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_open_encrypted_with_pass), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_open_encrypted_with_pass), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		path       gdextension.String
 		mode_flags ModeFlags
 		pass       gdextension.String
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), mode_flags, gdextension.String(pointers.Get(gd.InternalString(pass))[0])}))
+	}{pointers.Get(gd.InternalString(path)), mode_flags, pointers.Get(gd.InternalString(pass))}))
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret)}
 	return ret
 }
@@ -830,11 +831,11 @@ Returns [code]null[/code] if opening the file failed. You can use [method get_op
 */
 //go:nosplit
 func (self class) OpenCompressed(path String.Readable, mode_flags ModeFlags, compression_mode CompressionMode) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
-	var r_ret = gdextension.CallStatic[gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_open_compressed), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_open_compressed), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		path             gdextension.String
 		mode_flags       ModeFlags
 		compression_mode CompressionMode
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), mode_flags, compression_mode}))
+	}{pointers.Get(gd.InternalString(path)), mode_flags, compression_mode}))
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret)}
 	return ret
 }
@@ -858,12 +859,12 @@ Returns [code]null[/code] if opening the file failed. You can use [method get_op
 */
 //go:nosplit
 func (self class) CreateTemp(mode_flags int64, prefix String.Readable, extension String.Readable, keep bool) [1]gdclass.FileAccess { //gd:FileAccess.create_temp
-	var r_ret = gdextension.CallStatic[gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_create_temp), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_create_temp), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		mode_flags int64
 		prefix     gdextension.String
 		extension  gdextension.String
 		keep       bool
-	}{mode_flags, gdextension.String(pointers.Get(gd.InternalString(prefix))[0]), gdextension.String(pointers.Get(gd.InternalString(extension))[0]), keep}))
+	}{mode_flags, pointers.Get(gd.InternalString(prefix)), pointers.Get(gd.InternalString(extension)), keep}))
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret)}
 	return ret
 }
@@ -874,7 +875,7 @@ Returns an empty [PackedByteArray] if an error occurred while opening the file. 
 */
 //go:nosplit
 func (self class) GetFileAsBytes(path String.Readable) Packed.Bytes { //gd:FileAccess.get_file_as_bytes
-	var r_ret = gdextension.CallStatic[gd.PackedPointers](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_file_as_bytes), gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.CallStatic[gd.PackedPointers](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_file_as_bytes), gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -885,7 +886,7 @@ Returns an empty [String] if an error occurred while opening the file. You can u
 */
 //go:nosplit
 func (self class) GetFileAsString(path String.Readable) String.Readable { //gd:FileAccess.get_file_as_string
-	var r_ret = gdextension.CallStatic[[1]gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_file_as_string), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.CallStatic[gdextension.String](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_file_as_string), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -914,7 +915,7 @@ Returns the path as a [String] for the current open file.
 */
 //go:nosplit
 func (self class) GetPath() String.Readable { //gd:FileAccess.get_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -924,7 +925,7 @@ Returns the absolute path as a [String] for the current open file.
 */
 //go:nosplit
 func (self class) GetPathAbsolute() String.Readable { //gd:FileAccess.get_path_absolute
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_path_absolute), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_path_absolute), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1095,7 +1096,7 @@ Text is interpreted as being UTF-8 encoded.
 */
 //go:nosplit
 func (self class) GetLine() String.Readable { //gd:FileAccess.get_line
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_line), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_line), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1113,7 +1114,7 @@ Note how the second line can omit the enclosing quotes as it does not include th
 */
 //go:nosplit
 func (self class) GetCsvLine(delim String.Readable) Packed.Strings { //gd:FileAccess.get_csv_line
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_csv_line), gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ delim gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(delim))[0])}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_csv_line), gdextension.SizePackedArray|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ delim gdextension.String }{pointers.Get(gd.InternalString(delim))}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1124,7 +1125,7 @@ If [param skip_cr] is [code]true[/code], carriage return characters ([code]\r[/c
 */
 //go:nosplit
 func (self class) GetAsText(skip_cr bool) String.Readable { //gd:FileAccess.get_as_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_as_text), gdextension.SizeString|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ skip_cr bool }{skip_cr}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_as_text), gdextension.SizeString|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ skip_cr bool }{skip_cr}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1134,7 +1135,7 @@ Returns an MD5 String representing the file at the given path or an empty [Strin
 */
 //go:nosplit
 func (self class) GetMd5(path String.Readable) String.Readable { //gd:FileAccess.get_md5
-	var r_ret = gdextension.CallStatic[[1]gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_md5), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.CallStatic[gdextension.String](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_md5), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1144,7 +1145,7 @@ Returns an SHA-256 [String] representing the file at the given path or an empty 
 */
 //go:nosplit
 func (self class) GetSha256(path String.Readable) String.Readable { //gd:FileAccess.get_sha256
-	var r_ret = gdextension.CallStatic[[1]gd.EnginePointer](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_sha256), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.CallStatic[gdextension.String](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_sha256), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1178,7 +1179,7 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 */
 //go:nosplit
 func (self class) GetVar(allow_objects bool) variant.Any { //gd:FileAccess.get_var
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_var), gdextension.SizeVariant|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow_objects bool }{allow_objects}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_var), gdextension.SizeVariant|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow_objects bool }{allow_objects}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -1315,7 +1316,7 @@ Stores the given array of bytes in the file.
 */
 //go:nosplit
 func (self class) StoreBuffer(buffer Packed.Bytes) bool { //gd:FileAccess.store_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_store_buffer), gdextension.SizeBool|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_store_buffer), gdextension.SizeBool|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))}))
 	var ret = r_ret
 	return ret
 }
@@ -1326,7 +1327,7 @@ Stores [param line] in the file followed by a newline character ([code]\n[/code]
 */
 //go:nosplit
 func (self class) StoreLine(line String.Readable) bool { //gd:FileAccess.store_line
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_store_line), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ line gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(line))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_store_line), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ line gdextension.String }{pointers.Get(gd.InternalString(line))}))
 	var ret = r_ret
 	return ret
 }
@@ -1339,9 +1340,9 @@ Text will be encoded as UTF-8.
 //go:nosplit
 func (self class) StoreCsvLine(values Packed.Strings, delim String.Readable) bool { //gd:FileAccess.store_csv_line
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_store_csv_line), gdextension.SizeBool|(gdextension.SizePackedArray<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
-		values gdextension.PackedArray
+		values gdextension.PackedArray[gdextension.String]
 		delim  gdextension.String
-	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(values))), gdextension.String(pointers.Get(gd.InternalString(delim))[0])}))
+	}{pointers.Get(gd.InternalPackedStrings(values)), pointers.Get(gd.InternalString(delim))}))
 	var ret = r_ret
 	return ret
 }
@@ -1353,7 +1354,7 @@ Stores [param string] in the file without a newline character ([code]\n[/code]),
 */
 //go:nosplit
 func (self class) StoreString(s String.Readable) bool { //gd:FileAccess.store_string
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_store_string), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(s))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_store_string), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))}))
 	var ret = r_ret
 	return ret
 }
@@ -1381,7 +1382,7 @@ Text will be encoded as UTF-8.
 */
 //go:nosplit
 func (self class) StorePascalString(s String.Readable) bool { //gd:FileAccess.store_pascal_string
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_store_pascal_string), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(s))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_store_pascal_string), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))}))
 	var ret = r_ret
 	return ret
 }
@@ -1392,7 +1393,7 @@ Text is interpreted as being UTF-8 encoded.
 */
 //go:nosplit
 func (self class) GetPascalString() String.Readable { //gd:FileAccess.get_pascal_string
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_pascal_string), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_pascal_string), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1413,7 +1414,7 @@ For a non-static, relative equivalent, use [method DirAccess.file_exists].
 */
 //go:nosplit
 func (self class) FileExists(path String.Readable) bool { //gd:FileAccess.file_exists
-	var r_ret = gdextension.CallStatic[bool](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_file_exists), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.CallStatic[bool](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_file_exists), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -1423,7 +1424,7 @@ Returns the last time the [param file] was modified in Unix timestamp format, or
 */
 //go:nosplit
 func (self class) GetModifiedTime(file String.Readable) int64 { //gd:FileAccess.get_modified_time
-	var r_ret = gdextension.CallStatic[int64](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_modified_time), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(file))[0])}))
+	var r_ret = gdextension.CallStatic[int64](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_modified_time), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))}))
 	var ret = r_ret
 	return ret
 }
@@ -1434,7 +1435,7 @@ Returns file UNIX permissions.
 */
 //go:nosplit
 func (self class) GetUnixPermissions(file String.Readable) UnixPermissionFlags { //gd:FileAccess.get_unix_permissions
-	var r_ret = gdextension.CallStatic[UnixPermissionFlags](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_unix_permissions), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(file))[0])}))
+	var r_ret = gdextension.CallStatic[UnixPermissionFlags](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_unix_permissions), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))}))
 	var ret = r_ret
 	return ret
 }
@@ -1448,7 +1449,7 @@ func (self class) SetUnixPermissions(file String.Readable, permissions UnixPermi
 	var r_ret = gdextension.CallStatic[int64](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_set_unix_permissions), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		file        gdextension.String
 		permissions UnixPermissionFlags
-	}{gdextension.String(pointers.Get(gd.InternalString(file))[0]), permissions}))
+	}{pointers.Get(gd.InternalString(file)), permissions}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1459,7 +1460,7 @@ Returns [code]true[/code], if file [code]hidden[/code] attribute is set.
 */
 //go:nosplit
 func (self class) GetHiddenAttribute(file String.Readable) bool { //gd:FileAccess.get_hidden_attribute
-	var r_ret = gdextension.CallStatic[bool](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_hidden_attribute), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(file))[0])}))
+	var r_ret = gdextension.CallStatic[bool](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_hidden_attribute), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))}))
 	var ret = r_ret
 	return ret
 }
@@ -1473,7 +1474,7 @@ func (self class) SetHiddenAttribute(file String.Readable, hidden bool) Error.Co
 	var r_ret = gdextension.CallStatic[int64](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_set_hidden_attribute), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		file   gdextension.String
 		hidden bool
-	}{gdextension.String(pointers.Get(gd.InternalString(file))[0]), hidden}))
+	}{pointers.Get(gd.InternalString(file)), hidden}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1487,7 +1488,7 @@ func (self class) SetReadOnlyAttribute(file String.Readable, ro bool) Error.Code
 	var r_ret = gdextension.CallStatic[int64](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_set_read_only_attribute), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		file gdextension.String
 		ro   bool
-	}{gdextension.String(pointers.Get(gd.InternalString(file))[0]), ro}))
+	}{pointers.Get(gd.InternalString(file)), ro}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1498,7 +1499,7 @@ Returns [code]true[/code], if file [code]read only[/code] attribute is set.
 */
 //go:nosplit
 func (self class) GetReadOnlyAttribute(file String.Readable) bool { //gd:FileAccess.get_read_only_attribute
-	var r_ret = gdextension.CallStatic[bool](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_read_only_attribute), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(file))[0])}))
+	var r_ret = gdextension.CallStatic[bool](gdextension.MethodForClass(gd.Global.Methods.FileAccess.Bind_get_read_only_attribute), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))}))
 	var ret = r_ret
 	return ret
 }

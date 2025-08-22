@@ -96,9 +96,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ColorPalette"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ColorPalette"))))})}
 	casted := Instance{*(*gdclass.ColorPalette)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -112,7 +113,9 @@ func (self Instance) SetColors(value []Color.RGBA) {
 
 //go:nosplit
 func (self class) SetColors(colors Packed.Array[Color.RGBA]) { //gd:ColorPalette.set_colors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPalette.Bind_set_colors), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ colors gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPalette.Bind_set_colors), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		colors gdextension.PackedArray[Color.RGBA]
+	}{pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))}))
 }
 
 //go:nosplit

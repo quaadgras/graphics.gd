@@ -25,7 +25,7 @@ type UID int
 var (
 	rid_allocate_id       gdextension.FunctionID
 	rid_allocate_id_setup = sync.OnceFunc(func() {
-		rid_allocate_id = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("rid_allocate_id"))[0]), 701202648)
+		rid_allocate_id = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("rid_allocate_id")), 701202648)
 	})
 )
 
@@ -99,17 +99,17 @@ var once sync.Once
 var self [1]gdclass.ResourceLoader
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.ResourceLoader)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.ResourceLoader)))})
 	self = *(*[1]gdclass.ResourceLoader)(unsafe.Pointer(&obj))
 }
 
 func load(path String.Readable, type_hint String.Readable, cache_mode int) [1]gdclass.Resource { //gd:ResourceLoader.load
 	once.Do(singleton)
-	var r_ret = gdextension.Call[gd.EnginePointer](gdextension.Object(gd.ObjectChecked(self[0].AsObject())), gdextension.MethodForClass(gd.Global.Methods.ResourceLoader.Bind_load), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gdextension.Object(gd.ObjectChecked(self[0].AsObject())), gdextension.MethodForClass(gd.Global.Methods.ResourceLoader.Bind_load), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		path       gdextension.String
 		type_hint  gdextension.String
 		cache_mode int64
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), gdextension.String(pointers.Get(gd.InternalString(type_hint))[0]), int64(cache_mode)}))
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalString(type_hint)), int64(cache_mode)}))
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }

@@ -110,12 +110,12 @@ type builtin struct {
 }
 
 func (a Array) Size() int64 {
-	var ptr = gdextension.Array(pointers.Get(a)[0])
+	var ptr = pointers.Get(a)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.Array.size, gdextension.SizeInt|gdextension.SizeArray<<4, nil)
 }
 
 func (a Array) Resize(size Int) Int {
-	var ptr = gdextension.Array(pointers.Get(a)[0])
+	var ptr = pointers.Get(a)
 	return Int(callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.Array.resize, 0|gdextension.SizeArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
@@ -123,28 +123,28 @@ func (a Array) Resize(size Int) Int {
 	})))
 }
 func (a Array) IsReadOnly() bool {
-	var ptr = gdextension.Array(pointers.Get(a)[0])
+	var ptr = pointers.Get(a)
 	return callBuiltinMethod[bool](unsafe.Pointer(&ptr), Global.builtin.Array.is_read_only, gdextension.SizeBool|gdextension.SizeArray<<4, nil)
 }
 func (a Array) MakeReadOnly() {
-	var ptr = gdextension.Array(pointers.Get(a)[0])
+	var ptr = pointers.Get(a)
 	callBuiltinMethod[bool](unsafe.Pointer(&ptr), Global.builtin.Array.make_read_only, 0|gdextension.SizeArray<<4, nil)
 }
 
 func (c Callable) GetMethod() StringName {
-	var ptr = gdextension.Callable(pointers.Get(c))
-	return pointers.New[StringName]([1]EnginePointer{EnginePointer(callBuiltinMethod[gdextension.StringName](unsafe.Pointer(&ptr), Global.builtin.Callable.get_method, gdextension.SizeStringName|gdextension.SizeCallable<<4, nil))})
+	var ptr = pointers.Get(c)
+	return pointers.New[StringName](callBuiltinMethod[gdextension.StringName](unsafe.Pointer(&ptr), Global.builtin.Callable.get_method, gdextension.SizeStringName|gdextension.SizeCallable<<4, nil))
 }
 func (c Callable) GetBoundArguments() Array {
-	var ptr = gdextension.Callable(pointers.Get(c))
-	return pointers.New[Array]([1]EnginePointer{EnginePointer(callBuiltinMethod[gdextension.Array](unsafe.Pointer(&ptr), Global.builtin.Callable.get_bound_arguments, gdextension.SizeArray|gdextension.SizeCallable<<4, nil))})
+	var ptr = pointers.Get(c)
+	return pointers.New[Array](callBuiltinMethod[gdextension.Array](unsafe.Pointer(&ptr), Global.builtin.Callable.get_bound_arguments, gdextension.SizeArray|gdextension.SizeCallable<<4, nil))
 }
 func (c Callable) GetArgumentCount() int64 {
-	var ptr = gdextension.Callable(pointers.Get(c))
+	var ptr = pointers.Get(c)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.Callable.get_argument_count, gdextension.SizeInt|gdextension.SizeCallable<<4, nil)
 }
 func (c Callable) Call(args ...Variant) Variant {
-	var ptr = gdextension.Callable(pointers.Get(c))
+	var ptr = pointers.Get(c)
 	var array = NewArray()
 	array.Resize(int64(len(args)))
 	for i, arg := range args {
@@ -154,7 +154,7 @@ func (c Callable) Call(args ...Variant) Variant {
 	return pointers.New[Variant]([3]uint64(callBuiltinMethod[gdextension.Variant](unsafe.Pointer(&ptr), Global.builtin.Callable.callv, gdextension.SizeVariant|gdextension.SizeCallable<<4|gdextension.SizeArray<<8, unsafe.Pointer(&struct {
 		gdextension.Array
 	}{
-		gdextension.Array(pointers.Get(array)[0]),
+		pointers.Get(array),
 	}))))
 }
 func (c Callable) CallDeferred() Variant {
@@ -172,20 +172,16 @@ func (c Callable) Bind(args ...Variant) Callable {
 	return pointers.New[Callable]([2]uint64(callBuiltinMethod[gdextension.Callable](unsafe.Pointer(&ptr), Global.builtin.Callable.bindv, gdextension.SizeCallable|gdextension.SizeCallable<<4|gdextension.SizeArray<<8, unsafe.Pointer(&struct {
 		gdextension.Array
 	}{
-		gdextension.Array(pointers.Get(array)[0]),
+		pointers.Get(array),
 	}))))
 }
 
 func (d Dictionary) Keys() Array {
-	var ptr = gdextension.Dictionary(pointers.Get(d)[0])
-	return pointers.New[Array]([1]EnginePointer{EnginePointer(callBuiltinMethod[gdextension.Array](unsafe.Pointer(&ptr), Global.builtin.Dictionary.keys, gdextension.SizeArray|gdextension.SizeDictionary<<4, unsafe.Pointer(&struct {
-		gdextension.Dictionary
-	}{
-		gdextension.Dictionary(pointers.Get(d)[0]),
-	})))})
+	var ptr = pointers.Get(d)
+	return pointers.New[Array](callBuiltinMethod[gdextension.Array](unsafe.Pointer(&ptr), Global.builtin.Dictionary.keys, gdextension.SizeArray|gdextension.SizeDictionary<<4, nil))
 }
 func (d Dictionary) Has(key Variant) bool {
-	var ptr = gdextension.Dictionary(pointers.Get(d)[0])
+	var ptr = pointers.Get(d)
 	return callBuiltinMethod[bool](unsafe.Pointer(&ptr), Global.builtin.Dictionary.has, gdextension.SizeBool|gdextension.SizeDictionary<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
 		gdextension.Variant
 	}{
@@ -193,15 +189,15 @@ func (d Dictionary) Has(key Variant) bool {
 	}))
 }
 func (d Dictionary) Clear() {
-	var ptr = gdextension.Dictionary(pointers.Get(d)[0])
+	var ptr = pointers.Get(d)
 	callBuiltinMethod[bool](unsafe.Pointer(&ptr), Global.builtin.Dictionary.clear, 0|gdextension.SizeDictionary<<4, nil)
 }
 func (d Dictionary) Sort() {
-	var ptr = gdextension.Dictionary(pointers.Get(d)[0])
+	var ptr = pointers.Get(d)
 	callBuiltinMethod[bool](unsafe.Pointer(&ptr), Global.builtin.Dictionary.sort, 0|gdextension.SizeDictionary<<4, nil)
 }
 func (d Dictionary) Erase(key Variant) bool {
-	var ptr = gdextension.Dictionary(pointers.Get(d)[0])
+	var ptr = pointers.Get(d)
 	return callBuiltinMethod[bool](unsafe.Pointer(&ptr), Global.builtin.Dictionary.erase, gdextension.SizeBool|gdextension.SizeDictionary<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
 		gdextension.Variant
 	}{
@@ -209,25 +205,25 @@ func (d Dictionary) Erase(key Variant) bool {
 	}))
 }
 func (d Dictionary) Hash() int64 {
-	var ptr = gdextension.Dictionary(pointers.Get(d)[0])
+	var ptr = pointers.Get(d)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.Dictionary.hash, gdextension.SizeInt|gdextension.SizeDictionary<<4, nil)
 }
 func (d Dictionary) Size() int64 {
-	var ptr = gdextension.Dictionary(pointers.Get(d)[0])
+	var ptr = pointers.Get(d)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.Dictionary.size, gdextension.SizeInt|gdextension.SizeDictionary<<4, nil)
 }
 func (d Dictionary) IsReadOnly() bool {
-	var ptr = gdextension.Dictionary(pointers.Get(d)[0])
+	var ptr = pointers.Get(d)
 	return callBuiltinMethod[bool](unsafe.Pointer(&ptr), Global.builtin.Dictionary.is_read_only, gdextension.SizeBool|gdextension.SizeDictionary<<4, nil)
 }
 func (d Dictionary) MakeReadOnly() {
-	var ptr = gdextension.Dictionary(pointers.Get(d)[0])
+	var ptr = pointers.Get(d)
 	callBuiltinMethod[bool](unsafe.Pointer(&ptr), Global.builtin.Dictionary.make_read_only, 0|gdextension.SizeDictionary<<4, nil)
 }
 
 func (a PackedByteArray) Resize(size Int) Int {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
-	defer func() { pointers.Set(a, MakePacked(ptr)) }()
+	var ptr = pointers.Get(a)
+	defer func() { pointers.Set(a, ptr) }()
 	return Int(callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedByteArray.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
@@ -235,16 +231,16 @@ func (a PackedByteArray) Resize(size Int) Int {
 	})))
 }
 func (a PackedByteArray) Size() int64 {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
+	var ptr = pointers.Get(a)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedByteArray.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedByteArray) Duplicate() PackedByteArray {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
-	return pointers.New[PackedByteArray](MakePacked(callBuiltinMethod[gdextension.PackedArray](unsafe.Pointer(&ptr), Global.builtin.PackedByteArray.duplicate, gdextension.SizePackedArray|gdextension.SizePackedArray<<4, nil)))
+	var ptr = pointers.Get(a)
+	return pointers.New[PackedByteArray](callBuiltinMethod[gdextension.PackedArray[byte]](unsafe.Pointer(&ptr), Global.builtin.PackedByteArray.duplicate, gdextension.SizePackedArray|gdextension.SizePackedArray<<4, nil))
 }
 func (a PackedColorArray) Resize(size Int) Int {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
-	defer func() { pointers.Set(a, MakePacked(ptr)) }()
+	var ptr = pointers.Get(a)
+	defer func() { pointers.Set(a, ptr) }()
 	return Int(callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedColorArray.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
@@ -252,12 +248,12 @@ func (a PackedColorArray) Resize(size Int) Int {
 	})))
 }
 func (a PackedColorArray) Size() int64 {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
+	var ptr = pointers.Get(a)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedColorArray.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedFloat32Array) Resize(size Int) Int {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
-	defer func() { pointers.Set(a, MakePacked(ptr)) }()
+	var ptr = pointers.Get(a)
+	defer func() { pointers.Set(a, ptr) }()
 	return Int(callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedFloat32Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
@@ -265,12 +261,12 @@ func (a PackedFloat32Array) Resize(size Int) Int {
 	})))
 }
 func (a PackedFloat32Array) Size() int64 {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
+	var ptr = pointers.Get(a)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedFloat32Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedFloat64Array) Resize(size Int) Int {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
-	defer func() { pointers.Set(a, MakePacked(ptr)) }()
+	var ptr = pointers.Get(a)
+	defer func() { pointers.Set(a, ptr) }()
 	return Int(callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedFloat64Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
@@ -278,12 +274,12 @@ func (a PackedFloat64Array) Resize(size Int) Int {
 	})))
 }
 func (a PackedFloat64Array) Size() int64 {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
+	var ptr = pointers.Get(a)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedFloat64Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedInt32Array) Resize(size Int) Int {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
-	defer func() { pointers.Set(a, MakePacked(ptr)) }()
+	var ptr = pointers.Get(a)
+	defer func() { pointers.Set(a, ptr) }()
 	return Int(callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedInt32Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
@@ -291,12 +287,12 @@ func (a PackedInt32Array) Resize(size Int) Int {
 	})))
 }
 func (a PackedInt32Array) Size() int64 {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
+	var ptr = pointers.Get(a)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedInt32Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedStringArray) Resize(size Int) Int {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
-	defer func() { pointers.Set(a, MakePacked(ptr)) }()
+	var ptr = pointers.Get(a)
+	defer func() { pointers.Set(a, ptr) }()
 	return Int(callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedStringArray.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
@@ -304,12 +300,12 @@ func (a PackedStringArray) Resize(size Int) Int {
 	})))
 }
 func (a PackedStringArray) Size() int64 {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
+	var ptr = pointers.Get(a)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedStringArray.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedVector2Array) Resize(size Int) Int {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
-	defer func() { pointers.Set(a, MakePacked(ptr)) }()
+	var ptr = pointers.Get(a)
+	defer func() { pointers.Set(a, ptr) }()
 	return Int(callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedVector2Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
@@ -317,12 +313,12 @@ func (a PackedVector2Array) Resize(size Int) Int {
 	})))
 }
 func (a PackedVector2Array) Size() int64 {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
+	var ptr = pointers.Get(a)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedVector2Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedVector3Array) Resize(size Int) Int {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
-	defer func() { pointers.Set(a, MakePacked(ptr)) }()
+	var ptr = pointers.Get(a)
+	defer func() { pointers.Set(a, ptr) }()
 	return Int(callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedVector3Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
@@ -330,12 +326,12 @@ func (a PackedVector3Array) Resize(size Int) Int {
 	})))
 }
 func (a PackedVector3Array) Size() int64 {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
+	var ptr = pointers.Get(a)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedVector3Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedVector4Array) Resize(size Int) Int {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
-	defer func() { pointers.Set(a, MakePacked(ptr)) }()
+	var ptr = pointers.Get(a)
+	defer func() { pointers.Set(a, ptr) }()
 	return Int(callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedVector4Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
@@ -343,12 +339,12 @@ func (a PackedVector4Array) Resize(size Int) Int {
 	})))
 }
 func (a PackedVector4Array) Size() int64 {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
+	var ptr = pointers.Get(a)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedVector4Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 func (a PackedInt64Array) Resize(size Int) Int {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
-	defer func() { pointers.Set(a, MakePacked(ptr)) }()
+	var ptr = pointers.Get(a)
+	defer func() { pointers.Set(a, ptr) }()
 	return Int(callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedInt64Array.resize, 0|gdextension.SizePackedArray<<4|gdextension.SizeInt<<8, unsafe.Pointer(&struct {
 		Size int64
 	}{
@@ -356,7 +352,7 @@ func (a PackedInt64Array) Resize(size Int) Int {
 	})))
 }
 func (a PackedInt64Array) Size() int64 {
-	var ptr = gdextension.ToPackedArray(pointers.Get(a))
+	var ptr = pointers.Get(a)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.PackedInt64Array.size, gdextension.SizeInt|gdextension.SizePackedArray<<4, nil)
 }
 
@@ -388,56 +384,56 @@ func (s Signal) Disconnect(callable Callable) {
 }
 func (s Signal) GetName() StringName {
 	var ptr = gdextension.Signal(pointers.Get(s))
-	return pointers.New[StringName]([1]EnginePointer{EnginePointer(callBuiltinMethod[gdextension.StringName](unsafe.Pointer(&ptr), Global.builtin.Signal.get_name, gdextension.SizeStringName|gdextension.SizeSignal<<4, nil))})
+	return pointers.New[StringName](callBuiltinMethod[gdextension.StringName](unsafe.Pointer(&ptr), Global.builtin.Signal.get_name, gdextension.SizeStringName|gdextension.SizeSignal<<4, nil))
 }
 func (s Signal) GetConnections() Array {
 	var ptr = gdextension.Signal(pointers.Get(s))
-	return pointers.New[Array]([1]EnginePointer{EnginePointer(callBuiltinMethod[gdextension.Array](unsafe.Pointer(&ptr), Global.builtin.Signal.get_connections, gdextension.SizeArray|gdextension.SizeSignal<<4, nil))})
+	return pointers.New[Array](callBuiltinMethod[gdextension.Array](unsafe.Pointer(&ptr), Global.builtin.Signal.get_connections, gdextension.SizeArray|gdextension.SizeSignal<<4, nil))
 }
 func (s Signal) GetObject() Object {
 	var ptr = gdextension.Signal(pointers.Get(s))
 	return pointers.New[Object]([3]uint64{uint64(callBuiltinMethod[gdextension.Object](unsafe.Pointer(&ptr), Global.builtin.Signal.get_object, gdextension.SizeObject|gdextension.SizeSignal<<4, nil))})
 }
 func (s String) Length() int64 {
-	var ptr = gdextension.String(pointers.Get(s)[0])
+	var ptr = pointers.Get(s)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.String.length, gdextension.SizeInt|gdextension.SizeString<<4, nil)
 }
 func (s String) Substr(begin, end int64) String {
-	var ptr = gdextension.String(pointers.Get(s)[0])
-	return pointers.New[String]([1]EnginePointer{EnginePointer(callBuiltinMethod[gdextension.String](unsafe.Pointer(&ptr), Global.builtin.String.substr, gdextension.SizeString|gdextension.SizeString<<4|gdextension.SizeInt<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
+	var ptr = pointers.Get(s)
+	return pointers.New[String](callBuiltinMethod[gdextension.String](unsafe.Pointer(&ptr), Global.builtin.String.substr, gdextension.SizeString|gdextension.SizeString<<4|gdextension.SizeInt<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
 		Begin int64
 		End   int64
 	}{
 		begin, end,
-	})))})
+	})))
 }
 func (s String) CasecmpTo(other String) int64 {
-	var ptr = gdextension.String(pointers.Get(s)[0])
+	var ptr = pointers.Get(s)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.String.casecmp_to, gdextension.SizeInt|gdextension.SizeString<<4|gdextension.SizeString<<8, unsafe.Pointer(&struct {
 		Other gdextension.String
 	}{
-		gdextension.String(pointers.Get(other)[0]),
+		pointers.Get(other),
 	}))
 }
 func (s StringName) Length() int64 {
-	var ptr = gdextension.StringName(pointers.Get(s)[0])
+	var ptr = pointers.Get(s)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.StringName.length, gdextension.SizeInt|gdextension.SizeStringName<<4, nil)
 }
 func (s StringName) Substr(begin, end int64) String {
-	var ptr = gdextension.StringName(pointers.Get(s)[0])
-	return pointers.New[String]([1]EnginePointer{EnginePointer(callBuiltinMethod[gdextension.String](unsafe.Pointer(&ptr), Global.builtin.StringName.substr, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeInt<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
+	var ptr = pointers.Get(s)
+	return pointers.New[String](callBuiltinMethod[gdextension.String](unsafe.Pointer(&ptr), Global.builtin.StringName.substr, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeInt<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
 		Begin int64
 		End   int64
 	}{
 		begin, end,
-	})))})
+	})))
 }
 func (s StringName) CasecmpTo(other String) int64 {
-	var ptr = gdextension.StringName(pointers.Get(s)[0])
+	var ptr = pointers.Get(s)
 	return callBuiltinMethod[int64](unsafe.Pointer(&ptr), Global.builtin.StringName.casecmp_to, gdextension.SizeInt|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
-		Other gdextension.StringName
+		Other gdextension.String
 	}{
-		gdextension.StringName(pointers.Get(other)[0]),
+		pointers.Get(other),
 	}))
 }
 
@@ -445,7 +441,7 @@ func (o Object) Get(name StringName) Variant {
 	return pointers.New[Variant]([3]uint64(gdextension.Call[gdextension.Variant](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_get, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
 		Name gdextension.StringName
 	}{
-		gdextension.StringName(pointers.Get(name)[0]),
+		pointers.Get(name),
 	}))))
 }
 func (o Object) Set(name StringName, value Variant) {
@@ -453,19 +449,19 @@ func (o Object) Set(name StringName, value Variant) {
 		Name  gdextension.StringName
 		Value gdextension.Variant
 	}{
-		gdextension.StringName(pointers.Get(name)[0]), gdextension.Variant(pointers.Get(value)),
+		pointers.Get(name), gdextension.Variant(pointers.Get(value)),
 	}))
 }
 func (o Object) HasMethod(name StringName) bool {
 	return gdextension.Call[bool](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_has_method, gdextension.SizeBool|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
 		Name gdextension.StringName
 	}{
-		gdextension.StringName(pointers.Get(name)[0]),
+		pointers.Get(name),
 	}))
 }
 func (o Object) Call(method StringName, args ...Variant) (Variant, error) {
 	self := gdextension.Object(pointers.Get(o.AsObject()[0])[0])
-	name := gdextension.StringName(pointers.Get(method)[0])
+	name := pointers.Get(method)
 	if gdextension.Host.Objects.Script.DefinesMethod(self, name) {
 		var converted []gdextension.Variant
 		for _, arg := range args {
@@ -508,25 +504,25 @@ func (o Object) SetScript(script Variant) {
 	}))
 }
 func (o Object) ToString() String {
-	return pointers.New[String]([1]EnginePointer{EnginePointer(gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_to_string, gdextension.SizeString, nil))})
+	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_to_string, gdextension.SizeString, nil))
 }
 func (o Object) Tr(message StringName, context StringName) String {
-	return pointers.New[String]([1]EnginePointer{EnginePointer(gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_tr, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
+	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_tr, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
 		Message gdextension.StringName
 		Context gdextension.StringName
 	}{
-		gdextension.StringName(pointers.Get(message)[0]), gdextension.StringName(pointers.Get(context)[0]),
-	})))})
+		pointers.Get(message), pointers.Get(context),
+	})))
 }
 func (o Object) TrN(message StringName, plural StringName, n int64, context StringName) String {
-	return pointers.New[String]([1]EnginePointer{EnginePointer(gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_tr_n, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8|gdextension.SizeInt<<12|gdextension.SizeStringName<<16, unsafe.Pointer(&struct {
+	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_tr_n, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8|gdextension.SizeInt<<12|gdextension.SizeStringName<<16, unsafe.Pointer(&struct {
 		Message gdextension.StringName
 		Plural  gdextension.StringName
 		N       int64
 		Context gdextension.StringName
 	}{
-		gdextension.StringName(pointers.Get(message)[0]), gdextension.StringName(pointers.Get(plural)[0]), n, gdextension.StringName(pointers.Get(context)[0]),
-	})))})
+		pointers.Get(message), pointers.Get(plural), n, pointers.Get(context),
+	})))
 }
 func (o Object) SetMessageTranslation(enable bool) {
 	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_set_message_translation, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
@@ -539,7 +535,7 @@ func (o Object) IsBlockingSignals() bool {
 	return gdextension.Call[bool](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_is_blocking_signals, gdextension.SizeBool, nil)
 }
 func (o Object) GetClass() String {
-	return pointers.New[String]([1]EnginePointer{EnginePointer(gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_get_class, gdextension.SizeString, nil))})
+	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_get_class, gdextension.SizeString, nil))
 }
 func (o Object) Connect(signal StringName, callable Callable, flags int64) int64 {
 	return gdextension.Call[int64](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_connect, gdextension.SizeInt|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
@@ -547,7 +543,7 @@ func (o Object) Connect(signal StringName, callable Callable, flags int64) int64
 		Callable gdextension.Callable
 		Flags    int64
 	}{
-		gdextension.StringName(pointers.Get(signal)[0]), gdextension.Callable(pointers.Get(callable)), flags,
+		pointers.Get(signal), gdextension.Callable(pointers.Get(callable)), flags,
 	}))
 }
 func (o Object) IsConnected(signal StringName, callable Callable) bool {
@@ -555,7 +551,7 @@ func (o Object) IsConnected(signal StringName, callable Callable) bool {
 		Signal   gdextension.StringName
 		Callable gdextension.Callable
 	}{
-		gdextension.StringName(pointers.Get(signal)[0]), gdextension.Callable(pointers.Get(callable)),
+		pointers.Get(signal), gdextension.Callable(pointers.Get(callable)),
 	}))
 }
 func (o Object) Disconnect(signal StringName, callable Callable) {
@@ -563,11 +559,19 @@ func (o Object) Disconnect(signal StringName, callable Callable) {
 		Signal   gdextension.StringName
 		Callable gdextension.Callable
 	}{
-		gdextension.StringName(pointers.Get(signal)[0]), gdextension.Callable(pointers.Get(callable)),
+		pointers.Get(signal), gdextension.Callable(pointers.Get(callable)),
 	}))
 }
 func (o Object) IsQueuedForDeletion() bool {
 	return gdextension.Call[bool](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_is_queued_for_deletion, gdextension.SizeBool, nil)
+}
+func (o Object) Notification(what Int, reversed bool) {
+	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_notification, 0|gdextension.SizeInt<<4|gdextension.SizeBool<<8, unsafe.Pointer(&struct {
+		What     int64
+		Reversed bool
+	}{
+		int64(what), reversed,
+	}))
 }
 
 func (rc RefCounted) Reference() {

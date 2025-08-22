@@ -468,8 +468,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Skeleton3D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Skeleton3D"))))})}
 	casted := Instance{*(*gdclass.Skeleton3D)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -511,7 +512,7 @@ Adds a new bone with the given name. Returns the new bone's index, or [code]-1[/
 */
 //go:nosplit
 func (self class) AddBone(name String.Readable) int64 { //gd:Skeleton3D.add_bone
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_add_bone), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_add_bone), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -521,7 +522,7 @@ Returns the bone index that matches [param name] as its name. Returns [code]-1[/
 */
 //go:nosplit
 func (self class) FindBone(name String.Readable) int64 { //gd:Skeleton3D.find_bone
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_find_bone), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_find_bone), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -531,7 +532,7 @@ Returns the name of the bone at index [param bone_idx].
 */
 //go:nosplit
 func (self class) GetBoneName(bone_idx int64) String.Readable { //gd:Skeleton3D.get_bone_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_get_bone_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_get_bone_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -544,7 +545,7 @@ func (self class) SetBoneName(bone_idx int64, name String.Readable) { //gd:Skele
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_set_bone_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		bone_idx int64
 		name     gdextension.String
-	}{bone_idx, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	}{bone_idx, pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -552,10 +553,10 @@ Returns bone metadata for [param bone_idx] with [param key].
 */
 //go:nosplit
 func (self class) GetBoneMeta(bone_idx int64, key String.Name) variant.Any { //gd:Skeleton3D.get_bone_meta
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_get_bone_meta), gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_get_bone_meta), gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		bone_idx int64
 		key      gdextension.StringName
-	}{bone_idx, gdextension.StringName(pointers.Get(gd.InternalStringName(key))[0])}))
+	}{bone_idx, pointers.Get(gd.InternalStringName(key))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -565,7 +566,7 @@ Returns a list of all metadata keys for [param bone_idx].
 */
 //go:nosplit
 func (self class) GetBoneMetaList(bone_idx int64) Array.Contains[String.Name] { //gd:Skeleton3D.get_bone_meta_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_get_bone_meta_list), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_get_bone_meta_list), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -578,7 +579,7 @@ func (self class) HasBoneMeta(bone_idx int64, key String.Name) bool { //gd:Skele
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_has_bone_meta), gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		bone_idx int64
 		key      gdextension.StringName
-	}{bone_idx, gdextension.StringName(pointers.Get(gd.InternalStringName(key))[0])}))
+	}{bone_idx, pointers.Get(gd.InternalStringName(key))}))
 	var ret = r_ret
 	return ret
 }
@@ -592,7 +593,7 @@ func (self class) SetBoneMeta(bone_idx int64, key String.Name, value variant.Any
 		bone_idx int64
 		key      gdextension.StringName
 		value    gdextension.Variant
-	}{bone_idx, gdextension.StringName(pointers.Get(gd.InternalStringName(key))[0]), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{bone_idx, pointers.Get(gd.InternalStringName(key)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 }
 
 /*
@@ -601,7 +602,7 @@ It is useful to set it as a hint for the enum property.
 */
 //go:nosplit
 func (self class) GetConcatenatedBoneNames() String.Name { //gd:Skeleton3D.get_concatenated_bone_names
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_get_concatenated_bone_names), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_get_concatenated_bone_names), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -712,7 +713,7 @@ func (self class) GetBoneGlobalRest(bone_idx int64) Transform3D.BasisOrigin { //
 
 //go:nosplit
 func (self class) CreateSkinFromRestTransforms() [1]gdclass.Skin { //gd:Skeleton3D.create_skin_from_rest_transforms
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_create_skin_from_rest_transforms), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_create_skin_from_rest_transforms), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret)}
 	return ret
 }
@@ -722,7 +723,7 @@ Binds the given Skin to the Skeleton.
 */
 //go:nosplit
 func (self class) RegisterSkin(skin [1]gdclass.Skin) [1]gdclass.SkinReference { //gd:Skeleton3D.register_skin
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_register_skin), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_register_skin), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))}))
 	var ret = [1]gdclass.SkinReference{gd.PointerWithOwnershipTransferredToGo[gdclass.SkinReference](r_ret)}
 	return ret
 }
@@ -1009,7 +1010,7 @@ Optionally, a list of bone names can be passed-in, allowing only the passed-in b
 */
 //go:nosplit
 func (self class) PhysicalBonesStartSimulation(bones Array.Contains[String.Name]) { //gd:Skeleton3D.physical_bones_start_simulation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_physical_bones_start_simulation), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(bones))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton3D.Bind_physical_bones_start_simulation), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))}))
 }
 
 /*

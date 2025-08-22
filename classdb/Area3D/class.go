@@ -150,8 +150,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("Area3D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Area3D"))))})}
 	casted := Instance{*(*gdclass.Area3D)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -489,12 +490,12 @@ func (self class) GetWindAttenuationFactor() float64 { //gd:Area3D.get_wind_atte
 
 //go:nosplit
 func (self class) SetWindSourcePath(wind_source_path Path.ToNode) { //gd:Area3D.set_wind_source_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_set_wind_source_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ wind_source_path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(wind_source_path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_set_wind_source_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ wind_source_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(wind_source_path))}))
 }
 
 //go:nosplit
 func (self class) GetWindSourcePath() Path.ToNode { //gd:Area3D.get_wind_source_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_get_wind_source_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_get_wind_source_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -529,7 +530,7 @@ For performance reasons (collisions are all processed at the same time) this lis
 */
 //go:nosplit
 func (self class) GetOverlappingBodies() Array.Contains[[1]gdclass.Node3D] { //gd:Area3D.get_overlapping_bodies
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_get_overlapping_bodies), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_get_overlapping_bodies), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node3D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -540,7 +541,7 @@ For performance reasons (collisions are all processed at the same time) this lis
 */
 //go:nosplit
 func (self class) GetOverlappingAreas() Array.Contains[[1]gdclass.Area3D] { //gd:Area3D.get_overlapping_areas
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_get_overlapping_areas), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_get_overlapping_areas), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Area3D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -604,12 +605,12 @@ func (self class) IsOverridingAudioBus() bool { //gd:Area3D.is_overriding_audio_
 
 //go:nosplit
 func (self class) SetAudioBusName(name String.Name) { //gd:Area3D.set_audio_bus_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_set_audio_bus_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_set_audio_bus_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 //go:nosplit
 func (self class) GetAudioBusName() String.Name { //gd:Area3D.get_audio_bus_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_get_audio_bus_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_get_audio_bus_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -628,12 +629,12 @@ func (self class) IsUsingReverbBus() bool { //gd:Area3D.is_using_reverb_bus
 
 //go:nosplit
 func (self class) SetReverbBusName(name String.Name) { //gd:Area3D.set_reverb_bus_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_set_reverb_bus_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_set_reverb_bus_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 //go:nosplit
 func (self class) GetReverbBusName() String.Name { //gd:Area3D.get_reverb_bus_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_get_reverb_bus_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Area3D.Bind_get_reverb_bus_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

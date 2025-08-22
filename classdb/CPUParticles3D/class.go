@@ -145,8 +145,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("CPUParticles3D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CPUParticles3D"))))})}
 	casted := Instance{*(*gdclass.CPUParticles3D)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -941,7 +942,7 @@ func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:CPUParticles3D.set_mesh
 
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:CPUParticles3D.get_mesh
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret)}
 	return ret
 }
@@ -1092,7 +1093,7 @@ Returns the [Curve] of the parameter specified by [enum Parameter].
 */
 //go:nosplit
 func (self class) GetParamCurve(param Parameter) [1]gdclass.Curve { //gd:CPUParticles3D.get_param_curve
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_param_curve), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Parameter }{param}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_param_curve), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Parameter }{param}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
@@ -1116,7 +1117,7 @@ func (self class) SetColorRamp(ramp [1]gdclass.Gradient) { //gd:CPUParticles3D.s
 
 //go:nosplit
 func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:CPUParticles3D.get_color_ramp
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_color_ramp), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_color_ramp), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
 	return ret
 }
@@ -1128,7 +1129,7 @@ func (self class) SetColorInitialRamp(ramp [1]gdclass.Gradient) { //gd:CPUPartic
 
 //go:nosplit
 func (self class) GetColorInitialRamp() [1]gdclass.Gradient { //gd:CPUParticles3D.get_color_initial_ramp
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_color_initial_ramp), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_color_initial_ramp), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
 	return ret
 }
@@ -1192,7 +1193,9 @@ func (self class) GetEmissionBoxExtents() Vector3.XYZ { //gd:CPUParticles3D.get_
 
 //go:nosplit
 func (self class) SetEmissionPoints(array Packed.Array[Vector3.XYZ]) { //gd:CPUParticles3D.set_emission_points
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_set_emission_points), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ array gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](array)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_set_emission_points), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		array gdextension.PackedArray[Vector3.XYZ]
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](array))}))
 }
 
 //go:nosplit
@@ -1204,7 +1207,9 @@ func (self class) GetEmissionPoints() Packed.Array[Vector3.XYZ] { //gd:CPUPartic
 
 //go:nosplit
 func (self class) SetEmissionNormals(array Packed.Array[Vector3.XYZ]) { //gd:CPUParticles3D.set_emission_normals
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_set_emission_normals), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ array gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](array)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_set_emission_normals), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		array gdextension.PackedArray[Vector3.XYZ]
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](array))}))
 }
 
 //go:nosplit
@@ -1216,7 +1221,9 @@ func (self class) GetEmissionNormals() Packed.Array[Vector3.XYZ] { //gd:CPUParti
 
 //go:nosplit
 func (self class) SetEmissionColors(array Packed.Array[Color.RGBA]) { //gd:CPUParticles3D.set_emission_colors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_set_emission_colors), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ array gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](array)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_set_emission_colors), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		array gdextension.PackedArray[Color.RGBA]
+	}{pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](array))}))
 }
 
 //go:nosplit
@@ -1312,7 +1319,7 @@ func (self class) SetSplitScale(split_scale bool) { //gd:CPUParticles3D.set_spli
 
 //go:nosplit
 func (self class) GetScaleCurveX() [1]gdclass.Curve { //gd:CPUParticles3D.get_scale_curve_x
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_scale_curve_x), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_scale_curve_x), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
@@ -1324,7 +1331,7 @@ func (self class) SetScaleCurveX(scale_curve [1]gdclass.Curve) { //gd:CPUParticl
 
 //go:nosplit
 func (self class) GetScaleCurveY() [1]gdclass.Curve { //gd:CPUParticles3D.get_scale_curve_y
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_scale_curve_y), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_scale_curve_y), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
@@ -1336,7 +1343,7 @@ func (self class) SetScaleCurveY(scale_curve [1]gdclass.Curve) { //gd:CPUParticl
 
 //go:nosplit
 func (self class) GetScaleCurveZ() [1]gdclass.Curve { //gd:CPUParticles3D.get_scale_curve_z
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_scale_curve_z), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles3D.Bind_get_scale_curve_z), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }

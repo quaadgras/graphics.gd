@@ -600,9 +600,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("FontFile"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("FontFile"))))})}
 	casted := Instance{*(*gdclass.FontFile)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -760,7 +761,7 @@ Loads an AngelCode BMFont (.fnt, .font) bitmap font from file [param path].
 */
 //go:nosplit
 func (self class) LoadBitmapFont(path String.Readable) Error.Code { //gd:FontFile.load_bitmap_font
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_load_bitmap_font), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_load_bitmap_font), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -771,14 +772,14 @@ Loads a TrueType (.ttf), OpenType (.otf), WOFF (.woff), WOFF2 (.woff2) or Type 1
 */
 //go:nosplit
 func (self class) LoadDynamicFont(path String.Readable) Error.Code { //gd:FontFile.load_dynamic_font
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_load_dynamic_font), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_load_dynamic_font), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetData(data Packed.Bytes) { //gd:FontFile.set_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_set_data), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_set_data), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 }
 
 //go:nosplit
@@ -790,12 +791,12 @@ func (self class) GetData() Packed.Bytes { //gd:FontFile.get_data
 
 //go:nosplit
 func (self class) SetFontName(name String.Readable) { //gd:FontFile.set_font_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_set_font_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_set_font_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 //go:nosplit
 func (self class) SetFontStyleName(name String.Readable) { //gd:FontFile.set_font_style_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_set_font_style_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_set_font_style_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 //go:nosplit
@@ -1014,7 +1015,7 @@ Returns list of the font sizes in the cache. Each size is [Vector2i] with font s
 */
 //go:nosplit
 func (self class) GetSizeCacheList(cache_index int64) Array.Contains[Vector2i.XY] { //gd:FontFile.get_size_cache_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_size_cache_list), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cache_index int64 }{cache_index}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_size_cache_list), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cache_index int64 }{cache_index}))
 	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1046,7 +1047,7 @@ func (self class) SetVariationCoordinates(cache_index int64, variation_coordinat
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_set_variation_coordinates), 0|(gdextension.SizeInt<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
 		cache_index           int64
 		variation_coordinates gdextension.Dictionary
-	}{cache_index, gdextension.Dictionary(pointers.Get(gd.InternalDictionary(variation_coordinates))[0])}))
+	}{cache_index, pointers.Get(gd.InternalDictionary(variation_coordinates))}))
 }
 
 /*
@@ -1054,7 +1055,7 @@ Returns variation coordinates for the specified font cache entry. See [method Fo
 */
 //go:nosplit
 func (self class) GetVariationCoordinates(cache_index int64) Dictionary.Any { //gd:FontFile.get_variation_coordinates
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_variation_coordinates), gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cache_index int64 }{cache_index}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_variation_coordinates), gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cache_index int64 }{cache_index}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -1349,7 +1350,7 @@ Returns a copy of the font cache texture image.
 */
 //go:nosplit
 func (self class) GetTextureImage(cache_index int64, size Vector2i.XY, texture_index int64) [1]gdclass.Image { //gd:FontFile.get_texture_image
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_texture_image), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_texture_image), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		cache_index   int64
 		size          Vector2i.XY
 		texture_index int64
@@ -1367,8 +1368,8 @@ func (self class) SetTextureOffsets(cache_index int64, size Vector2i.XY, texture
 		cache_index   int64
 		size          Vector2i.XY
 		texture_index int64
-		offset        gdextension.PackedArray
-	}{cache_index, size, texture_index, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](offset)))}))
+		offset        gdextension.PackedArray[int32]
+	}{cache_index, size, texture_index, pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](offset))}))
 }
 
 /*
@@ -1565,7 +1566,7 @@ Returns list of the kerning overrides.
 */
 //go:nosplit
 func (self class) GetKerningList(cache_index int64, size int64) Array.Contains[Vector2i.XY] { //gd:FontFile.get_kerning_list
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_kerning_list), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_kerning_list), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		cache_index int64
 		size        int64
 	}{cache_index, size}))
@@ -1656,7 +1657,7 @@ func (self class) SetLanguageSupportOverride(language String.Readable, supported
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_set_language_support_override), 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		language  gdextension.String
 		supported bool
-	}{gdextension.String(pointers.Get(gd.InternalString(language))[0]), supported}))
+	}{pointers.Get(gd.InternalString(language)), supported}))
 }
 
 /*
@@ -1664,7 +1665,7 @@ Returns [code]true[/code] if support override is enabled for the [param language
 */
 //go:nosplit
 func (self class) GetLanguageSupportOverride(language String.Readable) bool { //gd:FontFile.get_language_support_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_language_support_override), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_language_support_override), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))}))
 	var ret = r_ret
 	return ret
 }
@@ -1674,7 +1675,7 @@ Remove language support override.
 */
 //go:nosplit
 func (self class) RemoveLanguageSupportOverride(language String.Readable) { //gd:FontFile.remove_language_support_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_remove_language_support_override), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_remove_language_support_override), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))}))
 }
 
 /*
@@ -1695,7 +1696,7 @@ func (self class) SetScriptSupportOverride(script String.Readable, supported boo
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_set_script_support_override), 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		script    gdextension.String
 		supported bool
-	}{gdextension.String(pointers.Get(gd.InternalString(script))[0]), supported}))
+	}{pointers.Get(gd.InternalString(script)), supported}))
 }
 
 /*
@@ -1703,7 +1704,7 @@ Returns [code]true[/code] if support override is enabled for the [param script].
 */
 //go:nosplit
 func (self class) GetScriptSupportOverride(script String.Readable) bool { //gd:FontFile.get_script_support_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_script_support_override), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ script gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(script))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_script_support_override), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ script gdextension.String }{pointers.Get(gd.InternalString(script))}))
 	var ret = r_ret
 	return ret
 }
@@ -1713,7 +1714,7 @@ Removes script support override.
 */
 //go:nosplit
 func (self class) RemoveScriptSupportOverride(script String.Readable) { //gd:FontFile.remove_script_support_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_remove_script_support_override), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ script gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(script))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_remove_script_support_override), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ script gdextension.String }{pointers.Get(gd.InternalString(script))}))
 }
 
 /*
@@ -1728,12 +1729,12 @@ func (self class) GetScriptSupportOverrides() Packed.Strings { //gd:FontFile.get
 
 //go:nosplit
 func (self class) SetOpentypeFeatureOverrides(overrides Dictionary.Any) { //gd:FontFile.set_opentype_feature_overrides
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_set_opentype_feature_overrides), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ overrides gdextension.Dictionary }{gdextension.Dictionary(pointers.Get(gd.InternalDictionary(overrides))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_set_opentype_feature_overrides), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ overrides gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(overrides))}))
 }
 
 //go:nosplit
 func (self class) GetOpentypeFeatureOverrides() Dictionary.Any { //gd:FontFile.get_opentype_feature_overrides
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_opentype_feature_overrides), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FontFile.Bind_get_opentype_feature_overrides), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

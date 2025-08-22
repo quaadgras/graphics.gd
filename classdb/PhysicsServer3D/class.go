@@ -92,7 +92,7 @@ var self [1]gdclass.PhysicsServer3D
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.PhysicsServer3D)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.PhysicsServer3D)))})
 	self = *(*[1]gdclass.PhysicsServer3D)(unsafe.Pointer(&obj))
 }
 func WorldBoundaryShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.world_boundary_shape_create
@@ -1596,7 +1596,7 @@ Returns the shape data.
 */
 //go:nosplit
 func (self class) ShapeGetData(shape RID.Any) variant.Any { //gd:PhysicsServer3D.shape_get_data
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_shape_get_data), gdextension.SizeVariant|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shape RID.Any }{shape}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_shape_get_data), gdextension.SizeVariant|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shape RID.Any }{shape}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -1673,7 +1673,7 @@ Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be 
 */
 //go:nosplit
 func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsServer3D.space_get_direct_state
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_space_get_direct_state), gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ space RID.Any }{space}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_space_get_direct_state), gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ space RID.Any }{space}))
 	var ret = [1]gdclass.PhysicsDirectSpaceState3D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState3D](r_ret)}
 	return ret
 }
@@ -1881,7 +1881,7 @@ Returns an area parameter value. A list of available parameters is on the [enum 
 */
 //go:nosplit
 func (self class) AreaGetParam(area RID.Any, param AreaParameter) variant.Any { //gd:PhysicsServer3D.area_get_param
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_area_get_param), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_area_get_param), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		area  RID.Any
 		param AreaParameter
 	}{area, param}))
@@ -1934,7 +1934,7 @@ func (self class) AreaSetMonitorCallback(area RID.Any, callback Callable.Functio
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_area_set_monitor_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		area     RID.Any
 		callback gdextension.Callable
-	}{area, gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{area, pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -1951,7 +1951,7 @@ func (self class) AreaSetAreaMonitorCallback(area RID.Any, callback Callable.Fun
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_area_set_area_monitor_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		area     RID.Any
 		callback gdextension.Callable
-	}{area, gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{area, pointers.Get(gd.InternalCallable(callback))}))
 }
 
 //go:nosplit
@@ -2250,7 +2250,7 @@ Returns the value of a body parameter. A list of available parameters is on the 
 */
 //go:nosplit
 func (self class) BodyGetParam(body RID.Any, param BodyParameter) variant.Any { //gd:PhysicsServer3D.body_get_param
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_body_get_param), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_body_get_param), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		body  RID.Any
 		param BodyParameter
 	}{body, param}))
@@ -2283,7 +2283,7 @@ Returns a body state.
 */
 //go:nosplit
 func (self class) BodyGetState(body RID.Any, state BodyState) variant.Any { //gd:PhysicsServer3D.body_get_state
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_body_get_state), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_body_get_state), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		body  RID.Any
 		state BodyState
 	}{body, state}))
@@ -2555,7 +2555,7 @@ func (self class) BodySetStateSyncCallback(body RID.Any, callable Callable.Funct
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_body_set_state_sync_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		body     RID.Any
 		callable gdextension.Callable
-	}{body, gdextension.Callable(pointers.Get(gd.InternalCallable(callable)))}))
+	}{body, pointers.Get(gd.InternalCallable(callable))}))
 }
 
 /*
@@ -2572,7 +2572,7 @@ func (self class) BodySetForceIntegrationCallback(body RID.Any, callable Callabl
 		body     RID.Any
 		callable gdextension.Callable
 		userdata gdextension.Variant
-	}{body, gdextension.Callable(pointers.Get(gd.InternalCallable(callable))), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
+	}{body, pointers.Get(gd.InternalCallable(callable)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
 }
 
 /*
@@ -2605,7 +2605,7 @@ Returns the [PhysicsDirectBodyState3D] of the body. Returns [code]null[/code] if
 */
 //go:nosplit
 func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyState3D { //gd:PhysicsServer3D.body_get_direct_state
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_body_get_direct_state), gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_body_get_direct_state), gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
 	var ret = [1]gdclass.PhysicsDirectBodyState3D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectBodyState3D](r_ret)}
 	return ret
 }
@@ -2756,7 +2756,7 @@ Returns the given soft body state (see [enum BodyState] constants).
 */
 //go:nosplit
 func (self class) SoftBodyGetState(body RID.Any, state BodyState) variant.Any { //gd:PhysicsServer3D.soft_body_get_state
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_state), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3D.Bind_soft_body_get_state), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		body  RID.Any
 		state BodyState
 	}{body, state}))

@@ -138,8 +138,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ScriptCreateDialog"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ScriptCreateDialog"))))})}
 	casted := Instance{*(*gdclass.ScriptCreateDialog)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -153,7 +154,7 @@ func (self class) Config(inherits String.Readable, path String.Readable, built_i
 		path             gdextension.String
 		built_in_enabled bool
 		load_enabled     bool
-	}{gdextension.String(pointers.Get(gd.InternalString(inherits))[0]), gdextension.String(pointers.Get(gd.InternalString(path))[0]), built_in_enabled, load_enabled}))
+	}{pointers.Get(gd.InternalString(inherits)), pointers.Get(gd.InternalString(path)), built_in_enabled, load_enabled}))
 }
 func (self Instance) OnScriptCreated(cb func(script Script.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("script_created"), gd.NewCallable(cb), 0)

@@ -102,9 +102,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OggPacketSequence"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("OggPacketSequence"))))})}
 	casted := Instance{*(*gdclass.OggPacketSequence)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -134,19 +135,21 @@ func (self Instance) SetSamplingRate(value Float.X) {
 
 //go:nosplit
 func (self class) SetPacketData(packet_data Array.Contains[Array.Any]) { //gd:OggPacketSequence.set_packet_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_set_packet_data), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ packet_data gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(packet_data))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_set_packet_data), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ packet_data gdextension.Array }{pointers.Get(gd.InternalArray(packet_data))}))
 }
 
 //go:nosplit
 func (self class) GetPacketData() Array.Contains[Array.Any] { //gd:OggPacketSequence.get_packet_data
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_get_packet_data), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_get_packet_data), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Array.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPacketGranulePositions(granule_positions Packed.Array[int64]) { //gd:OggPacketSequence.set_packet_granule_positions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_set_packet_granule_positions), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ granule_positions gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](granule_positions)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_set_packet_granule_positions), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		granule_positions gdextension.PackedArray[int64]
+	}{pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](granule_positions))}))
 }
 
 //go:nosplit

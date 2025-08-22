@@ -347,18 +347,31 @@ func (name Name) IsPointer() (string, bool) {
 	t = strings.TrimPrefix(t, "gdclass.")
 	t = strings.TrimPrefix(t, "[1]gdclass.")
 	if strings.HasPrefix(t, "Array.Contains[") {
-		return "[1]gd.EnginePointer", true
+		return "gdextension.Array", true
 	}
 	switch t {
-	case "String", "StringName", "NodePath",
-		"Dictionary.Any", "Array.Any", "String.Readable", "Path.ToNode", "String.Name":
-		return "[1]gd.EnginePointer", true
+	case "String":
+		return "gdextension.String", true
+	case "StringName":
+		return "gdextension.StringName", true
+	case "NodePath":
+		return "gdextension.NodePath", true
+	case "Array.Any":
+		return "gdextension.Array", true
+	case "String.Readable":
+		return "gdextension.String", true
+	case "Path.ToNode":
+		return "gdextension.NodePath", true
+	case "String.Name":
+		return "gdextension.StringName", true
+	case "Dictionary.Any":
+		return "gdextension.Dictionary", true
 	case "Signal", "Signal.Any":
-		return "[2]uint64", true
+		return "gdextension.Signal", true
 	case "Callable":
-		return "[2]uint64", true
+		return "gdextension.Callable", true
 	case "Callable.Function":
-		return "[2]uint64", true
+		return "gdextension.Callable", true
 	case "Packed.Bytes", "Packed.Array[int32]",
 		"Packed.Array[int64]", "Packed.Array[float32]",
 		"Packed.Array[float64]", "Packed.Strings",
@@ -367,14 +380,14 @@ func (name Name) IsPointer() (string, bool) {
 		"Packed.Array[Color.RGBA]":
 		return "gd.PackedPointers", true
 	case "Variant", "variant.Any":
-		return "[3]uint64", true
+		return "gdextension.Variant", true
 	case "Object":
-		return "gd.EnginePointer", true
+		return "gdextension.Object", true
 	case "Error.Code":
 		return "int64", true
 	default:
 		if entry, ok := ClassDB[t]; ok && !entry.IsEnum {
-			return "gd.EnginePointer", true
+			return "gdextension.Object", true
 		}
 		return "", false
 	}
@@ -407,9 +420,26 @@ func (name Name) CallframeType() string {
 		return "gdextension.NodePath"
 	case "String.Name":
 		return "gdextension.StringName"
-	case "Packed.Bytes", "Packed.Strings", "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]",
-		"Packed.Array[Vector2.XY]", "Packed.Array[Vector3.XYZ]", "Packed.Array[Vector4.XYZW]", "Packed.Array[Color.RGBA]":
-		return "gdextension.PackedArray"
+	case "Packed.Bytes":
+		return "gdextension.PackedArray[byte]"
+	case "Packed.Strings":
+		return "gdextension.PackedArray[gdextension.String]"
+	case "Packed.Array[int32]":
+		return "gdextension.PackedArray[int32]"
+	case "Packed.Array[int64]":
+		return "gdextension.PackedArray[int64]"
+	case "Packed.Array[float32]":
+		return "gdextension.PackedArray[float32]"
+	case "Packed.Array[float64]":
+		return "gdextension.PackedArray[float64]"
+	case "Packed.Array[Vector2.XY]":
+		return "gdextension.PackedArray[Vector2.XY]"
+	case "Packed.Array[Vector3.XYZ]":
+		return "gdextension.PackedArray[Vector3.XYZ]"
+	case "Packed.Array[Vector4.XYZW]":
+		return "gdextension.PackedArray[Vector4.XYZW]"
+	case "Packed.Array[Color.RGBA]":
+		return "gdextension.PackedArray[Color.RGBA]"
 	}
 	_, argIsPtr := name.IsPointer()
 	if argIsPtr {
@@ -424,7 +454,7 @@ func (name Name) CallframeType() string {
 
 func (name Name) CallframeValue(val string) string {
 	if strings.HasPrefix(string(name), "Array.Contains[") {
-		return fmt.Sprintf("gdextension.Array(pointers.Get(gd.InternalArray(%v))[0])", val)
+		return fmt.Sprintf("pointers.Get(gd.InternalArray(%v))", val)
 	}
 	switch name {
 	case "variant.Any":
@@ -438,32 +468,32 @@ func (name Name) CallframeValue(val string) string {
 	case "Signal.Any":
 		return fmt.Sprintf("pointers.Get(gd.InternalSignal(%v))", val)
 	case "Array.Any":
-		return fmt.Sprintf("gdextension.Array(pointers.Get(gd.InternalArray(%v))[0])", val)
+		return fmt.Sprintf("pointers.Get(gd.InternalArray(%v))", val)
 	case "String.Readable":
-		return fmt.Sprintf("gdextension.String(pointers.Get(gd.InternalString(%v))[0])", val)
+		return fmt.Sprintf("pointers.Get(gd.InternalString(%v))", val)
 	case "Dictionary.Any":
-		return fmt.Sprintf("gdextension.Dictionary(pointers.Get(gd.InternalDictionary(%v))[0])", val)
+		return fmt.Sprintf("pointers.Get(gd.InternalDictionary(%v))", val)
 	case "Callable.Function":
-		return fmt.Sprintf("gdextension.Callable(pointers.Get(gd.InternalCallable(%v)))", val)
+		return fmt.Sprintf("pointers.Get(gd.InternalCallable(%v))", val)
 	case "Path.ToNode":
-		return fmt.Sprintf("gdextension.NodePath(pointers.Get(gd.InternalNodePath(%v))[0])", val)
+		return fmt.Sprintf("pointers.Get(gd.InternalNodePath(%v))", val)
 	case "String.Name":
-		return fmt.Sprintf("gdextension.StringName(pointers.Get(gd.InternalStringName(%v))[0])", val)
+		return fmt.Sprintf("pointers.Get(gd.InternalStringName(%v))", val)
 	case "Packed.Bytes":
-		return fmt.Sprintf("gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray,byte](Packed.Array[byte](%v))))", val)
+		return fmt.Sprintf("pointers.Get(gd.InternalPacked[gd.PackedByteArray,byte](Packed.Array[byte](%v)))", val)
 	case "Packed.Strings":
-		return fmt.Sprintf("gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(%v)))", val)
+		return fmt.Sprintf("pointers.Get(gd.InternalPackedStrings(%v))", val)
 	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]",
 		"Packed.Array[Vector2.XY]", "Packed.Array[Vector3.XYZ]", "Packed.Array[Vector4.XYZW]", "Packed.Array[Color.RGBA]":
 		elem := strings.TrimPrefix(string(name), "Packed.Array[")
 		elem = strings.TrimSuffix(elem, "]")
 		title, _, _ := strings.Cut(elem, ".")
 		title = strings.Title(title)
-		return fmt.Sprintf("gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.Packed%sArray, %s](%v)))", title, elem, val)
+		return fmt.Sprintf("pointers.Get(gd.InternalPacked[gd.Packed%sArray, %s](%v))", title, elem, val)
 	}
 	_, argIsPtr := name.IsPointer()
 	if argIsPtr {
-		return fmt.Sprintf("gdextension.Object(gd.ObjectChecked(%v))", val)
+		return fmt.Sprintf("gd.ObjectChecked(%v)", val)
 	} else {
 		if entry, ok := ClassDB[string(name)]; ok && entry.IsEnum {
 			return fmt.Sprintf("int64(%v)", val)

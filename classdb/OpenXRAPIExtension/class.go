@@ -405,9 +405,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRAPIExtension"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("OpenXRAPIExtension"))))})}
 	casted := Instance{*(*gdclass.OpenXRAPIExtension)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -460,7 +461,7 @@ func (self class) XrResult(result int64, format String.Readable, args Array.Any)
 		result int64
 		format gdextension.String
 		args   gdextension.Array
-	}{result, gdextension.String(pointers.Get(gd.InternalString(format))[0]), gdextension.Array(pointers.Get(gd.InternalArray(args))[0])}))
+	}{result, pointers.Get(gd.InternalString(format)), pointers.Get(gd.InternalArray(args))}))
 	var ret = r_ret
 	return ret
 }
@@ -481,7 +482,7 @@ Returns the function pointer of the OpenXR function with the specified name, cas
 */
 //go:nosplit
 func (self class) GetInstanceProcAddr(name String.Readable) int64 { //gd:OpenXRAPIExtension.get_instance_proc_addr
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAPIExtension.Bind_get_instance_proc_addr), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAPIExtension.Bind_get_instance_proc_addr), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -491,7 +492,7 @@ Returns an error string for the given [url=https://registry.khronos.org/OpenXR/s
 */
 //go:nosplit
 func (self class) GetErrorString(result int64) String.Readable { //gd:OpenXRAPIExtension.get_error_string
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAPIExtension.Bind_get_error_string), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ result int64 }{result}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAPIExtension.Bind_get_error_string), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ result int64 }{result}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -501,7 +502,7 @@ Returns the name of the specified swapchain format.
 */
 //go:nosplit
 func (self class) GetSwapchainFormatName(swapchain_format int64) String.Readable { //gd:OpenXRAPIExtension.get_swapchain_format_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAPIExtension.Bind_get_swapchain_format_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ swapchain_format int64 }{swapchain_format}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAPIExtension.Bind_get_swapchain_format_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ swapchain_format int64 }{swapchain_format}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -515,7 +516,7 @@ func (self class) SetObjectName(object_type int64, object_handle int64, object_n
 		object_type   int64
 		object_handle int64
 		object_name   gdextension.String
-	}{object_type, object_handle, gdextension.String(pointers.Get(gd.InternalString(object_name))[0])}))
+	}{object_type, object_handle, pointers.Get(gd.InternalString(object_name))}))
 }
 
 /*
@@ -523,7 +524,7 @@ Begins a new debug label region, this label will be reported in debug messages f
 */
 //go:nosplit
 func (self class) BeginDebugLabelRegion(label_name String.Readable) { //gd:OpenXRAPIExtension.begin_debug_label_region
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAPIExtension.Bind_begin_debug_label_region), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ label_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(label_name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAPIExtension.Bind_begin_debug_label_region), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ label_name gdextension.String }{pointers.Get(gd.InternalString(label_name))}))
 }
 
 /*
@@ -539,7 +540,7 @@ Inserts a debug label, this label is reported in any debug message resulting fro
 */
 //go:nosplit
 func (self class) InsertDebugLabel(label_name String.Readable) { //gd:OpenXRAPIExtension.insert_debug_label
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAPIExtension.Bind_insert_debug_label), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ label_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(label_name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAPIExtension.Bind_insert_debug_label), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ label_name gdextension.String }{pointers.Get(gd.InternalString(label_name))}))
 }
 
 /*
@@ -610,7 +611,7 @@ func (self class) FindAction(name String.Readable, action_set RID.Any) RID.Any {
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAPIExtension.Bind_find_action), gdextension.SizeRID|(gdextension.SizeString<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		name       gdextension.String
 		action_set RID.Any
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), action_set}))
+	}{pointers.Get(gd.InternalString(name)), action_set}))
 	var ret = r_ret
 	return ret
 }

@@ -590,7 +590,7 @@ func Load[T Generic[T, P], P Size](data complex128) T {
 
 // Size of a pointer up to [3]uintptr's, suitable for supporting fat pointers.
 type Size interface {
-	[1]uint32 | [1]uint64 | [2]uint64 | [3]uint64
+	~[1]uint32 | ~[1]uintptr | ~[1]uint64 | ~[2]uint64 | ~[3]uint64
 }
 
 // Generic pointer.
@@ -630,7 +630,7 @@ func End[T Generic[T, Raw], Raw Size](ptr T) (Raw, bool) {
 }
 
 // Half pointer value that safely wraps a single uintptr-sized value.
-type Half[T Generic[T, [1]uint32]] struct {
+type Type[T any, S Size] struct {
 	_ [0]*T // prevents converting between different pointer types.
 
 	// if both 'sentinal' and 'revision' fields are zero, then this is
@@ -642,42 +642,10 @@ type Half[T Generic[T, [1]uint32]] struct {
 	// value is ignored.
 	sentinal uint64
 	revision revision
-	checksum [1]uint32
+	checksum S
 }
 
-// Solo pointer value that safely wraps a single uintptr-sized value.
-type Solo[T Generic[T, [1]uint64]] struct {
-	_ [0]*T // prevents converting between different pointer types.
-
-	// if both 'sentinal' and 'revision' fields are zero, then this is
-	// an unsafe pointer and the checksum value is used directly, in
-	// this case, no memory-safety protections are provided.
-	//
-	// if the 'sentinal' is non-zero but the 'revision' is zero, then
-	// this is a static pointer, it cannot be freed and the checksum
-	// value is ignored.
-	sentinal uint64
-	revision revision
-	checksum [1]uint64
-}
-
-// Pair pointer value that safely wraps a pair of uintptr-sized values.
-type Pair[T Generic[T, [2]uint64]] struct {
-	_ [0]*T // prevents converting between different pointer types.
-
-	// if both 'sentinal' and 'revision' fields are zero, then this is
-	// an unsafe pointer and the checksum value is used directly, in
-	// this case, no memory-safety protections are provided.
-	//
-	// if the 'sentinal' is non-zero but the 'revision' is zero, then
-	// this is a static pointer, it cannot be freed and the checksum
-	// value is ignored.
-	sentinal uint64
-	revision revision
-	checksum [2]uint64
-}
-
-// Trio pointer value that safely wraps three uintptr-sized values.
+// Half pointer value that safely wraps a single uintptr-sized value.
 type Trio[T Generic[T, [3]uint64]] struct {
 	_ [0]*T // prevents converting between different pointer types.
 

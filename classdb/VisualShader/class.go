@@ -238,9 +238,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("VisualShader"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShader"))))})}
 	casted := Instance{*(*gdclass.VisualShader)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -278,7 +279,7 @@ Returns the shader node instance with specified [param type] and [param id].
 */
 //go:nosplit
 func (self class) GetNode(atype Type, id int64) [1]gdclass.VisualShaderNode { //gd:VisualShader.get_node
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_node), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_node), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		atype Type
 		id    int64
 	}{atype, id}))
@@ -351,7 +352,7 @@ func (self class) ReplaceNode(atype Type, id int64, new_class String.Name) { //g
 		atype     Type
 		id        int64
 		new_class gdextension.StringName
-	}{atype, id, gdextension.StringName(pointers.Get(gd.InternalStringName(new_class))[0])}))
+	}{atype, id, pointers.Get(gd.InternalStringName(new_class))}))
 }
 
 /*
@@ -435,7 +436,7 @@ Returns the list of connected nodes with the specified type.
 */
 //go:nosplit
 func (self class) GetNodeConnections(atype Type) Array.Contains[Dictionary.Any] { //gd:VisualShader.get_node_connections
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_node_connections), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype Type }{atype}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_get_node_connections), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype Type }{atype}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -484,7 +485,7 @@ func (self class) AddVarying(name String.Readable, mode VaryingMode, atype Varyi
 		name  gdextension.String
 		mode  VaryingMode
 		atype VaryingType
-	}{gdextension.String(pointers.Get(gd.InternalString(name))[0]), mode, atype}))
+	}{pointers.Get(gd.InternalString(name)), mode, atype}))
 }
 
 /*
@@ -492,7 +493,7 @@ Removes a varying value node with the given [param name]. Prints an error if a n
 */
 //go:nosplit
 func (self class) RemoveVarying(name String.Readable) { //gd:VisualShader.remove_varying
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_remove_varying), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_remove_varying), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -500,7 +501,7 @@ Returns [code]true[/code] if the shader has a varying with the given [param name
 */
 //go:nosplit
 func (self class) HasVarying(name String.Readable) bool { //gd:VisualShader.has_varying
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_has_varying), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShader.Bind_has_varying), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }

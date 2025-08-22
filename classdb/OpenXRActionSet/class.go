@@ -118,9 +118,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRActionSet"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("OpenXRActionSet"))))})}
 	casted := Instance{*(*gdclass.OpenXRActionSet)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -150,12 +151,12 @@ func (self Instance) SetActions(value []any) {
 
 //go:nosplit
 func (self class) SetLocalizedName(localized_name String.Readable) { //gd:OpenXRActionSet.set_localized_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRActionSet.Bind_set_localized_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ localized_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(localized_name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRActionSet.Bind_set_localized_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ localized_name gdextension.String }{pointers.Get(gd.InternalString(localized_name))}))
 }
 
 //go:nosplit
 func (self class) GetLocalizedName() String.Readable { //gd:OpenXRActionSet.get_localized_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRActionSet.Bind_get_localized_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRActionSet.Bind_get_localized_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -184,12 +185,12 @@ func (self class) GetActionCount() int64 { //gd:OpenXRActionSet.get_action_count
 
 //go:nosplit
 func (self class) SetActions(actions Array.Any) { //gd:OpenXRActionSet.set_actions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRActionSet.Bind_set_actions), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ actions gdextension.Array }{gdextension.Array(pointers.Get(gd.InternalArray(actions))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRActionSet.Bind_set_actions), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ actions gdextension.Array }{pointers.Get(gd.InternalArray(actions))}))
 }
 
 //go:nosplit
 func (self class) GetActions() Array.Any { //gd:OpenXRActionSet.get_actions
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRActionSet.Bind_get_actions), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRActionSet.Bind_get_actions), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

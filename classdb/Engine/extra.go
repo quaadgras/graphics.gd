@@ -22,12 +22,12 @@ var (
 	push_error_fn,
 	push_warning_fn gdextension.FunctionID
 	print_setup = sync.OnceFunc(func() {
-		print_fn = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("print"))[0]), 2648703342)
-		print_rich_fn = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("print_rich"))[0]), 2648703342)
-		print_err_fn = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("printerr"))[0]), 2648703342)
-		print_verbose_fn = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("print_verbose"))[0]), 2648703342)
-		push_error_fn = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("push_error"))[0]), 2648703342)
-		push_warning_fn = gdextension.Host.Builtin.Functions.Name(gdextension.StringName(pointers.Get(gd.NewStringName("push_warning"))[0]), 2648703342)
+		print_fn = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("print")), 2648703342)
+		print_rich_fn = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("print_rich")), 2648703342)
+		print_err_fn = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("printerr")), 2648703342)
+		print_verbose_fn = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("print_verbose")), 2648703342)
+		push_error_fn = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("push_error")), 2648703342)
+		push_warning_fn = gdextension.Host.Builtin.Functions.Name(pointers.Get(gd.NewStringName("push_warning")), 2648703342)
 	})
 )
 

@@ -157,7 +157,7 @@ func Register[T Class](exports ...any) {
 		gd.Global.ClassDB.RegisterClass(gd.Global.ExtensionToken, className, superName, impl)
 
 		gd.RegisterCleanup(func() {
-			gd.Global.ClassDB.UnregisterClass(gd.Global.ExtensionToken, className)
+			gdextension.Host.ClassDB.Register.Removal(pointers.Get(className))
 			gdclass.Registered.Delete(classType)
 			className.Free()
 			superName.Free()
@@ -173,9 +173,9 @@ func Register[T Class](exports ...any) {
 			case map[string]int:
 				for name, value := range export {
 					gdextension.Host.ClassDB.Register.Constant(
-						gdextension.StringName(pointers.Get(className)[0]),
-						gdextension.StringName(pointers.Get(gd.NewStringName(""))[0]),
-						gdextension.StringName(pointers.Get(gd.NewStringName(name))[0]),
+						pointers.Get(className),
+						pointers.Get(gd.NewStringName("")),
+						pointers.Get(gd.NewStringName(name)),
 						int64(value),
 						false,
 					)
@@ -232,7 +232,7 @@ func Register[T Class](exports ...any) {
 		if EngineClass.IsEditorHint() {
 			switch super.(type) {
 			case EditorPluginClass.Any:
-				gdextension.Host.Editor.AddPlugin(gdextension.StringName(pointers.Get(className)[0]))
+				gdextension.Host.Editor.AddPlugin(pointers.Get(className))
 			}
 		}
 	}
@@ -390,11 +390,10 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		registerField(field)
 	}
 	for groupName, fields := range groupedFields {
-		gd.Global.ClassDB.RegisterClassPropertyGroup(
-			gd.Global.ExtensionToken,
-			className,
-			gd.NewString(groupName),
-			gd.NewString(""),
+		gdextension.Host.ClassDB.Register.PropertyGroup(
+			pointers.Get(className),
+			pointers.Get(gd.NewString(groupName)),
+			pointers.Get(gd.NewString("")),
 		)
 		for _, field := range fields {
 			registerField(field)
@@ -466,7 +465,7 @@ func (class classImplementation) CreateInstance() [1]gd.Object {
 }
 
 func (class classImplementation) CreateInstanceFrom(value reflect.Value) [1]gd.Object {
-	var super = gd.Global.ClassDB.ConstructObject(class.Super)
+	var super = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(class.Super)))})}
 	if class.RefCounted {
 		Object.To[RefCounted.Instance](super[0])[0].Reference()
 	}
@@ -474,6 +473,7 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value) [1]gd.O
 	instance := class.reloadInstance(value, super)
 	gd.Global.Object.SetInstance(super, class.Name, instance)
 	gd.Global.Object.SetInstanceBinding(super, gd.Global.ExtensionToken, nil, nil)
+	super[0].Notification(0, false)
 	instance.OnCreate(value)
 	return super
 }
@@ -737,7 +737,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 	}
 	path := Path.ToNode(String.New(name))
 	if !NodeClass.Advanced(parent).HasNode(path) {
-		child := gd.Global.ClassDB.ConstructObject(gd.NewStringName(nameOf(field.Type)))
+		child := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName(nameOf(field.Type)))))})}
 		defer pointers.End(child[0])
 		native, ok := gd.ExtensionInstances.Load(pointers.Get(child[0])[0])
 		if ok {

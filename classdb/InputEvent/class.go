@@ -249,9 +249,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("InputEvent"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("InputEvent"))))})}
 	casted := Instance{*(*gdclass.InputEvent)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -284,7 +285,7 @@ func (self class) IsAction(action String.Name, exact_match bool) bool { //gd:Inp
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEvent.Bind_is_action), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
 	var ret = r_ret
 	return ret
 }
@@ -300,7 +301,7 @@ func (self class) IsActionPressed(action String.Name, allow_echo bool, exact_mat
 		action      gdextension.StringName
 		allow_echo  bool
 		exact_match bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), allow_echo, exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), allow_echo, exact_match}))
 	var ret = r_ret
 	return ret
 }
@@ -314,7 +315,7 @@ func (self class) IsActionReleased(action String.Name, exact_match bool) bool { 
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEvent.Bind_is_action_released), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
 	var ret = r_ret
 	return ret
 }
@@ -328,7 +329,7 @@ func (self class) GetActionStrength(action String.Name, exact_match bool) float6
 	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEvent.Bind_get_action_strength), gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{gdextension.StringName(pointers.Get(gd.InternalStringName(action))[0]), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
 	var ret = r_ret
 	return ret
 }
@@ -380,7 +381,7 @@ Returns a [String] representation of the event.
 */
 //go:nosplit
 func (self class) AsText() String.Readable { //gd:InputEvent.as_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEvent.Bind_as_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEvent.Bind_as_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -426,7 +427,7 @@ Returns a copy of the given input event which has been offset by [param local_of
 */
 //go:nosplit
 func (self class) XformedBy(xform Transform2D.OriginXY, local_ofs Vector2.XY) [1]gdclass.InputEvent { //gd:InputEvent.xformed_by
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEvent.Bind_xformed_by), gdextension.SizeObject|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEvent.Bind_xformed_by), gdextension.SizeObject|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		xform     Transform2D.OriginXY
 		local_ofs Vector2.XY
 	}{xform, local_ofs}))

@@ -90,7 +90,7 @@ type Callbacks struct {
 		ArgumentCount func(fn FunctionID, err Returns[CallError]) int                                                            `gd:"on_callable_get_argument_count"`
 	}
 	Editor struct {
-		ClassInUseDetection func(classes PackedArray, result Returns[PackedArray]) `gd:"on_editor_class_in_use_detection"`
+		ClassInUseDetection func(classes PackedArray[String], result Returns[PackedArray[String]]) `gd:"on_editor_class_in_use_detection"`
 	}
 	Tasks struct {
 		Run        func(task TaskID)           `gd:"on_worker_thread_pool_task"`
@@ -249,44 +249,44 @@ type API struct {
 	}
 	Packed struct {
 		Bytes struct {
-			Unsafe func(p PackedArray) Pointer       `gd:"packed_byte_array_unsafe"`
-			Access func(p PackedArray, idx int) byte `gd:"packed_byte_array_access"`
+			Unsafe func(p PackedArray[byte]) Pointer       `gd:"packed_byte_array_unsafe"`
+			Access func(p PackedArray[byte], idx int) byte `gd:"packed_byte_array_access"`
 		}
 		Float32s struct {
-			Unsafe func(p PackedArray) Pointer          `gd:"packed_float32_array_unsafe"`
-			Access func(p PackedArray, idx int) float32 `gd:"packed_float32_array_access"`
+			Unsafe func(p PackedArray[float32]) Pointer          `gd:"packed_float32_array_unsafe"`
+			Access func(p PackedArray[float32], idx int) float32 `gd:"packed_float32_array_access"`
 		}
 		Float64s struct {
-			Unsafe func(p PackedArray) Pointer          `gd:"packed_float64_array_unsafe"`
-			Access func(p PackedArray, idx int) float64 `gd:"packed_float64_array_access"`
+			Unsafe func(p PackedArray[float64]) Pointer          `gd:"packed_float64_array_unsafe"`
+			Access func(p PackedArray[float64], idx int) float64 `gd:"packed_float64_array_access"`
 		}
 		Int32s struct {
-			Unsafe func(p PackedArray) Pointer        `gd:"packed_int32_array_unsafe"`
-			Access func(p PackedArray, idx int) int32 `gd:"packed_int32_array_access"`
+			Unsafe func(p PackedArray[int32]) Pointer        `gd:"packed_int32_array_unsafe"`
+			Access func(p PackedArray[int32], idx int) int32 `gd:"packed_int32_array_access"`
 		}
 		Int64s struct {
-			Unsafe func(p PackedArray) Pointer        `gd:"packed_int64_array_unsafe"`
-			Access func(p PackedArray, idx int) int64 `gd:"packed_int64_array_access"`
+			Unsafe func(p PackedArray[int64]) Pointer        `gd:"packed_int64_array_unsafe"`
+			Access func(p PackedArray[int64], idx int) int64 `gd:"packed_int64_array_access"`
 		}
 		Strings struct {
-			Unsafe func(p PackedArray) Pointer         `gd:"packed_string_array_unsafe"`
-			Access func(p PackedArray, idx int) String `gd:"packed_string_array_access"`
+			Unsafe func(p PackedArray[String]) Pointer         `gd:"packed_string_array_unsafe"`
+			Access func(p PackedArray[String], idx int) String `gd:"packed_string_array_access"`
 		}
 		Vector2s struct {
-			Unsafe func(p PackedArray) Pointer                                  `gd:"packed_vector2_array_unsafe"`
-			Access func(p PackedArray, idx int, result CallReturns[Vector2.XY]) `gd:"packed_vector2_array_access"`
+			Unsafe func(p PackedArray[Vector2.XY]) Pointer                                  `gd:"packed_vector2_array_unsafe"`
+			Access func(p PackedArray[Vector2.XY], idx int, result CallReturns[Vector2.XY]) `gd:"packed_vector2_array_access"`
 		}
 		Vector3s struct {
-			Unsafe func(p PackedArray) Pointer                                   `gd:"packed_vector3_array_unsafe"`
-			Access func(p PackedArray, idx int, result CallReturns[Vector3.XYZ]) `gd:"packed_vector3_array_access"`
+			Unsafe func(p PackedArray[Vector3.XYZ]) Pointer                                   `gd:"packed_vector3_array_unsafe"`
+			Access func(p PackedArray[Vector3.XYZ], idx int, result CallReturns[Vector3.XYZ]) `gd:"packed_vector3_array_access"`
 		}
 		Vector4s struct {
-			Unsafe func(p PackedArray) Pointer                                    `gd:"packed_vector4_array_unsafe"`
-			Access func(p PackedArray, idx int, result CallReturns[Vector4.XYZW]) `gd:"packed_vector4_array_access"`
+			Unsafe func(p PackedArray[Vector4.XYZW]) Pointer                                    `gd:"packed_vector4_array_unsafe"`
+			Access func(p PackedArray[Vector4.XYZW], idx int, result CallReturns[Vector4.XYZW]) `gd:"packed_vector4_array_access"`
 		}
 		Colors struct {
-			Unsafe func(p PackedArray) Pointer                                  `gd:"packed_color_array_unsafe"`
-			Access func(p PackedArray, idx int, result CallReturns[Color.RGBA]) `gd:"packed_color_array_access"`
+			Unsafe func(p PackedArray[Color.RGBA]) Pointer                                  `gd:"packed_color_array_unsafe"`
+			Access func(p PackedArray[Color.RGBA], idx int, result CallReturns[Color.RGBA]) `gd:"packed_color_array_access"`
 		}
 	}
 	Array struct {
@@ -427,12 +427,12 @@ const (
 	InitEditor  InitializationLevel = 3
 )
 
-type String Pointer
-type StringName Pointer
-type NodePath Pointer
+type String [1]Pointer
+type StringName [1]Pointer
+type NodePath [1]Pointer
 
-type Array Pointer
-type Dictionary Pointer
+type Array [1]Pointer
+type Dictionary [1]Pointer
 type Callable [2]uint64
 type Signal [2]uint64
 
@@ -807,7 +807,7 @@ func init() {
 	if SizeFloat.SizeResult() != int(unsafe.Sizeof(float64(0))) {
 		panic("Size of Float does not match expected size")
 	}
-	if SizeString.SizeResult() != int(unsafe.Sizeof(String(0))) {
+	if SizeString.SizeResult() != int(unsafe.Sizeof(String{})) {
 		panic("Size of String does not match expected size")
 	}
 	if SizeVector2.SizeResult() != int(unsafe.Sizeof(Vector2.XY{})) {
@@ -858,7 +858,7 @@ func init() {
 	if SizeProjection.SizeResult() != int(unsafe.Sizeof(Projection.XYZW{})) {
 		panic("Size of Projection does not match expected size")
 	}
-	if SizeStringName.SizeResult() != int(unsafe.Sizeof(StringName(0))) {
+	if SizeStringName.SizeResult() != int(unsafe.Sizeof(StringName{})) {
 		panic("Size of StringName does not match expected size")
 	}
 	if SizeNodePath.SizeResult() != int(unsafe.Sizeof([1]Pointer{})) {
@@ -876,13 +876,13 @@ func init() {
 	if SizeSignal.SizeResult() != int(unsafe.Sizeof([2]uint64{})) {
 		panic("Size of Signal does not match expected size")
 	}
-	if SizeDictionary.SizeResult() != int(unsafe.Sizeof(Dictionary(0))) {
+	if SizeDictionary.SizeResult() != int(unsafe.Sizeof(Dictionary{})) {
 		panic("Size of Dictionary does not match expected size")
 	}
-	if SizeArray.SizeResult() != int(unsafe.Sizeof(Array(0))) {
+	if SizeArray.SizeResult() != int(unsafe.Sizeof(Array{})) {
 		panic("Size of Array does not match expected size")
 	}
-	if SizePackedArray.SizeResult() != int(unsafe.Sizeof(PackedArray{})) {
+	if SizePackedArray.SizeResult() != int(unsafe.Sizeof(PackedArray[byte]{})) {
 		panic("Size of PackedArray does not match expected size")
 	}
 }
@@ -919,4 +919,8 @@ func (err CallError) Error() string {
 	default:
 		return "Unknown Call Error"
 	}
+}
+
+type Packable interface {
+	byte | int32 | int64 | float32 | float64 | Color.RGBA | Vector2.XY | Vector3.XYZ | Vector4.XYZW | String
 }

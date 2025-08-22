@@ -299,9 +299,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ArrayMesh"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ArrayMesh"))))})}
 	casted := Instance{*(*gdclass.ArrayMesh)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -334,7 +335,7 @@ Adds name for a blend shape that will be added with [method add_surface_from_arr
 */
 //go:nosplit
 func (self class) AddBlendShape(name String.Name) { //gd:ArrayMesh.add_blend_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_add_blend_shape), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_add_blend_shape), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -352,7 +353,7 @@ Returns the name of the blend shape at this index.
 */
 //go:nosplit
 func (self class) GetBlendShapeName(index int64) String.Name { //gd:ArrayMesh.get_blend_shape_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_get_blend_shape_name), gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_get_blend_shape_name), gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -365,7 +366,7 @@ func (self class) SetBlendShapeName(index int64, name String.Name) { //gd:ArrayM
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_set_blend_shape_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		index int64
 		name  gdextension.StringName
-	}{index, gdextension.StringName(pointers.Get(gd.InternalStringName(name))[0])}))
+	}{index, pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -405,7 +406,7 @@ func (self class) AddSurfaceFromArrays(primitive Mesh.PrimitiveType, arrays Arra
 		blend_shapes gdextension.Array
 		lods         gdextension.Dictionary
 		flags        Mesh.ArrayFormat
-	}{primitive, gdextension.Array(pointers.Get(gd.InternalArray(arrays))[0]), gdextension.Array(pointers.Get(gd.InternalArray(blend_shapes))[0]), gdextension.Dictionary(pointers.Get(gd.InternalDictionary(lods))[0]), flags}))
+	}{primitive, pointers.Get(gd.InternalArray(arrays)), pointers.Get(gd.InternalArray(blend_shapes)), pointers.Get(gd.InternalDictionary(lods)), flags}))
 }
 
 /*
@@ -429,8 +430,8 @@ func (self class) SurfaceUpdateVertexRegion(surf_idx int64, offset int64, data P
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_surface_update_vertex_region), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
 		surf_idx int64
 		offset   int64
-		data     gdextension.PackedArray
-	}{surf_idx, offset, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+		data     gdextension.PackedArray[byte]
+	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 }
 
 //go:nosplit
@@ -438,8 +439,8 @@ func (self class) SurfaceUpdateAttributeRegion(surf_idx int64, offset int64, dat
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_surface_update_attribute_region), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
 		surf_idx int64
 		offset   int64
-		data     gdextension.PackedArray
-	}{surf_idx, offset, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+		data     gdextension.PackedArray[byte]
+	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 }
 
 //go:nosplit
@@ -447,8 +448,8 @@ func (self class) SurfaceUpdateSkinRegion(surf_idx int64, offset int64, data Pac
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_surface_update_skin_region), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
 		surf_idx int64
 		offset   int64
-		data     gdextension.PackedArray
-	}{surf_idx, offset, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+		data     gdextension.PackedArray[byte]
+	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 }
 
 /*
@@ -496,7 +497,7 @@ Returns the index of the first surface with this name held within this [ArrayMes
 */
 //go:nosplit
 func (self class) SurfaceFindByName(name String.Readable) int64 { //gd:ArrayMesh.surface_find_by_name
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_surface_find_by_name), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_surface_find_by_name), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -509,7 +510,7 @@ func (self class) SurfaceSetName(surf_idx int64, name String.Readable) { //gd:Ar
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_surface_set_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		surf_idx int64
 		name     gdextension.String
-	}{surf_idx, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	}{surf_idx, pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -517,7 +518,7 @@ Gets the name assigned to this surface.
 */
 //go:nosplit
 func (self class) SurfaceGetName(surf_idx int64) String.Readable { //gd:ArrayMesh.surface_get_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_surface_get_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_surface_get_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -562,7 +563,7 @@ func (self class) SetShadowMesh(mesh [1]gdclass.ArrayMesh) { //gd:ArrayMesh.set_
 
 //go:nosplit
 func (self class) GetShadowMesh() [1]gdclass.ArrayMesh { //gd:ArrayMesh.get_shadow_mesh
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_get_shadow_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayMesh.Bind_get_shadow_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }

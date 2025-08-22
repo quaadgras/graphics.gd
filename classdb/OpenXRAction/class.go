@@ -98,9 +98,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("OpenXRAction"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("OpenXRAction"))))})}
 	casted := Instance{*(*gdclass.OpenXRAction)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -130,12 +131,12 @@ func (self Instance) SetToplevelPaths(value []string) {
 
 //go:nosplit
 func (self class) SetLocalizedName(localized_name String.Readable) { //gd:OpenXRAction.set_localized_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAction.Bind_set_localized_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ localized_name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(localized_name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAction.Bind_set_localized_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ localized_name gdextension.String }{pointers.Get(gd.InternalString(localized_name))}))
 }
 
 //go:nosplit
 func (self class) GetLocalizedName() String.Readable { //gd:OpenXRAction.get_localized_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAction.Bind_get_localized_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAction.Bind_get_localized_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -154,7 +155,9 @@ func (self class) GetActionType() ActionType { //gd:OpenXRAction.get_action_type
 
 //go:nosplit
 func (self class) SetToplevelPaths(toplevel_paths Packed.Strings) { //gd:OpenXRAction.set_toplevel_paths
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAction.Bind_set_toplevel_paths), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ toplevel_paths gdextension.PackedArray }{gdextension.ToPackedArray(pointers.Get(gd.InternalPackedStrings(toplevel_paths)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAction.Bind_set_toplevel_paths), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+		toplevel_paths gdextension.PackedArray[gdextension.String]
+	}{pointers.Get(gd.InternalPackedStrings(toplevel_paths))}))
 }
 
 //go:nosplit

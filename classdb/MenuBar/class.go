@@ -182,8 +182,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("MenuBar"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("MenuBar"))))})}
 	casted := Instance{*(*gdclass.MenuBar)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -301,12 +302,12 @@ func (self class) GetTextDirection() Control.TextDirection { //gd:MenuBar.get_te
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:MenuBar.set_language
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_language), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(language))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_language), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:MenuBar.get_language
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -343,7 +344,7 @@ func (self class) SetMenuTitle(menu int64, title String.Readable) { //gd:MenuBar
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_menu_title), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		menu  int64
 		title gdextension.String
-	}{menu, gdextension.String(pointers.Get(gd.InternalString(title))[0])}))
+	}{menu, pointers.Get(gd.InternalString(title))}))
 }
 
 /*
@@ -351,7 +352,7 @@ Returns menu item title.
 */
 //go:nosplit
 func (self class) GetMenuTitle(menu int64) String.Readable { //gd:MenuBar.get_menu_title
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_menu_title), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_menu_title), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -364,7 +365,7 @@ func (self class) SetMenuTooltip(menu int64, tooltip String.Readable) { //gd:Men
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_menu_tooltip), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		menu    int64
 		tooltip gdextension.String
-	}{menu, gdextension.String(pointers.Get(gd.InternalString(tooltip))[0])}))
+	}{menu, pointers.Get(gd.InternalString(tooltip))}))
 }
 
 /*
@@ -372,7 +373,7 @@ Returns menu item tooltip.
 */
 //go:nosplit
 func (self class) GetMenuTooltip(menu int64) String.Readable { //gd:MenuBar.get_menu_tooltip
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_menu_tooltip), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_menu_tooltip), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -424,7 +425,7 @@ Returns [PopupMenu] associated with menu item.
 */
 //go:nosplit
 func (self class) GetMenuPopup(menu int64) [1]gdclass.PopupMenu { //gd:MenuBar.get_menu_popup
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_menu_popup), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_menu_popup), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }

@@ -266,9 +266,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("KinematicCollision3D"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("KinematicCollision3D"))))})}
 	casted := Instance{*(*gdclass.KinematicCollision3D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -350,7 +351,7 @@ Returns the moving object's colliding shape given a collision index (the deepest
 */
 //go:nosplit
 func (self class) GetLocalShape(collision_index int64) [1]gd.Object { //gd:KinematicCollision3D.get_local_shape
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision3D.Bind_get_local_shape), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_index int64 }{collision_index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision3D.Bind_get_local_shape), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_index int64 }{collision_index}))
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -360,7 +361,7 @@ Returns the colliding body's attached [Object] given a collision index (the deep
 */
 //go:nosplit
 func (self class) GetCollider(collision_index int64) [1]gd.Object { //gd:KinematicCollision3D.get_collider
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision3D.Bind_get_collider), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_index int64 }{collision_index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision3D.Bind_get_collider), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_index int64 }{collision_index}))
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -390,7 +391,7 @@ Returns the colliding body's shape given a collision index (the deepest collisio
 */
 //go:nosplit
 func (self class) GetColliderShape(collision_index int64) [1]gd.Object { //gd:KinematicCollision3D.get_collider_shape
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision3D.Bind_get_collider_shape), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_index int64 }{collision_index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision3D.Bind_get_collider_shape), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_index int64 }{collision_index}))
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }

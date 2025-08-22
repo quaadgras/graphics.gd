@@ -19,8 +19,8 @@ import (
 	gd "graphics.gd/internal"
 	internal "graphics.gd/internal"
 	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
-	"graphics.gd/variant/Packed"
 )
 
 func btoi(b bool) int {
@@ -87,112 +87,6 @@ func linkCGO(API *gd.API) {
 			Value: C.GoString(version.string),
 		}
 	}
-	variant_get_ptr_operator_evaluator := dlsymGD("variant_get_ptr_operator_evaluator")
-	API.Variants.PointerOperatorEvaluator = func(op gd.Operator, a, b gd.VariantType) func(a, b, ret callframe.Addr) {
-		fn := C.variant_get_ptr_operator_evaluator(
-			C.uintptr_t(uintptr(variant_get_ptr_operator_evaluator)),
-			C.GDExtensionVariantOperator(op),
-			C.GDExtensionVariantType(a),
-			C.GDExtensionVariantType(b),
-		)
-		return func(a, b, ret callframe.Addr) {
-			C.call_variant_ptr_operator_evaluator(
-				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(a.Uintptr()),
-				C.uintptr_t(b.Uintptr()),
-				C.uintptr_t(ret.Uintptr()),
-			)
-		}
-	}
-	variant_get_ptr_constructor := dlsymGD("variant_get_ptr_constructor")
-	API.Variants.GetPointerConstructor = func(vt gd.VariantType, index int32) func(ret callframe.Addr, args callframe.Args) {
-		fn := C.variant_get_ptr_constructor(
-			C.uintptr_t(uintptr(variant_get_ptr_constructor)),
-			C.GDExtensionVariantType(vt),
-			C.int32_t(index),
-		)
-		return func(ret callframe.Addr, args callframe.Args) {
-			C.call_variant_ptr_constructor(
-				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(ret.Uintptr()),
-				C.uintptr_t(args.Uintptr()),
-			)
-		}
-	}
-	variant_get_ptr_destructor := dlsymGD("variant_get_ptr_destructor")
-	API.Variants.GetPointerDestructor = func(vt gd.VariantType) func(ret callframe.Addr) {
-		fn := C.variant_get_ptr_destructor(
-			C.uintptr_t(uintptr(variant_get_ptr_destructor)),
-			C.GDExtensionVariantType(vt),
-		)
-		return func(ret callframe.Addr) {
-			C.call_variant_ptr_destructor(
-				C.uintptr_t(uintptr(fn)),
-				C.uintptr_t(ret.Uintptr()),
-			)
-		}
-	}
-	variant_construct := dlsymGD("variant_construct")
-	API.Variants.Construct = func(t gd.VariantType, args ...gd.Variant) (gd.Variant, error) {
-		var frame = callframe.New()
-		for _, arg := range args {
-			callframe.Arg(frame, pointers.Get(arg))
-		}
-		var r_ret = callframe.Ret[[3]uint64](frame)
-		var r_error = new(C.GDExtensionCallError)
-		C.variant_construct(
-			C.uintptr_t(uintptr(variant_construct)),
-			C.GDExtensionVariantType(t),
-			C.uintptr_t(r_ret.Uintptr()),
-			C.uintptr_t(frame.Array(0).Uintptr()),
-			C.int32_t(len(args)),
-			r_error,
-		)
-		if r_error.error != 0 {
-			frame.Free()
-			return gd.Variant{}, &gd.CallError{
-				ErrorType: gd.CallErrorType(r_error.error),
-				Argument:  int32(r_error.argument),
-				Expected:  int32(r_error.expected),
-			}
-		}
-		var ret = pointers.New[gd.Variant](r_ret.Get())
-		frame.Free()
-		return ret, nil
-	}
-	API.PackedByteArray = makePackedFunctions[gd.PackedByteArray, byte]("byte_array")
-	API.PackedColorArray = makePackedFunctions[gd.PackedColorArray, gd.Color]("color_array")
-	API.PackedFloat32Array = makePackedFunctions[gd.PackedFloat32Array, float32]("float32_array")
-	API.PackedFloat64Array = makePackedFunctions[gd.PackedFloat64Array, float64]("float64_array")
-	API.PackedInt32Array = makePackedFunctions[gd.PackedInt32Array, int32]("int32_array")
-	API.PackedInt64Array = makePackedFunctions[gd.PackedInt64Array, int64]("int64_array")
-	packed_string_array_operator_index_const := dlsymGD("packed_string_array_operator_index_const")
-	API.PackedStringArray.Index = func(psa gd.PackedStringArray, i gd.Int) gd.String {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(psa))
-		var ret = C.packed_T_operator_index_const(
-			C.uintptr_t(uintptr(packed_string_array_operator_index_const)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.GDExtensionInt(i),
-		)
-		frame.Free()
-		return pointers.Let[gd.String]([1]gd.EnginePointer{*(*gd.EnginePointer)(ret)})
-	}
-	packed_string_array_operator_index := dlsymGD("packed_string_array_operator_index")
-	API.PackedStringArray.SetIndex = func(psa gd.PackedStringArray, i gd.Int, v gd.String) {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get(psa))
-		var ptr = C.packed_T_operator_index(
-			C.uintptr_t(uintptr(packed_string_array_operator_index)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.GDExtensionInt(i),
-		)
-		*(*[1]gd.EnginePointer)(ptr) = pointers.Get(v)
-		frame.Free()
-	}
-	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
-	API.PackedVector3Array = makePackedFunctions[gd.PackedVector3Array, gd.Vector3]("vector3_array")
-	API.PackedVector4Array = makePackedFunctions[gd.PackedVector4Array, gd.Vector4]("vector4_array")
 	object_get_instance_binding := dlsymGD("object_get_instance_binding")
 	API.Object.GetInstanceBinding = func(o [1]gd.Object, et gd.ExtensionToken, ibt gd.InstanceBindingType) any {
 		var self = pointers.Get(o[0])
@@ -273,15 +167,6 @@ func linkCGO(API *gd.API) {
 		}
 		return o // Let?
 	}
-	classdb_construct_object := dlsymGD("classdb_construct_object")
-	API.ClassDB.ConstructObject = func(name gd.StringName) [1]gd.Object {
-		var frame = callframe.New()
-		defer frame.Free()
-		return [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(C.classdb_construct_object(
-			C.uintptr_t(uintptr(classdb_construct_object)),
-			C.uintptr_t(callframe.Arg(frame, pointers.Get(name)).Uintptr()),
-		))})}
-	}
 	classdb_get_class_tag := dlsymGD("classdb_get_class_tag")
 	API.ClassDB.GetClassTag = func(name gd.StringName) gd.ClassTag {
 		var frame = callframe.New()
@@ -294,7 +179,7 @@ func linkCGO(API *gd.API) {
 	get_library_path := dlsymGD("get_library_path")
 	API.GetLibraryPath = func(et gd.ExtensionToken) gd.String {
 		var frame = callframe.New()
-		var r_ret = callframe.Ret[[1]gd.EnginePointer](frame)
+		var r_ret = callframe.Ret[gdextension.String](frame)
 		C.get_library_path(
 			C.uintptr_t(uintptr(get_library_path)),
 			C.uintptr_t(et),
@@ -436,37 +321,6 @@ func linkCGO(API *gd.API) {
 		)
 		frame.Free()
 	}
-
-	classdb_register_extension_class_property_group := dlsymGD("classdb_register_extension_class_property_group")
-	API.ClassDB.RegisterClassPropertyGroup = func(library gd.ExtensionToken, class gd.StringName, group, prefix gd.String) {
-		var frame = callframe.New()
-		var p_class = callframe.Arg(frame, pointers.Get(class))
-		var p_group = callframe.Arg(frame, pointers.Get(group))
-		var p_prefix = callframe.Arg(frame, pointers.Get(prefix))
-		C.classdb_register_extension_class_property_group(
-			C.uintptr_t(uintptr(classdb_register_extension_class_property_group)),
-			C.uintptr_t(uintptr(library)),
-			C.uintptr_t(p_class.Uintptr()),
-			C.uintptr_t(p_group.Uintptr()),
-			C.uintptr_t(p_prefix.Uintptr()),
-		)
-		frame.Free()
-	}
-	classdb_register_extension_class_property_subgroup := dlsymGD("classdb_register_extension_class_property_subgroup")
-	API.ClassDB.RegisterClassPropertySubGroup = func(library gd.ExtensionToken, class gd.StringName, subGroup, prefix gd.String) {
-		var frame = callframe.New()
-		var p_class = callframe.Arg(frame, pointers.Get(class))
-		var p_subGroup = callframe.Arg(frame, pointers.Get(subGroup))
-		var p_prefix = callframe.Arg(frame, pointers.Get(prefix))
-		C.classdb_register_extension_class_property_subgroup(
-			C.uintptr_t(uintptr(classdb_register_extension_class_property_subgroup)),
-			C.uintptr_t(uintptr(library)),
-			C.uintptr_t(p_class.Uintptr()),
-			C.uintptr_t(p_subGroup.Uintptr()),
-			C.uintptr_t(p_prefix.Uintptr()),
-		)
-		frame.Free()
-	}
 	classdb_register_extension_class_method := dlsymGD("classdb_register_extension_class_method")
 	API.ClassDB.RegisterClassMethod = func(library gd.ExtensionToken, class gd.StringName, info gd.Method) {
 		infoHandle := cgo.NewHandle(&info)
@@ -555,86 +409,18 @@ func linkCGO(API *gd.API) {
 		)
 		frame.Free()
 	}
-	classdb_unregister_extension_class := dlsymGD("classdb_unregister_extension_class")
-	API.ClassDB.UnregisterClass = func(library gd.ExtensionToken, name gd.StringName) {
-		var frame = callframe.New()
-		var p_name = callframe.Arg(frame, pointers.Get(name))
-		C.classdb_unregister_extension_class(
-			C.uintptr_t(uintptr(classdb_unregister_extension_class)),
-			C.uintptr_t(uintptr(library)),
-			C.uintptr_t(p_name.Uintptr()),
-		)
-		frame.Free()
-	}
-}
-
-func makePackedFunctions[T gd.Packed[T, V], V Packed.Type](prefix string) gd.PackedFunctionsFor[T, V] {
-	var API gd.PackedFunctionsFor[T, V]
-	packed_T_operator_index := dlsymGD("packed_" + prefix + "_operator_index")
-	API.SetIndex = func(t T, i gd.Int, v V) {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get[T, [2]uint64](t))
-		var ptr = C.packed_T_operator_index(
-			C.uintptr_t(uintptr(packed_T_operator_index)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.GDExtensionInt(i),
-		)
-		*(*V)(unsafe.Pointer(uintptr(ptr))) = v
-		frame.Free()
-	}
-	packed_T_operator_index_const := dlsymGD("packed_" + prefix + "_operator_index_const")
-	API.Index = func(t T, i gd.Int) V {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get[T, [2]uint64](t))
-		var ret = C.packed_T_operator_index_const(
-			C.uintptr_t(uintptr(packed_T_operator_index_const)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.GDExtensionInt(i),
-		)
-		frame.Free()
-		return *(*V)(unsafe.Pointer(uintptr(ret)))
-	}
-	API.CopyAsSlice = func(t T) []V {
-		var size = t.Len()
-		if size == 0 {
-			return nil
-		}
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get[T, [2]uint64](t))
-		var ret = C.packed_T_operator_index_const(
-			C.uintptr_t(uintptr(packed_T_operator_index_const)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.GDExtensionInt(0),
-		)
-		var slice = make([]V, size)
-		copy(slice, unsafe.Slice((*V)(unsafe.Pointer(uintptr(ret))), size))
-		frame.Free()
-		return slice
-	}
-	API.CopyFromSlice = func(t T, slice []V) {
-		var frame = callframe.New()
-		var p_self = callframe.Arg(frame, pointers.Get[T, [2]uint64](t))
-		var ret = C.packed_T_operator_index_const(
-			C.uintptr_t(uintptr(packed_T_operator_index_const)),
-			C.uintptr_t(p_self.Uintptr()),
-			C.GDExtensionInt(0),
-		)
-		frame.Free()
-		copy(unsafe.Slice((*V)(ret), t.Len()), slice)
-	}
-	return API
 }
 
 //export set_func
 func set_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
-	name := pointers.Let[gd.StringName](*(*[1]gd.EnginePointer)(p_name))
+	name := pointers.Let[gd.StringName](*(*gdextension.StringName)(p_name))
 	value := pointers.Let[gd.Variant](*(*[3]uint64)(p_value))
 	return cgo.Handle(p_instance).Value().(gd.ObjectInterface).Set(name, value)
 }
 
 //export get_func
 func get_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
-	name := pointers.Let[gd.StringName](*(*[1]gd.EnginePointer)(p_name))
+	name := pointers.Let[gd.StringName](*(*gdextension.StringName)(p_name))
 	variant, ok := cgo.Handle(p_instance).Value().(gd.ObjectInterface).Get(name)
 	if !ok {
 		return false
@@ -692,13 +478,13 @@ func free_property_list_func(p_instance uintptr, p_properties *C.GDExtensionProp
 
 //export property_can_revert_func
 func property_can_revert_func(p_instance uintptr, p_name unsafe.Pointer) bool {
-	name := pointers.Let[gd.StringName](*(*[1]gd.EnginePointer)(p_name))
+	name := pointers.Let[gd.StringName](*(*gdextension.StringName)(p_name))
 	return cgo.Handle(p_instance).Value().(gd.ObjectInterface).PropertyCanRevert(name)
 }
 
 //export property_get_revert_func
 func property_get_revert_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
-	name := pointers.Let[gd.StringName](*(*[1]gd.EnginePointer)(p_name))
+	name := pointers.Let[gd.StringName](*(*gdextension.StringName)(p_name))
 	variant, ok := cgo.Handle(p_instance).Value().(gd.ObjectInterface).PropertyGetRevert(name)
 	if ok {
 		*(*[3]uint64)(p_value), _ = pointers.End(variant)
@@ -719,7 +505,7 @@ func to_string_func(p_instance uintptr, valid, out unsafe.Pointer) {
 		return
 	}
 	*(*bool)(valid) = true
-	*(*[1]gd.EnginePointer)(out) = pointers.Get(s)
+	*(*gdextension.String)(out) = pointers.Get(s)
 }
 
 //export reference_func
@@ -744,7 +530,7 @@ func free_instance_func(_, p_instance uintptr) {
 
 //export get_virtual_call_data_func
 func get_virtual_call_data_func(p_class uintptr, p_name unsafe.Pointer) uintptr {
-	var name = pointers.Let[gd.StringName](*(*[1]gd.EnginePointer)(p_name))
+	var name = pointers.Let[gd.StringName](*(*gdextension.StringName)(p_name))
 	virtual := cgo.Handle(p_class).Value().(gd.ClassInterface).GetVirtual(name)
 	if virtual == nil {
 		return 0
@@ -754,7 +540,7 @@ func get_virtual_call_data_func(p_class uintptr, p_name unsafe.Pointer) uintptr 
 
 //export call_virtual_with_data_func
 func call_virtual_with_data_func(p_instance uintptr, p_name unsafe.Pointer, p_data uintptr, p_args, p_ret unsafe.Pointer) {
-	var name = pointers.Let[gd.StringName](*(*[1]gd.EnginePointer)(p_name))
+	var name = pointers.Let[gd.StringName](*(*gdextension.StringName)(p_name))
 	cgo.Handle(p_instance).Value().(gd.ObjectInterface).CallVirtual(name, cgo.Handle(p_data).Value(), gd.Address(p_args), gd.Address(p_ret))
 }
 

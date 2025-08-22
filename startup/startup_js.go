@@ -7,7 +7,6 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/pointers"
-	"graphics.gd/variant/Packed"
 )
 
 func init() {
@@ -139,36 +138,6 @@ func linkJS(API *gd.API) {
 		}
 		return pointers.New[gd.Callable](*(*[2]uint64)(unsafe.Pointer(&raw)))
 	}
-	variant_get_ptr_constructor := dlsym("variant_get_ptr_constructor")
-	call_variant_get_ptr_constructor := dlsym("call_variant_get_ptr_constructor")
-	API.Variants.GetPointerConstructor = func(vtype gd.VariantType, index int32) func(base callframe.Addr, args callframe.Args) {
-		fn := variant_get_ptr_constructor.Invoke(uint32(vtype), index)
-		return func(base callframe.Addr, args callframe.Args) {
-			writeCallFrameArguments(0, args)
-			call_variant_get_ptr_constructor.Invoke(fn)
-			readCallFrameResult(0, base)
-		}
-	}
-	variant_get_ptr_operator_evaluator := dlsym("variant_get_ptr_operator_evaluator")
-	call_variant_get_ptr_operator_evaluator := dlsym("call_variant_get_ptr_operator_evaluator")
-	API.Variants.PointerOperatorEvaluator = func(op gd.Operator, a, b gd.VariantType) func(a, b, ret callframe.Addr) {
-		fn := variant_get_ptr_operator_evaluator.Invoke(uint32(op), uint32(a), uint32(b))
-		return func(a callframe.Addr, b callframe.Addr, ret callframe.Addr) {
-			writeCallFrameArgument(0, 0, a)
-			writeCallFrameArgument(1, 0, b)
-			call_variant_get_ptr_operator_evaluator.Invoke(fn)
-			readCallFrameResult(0, ret)
-		}
-	}
-	variant_get_ptr_destructor := dlsym("variant_get_ptr_destructor")
-	call_variant_get_ptr_destructor := dlsym("call_variant_get_ptr_destructor")
-	API.Variants.GetPointerDestructor = func(vtype gd.VariantType) func(base callframe.Addr) {
-		fn := variant_get_ptr_destructor.Invoke(uint32(vtype))
-		return func(base callframe.Addr) {
-			writeCallFrameArgument(0, 0, base)
-			call_variant_get_ptr_destructor.Invoke(fn)
-		}
-	}
 	classdb_register_extension_class3 := dlsym("classdb_register_extension_class3")
 	API.ClassDB.RegisterClass = func(library gd.ExtensionToken, name, extends gd.StringName, info_go gd.ClassInterface) {
 		info := js.Global().Get("Object").New()
@@ -189,10 +158,6 @@ func linkJS(API *gd.API) {
 			return uintptr(cgoNewHandle(virtual))
 		}))
 		classdb_register_extension_class3.Invoke(uint32(library), pointers.Get(name)[0], pointers.Get(extends)[0], info)
-	}
-	classdb_construct_object := dlsym("classdb_construct_object")
-	API.ClassDB.ConstructObject = func(class gd.StringName) [1]gd.Object {
-		return [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(classdb_construct_object.Invoke(pointers.Get(class)[0]).Int())})}
 	}
 	object_set_instance := dlsym("object_set_instance")
 	API.Object.SetInstance = func(o [1]gd.Object, sn gd.StringName, oi gd.ObjectInterface) {
@@ -318,42 +283,6 @@ func linkJS(API *gd.API) {
 		}
 		return o
 	}
-	API.PackedByteArray = makePackedFunctions[gd.PackedByteArray, byte]("byte_array")
-	API.PackedInt32Array = makePackedFunctions[gd.PackedInt32Array, int32]("int32_array")
-	API.PackedByteArray = makePackedFunctions[gd.PackedByteArray, byte]("byte_array")
-	API.PackedColorArray = makePackedFunctions[gd.PackedColorArray, gd.Color]("color_array")
-	API.PackedFloat32Array = makePackedFunctions[gd.PackedFloat32Array, float32]("float32_array")
-	API.PackedFloat64Array = makePackedFunctions[gd.PackedFloat64Array, float64]("float64_array")
-	API.PackedInt32Array = makePackedFunctions[gd.PackedInt32Array, int32]("int32_array")
-	API.PackedInt64Array = makePackedFunctions[gd.PackedInt64Array, int64]("int64_array")
-	API.PackedVector2Array = makePackedFunctions[gd.PackedVector2Array, gd.Vector2]("vector2_array")
-	API.PackedVector3Array = makePackedFunctions[gd.PackedVector3Array, gd.Vector3]("vector3_array")
-	API.PackedVector4Array = makePackedFunctions[gd.PackedVector4Array, gd.Vector4]("vector4_array")
-	packed_string_array_operator_index := dlsym("packed_string_array_operator_index")
-	API.PackedStringArray.Index = func(pia gd.PackedStringArray, index gd.Int) gd.String {
-		arr := pointers.Get(pia)
-		raw := *(*[2]uint32)(unsafe.Pointer(&arr))
-		s := packed_string_array_operator_index.Invoke(int(raw[0]), int(raw[1]), uint32(index)).Int()
-		return pointers.Let[gd.String]([1]gd.EnginePointer{gd.EnginePointer(s)})
-	}
-	packed_string_array_operator_index_set := dlsym("packed_string_array_operator_index_set")
-	API.PackedStringArray.SetIndex = func(pia gd.PackedStringArray, index gd.Int, v gd.String) {
-		arr := pointers.Get(pia)
-		raw := *(*[2]uint32)(unsafe.Pointer(&arr))
-		packed_string_array_operator_index_set.Invoke(int(raw[0]), int(raw[1]), uint32(index), pointers.Get(v)[0])
-	}
-	API.PackedStringArray.CopyAsSlice = func(pia gd.PackedStringArray) []gd.String {
-		var slice = make([]gd.String, pia.Size())
-		for i := 0; i < int(pia.Size()); i++ {
-			slice[i] = API.PackedStringArray.Index(pia, gd.Int(i))
-		}
-		return slice
-	}
-	API.PackedStringArray.CopyFromSlice = func(pia gd.PackedStringArray, slice []gd.String) {
-		for i, v := range slice {
-			API.PackedStringArray.SetIndex(pia, gd.Int(i), v)
-		}
-	}
 	classdb_register_extension_class_property := dlsym("classdb_register_extension_class_property")
 	API.ClassDB.RegisterClassProperty = func(library gd.ExtensionToken, class gd.StringName, info gd.PropertyInfo, getter, setter gd.StringName) {
 		converted := js.Global().Get("Object").New()
@@ -447,43 +376,4 @@ func linkJS(API *gd.API) {
 		}
 		classdb_register_extension_class_method.Invoke(uint32(library), pointers.Get(class)[0], converted)
 	}
-}
-
-func makePackedFunctions[T gd.Packed[T, V], V Packed.Type](prefix string) gd.PackedFunctionsFor[T, V] {
-	var API gd.PackedFunctionsFor[T, V]
-	packed_int32_array_operator_index := dlsym("packed_" + prefix + "_operator_index")
-	API.Index = func(pia T, index gd.Int) V {
-		arr := pointers.Get[T, gd.PackedPointers](pia)
-		raw := *(*[2]uint32)(unsafe.Pointer(&arr))
-		packed_int32_array_operator_index.Invoke(int(raw[0]), int(raw[1]), uint32(index))
-		var buf [4]uint32
-		for i := range buf {
-			buf[i] = uint32(read_result_buffer.Invoke(0, 0, uint32(i)).Int())
-		}
-		return *(*V)(unsafe.Pointer(&buf))
-	}
-	packed_int32_array_operator_index_set := dlsym("packed_" + prefix + "_operator_index_set")
-	API.SetIndex = func(pia T, index gd.Int, v V) {
-		arr := pointers.Get[T, gd.PackedPointers](pia)
-		raw := *(*[2]uint32)(unsafe.Pointer(&arr))
-		var buf [4]uint32
-		*(*V)(unsafe.Pointer(&buf)) = v
-		for i, v := range buf {
-			write_params_buffer.Invoke(0, 0, i, v)
-		}
-		packed_int32_array_operator_index_set.Invoke(int(raw[0]), int(raw[1]), uint32(index))
-	}
-	API.CopyAsSlice = func(pia T) []V {
-		var slice = make([]V, pia.Len())
-		for i := 0; i < pia.Len(); i++ {
-			slice[i] = API.Index(pia, gd.Int(i))
-		}
-		return slice
-	}
-	API.CopyFromSlice = func(pia T, slice []V) {
-		for i, v := range slice {
-			API.SetIndex(pia, gd.Int(i), v)
-		}
-	}
-	return API
 }

@@ -152,9 +152,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("SceneMultiplayer"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SceneMultiplayer"))))})}
 	casted := Instance{*(*gdclass.SceneMultiplayer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -224,12 +225,12 @@ func (self Instance) SetMaxDeltaPacketSize(value int) {
 
 //go:nosplit
 func (self class) SetRootPath(path Path.ToNode) { //gd:SceneMultiplayer.set_root_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_root_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{gdextension.NodePath(pointers.Get(gd.InternalNodePath(path))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_root_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 }
 
 //go:nosplit
 func (self class) GetRootPath() Path.ToNode { //gd:SceneMultiplayer.get_root_path
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_root_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_root_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -267,8 +268,8 @@ Sends the specified [param data] to the remote peer identified by [param id] as 
 func (self class) SendAuth(id int64, data Packed.Bytes) Error.Code { //gd:SceneMultiplayer.send_auth
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_send_auth), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		id   int64
-		data gdextension.PackedArray
-	}{id, gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))))}))
+		data gdextension.PackedArray[byte]
+	}{id, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -286,12 +287,12 @@ func (self class) CompleteAuth(id int64) Error.Code { //gd:SceneMultiplayer.comp
 
 //go:nosplit
 func (self class) SetAuthCallback(callback Callable.Function) { //gd:SceneMultiplayer.set_auth_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_auth_callback), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callback gdextension.Callable }{gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_set_auth_callback), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))}))
 }
 
 //go:nosplit
 func (self class) GetAuthCallback() Callable.Function { //gd:SceneMultiplayer.get_auth_callback
-	var r_ret = gdextension.Call[[2]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_auth_callback), gdextension.SizeCallable, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_get_auth_callback), gdextension.SizeCallable, unsafe.Pointer(&struct{}{}))
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
@@ -350,11 +351,11 @@ Sends the given raw [param bytes] to a specific peer identified by [param id] (s
 //go:nosplit
 func (self class) SendBytes(bytes Packed.Bytes, id int64, mode MultiplayerPeer.TransferMode, channel int64) Error.Code { //gd:SceneMultiplayer.send_bytes
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SceneMultiplayer.Bind_send_bytes), gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
-		bytes   gdextension.PackedArray
+		bytes   gdextension.PackedArray[byte]
 		id      int64
 		mode    MultiplayerPeer.TransferMode
 		channel int64
-	}{gdextension.ToPackedArray(pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes)))), id, mode, channel}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes))), id, mode, channel}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

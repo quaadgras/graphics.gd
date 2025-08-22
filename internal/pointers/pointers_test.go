@@ -8,7 +8,7 @@ import (
 
 var simulated_pointers = make(map[[1]uint64]bool)
 
-type MyPointer pointers.Solo[MyPointer]
+type MyPointer pointers.Type[MyPointer, [1]uint64]
 
 func (ptr MyPointer) Free() {
 	raw, ok := pointers.End(ptr)
@@ -30,11 +30,11 @@ func BenchmarkDiscrete(b *testing.B) {
 	}
 }
 
-type MyString pointers.Pair[MyString]
+type MyString pointers.Type[MyString, [1]uint64]
 
 func (ptr MyString) Free() {}
 
-type MySlice pointers.Trio[MySlice]
+type MySlice pointers.Type[MySlice, [1]uint64]
 
 func (ptr MySlice) Free() {}
 

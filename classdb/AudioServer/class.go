@@ -81,7 +81,7 @@ var self [1]gdclass.AudioServer
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.AudioServer)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.AudioServer)))})
 	self = *(*[1]gdclass.AudioServer)(unsafe.Pointer(&obj))
 }
 
@@ -579,7 +579,7 @@ func (self class) SetBusName(bus_idx int64, name String.Readable) { //gd:AudioSe
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_set_bus_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		bus_idx int64
 		name    gdextension.String
-	}{bus_idx, gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	}{bus_idx, pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -587,7 +587,7 @@ Returns the name of the bus with the index [param bus_idx].
 */
 //go:nosplit
 func (self class) GetBusName(bus_idx int64) String.Readable { //gd:AudioServer.get_bus_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_bus_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bus_idx int64 }{bus_idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_bus_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bus_idx int64 }{bus_idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -597,7 +597,7 @@ Returns the index of the bus with the name [param bus_name]. Returns [code]-1[/c
 */
 //go:nosplit
 func (self class) GetBusIndex(bus_name String.Name) int64 { //gd:AudioServer.get_bus_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_bus_index), gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ bus_name gdextension.StringName }{gdextension.StringName(pointers.Get(gd.InternalStringName(bus_name))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_bus_index), gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ bus_name gdextension.StringName }{pointers.Get(gd.InternalStringName(bus_name))}))
 	var ret = r_ret
 	return ret
 }
@@ -664,7 +664,7 @@ func (self class) SetBusSend(bus_idx int64, send String.Name) { //gd:AudioServer
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_set_bus_send), 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		bus_idx int64
 		send    gdextension.StringName
-	}{bus_idx, gdextension.StringName(pointers.Get(gd.InternalStringName(send))[0])}))
+	}{bus_idx, pointers.Get(gd.InternalStringName(send))}))
 }
 
 /*
@@ -672,7 +672,7 @@ Returns the name of the bus that the bus at index [param bus_idx] sends to.
 */
 //go:nosplit
 func (self class) GetBusSend(bus_idx int64) String.Name { //gd:AudioServer.get_bus_send
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_bus_send), gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bus_idx int64 }{bus_idx}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_bus_send), gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bus_idx int64 }{bus_idx}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -778,7 +778,7 @@ Returns the [AudioEffect] at position [param effect_idx] in bus [param bus_idx].
 */
 //go:nosplit
 func (self class) GetBusEffect(bus_idx int64, effect_idx int64) [1]gdclass.AudioEffect { //gd:AudioServer.get_bus_effect
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_bus_effect), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_bus_effect), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		bus_idx    int64
 		effect_idx int64
 	}{bus_idx, effect_idx}))
@@ -791,7 +791,7 @@ Returns the [AudioEffectInstance] assigned to the given bus and effect indices (
 */
 //go:nosplit
 func (self class) GetBusEffectInstance(bus_idx int64, effect_idx int64, channel int64) [1]gdclass.AudioEffectInstance { //gd:AudioServer.get_bus_effect_instance
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_bus_effect_instance), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_bus_effect_instance), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		bus_idx    int64
 		effect_idx int64
 		channel    int64
@@ -927,7 +927,7 @@ Returns the name of the current audio driver. The default usually depends on the
 */
 //go:nosplit
 func (self class) GetDriverName() String.Readable { //gd:AudioServer.get_driver_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_driver_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_driver_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -944,14 +944,14 @@ func (self class) GetOutputDeviceList() Packed.Strings { //gd:AudioServer.get_ou
 
 //go:nosplit
 func (self class) GetOutputDevice() String.Readable { //gd:AudioServer.get_output_device
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_output_device), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_output_device), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOutputDevice(name String.Readable) { //gd:AudioServer.set_output_device
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_set_output_device), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_set_output_device), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -998,14 +998,14 @@ func (self class) GetInputDeviceList() Packed.Strings { //gd:AudioServer.get_inp
 
 //go:nosplit
 func (self class) GetInputDevice() String.Readable { //gd:AudioServer.get_input_device
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_input_device), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_get_input_device), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInputDevice(name String.Readable) { //gd:AudioServer.set_input_device
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_set_input_device), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(name))[0])}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_set_input_device), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -1021,7 +1021,7 @@ Generates an [AudioBusLayout] using the available buses and effects.
 */
 //go:nosplit
 func (self class) GenerateBusLayout() [1]gdclass.AudioBusLayout { //gd:AudioServer.generate_bus_layout
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_generate_bus_layout), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioServer.Bind_generate_bus_layout), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.AudioBusLayout{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioBusLayout](r_ret)}
 	return ret
 }

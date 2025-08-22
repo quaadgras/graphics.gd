@@ -190,9 +190,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("ZIPReader"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ZIPReader"))))})}
 	casted := Instance{*(*gdclass.ZIPReader)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -201,7 +202,7 @@ Opens the zip archive at the given [param path] and reads its file index.
 */
 //go:nosplit
 func (self class) Open(path String.Readable) Error.Code { //gd:ZIPReader.open
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ZIPReader.Bind_open), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{gdextension.String(pointers.Get(gd.InternalString(path))[0])}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ZIPReader.Bind_open), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -236,7 +237,7 @@ func (self class) ReadFile(path String.Readable, case_sensitive bool) Packed.Byt
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ZIPReader.Bind_read_file), gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path           gdextension.String
 		case_sensitive bool
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), case_sensitive}))
+	}{pointers.Get(gd.InternalString(path)), case_sensitive}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -250,7 +251,7 @@ func (self class) FileExists(path String.Readable, case_sensitive bool) bool { /
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ZIPReader.Bind_file_exists), gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path           gdextension.String
 		case_sensitive bool
-	}{gdextension.String(pointers.Get(gd.InternalString(path))[0]), case_sensitive}))
+	}{pointers.Get(gd.InternalString(path)), case_sensitive}))
 	var ret = r_ret
 	return ret
 }

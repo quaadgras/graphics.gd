@@ -115,7 +115,7 @@ var self [1]gdclass.NativeMenu
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(gdextension.StringName(pointers.Get(gd.Global.Singletons.NativeMenu)[0])))})
+	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.NativeMenu)))})
 	self = *(*[1]gdclass.NativeMenu)(unsafe.Pointer(&obj))
 }
 
@@ -926,7 +926,7 @@ Returns readable name of a special system menu.
 */
 //go:nosplit
 func (self class) GetSystemMenuName(menu_id SystemMenus) String.Readable { //gd:NativeMenu.get_system_menu_name
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_system_menu_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu_id SystemMenus }{menu_id}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_system_menu_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu_id SystemMenus }{menu_id}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1006,7 +1006,7 @@ func (self class) SetPopupOpenCallback(rid RID.Any, callback Callable.Function) 
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_popup_open_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		rid      RID.Any
 		callback gdextension.Callable
-	}{rid, gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{rid, pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -1015,7 +1015,7 @@ b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetPopupOpenCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_open_callback
-	var r_ret = gdextension.Call[[2]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_popup_open_callback), gdextension.SizeCallable|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_popup_open_callback), gdextension.SizeCallable|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
@@ -1030,7 +1030,7 @@ func (self class) SetPopupCloseCallback(rid RID.Any, callback Callable.Function)
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_popup_close_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		rid      RID.Any
 		callback gdextension.Callable
-	}{rid, gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{rid, pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -1039,7 +1039,7 @@ Returns global menu close callback.
 */
 //go:nosplit
 func (self class) GetPopupCloseCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_close_callback
-	var r_ret = gdextension.Call[[2]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_popup_close_callback), gdextension.SizeCallable|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_popup_close_callback), gdextension.SizeCallable|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
@@ -1091,7 +1091,7 @@ func (self class) AddSubmenuItem(rid RID.Any, label String.Readable, submenu_rid
 		submenu_rid RID.Any
 		tag         gdextension.Variant
 		index       int64
-	}{rid, gdextension.String(pointers.Get(gd.InternalString(label))[0]), submenu_rid, gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), index}))
+	}{rid, pointers.Get(gd.InternalString(label)), submenu_rid, gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), index}))
 	var ret = r_ret
 	return ret
 }
@@ -1114,7 +1114,7 @@ func (self class) AddItem(rid RID.Any, label String.Readable, callback Callable.
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{rid, gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback))), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
+	}{rid, pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
 	var ret = r_ret
 	return ret
 }
@@ -1137,7 +1137,7 @@ func (self class) AddCheckItem(rid RID.Any, label String.Readable, callback Call
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{rid, gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback))), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
+	}{rid, pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
 	var ret = r_ret
 	return ret
 }
@@ -1161,7 +1161,7 @@ func (self class) AddIconItem(rid RID.Any, icon [1]gdclass.Texture2D, label Stri
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{rid, gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback))), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
+	}{rid, gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
 	var ret = r_ret
 	return ret
 }
@@ -1185,7 +1185,7 @@ func (self class) AddIconCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{rid, gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback))), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
+	}{rid, gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
 	var ret = r_ret
 	return ret
 }
@@ -1209,7 +1209,7 @@ func (self class) AddRadioCheckItem(rid RID.Any, label String.Readable, callback
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{rid, gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback))), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
+	}{rid, pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
 	var ret = r_ret
 	return ret
 }
@@ -1234,7 +1234,7 @@ func (self class) AddIconRadioCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, 
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{rid, gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(label))[0]), gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback))), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
+	}{rid, gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
 	var ret = r_ret
 	return ret
 }
@@ -1261,7 +1261,7 @@ func (self class) AddMultistateItem(rid RID.Any, label String.Readable, max_stat
 		tag           gdextension.Variant
 		accelerator   Input.Key
 		index         int64
-	}{rid, gdextension.String(pointers.Get(gd.InternalString(label))[0]), max_states, default_state, gdextension.Callable(pointers.Get(gd.InternalCallable(callback))), gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback))), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
+	}{rid, pointers.Get(gd.InternalString(label)), max_states, default_state, pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
 	var ret = r_ret
 	return ret
 }
@@ -1290,7 +1290,7 @@ func (self class) FindItemIndexWithText(rid RID.Any, text String.Readable) int64
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_find_item_index_with_text), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		rid  RID.Any
 		text gdextension.String
-	}{rid, gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	}{rid, pointers.Get(gd.InternalString(text))}))
 	var ret = r_ret
 	return ret
 }
@@ -1372,7 +1372,7 @@ Returns the callback of the item at index [param idx].
 */
 //go:nosplit
 func (self class) GetItemCallback(rid RID.Any, idx int64) Callable.Function { //gd:NativeMenu.get_item_callback
-	var r_ret = gdextension.Call[[2]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_callback), gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_callback), gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1386,7 +1386,7 @@ Returns the callback of the item accelerator at index [param idx].
 */
 //go:nosplit
 func (self class) GetItemKeyCallback(rid RID.Any, idx int64) Callable.Function { //gd:NativeMenu.get_item_key_callback
-	var r_ret = gdextension.Call[[2]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_key_callback), gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_key_callback), gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1400,7 +1400,7 @@ Returns the metadata of the specified item, which might be of any type. You can 
 */
 //go:nosplit
 func (self class) GetItemTag(rid RID.Any, idx int64) variant.Any { //gd:NativeMenu.get_item_tag
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_tag), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_tag), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1414,7 +1414,7 @@ Returns the text of the item at index [param idx].
 */
 //go:nosplit
 func (self class) GetItemText(rid RID.Any, idx int64) String.Readable { //gd:NativeMenu.get_item_text
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_text), gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_text), gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1486,7 +1486,7 @@ Returns the tooltip associated with the specified index [param idx].
 */
 //go:nosplit
 func (self class) GetItemTooltip(rid RID.Any, idx int64) String.Readable { //gd:NativeMenu.get_item_tooltip
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_tooltip), gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_tooltip), gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1528,7 +1528,7 @@ Returns the icon of the item at index [param idx].
 */
 //go:nosplit
 func (self class) GetItemIcon(rid RID.Any, idx int64) [1]gdclass.Texture2D { //gd:NativeMenu.get_item_icon
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_icon), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_icon), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1601,7 +1601,7 @@ func (self class) SetItemCallback(rid RID.Any, idx int64, callback Callable.Func
 		rid      RID.Any
 		idx      int64
 		callback gdextension.Callable
-	}{rid, idx, gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{rid, idx, pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -1615,7 +1615,7 @@ func (self class) SetItemHoverCallbacks(rid RID.Any, idx int64, callback Callabl
 		rid      RID.Any
 		idx      int64
 		callback gdextension.Callable
-	}{rid, idx, gdextension.Callable(pointers.Get(gd.InternalCallable(callback)))}))
+	}{rid, idx, pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -1629,7 +1629,7 @@ func (self class) SetItemKeyCallback(rid RID.Any, idx int64, key_callback Callab
 		rid          RID.Any
 		idx          int64
 		key_callback gdextension.Callable
-	}{rid, idx, gdextension.Callable(pointers.Get(gd.InternalCallable(key_callback)))}))
+	}{rid, idx, pointers.Get(gd.InternalCallable(key_callback))}))
 }
 
 /*
@@ -1655,7 +1655,7 @@ func (self class) SetItemText(rid RID.Any, idx int64, text String.Readable) { //
 		rid  RID.Any
 		idx  int64
 		text gdextension.String
-	}{rid, idx, gdextension.String(pointers.Get(gd.InternalString(text))[0])}))
+	}{rid, idx, pointers.Get(gd.InternalString(text))}))
 }
 
 /*
@@ -1720,7 +1720,7 @@ func (self class) SetItemTooltip(rid RID.Any, idx int64, tooltip String.Readable
 		rid     RID.Any
 		idx     int64
 		tooltip gdextension.String
-	}{rid, idx, gdextension.String(pointers.Get(gd.InternalString(tooltip))[0])}))
+	}{rid, idx, pointers.Get(gd.InternalString(tooltip))}))
 }
 
 /*

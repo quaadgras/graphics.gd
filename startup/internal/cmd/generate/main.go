@@ -119,9 +119,13 @@ func generate_startup_cgo() error {
 
 		}
 		if result := getReturn(fn.Type); fn.NumOut() == 1 && result != nil {
-			fmt.Fprint(f, "))")
+			if result.Kind() == reflect.Array && result.Len() == 1 {
+				fmt.Fprintf(f, ")[0])")
+			} else {
+				fmt.Fprint(f, "))")
+			}
 		} else if fn.NumOut() > 0 && result != nil {
-			fmt.Fprintf(f, ")\n\treturn %s(result)", cgoTypeOf(result))
+			fmt.Fprintf(f, ")\n\treturn %s", toCValue(result, "result"))
 		} else {
 			fmt.Fprint(f, ")")
 		}
@@ -155,7 +159,11 @@ func generate_startup_cgo() error {
 		}
 		fmt.Fprintf(f, " {\n")
 		if result := getReturn(fn.Type); result != nil {
-			fmt.Fprintf(f, "\t\tresult = %s(", goTypeOf(result))
+			if result.Kind() == reflect.Array && result.Len() == 1 {
+				fmt.Fprintf(f, "\t\tresult = %s{%s(", goTypeOf(result), goTypeOf(result.Elem()))
+			} else {
+				fmt.Fprintf(f, "\t\tresult = %s(", goTypeOf(result))
+			}
 		}
 		fmt.Fprintf(f, "\t\tC.gd_%s(", name)
 		for i := range fn.NumIn() {
@@ -179,10 +187,15 @@ func generate_startup_cgo() error {
 				fmt.Fprintf(f, "%s", toCValue(arg, argName(arg, i)))
 			}
 		}
+		fmt.Fprint(f, ")")
 		if result := getReturn(fn.Type); result != nil {
-			fmt.Fprint(f, ")")
+			if result.Kind() == reflect.Array && result.Len() == 1 {
+				fmt.Fprintf(f, ")}")
+			} else {
+				fmt.Fprint(f, ")")
+			}
 		}
-		fmt.Fprint(f, ")\n")
+		fmt.Fprintln(f)
 		fmt.Fprintf(f, "\t\treturn\n")
 		fmt.Fprintf(f, "\t}\n")
 	}
@@ -269,6 +282,11 @@ func toCValue(rtype reflect.Type, value string) string {
 			return fmt.Sprintf("(*C.char)(unsafe.Pointer(unsafe.SliceData(%s)))", value)
 		}
 		fallthrough
+	case reflect.Array:
+		if rtype.Len() == 1 {
+			return toCValue(rtype.Elem(), value+"[0]")
+		}
+		panic(fmt.Sprintf("unsupported array type %s for value %s", rtype, value))
 	default:
 		return fmt.Sprintf("%s(%s)", cgoTypeOf(rtype), value)
 	}
@@ -377,6 +395,11 @@ func ctypeOf(rtype reflect.Type) string {
 	case reflect.Slice:
 		if rtype.Elem().Kind() == reflect.Uint8 {
 			return "char*"
+		}
+		fallthrough
+	case reflect.Array:
+		if rtype.Len() == 1 {
+			return ctypeOf(rtype.Elem())
 		}
 		fallthrough
 	default:

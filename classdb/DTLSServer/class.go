@@ -262,9 +262,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("DTLSServer"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("DTLSServer"))))})}
 	casted := Instance{*(*gdclass.DTLSServer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -284,7 +285,7 @@ Try to initiate the DTLS handshake with the given [param udp_peer] which must be
 */
 //go:nosplit
 func (self class) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS { //gd:DTLSServer.take_connection
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DTLSServer.Bind_take_connection), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ udp_peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(udp_peer[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DTLSServer.Bind_take_connection), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ udp_peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(udp_peer[0].AsObject()))}))
 	var ret = [1]gdclass.PacketPeerDTLS{gd.PointerWithOwnershipTransferredToGo[gdclass.PacketPeerDTLS](r_ret)}
 	return ret
 }

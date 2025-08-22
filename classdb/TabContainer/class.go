@@ -295,8 +295,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("TabContainer"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TabContainer"))))})}
 	casted := Instance{*(*gdclass.TabContainer)(unsafe.Pointer(&object))}
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -445,7 +446,7 @@ Returns the child [Control] node located at the active tab index.
 */
 //go:nosplit
 func (self class) GetCurrentTabControl() [1]gdclass.Control { //gd:TabContainer.get_current_tab_control
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_current_tab_control), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_current_tab_control), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
@@ -456,7 +457,7 @@ Returns the [TabBar] contained in this container.
 */
 //go:nosplit
 func (self class) GetTabBar() [1]gdclass.TabBar { //gd:TabContainer.get_tab_bar
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_bar), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_bar), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TabBar{gd.PointerLifetimeBoundTo[gdclass.TabBar](self.AsObject(), r_ret)}
 	return ret
 }
@@ -466,7 +467,7 @@ Returns the [Control] node from the tab at index [param tab_idx].
 */
 //go:nosplit
 func (self class) GetTabControl(tab_idx int64) [1]gdclass.Control { //gd:TabContainer.get_tab_control
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_control), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_control), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
@@ -539,7 +540,7 @@ func (self class) SetTabTitle(tab_idx int64, title String.Readable) { //gd:TabCo
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_set_tab_title), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		tab_idx int64
 		title   gdextension.String
-	}{tab_idx, gdextension.String(pointers.Get(gd.InternalString(title))[0])}))
+	}{tab_idx, pointers.Get(gd.InternalString(title))}))
 }
 
 /*
@@ -547,7 +548,7 @@ Returns the title of the tab at index [param tab_idx]. Tab titles default to the
 */
 //go:nosplit
 func (self class) GetTabTitle(tab_idx int64) String.Readable { //gd:TabContainer.get_tab_title
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_title), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_title), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -561,7 +562,7 @@ func (self class) SetTabTooltip(tab_idx int64, tooltip String.Readable) { //gd:T
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_set_tab_tooltip), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		tab_idx int64
 		tooltip gdextension.String
-	}{tab_idx, gdextension.String(pointers.Get(gd.InternalString(tooltip))[0])}))
+	}{tab_idx, pointers.Get(gd.InternalString(tooltip))}))
 }
 
 /*
@@ -569,7 +570,7 @@ Returns the tooltip text of the tab at index [param tab_idx].
 */
 //go:nosplit
 func (self class) GetTabTooltip(tab_idx int64) String.Readable { //gd:TabContainer.get_tab_tooltip
-	var r_ret = gdextension.Call[[1]gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_tooltip), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_tooltip), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -590,7 +591,7 @@ Returns the [Texture2D] for the tab at index [param tab_idx] or [code]null[/code
 */
 //go:nosplit
 func (self class) GetTabIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabContainer.get_tab_icon
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_icon), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_icon), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -674,7 +675,7 @@ Returns the metadata value set to the tab at index [param tab_idx] using [method
 */
 //go:nosplit
 func (self class) GetTabMetadata(tab_idx int64) variant.Any { //gd:TabContainer.get_tab_metadata
-	var r_ret = gdextension.Call[[3]uint64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_metadata), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_metadata), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -695,7 +696,7 @@ Returns the button icon from the tab at index [param tab_idx].
 */
 //go:nosplit
 func (self class) GetTabButtonIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabContainer.get_tab_button_icon
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_button_icon), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_tab_button_icon), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tab_idx int64 }{tab_idx}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -734,7 +735,7 @@ Returns the [Popup] node instance if one has been set already with [method set_p
 */
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.Popup { //gd:TabContainer.get_popup
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_popup), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TabContainer.Bind_get_popup), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Popup{gd.PointerMustAssertInstanceID[gdclass.Popup](r_ret)}
 	return ret
 }

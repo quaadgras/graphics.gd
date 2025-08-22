@@ -148,9 +148,10 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := gd.Global.ClassDB.ConstructObject(gd.NewStringName("StreamPeerTLS"))
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("StreamPeerTLS"))))})}
 	casted := Instance{*(*gdclass.StreamPeerTLS)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
+	object[0].Notification(0, false)
 	return casted
 }
 
@@ -184,7 +185,7 @@ func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name Stri
 		stream         gdextension.Object
 		common_name    gdextension.String
 		client_options gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(stream[0].AsObject())), gdextension.String(pointers.Get(gd.InternalString(common_name))[0]), gdextension.Object(gd.ObjectChecked(client_options[0].AsObject()))}))
+	}{gdextension.Object(gd.ObjectChecked(stream[0].AsObject())), pointers.Get(gd.InternalString(common_name)), gdextension.Object(gd.ObjectChecked(client_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -204,7 +205,7 @@ Returns the underlying [StreamPeer] connection, used in [method accept_stream] o
 */
 //go:nosplit
 func (self class) GetStream() [1]gdclass.StreamPeer { //gd:StreamPeerTLS.get_stream
-	var r_ret = gdextension.Call[gd.EnginePointer](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTLS.Bind_get_stream), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTLS.Bind_get_stream), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.StreamPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeer](r_ret)}
 	return ret
 }
