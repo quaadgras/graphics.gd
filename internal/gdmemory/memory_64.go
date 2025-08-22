@@ -30,3 +30,7 @@ func LoadSlice[T any](ptr gdextension.Pointer, slice []T) {
 	}
 	copy(unsafe.Slice(*(**T)(unsafe.Pointer(&ptr)), len(slice)), slice)
 }
+
+func IndexVariants(ptr gdextension.Accepts[gdextension.Variant], len, idx int) gdextension.Variant {
+	return *unsafe.Slice((**gdextension.Variant)(unsafe.Pointer(&ptr)), len)[idx]
+}

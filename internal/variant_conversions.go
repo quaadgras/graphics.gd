@@ -7,7 +7,6 @@ import (
 	"reflect"
 	"unsafe"
 
-	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
@@ -38,7 +37,6 @@ func CutVariant(v any, cut bool) Variant {
 	if v == nil {
 		return Variant{}
 	}
-	var frame = callframe.New()
 	var ret gdextension.Variant
 	if enum, ok := v.(Enum.Any); ok {
 		v = enum.Int()
@@ -241,7 +239,7 @@ func CutVariant(v any, cut bool) Variant {
 		case Variant:
 			return val
 		case VariantPkg.Any:
-			return NewVariant(val.Interface())
+			return CutVariant(val.Interface(), cut)
 		case Vector2:
 			var arg = val
 			ret.LoadNative(TypeVector2, gdextension.SizeVector2, unsafe.Pointer(&arg))
@@ -400,8 +398,12 @@ func CutVariant(v any, cut bool) Variant {
 	default:
 		panic("gd.Variant: unsupported type " + reflect.TypeOf(v).String())
 	}
-	var variant = pointers.Raw[Variant]([3]uint64(ret)).Copy()
-	frame.Free()
+	var variant = pointers.Raw[Variant]([3]uint64(ret))
+	if variant.Type() == TypeObject {
+		variant = pointers.New[Variant]([3]uint64(ret))
+	} else {
+		variant = variant.Copy()
+	}
 	return variant
 }
 

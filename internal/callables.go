@@ -5,75 +5,79 @@ package gd
 import (
 	"reflect"
 
+	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/gdmemory"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
 	CallableType "graphics.gd/variant/Callable"
 )
 
-/*func init() {
-type Callframe struct {
-	_ structs.HostLayout
-
-	r_return *gdextension.Variant
-	r_error  *gdextension.CallError
-	p_args   **gdextension.Variant
-	p_argc   int64
+func init() {
+	gdextension.On.Callables.Call = func(fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], arg_count int, args gdextension.Accepts[gdextension.Variant], call_error gdextension.Returns[gdextension.CallError]) {
+		value := cgoHandle(fn).Value()
+		switch cb := value.(type) {
+		case func():
+			cb()
+			gdmemory.Set(gdextension.Pointer(result), gdextension.Variant{})
+			gdmemory.Set(gdextension.Pointer(call_error), CallError{})
+			return
+		}
+		vargs := make([]reflect.Value, min(arg_count, 16))
+		rtype := reflect.TypeOf(value)
+		for i := range arg_count {
+			var err error
+			vargs[i], err = ConvertToDesiredGoType(gdmemory.IndexVariants(args, arg_count, i), rtype.In(i))
+			if err != nil {
+				gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{
+					Type: gdextension.CallInvalidArguments,
+				})
+				return
+			}
+		}
+		results := reflect.ValueOf(value).Call(vargs)
+		if len(results) > 0 {
+			raw, _ := pointers.End(CutVariant(results[0].Interface(), true))
+			gdmemory.Set(gdextension.Pointer(result), raw)
+		}
+		gdmemory.Set(gdextension.Pointer(call_error), CallError{})
+	}
+	gdextension.On.Callables.Hash = func(fn gdextension.FunctionID) uint32 {
+		return uint32(reflect.ValueOf(cgoHandle(fn).Value()).Pointer())
+	}
+	gdextension.On.Callables.Stringify = func(fn gdextension.FunctionID, err gdextension.Returns[gdextension.CallError]) gdextension.String {
+		s := NewString(reflect.ValueOf(cgoHandle(fn).Value()).String())
+		raw, _ := pointers.End(s)
+		return raw
+	}
+	gdextension.On.Callables.Free = func(fn gdextension.FunctionID) {
+		cgoHandle(fn).Delete()
+	}
+	gdextension.On.Callables.ArgumentCount = func(fn gdextension.FunctionID, err gdextension.Returns[gdextension.CallError]) int {
+		value := reflect.ValueOf(cgoHandle(fn).Value())
+		return value.Type().NumIn()
+	}
+	gdextension.On.Callables.Validation = func(fn gdextension.FunctionID) bool {
+		return cgoHandle(fn).Value() != nil
+	}
+	gdextension.On.Callables.Compare = func(fn, other gdextension.FunctionID) bool {
+		return reflect.ValueOf(cgoHandle(fn).Value()).Pointer() == reflect.ValueOf(cgoHandle(other).Value()).Pointer()
+	}
+	gdextension.On.Callables.LessThan = func(fn, other gdextension.FunctionID) bool {
+		return reflect.ValueOf(cgoHandle(fn).Value()).Pointer() < reflect.ValueOf(cgoHandle(other).Value()).Pointer()
+	}
 }
-
-gdextension.On.Callables.Call = func(fn gdextension.FunctionID, arg_count int64, args gdextension.CallAccepts[gdextension.Variant]) (gdextension.CallReturns[gdextension.Variant], gdextension.MaybeError) {
-	frame := (*Callframe)(args)
-	result, _ := cgo.Handle(fn).Value().(func(args []*Variant) (Variant, error))(nil)
-	frame.r_error.Type = 0
-	*frame.r_return, _ = pointers.End(result)
-	return gdextension.CallReturns[gdextension.Variant]{}, gdextension.MaybeError{}
-}
-gdextension.On.Callables.Hash = func(fn gdextension.FunctionID) int64 {
-	return int64(fn)
-}
-gdextension.On.Callables.Validation = func(fn gdextension.FunctionID) bool {
-	return fn != 0
-}
-gdextension.On.Callables.Stringify = func(fn gdextension.FunctionID, call gdextension.Call) (gdextension.String, gdextension.MaybeError) {
-	frame := (*Callframe)(call)
-	s := NewString(reflect.ValueOf(cgo.Handle(fn).Value()).String())
-	raw, _ := pointers.End(s)
-	frame.r_error.Type = 0
-	return gdextension.String(raw[0]), gdextension.MaybeError{}
-}
-}*/
 
 // Callable creates a new callable out of the given function which must only accept
 // godot-compatible types and return up to one godot-compatible type.
 func NewCallable(fn any) Callable {
-	rvalue := reflect.ValueOf(fn)
-	ftype := rvalue.Type()
-	return Global.Callables.Create(func(args ...Variant) (_ Variant, err error) {
-		var vargs = make([]reflect.Value, len(args))
-		for i, arg := range args {
-			vargs[i], err = ConvertToDesiredGoType(arg, ftype.In(i))
-			if err != nil {
-				panic(err)
-			}
-		}
-		results := rvalue.Call(vargs)
-		if len(results) == 0 {
-			return Variant{}, nil
-		}
-		result := results[0].Interface()
-		return CutVariant(result, true), nil
-	})
+	var result gdextension.Callable
+	gdextension.Host.Callables.Create(gdextension.CallableID(cgoNewHandle(fn)), 0, gdextension.CallReturns[gdextension.Callable](&result))
+	return pointers.New[Callable](result)
 }
 
 func InternalCallable(fn CallableType.Function) Callable {
-	return Global.Callables.Create(func(args ...Variant) (_ Variant, err error) {
-		converted := make([]VariantPkg.Any, len(args))
-		for i, arg := range args {
-			converted[i] = VariantPkg.New(arg.Interface())
-		}
-		result := fn.Call(converted...).Interface()
-		return CutVariant(result, true), nil
-	})
+	return NewCallable(fn.Call)
 }
 
 type CallableProxy struct{}

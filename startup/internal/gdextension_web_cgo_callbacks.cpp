@@ -22,8 +22,8 @@ bool go_on_callable_validation(uintptr_t p0) {
 void go_on_callable_free(uintptr_t p0) {
 	Go.call<void>("on_callable_free",p0);
 }
-int64_t go_on_callable_hash(uintptr_t p0) {
-	return Go.call<int64_t>("on_callable_hash",p0);
+uint32_t go_on_callable_hash(uintptr_t p0) {
+	return Go.call<uint32_t>("on_callable_hash",p0);
 }
 bool go_on_callable_compare(uintptr_t p0, uintptr_t p1) {
 	return Go.call<bool>("on_callable_compare",p0,p1);
@@ -34,8 +34,8 @@ bool go_on_callable_less_than(uintptr_t p0, uintptr_t p1) {
 uintptr_t go_on_callable_stringify(uintptr_t p0, void* p1) {
 	return Go.call<uintptr_t>("on_callable_stringify",p0, uintptr_t(p1));
 }
-int64_t go_on_callable_get_argument_count(uintptr_t p0, void* p1) {
-	return Go.call<int64_t>("on_callable_get_argument_count",p0, uintptr_t(p1));
+int32_t go_on_callable_get_argument_count(uintptr_t p0, void* p1) {
+	return Go.call<int32_t>("on_callable_get_argument_count",p0, uintptr_t(p1));
 }
 void go_on_editor_class_in_use_detection(double p0, double p1, void* p2) {
 	Go.call<void>("on_editor_class_in_use_detection",p0,p1, uintptr_t(p2));
@@ -83,7 +83,7 @@ bool go_on_extension_instance_reference(uintptr_t p0, bool p1) {
 	return Go.call<bool>("on_extension_instance_reference",p0,p1);
 }
 uint64_t go_on_extension_instance_rid(uintptr_t p0) {
-	return Go.call<uint64_t>("on_extension_instance_rid",p0);
+	return std::__bit_cast<uint64_t>(Go.call<double>("on_extension_instance_rid",p0));
 }
 void go_on_extension_instance_call(uintptr_t p0, uintptr_t p1, void* p2, double p3, void* p4, void* p5) {
 	Go.call<void>("on_extension_instance_call",p0,p1, uintptr_t(p2),p3, uintptr_t(p4), uintptr_t(p5));
@@ -115,8 +115,8 @@ uintptr_t go_on_extension_script_get_methods(uintptr_t p0) {
 bool go_on_extension_script_has_method(uintptr_t p0, uintptr_t p1) {
 	return Go.call<bool>("on_extension_script_has_method",p0,p1);
 }
-int64_t go_on_extension_script_get_method_argument_count(uintptr_t p0, uintptr_t p1) {
-	return Go.call<int64_t>("on_extension_script_get_method_argument_count",p0,p1);
+int32_t go_on_extension_script_get_method_argument_count(uintptr_t p0, uintptr_t p1) {
+	return Go.call<int32_t>("on_extension_script_get_method_argument_count",p0,p1);
 }
 uintptr_t go_on_extension_script_get(uintptr_t p0) {
 	return Go.call<uintptr_t>("on_extension_script_get",p0);

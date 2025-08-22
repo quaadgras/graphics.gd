@@ -394,7 +394,7 @@ func init() {
 		return nil
 	}))
 	Go.Set("on_callable_hash", js.FuncOf(func(self js.Value, args []js.Value) any {
-		return int64(gdextension.On.Callables.Hash(gdextension.FunctionID(args[0].Int())))
+		return uint32(gdextension.On.Callables.Hash(gdextension.FunctionID(args[0].Int())))
 	}))
 	Go.Set("on_callable_compare", js.FuncOf(func(self js.Value, args []js.Value) any {
 		return bool(gdextension.On.Callables.Compare(gdextension.FunctionID(args[0].Int()), gdextension.FunctionID(args[1].Int())))

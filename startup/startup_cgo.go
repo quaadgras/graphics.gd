@@ -189,22 +189,6 @@ func linkCGO(API *gd.API) {
 		frame.Free()
 		return ret
 	}
-	callable_custom_create := dlsymGD("callable_custom_create")
-	API.Callables.Create = func(fn func(...gd.Variant) (gd.Variant, error)) gd.Callable {
-		var frame = callframe.New()
-		var r_callable = callframe.Ret[[2]uint64](frame)
-		var info C.GDExtensionCallableCustomInfo
-		*(*uintptr)(unsafe.Pointer(&info.token)) = uintptr(gd.Global.ExtensionToken)
-		*(*uintptr)(unsafe.Pointer(&info.callable_userdata)) = uintptr(cgo.NewHandle(fn))
-		C.callable_custom_create(
-			C.uintptr_t(uintptr(callable_custom_create)),
-			C.uintptr_t(r_callable.Uintptr()),
-			&info,
-		)
-		var r_ret = pointers.New[gd.Callable](r_callable.Get())
-		frame.Free()
-		return r_ret
-	}
 
 	classdb_register_extension_class_signal := dlsymGD("classdb_register_extension_class_signal")
 	API.ClassDB.RegisterClassSignal = func(library gd.ExtensionToken, class, signal gd.StringName, args []gd.PropertyInfo) {

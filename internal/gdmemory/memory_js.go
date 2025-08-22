@@ -105,3 +105,11 @@ func LoadSlice[T any](ptr gdextension.Pointer, slice []T) {
 		}
 	}
 }
+
+func IndexVariants(addr gdextension.Accepts[gdextension.Variant], len, idx int) gdextension.Variant {
+	ptr := Get[gdextension.Pointer](gdextension.Pointer(addr) + gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(gdextension.Pointer(0))))
+	if ptr == 0 {
+		return gdextension.Variant{}
+	}
+	return Get[gdextension.Variant](ptr)
+}

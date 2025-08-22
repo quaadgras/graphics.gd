@@ -83,7 +83,7 @@ type Callbacks struct {
 		Call          func(fn FunctionID, result Returns[Variant], arg_count int, args Accepts[Variant], err Returns[CallError]) `gd:"on_callable_call"`
 		Validation    func(fn FunctionID) bool                                                                                   `gd:"on_callable_validation"`
 		Free          func(fn FunctionID)                                                                                        `gd:"on_callable_free"`
-		Hash          func(fn FunctionID) int64                                                                                  `gd:"on_callable_hash"`
+		Hash          func(fn FunctionID) uint32                                                                                 `gd:"on_callable_hash"`
 		Compare       func(fn FunctionID, other FunctionID) bool                                                                 `gd:"on_callable_compare"`
 		LessThan      func(fn FunctionID, other FunctionID) bool                                                                 `gd:"on_callable_less_than"`
 		Stringify     func(fn FunctionID, err Returns[CallError]) String                                                         `gd:"on_callable_stringify"`

@@ -12,8 +12,8 @@ import (
 )
 
 type Pointer = uint32
-type Returns[T any] uint32
-type Accepts[T any] uint32
+type Returns[T any] Pointer
+type Accepts[T any] Pointer
 type PackedArray[T byte | int32 | int64 | float32 | float64 | Color.RGBA | Vector2.XY | Vector3.XYZ | Vector4.XYZW | String] [1]uint64
 
 const (

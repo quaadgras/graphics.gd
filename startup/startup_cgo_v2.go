@@ -38,8 +38,8 @@ func go_on_callable_free(p0 C.uintptr_t) {
 }
 
 //export go_on_callable_hash
-func go_on_callable_hash(p0 C.uintptr_t) C.int64_t {
-	return C.int64_t(gdextension.On.Callables.Hash(gdextension.FunctionID(p0)))
+func go_on_callable_hash(p0 C.uintptr_t) C.uint32_t {
+	return C.uint32_t(gdextension.On.Callables.Hash(gdextension.FunctionID(p0)))
 }
 
 //export go_on_callable_compare

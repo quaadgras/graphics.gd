@@ -461,6 +461,7 @@ GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc
         variant_ptr_keyed_setters[i] = gdextension_variant_get_ptr_keyed_setter(v);
         variant_ptr_keyed_getters[i] = gdextension_variant_get_ptr_keyed_getter(v);
     }
+    go_on_init(0);
     return true;
 }
 

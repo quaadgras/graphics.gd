@@ -51,6 +51,9 @@ func generate_gdextension_web_cgo_callbacks() error {
 		}
 		returns := getReturn(fn.Type)
 		if returns != nil {
+			if returns == reflect.TypeFor[int]() {
+				returns = reflect.TypeFor[int32]()
+			}
 			if ctype := ctypeOf(returns); ctype != "" {
 				fmt.Fprintf(h, "%s go_%s(", ctype, name)
 			} else {
@@ -74,8 +77,19 @@ func generate_gdextension_web_cgo_callbacks() error {
 		}
 		fmt.Fprint(h, ") {\n\t")
 		if returns != nil {
+			if returns == reflect.TypeFor[int]() {
+				returns = reflect.TypeFor[int32]()
+			}
 			if ctype := ctypeOf(returns); ctype != "" {
-				fmt.Fprintf(h, "return Go.call<%s", ctype)
+				goType := ctype
+				if ctype == "int64_t" || ctype == "uint64_t" {
+					goType = "double"
+				}
+				cast := ""
+				if goType != ctype {
+					cast = fmt.Sprintf("std::__bit_cast<%s>(", ctype)
+				}
+				fmt.Fprintf(h, "return %sGo.call<%s", cast, goType)
 			} else {
 				return fmt.Errorf("unsupported return type %s for function %s", returns, name)
 			}
@@ -88,6 +102,17 @@ func generate_gdextension_web_cgo_callbacks() error {
 				fmt.Fprintf(h, ", uintptr_t(p%d)", i)
 			} else {
 				fmt.Fprintf(h, ",p%d", i)
+			}
+		}
+		if returns != nil {
+			if ctype := ctypeOf(returns); ctype != "" {
+				goType := ctype
+				if ctype == "int64_t" || ctype == "uint64_t" {
+					goType = "double"
+				}
+				if goType != ctype {
+					fmt.Fprintf(h, ")")
+				}
 			}
 		}
 		fmt.Fprint(h, ");\n")

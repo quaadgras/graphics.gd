@@ -107,37 +107,6 @@ func linkJS(API *gd.API) {
 	API.ClassDB.GetClassTag = func(name gd.StringName) gd.ClassTag {
 		return gd.ClassTag(get_class_tag.Invoke(pointers.Get(name)[0]).Int())
 	}
-	callable_custom_create2 := dlsym("callable_custom_create2")
-	API.Callables.Create = func(fn func(...gd.Variant) (gd.Variant, error)) gd.Callable {
-		var info = js.Global().Get("Object").New()
-		info.Set("call_func", js.FuncOf(func(_ js.Value, js_args []js.Value) any {
-			var argc = js_args[0].Int()
-			var args = make([]gd.Variant, argc)
-			for i := 0; i < argc; i++ {
-				var raw [6]uint32
-				for j := 0; j < len(raw); j++ {
-					raw[j] = uint32(read_result_buffer.Invoke(0, i, j).Int())
-				}
-				args[i] = pointers.Let[gd.Variant](*(*gd.VariantPointers)(unsafe.Pointer(&raw)))
-			}
-			result, err := fn(args...)
-			if err != nil {
-				return 1
-			}
-			raw := pointers.Get(result)
-			buf := *(*[6]uint32)(unsafe.Pointer(&raw))
-			for i := 0; i < len(buf); i++ {
-				write_params_buffer.Invoke(0, 0, i, buf[i])
-			}
-			return 0
-		}))
-		callable_custom_create2.Invoke(info)
-		var raw [4]uint32
-		for i := 0; i < len(raw); i++ {
-			raw[i] = uint32(read_result_buffer.Invoke(0, 0, i).Int())
-		}
-		return pointers.New[gd.Callable](*(*[2]uint64)(unsafe.Pointer(&raw)))
-	}
 	classdb_register_extension_class3 := dlsym("classdb_register_extension_class3")
 	API.ClassDB.RegisterClass = func(library gd.ExtensionToken, name, extends gd.StringName, info_go gd.ClassInterface) {
 		info := js.Global().Get("Object").New()

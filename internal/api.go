@@ -29,10 +29,6 @@ type API struct {
 		SetInstance         func([1]Object, StringName, ObjectInterface)
 		CastTo              func([1]Object, ClassTag) [1]Object
 	}
-	Callables struct {
-		Create func(fn func(...Variant) (Variant, error)) Callable
-		Get    func(Callable) (func(...Variant) (Variant, error), bool)
-	}
 	ClassDB struct {
 		GetClassTag func(StringName) ClassTag
 
