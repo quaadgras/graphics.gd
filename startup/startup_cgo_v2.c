@@ -28,6 +28,7 @@
     #define BUFFER uint32_t
     #define BUFFER_POINTER(s) (char*)(s)
     #define ANY uint32_t
+    #define UINT uint32_t
 #else
     #define UINT64 uint64_t
     #define UINT64_MAKE(v) (v)
@@ -41,6 +42,7 @@
     #define BUFFER char*
     #define BUFFER_POINTER(s) (s)
     #define ANY void*
+    #define UINT uint64_t
 #endif
 
 #define LOAD_PROC_ADDRESS(m_name, m_type) gdextension_##m_name = (m_type)p_get_proc_address(#m_name);
@@ -1123,73 +1125,73 @@ void gd_object_script_placeholder_update(uintptr_t p_placeholder, uintptr_t p_pr
     gdextension_placeholder_script_instance_update((GDExtensionScriptInstanceDataPtr)p_placeholder, (GDExtensionConstTypePtr)&p_properties, (GDExtensionConstTypePtr)&p_values);
 };
 
-uintptr_t gd_packed_byte_array_unsafe(uintptr_t a1, uintptr_t a2) {
+uintptr_t gd_packed_byte_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_byte_array_operator_index(&packed_array[0], 0);
 };
 
-uint8_t gd_packed_byte_array_access(uintptr_t a1, uintptr_t a2, INT i) {
+uint8_t gd_packed_byte_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
     return *(uint8_t *)gdextension_packed_byte_array_operator_index_const(&packed_array[0], i);
 };
 
-uintptr_t gd_packed_color_array_unsafe(uintptr_t a1, uintptr_t a2) {
+uintptr_t gd_packed_color_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_color_array_operator_index(&packed_array[0], 0);
 };
 
-void gd_packed_color_array_access(uintptr_t a1, uintptr_t a2, INT i, ANY result) {
+void gd_packed_color_array_access(UINT a1, UINT a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
     const float *color = (float *)gdextension_packed_color_array_operator_index_const(&packed_array[0], i);
     memcpy((float*)result, color, sizeof(float)*4);
 };
 
-uintptr_t gd_packed_float32_array_unsafe(uintptr_t a1, uintptr_t a2) {
+uintptr_t gd_packed_float32_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_float32_array_operator_index(&packed_array[0], 0);
 };
 
-float gd_packed_float32_array_access(uintptr_t a1, uintptr_t a2, INT i) {
+float gd_packed_float32_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
     return *(float *)gdextension_packed_float32_array_operator_index_const(&packed_array[0], i);
 };
 
-uintptr_t gd_packed_float64_array_unsafe(uintptr_t a1, uintptr_t a2) {
+uintptr_t gd_packed_float64_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_float64_array_operator_index(&packed_array[0], 0);
 };
 
-double gd_packed_float64_array_access(uintptr_t a1, uintptr_t a2, INT i) {
+double gd_packed_float64_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
     return *(double *)gdextension_packed_float64_array_operator_index_const(&packed_array[0], i);
 };
 
-uintptr_t gd_packed_int32_array_unsafe(uintptr_t a1, uintptr_t a2) {
+uintptr_t gd_packed_int32_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_int32_array_operator_index(&packed_array[0], 0);
 };
 
-int32_t gd_packed_int32_array_access(uintptr_t a1, uintptr_t a2, INT i) {
+int32_t gd_packed_int32_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
     return *(int32_t *)gdextension_packed_int32_array_operator_index_const(&packed_array[0], i);
 };
 
-uintptr_t gd_packed_int64_array_unsafe(uintptr_t a1, uintptr_t a2) {
+uintptr_t gd_packed_int64_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_int64_array_operator_index(&packed_array[0], 0);
 };
 
-INT64 gd_packed_int64_array_access(uintptr_t a1, uintptr_t a2, INT i) {
+INT64 gd_packed_int64_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
     return INT64_MAKE(*(int64_t *)gdextension_packed_int64_array_operator_index_const(&packed_array[0], i));
 };
 
-uintptr_t gd_packed_string_array_unsafe(uintptr_t a1, uintptr_t a2) {
+uintptr_t gd_packed_string_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_string_array_operator_index(&packed_array[0], 0);
 };
 
-uintptr_t gd_packed_string_array_access(uintptr_t a1, uintptr_t a2, INT i) {
+uintptr_t gd_packed_string_array_access(UINT a1, UINT a2, INT i) {
     uintptr_t packed_array[2] = {a1, a2};
     return *(uintptr_t*)gdextension_packed_string_array_operator_index_const(&packed_array[0], i);
 };
@@ -1206,34 +1208,34 @@ void gd_array_get(uintptr_t a, INT i, ANY result) {
     memcpy((uint64_t*)result, packed, sizeof(uint64_t)*3);
 };
 
-uintptr_t gd_packed_vector2_array_unsafe(uintptr_t a1, uintptr_t a2) {
+uintptr_t gd_packed_vector2_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_vector2_array_operator_index(&packed_array[0], 0);
 };
 
-void gd_packed_vector2_array_access(uintptr_t a1, uintptr_t a2, INT i, ANY result) {
+void gd_packed_vector2_array_access(UINT a1, UINT a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
     const float *vector = (const float *)gdextension_packed_vector2_array_operator_index_const(&packed_array[0], i);
     memcpy((float*)result, vector, sizeof(float)*2);
 };
 
-uintptr_t gd_packed_vector3_array_unsafe(uintptr_t a1, uintptr_t a2) {
+uintptr_t gd_packed_vector3_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_vector3_array_operator_index(&packed_array[0], 0);
 };
 
-void gd_packed_vector3_array_access(uintptr_t a1, uintptr_t a2, INT i, ANY result) {
+void gd_packed_vector3_array_access(UINT a1, UINT a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
     const float *vector = (const float *)gdextension_packed_vector3_array_operator_index_const(&packed_array[0], i);
     memcpy((float*)result, vector, sizeof(float)*3);
 };
 
-uintptr_t gd_packed_vector4_array_unsafe(uintptr_t a1, uintptr_t a2) {
+uintptr_t gd_packed_vector4_array_unsafe(UINT a1, UINT a2) {
     uintptr_t packed_array[2] = {a1, a2};
     return (uintptr_t)gdextension_packed_vector4_array_operator_index(&packed_array[0], 0);
 };
 
-void gd_packed_vector4_array_access(uintptr_t a1, uintptr_t a2, INT i, ANY result) {
+void gd_packed_vector4_array_access(UINT a1, UINT a2, INT i, ANY result) {
     uintptr_t packed_array[2] = {a1, a2};
     const float *vector = (const float *)gdextension_packed_vector4_array_operator_index_const(&packed_array[0], i);
     memcpy((float *)result, vector, sizeof(float)*4);

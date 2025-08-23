@@ -2,7 +2,7 @@ module graphics.gd
 
 go 1.24.0
 
-require runtime.link v0.0.0-20250131052539-992a5f0be9db
+require runtime.link v0.0.0-20250814043127-466c6970c4a5
 
 require (
 	github.com/konoui/lipo v0.10.0
