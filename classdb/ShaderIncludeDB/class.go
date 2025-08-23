@@ -70,6 +70,24 @@ This object contains shader fragments from Godot's internal shaders. These can b
 */
 type Instance [1]gdclass.ShaderIncludeDB
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	list_built_in_include_files gdextension.MethodForClass `hash:"2981934095"`
+	has_built_in_include_file   gdextension.MethodForClass `hash:"2323990056"`
+	get_built_in_include_file   gdextension.MethodForClass `hash:"1703090593"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ShaderIncludeDB")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -109,6 +127,20 @@ type Advanced = class
 type class [1]gdclass.ShaderIncludeDB
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ShaderIncludeDB)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ShaderIncludeDB)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -118,7 +150,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ShaderIncludeDB"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ShaderIncludeDB)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -129,7 +161,7 @@ Returns a list of built-in include files that are currently registered.
 */
 //go:nosplit
 func (self class) ListBuiltInIncludeFiles() Packed.Strings { //gd:ShaderIncludeDB.list_built_in_include_files
-	var r_ret = gdextension.CallStatic[gd.PackedPointers](gdextension.MethodForClass(gd.Global.Methods.ShaderIncludeDB.Bind_list_built_in_include_files), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.CallStatic[gd.PackedPointers](methods.list_built_in_include_files, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -139,7 +171,7 @@ Returns [code]true[/code] if an include file with this name exists.
 */
 //go:nosplit
 func (self class) HasBuiltInIncludeFile(filename String.Readable) bool { //gd:ShaderIncludeDB.has_built_in_include_file
-	var r_ret = gdextension.CallStatic[bool](gdextension.MethodForClass(gd.Global.Methods.ShaderIncludeDB.Bind_has_built_in_include_file), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))}))
+	var r_ret = gdextension.CallStatic[bool](methods.has_built_in_include_file, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))}))
 	var ret = r_ret
 	return ret
 }
@@ -149,7 +181,7 @@ Returns the code for the built-in shader fragment. You can also access this in y
 */
 //go:nosplit
 func (self class) GetBuiltInIncludeFile(filename String.Readable) String.Readable { //gd:ShaderIncludeDB.get_built_in_include_file
-	var r_ret = gdextension.CallStatic[gdextension.String](gdextension.MethodForClass(gd.Global.Methods.ShaderIncludeDB.Bind_get_built_in_include_file), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))}))
+	var r_ret = gdextension.CallStatic[gdextension.String](methods.get_built_in_include_file, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -171,7 +203,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ShaderIncludeDB", func(ptr gd.Object) any {
-		return [1]gdclass.ShaderIncludeDB{*(*gdclass.ShaderIncludeDB)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ShaderIncludeDB", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -73,6 +73,30 @@ Abstract base class for all joints in 2D physics. 2D joints bind together two ph
 */
 type Instance [1]gdclass.Joint2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_node_a                       gdextension.MethodForClass `hash:"1348162250"`
+	get_node_a                       gdextension.MethodForClass `hash:"4075236667"`
+	set_node_b                       gdextension.MethodForClass `hash:"1348162250"`
+	get_node_b                       gdextension.MethodForClass `hash:"4075236667"`
+	set_bias                         gdextension.MethodForClass `hash:"373806689"`
+	get_bias                         gdextension.MethodForClass `hash:"1740695150"`
+	set_exclude_nodes_from_collision gdextension.MethodForClass `hash:"2586408642"`
+	get_exclude_nodes_from_collision gdextension.MethodForClass `hash:"36873697"`
+	get_rid                          gdextension.MethodForClass `hash:"2944877500"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Joint2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -95,6 +119,20 @@ type Advanced = class
 type class [1]gdclass.Joint2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Joint2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Joint2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -104,7 +142,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Joint2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Joint2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -144,48 +182,48 @@ func (self Instance) SetDisableCollision(value bool) {
 
 //go:nosplit
 func (self class) SetNodeA(node Path.ToNode) { //gd:Joint2D.set_node_a
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint2D.Bind_set_node_a), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_a, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))}))
 }
 
 //go:nosplit
 func (self class) GetNodeA() Path.ToNode { //gd:Joint2D.get_node_a
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint2D.Bind_get_node_a), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_a, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNodeB(node Path.ToNode) { //gd:Joint2D.set_node_b
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint2D.Bind_set_node_b), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_b, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))}))
 }
 
 //go:nosplit
 func (self class) GetNodeB() Path.ToNode { //gd:Joint2D.get_node_b
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint2D.Bind_get_node_b), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_b, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBias(bias float64) { //gd:Joint2D.set_bias
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint2D.Bind_set_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bias, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
 }
 
 //go:nosplit
 func (self class) GetBias() float64 { //gd:Joint2D.get_bias
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint2D.Bind_get_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bias, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExcludeNodesFromCollision(enable bool) { //gd:Joint2D.set_exclude_nodes_from_collision
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint2D.Bind_set_exclude_nodes_from_collision), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_nodes_from_collision, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetExcludeNodesFromCollision() bool { //gd:Joint2D.get_exclude_nodes_from_collision
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint2D.Bind_get_exclude_nodes_from_collision), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_nodes_from_collision, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -195,7 +233,7 @@ Returns the joint's internal [RID] from the [PhysicsServer2D].
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:Joint2D.get_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Joint2D.Bind_get_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -230,5 +268,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Joint2D", func(ptr gd.Object) any { return [1]gdclass.Joint2D{*(*gdclass.Joint2D)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Joint2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

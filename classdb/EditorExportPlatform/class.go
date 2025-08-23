@@ -72,6 +72,48 @@ Used in scripting by [EditorExportPlugin] to configure platform-specific customi
 */
 type Instance [1]gdclass.EditorExportPlatform
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_os_name               gdextension.MethodForClass `hash:"201670096"`
+	create_preset             gdextension.MethodForClass `hash:"2572397818"`
+	find_export_template      gdextension.MethodForClass `hash:"2248993622"`
+	get_current_presets       gdextension.MethodForClass `hash:"3995934104"`
+	save_pack                 gdextension.MethodForClass `hash:"3420080977"`
+	save_zip                  gdextension.MethodForClass `hash:"1485052307"`
+	save_pack_patch           gdextension.MethodForClass `hash:"1485052307"`
+	save_zip_patch            gdextension.MethodForClass `hash:"1485052307"`
+	gen_export_flags          gdextension.MethodForClass `hash:"2976483270"`
+	export_project_files      gdextension.MethodForClass `hash:"1063735070"`
+	export_project            gdextension.MethodForClass `hash:"3879521245"`
+	export_pack               gdextension.MethodForClass `hash:"3879521245"`
+	export_zip                gdextension.MethodForClass `hash:"3879521245"`
+	export_pack_patch         gdextension.MethodForClass `hash:"608021658"`
+	export_zip_patch          gdextension.MethodForClass `hash:"608021658"`
+	clear_messages            gdextension.MethodForClass `hash:"3218959716"`
+	add_message               gdextension.MethodForClass `hash:"782767225"`
+	get_message_count         gdextension.MethodForClass `hash:"3905245786"`
+	get_message_type          gdextension.MethodForClass `hash:"2667287293"`
+	get_message_category      gdextension.MethodForClass `hash:"844755477"`
+	get_message_text          gdextension.MethodForClass `hash:"844755477"`
+	get_worst_message_type    gdextension.MethodForClass `hash:"2580557466"`
+	ssh_run_on_remote         gdextension.MethodForClass `hash:"3163734797"`
+	ssh_run_on_remote_no_wait gdextension.MethodForClass `hash:"3606362233"`
+	ssh_push_to_remote        gdextension.MethodForClass `hash:"218756989"`
+	get_internal_export_files gdextension.MethodForClass `hash:"89550086"`
+	get_forced_export_files   gdextension.MethodForClass `hash:"2981934095"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorExportPlatform")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.EditorExportPlatform
@@ -354,6 +396,20 @@ type Advanced = class
 type class [1]gdclass.EditorExportPlatform
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorExportPlatform)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorExportPlatform)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -363,7 +419,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorExportPlatform"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorExportPlatform)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -375,7 +431,7 @@ Returns the name of the export operating system handled by this [EditorExportPla
 */
 //go:nosplit
 func (self class) GetOsName() String.Readable { //gd:EditorExportPlatform.get_os_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_get_os_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_os_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -385,7 +441,7 @@ Create a new preset for this platform.
 */
 //go:nosplit
 func (self class) CreatePreset() [1]gdclass.EditorExportPreset { //gd:EditorExportPlatform.create_preset
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_create_preset), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_preset, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorExportPreset{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorExportPreset](r_ret)}
 	return ret
 }
@@ -395,7 +451,7 @@ Locates export template for the platform, and returns [Dictionary] with the foll
 */
 //go:nosplit
 func (self class) FindExportTemplate(template_file_name String.Readable) Dictionary.Any { //gd:EditorExportPlatform.find_export_template
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_find_export_template), gdextension.SizeDictionary|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ template_file_name gdextension.String }{pointers.Get(gd.InternalString(template_file_name))}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.find_export_template, gdextension.SizeDictionary|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ template_file_name gdextension.String }{pointers.Get(gd.InternalString(template_file_name))}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -405,7 +461,7 @@ Returns array of [EditorExportPreset]s for this platform.
 */
 //go:nosplit
 func (self class) GetCurrentPresets() Array.Any { //gd:EditorExportPlatform.get_current_presets
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_get_current_presets), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_current_presets, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -416,7 +472,7 @@ If [param embed] is [code]true[/code], PCK content is appended to the end of [pa
 */
 //go:nosplit
 func (self class) SavePack(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, embed bool) Dictionary.Any { //gd:EditorExportPlatform.save_pack
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_save_pack), gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.save_pack, gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		preset gdextension.Object
 		debug  bool
 		path   gdextension.String
@@ -431,7 +487,7 @@ Saves ZIP archive and returns [Dictionary] with the following keys: [code]result
 */
 //go:nosplit
 func (self class) SaveZip(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable) Dictionary.Any { //gd:EditorExportPlatform.save_zip
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_save_zip), gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.save_zip, gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		preset gdextension.Object
 		debug  bool
 		path   gdextension.String
@@ -445,7 +501,7 @@ Saves patch PCK archive and returns [Dictionary] with the following keys: [code]
 */
 //go:nosplit
 func (self class) SavePackPatch(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable) Dictionary.Any { //gd:EditorExportPlatform.save_pack_patch
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_save_pack_patch), gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.save_pack_patch, gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		preset gdextension.Object
 		debug  bool
 		path   gdextension.String
@@ -459,7 +515,7 @@ Saves patch ZIP archive and returns [Dictionary] with the following keys: [code]
 */
 //go:nosplit
 func (self class) SaveZipPatch(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable) Dictionary.Any { //gd:EditorExportPlatform.save_zip_patch
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_save_zip_patch), gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.save_zip_patch, gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		preset gdextension.Object
 		debug  bool
 		path   gdextension.String
@@ -473,7 +529,7 @@ Generates array of command line arguments for the default export templates for t
 */
 //go:nosplit
 func (self class) GenExportFlags(flags DebugFlags) Packed.Strings { //gd:EditorExportPlatform.gen_export_flags
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_gen_export_flags), gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags DebugFlags }{flags}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.gen_export_flags, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags DebugFlags }{flags}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -486,7 +542,7 @@ Exports project files for the specified preset. This method can be used to imple
 */
 //go:nosplit
 func (self class) ExportProjectFiles(preset [1]gdclass.EditorExportPreset, debug bool, save_cb Callable.Function, shared_cb Callable.Function) Error.Code { //gd:EditorExportPlatform.export_project_files
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_export_project_files), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.export_project_files, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16), unsafe.Pointer(&struct {
 		preset    gdextension.Object
 		debug     bool
 		save_cb   gdextension.Callable
@@ -501,7 +557,7 @@ Creates a full project at [param path] for the specified [param preset].
 */
 //go:nosplit
 func (self class) ExportProject(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags DebugFlags) Error.Code { //gd:EditorExportPlatform.export_project
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_export_project), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.export_project, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		preset gdextension.Object
 		debug  bool
 		path   gdextension.String
@@ -516,7 +572,7 @@ Creates a PCK archive at [param path] for the specified [param preset].
 */
 //go:nosplit
 func (self class) ExportPack(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags DebugFlags) Error.Code { //gd:EditorExportPlatform.export_pack
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_export_pack), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.export_pack, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		preset gdextension.Object
 		debug  bool
 		path   gdextension.String
@@ -531,7 +587,7 @@ Create a ZIP archive at [param path] for the specified [param preset].
 */
 //go:nosplit
 func (self class) ExportZip(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags DebugFlags) Error.Code { //gd:EditorExportPlatform.export_zip
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_export_zip), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.export_zip, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		preset gdextension.Object
 		debug  bool
 		path   gdextension.String
@@ -547,7 +603,7 @@ Creates a patch PCK archive at [param path] for the specified [param preset], co
 */
 //go:nosplit
 func (self class) ExportPackPatch(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, patches Packed.Strings, flags DebugFlags) Error.Code { //gd:EditorExportPlatform.export_pack_patch
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_export_pack_patch), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.export_pack_patch, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		preset  gdextension.Object
 		debug   bool
 		path    gdextension.String
@@ -564,7 +620,7 @@ Create a patch ZIP archive at [param path] for the specified [param preset], con
 */
 //go:nosplit
 func (self class) ExportZipPatch(preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, patches Packed.Strings, flags DebugFlags) Error.Code { //gd:EditorExportPlatform.export_zip_patch
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_export_zip_patch), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.export_zip_patch, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		preset  gdextension.Object
 		debug   bool
 		path    gdextension.String
@@ -580,7 +636,7 @@ Clears the export log.
 */
 //go:nosplit
 func (self class) ClearMessages() { //gd:EditorExportPlatform.clear_messages
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_clear_messages), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_messages, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -588,7 +644,7 @@ Adds a message to the export log that will be displayed when exporting ends.
 */
 //go:nosplit
 func (self class) AddMessage(atype ExportMessageType, category String.Readable, message String.Readable) { //gd:EditorExportPlatform.add_message
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_add_message), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_message, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		atype    ExportMessageType
 		category gdextension.String
 		message  gdextension.String
@@ -600,7 +656,7 @@ Returns number of messages in the export log.
 */
 //go:nosplit
 func (self class) GetMessageCount() int64 { //gd:EditorExportPlatform.get_message_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_get_message_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_message_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -610,7 +666,7 @@ Returns message type, for the message with [param index].
 */
 //go:nosplit
 func (self class) GetMessageType(index int64) ExportMessageType { //gd:EditorExportPlatform.get_message_type
-	var r_ret = gdextension.Call[ExportMessageType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_get_message_type), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[ExportMessageType](gd.ObjectChecked(self.AsObject()), methods.get_message_type, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -620,7 +676,7 @@ Returns message category, for the message with [param index].
 */
 //go:nosplit
 func (self class) GetMessageCategory(index int64) String.Readable { //gd:EditorExportPlatform.get_message_category
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_get_message_category), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_message_category, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -630,7 +686,7 @@ Returns message text, for the message with [param index].
 */
 //go:nosplit
 func (self class) GetMessageText(index int64) String.Readable { //gd:EditorExportPlatform.get_message_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_get_message_text), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_message_text, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -640,7 +696,7 @@ Returns most severe message type currently present in the export log.
 */
 //go:nosplit
 func (self class) GetWorstMessageType() ExportMessageType { //gd:EditorExportPlatform.get_worst_message_type
-	var r_ret = gdextension.Call[ExportMessageType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_get_worst_message_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ExportMessageType](gd.ObjectChecked(self.AsObject()), methods.get_worst_message_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -650,7 +706,7 @@ Executes specified command on the remote host via SSH protocol and returns comma
 */
 //go:nosplit
 func (self class) SshRunOnRemote(host String.Readable, port String.Readable, ssh_arg Packed.Strings, cmd_args String.Readable, output Array.Any, port_fwd int64) Error.Code { //gd:EditorExportPlatform.ssh_run_on_remote
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_ssh_run_on_remote), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16)|(gdextension.SizeArray<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.ssh_run_on_remote, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16)|(gdextension.SizeArray<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
 		host     gdextension.String
 		port     gdextension.String
 		ssh_arg  gdextension.PackedArray[gdextension.String]
@@ -667,7 +723,7 @@ Executes specified command on the remote host via SSH protocol and returns proce
 */
 //go:nosplit
 func (self class) SshRunOnRemoteNoWait(host String.Readable, port String.Readable, ssh_args Packed.Strings, cmd_args String.Readable, port_fwd int64) int64 { //gd:EditorExportPlatform.ssh_run_on_remote_no_wait
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_ssh_run_on_remote_no_wait), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.ssh_run_on_remote_no_wait, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		host     gdextension.String
 		port     gdextension.String
 		ssh_args gdextension.PackedArray[gdextension.String]
@@ -683,7 +739,7 @@ Uploads specified file over SCP protocol to the remote host.
 */
 //go:nosplit
 func (self class) SshPushToRemote(host String.Readable, port String.Readable, scp_args Packed.Strings, src_file String.Readable, dst_file String.Readable) Error.Code { //gd:EditorExportPlatform.ssh_push_to_remote
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_ssh_push_to_remote), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16)|(gdextension.SizeString<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.ssh_push_to_remote, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16)|(gdextension.SizeString<<20), unsafe.Pointer(&struct {
 		host     gdextension.String
 		port     gdextension.String
 		scp_args gdextension.PackedArray[gdextension.String]
@@ -699,7 +755,7 @@ Returns additional files that should always be exported regardless of preset con
 */
 //go:nosplit
 func (self class) GetInternalExportFiles(preset [1]gdclass.EditorExportPreset, debug bool) Dictionary.Any { //gd:EditorExportPlatform.get_internal_export_files
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_get_internal_export_files), gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_internal_export_files, gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		preset gdextension.Object
 		debug  bool
 	}{gdextension.Object(gd.ObjectChecked(preset[0].AsObject())), debug}))
@@ -712,7 +768,7 @@ Returns array of core file names that always should be exported regardless of pr
 */
 //go:nosplit
 func (self class) GetForcedExportFiles() Packed.Strings { //gd:EditorExportPlatform.get_forced_export_files
-	var r_ret = gdextension.CallStatic[gd.PackedPointers](gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatform.Bind_get_forced_export_files), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.CallStatic[gd.PackedPointers](methods.get_forced_export_files, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -743,9 +799,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorExportPlatform", func(ptr gd.Object) any {
-		return [1]gdclass.EditorExportPlatform{*(*gdclass.EditorExportPlatform)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorExportPlatform", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type ExportMessageType int //gd:EditorExportPlatform.ExportMessageType

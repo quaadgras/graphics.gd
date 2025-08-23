@@ -74,6 +74,24 @@ If there is no active [AudioListener2D] in the current [Viewport], center of the
 */
 type Instance [1]gdclass.AudioListener2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	make_current  gdextension.MethodForClass `hash:"3218959716"`
+	clear_current gdextension.MethodForClass `hash:"3218959716"`
+	is_current    gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioListener2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -111,6 +129,20 @@ type Advanced = class
 type class [1]gdclass.AudioListener2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioListener2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioListener2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -120,7 +152,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioListener2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioListener2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -132,7 +164,7 @@ This method will have no effect if the [AudioListener2D] is not added to [SceneT
 */
 //go:nosplit
 func (self class) MakeCurrent() { //gd:AudioListener2D.make_current
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioListener2D.Bind_make_current), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_current, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -140,7 +172,7 @@ Disables the [AudioListener2D]. If it's not set as current, this method will hav
 */
 //go:nosplit
 func (self class) ClearCurrent() { //gd:AudioListener2D.clear_current
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioListener2D.Bind_clear_current), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_current, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -148,7 +180,7 @@ Returns [code]true[/code] if this [AudioListener2D] is currently active.
 */
 //go:nosplit
 func (self class) IsCurrent() bool { //gd:AudioListener2D.is_current
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioListener2D.Bind_is_current), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -183,7 +215,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioListener2D", func(ptr gd.Object) any {
-		return [1]gdclass.AudioListener2D{*(*gdclass.AudioListener2D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioListener2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

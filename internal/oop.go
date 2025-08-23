@@ -121,13 +121,12 @@ func (self Object) Free() {
 	if !ok {
 		return
 	}
-	this := [1]Object{pointers.Raw[Object](raw)}
 	//fmt.Println("FREE ", pointers.Trio[Object](self), this[0].GetClass().String())
 	//	fmt.Println(runtime.Caller(2))
 	// Important that we don't destroy RefCounted objects, instead
 	// they should be unreferenced instead.
-	ref := Global.Object.CastTo(this, Global.refCountedClassTag)
-	if ref != ([1]Object{}) {
+	ref := gdextension.Host.Objects.Cast(gdextension.Object(raw[0]), Global.refCountedClassTag)
+	if ref != 0 {
 		if (*(*RefCounted)(unsafe.Pointer(&ref))).Unreference() {
 			gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
 		}
@@ -175,44 +174,6 @@ func classNameOf(rtype reflect.Type) string {
 	return ""
 }
 
-// As attempts to cast the given class to T, returning true
-// if the cast was successful.
-func As[T IsClass](class IsClass) (T, bool) {
-	/*if ref, ok := Global.Instances[pointers.Get(class.AsObject())[0]].(T); ok {
-	extension := any(ref).(ExtensionClass)
-	extension.SetPointer(class.AsObject())
-	return ref, true
-	}*/
-	var zero T
-	var rtype = reflect.TypeOf([0]T{}).Elem()
-	if rtype.Kind() == reflect.Pointer {
-		return zero, false
-	}
-	var classtag = Global.ClassDB.GetClassTag(NewStringName(classNameOf(rtype)))
-	casted := Global.Object.CastTo(class.AsObject(), classtag)
-	if casted != ([1]Object{}) && pointers.Get(casted[0]) != ([3]uint64{}) {
-		return (*(*T)(unsafe.Pointer(&casted))), true
-	}
-	return zero, false
-}
-
-func as[T any](v Variant) T {
-	var zero T
-	val := v.Interface()
-	if val == nil {
-		return zero
-	}
-	if obj, ok := val.(IsClass); ok {
-		var classtag = Global.ClassDB.GetClassTag(obj.AsObject()[0].GetClass().StringName())
-		casted := Global.Object.CastTo(obj.AsObject(), classtag)
-		if casted != ([1]Object{}) && pointers.Get(casted[0]) != ([3]uint64{}) {
-			any(&zero).(PointerToClass).SetPointer(casted)
-		}
-		return zero
-	}
-	return val.(T)
-}
-
 type Singleton interface {
 	IsSingleton()
 }
@@ -231,4 +192,8 @@ type PointerToClass interface {
 type IsClass interface {
 	Virtual(string) reflect.Value
 	AsObject() [1]Object
+}
+
+type IsClassCastable interface {
+	SetObject([1]Object) bool
 }

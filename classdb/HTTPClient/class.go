@@ -81,6 +81,43 @@ For more information on HTTP, see [url=https://developer.mozilla.org/en-US/docs/
 */
 type Instance [1]gdclass.HTTPClient
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	connect_to_host                    gdextension.MethodForClass `hash:"504540374"`
+	set_connection                     gdextension.MethodForClass `hash:"3281897016"`
+	get_connection                     gdextension.MethodForClass `hash:"2741655269"`
+	request_raw                        gdextension.MethodForClass `hash:"540161961"`
+	request                            gdextension.MethodForClass `hash:"3778990155"`
+	close                              gdextension.MethodForClass `hash:"3218959716"`
+	has_response                       gdextension.MethodForClass `hash:"36873697"`
+	is_response_chunked                gdextension.MethodForClass `hash:"36873697"`
+	get_response_code                  gdextension.MethodForClass `hash:"3905245786"`
+	get_response_headers               gdextension.MethodForClass `hash:"2981934095"`
+	get_response_headers_as_dictionary gdextension.MethodForClass `hash:"2382534195"`
+	get_response_body_length           gdextension.MethodForClass `hash:"3905245786"`
+	read_response_body_chunk           gdextension.MethodForClass `hash:"2115431945"`
+	set_read_chunk_size                gdextension.MethodForClass `hash:"1286410249"`
+	get_read_chunk_size                gdextension.MethodForClass `hash:"3905245786"`
+	set_blocking_mode                  gdextension.MethodForClass `hash:"2586408642"`
+	is_blocking_mode_enabled           gdextension.MethodForClass `hash:"36873697"`
+	get_status                         gdextension.MethodForClass `hash:"1426656811"`
+	poll                               gdextension.MethodForClass `hash:"166280745"`
+	set_http_proxy                     gdextension.MethodForClass `hash:"2956805083"`
+	set_https_proxy                    gdextension.MethodForClass `hash:"2956805083"`
+	query_string_from_dict             gdextension.MethodForClass `hash:"2538086567"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("HTTPClient")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.HTTPClient
@@ -309,6 +346,20 @@ type Advanced = class
 type class [1]gdclass.HTTPClient
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.HTTPClient)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.HTTPClient)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -318,7 +369,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("HTTPClient"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.HTTPClient)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -355,7 +406,7 @@ If no [param port] is specified (or [code]-1[/code] is used), it is automaticall
 */
 //go:nosplit
 func (self class) ConnectToHost(host String.Readable, port int64, tls_options [1]gdclass.TLSOptions) Error.Code { //gd:HTTPClient.connect_to_host
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_connect_to_host), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		host        gdextension.String
 		port        int64
 		tls_options gdextension.Object
@@ -366,12 +417,12 @@ func (self class) ConnectToHost(host String.Readable, port int64, tls_options [1
 
 //go:nosplit
 func (self class) SetConnection(connection [1]gdclass.StreamPeer) { //gd:HTTPClient.set_connection
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_set_connection), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ connection gdextension.Object }{gdextension.Object(gd.ObjectChecked(connection[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ connection gdextension.Object }{gdextension.Object(gd.ObjectChecked(connection[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetConnection() [1]gdclass.StreamPeer { //gd:HTTPClient.get_connection
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_get_connection), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_connection, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.StreamPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeer](r_ret)}
 	return ret
 }
@@ -384,7 +435,7 @@ Sends the body data raw, as a byte array and does not encode it in any way.
 */
 //go:nosplit
 func (self class) RequestRaw(method Method, url String.Readable, headers Packed.Strings, body Packed.Bytes) Error.Code { //gd:HTTPClient.request_raw
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_request_raw), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.request_raw, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16), unsafe.Pointer(&struct {
 		method  Method
 		url     gdextension.String
 		headers gdextension.PackedArray[gdextension.String]
@@ -417,7 +468,7 @@ var result = new HttpClient().Request(HttpClient.Method.Post, "index.php", heade
 */
 //go:nosplit
 func (self class) Request(method Method, url String.Readable, headers Packed.Strings, body String.Readable) Error.Code { //gd:HTTPClient.request
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_request), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.request, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
 		method  Method
 		url     gdextension.String
 		headers gdextension.PackedArray[gdextension.String]
@@ -432,7 +483,7 @@ Closes the current connection, allowing reuse of this [HTTPClient].
 */
 //go:nosplit
 func (self class) Close() { //gd:HTTPClient.close
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_close), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -440,7 +491,7 @@ If [code]true[/code], this [HTTPClient] has a response available.
 */
 //go:nosplit
 func (self class) HasResponse() bool { //gd:HTTPClient.has_response
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_has_response), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_response, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -450,7 +501,7 @@ If [code]true[/code], this [HTTPClient] has a response that is chunked.
 */
 //go:nosplit
 func (self class) IsResponseChunked() bool { //gd:HTTPClient.is_response_chunked
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_is_response_chunked), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_response_chunked, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -460,7 +511,7 @@ Returns the response's HTTP status code.
 */
 //go:nosplit
 func (self class) GetResponseCode() int64 { //gd:HTTPClient.get_response_code
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_get_response_code), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_response_code, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -470,7 +521,7 @@ Returns the response headers.
 */
 //go:nosplit
 func (self class) GetResponseHeaders() Packed.Strings { //gd:HTTPClient.get_response_headers
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_get_response_headers), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_response_headers, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -486,7 +537,7 @@ Returns all response headers as a [Dictionary]. Each entry is composed by the he
 */
 //go:nosplit
 func (self class) GetResponseHeadersAsDictionary() Dictionary.Any { //gd:HTTPClient.get_response_headers_as_dictionary
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_get_response_headers_as_dictionary), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_response_headers_as_dictionary, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -498,7 +549,7 @@ Returns the response's body length.
 */
 //go:nosplit
 func (self class) GetResponseBodyLength() int64 { //gd:HTTPClient.get_response_body_length
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_get_response_body_length), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_response_body_length, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -508,31 +559,31 @@ Reads one chunk from the response.
 */
 //go:nosplit
 func (self class) ReadResponseBodyChunk() Packed.Bytes { //gd:HTTPClient.read_response_body_chunk
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_read_response_body_chunk), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.read_response_body_chunk, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetReadChunkSize(bytes int64) { //gd:HTTPClient.set_read_chunk_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_set_read_chunk_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bytes int64 }{bytes}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_read_chunk_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bytes int64 }{bytes}))
 }
 
 //go:nosplit
 func (self class) GetReadChunkSize() int64 { //gd:HTTPClient.get_read_chunk_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_get_read_chunk_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_read_chunk_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlockingMode(enabled bool) { //gd:HTTPClient.set_blocking_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_set_blocking_mode), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blocking_mode, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsBlockingModeEnabled() bool { //gd:HTTPClient.is_blocking_mode_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_is_blocking_mode_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_blocking_mode_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -542,7 +593,7 @@ Returns a [enum Status] constant. Need to call [method poll] in order to get sta
 */
 //go:nosplit
 func (self class) GetStatus() Status { //gd:HTTPClient.get_status
-	var r_ret = gdextension.Call[Status](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_get_status), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Status](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -552,7 +603,7 @@ This needs to be called in order to have any request processed. Check results wi
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:HTTPClient.poll
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_poll), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -563,7 +614,7 @@ The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
 func (self class) SetHttpProxy(host String.Readable, port int64) { //gd:HTTPClient.set_http_proxy
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_set_http_proxy), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_http_proxy, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		host gdextension.String
 		port int64
 	}{pointers.Get(gd.InternalString(host)), port}))
@@ -575,7 +626,7 @@ The proxy server is unset if [param host] is empty or [param port] is -1.
 */
 //go:nosplit
 func (self class) SetHttpsProxy(host String.Readable, port int64) { //gd:HTTPClient.set_https_proxy
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_set_https_proxy), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_https_proxy, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		host gdextension.String
 		port int64
 	}{pointers.Get(gd.InternalString(host)), port}))
@@ -616,7 +667,7 @@ string queryString = httpClient.QueryStringFromDict(fields);
 */
 //go:nosplit
 func (self class) QueryStringFromDict(fields Dictionary.Any) String.Readable { //gd:HTTPClient.query_string_from_dict
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HTTPClient.Bind_query_string_from_dict), gdextension.SizeString|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ fields gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(fields))}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.query_string_from_dict, gdextension.SizeString|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ fields gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(fields))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -645,7 +696,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("HTTPClient", func(ptr gd.Object) any { return [1]gdclass.HTTPClient{*(*gdclass.HTTPClient)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("HTTPClient", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Method int //gd:HTTPClient.Method

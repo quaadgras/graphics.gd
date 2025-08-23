@@ -74,6 +74,25 @@ Translated to [code]uniform vec4[/code] in the shader language.
 */
 type Instance [1]gdclass.VisualShaderNodeVec4Parameter
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_default_value_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_default_value_enabled  gdextension.MethodForClass `hash:"36873697"`
+	set_default_value         gdextension.MethodForClass `hash:"643568085"`
+	get_default_value         gdextension.MethodForClass `hash:"2435802345"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VisualShaderNodeVec4Parameter")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +108,20 @@ type Advanced = class
 type class [1]gdclass.VisualShaderNodeVec4Parameter
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeVec4Parameter)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeVec4Parameter)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +131,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShaderNodeVec4Parameter"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisualShaderNodeVec4Parameter)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -123,24 +156,24 @@ func (self Instance) SetDefaultValue(value Vector4.XYZW) {
 
 //go:nosplit
 func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeVec4Parameter.set_default_value_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Parameter.Bind_set_default_value_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeVec4Parameter.is_default_value_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Parameter.Bind_is_default_value_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_default_value_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultValue(value Vector4.XYZW) { //gd:VisualShaderNodeVec4Parameter.set_default_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Parameter.Bind_set_default_value), 0|(gdextension.SizeVector4<<4), unsafe.Pointer(&struct{ value Vector4.XYZW }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value, 0|(gdextension.SizeVector4<<4), unsafe.Pointer(&struct{ value Vector4.XYZW }{value}))
 }
 
 //go:nosplit
 func (self class) GetDefaultValue() Vector4.XYZW { //gd:VisualShaderNodeVec4Parameter.get_default_value
-	var r_ret = gdextension.Call[Vector4.XYZW](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeVec4Parameter.Bind_get_default_value), gdextension.SizeVector4, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector4.XYZW](gd.ObjectChecked(self.AsObject()), methods.get_default_value, gdextension.SizeVector4, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -200,7 +233,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisualShaderNodeVec4Parameter", func(ptr gd.Object) any {
-		return [1]gdclass.VisualShaderNodeVec4Parameter{*(*gdclass.VisualShaderNodeVec4Parameter)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VisualShaderNodeVec4Parameter", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

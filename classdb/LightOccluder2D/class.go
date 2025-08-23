@@ -74,6 +74,27 @@ Occludes light cast by a Light2D, casting shadows. The LightOccluder2D must be p
 */
 type Instance [1]gdclass.LightOccluder2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_occluder_polygon    gdextension.MethodForClass `hash:"3258315893"`
+	get_occluder_polygon    gdextension.MethodForClass `hash:"3962317075"`
+	set_occluder_light_mask gdextension.MethodForClass `hash:"1286410249"`
+	get_occluder_light_mask gdextension.MethodForClass `hash:"3905245786"`
+	set_as_sdf_collision    gdextension.MethodForClass `hash:"2586408642"`
+	is_set_as_sdf_collision gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("LightOccluder2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +110,20 @@ type Advanced = class
 type class [1]gdclass.LightOccluder2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.LightOccluder2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.LightOccluder2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +133,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("LightOccluder2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.LightOccluder2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -130,36 +165,36 @@ func (self Instance) SetOccluderLightMask(value int) {
 
 //go:nosplit
 func (self class) SetOccluderPolygon(polygon [1]gdclass.OccluderPolygon2D) { //gd:LightOccluder2D.set_occluder_polygon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_set_occluder_polygon), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(polygon[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder_polygon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(polygon[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetOccluderPolygon() [1]gdclass.OccluderPolygon2D { //gd:LightOccluder2D.get_occluder_polygon
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_get_occluder_polygon), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder_polygon, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.OccluderPolygon2D{gd.PointerWithOwnershipTransferredToGo[gdclass.OccluderPolygon2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOccluderLightMask(mask int64) { //gd:LightOccluder2D.set_occluder_light_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_set_occluder_light_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder_light_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetOccluderLightMask() int64 { //gd:LightOccluder2D.get_occluder_light_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_get_occluder_light_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_occluder_light_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAsSdfCollision(enable bool) { //gd:LightOccluder2D.set_as_sdf_collision
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_set_as_sdf_collision), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_sdf_collision, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSetAsSdfCollision() bool { //gd:LightOccluder2D.is_set_as_sdf_collision
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LightOccluder2D.Bind_is_set_as_sdf_collision), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_set_as_sdf_collision, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -194,7 +229,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("LightOccluder2D", func(ptr gd.Object) any {
-		return [1]gdclass.LightOccluder2D{*(*gdclass.LightOccluder2D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("LightOccluder2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

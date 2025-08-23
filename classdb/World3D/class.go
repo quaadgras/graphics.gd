@@ -74,6 +74,31 @@ Class that has everything pertaining to a world: A physics space, a visual scena
 */
 type Instance [1]gdclass.World3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_space                gdextension.MethodForClass `hash:"2944877500"`
+	get_navigation_map       gdextension.MethodForClass `hash:"2944877500"`
+	get_scenario             gdextension.MethodForClass `hash:"2944877500"`
+	set_environment          gdextension.MethodForClass `hash:"4143518816"`
+	get_environment          gdextension.MethodForClass `hash:"3082064660"`
+	set_fallback_environment gdextension.MethodForClass `hash:"4143518816"`
+	get_fallback_environment gdextension.MethodForClass `hash:"3082064660"`
+	set_camera_attributes    gdextension.MethodForClass `hash:"2817810567"`
+	get_camera_attributes    gdextension.MethodForClass `hash:"3921283215"`
+	get_direct_space_state   gdextension.MethodForClass `hash:"2069328350"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("World3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +114,20 @@ type Advanced = class
 type class [1]gdclass.World3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.World3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.World3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +137,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("World3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.World3D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -147,64 +186,64 @@ func (self Instance) DirectSpaceState() PhysicsDirectSpaceState3D.Instance {
 
 //go:nosplit
 func (self class) GetSpace() RID.Any { //gd:World3D.get_space
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.World3D.Bind_get_space), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_space, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:World3D.get_navigation_map
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.World3D.Bind_get_navigation_map), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetScenario() RID.Any { //gd:World3D.get_scenario
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.World3D.Bind_get_scenario), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_scenario, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:World3D.set_environment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.World3D.Bind_set_environment), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetEnvironment() [1]gdclass.Environment { //gd:World3D.get_environment
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.World3D.Bind_get_environment), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Environment{gd.PointerWithOwnershipTransferredToGo[gdclass.Environment](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFallbackEnvironment(env [1]gdclass.Environment) { //gd:World3D.set_fallback_environment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.World3D.Bind_set_fallback_environment), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetFallbackEnvironment() [1]gdclass.Environment { //gd:World3D.get_fallback_environment
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.World3D.Bind_get_fallback_environment), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_fallback_environment, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Environment{gd.PointerWithOwnershipTransferredToGo[gdclass.Environment](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCameraAttributes(attributes [1]gdclass.CameraAttributes) { //gd:World3D.set_camera_attributes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.World3D.Bind_set_camera_attributes), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(attributes[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(attributes[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:World3D.get_camera_attributes
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.World3D.Bind_get_camera_attributes), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.CameraAttributes{gd.PointerWithOwnershipTransferredToGo[gdclass.CameraAttributes](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetDirectSpaceState() [1]gdclass.PhysicsDirectSpaceState3D { //gd:World3D.get_direct_space_state
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.World3D.Bind_get_direct_space_state), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_direct_space_state, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.PhysicsDirectSpaceState3D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState3D](r_ret)}
 	return ret
 }
@@ -240,5 +279,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("World3D", func(ptr gd.Object) any { return [1]gdclass.World3D{*(*gdclass.World3D)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("World3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

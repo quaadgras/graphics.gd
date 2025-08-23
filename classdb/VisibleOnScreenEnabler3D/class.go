@@ -76,6 +76,25 @@ See [VisibleOnScreenNotifier3D] if you only want to be notified when the region 
 */
 type Instance [1]gdclass.VisibleOnScreenEnabler3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_enable_mode      gdextension.MethodForClass `hash:"320303646"`
+	get_enable_mode      gdextension.MethodForClass `hash:"3352990031"`
+	set_enable_node_path gdextension.MethodForClass `hash:"1348162250"`
+	get_enable_node_path gdextension.MethodForClass `hash:"277076166"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VisibleOnScreenEnabler3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -91,6 +110,20 @@ type Advanced = class
 type class [1]gdclass.VisibleOnScreenEnabler3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisibleOnScreenEnabler3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisibleOnScreenEnabler3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -100,7 +133,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisibleOnScreenEnabler3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisibleOnScreenEnabler3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -124,24 +157,24 @@ func (self Instance) SetEnableNodePath(value string) {
 
 //go:nosplit
 func (self class) SetEnableMode(mode EnableMode) { //gd:VisibleOnScreenEnabler3D.set_enable_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_set_enable_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode EnableMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode EnableMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetEnableMode() EnableMode { //gd:VisibleOnScreenEnabler3D.get_enable_mode
-	var r_ret = gdextension.Call[EnableMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_get_enable_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[EnableMode](gd.ObjectChecked(self.AsObject()), methods.get_enable_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableNodePath(path Path.ToNode) { //gd:VisibleOnScreenEnabler3D.set_enable_node_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_set_enable_node_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_node_path, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 }
 
 //go:nosplit
 func (self class) GetEnableNodePath() Path.ToNode { //gd:VisibleOnScreenEnabler3D.get_enable_node_path
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenEnabler3D.Bind_get_enable_node_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_enable_node_path, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -191,9 +224,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisibleOnScreenEnabler3D", func(ptr gd.Object) any {
-		return [1]gdclass.VisibleOnScreenEnabler3D{*(*gdclass.VisibleOnScreenEnabler3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VisibleOnScreenEnabler3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type EnableMode int //gd:VisibleOnScreenEnabler3D.EnableMode

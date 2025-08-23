@@ -73,6 +73,39 @@ The [code]new[/code] method of a script subclass creates a new instance. [method
 */
 type Instance [1]gdclass.Script
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	can_instantiate            gdextension.MethodForClass `hash:"36873697"`
+	instance_has               gdextension.MethodForClass `hash:"397768994"`
+	has_source_code            gdextension.MethodForClass `hash:"36873697"`
+	get_source_code            gdextension.MethodForClass `hash:"201670096"`
+	set_source_code            gdextension.MethodForClass `hash:"83702148"`
+	reload                     gdextension.MethodForClass `hash:"1633102583"`
+	get_base_script            gdextension.MethodForClass `hash:"278624046"`
+	get_instance_base_type     gdextension.MethodForClass `hash:"2002593661"`
+	get_global_name            gdextension.MethodForClass `hash:"2002593661"`
+	has_script_signal          gdextension.MethodForClass `hash:"2619796661"`
+	get_script_property_list   gdextension.MethodForClass `hash:"2915620761"`
+	get_script_method_list     gdextension.MethodForClass `hash:"2915620761"`
+	get_script_signal_list     gdextension.MethodForClass `hash:"2915620761"`
+	get_script_constant_map    gdextension.MethodForClass `hash:"2382534195"`
+	get_property_default_value gdextension.MethodForClass `hash:"2138907829"`
+	is_tool                    gdextension.MethodForClass `hash:"36873697"`
+	is_abstract                gdextension.MethodForClass `hash:"36873697"`
+	get_rpc_config             gdextension.MethodForClass `hash:"1214101251"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Script")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Script
@@ -225,6 +258,20 @@ type Advanced = class
 type class [1]gdclass.Script
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Script)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Script)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -234,7 +281,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Script"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Script)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -254,7 +301,7 @@ Returns [code]true[/code] if the script can be instantiated.
 */
 //go:nosplit
 func (self class) CanInstantiate() bool { //gd:Script.can_instantiate
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_can_instantiate), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_instantiate, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -264,7 +311,7 @@ Returns [code]true[/code] if [param base_object] is an instance of this script.
 */
 //go:nosplit
 func (self class) InstanceHas(base_object [1]gd.Object) bool { //gd:Script.instance_has
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_instance_has), gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ base_object gdextension.Object }{gdextension.Object(gd.ObjectChecked(base_object[0].AsObject()))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.instance_has, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ base_object gdextension.Object }{gdextension.Object(gd.ObjectChecked(base_object[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -275,21 +322,21 @@ Returns [code]true[/code] if the script contains non-empty source code.
 */
 //go:nosplit
 func (self class) HasSourceCode() bool { //gd:Script.has_source_code
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_has_source_code), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_source_code, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetSourceCode() String.Readable { //gd:Script.get_source_code
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_get_source_code), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source_code, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSourceCode(source String.Readable) { //gd:Script.set_source_code
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_set_source_code), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ source gdextension.String }{pointers.Get(gd.InternalString(source))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source_code, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ source gdextension.String }{pointers.Get(gd.InternalString(source))}))
 }
 
 /*
@@ -297,7 +344,7 @@ Reloads the script's class implementation. Returns an error code.
 */
 //go:nosplit
 func (self class) Reload(keep_state bool) Error.Code { //gd:Script.reload
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_reload), gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep_state bool }{keep_state}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.reload, gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep_state bool }{keep_state}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -307,7 +354,7 @@ Returns the script directly inherited by this script.
 */
 //go:nosplit
 func (self class) GetBaseScript() [1]gdclass.Script { //gd:Script.get_base_script
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_get_base_script), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_script, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Script{gd.PointerWithOwnershipTransferredToGo[gdclass.Script](r_ret)}
 	return ret
 }
@@ -317,7 +364,7 @@ Returns the script's base type.
 */
 //go:nosplit
 func (self class) GetInstanceBaseType() String.Name { //gd:Script.get_instance_base_type
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_get_instance_base_type), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_instance_base_type, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -342,7 +389,7 @@ public partial class MyNode : Node
 */
 //go:nosplit
 func (self class) GetGlobalName() String.Name { //gd:Script.get_global_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_get_global_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_global_name, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -352,7 +399,7 @@ Returns [code]true[/code] if the script, or a base class, defines a signal with 
 */
 //go:nosplit
 func (self class) HasScriptSignal(signal_name String.Name) bool { //gd:Script.has_script_signal
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_has_script_signal), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ signal_name gdextension.StringName }{pointers.Get(gd.InternalStringName(signal_name))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_script_signal, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ signal_name gdextension.StringName }{pointers.Get(gd.InternalStringName(signal_name))}))
 	var ret = r_ret
 	return ret
 }
@@ -362,7 +409,7 @@ Returns the list of properties in this [Script].
 */
 //go:nosplit
 func (self class) GetScriptPropertyList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_property_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_get_script_property_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_script_property_list, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -372,7 +419,7 @@ Returns the list of methods in this [Script].
 */
 //go:nosplit
 func (self class) GetScriptMethodList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_method_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_get_script_method_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_script_method_list, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -382,7 +429,7 @@ Returns the list of user signals defined in this [Script].
 */
 //go:nosplit
 func (self class) GetScriptSignalList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_signal_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_get_script_signal_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_script_signal_list, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -392,7 +439,7 @@ Returns a dictionary containing constant names and their values.
 */
 //go:nosplit
 func (self class) GetScriptConstantMap() Dictionary.Any { //gd:Script.get_script_constant_map
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_get_script_constant_map), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_script_constant_map, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -402,7 +449,7 @@ Returns the default value of the specified property.
 */
 //go:nosplit
 func (self class) GetPropertyDefaultValue(property String.Name) variant.Any { //gd:Script.get_property_default_value
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_get_property_default_value), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ property gdextension.StringName }{pointers.Get(gd.InternalStringName(property))}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_property_default_value, gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ property gdextension.StringName }{pointers.Get(gd.InternalStringName(property))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -412,7 +459,7 @@ Returns [code]true[/code] if the script is a tool script. A tool script can run 
 */
 //go:nosplit
 func (self class) IsTool() bool { //gd:Script.is_tool
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_is_tool), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tool, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -422,7 +469,7 @@ Returns [code]true[/code] if the script is an abstract script. An abstract scrip
 */
 //go:nosplit
 func (self class) IsAbstract() bool { //gd:Script.is_abstract
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_is_abstract), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_abstract, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -432,7 +479,7 @@ Returns a [Dictionary] mapping method names to their RPC configuration defined b
 */
 //go:nosplit
 func (self class) GetRpcConfig() variant.Any { //gd:Script.get_rpc_config
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Script.Bind_get_rpc_config), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_rpc_config, gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -468,7 +515,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Script", func(ptr gd.Object) any { return [1]gdclass.Script{*(*gdclass.Script)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Script", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type PropertyInfo struct {

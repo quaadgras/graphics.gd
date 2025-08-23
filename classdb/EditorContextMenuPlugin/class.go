@@ -76,6 +76,25 @@ Currently, context menus are supported for three commonly used areas: the file s
 */
 type Instance [1]gdclass.EditorContextMenuPlugin
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	add_menu_shortcut                   gdextension.MethodForClass `hash:"851596305"`
+	add_context_menu_item               gdextension.MethodForClass `hash:"2748336951"`
+	add_context_menu_item_from_shortcut gdextension.MethodForClass `hash:"3799546916"`
+	add_context_submenu_item            gdextension.MethodForClass `hash:"1994674995"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorContextMenuPlugin")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.EditorContextMenuPlugin
@@ -227,6 +246,20 @@ type Advanced = class
 type class [1]gdclass.EditorContextMenuPlugin
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorContextMenuPlugin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorContextMenuPlugin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -236,7 +269,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorContextMenuPlugin"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorContextMenuPlugin)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -264,7 +297,7 @@ func _init():
 */
 //go:nosplit
 func (self class) AddMenuShortcut(shortcut [1]gdclass.Shortcut, callback Callable.Function) { //gd:EditorContextMenuPlugin.add_menu_shortcut
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorContextMenuPlugin.Bind_add_menu_shortcut), 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_menu_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		shortcut gdextension.Object
 		callback gdextension.Callable
 	}{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
@@ -280,7 +313,7 @@ If you want to assign shortcut to the menu item, use [method add_context_menu_it
 */
 //go:nosplit
 func (self class) AddContextMenuItem(name String.Readable, callback Callable.Function, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorContextMenuPlugin.Bind_add_context_menu_item), 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		name     gdextension.String
 		callback gdextension.Callable
 		icon     gdextension.Object
@@ -299,7 +332,7 @@ func _popup_menu(paths):
 */
 //go:nosplit
 func (self class) AddContextMenuItemFromShortcut(name String.Readable, shortcut [1]gdclass.Shortcut, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorContextMenuPlugin.Bind_add_context_menu_item_from_shortcut), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_item_from_shortcut, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		name     gdextension.String
 		shortcut gdextension.Object
 		icon     gdextension.Object
@@ -320,7 +353,7 @@ func _popup_menu(paths):
 */
 //go:nosplit
 func (self class) AddContextSubmenuItem(name String.Readable, menu [1]gdclass.PopupMenu, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_submenu_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorContextMenuPlugin.Bind_add_context_submenu_item), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_submenu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		name gdextension.String
 		menu gdextension.Object
 		icon gdextension.Object
@@ -359,9 +392,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorContextMenuPlugin", func(ptr gd.Object) any {
-		return [1]gdclass.EditorContextMenuPlugin{*(*gdclass.EditorContextMenuPlugin)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorContextMenuPlugin", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type ContextMenuSlot int //gd:EditorContextMenuPlugin.ContextMenuSlot

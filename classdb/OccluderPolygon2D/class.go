@@ -72,6 +72,27 @@ Editor facility that helps you draw a 2D polygon used as resource for [LightOccl
 */
 type Instance [1]gdclass.OccluderPolygon2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_closed    gdextension.MethodForClass `hash:"2586408642"`
+	is_closed     gdextension.MethodForClass `hash:"36873697"`
+	set_cull_mode gdextension.MethodForClass `hash:"3500863002"`
+	get_cull_mode gdextension.MethodForClass `hash:"33931036"`
+	set_polygon   gdextension.MethodForClass `hash:"1509147220"`
+	get_polygon   gdextension.MethodForClass `hash:"2961356807"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("OccluderPolygon2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -87,6 +108,20 @@ type Advanced = class
 type class [1]gdclass.OccluderPolygon2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OccluderPolygon2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OccluderPolygon2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -96,7 +131,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("OccluderPolygon2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.OccluderPolygon2D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -129,38 +164,38 @@ func (self Instance) SetPolygon(value []Vector2.XY) {
 
 //go:nosplit
 func (self class) SetClosed(closed bool) { //gd:OccluderPolygon2D.set_closed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_set_closed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ closed bool }{closed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_closed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ closed bool }{closed}))
 }
 
 //go:nosplit
 func (self class) IsClosed() bool { //gd:OccluderPolygon2D.is_closed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_is_closed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_closed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCullMode(cull_mode CullMode) { //gd:OccluderPolygon2D.set_cull_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_set_cull_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cull_mode CullMode }{cull_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cull_mode CullMode }{cull_mode}))
 }
 
 //go:nosplit
 func (self class) GetCullMode() CullMode { //gd:OccluderPolygon2D.get_cull_mode
-	var r_ret = gdextension.Call[CullMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_get_cull_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[CullMode](gd.ObjectChecked(self.AsObject()), methods.get_cull_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:OccluderPolygon2D.set_polygon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_set_polygon), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_polygon, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		polygon gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))}))
 }
 
 //go:nosplit
 func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:OccluderPolygon2D.get_polygon
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OccluderPolygon2D.Bind_get_polygon), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -196,9 +231,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("OccluderPolygon2D", func(ptr gd.Object) any {
-		return [1]gdclass.OccluderPolygon2D{*(*gdclass.OccluderPolygon2D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("OccluderPolygon2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type CullMode int //gd:OccluderPolygon2D.CullMode

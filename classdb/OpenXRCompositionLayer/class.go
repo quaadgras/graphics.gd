@@ -78,6 +78,36 @@ Composition layers allow 2D viewports to be displayed inside of the headset by t
 */
 type Instance [1]gdclass.OpenXRCompositionLayer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_layer_viewport       gdextension.MethodForClass `hash:"3888077664"`
+	get_layer_viewport       gdextension.MethodForClass `hash:"3750751911"`
+	set_use_android_surface  gdextension.MethodForClass `hash:"2586408642"`
+	get_use_android_surface  gdextension.MethodForClass `hash:"36873697"`
+	set_android_surface_size gdextension.MethodForClass `hash:"1130785943"`
+	get_android_surface_size gdextension.MethodForClass `hash:"3690982128"`
+	set_enable_hole_punch    gdextension.MethodForClass `hash:"2586408642"`
+	get_enable_hole_punch    gdextension.MethodForClass `hash:"36873697"`
+	set_sort_order           gdextension.MethodForClass `hash:"1286410249"`
+	get_sort_order           gdextension.MethodForClass `hash:"3905245786"`
+	set_alpha_blend          gdextension.MethodForClass `hash:"2586408642"`
+	get_alpha_blend          gdextension.MethodForClass `hash:"36873697"`
+	get_android_surface      gdextension.MethodForClass `hash:"3277089691"`
+	is_natively_supported    gdextension.MethodForClass `hash:"36873697"`
+	intersects_ray           gdextension.MethodForClass `hash:"1091262597"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("OpenXRCompositionLayer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -117,6 +147,20 @@ type Advanced = class
 type class [1]gdclass.OpenXRCompositionLayer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OpenXRCompositionLayer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OpenXRCompositionLayer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -126,7 +170,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("OpenXRCompositionLayer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.OpenXRCompositionLayer)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -182,72 +226,72 @@ func (self Instance) SetEnableHolePunch(value bool) {
 
 //go:nosplit
 func (self class) SetLayerViewport(viewport [1]gdclass.SubViewport) { //gd:OpenXRCompositionLayer.set_layer_viewport
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_set_layer_viewport), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ viewport gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(viewport[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_viewport, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ viewport gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(viewport[0].AsObject()[0]))}))
 }
 
 //go:nosplit
 func (self class) GetLayerViewport() [1]gdclass.SubViewport { //gd:OpenXRCompositionLayer.get_layer_viewport
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_layer_viewport), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_layer_viewport, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SubViewport{gd.PointerMustAssertInstanceID[gdclass.SubViewport](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseAndroidSurface(enable bool) { //gd:OpenXRCompositionLayer.set_use_android_surface
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_set_use_android_surface), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_android_surface, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetUseAndroidSurface() bool { //gd:OpenXRCompositionLayer.get_use_android_surface
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_use_android_surface), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_android_surface, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAndroidSurfaceSize(size Vector2i.XY) { //gd:OpenXRCompositionLayer.set_android_surface_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_set_android_surface_size), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_android_surface_size, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
 }
 
 //go:nosplit
 func (self class) GetAndroidSurfaceSize() Vector2i.XY { //gd:OpenXRCompositionLayer.get_android_surface_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_android_surface_size), gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_android_surface_size, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableHolePunch(enable bool) { //gd:OpenXRCompositionLayer.set_enable_hole_punch
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_set_enable_hole_punch), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_hole_punch, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetEnableHolePunch() bool { //gd:OpenXRCompositionLayer.get_enable_hole_punch
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_enable_hole_punch), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_hole_punch, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSortOrder(order int64) { //gd:OpenXRCompositionLayer.set_sort_order
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_set_sort_order), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ order int64 }{order}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sort_order, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ order int64 }{order}))
 }
 
 //go:nosplit
 func (self class) GetSortOrder() int64 { //gd:OpenXRCompositionLayer.get_sort_order
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_sort_order), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sort_order, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaBlend(enabled bool) { //gd:OpenXRCompositionLayer.set_alpha_blend
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_set_alpha_blend), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_blend, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetAlphaBlend() bool { //gd:OpenXRCompositionLayer.get_alpha_blend
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_alpha_blend), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_alpha_blend, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -258,7 +302,7 @@ Returns a [JavaObject] representing an [code]android.view.Surface[/code] if [mem
 */
 //go:nosplit
 func (self class) GetAndroidSurface() [1]gdclass.JavaObject { //gd:OpenXRCompositionLayer.get_android_surface
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_get_android_surface), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_android_surface, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.JavaObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaObject](r_ret)}
 	return ret
 }
@@ -269,7 +313,7 @@ Returns [code]true[/code] if the OpenXR runtime natively supports this compositi
 */
 //go:nosplit
 func (self class) IsNativelySupported() bool { //gd:OpenXRCompositionLayer.is_natively_supported
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_is_natively_supported), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_natively_supported, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -280,7 +324,7 @@ Returns [code]Vector2(-1.0, -1.0)[/code] if the ray doesn't intersect.
 */
 //go:nosplit
 func (self class) IntersectsRay(origin Vector3.XYZ, direction Vector3.XYZ) Vector2.XY { //gd:OpenXRCompositionLayer.intersects_ray
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayer.Bind_intersects_ray), gdextension.SizeVector2|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.intersects_ray, gdextension.SizeVector2|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		origin    Vector3.XYZ
 		direction Vector3.XYZ
 	}{origin, direction}))
@@ -315,7 +359,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("OpenXRCompositionLayer", func(ptr gd.Object) any {
-		return [1]gdclass.OpenXRCompositionLayer{*(*gdclass.OpenXRCompositionLayer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("OpenXRCompositionLayer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -75,6 +75,41 @@ A [Parallax2D] is used to create a parallax effect. It can move at a different s
 */
 type Instance [1]gdclass.Parallax2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_scroll_scale         gdextension.MethodForClass `hash:"743155724"`
+	get_scroll_scale         gdextension.MethodForClass `hash:"3341600327"`
+	set_repeat_size          gdextension.MethodForClass `hash:"743155724"`
+	get_repeat_size          gdextension.MethodForClass `hash:"3341600327"`
+	set_repeat_times         gdextension.MethodForClass `hash:"1286410249"`
+	get_repeat_times         gdextension.MethodForClass `hash:"3905245786"`
+	set_autoscroll           gdextension.MethodForClass `hash:"743155724"`
+	get_autoscroll           gdextension.MethodForClass `hash:"3341600327"`
+	set_scroll_offset        gdextension.MethodForClass `hash:"743155724"`
+	get_scroll_offset        gdextension.MethodForClass `hash:"3341600327"`
+	set_screen_offset        gdextension.MethodForClass `hash:"743155724"`
+	get_screen_offset        gdextension.MethodForClass `hash:"3341600327"`
+	set_limit_begin          gdextension.MethodForClass `hash:"743155724"`
+	get_limit_begin          gdextension.MethodForClass `hash:"3341600327"`
+	set_limit_end            gdextension.MethodForClass `hash:"743155724"`
+	get_limit_end            gdextension.MethodForClass `hash:"3341600327"`
+	set_follow_viewport      gdextension.MethodForClass `hash:"2586408642"`
+	get_follow_viewport      gdextension.MethodForClass `hash:"2240911060"`
+	set_ignore_camera_scroll gdextension.MethodForClass `hash:"2586408642"`
+	is_ignore_camera_scroll  gdextension.MethodForClass `hash:"2240911060"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Parallax2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -90,6 +125,20 @@ type Advanced = class
 type class [1]gdclass.Parallax2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Parallax2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Parallax2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -99,7 +148,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Parallax2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Parallax2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -187,120 +236,120 @@ func (self Instance) SetScreenOffset(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetScrollScale(scale Vector2.XY) { //gd:Parallax2D.set_scroll_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_set_scroll_scale), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_scale, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
 }
 
 //go:nosplit
 func (self class) GetScrollScale() Vector2.XY { //gd:Parallax2D.get_scroll_scale
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_get_scroll_scale), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_scale, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRepeatSize(repeat_size Vector2.XY) { //gd:Parallax2D.set_repeat_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_set_repeat_size), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ repeat_size Vector2.XY }{repeat_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_repeat_size, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ repeat_size Vector2.XY }{repeat_size}))
 }
 
 //go:nosplit
 func (self class) GetRepeatSize() Vector2.XY { //gd:Parallax2D.get_repeat_size
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_get_repeat_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_repeat_size, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRepeatTimes(repeat_times int64) { //gd:Parallax2D.set_repeat_times
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_set_repeat_times), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ repeat_times int64 }{repeat_times}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_repeat_times, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ repeat_times int64 }{repeat_times}))
 }
 
 //go:nosplit
 func (self class) GetRepeatTimes() int64 { //gd:Parallax2D.get_repeat_times
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_get_repeat_times), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_repeat_times, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoscroll(autoscroll Vector2.XY) { //gd:Parallax2D.set_autoscroll
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_set_autoscroll), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ autoscroll Vector2.XY }{autoscroll}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoscroll, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ autoscroll Vector2.XY }{autoscroll}))
 }
 
 //go:nosplit
 func (self class) GetAutoscroll() Vector2.XY { //gd:Parallax2D.get_autoscroll
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_get_autoscroll), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_autoscroll, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollOffset(offset Vector2.XY) { //gd:Parallax2D.set_scroll_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_set_scroll_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetScrollOffset() Vector2.XY { //gd:Parallax2D.get_scroll_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_get_scroll_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScreenOffset(offset Vector2.XY) { //gd:Parallax2D.set_screen_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_set_screen_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetScreenOffset() Vector2.XY { //gd:Parallax2D.get_screen_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_get_screen_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLimitBegin(offset Vector2.XY) { //gd:Parallax2D.set_limit_begin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_set_limit_begin), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_begin, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetLimitBegin() Vector2.XY { //gd:Parallax2D.get_limit_begin
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_get_limit_begin), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_limit_begin, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLimitEnd(offset Vector2.XY) { //gd:Parallax2D.set_limit_end
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_set_limit_end), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_end, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetLimitEnd() Vector2.XY { //gd:Parallax2D.get_limit_end
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_get_limit_end), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_limit_end, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFollowViewport(follow bool) { //gd:Parallax2D.set_follow_viewport
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_set_follow_viewport), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ follow bool }{follow}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_viewport, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ follow bool }{follow}))
 }
 
 //go:nosplit
 func (self class) GetFollowViewport() bool { //gd:Parallax2D.get_follow_viewport
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_get_follow_viewport), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_follow_viewport, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgnoreCameraScroll(ignore bool) { //gd:Parallax2D.set_ignore_camera_scroll
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_set_ignore_camera_scroll), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ ignore bool }{ignore}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_camera_scroll, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ ignore bool }{ignore}))
 }
 
 //go:nosplit
 func (self class) IsIgnoreCameraScroll() bool { //gd:Parallax2D.is_ignore_camera_scroll
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Parallax2D.Bind_is_ignore_camera_scroll), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignore_camera_scroll, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -335,5 +384,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Parallax2D", func(ptr gd.Object) any { return [1]gdclass.Parallax2D{*(*gdclass.Parallax2D)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Parallax2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

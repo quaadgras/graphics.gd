@@ -72,6 +72,31 @@ Combines phase-shifted signals with the original signal. The movement of the pha
 */
 type Instance [1]gdclass.AudioEffectPhaser
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_range_min_hz gdextension.MethodForClass `hash:"373806689"`
+	get_range_min_hz gdextension.MethodForClass `hash:"1740695150"`
+	set_range_max_hz gdextension.MethodForClass `hash:"373806689"`
+	get_range_max_hz gdextension.MethodForClass `hash:"1740695150"`
+	set_rate_hz      gdextension.MethodForClass `hash:"373806689"`
+	get_rate_hz      gdextension.MethodForClass `hash:"1740695150"`
+	set_feedback     gdextension.MethodForClass `hash:"373806689"`
+	get_feedback     gdextension.MethodForClass `hash:"1740695150"`
+	set_depth        gdextension.MethodForClass `hash:"373806689"`
+	get_depth        gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioEffectPhaser")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -87,6 +112,20 @@ type Advanced = class
 type class [1]gdclass.AudioEffectPhaser
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectPhaser)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectPhaser)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -96,7 +135,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioEffectPhaser"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioEffectPhaser)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -145,60 +184,60 @@ func (self Instance) SetDepth(value Float.X) {
 
 //go:nosplit
 func (self class) SetRangeMinHz(hz float64) { //gd:AudioEffectPhaser.set_range_min_hz
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPhaser.Bind_set_range_min_hz), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ hz float64 }{hz}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range_min_hz, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ hz float64 }{hz}))
 }
 
 //go:nosplit
 func (self class) GetRangeMinHz() float64 { //gd:AudioEffectPhaser.get_range_min_hz
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPhaser.Bind_get_range_min_hz), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range_min_hz, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRangeMaxHz(hz float64) { //gd:AudioEffectPhaser.set_range_max_hz
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPhaser.Bind_set_range_max_hz), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ hz float64 }{hz}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range_max_hz, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ hz float64 }{hz}))
 }
 
 //go:nosplit
 func (self class) GetRangeMaxHz() float64 { //gd:AudioEffectPhaser.get_range_max_hz
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPhaser.Bind_get_range_max_hz), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range_max_hz, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRateHz(hz float64) { //gd:AudioEffectPhaser.set_rate_hz
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPhaser.Bind_set_rate_hz), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ hz float64 }{hz}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rate_hz, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ hz float64 }{hz}))
 }
 
 //go:nosplit
 func (self class) GetRateHz() float64 { //gd:AudioEffectPhaser.get_rate_hz
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPhaser.Bind_get_rate_hz), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rate_hz, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFeedback(fbk float64) { //gd:AudioEffectPhaser.set_feedback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPhaser.Bind_set_feedback), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fbk float64 }{fbk}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_feedback, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fbk float64 }{fbk}))
 }
 
 //go:nosplit
 func (self class) GetFeedback() float64 { //gd:AudioEffectPhaser.get_feedback
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPhaser.Bind_get_feedback), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_feedback, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepth(depth float64) { //gd:AudioEffectPhaser.set_depth
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPhaser.Bind_set_depth), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ depth float64 }{depth}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ depth float64 }{depth}))
 }
 
 //go:nosplit
 func (self class) GetDepth() float64 { //gd:AudioEffectPhaser.get_depth
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPhaser.Bind_get_depth), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -241,7 +280,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioEffectPhaser", func(ptr gd.Object) any {
-		return [1]gdclass.AudioEffectPhaser{*(*gdclass.AudioEffectPhaser)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioEffectPhaser", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

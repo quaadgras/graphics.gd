@@ -73,6 +73,25 @@ Abstract render data object, exists for the duration of rendering a single viewp
 */
 type Instance [1]gdclass.RenderData
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_render_scene_buffers gdextension.MethodForClass `hash:"2793216201"`
+	get_render_scene_data    gdextension.MethodForClass `hash:"1288715698"`
+	get_environment          gdextension.MethodForClass `hash:"2944877500"`
+	get_camera_attributes    gdextension.MethodForClass `hash:"2944877500"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("RenderData")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -116,6 +135,20 @@ type Advanced = class
 type class [1]gdclass.RenderData
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RenderData)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RenderData)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -125,7 +158,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RenderData"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RenderData)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -136,7 +169,7 @@ Returns the [RenderSceneBuffers] object managing the scene buffers for rendering
 */
 //go:nosplit
 func (self class) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers { //gd:RenderData.get_render_scene_buffers
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderData.Bind_get_render_scene_buffers), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_buffers, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.RenderSceneBuffers{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderSceneBuffers](r_ret)}
 	return ret
 }
@@ -146,7 +179,7 @@ Returns the [RenderSceneData] object managing this frames scene data.
 */
 //go:nosplit
 func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:RenderData.get_render_scene_data
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderData.Bind_get_render_scene_data), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_data, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.RenderSceneData{gd.PointerBorrowedTemporarily[gdclass.RenderSceneData](r_ret)}
 	return ret
 }
@@ -156,7 +189,7 @@ Returns the [RID] of the environment object in the [RenderingServer] being used 
 */
 //go:nosplit
 func (self class) GetEnvironment() RID.Any { //gd:RenderData.get_environment
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderData.Bind_get_environment), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -166,7 +199,7 @@ Returns the [RID] of the camera attributes object in the [RenderingServer] being
 */
 //go:nosplit
 func (self class) GetCameraAttributes() RID.Any { //gd:RenderData.get_camera_attributes
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderData.Bind_get_camera_attributes), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -188,5 +221,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RenderData", func(ptr gd.Object) any { return [1]gdclass.RenderData{*(*gdclass.RenderData)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("RenderData", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

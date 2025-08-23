@@ -73,6 +73,25 @@ Stores information about joystick motions. One [InputEventJoypadMotion] represen
 */
 type Instance [1]gdclass.InputEventJoypadMotion
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_axis       gdextension.MethodForClass `hash:"1332685170"`
+	get_axis       gdextension.MethodForClass `hash:"4019121683"`
+	set_axis_value gdextension.MethodForClass `hash:"373806689"`
+	get_axis_value gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("InputEventJoypadMotion")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +107,20 @@ type Advanced = class
 type class [1]gdclass.InputEventJoypadMotion
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventJoypadMotion)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventJoypadMotion)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +130,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("InputEventJoypadMotion"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.InputEventJoypadMotion)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -122,24 +155,24 @@ func (self Instance) SetAxisValue(value Float.X) {
 
 //go:nosplit
 func (self class) SetAxis(axis Input.JoyAxis) { //gd:InputEventJoypadMotion.set_axis
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_set_axis), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ axis Input.JoyAxis }{axis}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ axis Input.JoyAxis }{axis}))
 }
 
 //go:nosplit
 func (self class) GetAxis() Input.JoyAxis { //gd:InputEventJoypadMotion.get_axis
-	var r_ret = gdextension.Call[Input.JoyAxis](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.JoyAxis](gd.ObjectChecked(self.AsObject()), methods.get_axis, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAxisValue(axis_value float64) { //gd:InputEventJoypadMotion.set_axis_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_set_axis_value), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ axis_value float64 }{axis_value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_value, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ axis_value float64 }{axis_value}))
 }
 
 //go:nosplit
 func (self class) GetAxisValue() float64 { //gd:InputEventJoypadMotion.get_axis_value
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadMotion.Bind_get_axis_value), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_axis_value, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -186,7 +219,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("InputEventJoypadMotion", func(ptr gd.Object) any {
-		return [1]gdclass.InputEventJoypadMotion{*(*gdclass.InputEventJoypadMotion)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("InputEventJoypadMotion", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

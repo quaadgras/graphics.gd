@@ -87,14 +87,178 @@ This server keeps tracks of any call and executes them during the sync phase. Th
 */
 type Instance [1]gdclass.NavigationServer3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_maps                             gdextension.MethodForClass `hash:"3995934104"`
+	map_create                           gdextension.MethodForClass `hash:"529393457"`
+	map_set_active                       gdextension.MethodForClass `hash:"1265174801"`
+	map_is_active                        gdextension.MethodForClass `hash:"4155700596"`
+	map_set_up                           gdextension.MethodForClass `hash:"3227306858"`
+	map_get_up                           gdextension.MethodForClass `hash:"531438156"`
+	map_set_cell_size                    gdextension.MethodForClass `hash:"1794382983"`
+	map_get_cell_size                    gdextension.MethodForClass `hash:"866169185"`
+	map_set_cell_height                  gdextension.MethodForClass `hash:"1794382983"`
+	map_get_cell_height                  gdextension.MethodForClass `hash:"866169185"`
+	map_set_merge_rasterizer_cell_scale  gdextension.MethodForClass `hash:"1794382983"`
+	map_get_merge_rasterizer_cell_scale  gdextension.MethodForClass `hash:"866169185"`
+	map_set_use_edge_connections         gdextension.MethodForClass `hash:"1265174801"`
+	map_get_use_edge_connections         gdextension.MethodForClass `hash:"4155700596"`
+	map_set_edge_connection_margin       gdextension.MethodForClass `hash:"1794382983"`
+	map_get_edge_connection_margin       gdextension.MethodForClass `hash:"866169185"`
+	map_set_link_connection_radius       gdextension.MethodForClass `hash:"1794382983"`
+	map_get_link_connection_radius       gdextension.MethodForClass `hash:"866169185"`
+	map_get_path                         gdextension.MethodForClass `hash:"276783190"`
+	map_get_closest_point_to_segment     gdextension.MethodForClass `hash:"3830095642"`
+	map_get_closest_point                gdextension.MethodForClass `hash:"2056183332"`
+	map_get_closest_point_normal         gdextension.MethodForClass `hash:"2056183332"`
+	map_get_closest_point_owner          gdextension.MethodForClass `hash:"553364610"`
+	map_get_links                        gdextension.MethodForClass `hash:"2684255073"`
+	map_get_regions                      gdextension.MethodForClass `hash:"2684255073"`
+	map_get_agents                       gdextension.MethodForClass `hash:"2684255073"`
+	map_get_obstacles                    gdextension.MethodForClass `hash:"2684255073"`
+	map_force_update                     gdextension.MethodForClass `hash:"2722037293"`
+	map_get_iteration_id                 gdextension.MethodForClass `hash:"2198884583"`
+	map_set_use_async_iterations         gdextension.MethodForClass `hash:"1265174801"`
+	map_get_use_async_iterations         gdextension.MethodForClass `hash:"4155700596"`
+	map_get_random_point                 gdextension.MethodForClass `hash:"722801526"`
+	query_path                           gdextension.MethodForClass `hash:"2146930868"`
+	region_create                        gdextension.MethodForClass `hash:"529393457"`
+	region_set_enabled                   gdextension.MethodForClass `hash:"1265174801"`
+	region_get_enabled                   gdextension.MethodForClass `hash:"4155700596"`
+	region_set_use_edge_connections      gdextension.MethodForClass `hash:"1265174801"`
+	region_get_use_edge_connections      gdextension.MethodForClass `hash:"4155700596"`
+	region_set_enter_cost                gdextension.MethodForClass `hash:"1794382983"`
+	region_get_enter_cost                gdextension.MethodForClass `hash:"866169185"`
+	region_set_travel_cost               gdextension.MethodForClass `hash:"1794382983"`
+	region_get_travel_cost               gdextension.MethodForClass `hash:"866169185"`
+	region_set_owner_id                  gdextension.MethodForClass `hash:"3411492887"`
+	region_get_owner_id                  gdextension.MethodForClass `hash:"2198884583"`
+	region_owns_point                    gdextension.MethodForClass `hash:"2360011153"`
+	region_set_map                       gdextension.MethodForClass `hash:"395945892"`
+	region_get_map                       gdextension.MethodForClass `hash:"3814569979"`
+	region_set_navigation_layers         gdextension.MethodForClass `hash:"3411492887"`
+	region_get_navigation_layers         gdextension.MethodForClass `hash:"2198884583"`
+	region_set_transform                 gdextension.MethodForClass `hash:"3935195649"`
+	region_get_transform                 gdextension.MethodForClass `hash:"1128465797"`
+	region_set_navigation_mesh           gdextension.MethodForClass `hash:"2764952978"`
+	region_bake_navigation_mesh          gdextension.MethodForClass `hash:"1401173477"`
+	region_get_connections_count         gdextension.MethodForClass `hash:"2198884583"`
+	region_get_connection_pathway_start  gdextension.MethodForClass `hash:"3440143363"`
+	region_get_connection_pathway_end    gdextension.MethodForClass `hash:"3440143363"`
+	region_get_closest_point_to_segment  gdextension.MethodForClass `hash:"3830095642"`
+	region_get_closest_point             gdextension.MethodForClass `hash:"2056183332"`
+	region_get_closest_point_normal      gdextension.MethodForClass `hash:"2056183332"`
+	region_get_random_point              gdextension.MethodForClass `hash:"722801526"`
+	region_get_bounds                    gdextension.MethodForClass `hash:"974181306"`
+	link_create                          gdextension.MethodForClass `hash:"529393457"`
+	link_set_map                         gdextension.MethodForClass `hash:"395945892"`
+	link_get_map                         gdextension.MethodForClass `hash:"3814569979"`
+	link_set_enabled                     gdextension.MethodForClass `hash:"1265174801"`
+	link_get_enabled                     gdextension.MethodForClass `hash:"4155700596"`
+	link_set_bidirectional               gdextension.MethodForClass `hash:"1265174801"`
+	link_is_bidirectional                gdextension.MethodForClass `hash:"4155700596"`
+	link_set_navigation_layers           gdextension.MethodForClass `hash:"3411492887"`
+	link_get_navigation_layers           gdextension.MethodForClass `hash:"2198884583"`
+	link_set_start_position              gdextension.MethodForClass `hash:"3227306858"`
+	link_get_start_position              gdextension.MethodForClass `hash:"531438156"`
+	link_set_end_position                gdextension.MethodForClass `hash:"3227306858"`
+	link_get_end_position                gdextension.MethodForClass `hash:"531438156"`
+	link_set_enter_cost                  gdextension.MethodForClass `hash:"1794382983"`
+	link_get_enter_cost                  gdextension.MethodForClass `hash:"866169185"`
+	link_set_travel_cost                 gdextension.MethodForClass `hash:"1794382983"`
+	link_get_travel_cost                 gdextension.MethodForClass `hash:"866169185"`
+	link_set_owner_id                    gdextension.MethodForClass `hash:"3411492887"`
+	link_get_owner_id                    gdextension.MethodForClass `hash:"2198884583"`
+	agent_create                         gdextension.MethodForClass `hash:"529393457"`
+	agent_set_avoidance_enabled          gdextension.MethodForClass `hash:"1265174801"`
+	agent_get_avoidance_enabled          gdextension.MethodForClass `hash:"4155700596"`
+	agent_set_use_3d_avoidance           gdextension.MethodForClass `hash:"1265174801"`
+	agent_get_use_3d_avoidance           gdextension.MethodForClass `hash:"4155700596"`
+	agent_set_map                        gdextension.MethodForClass `hash:"395945892"`
+	agent_get_map                        gdextension.MethodForClass `hash:"3814569979"`
+	agent_set_paused                     gdextension.MethodForClass `hash:"1265174801"`
+	agent_get_paused                     gdextension.MethodForClass `hash:"4155700596"`
+	agent_set_neighbor_distance          gdextension.MethodForClass `hash:"1794382983"`
+	agent_get_neighbor_distance          gdextension.MethodForClass `hash:"866169185"`
+	agent_set_max_neighbors              gdextension.MethodForClass `hash:"3411492887"`
+	agent_get_max_neighbors              gdextension.MethodForClass `hash:"2198884583"`
+	agent_set_time_horizon_agents        gdextension.MethodForClass `hash:"1794382983"`
+	agent_get_time_horizon_agents        gdextension.MethodForClass `hash:"866169185"`
+	agent_set_time_horizon_obstacles     gdextension.MethodForClass `hash:"1794382983"`
+	agent_get_time_horizon_obstacles     gdextension.MethodForClass `hash:"866169185"`
+	agent_set_radius                     gdextension.MethodForClass `hash:"1794382983"`
+	agent_get_radius                     gdextension.MethodForClass `hash:"866169185"`
+	agent_set_height                     gdextension.MethodForClass `hash:"1794382983"`
+	agent_get_height                     gdextension.MethodForClass `hash:"866169185"`
+	agent_set_max_speed                  gdextension.MethodForClass `hash:"1794382983"`
+	agent_get_max_speed                  gdextension.MethodForClass `hash:"866169185"`
+	agent_set_velocity_forced            gdextension.MethodForClass `hash:"3227306858"`
+	agent_set_velocity                   gdextension.MethodForClass `hash:"3227306858"`
+	agent_get_velocity                   gdextension.MethodForClass `hash:"531438156"`
+	agent_set_position                   gdextension.MethodForClass `hash:"3227306858"`
+	agent_get_position                   gdextension.MethodForClass `hash:"531438156"`
+	agent_is_map_changed                 gdextension.MethodForClass `hash:"4155700596"`
+	agent_set_avoidance_callback         gdextension.MethodForClass `hash:"3379118538"`
+	agent_has_avoidance_callback         gdextension.MethodForClass `hash:"4155700596"`
+	agent_set_avoidance_layers           gdextension.MethodForClass `hash:"3411492887"`
+	agent_get_avoidance_layers           gdextension.MethodForClass `hash:"2198884583"`
+	agent_set_avoidance_mask             gdextension.MethodForClass `hash:"3411492887"`
+	agent_get_avoidance_mask             gdextension.MethodForClass `hash:"2198884583"`
+	agent_set_avoidance_priority         gdextension.MethodForClass `hash:"1794382983"`
+	agent_get_avoidance_priority         gdextension.MethodForClass `hash:"866169185"`
+	obstacle_create                      gdextension.MethodForClass `hash:"529393457"`
+	obstacle_set_avoidance_enabled       gdextension.MethodForClass `hash:"1265174801"`
+	obstacle_get_avoidance_enabled       gdextension.MethodForClass `hash:"4155700596"`
+	obstacle_set_use_3d_avoidance        gdextension.MethodForClass `hash:"1265174801"`
+	obstacle_get_use_3d_avoidance        gdextension.MethodForClass `hash:"4155700596"`
+	obstacle_set_map                     gdextension.MethodForClass `hash:"395945892"`
+	obstacle_get_map                     gdextension.MethodForClass `hash:"3814569979"`
+	obstacle_set_paused                  gdextension.MethodForClass `hash:"1265174801"`
+	obstacle_get_paused                  gdextension.MethodForClass `hash:"4155700596"`
+	obstacle_set_radius                  gdextension.MethodForClass `hash:"1794382983"`
+	obstacle_get_radius                  gdextension.MethodForClass `hash:"866169185"`
+	obstacle_set_height                  gdextension.MethodForClass `hash:"1794382983"`
+	obstacle_get_height                  gdextension.MethodForClass `hash:"866169185"`
+	obstacle_set_velocity                gdextension.MethodForClass `hash:"3227306858"`
+	obstacle_get_velocity                gdextension.MethodForClass `hash:"531438156"`
+	obstacle_set_position                gdextension.MethodForClass `hash:"3227306858"`
+	obstacle_get_position                gdextension.MethodForClass `hash:"531438156"`
+	obstacle_set_vertices                gdextension.MethodForClass `hash:"4030257846"`
+	obstacle_get_vertices                gdextension.MethodForClass `hash:"808965560"`
+	obstacle_set_avoidance_layers        gdextension.MethodForClass `hash:"3411492887"`
+	obstacle_get_avoidance_layers        gdextension.MethodForClass `hash:"2198884583"`
+	parse_source_geometry_data           gdextension.MethodForClass `hash:"3172802542"`
+	bake_from_source_geometry_data       gdextension.MethodForClass `hash:"1286748856"`
+	bake_from_source_geometry_data_async gdextension.MethodForClass `hash:"1286748856"`
+	is_baking_navigation_mesh            gdextension.MethodForClass `hash:"3142026141"`
+	source_geometry_parser_create        gdextension.MethodForClass `hash:"529393457"`
+	source_geometry_parser_set_callback  gdextension.MethodForClass `hash:"3379118538"`
+	simplify_path                        gdextension.MethodForClass `hash:"2344122170"`
+	free_rid                             gdextension.MethodForClass `hash:"2722037293"`
+	set_active                           gdextension.MethodForClass `hash:"2586408642"`
+	set_debug_enabled                    gdextension.MethodForClass `hash:"2586408642"`
+	get_debug_enabled                    gdextension.MethodForClass `hash:"36873697"`
+	get_process_info                     gdextension.MethodForClass `hash:"1938440894"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("NavigationServer3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 var self [1]gdclass.NavigationServer3D
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.NavigationServer3D)))})
-	self = *(*[1]gdclass.NavigationServer3D)(unsafe.Pointer(&obj))
+	self[0] = pointers.Raw[gdclass.NavigationServer3D]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
 }
 
 /*
@@ -116,219 +280,219 @@ func MapCreate() RID.NavigationMap3D { //gd:NavigationServer3D.map_create
 /*
 Sets the map active.
 */
-func MapSetActive(mapping RID.NavigationMap3D, active bool) { //gd:NavigationServer3D.map_set_active
+func MapSetActive(map_ RID.NavigationMap3D, active bool) { //gd:NavigationServer3D.map_set_active
 	once.Do(singleton)
-	Advanced().MapSetActive(RID.Any(mapping), active)
+	Advanced().MapSetActive(RID.Any(map_), active)
 }
 
 /*
 Returns [code]true[/code] if the map is active.
 */
-func MapIsActive(mapping RID.NavigationMap3D) bool { //gd:NavigationServer3D.map_is_active
+func MapIsActive(map_ RID.NavigationMap3D) bool { //gd:NavigationServer3D.map_is_active
 	once.Do(singleton)
-	return bool(Advanced().MapIsActive(RID.Any(mapping)))
+	return bool(Advanced().MapIsActive(RID.Any(map_)))
 }
 
 /*
 Sets the map up direction.
 */
-func MapSetUp(mapping RID.NavigationMap3D, up Vector3.XYZ) { //gd:NavigationServer3D.map_set_up
+func MapSetUp(map_ RID.NavigationMap3D, up Vector3.XYZ) { //gd:NavigationServer3D.map_set_up
 	once.Do(singleton)
-	Advanced().MapSetUp(RID.Any(mapping), Vector3.XYZ(up))
+	Advanced().MapSetUp(RID.Any(map_), Vector3.XYZ(up))
 }
 
 /*
 Returns the map's up direction.
 */
-func MapGetUp(mapping RID.NavigationMap3D) Vector3.XYZ { //gd:NavigationServer3D.map_get_up
+func MapGetUp(map_ RID.NavigationMap3D) Vector3.XYZ { //gd:NavigationServer3D.map_get_up
 	once.Do(singleton)
-	return Vector3.XYZ(Advanced().MapGetUp(RID.Any(mapping)))
+	return Vector3.XYZ(Advanced().MapGetUp(RID.Any(map_)))
 }
 
 /*
 Sets the map cell size used to rasterize the navigation mesh vertices on the XZ plane. Must match with the cell size of the used navigation meshes.
 */
-func MapSetCellSize(mapping RID.NavigationMap3D, cell_size Float.X) { //gd:NavigationServer3D.map_set_cell_size
+func MapSetCellSize(map_ RID.NavigationMap3D, cell_size Float.X) { //gd:NavigationServer3D.map_set_cell_size
 	once.Do(singleton)
-	Advanced().MapSetCellSize(RID.Any(mapping), float64(cell_size))
+	Advanced().MapSetCellSize(RID.Any(map_), float64(cell_size))
 }
 
 /*
 Returns the map cell size used to rasterize the navigation mesh vertices on the XZ plane.
 */
-func MapGetCellSize(mapping RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_cell_size
+func MapGetCellSize(map_ RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_cell_size
 	once.Do(singleton)
-	return Float.X(Float.X(Advanced().MapGetCellSize(RID.Any(mapping))))
+	return Float.X(Float.X(Advanced().MapGetCellSize(RID.Any(map_))))
 }
 
 /*
 Sets the map cell height used to rasterize the navigation mesh vertices on the Y axis. Must match with the cell height of the used navigation meshes.
 */
-func MapSetCellHeight(mapping RID.NavigationMap3D, cell_height Float.X) { //gd:NavigationServer3D.map_set_cell_height
+func MapSetCellHeight(map_ RID.NavigationMap3D, cell_height Float.X) { //gd:NavigationServer3D.map_set_cell_height
 	once.Do(singleton)
-	Advanced().MapSetCellHeight(RID.Any(mapping), float64(cell_height))
+	Advanced().MapSetCellHeight(RID.Any(map_), float64(cell_height))
 }
 
 /*
 Returns the map cell height used to rasterize the navigation mesh vertices on the Y axis.
 */
-func MapGetCellHeight(mapping RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_cell_height
+func MapGetCellHeight(map_ RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_cell_height
 	once.Do(singleton)
-	return Float.X(Float.X(Advanced().MapGetCellHeight(RID.Any(mapping))))
+	return Float.X(Float.X(Advanced().MapGetCellHeight(RID.Any(map_))))
 }
 
 /*
 Set the map's internal merge rasterizer cell scale used to control merging sensitivity.
 */
-func MapSetMergeRasterizerCellScale(mapping RID.NavigationMap3D, scale Float.X) { //gd:NavigationServer3D.map_set_merge_rasterizer_cell_scale
+func MapSetMergeRasterizerCellScale(map_ RID.NavigationMap3D, scale Float.X) { //gd:NavigationServer3D.map_set_merge_rasterizer_cell_scale
 	once.Do(singleton)
-	Advanced().MapSetMergeRasterizerCellScale(RID.Any(mapping), float64(scale))
+	Advanced().MapSetMergeRasterizerCellScale(RID.Any(map_), float64(scale))
 }
 
 /*
 Returns map's internal merge rasterizer cell scale.
 */
-func MapGetMergeRasterizerCellScale(mapping RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_merge_rasterizer_cell_scale
+func MapGetMergeRasterizerCellScale(map_ RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_merge_rasterizer_cell_scale
 	once.Do(singleton)
-	return Float.X(Float.X(Advanced().MapGetMergeRasterizerCellScale(RID.Any(mapping))))
+	return Float.X(Float.X(Advanced().MapGetMergeRasterizerCellScale(RID.Any(map_))))
 }
 
 /*
 Set the navigation [param map] edge connection use. If [param enabled] is [code]true[/code], the navigation map allows navigation regions to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
 */
-func MapSetUseEdgeConnections(mapping RID.NavigationMap3D, enabled bool) { //gd:NavigationServer3D.map_set_use_edge_connections
+func MapSetUseEdgeConnections(map_ RID.NavigationMap3D, enabled bool) { //gd:NavigationServer3D.map_set_use_edge_connections
 	once.Do(singleton)
-	Advanced().MapSetUseEdgeConnections(RID.Any(mapping), enabled)
+	Advanced().MapSetUseEdgeConnections(RID.Any(map_), enabled)
 }
 
 /*
 Returns [code]true[/code] if the navigation [param map] allows navigation regions to use edge connections to connect with other navigation regions within proximity of the navigation map edge connection margin.
 */
-func MapGetUseEdgeConnections(mapping RID.NavigationMap3D) bool { //gd:NavigationServer3D.map_get_use_edge_connections
+func MapGetUseEdgeConnections(map_ RID.NavigationMap3D) bool { //gd:NavigationServer3D.map_get_use_edge_connections
 	once.Do(singleton)
-	return bool(Advanced().MapGetUseEdgeConnections(RID.Any(mapping)))
+	return bool(Advanced().MapGetUseEdgeConnections(RID.Any(map_)))
 }
 
 /*
 Set the map edge connection margin used to weld the compatible region edges.
 */
-func MapSetEdgeConnectionMargin(mapping RID.NavigationMap3D, margin Float.X) { //gd:NavigationServer3D.map_set_edge_connection_margin
+func MapSetEdgeConnectionMargin(map_ RID.NavigationMap3D, margin Float.X) { //gd:NavigationServer3D.map_set_edge_connection_margin
 	once.Do(singleton)
-	Advanced().MapSetEdgeConnectionMargin(RID.Any(mapping), float64(margin))
+	Advanced().MapSetEdgeConnectionMargin(RID.Any(map_), float64(margin))
 }
 
 /*
 Returns the edge connection margin of the map. This distance is the minimum vertex distance needed to connect two edges from different regions.
 */
-func MapGetEdgeConnectionMargin(mapping RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_edge_connection_margin
+func MapGetEdgeConnectionMargin(map_ RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_edge_connection_margin
 	once.Do(singleton)
-	return Float.X(Float.X(Advanced().MapGetEdgeConnectionMargin(RID.Any(mapping))))
+	return Float.X(Float.X(Advanced().MapGetEdgeConnectionMargin(RID.Any(map_))))
 }
 
 /*
 Set the map's link connection radius used to connect links to navigation polygons.
 */
-func MapSetLinkConnectionRadius(mapping RID.NavigationMap3D, radius Float.X) { //gd:NavigationServer3D.map_set_link_connection_radius
+func MapSetLinkConnectionRadius(map_ RID.NavigationMap3D, radius Float.X) { //gd:NavigationServer3D.map_set_link_connection_radius
 	once.Do(singleton)
-	Advanced().MapSetLinkConnectionRadius(RID.Any(mapping), float64(radius))
+	Advanced().MapSetLinkConnectionRadius(RID.Any(map_), float64(radius))
 }
 
 /*
 Returns the link connection radius of the map. This distance is the maximum range any link will search for navigation mesh polygons to connect to.
 */
-func MapGetLinkConnectionRadius(mapping RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_link_connection_radius
+func MapGetLinkConnectionRadius(map_ RID.NavigationMap3D) Float.X { //gd:NavigationServer3D.map_get_link_connection_radius
 	once.Do(singleton)
-	return Float.X(Float.X(Advanced().MapGetLinkConnectionRadius(RID.Any(mapping))))
+	return Float.X(Float.X(Advanced().MapGetLinkConnectionRadius(RID.Any(map_))))
 }
 
 /*
 Returns the navigation path to reach the destination from the origin. [param navigation_layers] is a bitmask of all region navigation layers that are allowed to be in the path.
 */
-func MapGetPath(mapping RID.NavigationMap3D, origin Vector3.XYZ, destination Vector3.XYZ, optimize bool) []Vector3.XYZ { //gd:NavigationServer3D.map_get_path
+func MapGetPath(map_ RID.NavigationMap3D, origin Vector3.XYZ, destination Vector3.XYZ, optimize bool) []Vector3.XYZ { //gd:NavigationServer3D.map_get_path
 	once.Do(singleton)
-	return []Vector3.XYZ(slices.Collect(Advanced().MapGetPath(RID.Any(mapping), Vector3.XYZ(origin), Vector3.XYZ(destination), optimize, int64(1)).Values()))
+	return []Vector3.XYZ(slices.Collect(Advanced().MapGetPath(RID.Any(map_), Vector3.XYZ(origin), Vector3.XYZ(destination), optimize, int64(1)).Values()))
 }
 
 /*
 Returns the navigation path to reach the destination from the origin. [param navigation_layers] is a bitmask of all region navigation layers that are allowed to be in the path.
 */
-func MapGetPathOptions(mapping RID.NavigationMap3D, origin Vector3.XYZ, destination Vector3.XYZ, optimize bool, navigation_layers int) []Vector3.XYZ { //gd:NavigationServer3D.map_get_path
+func MapGetPathOptions(map_ RID.NavigationMap3D, origin Vector3.XYZ, destination Vector3.XYZ, optimize bool, navigation_layers int) []Vector3.XYZ { //gd:NavigationServer3D.map_get_path
 	once.Do(singleton)
-	return []Vector3.XYZ(slices.Collect(Advanced().MapGetPath(RID.Any(mapping), Vector3.XYZ(origin), Vector3.XYZ(destination), optimize, int64(navigation_layers)).Values()))
+	return []Vector3.XYZ(slices.Collect(Advanced().MapGetPath(RID.Any(map_), Vector3.XYZ(origin), Vector3.XYZ(destination), optimize, int64(navigation_layers)).Values()))
 }
 
 /*
 Returns the navigation mesh surface point closest to the provided [param start] and [param end] segment on the navigation [param map].
 If [param use_collision] is [code]true[/code], a closest point test is only done when the segment intersects with the navigation mesh surface.
 */
-func MapGetClosestPointToSegment(mapping RID.NavigationMap3D, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_to_segment
+func MapGetClosestPointToSegment(map_ RID.NavigationMap3D, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_to_segment
 	once.Do(singleton)
-	return Vector3.XYZ(Advanced().MapGetClosestPointToSegment(RID.Any(mapping), Vector3.XYZ(start), Vector3.XYZ(end), use_collision))
+	return Vector3.XYZ(Advanced().MapGetClosestPointToSegment(RID.Any(map_), Vector3.XYZ(start), Vector3.XYZ(end), use_collision))
 }
 
 /*
 Returns the navigation mesh surface point closest to the provided [param start] and [param end] segment on the navigation [param map].
 If [param use_collision] is [code]true[/code], a closest point test is only done when the segment intersects with the navigation mesh surface.
 */
-func MapGetClosestPointToSegmentOptions(mapping RID.NavigationMap3D, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_to_segment
+func MapGetClosestPointToSegmentOptions(map_ RID.NavigationMap3D, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_to_segment
 	once.Do(singleton)
-	return Vector3.XYZ(Advanced().MapGetClosestPointToSegment(RID.Any(mapping), Vector3.XYZ(start), Vector3.XYZ(end), use_collision))
+	return Vector3.XYZ(Advanced().MapGetClosestPointToSegment(RID.Any(map_), Vector3.XYZ(start), Vector3.XYZ(end), use_collision))
 }
 
 /*
 Returns the navigation mesh surface point closest to the provided [param to_point] on the navigation [param map].
 */
-func MapGetClosestPoint(mapping RID.NavigationMap3D, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point
+func MapGetClosestPoint(map_ RID.NavigationMap3D, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point
 	once.Do(singleton)
-	return Vector3.XYZ(Advanced().MapGetClosestPoint(RID.Any(mapping), Vector3.XYZ(to_point)))
+	return Vector3.XYZ(Advanced().MapGetClosestPoint(RID.Any(map_), Vector3.XYZ(to_point)))
 }
 
 /*
 Returns the navigation mesh surface normal closest to the provided [param to_point] on the navigation [param map].
 */
-func MapGetClosestPointNormal(mapping RID.NavigationMap3D, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_normal
+func MapGetClosestPointNormal(map_ RID.NavigationMap3D, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_normal
 	once.Do(singleton)
-	return Vector3.XYZ(Advanced().MapGetClosestPointNormal(RID.Any(mapping), Vector3.XYZ(to_point)))
+	return Vector3.XYZ(Advanced().MapGetClosestPointNormal(RID.Any(map_), Vector3.XYZ(to_point)))
 }
 
 /*
 Returns the owner region RID for the navigation mesh surface point closest to the provided [param to_point] on the navigation [param map].
 */
-func MapGetClosestPointOwner(mapping RID.NavigationMap3D, to_point Vector3.XYZ) RID.NavigationRegion3D { //gd:NavigationServer3D.map_get_closest_point_owner
+func MapGetClosestPointOwner(map_ RID.NavigationMap3D, to_point Vector3.XYZ) RID.NavigationRegion3D { //gd:NavigationServer3D.map_get_closest_point_owner
 	once.Do(singleton)
-	return RID.NavigationRegion3D(Advanced().MapGetClosestPointOwner(RID.Any(mapping), Vector3.XYZ(to_point)))
+	return RID.NavigationRegion3D(Advanced().MapGetClosestPointOwner(RID.Any(map_), Vector3.XYZ(to_point)))
 }
 
 /*
 Returns all navigation link [RID]s that are currently assigned to the requested navigation [param map].
 */
-func MapGetLinks(mapping RID.NavigationMap3D) [][]RID.NavigationLink3D { //gd:NavigationServer3D.map_get_links
+func MapGetLinks(map_ RID.NavigationMap3D) [][]RID.NavigationLink3D { //gd:NavigationServer3D.map_get_links
 	once.Do(singleton)
-	return [][]RID.NavigationLink3D(gd.ArrayAs[[][]RID.NavigationLink3D](gd.InternalArray(Advanced().MapGetLinks(RID.Any(mapping)))))
+	return [][]RID.NavigationLink3D(gd.ArrayAs[[][]RID.NavigationLink3D](gd.InternalArray(Advanced().MapGetLinks(RID.Any(map_)))))
 }
 
 /*
 Returns all navigation regions [RID]s that are currently assigned to the requested navigation [param map].
 */
-func MapGetRegions(mapping RID.NavigationMap3D) [][]RID.NavigationRegion3D { //gd:NavigationServer3D.map_get_regions
+func MapGetRegions(map_ RID.NavigationMap3D) [][]RID.NavigationRegion3D { //gd:NavigationServer3D.map_get_regions
 	once.Do(singleton)
-	return [][]RID.NavigationRegion3D(gd.ArrayAs[[][]RID.NavigationRegion3D](gd.InternalArray(Advanced().MapGetRegions(RID.Any(mapping)))))
+	return [][]RID.NavigationRegion3D(gd.ArrayAs[[][]RID.NavigationRegion3D](gd.InternalArray(Advanced().MapGetRegions(RID.Any(map_)))))
 }
 
 /*
 Returns all navigation agents [RID]s that are currently assigned to the requested navigation [param map].
 */
-func MapGetAgents(mapping RID.NavigationMap3D) [][]RID.NavigationAgent3D { //gd:NavigationServer3D.map_get_agents
+func MapGetAgents(map_ RID.NavigationMap3D) [][]RID.NavigationAgent3D { //gd:NavigationServer3D.map_get_agents
 	once.Do(singleton)
-	return [][]RID.NavigationAgent3D(gd.ArrayAs[[][]RID.NavigationAgent3D](gd.InternalArray(Advanced().MapGetAgents(RID.Any(mapping)))))
+	return [][]RID.NavigationAgent3D(gd.ArrayAs[[][]RID.NavigationAgent3D](gd.InternalArray(Advanced().MapGetAgents(RID.Any(map_)))))
 }
 
 /*
 Returns all navigation obstacle [RID]s that are currently assigned to the requested navigation [param map].
 */
-func MapGetObstacles(mapping RID.NavigationMap3D) [][]RID.NavigationObstacle3D { //gd:NavigationServer3D.map_get_obstacles
+func MapGetObstacles(map_ RID.NavigationMap3D) [][]RID.NavigationObstacle3D { //gd:NavigationServer3D.map_get_obstacles
 	once.Do(singleton)
-	return [][]RID.NavigationObstacle3D(gd.ArrayAs[[][]RID.NavigationObstacle3D](gd.InternalArray(Advanced().MapGetObstacles(RID.Any(mapping)))))
+	return [][]RID.NavigationObstacle3D(gd.ArrayAs[[][]RID.NavigationObstacle3D](gd.InternalArray(Advanced().MapGetObstacles(RID.Any(map_)))))
 }
 
 /*
@@ -337,34 +501,34 @@ Due to technical restrictions the current NavigationServer command queue will be
 Avoidance processing and dispatch of the [code]safe_velocity[/code] signals is unaffected by this function and continues to happen for all maps and agents at the end of the physics frame.
 [b]Note:[/b] With great power comes great responsibility. This function should only be used by users that really know what they are doing and have a good reason for it. Forcing an immediate update of a navigation map requires locking the NavigationServer and flushing the entire NavigationServer command queue. Not only can this severely impact the performance of a game but it can also introduce bugs if used inappropriately without much foresight.
 */
-func MapForceUpdate(mapping RID.NavigationMap3D) { //gd:NavigationServer3D.map_force_update
+func MapForceUpdate(map_ RID.NavigationMap3D) { //gd:NavigationServer3D.map_force_update
 	once.Do(singleton)
-	Advanced().MapForceUpdate(RID.Any(mapping))
+	Advanced().MapForceUpdate(RID.Any(map_))
 }
 
 /*
 Returns the current iteration id of the navigation map. Every time the navigation map changes and synchronizes the iteration id increases. An iteration id of 0 means the navigation map has never synchronized.
 [b]Note:[/b] The iteration id will wrap back to 1 after reaching its range limit.
 */
-func MapGetIterationId(mapping RID.NavigationMap3D) int { //gd:NavigationServer3D.map_get_iteration_id
+func MapGetIterationId(map_ RID.NavigationMap3D) int { //gd:NavigationServer3D.map_get_iteration_id
 	once.Do(singleton)
-	return int(int(Advanced().MapGetIterationId(RID.Any(mapping))))
+	return int(int(Advanced().MapGetIterationId(RID.Any(map_))))
 }
 
 /*
 If [param enabled] is [code]true[/code] the [param map] synchronization uses an async process that runs on a background thread.
 */
-func MapSetUseAsyncIterations(mapping RID.NavigationMap3D, enabled bool) { //gd:NavigationServer3D.map_set_use_async_iterations
+func MapSetUseAsyncIterations(map_ RID.NavigationMap3D, enabled bool) { //gd:NavigationServer3D.map_set_use_async_iterations
 	once.Do(singleton)
-	Advanced().MapSetUseAsyncIterations(RID.Any(mapping), enabled)
+	Advanced().MapSetUseAsyncIterations(RID.Any(map_), enabled)
 }
 
 /*
 Returns [code]true[/code] if the [param map] synchronization uses an async process that runs on a background thread.
 */
-func MapGetUseAsyncIterations(mapping RID.NavigationMap3D) bool { //gd:NavigationServer3D.map_get_use_async_iterations
+func MapGetUseAsyncIterations(map_ RID.NavigationMap3D) bool { //gd:NavigationServer3D.map_get_use_async_iterations
 	once.Do(singleton)
-	return bool(Advanced().MapGetUseAsyncIterations(RID.Any(mapping)))
+	return bool(Advanced().MapGetUseAsyncIterations(RID.Any(map_)))
 }
 
 /*
@@ -372,9 +536,9 @@ Returns a random position picked from all map region polygons with matching [par
 If [param uniformly] is [code]true[/code], all map regions, polygons, and faces are weighted by their surface area (slower).
 If [param uniformly] is [code]false[/code], just a random region and a random polygon are picked (faster).
 */
-func MapGetRandomPoint(mapping RID.NavigationMap3D, navigation_layers int, uniformly bool) Vector3.XYZ { //gd:NavigationServer3D.map_get_random_point
+func MapGetRandomPoint(map_ RID.NavigationMap3D, navigation_layers int, uniformly bool) Vector3.XYZ { //gd:NavigationServer3D.map_get_random_point
 	once.Do(singleton)
-	return Vector3.XYZ(Advanced().MapGetRandomPoint(RID.Any(mapping), int64(navigation_layers), uniformly))
+	return Vector3.XYZ(Advanced().MapGetRandomPoint(RID.Any(map_), int64(navigation_layers), uniformly))
 }
 
 /*
@@ -494,9 +658,9 @@ func RegionOwnsPoint(region RID.NavigationRegion3D, point Vector3.XYZ) bool { //
 /*
 Sets the map for the region.
 */
-func RegionSetMap(region RID.NavigationRegion3D, mapping RID.NavigationMap3D) { //gd:NavigationServer3D.region_set_map
+func RegionSetMap(region RID.NavigationRegion3D, map_ RID.NavigationMap3D) { //gd:NavigationServer3D.region_set_map
 	once.Do(singleton)
-	Advanced().RegionSetMap(RID.Any(region), RID.Any(mapping))
+	Advanced().RegionSetMap(RID.Any(region), RID.Any(map_))
 }
 
 /*
@@ -642,9 +806,9 @@ func LinkCreate() RID.NavigationLink3D { //gd:NavigationServer3D.link_create
 /*
 Sets the navigation map [RID] for the link.
 */
-func LinkSetMap(link RID.NavigationLink3D, mapping RID.NavigationMap3D) { //gd:NavigationServer3D.link_set_map
+func LinkSetMap(link RID.NavigationLink3D, map_ RID.NavigationMap3D) { //gd:NavigationServer3D.link_set_map
 	once.Do(singleton)
-	Advanced().LinkSetMap(RID.Any(link), RID.Any(mapping))
+	Advanced().LinkSetMap(RID.Any(link), RID.Any(map_))
 }
 
 /*
@@ -828,9 +992,9 @@ func AgentGetUse3dAvoidance(agent RID.NavigationAgent3D) bool { //gd:NavigationS
 /*
 Puts the agent in the map.
 */
-func AgentSetMap(agent RID.NavigationAgent3D, mapping RID.NavigationMap3D) { //gd:NavigationServer3D.agent_set_map
+func AgentSetMap(agent RID.NavigationAgent3D, map_ RID.NavigationMap3D) { //gd:NavigationServer3D.agent_set_map
 	once.Do(singleton)
-	Advanced().AgentSetMap(RID.Any(agent), RID.Any(mapping))
+	Advanced().AgentSetMap(RID.Any(agent), RID.Any(map_))
 }
 
 /*
@@ -1126,9 +1290,9 @@ func ObstacleGetUse3dAvoidance(obstacle RID.NavigationObstacle3D) bool { //gd:Na
 /*
 Assigns the [param obstacle] to a navigation map.
 */
-func ObstacleSetMap(obstacle RID.NavigationObstacle3D, mapping RID.NavigationMap3D) { //gd:NavigationServer3D.obstacle_set_map
+func ObstacleSetMap(obstacle RID.NavigationObstacle3D, map_ RID.NavigationMap3D) { //gd:NavigationServer3D.obstacle_set_map
 	once.Do(singleton)
-	Advanced().ObstacleSetMap(RID.Any(obstacle), RID.Any(mapping))
+	Advanced().ObstacleSetMap(RID.Any(obstacle), RID.Any(map_))
 }
 
 /*
@@ -1385,6 +1549,20 @@ func Advanced() class { once.Do(singleton); return self }
 type class [1]gdclass.NavigationServer3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.NavigationServer3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.NavigationServer3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -1399,7 +1577,7 @@ Returns all created navigation map [RID]s on the NavigationServer. This returns 
 */
 //go:nosplit
 func (self class) GetMaps() Array.Contains[RID.Any] { //gd:NavigationServer3D.get_maps
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_get_maps), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_maps, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1409,7 +1587,7 @@ Create a new map.
 */
 //go:nosplit
 func (self class) MapCreate() RID.Any { //gd:NavigationServer3D.map_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.map_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1419,7 +1597,7 @@ Sets the map active.
 */
 //go:nosplit
 func (self class) MapSetActive(mapping RID.Any, active bool) { //gd:NavigationServer3D.map_set_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_set_active), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.map_set_active, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		mapping RID.Any
 		active  bool
 	}{mapping, active}))
@@ -1430,7 +1608,7 @@ Returns [code]true[/code] if the map is active.
 */
 //go:nosplit
 func (self class) MapIsActive(mapping RID.Any) bool { //gd:NavigationServer3D.map_is_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_is_active), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.map_is_active, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = r_ret
 	return ret
 }
@@ -1440,7 +1618,7 @@ Sets the map up direction.
 */
 //go:nosplit
 func (self class) MapSetUp(mapping RID.Any, up Vector3.XYZ) { //gd:NavigationServer3D.map_set_up
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_set_up), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.map_set_up, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		mapping RID.Any
 		up      Vector3.XYZ
 	}{mapping, up}))
@@ -1451,7 +1629,7 @@ Returns the map's up direction.
 */
 //go:nosplit
 func (self class) MapGetUp(mapping RID.Any) Vector3.XYZ { //gd:NavigationServer3D.map_get_up
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_up), gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.map_get_up, gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = r_ret
 	return ret
 }
@@ -1461,7 +1639,7 @@ Sets the map cell size used to rasterize the navigation mesh vertices on the XZ 
 */
 //go:nosplit
 func (self class) MapSetCellSize(mapping RID.Any, cell_size float64) { //gd:NavigationServer3D.map_set_cell_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_set_cell_size), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.map_set_cell_size, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		mapping   RID.Any
 		cell_size float64
 	}{mapping, cell_size}))
@@ -1472,7 +1650,7 @@ Returns the map cell size used to rasterize the navigation mesh vertices on the 
 */
 //go:nosplit
 func (self class) MapGetCellSize(mapping RID.Any) float64 { //gd:NavigationServer3D.map_get_cell_size
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_cell_size), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.map_get_cell_size, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = r_ret
 	return ret
 }
@@ -1482,7 +1660,7 @@ Sets the map cell height used to rasterize the navigation mesh vertices on the Y
 */
 //go:nosplit
 func (self class) MapSetCellHeight(mapping RID.Any, cell_height float64) { //gd:NavigationServer3D.map_set_cell_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_set_cell_height), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.map_set_cell_height, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		mapping     RID.Any
 		cell_height float64
 	}{mapping, cell_height}))
@@ -1493,7 +1671,7 @@ Returns the map cell height used to rasterize the navigation mesh vertices on th
 */
 //go:nosplit
 func (self class) MapGetCellHeight(mapping RID.Any) float64 { //gd:NavigationServer3D.map_get_cell_height
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_cell_height), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.map_get_cell_height, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = r_ret
 	return ret
 }
@@ -1503,7 +1681,7 @@ Set the map's internal merge rasterizer cell scale used to control merging sensi
 */
 //go:nosplit
 func (self class) MapSetMergeRasterizerCellScale(mapping RID.Any, scale float64) { //gd:NavigationServer3D.map_set_merge_rasterizer_cell_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_set_merge_rasterizer_cell_scale), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.map_set_merge_rasterizer_cell_scale, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		mapping RID.Any
 		scale   float64
 	}{mapping, scale}))
@@ -1514,7 +1692,7 @@ Returns map's internal merge rasterizer cell scale.
 */
 //go:nosplit
 func (self class) MapGetMergeRasterizerCellScale(mapping RID.Any) float64 { //gd:NavigationServer3D.map_get_merge_rasterizer_cell_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_merge_rasterizer_cell_scale), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.map_get_merge_rasterizer_cell_scale, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = r_ret
 	return ret
 }
@@ -1524,7 +1702,7 @@ Set the navigation [param map] edge connection use. If [param enabled] is [code]
 */
 //go:nosplit
 func (self class) MapSetUseEdgeConnections(mapping RID.Any, enabled bool) { //gd:NavigationServer3D.map_set_use_edge_connections
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_set_use_edge_connections), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.map_set_use_edge_connections, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		mapping RID.Any
 		enabled bool
 	}{mapping, enabled}))
@@ -1535,7 +1713,7 @@ Returns [code]true[/code] if the navigation [param map] allows navigation region
 */
 //go:nosplit
 func (self class) MapGetUseEdgeConnections(mapping RID.Any) bool { //gd:NavigationServer3D.map_get_use_edge_connections
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_use_edge_connections), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.map_get_use_edge_connections, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = r_ret
 	return ret
 }
@@ -1545,7 +1723,7 @@ Set the map edge connection margin used to weld the compatible region edges.
 */
 //go:nosplit
 func (self class) MapSetEdgeConnectionMargin(mapping RID.Any, margin float64) { //gd:NavigationServer3D.map_set_edge_connection_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_set_edge_connection_margin), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.map_set_edge_connection_margin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		mapping RID.Any
 		margin  float64
 	}{mapping, margin}))
@@ -1556,7 +1734,7 @@ Returns the edge connection margin of the map. This distance is the minimum vert
 */
 //go:nosplit
 func (self class) MapGetEdgeConnectionMargin(mapping RID.Any) float64 { //gd:NavigationServer3D.map_get_edge_connection_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_edge_connection_margin), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.map_get_edge_connection_margin, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = r_ret
 	return ret
 }
@@ -1566,7 +1744,7 @@ Set the map's link connection radius used to connect links to navigation polygon
 */
 //go:nosplit
 func (self class) MapSetLinkConnectionRadius(mapping RID.Any, radius float64) { //gd:NavigationServer3D.map_set_link_connection_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_set_link_connection_radius), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.map_set_link_connection_radius, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		mapping RID.Any
 		radius  float64
 	}{mapping, radius}))
@@ -1577,7 +1755,7 @@ Returns the link connection radius of the map. This distance is the maximum rang
 */
 //go:nosplit
 func (self class) MapGetLinkConnectionRadius(mapping RID.Any) float64 { //gd:NavigationServer3D.map_get_link_connection_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_link_connection_radius), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.map_get_link_connection_radius, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = r_ret
 	return ret
 }
@@ -1587,7 +1765,7 @@ Returns the navigation path to reach the destination from the origin. [param nav
 */
 //go:nosplit
 func (self class) MapGetPath(mapping RID.Any, origin Vector3.XYZ, destination Vector3.XYZ, optimize bool, navigation_layers int64) Packed.Array[Vector3.XYZ] { //gd:NavigationServer3D.map_get_path
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_path), gdextension.SizePackedArray|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.map_get_path, gdextension.SizePackedArray|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		mapping           RID.Any
 		origin            Vector3.XYZ
 		destination       Vector3.XYZ
@@ -1604,7 +1782,7 @@ If [param use_collision] is [code]true[/code], a closest point test is only done
 */
 //go:nosplit
 func (self class) MapGetClosestPointToSegment(mapping RID.Any, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_to_segment
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_closest_point_to_segment), gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.map_get_closest_point_to_segment, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		mapping       RID.Any
 		start         Vector3.XYZ
 		end           Vector3.XYZ
@@ -1619,7 +1797,7 @@ Returns the navigation mesh surface point closest to the provided [param to_poin
 */
 //go:nosplit
 func (self class) MapGetClosestPoint(mapping RID.Any, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_closest_point), gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.map_get_closest_point, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		mapping  RID.Any
 		to_point Vector3.XYZ
 	}{mapping, to_point}))
@@ -1632,7 +1810,7 @@ Returns the navigation mesh surface normal closest to the provided [param to_poi
 */
 //go:nosplit
 func (self class) MapGetClosestPointNormal(mapping RID.Any, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_normal
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_closest_point_normal), gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.map_get_closest_point_normal, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		mapping  RID.Any
 		to_point Vector3.XYZ
 	}{mapping, to_point}))
@@ -1645,7 +1823,7 @@ Returns the owner region RID for the navigation mesh surface point closest to th
 */
 //go:nosplit
 func (self class) MapGetClosestPointOwner(mapping RID.Any, to_point Vector3.XYZ) RID.Any { //gd:NavigationServer3D.map_get_closest_point_owner
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_closest_point_owner), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.map_get_closest_point_owner, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		mapping  RID.Any
 		to_point Vector3.XYZ
 	}{mapping, to_point}))
@@ -1658,7 +1836,7 @@ Returns all navigation link [RID]s that are currently assigned to the requested 
 */
 //go:nosplit
 func (self class) MapGetLinks(mapping RID.Any) Array.Contains[RID.Any] { //gd:NavigationServer3D.map_get_links
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_links), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.map_get_links, gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1668,7 +1846,7 @@ Returns all navigation regions [RID]s that are currently assigned to the request
 */
 //go:nosplit
 func (self class) MapGetRegions(mapping RID.Any) Array.Contains[RID.Any] { //gd:NavigationServer3D.map_get_regions
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_regions), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.map_get_regions, gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1678,7 +1856,7 @@ Returns all navigation agents [RID]s that are currently assigned to the requeste
 */
 //go:nosplit
 func (self class) MapGetAgents(mapping RID.Any) Array.Contains[RID.Any] { //gd:NavigationServer3D.map_get_agents
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_agents), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.map_get_agents, gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1688,7 +1866,7 @@ Returns all navigation obstacle [RID]s that are currently assigned to the reques
 */
 //go:nosplit
 func (self class) MapGetObstacles(mapping RID.Any) Array.Contains[RID.Any] { //gd:NavigationServer3D.map_get_obstacles
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_obstacles), gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.map_get_obstacles, gdextension.SizeArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1701,7 +1879,7 @@ Avoidance processing and dispatch of the [code]safe_velocity[/code] signals is u
 */
 //go:nosplit
 func (self class) MapForceUpdate(mapping RID.Any) { //gd:NavigationServer3D.map_force_update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_force_update), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.map_force_update, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 }
 
 /*
@@ -1710,7 +1888,7 @@ Returns the current iteration id of the navigation map. Every time the navigatio
 */
 //go:nosplit
 func (self class) MapGetIterationId(mapping RID.Any) int64 { //gd:NavigationServer3D.map_get_iteration_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_iteration_id), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.map_get_iteration_id, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = r_ret
 	return ret
 }
@@ -1720,7 +1898,7 @@ If [param enabled] is [code]true[/code] the [param map] synchronization uses an 
 */
 //go:nosplit
 func (self class) MapSetUseAsyncIterations(mapping RID.Any, enabled bool) { //gd:NavigationServer3D.map_set_use_async_iterations
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_set_use_async_iterations), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.map_set_use_async_iterations, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		mapping RID.Any
 		enabled bool
 	}{mapping, enabled}))
@@ -1731,7 +1909,7 @@ Returns [code]true[/code] if the [param map] synchronization uses an async proce
 */
 //go:nosplit
 func (self class) MapGetUseAsyncIterations(mapping RID.Any) bool { //gd:NavigationServer3D.map_get_use_async_iterations
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_use_async_iterations), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.map_get_use_async_iterations, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 	var ret = r_ret
 	return ret
 }
@@ -1743,7 +1921,7 @@ If [param uniformly] is [code]false[/code], just a random region and a random po
 */
 //go:nosplit
 func (self class) MapGetRandomPoint(mapping RID.Any, navigation_layers int64, uniformly bool) Vector3.XYZ { //gd:NavigationServer3D.map_get_random_point
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_map_get_random_point), gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.map_get_random_point, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		mapping           RID.Any
 		navigation_layers int64
 		uniformly         bool
@@ -1757,7 +1935,7 @@ Queries a path in a given navigation map. Start and target position and other pa
 */
 //go:nosplit
 func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters3D, result [1]gdclass.NavigationPathQueryResult3D, callback Callable.Function) { //gd:NavigationServer3D.query_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_query_path), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.query_path, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
 		parameters gdextension.Object
 		result     gdextension.Object
 		callback   gdextension.Callable
@@ -1769,7 +1947,7 @@ Creates a new region.
 */
 //go:nosplit
 func (self class) RegionCreate() RID.Any { //gd:NavigationServer3D.region_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.region_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1779,7 +1957,7 @@ If [param enabled] is [code]true[/code], the specified [param region] will contr
 */
 //go:nosplit
 func (self class) RegionSetEnabled(region RID.Any, enabled bool) { //gd:NavigationServer3D.region_set_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_set_enabled), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_set_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		region  RID.Any
 		enabled bool
 	}{region, enabled}))
@@ -1790,7 +1968,7 @@ Returns [code]true[/code] if the specified [param region] is enabled.
 */
 //go:nosplit
 func (self class) RegionGetEnabled(region RID.Any) bool { //gd:NavigationServer3D.region_get_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_enabled), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.region_get_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
 	var ret = r_ret
 	return ret
 }
@@ -1800,7 +1978,7 @@ If [param enabled] is [code]true[/code], the navigation [param region] will use 
 */
 //go:nosplit
 func (self class) RegionSetUseEdgeConnections(region RID.Any, enabled bool) { //gd:NavigationServer3D.region_set_use_edge_connections
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_set_use_edge_connections), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_set_use_edge_connections, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		region  RID.Any
 		enabled bool
 	}{region, enabled}))
@@ -1811,7 +1989,7 @@ Returns [code]true[/code] if the navigation [param region] is set to use edge co
 */
 //go:nosplit
 func (self class) RegionGetUseEdgeConnections(region RID.Any) bool { //gd:NavigationServer3D.region_get_use_edge_connections
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_use_edge_connections), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.region_get_use_edge_connections, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
 	var ret = r_ret
 	return ret
 }
@@ -1821,7 +1999,7 @@ Sets the [param enter_cost] for this [param region].
 */
 //go:nosplit
 func (self class) RegionSetEnterCost(region RID.Any, enter_cost float64) { //gd:NavigationServer3D.region_set_enter_cost
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_set_enter_cost), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_set_enter_cost, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		region     RID.Any
 		enter_cost float64
 	}{region, enter_cost}))
@@ -1832,7 +2010,7 @@ Returns the enter cost of this [param region].
 */
 //go:nosplit
 func (self class) RegionGetEnterCost(region RID.Any) float64 { //gd:NavigationServer3D.region_get_enter_cost
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_enter_cost), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.region_get_enter_cost, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
 	var ret = r_ret
 	return ret
 }
@@ -1842,7 +2020,7 @@ Sets the [param travel_cost] for this [param region].
 */
 //go:nosplit
 func (self class) RegionSetTravelCost(region RID.Any, travel_cost float64) { //gd:NavigationServer3D.region_set_travel_cost
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_set_travel_cost), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_set_travel_cost, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		region      RID.Any
 		travel_cost float64
 	}{region, travel_cost}))
@@ -1853,7 +2031,7 @@ Returns the travel cost of this [param region].
 */
 //go:nosplit
 func (self class) RegionGetTravelCost(region RID.Any) float64 { //gd:NavigationServer3D.region_get_travel_cost
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_travel_cost), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.region_get_travel_cost, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
 	var ret = r_ret
 	return ret
 }
@@ -1863,7 +2041,7 @@ Set the [code]ObjectID[/code] of the object which manages this region.
 */
 //go:nosplit
 func (self class) RegionSetOwnerId(region RID.Any, owner_id int64) { //gd:NavigationServer3D.region_set_owner_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_set_owner_id), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_set_owner_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		region   RID.Any
 		owner_id int64
 	}{region, owner_id}))
@@ -1874,7 +2052,7 @@ Returns the [code]ObjectID[/code] of the object which manages this region.
 */
 //go:nosplit
 func (self class) RegionGetOwnerId(region RID.Any) int64 { //gd:NavigationServer3D.region_get_owner_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_owner_id), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.region_get_owner_id, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
 	var ret = r_ret
 	return ret
 }
@@ -1886,7 +2064,7 @@ If multiple navigation meshes have positions at equal distance the navigation re
 */
 //go:nosplit
 func (self class) RegionOwnsPoint(region RID.Any, point Vector3.XYZ) bool { //gd:NavigationServer3D.region_owns_point
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_owns_point), gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.region_owns_point, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		region RID.Any
 		point  Vector3.XYZ
 	}{region, point}))
@@ -1899,7 +2077,7 @@ Sets the map for the region.
 */
 //go:nosplit
 func (self class) RegionSetMap(region RID.Any, mapping RID.Any) { //gd:NavigationServer3D.region_set_map
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_set_map), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_set_map, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		region  RID.Any
 		mapping RID.Any
 	}{region, mapping}))
@@ -1910,7 +2088,7 @@ Returns the navigation map [RID] the requested [param region] is currently assig
 */
 //go:nosplit
 func (self class) RegionGetMap(region RID.Any) RID.Any { //gd:NavigationServer3D.region_get_map
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_map), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.region_get_map, gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
 	var ret = r_ret
 	return ret
 }
@@ -1920,7 +2098,7 @@ Set the region's navigation layers. This allows selecting regions from a path re
 */
 //go:nosplit
 func (self class) RegionSetNavigationLayers(region RID.Any, navigation_layers int64) { //gd:NavigationServer3D.region_set_navigation_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_set_navigation_layers), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_set_navigation_layers, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		region            RID.Any
 		navigation_layers int64
 	}{region, navigation_layers}))
@@ -1931,7 +2109,7 @@ Returns the region's navigation layers.
 */
 //go:nosplit
 func (self class) RegionGetNavigationLayers(region RID.Any) int64 { //gd:NavigationServer3D.region_get_navigation_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_navigation_layers), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.region_get_navigation_layers, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
 	var ret = r_ret
 	return ret
 }
@@ -1941,7 +2119,7 @@ Sets the global transformation for the region.
 */
 //go:nosplit
 func (self class) RegionSetTransform(region RID.Any, transform Transform3D.BasisOrigin) { //gd:NavigationServer3D.region_set_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_set_transform), 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		region    RID.Any
 		transform Transform3D.BasisOrigin
 	}{region, gd.Transposed(transform)}))
@@ -1952,7 +2130,7 @@ Returns the global transformation of this [param region].
 */
 //go:nosplit
 func (self class) RegionGetTransform(region RID.Any) Transform3D.BasisOrigin { //gd:NavigationServer3D.region_get_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_transform), gdextension.SizeTransform3D|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.region_get_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -1962,7 +2140,7 @@ Sets the navigation mesh for the region.
 */
 //go:nosplit
 func (self class) RegionSetNavigationMesh(region RID.Any, navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationServer3D.region_set_navigation_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_set_navigation_mesh), 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_set_navigation_mesh, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		region          RID.Any
 		navigation_mesh gdextension.Object
 	}{region, gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))}))
@@ -1973,7 +2151,7 @@ Bakes the [param navigation_mesh] with bake source geometry collected starting f
 */
 //go:nosplit
 func (self class) RegionBakeNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh, root_node [1]gdclass.Node) { //gd:NavigationServer3D.region_bake_navigation_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_bake_navigation_mesh), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_bake_navigation_mesh, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		navigation_mesh gdextension.Object
 		root_node       gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject()))}))
@@ -1984,7 +2162,7 @@ Returns how many connections this [param region] has with other regions in the m
 */
 //go:nosplit
 func (self class) RegionGetConnectionsCount(region RID.Any) int64 { //gd:NavigationServer3D.region_get_connections_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_connections_count), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.region_get_connections_count, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
 	var ret = r_ret
 	return ret
 }
@@ -1994,7 +2172,7 @@ Returns the starting point of a connection door. [param connection] is an index 
 */
 //go:nosplit
 func (self class) RegionGetConnectionPathwayStart(region RID.Any, connection int64) Vector3.XYZ { //gd:NavigationServer3D.region_get_connection_pathway_start
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_connection_pathway_start), gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.region_get_connection_pathway_start, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		region     RID.Any
 		connection int64
 	}{region, connection}))
@@ -2007,7 +2185,7 @@ Returns the ending point of a connection door. [param connection] is an index be
 */
 //go:nosplit
 func (self class) RegionGetConnectionPathwayEnd(region RID.Any, connection int64) Vector3.XYZ { //gd:NavigationServer3D.region_get_connection_pathway_end
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_connection_pathway_end), gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.region_get_connection_pathway_end, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		region     RID.Any
 		connection int64
 	}{region, connection}))
@@ -2021,7 +2199,7 @@ If [param use_collision] is [code]true[/code], a closest point test is only done
 */
 //go:nosplit
 func (self class) RegionGetClosestPointToSegment(region RID.Any, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point_to_segment
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_closest_point_to_segment), gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.region_get_closest_point_to_segment, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		region        RID.Any
 		start         Vector3.XYZ
 		end           Vector3.XYZ
@@ -2036,7 +2214,7 @@ Returns the navigation mesh surface point closest to the provided [param to_poin
 */
 //go:nosplit
 func (self class) RegionGetClosestPoint(region RID.Any, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_closest_point), gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.region_get_closest_point, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		region   RID.Any
 		to_point Vector3.XYZ
 	}{region, to_point}))
@@ -2049,7 +2227,7 @@ Returns the navigation mesh surface normal closest to the provided [param to_poi
 */
 //go:nosplit
 func (self class) RegionGetClosestPointNormal(region RID.Any, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point_normal
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_closest_point_normal), gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.region_get_closest_point_normal, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		region   RID.Any
 		to_point Vector3.XYZ
 	}{region, to_point}))
@@ -2064,7 +2242,7 @@ If [param uniformly] is [code]false[/code], just a random polygon and face is pi
 */
 //go:nosplit
 func (self class) RegionGetRandomPoint(region RID.Any, navigation_layers int64, uniformly bool) Vector3.XYZ { //gd:NavigationServer3D.region_get_random_point
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_random_point), gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.region_get_random_point, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		region            RID.Any
 		navigation_layers int64
 		uniformly         bool
@@ -2078,7 +2256,7 @@ Returns the axis-aligned bounding box for the [param region]'s transformed navig
 */
 //go:nosplit
 func (self class) RegionGetBounds(region RID.Any) AABB.PositionSize { //gd:NavigationServer3D.region_get_bounds
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_region_get_bounds), gdextension.SizeAABB|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.region_get_bounds, gdextension.SizeAABB|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ region RID.Any }{region}))
 	var ret = r_ret
 	return ret
 }
@@ -2088,7 +2266,7 @@ Create a new link between two positions on a map.
 */
 //go:nosplit
 func (self class) LinkCreate() RID.Any { //gd:NavigationServer3D.link_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.link_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2098,7 +2276,7 @@ Sets the navigation map [RID] for the link.
 */
 //go:nosplit
 func (self class) LinkSetMap(link RID.Any, mapping RID.Any) { //gd:NavigationServer3D.link_set_map
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_set_map), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.link_set_map, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		link    RID.Any
 		mapping RID.Any
 	}{link, mapping}))
@@ -2109,7 +2287,7 @@ Returns the navigation map [RID] the requested [param link] is currently assigne
 */
 //go:nosplit
 func (self class) LinkGetMap(link RID.Any) RID.Any { //gd:NavigationServer3D.link_get_map
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_get_map), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.link_get_map, gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
 	var ret = r_ret
 	return ret
 }
@@ -2119,7 +2297,7 @@ If [param enabled] is [code]true[/code], the specified [param link] will contrib
 */
 //go:nosplit
 func (self class) LinkSetEnabled(link RID.Any, enabled bool) { //gd:NavigationServer3D.link_set_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_set_enabled), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.link_set_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		link    RID.Any
 		enabled bool
 	}{link, enabled}))
@@ -2130,7 +2308,7 @@ Returns [code]true[/code] if the specified [param link] is enabled.
 */
 //go:nosplit
 func (self class) LinkGetEnabled(link RID.Any) bool { //gd:NavigationServer3D.link_get_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_get_enabled), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.link_get_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
 	var ret = r_ret
 	return ret
 }
@@ -2140,7 +2318,7 @@ Sets whether this [param link] can be travelled in both directions.
 */
 //go:nosplit
 func (self class) LinkSetBidirectional(link RID.Any, bidirectional bool) { //gd:NavigationServer3D.link_set_bidirectional
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_set_bidirectional), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.link_set_bidirectional, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		link          RID.Any
 		bidirectional bool
 	}{link, bidirectional}))
@@ -2151,7 +2329,7 @@ Returns whether this [param link] can be travelled in both directions.
 */
 //go:nosplit
 func (self class) LinkIsBidirectional(link RID.Any) bool { //gd:NavigationServer3D.link_is_bidirectional
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_is_bidirectional), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.link_is_bidirectional, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
 	var ret = r_ret
 	return ret
 }
@@ -2161,7 +2339,7 @@ Set the links's navigation layers. This allows selecting links from a path reque
 */
 //go:nosplit
 func (self class) LinkSetNavigationLayers(link RID.Any, navigation_layers int64) { //gd:NavigationServer3D.link_set_navigation_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_set_navigation_layers), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.link_set_navigation_layers, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		link              RID.Any
 		navigation_layers int64
 	}{link, navigation_layers}))
@@ -2172,7 +2350,7 @@ Returns the navigation layers for this [param link].
 */
 //go:nosplit
 func (self class) LinkGetNavigationLayers(link RID.Any) int64 { //gd:NavigationServer3D.link_get_navigation_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_get_navigation_layers), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.link_get_navigation_layers, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
 	var ret = r_ret
 	return ret
 }
@@ -2182,7 +2360,7 @@ Sets the entry position for this [param link].
 */
 //go:nosplit
 func (self class) LinkSetStartPosition(link RID.Any, position Vector3.XYZ) { //gd:NavigationServer3D.link_set_start_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_set_start_position), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.link_set_start_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		link     RID.Any
 		position Vector3.XYZ
 	}{link, position}))
@@ -2193,7 +2371,7 @@ Returns the starting position of this [param link].
 */
 //go:nosplit
 func (self class) LinkGetStartPosition(link RID.Any) Vector3.XYZ { //gd:NavigationServer3D.link_get_start_position
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_get_start_position), gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.link_get_start_position, gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
 	var ret = r_ret
 	return ret
 }
@@ -2203,7 +2381,7 @@ Sets the exit position for the [param link].
 */
 //go:nosplit
 func (self class) LinkSetEndPosition(link RID.Any, position Vector3.XYZ) { //gd:NavigationServer3D.link_set_end_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_set_end_position), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.link_set_end_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		link     RID.Any
 		position Vector3.XYZ
 	}{link, position}))
@@ -2214,7 +2392,7 @@ Returns the ending position of this [param link].
 */
 //go:nosplit
 func (self class) LinkGetEndPosition(link RID.Any) Vector3.XYZ { //gd:NavigationServer3D.link_get_end_position
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_get_end_position), gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.link_get_end_position, gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
 	var ret = r_ret
 	return ret
 }
@@ -2224,7 +2402,7 @@ Sets the [param enter_cost] for this [param link].
 */
 //go:nosplit
 func (self class) LinkSetEnterCost(link RID.Any, enter_cost float64) { //gd:NavigationServer3D.link_set_enter_cost
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_set_enter_cost), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.link_set_enter_cost, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		link       RID.Any
 		enter_cost float64
 	}{link, enter_cost}))
@@ -2235,7 +2413,7 @@ Returns the enter cost of this [param link].
 */
 //go:nosplit
 func (self class) LinkGetEnterCost(link RID.Any) float64 { //gd:NavigationServer3D.link_get_enter_cost
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_get_enter_cost), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.link_get_enter_cost, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
 	var ret = r_ret
 	return ret
 }
@@ -2245,7 +2423,7 @@ Sets the [param travel_cost] for this [param link].
 */
 //go:nosplit
 func (self class) LinkSetTravelCost(link RID.Any, travel_cost float64) { //gd:NavigationServer3D.link_set_travel_cost
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_set_travel_cost), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.link_set_travel_cost, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		link        RID.Any
 		travel_cost float64
 	}{link, travel_cost}))
@@ -2256,7 +2434,7 @@ Returns the travel cost of this [param link].
 */
 //go:nosplit
 func (self class) LinkGetTravelCost(link RID.Any) float64 { //gd:NavigationServer3D.link_get_travel_cost
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_get_travel_cost), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.link_get_travel_cost, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
 	var ret = r_ret
 	return ret
 }
@@ -2266,7 +2444,7 @@ Set the [code]ObjectID[/code] of the object which manages this link.
 */
 //go:nosplit
 func (self class) LinkSetOwnerId(link RID.Any, owner_id int64) { //gd:NavigationServer3D.link_set_owner_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_set_owner_id), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.link_set_owner_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		link     RID.Any
 		owner_id int64
 	}{link, owner_id}))
@@ -2277,7 +2455,7 @@ Returns the [code]ObjectID[/code] of the object which manages this link.
 */
 //go:nosplit
 func (self class) LinkGetOwnerId(link RID.Any) int64 { //gd:NavigationServer3D.link_get_owner_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_link_get_owner_id), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.link_get_owner_id, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ link RID.Any }{link}))
 	var ret = r_ret
 	return ret
 }
@@ -2287,7 +2465,7 @@ Creates the agent.
 */
 //go:nosplit
 func (self class) AgentCreate() RID.Any { //gd:NavigationServer3D.agent_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.agent_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2297,7 +2475,7 @@ If [param enabled] is [code]true[/code], the provided [param agent] calculates a
 */
 //go:nosplit
 func (self class) AgentSetAvoidanceEnabled(agent RID.Any, enabled bool) { //gd:NavigationServer3D.agent_set_avoidance_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_avoidance_enabled), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_avoidance_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		agent   RID.Any
 		enabled bool
 	}{agent, enabled}))
@@ -2308,7 +2486,7 @@ Returns [code]true[/code] if the provided [param agent] has avoidance enabled.
 */
 //go:nosplit
 func (self class) AgentGetAvoidanceEnabled(agent RID.Any) bool { //gd:NavigationServer3D.agent_get_avoidance_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_avoidance_enabled), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.agent_get_avoidance_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2320,7 +2498,7 @@ If [code]false[/code] the agent calculates avoidance velocities in 2D along the 
 */
 //go:nosplit
 func (self class) AgentSetUse3dAvoidance(agent RID.Any, enabled bool) { //gd:NavigationServer3D.agent_set_use_3d_avoidance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_use_3d_avoidance), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_use_3d_avoidance, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		agent   RID.Any
 		enabled bool
 	}{agent, enabled}))
@@ -2331,7 +2509,7 @@ Returns [code]true[/code] if the provided [param agent] uses avoidance in 3D spa
 */
 //go:nosplit
 func (self class) AgentGetUse3dAvoidance(agent RID.Any) bool { //gd:NavigationServer3D.agent_get_use_3d_avoidance
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_use_3d_avoidance), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.agent_get_use_3d_avoidance, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2341,7 +2519,7 @@ Puts the agent in the map.
 */
 //go:nosplit
 func (self class) AgentSetMap(agent RID.Any, mapping RID.Any) { //gd:NavigationServer3D.agent_set_map
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_map), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_map, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		agent   RID.Any
 		mapping RID.Any
 	}{agent, mapping}))
@@ -2352,7 +2530,7 @@ Returns the navigation map [RID] the requested [param agent] is currently assign
 */
 //go:nosplit
 func (self class) AgentGetMap(agent RID.Any) RID.Any { //gd:NavigationServer3D.agent_get_map
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_map), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.agent_get_map, gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2362,7 +2540,7 @@ If [param paused] is [code]true[/code] the specified [param agent] will not be p
 */
 //go:nosplit
 func (self class) AgentSetPaused(agent RID.Any, paused bool) { //gd:NavigationServer3D.agent_set_paused
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_paused), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_paused, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		agent  RID.Any
 		paused bool
 	}{agent, paused}))
@@ -2373,7 +2551,7 @@ Returns [code]true[/code] if the specified [param agent] is paused.
 */
 //go:nosplit
 func (self class) AgentGetPaused(agent RID.Any) bool { //gd:NavigationServer3D.agent_get_paused
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_paused), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.agent_get_paused, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2383,7 +2561,7 @@ Sets the maximum distance to other agents this agent takes into account in the n
 */
 //go:nosplit
 func (self class) AgentSetNeighborDistance(agent RID.Any, distance float64) { //gd:NavigationServer3D.agent_set_neighbor_distance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_neighbor_distance), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_neighbor_distance, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		agent    RID.Any
 		distance float64
 	}{agent, distance}))
@@ -2394,7 +2572,7 @@ Returns the maximum distance to other agents the specified [param agent] takes i
 */
 //go:nosplit
 func (self class) AgentGetNeighborDistance(agent RID.Any) float64 { //gd:NavigationServer3D.agent_get_neighbor_distance
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_neighbor_distance), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.agent_get_neighbor_distance, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2404,7 +2582,7 @@ Sets the maximum number of other agents the agent takes into account in the navi
 */
 //go:nosplit
 func (self class) AgentSetMaxNeighbors(agent RID.Any, count int64) { //gd:NavigationServer3D.agent_set_max_neighbors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_max_neighbors), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_max_neighbors, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		agent RID.Any
 		count int64
 	}{agent, count}))
@@ -2415,7 +2593,7 @@ Returns the maximum number of other agents the specified [param agent] takes int
 */
 //go:nosplit
 func (self class) AgentGetMaxNeighbors(agent RID.Any) int64 { //gd:NavigationServer3D.agent_get_max_neighbors
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_max_neighbors), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.agent_get_max_neighbors, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2425,7 +2603,7 @@ The minimal amount of time for which the agent's velocities that are computed by
 */
 //go:nosplit
 func (self class) AgentSetTimeHorizonAgents(agent RID.Any, time_horizon float64) { //gd:NavigationServer3D.agent_set_time_horizon_agents
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_time_horizon_agents), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_time_horizon_agents, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		agent        RID.Any
 		time_horizon float64
 	}{agent, time_horizon}))
@@ -2436,7 +2614,7 @@ Returns the minimal amount of time for which the specified [param agent]'s veloc
 */
 //go:nosplit
 func (self class) AgentGetTimeHorizonAgents(agent RID.Any) float64 { //gd:NavigationServer3D.agent_get_time_horizon_agents
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_time_horizon_agents), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.agent_get_time_horizon_agents, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2446,7 +2624,7 @@ The minimal amount of time for which the agent's velocities that are computed by
 */
 //go:nosplit
 func (self class) AgentSetTimeHorizonObstacles(agent RID.Any, time_horizon float64) { //gd:NavigationServer3D.agent_set_time_horizon_obstacles
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_time_horizon_obstacles), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_time_horizon_obstacles, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		agent        RID.Any
 		time_horizon float64
 	}{agent, time_horizon}))
@@ -2457,7 +2635,7 @@ Returns the minimal amount of time for which the specified [param agent]'s veloc
 */
 //go:nosplit
 func (self class) AgentGetTimeHorizonObstacles(agent RID.Any) float64 { //gd:NavigationServer3D.agent_get_time_horizon_obstacles
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_time_horizon_obstacles), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.agent_get_time_horizon_obstacles, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2467,7 +2645,7 @@ Sets the radius of the agent.
 */
 //go:nosplit
 func (self class) AgentSetRadius(agent RID.Any, radius float64) { //gd:NavigationServer3D.agent_set_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_radius), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_radius, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		agent  RID.Any
 		radius float64
 	}{agent, radius}))
@@ -2478,7 +2656,7 @@ Returns the radius of the specified [param agent].
 */
 //go:nosplit
 func (self class) AgentGetRadius(agent RID.Any) float64 { //gd:NavigationServer3D.agent_get_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_radius), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.agent_get_radius, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2488,7 +2666,7 @@ Updates the provided [param agent] [param height].
 */
 //go:nosplit
 func (self class) AgentSetHeight(agent RID.Any, height float64) { //gd:NavigationServer3D.agent_set_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_height), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_height, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		agent  RID.Any
 		height float64
 	}{agent, height}))
@@ -2499,7 +2677,7 @@ Returns the [code]height[/code] of the specified [param agent].
 */
 //go:nosplit
 func (self class) AgentGetHeight(agent RID.Any) float64 { //gd:NavigationServer3D.agent_get_height
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_height), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.agent_get_height, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2509,7 +2687,7 @@ Sets the maximum speed of the agent. Must be positive.
 */
 //go:nosplit
 func (self class) AgentSetMaxSpeed(agent RID.Any, max_speed float64) { //gd:NavigationServer3D.agent_set_max_speed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_max_speed), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_max_speed, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		agent     RID.Any
 		max_speed float64
 	}{agent, max_speed}))
@@ -2520,7 +2698,7 @@ Returns the maximum speed of the specified [param agent].
 */
 //go:nosplit
 func (self class) AgentGetMaxSpeed(agent RID.Any) float64 { //gd:NavigationServer3D.agent_get_max_speed
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_max_speed), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.agent_get_max_speed, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2530,7 +2708,7 @@ Replaces the internal velocity in the collision avoidance simulation with [param
 */
 //go:nosplit
 func (self class) AgentSetVelocityForced(agent RID.Any, velocity Vector3.XYZ) { //gd:NavigationServer3D.agent_set_velocity_forced
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_velocity_forced), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_velocity_forced, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		agent    RID.Any
 		velocity Vector3.XYZ
 	}{agent, velocity}))
@@ -2541,7 +2719,7 @@ Sets [param velocity] as the new wanted velocity for the specified [param agent]
 */
 //go:nosplit
 func (self class) AgentSetVelocity(agent RID.Any, velocity Vector3.XYZ) { //gd:NavigationServer3D.agent_set_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_velocity), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_velocity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		agent    RID.Any
 		velocity Vector3.XYZ
 	}{agent, velocity}))
@@ -2552,7 +2730,7 @@ Returns the velocity of the specified [param agent].
 */
 //go:nosplit
 func (self class) AgentGetVelocity(agent RID.Any) Vector3.XYZ { //gd:NavigationServer3D.agent_get_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_velocity), gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.agent_get_velocity, gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2562,7 +2740,7 @@ Sets the position of the agent in world space.
 */
 //go:nosplit
 func (self class) AgentSetPosition(agent RID.Any, position Vector3.XYZ) { //gd:NavigationServer3D.agent_set_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_position), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		agent    RID.Any
 		position Vector3.XYZ
 	}{agent, position}))
@@ -2573,7 +2751,7 @@ Returns the position of the specified [param agent] in world space.
 */
 //go:nosplit
 func (self class) AgentGetPosition(agent RID.Any) Vector3.XYZ { //gd:NavigationServer3D.agent_get_position
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_position), gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.agent_get_position, gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2583,7 +2761,7 @@ Returns [code]true[/code] if the map got changed the previous frame.
 */
 //go:nosplit
 func (self class) AgentIsMapChanged(agent RID.Any) bool { //gd:NavigationServer3D.agent_is_map_changed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_is_map_changed), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.agent_is_map_changed, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2594,7 +2772,7 @@ Sets the callback [Callable] that gets called after each avoidance processing st
 */
 //go:nosplit
 func (self class) AgentSetAvoidanceCallback(agent RID.Any, callback Callable.Function) { //gd:NavigationServer3D.agent_set_avoidance_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_avoidance_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_avoidance_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		agent    RID.Any
 		callback gdextension.Callable
 	}{agent, pointers.Get(gd.InternalCallable(callback))}))
@@ -2605,7 +2783,7 @@ Return [code]true[/code] if the specified [param agent] has an avoidance callbac
 */
 //go:nosplit
 func (self class) AgentHasAvoidanceCallback(agent RID.Any) bool { //gd:NavigationServer3D.agent_has_avoidance_callback
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_has_avoidance_callback), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.agent_has_avoidance_callback, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2615,7 +2793,7 @@ Set the agent's [code]avoidance_layers[/code] bitmask.
 */
 //go:nosplit
 func (self class) AgentSetAvoidanceLayers(agent RID.Any, layers int64) { //gd:NavigationServer3D.agent_set_avoidance_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_avoidance_layers), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_avoidance_layers, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		agent  RID.Any
 		layers int64
 	}{agent, layers}))
@@ -2626,7 +2804,7 @@ Returns the [code]avoidance_layers[/code] bitmask of the specified [param agent]
 */
 //go:nosplit
 func (self class) AgentGetAvoidanceLayers(agent RID.Any) int64 { //gd:NavigationServer3D.agent_get_avoidance_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_avoidance_layers), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.agent_get_avoidance_layers, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2636,7 +2814,7 @@ Set the agent's [code]avoidance_mask[/code] bitmask.
 */
 //go:nosplit
 func (self class) AgentSetAvoidanceMask(agent RID.Any, mask int64) { //gd:NavigationServer3D.agent_set_avoidance_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_avoidance_mask), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_avoidance_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		agent RID.Any
 		mask  int64
 	}{agent, mask}))
@@ -2647,7 +2825,7 @@ Returns the [code]avoidance_mask[/code] bitmask of the specified [param agent].
 */
 //go:nosplit
 func (self class) AgentGetAvoidanceMask(agent RID.Any) int64 { //gd:NavigationServer3D.agent_get_avoidance_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_avoidance_mask), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.agent_get_avoidance_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2658,7 +2836,7 @@ The specified [param agent] does not adjust the velocity for other agents that w
 */
 //go:nosplit
 func (self class) AgentSetAvoidancePriority(agent RID.Any, priority float64) { //gd:NavigationServer3D.agent_set_avoidance_priority
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_set_avoidance_priority), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.agent_set_avoidance_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		agent    RID.Any
 		priority float64
 	}{agent, priority}))
@@ -2669,7 +2847,7 @@ Returns the [code]avoidance_priority[/code] of the specified [param agent].
 */
 //go:nosplit
 func (self class) AgentGetAvoidancePriority(agent RID.Any) float64 { //gd:NavigationServer3D.agent_get_avoidance_priority
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_agent_get_avoidance_priority), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.agent_get_avoidance_priority, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ agent RID.Any }{agent}))
 	var ret = r_ret
 	return ret
 }
@@ -2679,7 +2857,7 @@ Creates a new obstacle.
 */
 //go:nosplit
 func (self class) ObstacleCreate() RID.Any { //gd:NavigationServer3D.obstacle_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.obstacle_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2689,7 +2867,7 @@ If [param enabled] is [code]true[/code], the provided [param obstacle] affects a
 */
 //go:nosplit
 func (self class) ObstacleSetAvoidanceEnabled(obstacle RID.Any, enabled bool) { //gd:NavigationServer3D.obstacle_set_avoidance_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_set_avoidance_enabled), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.obstacle_set_avoidance_enabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		obstacle RID.Any
 		enabled  bool
 	}{obstacle, enabled}))
@@ -2700,7 +2878,7 @@ Returns [code]true[/code] if the provided [param obstacle] has avoidance enabled
 */
 //go:nosplit
 func (self class) ObstacleGetAvoidanceEnabled(obstacle RID.Any) bool { //gd:NavigationServer3D.obstacle_get_avoidance_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_get_avoidance_enabled), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.obstacle_get_avoidance_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
 	var ret = r_ret
 	return ret
 }
@@ -2710,7 +2888,7 @@ Sets if the [param obstacle] uses the 2D avoidance or the 3D avoidance while avo
 */
 //go:nosplit
 func (self class) ObstacleSetUse3dAvoidance(obstacle RID.Any, enabled bool) { //gd:NavigationServer3D.obstacle_set_use_3d_avoidance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_set_use_3d_avoidance), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.obstacle_set_use_3d_avoidance, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		obstacle RID.Any
 		enabled  bool
 	}{obstacle, enabled}))
@@ -2721,7 +2899,7 @@ Returns [code]true[/code] if the provided [param obstacle] uses avoidance in 3D 
 */
 //go:nosplit
 func (self class) ObstacleGetUse3dAvoidance(obstacle RID.Any) bool { //gd:NavigationServer3D.obstacle_get_use_3d_avoidance
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_get_use_3d_avoidance), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.obstacle_get_use_3d_avoidance, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
 	var ret = r_ret
 	return ret
 }
@@ -2731,7 +2909,7 @@ Assigns the [param obstacle] to a navigation map.
 */
 //go:nosplit
 func (self class) ObstacleSetMap(obstacle RID.Any, mapping RID.Any) { //gd:NavigationServer3D.obstacle_set_map
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_set_map), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.obstacle_set_map, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		obstacle RID.Any
 		mapping  RID.Any
 	}{obstacle, mapping}))
@@ -2742,7 +2920,7 @@ Returns the navigation map [RID] the requested [param obstacle] is currently ass
 */
 //go:nosplit
 func (self class) ObstacleGetMap(obstacle RID.Any) RID.Any { //gd:NavigationServer3D.obstacle_get_map
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_get_map), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.obstacle_get_map, gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
 	var ret = r_ret
 	return ret
 }
@@ -2752,7 +2930,7 @@ If [param paused] is [code]true[/code] the specified [param obstacle] will not b
 */
 //go:nosplit
 func (self class) ObstacleSetPaused(obstacle RID.Any, paused bool) { //gd:NavigationServer3D.obstacle_set_paused
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_set_paused), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.obstacle_set_paused, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		obstacle RID.Any
 		paused   bool
 	}{obstacle, paused}))
@@ -2763,7 +2941,7 @@ Returns [code]true[/code] if the specified [param obstacle] is paused.
 */
 //go:nosplit
 func (self class) ObstacleGetPaused(obstacle RID.Any) bool { //gd:NavigationServer3D.obstacle_get_paused
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_get_paused), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.obstacle_get_paused, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
 	var ret = r_ret
 	return ret
 }
@@ -2773,7 +2951,7 @@ Sets the radius of the dynamic obstacle.
 */
 //go:nosplit
 func (self class) ObstacleSetRadius(obstacle RID.Any, radius float64) { //gd:NavigationServer3D.obstacle_set_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_set_radius), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.obstacle_set_radius, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		obstacle RID.Any
 		radius   float64
 	}{obstacle, radius}))
@@ -2784,7 +2962,7 @@ Returns the radius of the specified dynamic [param obstacle].
 */
 //go:nosplit
 func (self class) ObstacleGetRadius(obstacle RID.Any) float64 { //gd:NavigationServer3D.obstacle_get_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_get_radius), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.obstacle_get_radius, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
 	var ret = r_ret
 	return ret
 }
@@ -2794,7 +2972,7 @@ Sets the [param height] for the [param obstacle]. In 3D agents will ignore obsta
 */
 //go:nosplit
 func (self class) ObstacleSetHeight(obstacle RID.Any, height float64) { //gd:NavigationServer3D.obstacle_set_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_set_height), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.obstacle_set_height, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		obstacle RID.Any
 		height   float64
 	}{obstacle, height}))
@@ -2805,7 +2983,7 @@ Returns the [code]height[/code] of the specified [param obstacle].
 */
 //go:nosplit
 func (self class) ObstacleGetHeight(obstacle RID.Any) float64 { //gd:NavigationServer3D.obstacle_get_height
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_get_height), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.obstacle_get_height, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
 	var ret = r_ret
 	return ret
 }
@@ -2815,7 +2993,7 @@ Sets [param velocity] of the dynamic [param obstacle]. Allows other agents to be
 */
 //go:nosplit
 func (self class) ObstacleSetVelocity(obstacle RID.Any, velocity Vector3.XYZ) { //gd:NavigationServer3D.obstacle_set_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_set_velocity), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.obstacle_set_velocity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		obstacle RID.Any
 		velocity Vector3.XYZ
 	}{obstacle, velocity}))
@@ -2826,7 +3004,7 @@ Returns the velocity of the specified dynamic [param obstacle].
 */
 //go:nosplit
 func (self class) ObstacleGetVelocity(obstacle RID.Any) Vector3.XYZ { //gd:NavigationServer3D.obstacle_get_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_get_velocity), gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.obstacle_get_velocity, gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
 	var ret = r_ret
 	return ret
 }
@@ -2836,7 +3014,7 @@ Updates the [param position] in world space for the [param obstacle].
 */
 //go:nosplit
 func (self class) ObstacleSetPosition(obstacle RID.Any, position Vector3.XYZ) { //gd:NavigationServer3D.obstacle_set_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_set_position), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.obstacle_set_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		obstacle RID.Any
 		position Vector3.XYZ
 	}{obstacle, position}))
@@ -2847,7 +3025,7 @@ Returns the position of the specified [param obstacle] in world space.
 */
 //go:nosplit
 func (self class) ObstacleGetPosition(obstacle RID.Any) Vector3.XYZ { //gd:NavigationServer3D.obstacle_get_position
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_get_position), gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.obstacle_get_position, gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
 	var ret = r_ret
 	return ret
 }
@@ -2857,7 +3035,7 @@ Sets the outline vertices for the obstacle. If the vertices are winded in clockw
 */
 //go:nosplit
 func (self class) ObstacleSetVertices(obstacle RID.Any, vertices Packed.Array[Vector3.XYZ]) { //gd:NavigationServer3D.obstacle_set_vertices
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_set_vertices), 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.obstacle_set_vertices, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		obstacle RID.Any
 		vertices gdextension.PackedArray[Vector3.XYZ]
 	}{obstacle, pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))}))
@@ -2868,7 +3046,7 @@ Returns the outline vertices for the specified [param obstacle].
 */
 //go:nosplit
 func (self class) ObstacleGetVertices(obstacle RID.Any) Packed.Array[Vector3.XYZ] { //gd:NavigationServer3D.obstacle_get_vertices
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_get_vertices), gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.obstacle_get_vertices, gdextension.SizePackedArray|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -2878,7 +3056,7 @@ Set the obstacles's [code]avoidance_layers[/code] bitmask.
 */
 //go:nosplit
 func (self class) ObstacleSetAvoidanceLayers(obstacle RID.Any, layers int64) { //gd:NavigationServer3D.obstacle_set_avoidance_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_set_avoidance_layers), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.obstacle_set_avoidance_layers, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		obstacle RID.Any
 		layers   int64
 	}{obstacle, layers}))
@@ -2889,7 +3067,7 @@ Returns the [code]avoidance_layers[/code] bitmask of the specified [param obstac
 */
 //go:nosplit
 func (self class) ObstacleGetAvoidanceLayers(obstacle RID.Any) int64 { //gd:NavigationServer3D.obstacle_get_avoidance_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_obstacle_get_avoidance_layers), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.obstacle_get_avoidance_layers, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ obstacle RID.Any }{obstacle}))
 	var ret = r_ret
 	return ret
 }
@@ -2901,7 +3079,7 @@ Parses the [SceneTree] for source geometry according to the properties of [param
 */
 //go:nosplit
 func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, root_node [1]gdclass.Node, callback Callable.Function) { //gd:NavigationServer3D.parse_source_geometry_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_parse_source_geometry_data), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeCallable<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.parse_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeCallable<<16), unsafe.Pointer(&struct {
 		navigation_mesh      gdextension.Object
 		source_geometry_data gdextension.Object
 		root_node            gdextension.Object
@@ -2914,7 +3092,7 @@ Bakes the provided [param navigation_mesh] with the data from the provided [para
 */
 //go:nosplit
 func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback Callable.Function) { //gd:NavigationServer3D.bake_from_source_geometry_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_bake_from_source_geometry_data), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake_from_source_geometry_data, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
 		navigation_mesh      gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
@@ -2926,7 +3104,7 @@ Bakes the provided [param navigation_mesh] with the data from the provided [para
 */
 //go:nosplit
 func (self class) BakeFromSourceGeometryDataAsync(navigation_mesh [1]gdclass.NavigationMesh, source_geometry_data [1]gdclass.NavigationMeshSourceGeometryData3D, callback Callable.Function) { //gd:NavigationServer3D.bake_from_source_geometry_data_async
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_bake_from_source_geometry_data_async), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake_from_source_geometry_data_async, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
 		navigation_mesh      gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
@@ -2938,7 +3116,7 @@ Returns [code]true[/code] when the provided navigation mesh is being baked on a 
 */
 //go:nosplit
 func (self class) IsBakingNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh) bool { //gd:NavigationServer3D.is_baking_navigation_mesh
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_is_baking_navigation_mesh), gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_baking_navigation_mesh, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -2948,7 +3126,7 @@ Creates a new source geometry parser. If a [Callable] is set for the parser with
 */
 //go:nosplit
 func (self class) SourceGeometryParserCreate() RID.Any { //gd:NavigationServer3D.source_geometry_parser_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_source_geometry_parser_create), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.source_geometry_parser_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2961,7 +3139,7 @@ Sets the [param callback] [Callable] for the specific source geometry [param par
 */
 //go:nosplit
 func (self class) SourceGeometryParserSetCallback(parser RID.Any, callback Callable.Function) { //gd:NavigationServer3D.source_geometry_parser_set_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_source_geometry_parser_set_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.source_geometry_parser_set_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		parser   RID.Any
 		callback gdextension.Callable
 	}{parser, pointers.Get(gd.InternalCallable(callback))}))
@@ -2973,7 +3151,7 @@ Path simplification can be helpful to mitigate various path following issues tha
 */
 //go:nosplit
 func (self class) SimplifyPath(path Packed.Array[Vector3.XYZ], epsilon float64) Packed.Array[Vector3.XYZ] { //gd:NavigationServer3D.simplify_path
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_simplify_path), gdextension.SizePackedArray|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.simplify_path, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		path    gdextension.PackedArray[Vector3.XYZ]
 		epsilon float64
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](path)), epsilon}))
@@ -2986,7 +3164,7 @@ Destroys the given RID.
 */
 //go:nosplit
 func (self class) FreeRid(rid RID.Any) { //gd:NavigationServer3D.free_rid
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_free_rid), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_rid, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 }
 
 /*
@@ -2994,7 +3172,7 @@ Control activation of this server.
 */
 //go:nosplit
 func (self class) SetActive(active bool) { //gd:NavigationServer3D.set_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_set_active), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
 }
 
 /*
@@ -3002,7 +3180,7 @@ If [code]true[/code] enables debug mode on the NavigationServer.
 */
 //go:nosplit
 func (self class) SetDebugEnabled(enabled bool) { //gd:NavigationServer3D.set_debug_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_set_debug_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 /*
@@ -3010,7 +3188,7 @@ Returns [code]true[/code] when the NavigationServer has debug enabled.
 */
 //go:nosplit
 func (self class) GetDebugEnabled() bool { //gd:NavigationServer3D.get_debug_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_get_debug_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_debug_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -3020,11 +3198,11 @@ Returns information about the current state of the NavigationServer. See [enum P
 */
 //go:nosplit
 func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:NavigationServer3D.get_process_info
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationServer3D.Bind_get_process_info), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ process_info ProcessInfo }{process_info}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_info, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ process_info ProcessInfo }{process_info}))
 	var ret = r_ret
 	return ret
 }
-func OnMapChanged(cb func(mapping RID.Any)) {
+func OnMapChanged(cb func(map_ RID.Any)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("map_changed"), gd.NewCallable(cb), 0)
 }
 
@@ -3050,9 +3228,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("NavigationServer3D", func(ptr gd.Object) any {
-		return [1]gdclass.NavigationServer3D{*(*gdclass.NavigationServer3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("NavigationServer3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type ProcessInfo int //gd:NavigationServer3D.ProcessInfo

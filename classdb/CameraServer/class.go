@@ -74,14 +74,33 @@ It is notably used to provide AR modules with a video feed from the camera.
 */
 type Instance [1]gdclass.CameraServer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_feed       gdextension.MethodForClass `hash:"361927068"`
+	get_feed_count gdextension.MethodForClass `hash:"2455072627"`
+	feeds          gdextension.MethodForClass `hash:"2915620761"`
+	add_feed       gdextension.MethodForClass `hash:"3204782488"`
+	remove_feed    gdextension.MethodForClass `hash:"3204782488"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("CameraServer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 var self [1]gdclass.CameraServer
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.CameraServer)))})
-	self = *(*[1]gdclass.CameraServer)(unsafe.Pointer(&obj))
+	self[0] = pointers.Raw[gdclass.CameraServer]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
 }
 
 /*
@@ -130,6 +149,20 @@ func Advanced() class { once.Do(singleton); return self }
 type class [1]gdclass.CameraServer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CameraServer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CameraServer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -144,7 +177,7 @@ Returns the [CameraFeed] corresponding to the camera with the given [param index
 */
 //go:nosplit
 func (self class) GetFeed(index int64) [1]gdclass.CameraFeed { //gd:CameraServer.get_feed
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraServer.Bind_get_feed), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_feed, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = [1]gdclass.CameraFeed{gd.PointerWithOwnershipTransferredToGo[gdclass.CameraFeed](r_ret)}
 	return ret
 }
@@ -154,7 +187,7 @@ Returns the number of [CameraFeed]s registered.
 */
 //go:nosplit
 func (self class) GetFeedCount() int64 { //gd:CameraServer.get_feed_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraServer.Bind_get_feed_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_feed_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -164,7 +197,7 @@ Returns an array of [CameraFeed]s.
 */
 //go:nosplit
 func (self class) Feeds() Array.Contains[[1]gdclass.CameraFeed] { //gd:CameraServer.feeds
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraServer.Bind_feeds), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.feeds, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.CameraFeed]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -174,7 +207,7 @@ Adds the camera [param feed] to the camera server.
 */
 //go:nosplit
 func (self class) AddFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.add_feed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraServer.Bind_add_feed), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(feed[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_feed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(feed[0].AsObject()))}))
 }
 
 /*
@@ -182,7 +215,7 @@ Removes the specified camera [param feed].
 */
 //go:nosplit
 func (self class) RemoveFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.remove_feed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraServer.Bind_remove_feed), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(feed[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_feed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(feed[0].AsObject()))}))
 }
 func OnCameraFeedAdded(cb func(id int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("camera_feed_added"), gd.NewCallable(cb), 0)
@@ -206,7 +239,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CameraServer", func(ptr gd.Object) any {
-		return [1]gdclass.CameraServer{*(*gdclass.CameraServer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("CameraServer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

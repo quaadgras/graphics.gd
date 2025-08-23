@@ -73,14 +73,30 @@ type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 */
 type Instance [1]gdclass.PhysicsServer3DManager
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	register_server    gdextension.MethodForClass `hash:"2137474292"`
+	set_default_server gdextension.MethodForClass `hash:"2956805083"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PhysicsServer3DManager")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 var self [1]gdclass.PhysicsServer3DManager
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.PhysicsServer3DManager)))})
-	self = *(*[1]gdclass.PhysicsServer3DManager)(unsafe.Pointer(&obj))
+	self[0] = pointers.Raw[gdclass.PhysicsServer3DManager]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
 }
 
 /*
@@ -105,6 +121,20 @@ func Advanced() class { once.Do(singleton); return self }
 type class [1]gdclass.PhysicsServer3DManager
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PhysicsServer3DManager)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PhysicsServer3DManager)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -119,7 +149,7 @@ Register a [PhysicsServer3D] implementation by passing a [param name] and a [Cal
 */
 //go:nosplit
 func (self class) RegisterServer(name String.Readable, create_callback Callable.Function) { //gd:PhysicsServer3DManager.register_server
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3DManager.Bind_register_server), 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		name            gdextension.String
 		create_callback gdextension.Callable
 	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(create_callback))}))
@@ -130,7 +160,7 @@ Set the default [PhysicsServer3D] implementation to the one identified by [param
 */
 //go:nosplit
 func (self class) SetDefaultServer(name String.Readable, priority int64) { //gd:PhysicsServer3DManager.set_default_server
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3DManager.Bind_set_default_server), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		name     gdextension.String
 		priority int64
 	}{pointers.Get(gd.InternalString(name)), priority}))
@@ -149,7 +179,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicsServer3DManager", func(ptr gd.Object) any {
-		return [1]gdclass.PhysicsServer3DManager{*(*gdclass.PhysicsServer3DManager)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("PhysicsServer3DManager", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -78,6 +78,34 @@ A GraphFrame is always kept behind the connection layer and other [GraphElement]
 */
 type Instance [1]gdclass.GraphFrame
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_title              gdextension.MethodForClass `hash:"83702148"`
+	get_title              gdextension.MethodForClass `hash:"201670096"`
+	get_titlebar_hbox      gdextension.MethodForClass `hash:"3590609951"`
+	set_autoshrink_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_autoshrink_enabled  gdextension.MethodForClass `hash:"36873697"`
+	set_autoshrink_margin  gdextension.MethodForClass `hash:"1286410249"`
+	get_autoshrink_margin  gdextension.MethodForClass `hash:"3905245786"`
+	set_drag_margin        gdextension.MethodForClass `hash:"1286410249"`
+	get_drag_margin        gdextension.MethodForClass `hash:"3905245786"`
+	set_tint_color_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_tint_color_enabled  gdextension.MethodForClass `hash:"36873697"`
+	set_tint_color         gdextension.MethodForClass `hash:"2920490490"`
+	get_tint_color         gdextension.MethodForClass `hash:"3444240500"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("GraphFrame")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -101,6 +129,20 @@ type Advanced = class
 type class [1]gdclass.GraphFrame
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GraphFrame)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GraphFrame)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -110,7 +152,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("GraphFrame"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GraphFrame)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -166,12 +208,12 @@ func (self Instance) SetTintColor(value Color.RGBA) {
 
 //go:nosplit
 func (self class) SetTitle(title String.Readable) { //gd:GraphFrame.set_title
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphFrame.Bind_set_title), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_title, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ title gdextension.String }{pointers.Get(gd.InternalString(title))}))
 }
 
 //go:nosplit
 func (self class) GetTitle() String.Readable { //gd:GraphFrame.get_title
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphFrame.Bind_get_title), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -182,67 +224,67 @@ This can be used to add custom controls to the title bar such as option or close
 */
 //go:nosplit
 func (self class) GetTitlebarHbox() [1]gdclass.HBoxContainer { //gd:GraphFrame.get_titlebar_hbox
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphFrame.Bind_get_titlebar_hbox), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_titlebar_hbox, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.HBoxContainer{gd.PointerLifetimeBoundTo[gdclass.HBoxContainer](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoshrinkEnabled(shrink bool) { //gd:GraphFrame.set_autoshrink_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphFrame.Bind_set_autoshrink_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ shrink bool }{shrink}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoshrink_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ shrink bool }{shrink}))
 }
 
 //go:nosplit
 func (self class) IsAutoshrinkEnabled() bool { //gd:GraphFrame.is_autoshrink_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphFrame.Bind_is_autoshrink_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autoshrink_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoshrinkMargin(autoshrink_margin int64) { //gd:GraphFrame.set_autoshrink_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphFrame.Bind_set_autoshrink_margin), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autoshrink_margin int64 }{autoshrink_margin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoshrink_margin, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autoshrink_margin int64 }{autoshrink_margin}))
 }
 
 //go:nosplit
 func (self class) GetAutoshrinkMargin() int64 { //gd:GraphFrame.get_autoshrink_margin
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphFrame.Bind_get_autoshrink_margin), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_autoshrink_margin, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragMargin(drag_margin int64) { //gd:GraphFrame.set_drag_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphFrame.Bind_set_drag_margin), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ drag_margin int64 }{drag_margin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_margin, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ drag_margin int64 }{drag_margin}))
 }
 
 //go:nosplit
 func (self class) GetDragMargin() int64 { //gd:GraphFrame.get_drag_margin
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphFrame.Bind_get_drag_margin), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_margin, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTintColorEnabled(enable bool) { //gd:GraphFrame.set_tint_color_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphFrame.Bind_set_tint_color_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_color_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsTintColorEnabled() bool { //gd:GraphFrame.is_tint_color_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphFrame.Bind_is_tint_color_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tint_color_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTintColor(color Color.RGBA) { //gd:GraphFrame.set_tint_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphFrame.Bind_set_tint_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tint_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetTintColor() Color.RGBA { //gd:GraphFrame.get_tint_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphFrame.Bind_get_tint_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_tint_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -299,5 +341,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GraphFrame", func(ptr gd.Object) any { return [1]gdclass.GraphFrame{*(*gdclass.GraphFrame)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("GraphFrame", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

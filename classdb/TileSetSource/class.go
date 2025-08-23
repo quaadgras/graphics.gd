@@ -76,6 +76,27 @@ You can iterate over all tiles exposed by a TileSetSource by first iterating ove
 */
 type Instance [1]gdclass.TileSetSource
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_tiles_count             gdextension.MethodForClass `hash:"3905245786"`
+	get_tile_id                 gdextension.MethodForClass `hash:"880721226"`
+	has_tile                    gdextension.MethodForClass `hash:"3900751641"`
+	get_alternative_tiles_count gdextension.MethodForClass `hash:"2485466453"`
+	get_alternative_tile_id     gdextension.MethodForClass `hash:"89881719"`
+	has_alternative_tile        gdextension.MethodForClass `hash:"1073731340"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("TileSetSource")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -135,6 +156,20 @@ type Advanced = class
 type class [1]gdclass.TileSetSource
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TileSetSource)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TileSetSource)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -144,7 +179,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TileSetSource"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.TileSetSource)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -156,7 +191,7 @@ Returns how many tiles this atlas source defines (not including alternative tile
 */
 //go:nosplit
 func (self class) GetTilesCount() int64 { //gd:TileSetSource.get_tiles_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSetSource.Bind_get_tiles_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tiles_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -166,7 +201,7 @@ Returns the tile coordinates ID of the tile with index [param index].
 */
 //go:nosplit
 func (self class) GetTileId(index int64) Vector2i.XY { //gd:TileSetSource.get_tile_id
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSetSource.Bind_get_tile_id), gdextension.SizeVector2i|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_tile_id, gdextension.SizeVector2i|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -176,7 +211,7 @@ Returns if this atlas has a tile with coordinates ID [param atlas_coords].
 */
 //go:nosplit
 func (self class) HasTile(atlas_coords Vector2i.XY) bool { //gd:TileSetSource.has_tile
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSetSource.Bind_has_tile), gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ atlas_coords Vector2i.XY }{atlas_coords}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_tile, gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ atlas_coords Vector2i.XY }{atlas_coords}))
 	var ret = r_ret
 	return ret
 }
@@ -188,7 +223,7 @@ Returns -1 if there is not tile at the given coords.
 */
 //go:nosplit
 func (self class) GetAlternativeTilesCount(atlas_coords Vector2i.XY) int64 { //gd:TileSetSource.get_alternative_tiles_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSetSource.Bind_get_alternative_tiles_count), gdextension.SizeInt|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ atlas_coords Vector2i.XY }{atlas_coords}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_alternative_tiles_count, gdextension.SizeInt|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ atlas_coords Vector2i.XY }{atlas_coords}))
 	var ret = r_ret
 	return ret
 }
@@ -198,7 +233,7 @@ Returns the alternative ID for the tile with coordinates ID [param atlas_coords]
 */
 //go:nosplit
 func (self class) GetAlternativeTileId(atlas_coords Vector2i.XY, index int64) int64 { //gd:TileSetSource.get_alternative_tile_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSetSource.Bind_get_alternative_tile_id), gdextension.SizeInt|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_alternative_tile_id, gdextension.SizeInt|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		atlas_coords Vector2i.XY
 		index        int64
 	}{atlas_coords, index}))
@@ -211,7 +246,7 @@ Returns if the base tile at coordinates [param atlas_coords] has an alternative 
 */
 //go:nosplit
 func (self class) HasAlternativeTile(atlas_coords Vector2i.XY, alternative_tile int64) bool { //gd:TileSetSource.has_alternative_tile
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileSetSource.Bind_has_alternative_tile), gdextension.SizeBool|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_alternative_tile, gdextension.SizeBool|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		atlas_coords     Vector2i.XY
 		alternative_tile int64
 	}{atlas_coords, alternative_tile}))
@@ -250,7 +285,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TileSetSource", func(ptr gd.Object) any {
-		return [1]gdclass.TileSetSource{*(*gdclass.TileSetSource)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("TileSetSource", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

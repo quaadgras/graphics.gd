@@ -74,6 +74,26 @@ A container that arranges its child controls horizontally or vertically, rearran
 */
 type Instance [1]gdclass.BoxContainer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	add_spacer    gdextension.MethodForClass `hash:"1326660695"`
+	set_alignment gdextension.MethodForClass `hash:"2456745134"`
+	get_alignment gdextension.MethodForClass `hash:"1915476527"`
+	set_vertical  gdextension.MethodForClass `hash:"2586408642"`
+	is_vertical   gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("BoxContainer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -96,6 +116,20 @@ type Advanced = class
 type class [1]gdclass.BoxContainer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.BoxContainer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.BoxContainer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -105,7 +139,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("BoxContainer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.BoxContainer)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -132,31 +166,31 @@ Adds a [Control] node to the box as a spacer. If [param begin] is [code]true[/co
 */
 //go:nosplit
 func (self class) AddSpacer(begin bool) [1]gdclass.Control { //gd:BoxContainer.add_spacer
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BoxContainer.Bind_add_spacer), gdextension.SizeObject|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ begin bool }{begin}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_spacer, gdextension.SizeObject|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ begin bool }{begin}))
 	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlignment(alignment AlignmentMode) { //gd:BoxContainer.set_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BoxContainer.Bind_set_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment AlignmentMode }{alignment}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment AlignmentMode }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetAlignment() AlignmentMode { //gd:BoxContainer.get_alignment
-	var r_ret = gdextension.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BoxContainer.Bind_get_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVertical(vertical bool) { //gd:BoxContainer.set_vertical
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BoxContainer.Bind_set_vertical), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ vertical bool }{vertical}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ vertical bool }{vertical}))
 }
 
 //go:nosplit
 func (self class) IsVertical() bool { //gd:BoxContainer.is_vertical
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BoxContainer.Bind_is_vertical), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -200,9 +234,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("BoxContainer", func(ptr gd.Object) any {
-		return [1]gdclass.BoxContainer{*(*gdclass.BoxContainer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("BoxContainer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type AlignmentMode int //gd:BoxContainer.AlignmentMode

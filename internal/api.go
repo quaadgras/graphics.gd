@@ -27,11 +27,8 @@ type API struct {
 		SetInstanceBinding  func([1]Object, ExtensionToken, any, InstanceBindingType)
 		FreeInstanceBinding func([1]Object, ExtensionToken)
 		SetInstance         func([1]Object, StringName, ObjectInterface)
-		CastTo              func([1]Object, ClassTag) [1]Object
 	}
 	ClassDB struct {
-		GetClassTag func(StringName) ClassTag
-
 		RegisterClass                func(library ExtensionToken, name, extends StringName, info ClassInterface)
 		RegisterClassMethod          func(library ExtensionToken, class StringName, info Method)
 		RegisterClassProperty        func(library ExtensionToken, class StringName, info PropertyInfo, getter, setter StringName)
@@ -47,10 +44,7 @@ type API struct {
 	ExtensionToken
 	cache
 
-	refCountedClassTag ClassTag
-
-	// extensions instances are mapped here.
-	Singletons singletons
+	refCountedClassTag gdextension.ObjectType
 }
 
 type (

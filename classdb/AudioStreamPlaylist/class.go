@@ -68,6 +68,32 @@ T should be the type that is embedding this [Extension]
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 type Instance [1]gdclass.AudioStreamPlaylist
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_stream_count gdextension.MethodForClass `hash:"1286410249"`
+	get_stream_count gdextension.MethodForClass `hash:"3905245786"`
+	get_bpm          gdextension.MethodForClass `hash:"1740695150"`
+	set_list_stream  gdextension.MethodForClass `hash:"111075094"`
+	get_list_stream  gdextension.MethodForClass `hash:"2739380747"`
+	set_shuffle      gdextension.MethodForClass `hash:"2586408642"`
+	get_shuffle      gdextension.MethodForClass `hash:"36873697"`
+	set_fade_time    gdextension.MethodForClass `hash:"373806689"`
+	get_fade_time    gdextension.MethodForClass `hash:"1740695150"`
+	set_loop         gdextension.MethodForClass `hash:"2586408642"`
+	has_loop         gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioStreamPlaylist")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -90,6 +116,20 @@ type Advanced = class
 type class [1]gdclass.AudioStreamPlaylist
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioStreamPlaylist)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioStreamPlaylist)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -99,7 +139,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioStreamPlaylist"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioStreamPlaylist)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -652,12 +692,12 @@ func (self Instance) SetStream63(value AudioStream.Instance) {
 
 //go:nosplit
 func (self class) SetStreamCount(stream_count int64) { //gd:AudioStreamPlaylist.set_stream_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaylist.Bind_set_stream_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_count int64 }{stream_count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_count int64 }{stream_count}))
 }
 
 //go:nosplit
 func (self class) GetStreamCount() int64 { //gd:AudioStreamPlaylist.get_stream_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaylist.Bind_get_stream_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stream_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -667,7 +707,7 @@ Returns the BPM of the playlist, which can vary depending on the clip being play
 */
 //go:nosplit
 func (self class) GetBpm() float64 { //gd:AudioStreamPlaylist.get_bpm
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaylist.Bind_get_bpm), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bpm, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -677,7 +717,7 @@ Sets the stream at playback position index.
 */
 //go:nosplit
 func (self class) SetListStream(stream_index int64, audio_stream [1]gdclass.AudioStream) { //gd:AudioStreamPlaylist.set_list_stream
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaylist.Bind_set_list_stream), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_list_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		stream_index int64
 		audio_stream gdextension.Object
 	}{stream_index, gdextension.Object(gd.ObjectChecked(audio_stream[0].AsObject()))}))
@@ -688,43 +728,43 @@ Returns the stream at playback position index.
 */
 //go:nosplit
 func (self class) GetListStream(stream_index int64) [1]gdclass.AudioStream { //gd:AudioStreamPlaylist.get_list_stream
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaylist.Bind_get_list_stream), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_index int64 }{stream_index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_list_stream, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_index int64 }{stream_index}))
 	var ret = [1]gdclass.AudioStream{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStream](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShuffle(shuffle bool) { //gd:AudioStreamPlaylist.set_shuffle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaylist.Bind_set_shuffle), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ shuffle bool }{shuffle}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shuffle, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ shuffle bool }{shuffle}))
 }
 
 //go:nosplit
 func (self class) GetShuffle() bool { //gd:AudioStreamPlaylist.get_shuffle
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaylist.Bind_get_shuffle), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_shuffle, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFadeTime(dec float64) { //gd:AudioStreamPlaylist.set_fade_time
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaylist.Bind_set_fade_time), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ dec float64 }{dec}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fade_time, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ dec float64 }{dec}))
 }
 
 //go:nosplit
 func (self class) GetFadeTime() float64 { //gd:AudioStreamPlaylist.get_fade_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaylist.Bind_get_fade_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fade_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoop(loop bool) { //gd:AudioStreamPlaylist.set_loop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaylist.Bind_set_loop), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ loop bool }{loop}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ loop bool }{loop}))
 }
 
 //go:nosplit
 func (self class) HasLoop() bool { //gd:AudioStreamPlaylist.has_loop
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaylist.Bind_has_loop), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -769,9 +809,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioStreamPlaylist", func(ptr gd.Object) any {
-		return [1]gdclass.AudioStreamPlaylist{*(*gdclass.AudioStreamPlaylist)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioStreamPlaylist", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 const MaxStreams int = 64 //gd:AudioStreamPlaylist.MAX_STREAMS

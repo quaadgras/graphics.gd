@@ -71,6 +71,31 @@ This object is used by [RenderingDevice].
 */
 type Instance [1]gdclass.RDVertexAttribute
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_location  gdextension.MethodForClass `hash:"1286410249"`
+	get_location  gdextension.MethodForClass `hash:"3905245786"`
+	set_offset    gdextension.MethodForClass `hash:"1286410249"`
+	get_offset    gdextension.MethodForClass `hash:"3905245786"`
+	set_format    gdextension.MethodForClass `hash:"565531219"`
+	get_format    gdextension.MethodForClass `hash:"2235804183"`
+	set_stride    gdextension.MethodForClass `hash:"1286410249"`
+	get_stride    gdextension.MethodForClass `hash:"3905245786"`
+	set_frequency gdextension.MethodForClass `hash:"522141836"`
+	get_frequency gdextension.MethodForClass `hash:"4154106413"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("RDVertexAttribute")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -86,6 +111,20 @@ type Advanced = class
 type class [1]gdclass.RDVertexAttribute
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDVertexAttribute)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDVertexAttribute)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -95,7 +134,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RDVertexAttribute"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RDVertexAttribute)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -144,60 +183,60 @@ func (self Instance) SetFrequency(value Rendering.VertexFrequency) {
 
 //go:nosplit
 func (self class) SetLocation(p_member int64) { //gd:RDVertexAttribute.set_location
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDVertexAttribute.Bind_set_location), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_location, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetLocation() int64 { //gd:RDVertexAttribute.get_location
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDVertexAttribute.Bind_get_location), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_location, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffset(p_member int64) { //gd:RDVertexAttribute.set_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDVertexAttribute.Bind_set_offset), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetOffset() int64 { //gd:RDVertexAttribute.get_offset
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDVertexAttribute.Bind_get_offset), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFormat(p_member Rendering.DataFormat) { //gd:RDVertexAttribute.set_format
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDVertexAttribute.Bind_set_format), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.DataFormat }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.DataFormat }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetFormat() Rendering.DataFormat { //gd:RDVertexAttribute.get_format
-	var r_ret = gdextension.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDVertexAttribute.Bind_get_format), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStride(p_member int64) { //gd:RDVertexAttribute.set_stride
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDVertexAttribute.Bind_set_stride), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stride, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetStride() int64 { //gd:RDVertexAttribute.get_stride
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDVertexAttribute.Bind_get_stride), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stride, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrequency(p_member Rendering.VertexFrequency) { //gd:RDVertexAttribute.set_frequency
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDVertexAttribute.Bind_set_frequency), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.VertexFrequency }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frequency, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.VertexFrequency }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetFrequency() Rendering.VertexFrequency { //gd:RDVertexAttribute.get_frequency
-	var r_ret = gdextension.Call[Rendering.VertexFrequency](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDVertexAttribute.Bind_get_frequency), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.VertexFrequency](gd.ObjectChecked(self.AsObject()), methods.get_frequency, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -226,7 +265,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RDVertexAttribute", func(ptr gd.Object) any {
-		return [1]gdclass.RDVertexAttribute{*(*gdclass.RDVertexAttribute)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("RDVertexAttribute", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

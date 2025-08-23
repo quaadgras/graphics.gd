@@ -74,6 +74,23 @@ type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 */
 type Instance [1]gdclass.AnimationNodeExtension
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	is_looping         gdextension.MethodForClass `hash:"2035584311"`
+	get_remaining_time gdextension.MethodForClass `hash:"2851904656"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AnimationNodeExtension")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -141,6 +158,20 @@ type Advanced = class
 type class [1]gdclass.AnimationNodeExtension
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AnimationNodeExtension)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AnimationNodeExtension)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -150,7 +181,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AnimationNodeExtension"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AnimationNodeExtension)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -183,7 +214,7 @@ Returns [code]true[/code] if the animation for the given [param node_info] is lo
 */
 //go:nosplit
 func (self class) IsLooping(node_info Packed.Array[float32]) bool { //gd:AnimationNodeExtension.is_looping
-	var r_ret = gdextension.CallStatic[bool](gdextension.MethodForClass(gd.Global.Methods.AnimationNodeExtension.Bind_is_looping), gdextension.SizeBool|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[bool](methods.is_looping, gdextension.SizeBool|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		node_info gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info))}))
 	var ret = r_ret
@@ -195,7 +226,7 @@ Returns the animation's remaining time for the given node info. For looping anim
 */
 //go:nosplit
 func (self class) GetRemainingTime(node_info Packed.Array[float32], break_loop bool) float64 { //gd:AnimationNodeExtension.get_remaining_time
-	var r_ret = gdextension.CallStatic[float64](gdextension.MethodForClass(gd.Global.Methods.AnimationNodeExtension.Bind_get_remaining_time), gdextension.SizeFloat|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[float64](methods.get_remaining_time, gdextension.SizeFloat|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		node_info  gdextension.PackedArray[float32]
 		break_loop bool
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info)), break_loop}))
@@ -251,7 +282,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AnimationNodeExtension", func(ptr gd.Object) any {
-		return [1]gdclass.AnimationNodeExtension{*(*gdclass.AnimationNodeExtension)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AnimationNodeExtension", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -75,6 +75,31 @@ type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 */
 type Instance [1]gdclass.GraphElement
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_resizable       gdextension.MethodForClass `hash:"2586408642"`
+	is_resizable        gdextension.MethodForClass `hash:"36873697"`
+	set_draggable       gdextension.MethodForClass `hash:"2586408642"`
+	is_draggable        gdextension.MethodForClass `hash:"2240911060"`
+	set_selectable      gdextension.MethodForClass `hash:"2586408642"`
+	is_selectable       gdextension.MethodForClass `hash:"2240911060"`
+	set_selected        gdextension.MethodForClass `hash:"2586408642"`
+	is_selected         gdextension.MethodForClass `hash:"2240911060"`
+	set_position_offset gdextension.MethodForClass `hash:"743155724"`
+	get_position_offset gdextension.MethodForClass `hash:"3341600327"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("GraphElement")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -90,6 +115,20 @@ type Advanced = class
 type class [1]gdclass.GraphElement
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GraphElement)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GraphElement)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -99,7 +138,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("GraphElement"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GraphElement)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -147,60 +186,60 @@ func (self Instance) SetSelected(value bool) {
 
 //go:nosplit
 func (self class) SetResizable(resizable bool) { //gd:GraphElement.set_resizable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphElement.Bind_set_resizable), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ resizable bool }{resizable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resizable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ resizable bool }{resizable}))
 }
 
 //go:nosplit
 func (self class) IsResizable() bool { //gd:GraphElement.is_resizable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphElement.Bind_is_resizable), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_resizable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDraggable(draggable bool) { //gd:GraphElement.set_draggable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphElement.Bind_set_draggable), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draggable bool }{draggable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draggable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draggable bool }{draggable}))
 }
 
 //go:nosplit
 func (self class) IsDraggable() bool { //gd:GraphElement.is_draggable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphElement.Bind_is_draggable), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draggable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectable(selectable bool) { //gd:GraphElement.set_selectable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphElement.Bind_set_selectable), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ selectable bool }{selectable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selectable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ selectable bool }{selectable}))
 }
 
 //go:nosplit
 func (self class) IsSelectable() bool { //gd:GraphElement.is_selectable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphElement.Bind_is_selectable), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selectable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelected(selected bool) { //gd:GraphElement.set_selected
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphElement.Bind_set_selected), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ selected bool }{selected}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ selected bool }{selected}))
 }
 
 //go:nosplit
 func (self class) IsSelected() bool { //gd:GraphElement.is_selected
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphElement.Bind_is_selected), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selected, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPositionOffset(offset Vector2.XY) { //gd:GraphElement.set_position_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphElement.Bind_set_position_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetPositionOffset() Vector2.XY { //gd:GraphElement.get_position_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GraphElement.Bind_get_position_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -276,7 +315,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GraphElement", func(ptr gd.Object) any {
-		return [1]gdclass.GraphElement{*(*gdclass.GraphElement)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("GraphElement", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

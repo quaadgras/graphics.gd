@@ -81,6 +81,45 @@ The [Texture2D]s associated with the Decal are automatically stored in a texture
 */
 type Instance [1]gdclass.Decal
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_size                 gdextension.MethodForClass `hash:"3460891852"`
+	get_size                 gdextension.MethodForClass `hash:"3360562783"`
+	set_texture              gdextension.MethodForClass `hash:"2086764391"`
+	get_texture              gdextension.MethodForClass `hash:"3244119503"`
+	set_emission_energy      gdextension.MethodForClass `hash:"373806689"`
+	get_emission_energy      gdextension.MethodForClass `hash:"1740695150"`
+	set_albedo_mix           gdextension.MethodForClass `hash:"373806689"`
+	get_albedo_mix           gdextension.MethodForClass `hash:"1740695150"`
+	set_modulate             gdextension.MethodForClass `hash:"2920490490"`
+	get_modulate             gdextension.MethodForClass `hash:"3444240500"`
+	set_upper_fade           gdextension.MethodForClass `hash:"373806689"`
+	get_upper_fade           gdextension.MethodForClass `hash:"1740695150"`
+	set_lower_fade           gdextension.MethodForClass `hash:"373806689"`
+	get_lower_fade           gdextension.MethodForClass `hash:"1740695150"`
+	set_normal_fade          gdextension.MethodForClass `hash:"373806689"`
+	get_normal_fade          gdextension.MethodForClass `hash:"1740695150"`
+	set_enable_distance_fade gdextension.MethodForClass `hash:"2586408642"`
+	is_distance_fade_enabled gdextension.MethodForClass `hash:"36873697"`
+	set_distance_fade_begin  gdextension.MethodForClass `hash:"373806689"`
+	get_distance_fade_begin  gdextension.MethodForClass `hash:"1740695150"`
+	set_distance_fade_length gdextension.MethodForClass `hash:"373806689"`
+	get_distance_fade_length gdextension.MethodForClass `hash:"1740695150"`
+	set_cull_mask            gdextension.MethodForClass `hash:"1286410249"`
+	get_cull_mask            gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Decal")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -96,6 +135,20 @@ type Advanced = class
 type class [1]gdclass.Decal
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Decal)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Decal)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -105,7 +158,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Decal"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Decal)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -233,12 +286,12 @@ func (self Instance) SetCullMask(value int) {
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:Decal.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_set_size), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:Decal.get_size
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -262,7 +315,7 @@ for (int i = 0; i < (int)Decal.DecalTexture.Max; i++)
 */
 //go:nosplit
 func (self class) SetTexture(atype DecalTexture, texture [1]gdclass.Texture2D) { //gd:Decal.set_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_set_texture), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		atype   DecalTexture
 		texture gdextension.Object
 	}{atype, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
@@ -287,127 +340,127 @@ for (int i = 0; i < (int)Decal.DecalTexture.Max; i++)
 */
 //go:nosplit
 func (self class) GetTexture(atype DecalTexture) [1]gdclass.Texture2D { //gd:Decal.get_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_get_texture), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype DecalTexture }{atype}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype DecalTexture }{atype}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionEnergy(energy float64) { //gd:Decal.set_emission_energy
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_set_emission_energy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ energy float64 }{energy}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_energy, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ energy float64 }{energy}))
 }
 
 //go:nosplit
 func (self class) GetEmissionEnergy() float64 { //gd:Decal.get_emission_energy
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_get_emission_energy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_energy, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlbedoMix(energy float64) { //gd:Decal.set_albedo_mix
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_set_albedo_mix), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ energy float64 }{energy}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_albedo_mix, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ energy float64 }{energy}))
 }
 
 //go:nosplit
 func (self class) GetAlbedoMix() float64 { //gd:Decal.get_albedo_mix
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_get_albedo_mix), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_albedo_mix, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetModulate(color Color.RGBA) { //gd:Decal.set_modulate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_set_modulate), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetModulate() Color.RGBA { //gd:Decal.get_modulate
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_get_modulate), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpperFade(fade float64) { //gd:Decal.set_upper_fade
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_set_upper_fade), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fade float64 }{fade}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_upper_fade, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fade float64 }{fade}))
 }
 
 //go:nosplit
 func (self class) GetUpperFade() float64 { //gd:Decal.get_upper_fade
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_get_upper_fade), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_upper_fade, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLowerFade(fade float64) { //gd:Decal.set_lower_fade
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_set_lower_fade), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fade float64 }{fade}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lower_fade, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fade float64 }{fade}))
 }
 
 //go:nosplit
 func (self class) GetLowerFade() float64 { //gd:Decal.get_lower_fade
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_get_lower_fade), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lower_fade, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNormalFade(fade float64) { //gd:Decal.set_normal_fade
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_set_normal_fade), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fade float64 }{fade}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal_fade, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fade float64 }{fade}))
 }
 
 //go:nosplit
 func (self class) GetNormalFade() float64 { //gd:Decal.get_normal_fade
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_get_normal_fade), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_normal_fade, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableDistanceFade(enable bool) { //gd:Decal.set_enable_distance_fade
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_set_enable_distance_fade), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_distance_fade, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDistanceFadeEnabled() bool { //gd:Decal.is_distance_fade_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_is_distance_fade_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_distance_fade_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDistanceFadeBegin(distance float64) { //gd:Decal.set_distance_fade_begin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_set_distance_fade_begin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade_begin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetDistanceFadeBegin() float64 { //gd:Decal.get_distance_fade_begin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_get_distance_fade_begin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_begin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDistanceFadeLength(distance float64) { //gd:Decal.set_distance_fade_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_set_distance_fade_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetDistanceFadeLength() float64 { //gd:Decal.get_distance_fade_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_get_distance_fade_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCullMask(mask int64) { //gd:Decal.set_cull_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_set_cull_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetCullMask() int64 { //gd:Decal.get_cull_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Decal.Bind_get_cull_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -444,7 +497,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Decal", func(ptr gd.Object) any { return [1]gdclass.Decal{*(*gdclass.Decal)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Decal", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type DecalTexture int //gd:Decal.DecalTexture

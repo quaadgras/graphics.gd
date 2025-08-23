@@ -73,6 +73,26 @@ One shortcut can contain multiple [InputEvent]s, allowing the possibility of tri
 */
 type Instance [1]gdclass.Shortcut
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_events      gdextension.MethodForClass `hash:"381264803"`
+	get_events      gdextension.MethodForClass `hash:"3995934104"`
+	has_valid_event gdextension.MethodForClass `hash:"36873697"`
+	matches_event   gdextension.MethodForClass `hash:"3738334489"`
+	get_as_text     gdextension.MethodForClass `hash:"201670096"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Shortcut")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -109,6 +129,20 @@ type Advanced = class
 type class [1]gdclass.Shortcut
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Shortcut)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Shortcut)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -118,7 +152,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Shortcut"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Shortcut)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -135,12 +169,12 @@ func (self Instance) SetEvents(value []any) {
 
 //go:nosplit
 func (self class) SetEvents(events Array.Any) { //gd:Shortcut.set_events
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shortcut.Bind_set_events), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ events gdextension.Array }{pointers.Get(gd.InternalArray(events))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_events, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ events gdextension.Array }{pointers.Get(gd.InternalArray(events))}))
 }
 
 //go:nosplit
 func (self class) GetEvents() Array.Any { //gd:Shortcut.get_events
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shortcut.Bind_get_events), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_events, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -150,7 +184,7 @@ Returns whether [member events] contains an [InputEvent] which is valid.
 */
 //go:nosplit
 func (self class) HasValidEvent() bool { //gd:Shortcut.has_valid_event
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shortcut.Bind_has_valid_event), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_valid_event, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -160,7 +194,7 @@ Returns whether any [InputEvent] in [member events] equals [param event]. This u
 */
 //go:nosplit
 func (self class) MatchesEvent(event [1]gdclass.InputEvent) bool { //gd:Shortcut.matches_event
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shortcut.Bind_matches_event), gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.matches_event, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -170,7 +204,7 @@ Returns the shortcut's first valid [InputEvent] as a [String].
 */
 //go:nosplit
 func (self class) GetAsText() String.Readable { //gd:Shortcut.get_as_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shortcut.Bind_get_as_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_as_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -206,5 +240,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Shortcut", func(ptr gd.Object) any { return [1]gdclass.Shortcut{*(*gdclass.Shortcut)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Shortcut", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -73,6 +73,37 @@ TwoBoneIK is great for arms, legs, and really any joints that can be represented
 */
 type Instance [1]gdclass.SkeletonModification2DTwoBoneIK
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_target_node             gdextension.MethodForClass `hash:"1348162250"`
+	get_target_node             gdextension.MethodForClass `hash:"4075236667"`
+	set_target_minimum_distance gdextension.MethodForClass `hash:"373806689"`
+	get_target_minimum_distance gdextension.MethodForClass `hash:"1740695150"`
+	set_target_maximum_distance gdextension.MethodForClass `hash:"373806689"`
+	get_target_maximum_distance gdextension.MethodForClass `hash:"1740695150"`
+	set_flip_bend_direction     gdextension.MethodForClass `hash:"2586408642"`
+	get_flip_bend_direction     gdextension.MethodForClass `hash:"36873697"`
+	set_joint_one_bone2d_node   gdextension.MethodForClass `hash:"1348162250"`
+	get_joint_one_bone2d_node   gdextension.MethodForClass `hash:"4075236667"`
+	set_joint_one_bone_idx      gdextension.MethodForClass `hash:"1286410249"`
+	get_joint_one_bone_idx      gdextension.MethodForClass `hash:"3905245786"`
+	set_joint_two_bone2d_node   gdextension.MethodForClass `hash:"1348162250"`
+	get_joint_two_bone2d_node   gdextension.MethodForClass `hash:"4075236667"`
+	set_joint_two_bone_idx      gdextension.MethodForClass `hash:"1286410249"`
+	get_joint_two_bone_idx      gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("SkeletonModification2DTwoBoneIK")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -144,6 +175,20 @@ type Advanced = class
 type class [1]gdclass.SkeletonModification2DTwoBoneIK
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SkeletonModification2DTwoBoneIK)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SkeletonModification2DTwoBoneIK)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -153,7 +198,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SkeletonModification2DTwoBoneIK"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SkeletonModification2DTwoBoneIK)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -194,48 +239,48 @@ func (self Instance) SetFlipBendDirection(value bool) {
 
 //go:nosplit
 func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModification2DTwoBoneIK.set_target_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_target_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_nodepath))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_node, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_nodepath))}))
 }
 
 //go:nosplit
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DTwoBoneIK.get_target_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTargetMinimumDistance(minimum_distance float64) { //gd:SkeletonModification2DTwoBoneIK.set_target_minimum_distance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_target_minimum_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ minimum_distance float64 }{minimum_distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_minimum_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ minimum_distance float64 }{minimum_distance}))
 }
 
 //go:nosplit
 func (self class) GetTargetMinimumDistance() float64 { //gd:SkeletonModification2DTwoBoneIK.get_target_minimum_distance
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_minimum_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_target_minimum_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTargetMaximumDistance(maximum_distance float64) { //gd:SkeletonModification2DTwoBoneIK.set_target_maximum_distance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_target_maximum_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ maximum_distance float64 }{maximum_distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_maximum_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ maximum_distance float64 }{maximum_distance}))
 }
 
 //go:nosplit
 func (self class) GetTargetMaximumDistance() float64 { //gd:SkeletonModification2DTwoBoneIK.get_target_maximum_distance
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_target_maximum_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_target_maximum_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlipBendDirection(flip_direction bool) { //gd:SkeletonModification2DTwoBoneIK.set_flip_bend_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_flip_bend_direction), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip_direction bool }{flip_direction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_bend_direction, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip_direction bool }{flip_direction}))
 }
 
 //go:nosplit
 func (self class) GetFlipBendDirection() bool { //gd:SkeletonModification2DTwoBoneIK.get_flip_bend_direction
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_flip_bend_direction), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flip_bend_direction, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -245,7 +290,7 @@ Sets the [Bone2D] node that is being used as the first bone in the TwoBoneIK mod
 */
 //go:nosplit
 func (self class) SetJointOneBone2dNode(bone2d_node Path.ToNode) { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone2d_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_joint_one_bone2d_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ bone2d_node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(bone2d_node))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_one_bone2d_node, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ bone2d_node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(bone2d_node))}))
 }
 
 /*
@@ -253,7 +298,7 @@ Returns the [Bone2D] node that is being used as the first bone in the TwoBoneIK 
 */
 //go:nosplit
 func (self class) GetJointOneBone2dNode() Path.ToNode { //gd:SkeletonModification2DTwoBoneIK.get_joint_one_bone2d_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_one_bone2d_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_joint_one_bone2d_node, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -263,7 +308,7 @@ Sets the index of the [Bone2D] node that is being used as the first bone in the 
 */
 //go:nosplit
 func (self class) SetJointOneBoneIdx(bone_idx int64) { //gd:SkeletonModification2DTwoBoneIK.set_joint_one_bone_idx
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_joint_one_bone_idx), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_one_bone_idx, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
 }
 
 /*
@@ -271,7 +316,7 @@ Returns the index of the [Bone2D] node that is being used as the first bone in t
 */
 //go:nosplit
 func (self class) GetJointOneBoneIdx() int64 { //gd:SkeletonModification2DTwoBoneIK.get_joint_one_bone_idx
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_one_bone_idx), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_joint_one_bone_idx, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -281,7 +326,7 @@ Sets the [Bone2D] node that is being used as the second bone in the TwoBoneIK mo
 */
 //go:nosplit
 func (self class) SetJointTwoBone2dNode(bone2d_node Path.ToNode) { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone2d_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_joint_two_bone2d_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ bone2d_node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(bone2d_node))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_two_bone2d_node, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ bone2d_node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(bone2d_node))}))
 }
 
 /*
@@ -289,7 +334,7 @@ Returns the [Bone2D] node that is being used as the second bone in the TwoBoneIK
 */
 //go:nosplit
 func (self class) GetJointTwoBone2dNode() Path.ToNode { //gd:SkeletonModification2DTwoBoneIK.get_joint_two_bone2d_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_two_bone2d_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_joint_two_bone2d_node, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -299,7 +344,7 @@ Sets the index of the [Bone2D] node that is being used as the second bone in the
 */
 //go:nosplit
 func (self class) SetJointTwoBoneIdx(bone_idx int64) { //gd:SkeletonModification2DTwoBoneIK.set_joint_two_bone_idx
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_set_joint_two_bone_idx), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_two_bone_idx, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
 }
 
 /*
@@ -307,7 +352,7 @@ Returns the index of the [Bone2D] node that is being used as the second bone in 
 */
 //go:nosplit
 func (self class) GetJointTwoBoneIdx() int64 { //gd:SkeletonModification2DTwoBoneIK.get_joint_two_bone_idx
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DTwoBoneIK.Bind_get_joint_two_bone_idx), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_joint_two_bone_idx, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -358,7 +403,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SkeletonModification2DTwoBoneIK", func(ptr gd.Object) any {
-		return [1]gdclass.SkeletonModification2DTwoBoneIK{*(*gdclass.SkeletonModification2DTwoBoneIK)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("SkeletonModification2DTwoBoneIK", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

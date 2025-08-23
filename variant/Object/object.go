@@ -64,6 +64,23 @@ type Extension[T gdclass.Interface] struct {
 	gdclass.Extension[T, Instance]
 }
 
+var otype gdextension.ObjectType
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname := gdextension.Host.Strings.Intern.UTF8("Object")
+		otype = gdextension.Host.Objects.Type(sname)
+	})
+}
+
+func (self *Instance) SetObject(obj [1]gdclass.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Object)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+
 func (class *Extension[T]) AsObject() [1]gdclass.Object { return class.Super() }
 
 // Nil is a nil Object instance. Useful for comparisons.

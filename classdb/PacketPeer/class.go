@@ -71,6 +71,29 @@ PacketPeer is an abstraction and base class for packet-based protocols (such as 
 */
 type Instance [1]gdclass.PacketPeer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_var                    gdextension.MethodForClass `hash:"3442865206"`
+	put_var                    gdextension.MethodForClass `hash:"2436251611"`
+	get_packet                 gdextension.MethodForClass `hash:"2115431945"`
+	put_packet                 gdextension.MethodForClass `hash:"680677267"`
+	get_packet_error           gdextension.MethodForClass `hash:"3185525595"`
+	get_available_packet_count gdextension.MethodForClass `hash:"3905245786"`
+	get_encode_buffer_max_size gdextension.MethodForClass `hash:"3905245786"`
+	set_encode_buffer_max_size gdextension.MethodForClass `hash:"1286410249"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PacketPeer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.PacketPeer
@@ -150,6 +173,20 @@ type Advanced = class
 type class [1]gdclass.PacketPeer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PacketPeer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PacketPeer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -159,7 +196,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PacketPeer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.PacketPeer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -181,7 +218,7 @@ Internally, this uses the same decoding mechanism as the [method @GlobalScope.by
 */
 //go:nosplit
 func (self class) GetVar(allow_objects bool) variant.Any { //gd:PacketPeer.get_var
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeer.Bind_get_var), gdextension.SizeVariant|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow_objects bool }{allow_objects}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_var, gdextension.SizeVariant|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow_objects bool }{allow_objects}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -192,7 +229,7 @@ Internally, this uses the same encoding mechanism as the [method @GlobalScope.va
 */
 //go:nosplit
 func (self class) PutVar(v variant.Any, full_objects bool) Error.Code { //gd:PacketPeer.put_var
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeer.Bind_put_var), gdextension.SizeInt|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.put_var, gdextension.SizeInt|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		v            gdextension.Variant
 		full_objects bool
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(v))), full_objects}))
@@ -205,7 +242,7 @@ Gets a raw packet.
 */
 //go:nosplit
 func (self class) GetPacket() Packed.Bytes { //gd:PacketPeer.get_packet
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeer.Bind_get_packet), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_packet, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -215,7 +252,7 @@ Sends a raw packet.
 */
 //go:nosplit
 func (self class) PutPacket(buffer Packed.Bytes) Error.Code { //gd:PacketPeer.put_packet
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeer.Bind_put_packet), gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.put_packet, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -225,7 +262,7 @@ Returns the error state of the last packet received (via [method get_packet] and
 */
 //go:nosplit
 func (self class) GetPacketError() Error.Code { //gd:PacketPeer.get_packet_error
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeer.Bind_get_packet_error), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_packet_error, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -235,21 +272,21 @@ Returns the number of packets currently available in the ring-buffer.
 */
 //go:nosplit
 func (self class) GetAvailablePacketCount() int64 { //gd:PacketPeer.get_available_packet_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeer.Bind_get_available_packet_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_available_packet_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetEncodeBufferMaxSize() int64 { //gd:PacketPeer.get_encode_buffer_max_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeer.Bind_get_encode_buffer_max_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_encode_buffer_max_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEncodeBufferMaxSize(max_size int64) { //gd:PacketPeer.set_encode_buffer_max_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeer.Bind_set_encode_buffer_max_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_size int64 }{max_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_encode_buffer_max_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_size int64 }{max_size}))
 }
 func (self class) AsPacketPeer() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPacketPeer() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -276,5 +313,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PacketPeer", func(ptr gd.Object) any { return [1]gdclass.PacketPeer{*(*gdclass.PacketPeer)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("PacketPeer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

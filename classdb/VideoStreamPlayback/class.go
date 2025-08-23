@@ -74,6 +74,22 @@ This class is intended to be overridden by video decoder extensions with custom 
 */
 type Instance [1]gdclass.VideoStreamPlayback
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	mix_audio gdextension.MethodForClass `hash:"93876830"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VideoStreamPlayback")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.VideoStreamPlayback
@@ -298,6 +314,20 @@ type Advanced = class
 type class [1]gdclass.VideoStreamPlayback
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VideoStreamPlayback)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VideoStreamPlayback)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -307,7 +337,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VideoStreamPlayback"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VideoStreamPlayback)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -465,7 +495,7 @@ Render [param num_frames] audio frames (of [method _get_channels] floats each) f
 */
 //go:nosplit
 func (self class) MixAudio(num_frames int64, buffer Packed.Array[float32], offset int64) int64 { //gd:VideoStreamPlayback.mix_audio
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayback.Bind_mix_audio), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.mix_audio, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		num_frames int64
 		buffer     gdextension.PackedArray[float32]
 		offset     int64
@@ -559,7 +589,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VideoStreamPlayback", func(ptr gd.Object) any {
-		return [1]gdclass.VideoStreamPlayback{*(*gdclass.VideoStreamPlayback)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VideoStreamPlayback", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

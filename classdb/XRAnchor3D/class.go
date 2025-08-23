@@ -77,6 +77,23 @@ Keep in mind that, as long as plane detection is enabled, the size, placing and 
 */
 type Instance [1]gdclass.XRAnchor3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_size  gdextension.MethodForClass `hash:"3360562783"`
+	get_plane gdextension.MethodForClass `hash:"2753500971"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("XRAnchor3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -106,6 +123,20 @@ type Advanced = class
 type class [1]gdclass.XRAnchor3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRAnchor3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRAnchor3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -115,7 +146,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("XRAnchor3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.XRAnchor3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -126,7 +157,7 @@ Returns the estimated size of the plane that was detected. Say when the anchor r
 */
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:XRAnchor3D.get_size
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRAnchor3D.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -136,7 +167,7 @@ Returns a plane aligned with our anchor; handy for intersection testing.
 */
 //go:nosplit
 func (self class) GetPlane() Plane.NormalD { //gd:XRAnchor3D.get_plane
-	var r_ret = gdextension.Call[Plane.NormalD](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRAnchor3D.Bind_get_plane), gdextension.SizePlane, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Plane.NormalD](gd.ObjectChecked(self.AsObject()), methods.get_plane, gdextension.SizePlane, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -171,5 +202,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRAnchor3D", func(ptr gd.Object) any { return [1]gdclass.XRAnchor3D{*(*gdclass.XRAnchor3D)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("XRAnchor3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

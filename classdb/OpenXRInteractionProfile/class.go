@@ -74,6 +74,31 @@ For more information see the [url=https://www.khronos.org/registry/OpenXR/specs/
 */
 type Instance [1]gdclass.OpenXRInteractionProfile
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_interaction_profile_path gdextension.MethodForClass `hash:"83702148"`
+	get_interaction_profile_path gdextension.MethodForClass `hash:"201670096"`
+	get_binding_count            gdextension.MethodForClass `hash:"3905245786"`
+	get_binding                  gdextension.MethodForClass `hash:"3934429652"`
+	set_bindings                 gdextension.MethodForClass `hash:"381264803"`
+	get_bindings                 gdextension.MethodForClass `hash:"3995934104"`
+	get_binding_modifier_count   gdextension.MethodForClass `hash:"3905245786"`
+	get_binding_modifier         gdextension.MethodForClass `hash:"2419896583"`
+	set_binding_modifiers        gdextension.MethodForClass `hash:"381264803"`
+	get_binding_modifiers        gdextension.MethodForClass `hash:"3995934104"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("OpenXRInteractionProfile")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -117,6 +142,20 @@ type Advanced = class
 type class [1]gdclass.OpenXRInteractionProfile
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OpenXRInteractionProfile)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OpenXRInteractionProfile)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -126,7 +165,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("OpenXRInteractionProfile"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.OpenXRInteractionProfile)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -159,12 +198,12 @@ func (self Instance) SetBindingModifiers(value []any) {
 
 //go:nosplit
 func (self class) SetInteractionProfilePath(interaction_profile_path String.Readable) { //gd:OpenXRInteractionProfile.set_interaction_profile_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfile.Bind_set_interaction_profile_path), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ interaction_profile_path gdextension.String }{pointers.Get(gd.InternalString(interaction_profile_path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interaction_profile_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ interaction_profile_path gdextension.String }{pointers.Get(gd.InternalString(interaction_profile_path))}))
 }
 
 //go:nosplit
 func (self class) GetInteractionProfilePath() String.Readable { //gd:OpenXRInteractionProfile.get_interaction_profile_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_interaction_profile_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_interaction_profile_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -174,7 +213,7 @@ Get the number of bindings in this interaction profile.
 */
 //go:nosplit
 func (self class) GetBindingCount() int64 { //gd:OpenXRInteractionProfile.get_binding_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_binding_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -184,19 +223,19 @@ Retrieve the binding at this index.
 */
 //go:nosplit
 func (self class) GetBinding(index int64) [1]gdclass.OpenXRIPBinding { //gd:OpenXRInteractionProfile.get_binding
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_binding), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_binding, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = [1]gdclass.OpenXRIPBinding{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRIPBinding](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBindings(bindings Array.Any) { //gd:OpenXRInteractionProfile.set_bindings
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfile.Bind_set_bindings), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bindings gdextension.Array }{pointers.Get(gd.InternalArray(bindings))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bindings, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bindings gdextension.Array }{pointers.Get(gd.InternalArray(bindings))}))
 }
 
 //go:nosplit
 func (self class) GetBindings() Array.Any { //gd:OpenXRInteractionProfile.get_bindings
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_bindings), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_bindings, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -206,7 +245,7 @@ Get the number of binding modifiers in this interaction profile.
 */
 //go:nosplit
 func (self class) GetBindingModifierCount() int64 { //gd:OpenXRInteractionProfile.get_binding_modifier_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_binding_modifier_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding_modifier_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -216,19 +255,19 @@ Get the [OpenXRBindingModifier] at this index.
 */
 //go:nosplit
 func (self class) GetBindingModifier(index int64) [1]gdclass.OpenXRIPBindingModifier { //gd:OpenXRInteractionProfile.get_binding_modifier
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_binding_modifier), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_binding_modifier, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = [1]gdclass.OpenXRIPBindingModifier{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRIPBindingModifier](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBindingModifiers(binding_modifiers Array.Any) { //gd:OpenXRInteractionProfile.set_binding_modifiers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfile.Bind_set_binding_modifiers), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ binding_modifiers gdextension.Array }{pointers.Get(gd.InternalArray(binding_modifiers))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding_modifiers, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ binding_modifiers gdextension.Array }{pointers.Get(gd.InternalArray(binding_modifiers))}))
 }
 
 //go:nosplit
 func (self class) GetBindingModifiers() Array.Any { //gd:OpenXRInteractionProfile.get_binding_modifiers
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRInteractionProfile.Bind_get_binding_modifiers), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_binding_modifiers, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -268,7 +307,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("OpenXRInteractionProfile", func(ptr gd.Object) any {
-		return [1]gdclass.OpenXRInteractionProfile{*(*gdclass.OpenXRInteractionProfile)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("OpenXRInteractionProfile", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -75,6 +75,27 @@ You can use [url=https://danilw.github.io/GLSL-howto/cubemap_to_panorama_js/cube
 */
 type Instance [1]gdclass.PanoramaSkyMaterial
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_panorama          gdextension.MethodForClass `hash:"4051416890"`
+	get_panorama          gdextension.MethodForClass `hash:"3635182373"`
+	set_filtering_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_filtering_enabled  gdextension.MethodForClass `hash:"36873697"`
+	set_energy_multiplier gdextension.MethodForClass `hash:"373806689"`
+	get_energy_multiplier gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PanoramaSkyMaterial")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -90,6 +111,20 @@ type Advanced = class
 type class [1]gdclass.PanoramaSkyMaterial
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PanoramaSkyMaterial)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PanoramaSkyMaterial)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -99,7 +134,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PanoramaSkyMaterial"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.PanoramaSkyMaterial)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -132,36 +167,36 @@ func (self Instance) SetEnergyMultiplier(value Float.X) {
 
 //go:nosplit
 func (self class) SetPanorama(texture [1]gdclass.Texture2D) { //gd:PanoramaSkyMaterial.set_panorama
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_set_panorama), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_panorama, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetPanorama() [1]gdclass.Texture2D { //gd:PanoramaSkyMaterial.get_panorama
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_get_panorama), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_panorama, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFilteringEnabled(enabled bool) { //gd:PanoramaSkyMaterial.set_filtering_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_set_filtering_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_filtering_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFilteringEnabled() bool { //gd:PanoramaSkyMaterial.is_filtering_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_is_filtering_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_filtering_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnergyMultiplier(multiplier float64) { //gd:PanoramaSkyMaterial.set_energy_multiplier
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_set_energy_multiplier), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ multiplier float64 }{multiplier}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_energy_multiplier, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ multiplier float64 }{multiplier}))
 }
 
 //go:nosplit
 func (self class) GetEnergyMultiplier() float64 { //gd:PanoramaSkyMaterial.get_energy_multiplier
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PanoramaSkyMaterial.Bind_get_energy_multiplier), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy_multiplier, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -206,7 +241,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PanoramaSkyMaterial", func(ptr gd.Object) any {
-		return [1]gdclass.PanoramaSkyMaterial{*(*gdclass.PanoramaSkyMaterial)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("PanoramaSkyMaterial", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

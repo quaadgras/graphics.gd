@@ -79,6 +79,27 @@ A container that displays the contents of underlying [SubViewport] child nodes. 
 */
 type Instance [1]gdclass.SubViewportContainer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_stretch             gdextension.MethodForClass `hash:"2586408642"`
+	is_stretch_enabled      gdextension.MethodForClass `hash:"36873697"`
+	set_stretch_shrink      gdextension.MethodForClass `hash:"1286410249"`
+	get_stretch_shrink      gdextension.MethodForClass `hash:"3905245786"`
+	set_mouse_target        gdextension.MethodForClass `hash:"2586408642"`
+	is_mouse_target_enabled gdextension.MethodForClass `hash:"2240911060"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("SubViewportContainer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -119,6 +140,20 @@ type Advanced = class
 type class [1]gdclass.SubViewportContainer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SubViewportContainer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SubViewportContainer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -128,7 +163,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SubViewportContainer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SubViewportContainer)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -174,36 +209,36 @@ func (class) _propagate_input_event(impl func(ptr unsafe.Pointer, event [1]gdcla
 
 //go:nosplit
 func (self class) SetStretch(enable bool) { //gd:SubViewportContainer.set_stretch
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_set_stretch), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsStretchEnabled() bool { //gd:SubViewportContainer.is_stretch_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_is_stretch_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stretch_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStretchShrink(amount int64) { //gd:SubViewportContainer.set_stretch_shrink
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_set_stretch_shrink), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_shrink, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetStretchShrink() int64 { //gd:SubViewportContainer.get_stretch_shrink
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_get_stretch_shrink), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stretch_shrink, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMouseTarget(amount bool) { //gd:SubViewportContainer.set_mouse_target
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_set_mouse_target), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ amount bool }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_target, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ amount bool }{amount}))
 }
 
 //go:nosplit
 func (self class) IsMouseTargetEnabled() bool { //gd:SubViewportContainer.is_mouse_target_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SubViewportContainer.Bind_is_mouse_target_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_mouse_target_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -253,7 +288,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SubViewportContainer", func(ptr gd.Object) any {
-		return [1]gdclass.SubViewportContainer{*(*gdclass.SubViewportContainer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("SubViewportContainer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -72,6 +72,23 @@ The compositor resource stores attributes used to customize how a [Viewport] is 
 */
 type Instance [1]gdclass.Compositor
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_compositor_effects gdextension.MethodForClass `hash:"381264803"`
+	get_compositor_effects gdextension.MethodForClass `hash:"3995934104"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Compositor")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -87,6 +104,20 @@ type Advanced = class
 type class [1]gdclass.Compositor
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Compositor)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Compositor)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -96,7 +127,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Compositor"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Compositor)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -113,12 +144,12 @@ func (self Instance) SetCompositorEffects(value []CompositorEffect.Instance) {
 
 //go:nosplit
 func (self class) SetCompositorEffects(compositor_effects Array.Contains[[1]gdclass.CompositorEffect]) { //gd:Compositor.set_compositor_effects
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Compositor.Bind_set_compositor_effects), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ compositor_effects gdextension.Array }{pointers.Get(gd.InternalArray(compositor_effects))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor_effects, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ compositor_effects gdextension.Array }{pointers.Get(gd.InternalArray(compositor_effects))}))
 }
 
 //go:nosplit
 func (self class) GetCompositorEffects() Array.Contains[[1]gdclass.CompositorEffect] { //gd:Compositor.get_compositor_effects
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Compositor.Bind_get_compositor_effects), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_compositor_effects, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.CompositorEffect]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -154,5 +185,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Compositor", func(ptr gd.Object) any { return [1]gdclass.Compositor{*(*gdclass.Compositor)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Compositor", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -72,6 +72,25 @@ Increases or decreases the volume being routed through the audio bus.
 */
 type Instance [1]gdclass.AudioEffectAmplify
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_volume_db     gdextension.MethodForClass `hash:"373806689"`
+	get_volume_db     gdextension.MethodForClass `hash:"1740695150"`
+	set_volume_linear gdextension.MethodForClass `hash:"373806689"`
+	get_volume_linear gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioEffectAmplify")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -87,6 +106,20 @@ type Advanced = class
 type class [1]gdclass.AudioEffectAmplify
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectAmplify)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectAmplify)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -96,7 +129,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioEffectAmplify"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioEffectAmplify)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -121,24 +154,24 @@ func (self Instance) SetVolumeLinear(value Float.X) {
 
 //go:nosplit
 func (self class) SetVolumeDb(volume float64) { //gd:AudioEffectAmplify.set_volume_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectAmplify.Bind_set_volume_db), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume float64 }{volume}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume float64 }{volume}))
 }
 
 //go:nosplit
 func (self class) GetVolumeDb() float64 { //gd:AudioEffectAmplify.get_volume_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectAmplify.Bind_get_volume_db), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumeLinear(volume float64) { //gd:AudioEffectAmplify.set_volume_linear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectAmplify.Bind_set_volume_linear), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume float64 }{volume}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_linear, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume float64 }{volume}))
 }
 
 //go:nosplit
 func (self class) GetVolumeLinear() float64 { //gd:AudioEffectAmplify.get_volume_linear
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectAmplify.Bind_get_volume_linear), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_linear, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -181,7 +214,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioEffectAmplify", func(ptr gd.Object) any {
-		return [1]gdclass.AudioEffectAmplify{*(*gdclass.AudioEffectAmplify)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioEffectAmplify", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

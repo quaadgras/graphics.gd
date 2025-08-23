@@ -72,6 +72,29 @@ Defines the API that the editor uses to extract information from the underlying 
 */
 type Instance [1]gdclass.EditorVCSInterface
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	create_diff_line              gdextension.MethodForClass `hash:"2901184053"`
+	create_diff_hunk              gdextension.MethodForClass `hash:"3784842090"`
+	create_diff_file              gdextension.MethodForClass `hash:"2723227684"`
+	create_commit                 gdextension.MethodForClass `hash:"1075983584"`
+	create_status_file            gdextension.MethodForClass `hash:"1083471673"`
+	add_diff_hunks_into_diff_file gdextension.MethodForClass `hash:"4015243225"`
+	add_line_diffs_into_diff_hunk gdextension.MethodForClass `hash:"4015243225"`
+	popup_error                   gdextension.MethodForClass `hash:"83702148"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorVCSInterface")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -550,6 +573,20 @@ type Advanced = class
 type class [1]gdclass.EditorVCSInterface
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorVCSInterface)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorVCSInterface)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -559,7 +596,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorVCSInterface"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorVCSInterface)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -898,7 +935,7 @@ Helper function to create a [Dictionary] for storing a line diff. [param new_lin
 */
 //go:nosplit
 func (self class) CreateDiffLine(new_line_no int64, old_line_no int64, content String.Readable, status String.Readable) Dictionary.Any { //gd:EditorVCSInterface.create_diff_line
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_line), gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_diff_line, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
 		new_line_no int64
 		old_line_no int64
 		content     gdextension.String
@@ -913,7 +950,7 @@ Helper function to create a [Dictionary] for storing diff hunk data. [param old_
 */
 //go:nosplit
 func (self class) CreateDiffHunk(old_start int64, new_start int64, old_lines int64, new_lines int64) Dictionary.Any { //gd:EditorVCSInterface.create_diff_hunk
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_hunk), gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_diff_hunk, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		old_start int64
 		new_start int64
 		old_lines int64
@@ -928,7 +965,7 @@ Helper function to create a [Dictionary] for storing old and new diff file paths
 */
 //go:nosplit
 func (self class) CreateDiffFile(new_file String.Readable, old_file String.Readable) Dictionary.Any { //gd:EditorVCSInterface.create_diff_file
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorVCSInterface.Bind_create_diff_file), gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_diff_file, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		new_file gdextension.String
 		old_file gdextension.String
 	}{pointers.Get(gd.InternalString(new_file)), pointers.Get(gd.InternalString(old_file))}))
@@ -941,7 +978,7 @@ Helper function to create a commit [Dictionary] item. [param msg] is the commit 
 */
 //go:nosplit
 func (self class) CreateCommit(msg String.Readable, author String.Readable, id String.Readable, unix_timestamp int64, offset_minutes int64) Dictionary.Any { //gd:EditorVCSInterface.create_commit
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorVCSInterface.Bind_create_commit), gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_commit, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		msg            gdextension.String
 		author         gdextension.String
 		id             gdextension.String
@@ -957,7 +994,7 @@ Helper function to create a [Dictionary] used by editor to read the status of a 
 */
 //go:nosplit
 func (self class) CreateStatusFile(file_path String.Readable, change_type ChangeType, area TreeArea) Dictionary.Any { //gd:EditorVCSInterface.create_status_file
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorVCSInterface.Bind_create_status_file), gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_status_file, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		file_path   gdextension.String
 		change_type ChangeType
 		area        TreeArea
@@ -971,7 +1008,7 @@ Helper function to add an array of [param diff_hunks] into a [param diff_file].
 */
 //go:nosplit
 func (self class) AddDiffHunksIntoDiffFile(diff_file Dictionary.Any, diff_hunks Array.Contains[Dictionary.Any]) Dictionary.Any { //gd:EditorVCSInterface.add_diff_hunks_into_diff_file
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorVCSInterface.Bind_add_diff_hunks_into_diff_file), gdextension.SizeDictionary|(gdextension.SizeDictionary<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.add_diff_hunks_into_diff_file, gdextension.SizeDictionary|(gdextension.SizeDictionary<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		diff_file  gdextension.Dictionary
 		diff_hunks gdextension.Array
 	}{pointers.Get(gd.InternalDictionary(diff_file)), pointers.Get(gd.InternalArray(diff_hunks))}))
@@ -984,7 +1021,7 @@ Helper function to add an array of [param line_diffs] into a [param diff_hunk].
 */
 //go:nosplit
 func (self class) AddLineDiffsIntoDiffHunk(diff_hunk Dictionary.Any, line_diffs Array.Contains[Dictionary.Any]) Dictionary.Any { //gd:EditorVCSInterface.add_line_diffs_into_diff_hunk
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorVCSInterface.Bind_add_line_diffs_into_diff_hunk), gdextension.SizeDictionary|(gdextension.SizeDictionary<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.add_line_diffs_into_diff_hunk, gdextension.SizeDictionary|(gdextension.SizeDictionary<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		diff_hunk  gdextension.Dictionary
 		line_diffs gdextension.Array
 	}{pointers.Get(gd.InternalDictionary(diff_hunk)), pointers.Get(gd.InternalArray(line_diffs))}))
@@ -997,7 +1034,7 @@ Pops up an error message in the editor which is shown as coming from the underly
 */
 //go:nosplit
 func (self class) PopupError(msg String.Readable) { //gd:EditorVCSInterface.popup_error
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorVCSInterface.Bind_popup_error), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ msg gdextension.String }{pointers.Get(gd.InternalString(msg))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_error, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ msg gdextension.String }{pointers.Get(gd.InternalString(msg))}))
 }
 func (self class) AsEditorVCSInterface() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorVCSInterface() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -1109,9 +1146,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorVCSInterface", func(ptr gd.Object) any {
-		return [1]gdclass.EditorVCSInterface{*(*gdclass.EditorVCSInterface)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorVCSInterface", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type ChangeType int //gd:EditorVCSInterface.ChangeType

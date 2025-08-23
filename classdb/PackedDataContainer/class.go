@@ -92,6 +92,23 @@ Nested containers will be packed recursively. While iterating, they will be retu
 */
 type Instance [1]gdclass.PackedDataContainer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	pack gdextension.MethodForClass `hash:"966674026"`
+	size gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PackedDataContainer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -122,6 +139,20 @@ type Advanced = class
 type class [1]gdclass.PackedDataContainer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PackedDataContainer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PackedDataContainer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -131,7 +162,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PackedDataContainer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.PackedDataContainer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -144,7 +175,7 @@ Packs the given container into a binary representation. The [param value] must b
 */
 //go:nosplit
 func (self class) Pack(value variant.Any) Error.Code { //gd:PackedDataContainer.pack
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PackedDataContainer.Bind_pack), gdextension.SizeInt|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pack, gdextension.SizeInt|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -154,7 +185,7 @@ Returns the size of the packed container (see [method Array.size] and [method Di
 */
 //go:nosplit
 func (self class) Size() int64 { //gd:PackedDataContainer.size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PackedDataContainer.Bind_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -192,7 +223,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PackedDataContainer", func(ptr gd.Object) any {
-		return [1]gdclass.PackedDataContainer{*(*gdclass.PackedDataContainer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("PackedDataContainer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

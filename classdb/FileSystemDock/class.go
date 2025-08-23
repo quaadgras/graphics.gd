@@ -79,6 +79,24 @@ While [FileSystemDock] doesn't expose any methods for file manipulation, it can 
 */
 type Instance [1]gdclass.FileSystemDock
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	navigate_to_path               gdextension.MethodForClass `hash:"83702148"`
+	add_resource_tooltip_plugin    gdextension.MethodForClass `hash:"2258356838"`
+	remove_resource_tooltip_plugin gdextension.MethodForClass `hash:"2258356838"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("FileSystemDock")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -115,6 +133,20 @@ type Advanced = class
 type class [1]gdclass.FileSystemDock
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.FileSystemDock)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.FileSystemDock)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -124,7 +156,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("FileSystemDock"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.FileSystemDock)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -135,7 +167,7 @@ Sets the given [param path] as currently selected, ensuring that the selected fi
 */
 //go:nosplit
 func (self class) NavigateToPath(path String.Readable) { //gd:FileSystemDock.navigate_to_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileSystemDock.Bind_navigate_to_path), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.navigate_to_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 }
 
 /*
@@ -143,7 +175,7 @@ Registers a new [EditorResourceTooltipPlugin].
 */
 //go:nosplit
 func (self class) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.add_resource_tooltip_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileSystemDock.Bind_add_resource_tooltip_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 
 /*
@@ -151,7 +183,7 @@ Removes an [EditorResourceTooltipPlugin]. Fails if the plugin wasn't previously 
 */
 //go:nosplit
 func (self class) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.remove_resource_tooltip_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FileSystemDock.Bind_remove_resource_tooltip_plugin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
 func (self Instance) OnInherit(cb func(file string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("inherit"), gd.NewCallable(cb), 0)
@@ -247,7 +279,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("FileSystemDock", func(ptr gd.Object) any {
-		return [1]gdclass.FileSystemDock{*(*gdclass.FileSystemDock)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("FileSystemDock", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

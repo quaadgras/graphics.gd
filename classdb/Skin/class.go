@@ -68,6 +68,32 @@ T should be the type that is embedding this [Extension]
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 type Instance [1]gdclass.Skin
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_bind_count gdextension.MethodForClass `hash:"1286410249"`
+	get_bind_count gdextension.MethodForClass `hash:"3905245786"`
+	add_bind       gdextension.MethodForClass `hash:"3616898986"`
+	add_named_bind gdextension.MethodForClass `hash:"3154712474"`
+	set_bind_pose  gdextension.MethodForClass `hash:"3616898986"`
+	get_bind_pose  gdextension.MethodForClass `hash:"1965739696"`
+	set_bind_name  gdextension.MethodForClass `hash:"3780747571"`
+	get_bind_name  gdextension.MethodForClass `hash:"659327637"`
+	set_bind_bone  gdextension.MethodForClass `hash:"3937882851"`
+	get_bind_bone  gdextension.MethodForClass `hash:"923996154"`
+	clear_binds    gdextension.MethodForClass `hash:"3218959716"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Skin")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -117,6 +143,20 @@ type Advanced = class
 type class [1]gdclass.Skin
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Skin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Skin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -126,7 +166,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Skin"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Skin)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -135,19 +175,19 @@ func New() Instance {
 
 //go:nosplit
 func (self class) SetBindCount(bind_count int64) { //gd:Skin.set_bind_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_set_bind_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bind_count int64 }{bind_count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bind_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bind_count int64 }{bind_count}))
 }
 
 //go:nosplit
 func (self class) GetBindCount() int64 { //gd:Skin.get_bind_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_get_bind_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bind_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) AddBind(bone int64, pose Transform3D.BasisOrigin) { //gd:Skin.add_bind
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_add_bind), 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_bind, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		bone int64
 		pose Transform3D.BasisOrigin
 	}{bone, gd.Transposed(pose)}))
@@ -155,7 +195,7 @@ func (self class) AddBind(bone int64, pose Transform3D.BasisOrigin) { //gd:Skin.
 
 //go:nosplit
 func (self class) AddNamedBind(name String.Readable, pose Transform3D.BasisOrigin) { //gd:Skin.add_named_bind
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_add_named_bind), 0|(gdextension.SizeString<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_named_bind, 0|(gdextension.SizeString<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		name gdextension.String
 		pose Transform3D.BasisOrigin
 	}{pointers.Get(gd.InternalString(name)), gd.Transposed(pose)}))
@@ -163,7 +203,7 @@ func (self class) AddNamedBind(name String.Readable, pose Transform3D.BasisOrigi
 
 //go:nosplit
 func (self class) SetBindPose(bind_index int64, pose Transform3D.BasisOrigin) { //gd:Skin.set_bind_pose
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_set_bind_pose), 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bind_pose, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		bind_index int64
 		pose       Transform3D.BasisOrigin
 	}{bind_index, gd.Transposed(pose)}))
@@ -171,14 +211,14 @@ func (self class) SetBindPose(bind_index int64, pose Transform3D.BasisOrigin) { 
 
 //go:nosplit
 func (self class) GetBindPose(bind_index int64) Transform3D.BasisOrigin { //gd:Skin.get_bind_pose
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_get_bind_pose), gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bind_index int64 }{bind_index}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_bind_pose, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bind_index int64 }{bind_index}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBindName(bind_index int64, name String.Name) { //gd:Skin.set_bind_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_set_bind_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bind_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		bind_index int64
 		name       gdextension.StringName
 	}{bind_index, pointers.Get(gd.InternalStringName(name))}))
@@ -186,14 +226,14 @@ func (self class) SetBindName(bind_index int64, name String.Name) { //gd:Skin.se
 
 //go:nosplit
 func (self class) GetBindName(bind_index int64) String.Name { //gd:Skin.get_bind_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_get_bind_name), gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bind_index int64 }{bind_index}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_bind_name, gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bind_index int64 }{bind_index}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBindBone(bind_index int64, bone int64) { //gd:Skin.set_bind_bone
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_set_bind_bone), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bind_bone, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		bind_index int64
 		bone       int64
 	}{bind_index, bone}))
@@ -201,14 +241,14 @@ func (self class) SetBindBone(bind_index int64, bone int64) { //gd:Skin.set_bind
 
 //go:nosplit
 func (self class) GetBindBone(bind_index int64) int64 { //gd:Skin.get_bind_bone
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_get_bind_bone), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bind_index int64 }{bind_index}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bind_bone, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bind_index int64 }{bind_index}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) ClearBinds() { //gd:Skin.clear_binds
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skin.Bind_clear_binds), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_binds, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsSkin() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsSkin() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -242,5 +282,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Skin", func(ptr gd.Object) any { return [1]gdclass.Skin{*(*gdclass.Skin)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Skin", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -73,6 +73,26 @@ Input event type for gamepad buttons. For gamepad analog sticks and joysticks, s
 */
 type Instance [1]gdclass.InputEventJoypadButton
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_button_index gdextension.MethodForClass `hash:"1466368136"`
+	get_button_index gdextension.MethodForClass `hash:"595588182"`
+	set_pressure     gdextension.MethodForClass `hash:"373806689"`
+	get_pressure     gdextension.MethodForClass `hash:"1740695150"`
+	set_pressed      gdextension.MethodForClass `hash:"2586408642"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("InputEventJoypadButton")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +108,20 @@ type Advanced = class
 type class [1]gdclass.InputEventJoypadButton
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventJoypadButton)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventJoypadButton)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +131,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("InputEventJoypadButton"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.InputEventJoypadButton)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -126,31 +160,31 @@ func (self Instance) SetPressed(value bool) {
 
 //go:nosplit
 func (self class) SetButtonIndex(button_index Input.JoyButton) { //gd:InputEventJoypadButton.set_button_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadButton.Bind_set_button_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ button_index Input.JoyButton }{button_index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ button_index Input.JoyButton }{button_index}))
 }
 
 //go:nosplit
 func (self class) GetButtonIndex() Input.JoyButton { //gd:InputEventJoypadButton.get_button_index
-	var r_ret = gdextension.Call[Input.JoyButton](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadButton.Bind_get_button_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.JoyButton](gd.ObjectChecked(self.AsObject()), methods.get_button_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressure(pressure float64) { //gd:InputEventJoypadButton.set_pressure
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadButton.Bind_set_pressure), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pressure float64 }{pressure}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pressure float64 }{pressure}))
 }
 
 //go:nosplit
 func (self class) GetPressure() float64 { //gd:InputEventJoypadButton.get_pressure
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadButton.Bind_get_pressure), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressed(pressed bool) { //gd:InputEventJoypadButton.set_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventJoypadButton.Bind_set_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
 }
 func (self class) AsInputEventJoypadButton() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsInputEventJoypadButton() Instance {
@@ -195,7 +229,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("InputEventJoypadButton", func(ptr gd.Object) any {
-		return [1]gdclass.InputEventJoypadButton{*(*gdclass.InputEventJoypadButton)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("InputEventJoypadButton", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

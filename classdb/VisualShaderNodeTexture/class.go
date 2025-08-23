@@ -73,6 +73,27 @@ Performs a lookup operation on the provided texture, with support for multiple t
 */
 type Instance [1]gdclass.VisualShaderNodeTexture
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_source       gdextension.MethodForClass `hash:"905262939"`
+	get_source       gdextension.MethodForClass `hash:"2896297444"`
+	set_texture      gdextension.MethodForClass `hash:"4051416890"`
+	get_texture      gdextension.MethodForClass `hash:"3635182373"`
+	set_texture_type gdextension.MethodForClass `hash:"986314081"`
+	get_texture_type gdextension.MethodForClass `hash:"3290430153"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VisualShaderNodeTexture")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +109,20 @@ type Advanced = class
 type class [1]gdclass.VisualShaderNodeTexture
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeTexture)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeTexture)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +132,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShaderNodeTexture"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisualShaderNodeTexture)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -130,36 +165,36 @@ func (self Instance) SetTextureType(value TextureType) {
 
 //go:nosplit
 func (self class) SetSource(value Source) { //gd:VisualShaderNodeTexture.set_source
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_set_source), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value Source }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value Source }{value}))
 }
 
 //go:nosplit
 func (self class) GetSource() Source { //gd:VisualShaderNodeTexture.get_source
-	var r_ret = gdextension.Call[Source](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_source), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Source](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTexture(value [1]gdclass.Texture2D) { //gd:VisualShaderNodeTexture.set_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(value[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(value[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:VisualShaderNodeTexture.get_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureType(value TextureType) { //gd:VisualShaderNodeTexture.set_texture_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_set_texture_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value TextureType }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value TextureType }{value}))
 }
 
 //go:nosplit
 func (self class) GetTextureType() TextureType { //gd:VisualShaderNodeTexture.get_texture_type
-	var r_ret = gdextension.Call[TextureType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTexture.Bind_get_texture_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextureType](gd.ObjectChecked(self.AsObject()), methods.get_texture_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -208,9 +243,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisualShaderNodeTexture", func(ptr gd.Object) any {
-		return [1]gdclass.VisualShaderNodeTexture{*(*gdclass.VisualShaderNodeTexture)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VisualShaderNodeTexture", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Source int //gd:VisualShaderNodeTexture.Source

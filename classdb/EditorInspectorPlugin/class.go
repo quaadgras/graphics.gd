@@ -80,6 +80,24 @@ To use [EditorInspectorPlugin], register it using the [method EditorPlugin.add_i
 */
 type Instance [1]gdclass.EditorInspectorPlugin
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	add_custom_control                          gdextension.MethodForClass `hash:"1496901182"`
+	add_property_editor                         gdextension.MethodForClass `hash:"2042698479"`
+	add_property_editor_for_multiple_properties gdextension.MethodForClass `hash:"788598683"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorInspectorPlugin")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.EditorInspectorPlugin
@@ -243,6 +261,20 @@ type Advanced = class
 type class [1]gdclass.EditorInspectorPlugin
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorInspectorPlugin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorInspectorPlugin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -252,7 +284,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorInspectorPlugin"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorInspectorPlugin)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -350,7 +382,7 @@ Adds a custom control, which is not necessarily a property editor.
 */
 //go:nosplit
 func (self class) AddCustomControl(control [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_custom_control
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInspectorPlugin.Bind_add_custom_control), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_custom_control, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))}))
 }
 
 /*
@@ -360,7 +392,7 @@ There can be multiple property editors for a property. If [param add_to_end] is 
 */
 //go:nosplit
 func (self class) AddPropertyEditor(property String.Readable, editor [1]gdclass.Control, add_to_end bool, label String.Readable) { //gd:EditorInspectorPlugin.add_property_editor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInspectorPlugin.Bind_add_property_editor), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_property_editor, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
 		property   gdextension.String
 		editor     gdextension.Object
 		add_to_end bool
@@ -373,7 +405,7 @@ Adds an editor that allows modifying multiple properties. The [param editor] con
 */
 //go:nosplit
 func (self class) AddPropertyEditorForMultipleProperties(label String.Readable, properties Packed.Strings, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInspectorPlugin.Bind_add_property_editor_for_multiple_properties), 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_property_editor_for_multiple_properties, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		label      gdextension.String
 		properties gdextension.PackedArray[gdextension.String]
 		editor     gdextension.Object
@@ -430,7 +462,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorInspectorPlugin", func(ptr gd.Object) any {
-		return [1]gdclass.EditorInspectorPlugin{*(*gdclass.EditorInspectorPlugin)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorInspectorPlugin", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -103,10 +103,6 @@ func linkJS(API *gd.API) {
 	API.GetLibraryPath = func(token gd.ExtensionToken) gd.String {
 		return pointers.Let[gd.String]([1]gd.EnginePointer{gd.EnginePointer(get_library_path.Invoke(uint32(token)).Int())})
 	}
-	get_class_tag := dlsym("classdb_get_class_tag")
-	API.ClassDB.GetClassTag = func(name gd.StringName) gd.ClassTag {
-		return gd.ClassTag(get_class_tag.Invoke(pointers.Get(name)[0]).Int())
-	}
 	classdb_register_extension_class3 := dlsym("classdb_register_extension_class3")
 	API.ClassDB.RegisterClass = func(library gd.ExtensionToken, name, extends gd.StringName, info_go gd.ClassInterface) {
 		info := js.Global().Get("Object").New()
@@ -243,14 +239,6 @@ func linkJS(API *gd.API) {
 	object_set_instance_binding := dlsym("object_set_instance_binding")
 	API.Object.SetInstanceBinding = func(o [1]gd.Object, et gd.ExtensionToken, a any, ibt gd.InstanceBindingType) {
 		object_set_instance_binding.Invoke(pointers.Get(o[0])[0], uint32(et), 0, 0)
-	}
-	object_cast_to := dlsym("object_cast_to")
-	API.Object.CastTo = func(o [1]gd.Object, sn gd.ClassTag) [1]gd.Object {
-		casted := object_cast_to.Invoke(pointers.Get(o[0])[0], uint32(sn)).Int()
-		if casted == 0 {
-			return [1]gd.Object{}
-		}
-		return o
 	}
 	classdb_register_extension_class_property := dlsym("classdb_register_extension_class_property")
 	API.ClassDB.RegisterClassProperty = func(library gd.ExtensionToken, class gd.StringName, info gd.PropertyInfo, getter, setter gd.StringName) {

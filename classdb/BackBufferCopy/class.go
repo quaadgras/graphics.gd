@@ -75,6 +75,25 @@ Node for back-buffering the currently-displayed screen. The region defined in th
 */
 type Instance [1]gdclass.BackBufferCopy
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_rect      gdextension.MethodForClass `hash:"2046264180"`
+	get_rect      gdextension.MethodForClass `hash:"1639390495"`
+	set_copy_mode gdextension.MethodForClass `hash:"1713538590"`
+	get_copy_mode gdextension.MethodForClass `hash:"3271169440"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("BackBufferCopy")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -90,6 +109,20 @@ type Advanced = class
 type class [1]gdclass.BackBufferCopy
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.BackBufferCopy)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.BackBufferCopy)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -99,7 +132,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("BackBufferCopy"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.BackBufferCopy)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -123,24 +156,24 @@ func (self Instance) SetRect(value Rect2.PositionSize) {
 
 //go:nosplit
 func (self class) SetRect(rect Rect2.PositionSize) { //gd:BackBufferCopy.set_rect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BackBufferCopy.Bind_set_rect), 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rect, 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
 }
 
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:BackBufferCopy.get_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BackBufferCopy.Bind_get_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCopyMode(copy_mode CopyMode) { //gd:BackBufferCopy.set_copy_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BackBufferCopy.Bind_set_copy_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ copy_mode CopyMode }{copy_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_copy_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ copy_mode CopyMode }{copy_mode}))
 }
 
 //go:nosplit
 func (self class) GetCopyMode() CopyMode { //gd:BackBufferCopy.get_copy_mode
-	var r_ret = gdextension.Call[CopyMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BackBufferCopy.Bind_get_copy_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[CopyMode](gd.ObjectChecked(self.AsObject()), methods.get_copy_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -175,9 +208,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("BackBufferCopy", func(ptr gd.Object) any {
-		return [1]gdclass.BackBufferCopy{*(*gdclass.BackBufferCopy)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("BackBufferCopy", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type CopyMode int //gd:BackBufferCopy.CopyMode

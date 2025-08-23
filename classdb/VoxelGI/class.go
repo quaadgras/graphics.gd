@@ -80,6 +80,31 @@ type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 */
 type Instance [1]gdclass.VoxelGI
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_probe_data        gdextension.MethodForClass `hash:"1637849675"`
+	get_probe_data        gdextension.MethodForClass `hash:"1730645405"`
+	set_subdiv            gdextension.MethodForClass `hash:"2240898472"`
+	get_subdiv            gdextension.MethodForClass `hash:"4261647950"`
+	set_size              gdextension.MethodForClass `hash:"3460891852"`
+	get_size              gdextension.MethodForClass `hash:"3360562783"`
+	set_camera_attributes gdextension.MethodForClass `hash:"2817810567"`
+	get_camera_attributes gdextension.MethodForClass `hash:"3921283215"`
+	bake                  gdextension.MethodForClass `hash:"2781551026"`
+	debug_bake            gdextension.MethodForClass `hash:"3218959716"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VoxelGI")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.VoxelGI
@@ -122,6 +147,20 @@ type Advanced = class
 type class [1]gdclass.VoxelGI
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VoxelGI)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VoxelGI)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -131,7 +170,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VoxelGI"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VoxelGI)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -171,48 +210,48 @@ func (self Instance) SetData(value VoxelGIData.Instance) {
 
 //go:nosplit
 func (self class) SetProbeData(data [1]gdclass.VoxelGIData) { //gd:VoxelGI.set_probe_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VoxelGI.Bind_set_probe_data), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ data gdextension.Object }{gdextension.Object(gd.ObjectChecked(data[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_probe_data, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ data gdextension.Object }{gdextension.Object(gd.ObjectChecked(data[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetProbeData() [1]gdclass.VoxelGIData { //gd:VoxelGI.get_probe_data
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VoxelGI.Bind_get_probe_data), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_probe_data, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.VoxelGIData{gd.PointerWithOwnershipTransferredToGo[gdclass.VoxelGIData](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubdiv(subdiv Subdiv) { //gd:VoxelGI.set_subdiv
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VoxelGI.Bind_set_subdiv), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ subdiv Subdiv }{subdiv}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdiv, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ subdiv Subdiv }{subdiv}))
 }
 
 //go:nosplit
 func (self class) GetSubdiv() Subdiv { //gd:VoxelGI.get_subdiv
-	var r_ret = gdextension.Call[Subdiv](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VoxelGI.Bind_get_subdiv), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Subdiv](gd.ObjectChecked(self.AsObject()), methods.get_subdiv, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:VoxelGI.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VoxelGI.Bind_set_size), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:VoxelGI.get_size
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VoxelGI.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) { //gd:VoxelGI.set_camera_attributes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VoxelGI.Bind_set_camera_attributes), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(camera_attributes[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(camera_attributes[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:VoxelGI.get_camera_attributes
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VoxelGI.Bind_get_camera_attributes), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.CameraAttributes{gd.PointerWithOwnershipTransferredToGo[gdclass.CameraAttributes](r_ret)}
 	return ret
 }
@@ -224,7 +263,7 @@ Bakes the effect from all [GeometryInstance3D]s marked with [constant GeometryIn
 */
 //go:nosplit
 func (self class) Bake(from_node [1]gdclass.Node, create_visual_debug bool) { //gd:VoxelGI.bake
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VoxelGI.Bind_bake), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		from_node           gdextension.Object
 		create_visual_debug bool
 	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), create_visual_debug}))
@@ -235,7 +274,7 @@ Calls [method bake] with [code]create_visual_debug[/code] enabled.
 */
 //go:nosplit
 func (self class) DebugBake() { //gd:VoxelGI.debug_bake
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VoxelGI.Bind_debug_bake), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.debug_bake, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsVoxelGI() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsVoxelGI() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -270,7 +309,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VoxelGI", func(ptr gd.Object) any { return [1]gdclass.VoxelGI{*(*gdclass.VoxelGI)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("VoxelGI", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Subdiv int //gd:VoxelGI.Subdiv

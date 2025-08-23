@@ -74,6 +74,25 @@ The node attempts to identify blend shapes based on name matching. Blend shapes 
 */
 type Instance [1]gdclass.XRFaceModifier3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_face_tracker gdextension.MethodForClass `hash:"3304788590"`
+	get_face_tracker gdextension.MethodForClass `hash:"2002593661"`
+	set_target       gdextension.MethodForClass `hash:"1348162250"`
+	get_target       gdextension.MethodForClass `hash:"4075236667"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("XRFaceModifier3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +108,20 @@ type Advanced = class
 type class [1]gdclass.XRFaceModifier3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRFaceModifier3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRFaceModifier3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +131,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("XRFaceModifier3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.XRFaceModifier3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -122,24 +155,24 @@ func (self Instance) SetTarget(value string) {
 
 //go:nosplit
 func (self class) SetFaceTracker(tracker_name String.Name) { //gd:XRFaceModifier3D.set_face_tracker
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRFaceModifier3D.Bind_set_face_tracker), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_face_tracker, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))}))
 }
 
 //go:nosplit
 func (self class) GetFaceTracker() String.Name { //gd:XRFaceModifier3D.get_face_tracker
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRFaceModifier3D.Bind_get_face_tracker), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_face_tracker, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTarget(target Path.ToNode) { //gd:XRFaceModifier3D.set_target
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRFaceModifier3D.Bind_set_target), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target))}))
 }
 
 //go:nosplit
 func (self class) GetTarget() Path.ToNode { //gd:XRFaceModifier3D.get_target
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRFaceModifier3D.Bind_get_target), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -167,7 +200,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRFaceModifier3D", func(ptr gd.Object) any {
-		return [1]gdclass.XRFaceModifier3D{*(*gdclass.XRFaceModifier3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("XRFaceModifier3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

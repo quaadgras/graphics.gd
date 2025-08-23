@@ -76,6 +76,37 @@ The default use of [AcceptDialog] is to allow it to only be accepted or closed, 
 */
 type Instance [1]gdclass.AcceptDialog
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_ok_button       gdextension.MethodForClass `hash:"1856205918"`
+	get_label           gdextension.MethodForClass `hash:"566733104"`
+	set_hide_on_ok      gdextension.MethodForClass `hash:"2586408642"`
+	get_hide_on_ok      gdextension.MethodForClass `hash:"36873697"`
+	set_close_on_escape gdextension.MethodForClass `hash:"2586408642"`
+	get_close_on_escape gdextension.MethodForClass `hash:"36873697"`
+	add_button          gdextension.MethodForClass `hash:"3328440682"`
+	add_cancel_button   gdextension.MethodForClass `hash:"242045556"`
+	remove_button       gdextension.MethodForClass `hash:"2068354942"`
+	register_text_enter gdextension.MethodForClass `hash:"3714008017"`
+	set_text            gdextension.MethodForClass `hash:"83702148"`
+	get_text            gdextension.MethodForClass `hash:"201670096"`
+	set_autowrap        gdextension.MethodForClass `hash:"2586408642"`
+	has_autowrap        gdextension.MethodForClass `hash:"2240911060"`
+	set_ok_button_text  gdextension.MethodForClass `hash:"83702148"`
+	get_ok_button_text  gdextension.MethodForClass `hash:"201670096"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AcceptDialog")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.AcceptDialog
@@ -149,6 +180,20 @@ type Advanced = class
 type class [1]gdclass.AcceptDialog
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AcceptDialog)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AcceptDialog)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -158,7 +203,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AcceptDialog"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AcceptDialog)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -210,7 +255,7 @@ Returns the OK [Button] instance.
 */
 //go:nosplit
 func (self class) GetOkButton() [1]gdclass.Button { //gd:AcceptDialog.get_ok_button
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_get_ok_button), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_ok_button, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Button{gd.PointerLifetimeBoundTo[gdclass.Button](self.AsObject(), r_ret)}
 	return ret
 }
@@ -221,31 +266,31 @@ Returns the label used for built-in text.
 */
 //go:nosplit
 func (self class) GetLabel() [1]gdclass.Label { //gd:AcceptDialog.get_label
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_get_label), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Label{gd.PointerLifetimeBoundTo[gdclass.Label](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHideOnOk(enabled bool) { //gd:AcceptDialog.set_hide_on_ok
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_set_hide_on_ok), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_on_ok, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetHideOnOk() bool { //gd:AcceptDialog.get_hide_on_ok
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_get_hide_on_ok), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_hide_on_ok, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCloseOnEscape(enabled bool) { //gd:AcceptDialog.set_close_on_escape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_set_close_on_escape), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_close_on_escape, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetCloseOnEscape() bool { //gd:AcceptDialog.get_close_on_escape
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_get_close_on_escape), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_close_on_escape, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -257,7 +302,7 @@ You can use [method remove_button] method to remove a button created with this m
 */
 //go:nosplit
 func (self class) AddButton(text String.Readable, right bool, action String.Readable) [1]gdclass.Button { //gd:AcceptDialog.add_button
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_add_button), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_button, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		text   gdextension.String
 		right  bool
 		action gdextension.String
@@ -272,7 +317,7 @@ You can use [method remove_button] method to remove a button created with this m
 */
 //go:nosplit
 func (self class) AddCancelButton(name String.Readable) [1]gdclass.Button { //gd:AcceptDialog.add_cancel_button
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_add_cancel_button), gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_cancel_button, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = [1]gdclass.Button{gd.PointerLifetimeBoundTo[gdclass.Button](self.AsObject(), r_ret)}
 	return ret
 }
@@ -282,7 +327,7 @@ Removes the [param button] from the dialog. Does NOT free the [param button]. Th
 */
 //go:nosplit
 func (self class) RemoveButton(button [1]gdclass.Button) { //gd:AcceptDialog.remove_button
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_remove_button), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ button gdextension.Object }{gdextension.Object(gd.ObjectChecked(button[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_button, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ button gdextension.Object }{gdextension.Object(gd.ObjectChecked(button[0].AsObject()))}))
 }
 
 /*
@@ -290,41 +335,41 @@ Registers a [LineEdit] in the dialog. When the enter key is pressed, the dialog 
 */
 //go:nosplit
 func (self class) RegisterTextEnter(line_edit [1]gdclass.LineEdit) { //gd:AcceptDialog.register_text_enter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_register_text_enter), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ line_edit gdextension.Object }{gdextension.Object(gd.ObjectChecked(line_edit[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_text_enter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ line_edit gdextension.Object }{gdextension.Object(gd.ObjectChecked(line_edit[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) SetText(text String.Readable) { //gd:AcceptDialog.set_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_set_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
 }
 
 //go:nosplit
 func (self class) GetText() String.Readable { //gd:AcceptDialog.get_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_get_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutowrap(autowrap bool) { //gd:AcceptDialog.set_autowrap
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_set_autowrap), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ autowrap bool }{autowrap}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ autowrap bool }{autowrap}))
 }
 
 //go:nosplit
 func (self class) HasAutowrap() bool { //gd:AcceptDialog.has_autowrap
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_has_autowrap), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_autowrap, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOkButtonText(text String.Readable) { //gd:AcceptDialog.set_ok_button_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_set_ok_button_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ok_button_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
 }
 
 //go:nosplit
 func (self class) GetOkButtonText() String.Readable { //gd:AcceptDialog.get_ok_button_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AcceptDialog.Bind_get_ok_button_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ok_button_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -371,7 +416,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AcceptDialog", func(ptr gd.Object) any {
-		return [1]gdclass.AcceptDialog{*(*gdclass.AcceptDialog)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AcceptDialog", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

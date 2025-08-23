@@ -75,6 +75,27 @@ The body tracking position-data is scaled by [member Skeleton3D.motion_scale] wh
 */
 type Instance [1]gdclass.XRBodyModifier3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_body_tracker gdextension.MethodForClass `hash:"3304788590"`
+	get_body_tracker gdextension.MethodForClass `hash:"2002593661"`
+	set_body_update  gdextension.MethodForClass `hash:"2211199417"`
+	get_body_update  gdextension.MethodForClass `hash:"2642335328"`
+	set_bone_update  gdextension.MethodForClass `hash:"3356796943"`
+	get_bone_update  gdextension.MethodForClass `hash:"1309305964"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("XRBodyModifier3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -90,6 +111,20 @@ type Advanced = class
 type class [1]gdclass.XRBodyModifier3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRBodyModifier3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRBodyModifier3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -99,7 +134,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("XRBodyModifier3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.XRBodyModifier3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -131,36 +166,36 @@ func (self Instance) SetBoneUpdate(value BoneUpdate) {
 
 //go:nosplit
 func (self class) SetBodyTracker(tracker_name String.Name) { //gd:XRBodyModifier3D.set_body_tracker
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyModifier3D.Bind_set_body_tracker), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_tracker, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))}))
 }
 
 //go:nosplit
 func (self class) GetBodyTracker() String.Name { //gd:XRBodyModifier3D.get_body_tracker
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyModifier3D.Bind_get_body_tracker), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_body_tracker, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBodyUpdate(body_update BodyUpdate) { //gd:XRBodyModifier3D.set_body_update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyModifier3D.Bind_set_body_update), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ body_update BodyUpdate }{body_update}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_update, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ body_update BodyUpdate }{body_update}))
 }
 
 //go:nosplit
 func (self class) GetBodyUpdate() BodyUpdate { //gd:XRBodyModifier3D.get_body_update
-	var r_ret = gdextension.Call[BodyUpdate](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyModifier3D.Bind_get_body_update), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BodyUpdate](gd.ObjectChecked(self.AsObject()), methods.get_body_update, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBoneUpdate(bone_update BoneUpdate) { //gd:XRBodyModifier3D.set_bone_update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyModifier3D.Bind_set_bone_update), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_update BoneUpdate }{bone_update}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_update, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_update BoneUpdate }{bone_update}))
 }
 
 //go:nosplit
 func (self class) GetBoneUpdate() BoneUpdate { //gd:XRBodyModifier3D.get_bone_update
-	var r_ret = gdextension.Call[BoneUpdate](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyModifier3D.Bind_get_bone_update), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BoneUpdate](gd.ObjectChecked(self.AsObject()), methods.get_bone_update, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -197,9 +232,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRBodyModifier3D", func(ptr gd.Object) any {
-		return [1]gdclass.XRBodyModifier3D{*(*gdclass.XRBodyModifier3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("XRBodyModifier3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type BodyUpdate int //gd:XRBodyModifier3D.BodyUpdate

@@ -69,6 +69,41 @@ T should be the type that is embedding this [Extension]
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 type Instance [1]gdclass.GLTFSkin
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_skin_root         gdextension.MethodForClass `hash:"2455072627"`
+	set_skin_root         gdextension.MethodForClass `hash:"1286410249"`
+	get_joints_original   gdextension.MethodForClass `hash:"969006518"`
+	set_joints_original   gdextension.MethodForClass `hash:"3614634198"`
+	get_inverse_binds     gdextension.MethodForClass `hash:"2915620761"`
+	set_inverse_binds     gdextension.MethodForClass `hash:"381264803"`
+	get_joints            gdextension.MethodForClass `hash:"969006518"`
+	set_joints            gdextension.MethodForClass `hash:"3614634198"`
+	get_non_joints        gdextension.MethodForClass `hash:"969006518"`
+	set_non_joints        gdextension.MethodForClass `hash:"3614634198"`
+	get_roots             gdextension.MethodForClass `hash:"969006518"`
+	set_roots             gdextension.MethodForClass `hash:"3614634198"`
+	get_skeleton          gdextension.MethodForClass `hash:"2455072627"`
+	set_skeleton          gdextension.MethodForClass `hash:"1286410249"`
+	get_joint_i_to_bone_i gdextension.MethodForClass `hash:"2382534195"`
+	set_joint_i_to_bone_i gdextension.MethodForClass `hash:"4155329257"`
+	get_joint_i_to_name   gdextension.MethodForClass `hash:"2382534195"`
+	set_joint_i_to_name   gdextension.MethodForClass `hash:"4155329257"`
+	get_godot_skin        gdextension.MethodForClass `hash:"1032037385"`
+	set_godot_skin        gdextension.MethodForClass `hash:"3971435618"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("GLTFSkin")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -84,6 +119,20 @@ type Advanced = class
 type class [1]gdclass.GLTFSkin
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GLTFSkin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GLTFSkin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -93,7 +142,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("GLTFSkin"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GLTFSkin)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -182,130 +231,130 @@ func (self Instance) SetGodotSkin(value Skin.Instance) {
 
 //go:nosplit
 func (self class) GetSkinRoot() int64 { //gd:GLTFSkin.get_skin_root
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_get_skin_root), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skin_root, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkinRoot(skin_root int64) { //gd:GLTFSkin.set_skin_root
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_set_skin_root), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ skin_root int64 }{skin_root}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin_root, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ skin_root int64 }{skin_root}))
 }
 
 //go:nosplit
 func (self class) GetJointsOriginal() Packed.Array[int32] { //gd:GLTFSkin.get_joints_original
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_get_joints_original), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_joints_original, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJointsOriginal(joints_original Packed.Array[int32]) { //gd:GLTFSkin.set_joints_original
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_set_joints_original), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joints_original, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		joints_original gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](joints_original))}))
 }
 
 //go:nosplit
 func (self class) GetInverseBinds() Array.Contains[Transform3D.BasisOrigin] { //gd:GLTFSkin.get_inverse_binds
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_get_inverse_binds), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_inverse_binds, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInverseBinds(inverse_binds Array.Contains[Transform3D.BasisOrigin]) { //gd:GLTFSkin.set_inverse_binds
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_set_inverse_binds), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ inverse_binds gdextension.Array }{pointers.Get(gd.InternalArray(inverse_binds))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inverse_binds, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ inverse_binds gdextension.Array }{pointers.Get(gd.InternalArray(inverse_binds))}))
 }
 
 //go:nosplit
 func (self class) GetJoints() Packed.Array[int32] { //gd:GLTFSkin.get_joints
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_get_joints), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_joints, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJoints(joints Packed.Array[int32]) { //gd:GLTFSkin.set_joints
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_set_joints), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joints, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		joints gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](joints))}))
 }
 
 //go:nosplit
 func (self class) GetNonJoints() Packed.Array[int32] { //gd:GLTFSkin.get_non_joints
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_get_non_joints), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_non_joints, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNonJoints(non_joints Packed.Array[int32]) { //gd:GLTFSkin.set_non_joints
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_set_non_joints), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_non_joints, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		non_joints gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](non_joints))}))
 }
 
 //go:nosplit
 func (self class) GetRoots() Packed.Array[int32] { //gd:GLTFSkin.get_roots
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_get_roots), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_roots, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRoots(roots Packed.Array[int32]) { //gd:GLTFSkin.set_roots
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_set_roots), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_roots, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		roots gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](roots))}))
 }
 
 //go:nosplit
 func (self class) GetSkeleton() int64 { //gd:GLTFSkin.get_skeleton
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_get_skeleton), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkeleton(skeleton int64) { //gd:GLTFSkin.set_skeleton
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_set_skeleton), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ skeleton int64 }{skeleton}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ skeleton int64 }{skeleton}))
 }
 
 //go:nosplit
 func (self class) GetJointIToBoneI() Dictionary.Any { //gd:GLTFSkin.get_joint_i_to_bone_i
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_get_joint_i_to_bone_i), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_joint_i_to_bone_i, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJointIToBoneI(joint_i_to_bone_i Dictionary.Any) { //gd:GLTFSkin.set_joint_i_to_bone_i
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_set_joint_i_to_bone_i), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ joint_i_to_bone_i gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(joint_i_to_bone_i))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_i_to_bone_i, 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ joint_i_to_bone_i gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(joint_i_to_bone_i))}))
 }
 
 //go:nosplit
 func (self class) GetJointIToName() Dictionary.Any { //gd:GLTFSkin.get_joint_i_to_name
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_get_joint_i_to_name), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_joint_i_to_name, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJointIToName(joint_i_to_name Dictionary.Any) { //gd:GLTFSkin.set_joint_i_to_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_set_joint_i_to_name), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ joint_i_to_name gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(joint_i_to_name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_i_to_name, 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ joint_i_to_name gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(joint_i_to_name))}))
 }
 
 //go:nosplit
 func (self class) GetGodotSkin() [1]gdclass.Skin { //gd:GLTFSkin.get_godot_skin
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_get_godot_skin), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_godot_skin, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGodotSkin(godot_skin [1]gdclass.Skin) { //gd:GLTFSkin.set_godot_skin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkin.Bind_set_godot_skin), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ godot_skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(godot_skin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ godot_skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(godot_skin[0].AsObject()))}))
 }
 func (self class) AsGLTFSkin() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGLTFSkin() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -339,5 +388,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFSkin", func(ptr gd.Object) any { return [1]gdclass.GLTFSkin{*(*gdclass.GLTFSkin)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("GLTFSkin", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

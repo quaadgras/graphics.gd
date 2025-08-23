@@ -162,6 +162,44 @@ _undo_redo.CommitAction();
 */
 type Instance [1]gdclass.UndoRedo
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	create_action                  gdextension.MethodForClass `hash:"3171901514"`
+	commit_action                  gdextension.MethodForClass `hash:"3216645846"`
+	is_committing_action           gdextension.MethodForClass `hash:"36873697"`
+	add_do_method                  gdextension.MethodForClass `hash:"1611583062"`
+	add_undo_method                gdextension.MethodForClass `hash:"1611583062"`
+	add_do_property                gdextension.MethodForClass `hash:"1017172818"`
+	add_undo_property              gdextension.MethodForClass `hash:"1017172818"`
+	add_do_reference               gdextension.MethodForClass `hash:"3975164845"`
+	add_undo_reference             gdextension.MethodForClass `hash:"3975164845"`
+	start_force_keep_in_merge_ends gdextension.MethodForClass `hash:"3218959716"`
+	end_force_keep_in_merge_ends   gdextension.MethodForClass `hash:"3218959716"`
+	get_history_count              gdextension.MethodForClass `hash:"2455072627"`
+	get_current_action             gdextension.MethodForClass `hash:"2455072627"`
+	get_action_name                gdextension.MethodForClass `hash:"990163283"`
+	clear_history                  gdextension.MethodForClass `hash:"3216645846"`
+	get_current_action_name        gdextension.MethodForClass `hash:"201670096"`
+	has_undo                       gdextension.MethodForClass `hash:"36873697"`
+	has_redo                       gdextension.MethodForClass `hash:"36873697"`
+	get_version                    gdextension.MethodForClass `hash:"3905245786"`
+	set_max_steps                  gdextension.MethodForClass `hash:"1286410249"`
+	get_max_steps                  gdextension.MethodForClass `hash:"3905245786"`
+	redo                           gdextension.MethodForClass `hash:"2240911060"`
+	undo                           gdextension.MethodForClass `hash:"2240911060"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("UndoRedo")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.UndoRedo
@@ -372,6 +410,20 @@ type Advanced = class
 type class [1]gdclass.UndoRedo
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.UndoRedo)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.UndoRedo)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -381,7 +433,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("UndoRedo"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.UndoRedo)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -402,7 +454,7 @@ The way undo operation are ordered in actions is dictated by [param backward_und
 */
 //go:nosplit
 func (self class) CreateAction(name String.Readable, merge_mode MergeMode, backward_undo_ops bool) { //gd:UndoRedo.create_action
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_create_action), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_action, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		name              gdextension.String
 		merge_mode        MergeMode
 		backward_undo_ops bool
@@ -414,7 +466,7 @@ Commit the action. If [param execute] is [code]true[/code] (which it is by defau
 */
 //go:nosplit
 func (self class) CommitAction(execute bool) { //gd:UndoRedo.commit_action
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_commit_action), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ execute bool }{execute}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.commit_action, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ execute bool }{execute}))
 }
 
 /*
@@ -422,7 +474,7 @@ Returns [code]true[/code] if the [UndoRedo] is currently committing the action, 
 */
 //go:nosplit
 func (self class) IsCommittingAction() bool { //gd:UndoRedo.is_committing_action
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_is_committing_action), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_committing_action, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -432,7 +484,7 @@ Register a [Callable] that will be called when the action is committed.
 */
 //go:nosplit
 func (self class) AddDoMethod(callable Callable.Function) { //gd:UndoRedo.add_do_method
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_add_do_method), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_do_method, 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))}))
 }
 
 /*
@@ -440,7 +492,7 @@ Register a [Callable] that will be called when the action is undone.
 */
 //go:nosplit
 func (self class) AddUndoMethod(callable Callable.Function) { //gd:UndoRedo.add_undo_method
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_add_undo_method), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_method, 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))}))
 }
 
 /*
@@ -448,7 +500,7 @@ Register a [param property] that would change its value to [param value] when th
 */
 //go:nosplit
 func (self class) AddDoProperty(obj [1]gd.Object, property String.Name, value variant.Any) { //gd:UndoRedo.add_do_property
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_add_do_property), 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_do_property, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		obj      gdextension.Object
 		property gdextension.StringName
 		value    gdextension.Variant
@@ -460,7 +512,7 @@ Register a [param property] that would change its value to [param value] when th
 */
 //go:nosplit
 func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value variant.Any) { //gd:UndoRedo.add_undo_property
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_add_undo_property), 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_property, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		obj      gdextension.Object
 		property gdextension.StringName
 		value    gdextension.Variant
@@ -481,7 +533,7 @@ undo_redo.commit_action()
 */
 //go:nosplit
 func (self class) AddDoReference(obj [1]gd.Object) { //gd:UndoRedo.add_do_reference
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_add_do_reference), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_do_reference, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))}))
 }
 
 /*
@@ -498,7 +550,7 @@ undo_redo.commit_action()
 */
 //go:nosplit
 func (self class) AddUndoReference(obj [1]gd.Object) { //gd:UndoRedo.add_undo_reference
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_add_undo_reference), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_reference, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))}))
 }
 
 /*
@@ -506,7 +558,7 @@ Marks the next "do" and "undo" operations to be processed even if the action get
 */
 //go:nosplit
 func (self class) StartForceKeepInMergeEnds() { //gd:UndoRedo.start_force_keep_in_merge_ends
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_start_force_keep_in_merge_ends), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start_force_keep_in_merge_ends, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -514,7 +566,7 @@ Stops marking operations as to be processed even if the action gets merged with 
 */
 //go:nosplit
 func (self class) EndForceKeepInMergeEnds() { //gd:UndoRedo.end_force_keep_in_merge_ends
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_end_force_keep_in_merge_ends), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.end_force_keep_in_merge_ends, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -522,7 +574,7 @@ Returns how many elements are in the history.
 */
 //go:nosplit
 func (self class) GetHistoryCount() int64 { //gd:UndoRedo.get_history_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_get_history_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_history_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -532,7 +584,7 @@ Gets the index of the current action.
 */
 //go:nosplit
 func (self class) GetCurrentAction() int64 { //gd:UndoRedo.get_current_action
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_get_current_action), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_action, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -542,7 +594,7 @@ Gets the action name from its index.
 */
 //go:nosplit
 func (self class) GetActionName(id int64) String.Readable { //gd:UndoRedo.get_action_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_get_action_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_action_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -553,7 +605,7 @@ Passing [code]false[/code] to [param increase_version] will prevent the version 
 */
 //go:nosplit
 func (self class) ClearHistory(increase_version bool) { //gd:UndoRedo.clear_history
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_clear_history), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ increase_version bool }{increase_version}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_history, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ increase_version bool }{increase_version}))
 }
 
 /*
@@ -561,7 +613,7 @@ Gets the name of the current action, equivalent to [code]get_action_name(get_cur
 */
 //go:nosplit
 func (self class) GetCurrentActionName() String.Readable { //gd:UndoRedo.get_current_action_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_get_current_action_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_action_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -571,7 +623,7 @@ Returns [code]true[/code] if an "undo" action is available.
 */
 //go:nosplit
 func (self class) HasUndo() bool { //gd:UndoRedo.has_undo
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_has_undo), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_undo, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -581,7 +633,7 @@ Returns [code]true[/code] if a "redo" action is available.
 */
 //go:nosplit
 func (self class) HasRedo() bool { //gd:UndoRedo.has_redo
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_has_redo), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_redo, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -592,19 +644,19 @@ This is useful mostly to check if something changed from a saved version.
 */
 //go:nosplit
 func (self class) GetVersion() int64 { //gd:UndoRedo.get_version
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_get_version), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_version, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxSteps(max_steps int64) { //gd:UndoRedo.set_max_steps
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_set_max_steps), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_steps int64 }{max_steps}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_steps, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_steps int64 }{max_steps}))
 }
 
 //go:nosplit
 func (self class) GetMaxSteps() int64 { //gd:UndoRedo.get_max_steps
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_get_max_steps), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_steps, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -614,7 +666,7 @@ Redo the last action.
 */
 //go:nosplit
 func (self class) Redo() bool { //gd:UndoRedo.redo
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_redo), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.redo, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -624,7 +676,7 @@ Undo the last action.
 */
 //go:nosplit
 func (self class) Undo() bool { //gd:UndoRedo.undo
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.UndoRedo.Bind_undo), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.undo, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -650,7 +702,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("UndoRedo", func(ptr gd.Object) any { return [1]gdclass.UndoRedo{*(*gdclass.UndoRedo)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("UndoRedo", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type MergeMode int //gd:UndoRedo.MergeMode

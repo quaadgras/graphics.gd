@@ -74,6 +74,24 @@ See [OccluderInstance3D]'s documentation for instructions on setting up occlusio
 */
 type Instance [1]gdclass.ArrayOccluder3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_arrays   gdextension.MethodForClass `hash:"3233972621"`
+	set_vertices gdextension.MethodForClass `hash:"334873810"`
+	set_indices  gdextension.MethodForClass `hash:"3614634198"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ArrayOccluder3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -96,6 +114,20 @@ type Advanced = class
 type class [1]gdclass.ArrayOccluder3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ArrayOccluder3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ArrayOccluder3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -105,7 +137,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ArrayOccluder3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ArrayOccluder3D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -125,7 +157,7 @@ Sets [member indices] and [member vertices], while updating the final occluder o
 */
 //go:nosplit
 func (self class) SetArrays(vertices Packed.Array[Vector3.XYZ], indices Packed.Array[int32]) { //gd:ArrayOccluder3D.set_arrays
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayOccluder3D.Bind_set_arrays), 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_arrays, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		vertices gdextension.PackedArray[Vector3.XYZ]
 		indices  gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))}))
@@ -133,14 +165,14 @@ func (self class) SetArrays(vertices Packed.Array[Vector3.XYZ], indices Packed.A
 
 //go:nosplit
 func (self class) SetVertices(vertices Packed.Array[Vector3.XYZ]) { //gd:ArrayOccluder3D.set_vertices
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayOccluder3D.Bind_set_vertices), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertices, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		vertices gdextension.PackedArray[Vector3.XYZ]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))}))
 }
 
 //go:nosplit
 func (self class) SetIndices(indices Packed.Array[int32]) { //gd:ArrayOccluder3D.set_indices
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ArrayOccluder3D.Bind_set_indices), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_indices, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		indices gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))}))
 }
@@ -183,7 +215,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ArrayOccluder3D", func(ptr gd.Object) any {
-		return [1]gdclass.ArrayOccluder3D{*(*gdclass.ArrayOccluder3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ArrayOccluder3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

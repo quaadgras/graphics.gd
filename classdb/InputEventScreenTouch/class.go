@@ -74,6 +74,29 @@ Stores information about multi-touch press/release input events. Supports touch 
 */
 type Instance [1]gdclass.InputEventScreenTouch
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_index      gdextension.MethodForClass `hash:"1286410249"`
+	get_index      gdextension.MethodForClass `hash:"3905245786"`
+	set_position   gdextension.MethodForClass `hash:"743155724"`
+	get_position   gdextension.MethodForClass `hash:"3341600327"`
+	set_pressed    gdextension.MethodForClass `hash:"2586408642"`
+	set_canceled   gdextension.MethodForClass `hash:"2586408642"`
+	set_double_tap gdextension.MethodForClass `hash:"2586408642"`
+	is_double_tap  gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("InputEventScreenTouch")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +112,20 @@ type Advanced = class
 type class [1]gdclass.InputEventScreenTouch
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventScreenTouch)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventScreenTouch)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +135,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("InputEventScreenTouch"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.InputEventScreenTouch)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -139,46 +176,46 @@ func (self Instance) SetDoubleTap(value bool) {
 
 //go:nosplit
 func (self class) SetIndex(index int64) { //gd:InputEventScreenTouch.set_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenTouch.Bind_set_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 //go:nosplit
 func (self class) GetIndex() int64 { //gd:InputEventScreenTouch.get_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenTouch.Bind_get_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPosition(position Vector2.XY) { //gd:InputEventScreenTouch.set_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenTouch.Bind_set_position), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:InputEventScreenTouch.get_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenTouch.Bind_get_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressed(pressed bool) { //gd:InputEventScreenTouch.set_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenTouch.Bind_set_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
 }
 
 //go:nosplit
 func (self class) SetCanceled(canceled bool) { //gd:InputEventScreenTouch.set_canceled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenTouch.Bind_set_canceled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ canceled bool }{canceled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canceled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ canceled bool }{canceled}))
 }
 
 //go:nosplit
 func (self class) SetDoubleTap(double_tap bool) { //gd:InputEventScreenTouch.set_double_tap
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenTouch.Bind_set_double_tap), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ double_tap bool }{double_tap}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_double_tap, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ double_tap bool }{double_tap}))
 }
 
 //go:nosplit
 func (self class) IsDoubleTap() bool { //gd:InputEventScreenTouch.is_double_tap
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventScreenTouch.Bind_is_double_tap), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_double_tap, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -232,7 +269,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("InputEventScreenTouch", func(ptr gd.Object) any {
-		return [1]gdclass.InputEventScreenTouch{*(*gdclass.InputEventScreenTouch)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("InputEventScreenTouch", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

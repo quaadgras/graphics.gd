@@ -75,6 +75,31 @@ This is used to provide Godot with a flexible and powerful Inverse Kinematics so
 */
 type Instance [1]gdclass.SkeletonModification2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_enabled            gdextension.MethodForClass `hash:"2586408642"`
+	get_enabled            gdextension.MethodForClass `hash:"2240911060"`
+	get_modification_stack gdextension.MethodForClass `hash:"2137761694"`
+	set_is_setup           gdextension.MethodForClass `hash:"2586408642"`
+	get_is_setup           gdextension.MethodForClass `hash:"36873697"`
+	set_execution_mode     gdextension.MethodForClass `hash:"1286410249"`
+	get_execution_mode     gdextension.MethodForClass `hash:"3905245786"`
+	clamp_angle            gdextension.MethodForClass `hash:"1229502682"`
+	set_editor_draw_gizmo  gdextension.MethodForClass `hash:"2586408642"`
+	get_editor_draw_gizmo  gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("SkeletonModification2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -208,6 +233,20 @@ type Advanced = class
 type class [1]gdclass.SkeletonModification2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SkeletonModification2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SkeletonModification2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -217,7 +256,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SkeletonModification2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SkeletonModification2D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -277,12 +316,12 @@ func (class) _draw_editor_gizmo(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionC
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:SkeletonModification2D.set_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2D.Bind_set_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetEnabled() bool { //gd:SkeletonModification2D.get_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2D.Bind_get_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -292,7 +331,7 @@ Returns the [SkeletonModificationStack2D] that this modification is bound to. Th
 */
 //go:nosplit
 func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2D.get_modification_stack
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2D.Bind_get_modification_stack), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SkeletonModificationStack2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModificationStack2D](r_ret)}
 	return ret
 }
@@ -302,7 +341,7 @@ Manually allows you to set the setup state of the modification. This function sh
 */
 //go:nosplit
 func (self class) SetIsSetup(is_setup bool) { //gd:SkeletonModification2D.set_is_setup
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2D.Bind_set_is_setup), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ is_setup bool }{is_setup}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_setup, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ is_setup bool }{is_setup}))
 }
 
 /*
@@ -310,19 +349,19 @@ Returns whether this modification has been successfully setup or not.
 */
 //go:nosplit
 func (self class) GetIsSetup() bool { //gd:SkeletonModification2D.get_is_setup
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2D.Bind_get_is_setup), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_setup, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExecutionMode(execution_mode int64) { //gd:SkeletonModification2D.set_execution_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2D.Bind_set_execution_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ execution_mode int64 }{execution_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_execution_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ execution_mode int64 }{execution_mode}))
 }
 
 //go:nosplit
 func (self class) GetExecutionMode() int64 { //gd:SkeletonModification2D.get_execution_mode
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2D.Bind_get_execution_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_execution_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -332,7 +371,7 @@ Takes an angle and clamps it so it is within the passed-in [param min] and [para
 */
 //go:nosplit
 func (self class) ClampAngle(angle float64, min float64, max float64, invert bool) float64 { //gd:SkeletonModification2D.clamp_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2D.Bind_clamp_angle), gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.clamp_angle, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		angle  float64
 		min    float64
 		max    float64
@@ -347,7 +386,7 @@ Sets whether this modification will call [method _draw_editor_gizmo] in the Godo
 */
 //go:nosplit
 func (self class) SetEditorDrawGizmo(draw_gizmo bool) { //gd:SkeletonModification2D.set_editor_draw_gizmo
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2D.Bind_set_editor_draw_gizmo), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_gizmo bool }{draw_gizmo}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_draw_gizmo, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_gizmo bool }{draw_gizmo}))
 }
 
 /*
@@ -355,7 +394,7 @@ Returns whether this modification will call [method _draw_editor_gizmo] in the G
 */
 //go:nosplit
 func (self class) GetEditorDrawGizmo() bool { //gd:SkeletonModification2D.get_editor_draw_gizmo
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2D.Bind_get_editor_draw_gizmo), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_editor_draw_gizmo, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -407,7 +446,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SkeletonModification2D", func(ptr gd.Object) any {
-		return [1]gdclass.SkeletonModification2D{*(*gdclass.SkeletonModification2D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("SkeletonModification2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

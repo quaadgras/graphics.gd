@@ -98,6 +98,22 @@ public override void _Ready()
 */
 type Instance [1]gdclass.ScriptCreateDialog
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	config gdextension.MethodForClass `hash:"869314288"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ScriptCreateDialog")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.ScriptCreateDialog
@@ -129,6 +145,20 @@ type Advanced = class
 type class [1]gdclass.ScriptCreateDialog
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ScriptCreateDialog)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ScriptCreateDialog)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -138,7 +168,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ScriptCreateDialog"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ScriptCreateDialog)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -149,7 +179,7 @@ Prefills required fields to configure the ScriptCreateDialog for use.
 */
 //go:nosplit
 func (self class) Config(inherits String.Readable, path String.Readable, built_in_enabled bool, load_enabled bool) { //gd:ScriptCreateDialog.config
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ScriptCreateDialog.Bind_config), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.config, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		inherits         gdextension.String
 		path             gdextension.String
 		built_in_enabled bool
@@ -209,7 +239,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ScriptCreateDialog", func(ptr gd.Object) any {
-		return [1]gdclass.ScriptCreateDialog{*(*gdclass.ScriptCreateDialog)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ScriptCreateDialog", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

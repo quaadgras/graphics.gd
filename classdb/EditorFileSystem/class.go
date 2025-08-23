@@ -73,6 +73,30 @@ This object holds information of all resources in the filesystem, their types, e
 */
 type Instance [1]gdclass.EditorFileSystem
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_filesystem        gdextension.MethodForClass `hash:"842323275"`
+	is_scanning           gdextension.MethodForClass `hash:"36873697"`
+	get_scanning_progress gdextension.MethodForClass `hash:"1740695150"`
+	scan                  gdextension.MethodForClass `hash:"3218959716"`
+	scan_sources          gdextension.MethodForClass `hash:"3218959716"`
+	update_file           gdextension.MethodForClass `hash:"83702148"`
+	get_filesystem_path   gdextension.MethodForClass `hash:"3188521125"`
+	get_file_type         gdextension.MethodForClass `hash:"3135753539"`
+	reimport_files        gdextension.MethodForClass `hash:"4015028928"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorFileSystem")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -154,6 +178,20 @@ type Advanced = class
 type class [1]gdclass.EditorFileSystem
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorFileSystem)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorFileSystem)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -163,7 +201,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorFileSystem"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorFileSystem)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -174,7 +212,7 @@ Gets the root directory object.
 */
 //go:nosplit
 func (self class) GetFilesystem() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_get_filesystem), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_filesystem, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerLifetimeBoundTo[gdclass.EditorFileSystemDirectory](self.AsObject(), r_ret)}
 	return ret
 }
@@ -184,7 +222,7 @@ Returns [code]true[/code] if the filesystem is being scanned.
 */
 //go:nosplit
 func (self class) IsScanning() bool { //gd:EditorFileSystem.is_scanning
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_is_scanning), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scanning, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -194,7 +232,7 @@ Returns the scan progress for 0 to 1 if the FS is being scanned.
 */
 //go:nosplit
 func (self class) GetScanningProgress() float64 { //gd:EditorFileSystem.get_scanning_progress
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_get_scanning_progress), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_scanning_progress, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -204,7 +242,7 @@ Scan the filesystem for changes.
 */
 //go:nosplit
 func (self class) Scan() { //gd:EditorFileSystem.scan
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_scan), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scan, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -212,7 +250,7 @@ Check if the source of any imported resource changed.
 */
 //go:nosplit
 func (self class) ScanSources() { //gd:EditorFileSystem.scan_sources
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_scan_sources), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scan_sources, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -221,7 +259,7 @@ This will not import the file. To reimport, call [method reimport_files] or [met
 */
 //go:nosplit
 func (self class) UpdateFile(path String.Readable) { //gd:EditorFileSystem.update_file
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_update_file), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_file, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 }
 
 /*
@@ -229,7 +267,7 @@ Returns a view into the filesystem at [param path].
 */
 //go:nosplit
 func (self class) GetFilesystemPath(path String.Readable) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystem.get_filesystem_path
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_get_filesystem_path), gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_filesystem_path, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerLifetimeBoundTo[gdclass.EditorFileSystemDirectory](self.AsObject(), r_ret)}
 	return ret
 }
@@ -239,7 +277,7 @@ Returns the resource type of the file, given the full path. This returns a strin
 */
 //go:nosplit
 func (self class) GetFileType(path String.Readable) String.Readable { //gd:EditorFileSystem.get_file_type
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_get_file_type), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file_type, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -251,7 +289,7 @@ If the file type changed or the file was newly created, use [method update_file]
 */
 //go:nosplit
 func (self class) ReimportFiles(files Packed.Strings) { //gd:EditorFileSystem.reimport_files
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystem.Bind_reimport_files), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reimport_files, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		files gdextension.PackedArray[gdextension.String]
 	}{pointers.Get(gd.InternalPackedStrings(files))}))
 }
@@ -300,7 +338,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorFileSystem", func(ptr gd.Object) any {
-		return [1]gdclass.EditorFileSystem{*(*gdclass.EditorFileSystem)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorFileSystem", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

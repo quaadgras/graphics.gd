@@ -73,6 +73,32 @@ Internally, [MultiplayerSpawner] uses [method MultiplayerAPI.object_configuratio
 */
 type Instance [1]gdclass.MultiplayerSpawner
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	add_spawnable_scene       gdextension.MethodForClass `hash:"83702148"`
+	get_spawnable_scene_count gdextension.MethodForClass `hash:"3905245786"`
+	get_spawnable_scene       gdextension.MethodForClass `hash:"844755477"`
+	clear_spawnable_scenes    gdextension.MethodForClass `hash:"3218959716"`
+	spawn                     gdextension.MethodForClass `hash:"1991184589"`
+	get_spawn_path            gdextension.MethodForClass `hash:"4075236667"`
+	set_spawn_path            gdextension.MethodForClass `hash:"1348162250"`
+	get_spawn_limit           gdextension.MethodForClass `hash:"3905245786"`
+	set_spawn_limit           gdextension.MethodForClass `hash:"1286410249"`
+	get_spawn_function        gdextension.MethodForClass `hash:"1307783378"`
+	set_spawn_function        gdextension.MethodForClass `hash:"1611583062"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("MultiplayerSpawner")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.MultiplayerSpawner
@@ -134,6 +160,20 @@ type Advanced = class
 type class [1]gdclass.MultiplayerSpawner
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MultiplayerSpawner)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MultiplayerSpawner)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -143,7 +183,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("MultiplayerSpawner"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.MultiplayerSpawner)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -178,7 +218,7 @@ Adds a scene path to spawnable scenes, making it automatically replicated from t
 */
 //go:nosplit
 func (self class) AddSpawnableScene(path String.Readable) { //gd:MultiplayerSpawner.add_spawnable_scene
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSpawner.Bind_add_spawnable_scene), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_spawnable_scene, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 }
 
 /*
@@ -186,7 +226,7 @@ Returns the count of spawnable scene paths.
 */
 //go:nosplit
 func (self class) GetSpawnableSceneCount() int64 { //gd:MultiplayerSpawner.get_spawnable_scene_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawnable_scene_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_spawnable_scene_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -196,7 +236,7 @@ Returns the spawnable scene path by index.
 */
 //go:nosplit
 func (self class) GetSpawnableScene(index int64) String.Readable { //gd:MultiplayerSpawner.get_spawnable_scene
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawnable_scene), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_spawnable_scene, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -206,7 +246,7 @@ Clears all spawnable scenes. Does not despawn existing instances on remote peers
 */
 //go:nosplit
 func (self class) ClearSpawnableScenes() { //gd:MultiplayerSpawner.clear_spawnable_scenes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSpawner.Bind_clear_spawnable_scenes), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_spawnable_scenes, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -215,45 +255,45 @@ Requests a custom spawn, with [param data] passed to [member spawn_function] on 
 */
 //go:nosplit
 func (self class) Spawn(data variant.Any) [1]gdclass.Node { //gd:MultiplayerSpawner.spawn
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSpawner.Bind_spawn), gdextension.SizeObject|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ data gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(data)))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.spawn, gdextension.SizeObject|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ data gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(data)))}))
 	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetSpawnPath() Path.ToNode { //gd:MultiplayerSpawner.get_spawn_path
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawn_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_spawn_path, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpawnPath(path Path.ToNode) { //gd:MultiplayerSpawner.set_spawn_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSpawner.Bind_set_spawn_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spawn_path, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 }
 
 //go:nosplit
 func (self class) GetSpawnLimit() int64 { //gd:MultiplayerSpawner.get_spawn_limit
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawn_limit), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_spawn_limit, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpawnLimit(limit int64) { //gd:MultiplayerSpawner.set_spawn_limit
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSpawner.Bind_set_spawn_limit), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ limit int64 }{limit}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spawn_limit, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ limit int64 }{limit}))
 }
 
 //go:nosplit
 func (self class) GetSpawnFunction() Callable.Function { //gd:MultiplayerSpawner.get_spawn_function
-	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSpawner.Bind_get_spawn_function), gdextension.SizeCallable, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_spawn_function, gdextension.SizeCallable, unsafe.Pointer(&struct{}{}))
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpawnFunction(spawn_function Callable.Function) { //gd:MultiplayerSpawner.set_spawn_function
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSpawner.Bind_set_spawn_function), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ spawn_function gdextension.Callable }{pointers.Get(gd.InternalCallable(spawn_function))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spawn_function, 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ spawn_function gdextension.Callable }{pointers.Get(gd.InternalCallable(spawn_function))}))
 }
 func (self Instance) OnDespawned(cb func(node Node.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("despawned"), gd.NewCallable(cb), 0)
@@ -284,7 +324,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MultiplayerSpawner", func(ptr gd.Object) any {
-		return [1]gdclass.MultiplayerSpawner{*(*gdclass.MultiplayerSpawner)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("MultiplayerSpawner", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

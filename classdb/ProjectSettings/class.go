@@ -74,14 +74,46 @@ When naming a Project Settings property, use the full path to the setting includ
 */
 type Instance [1]gdclass.ProjectSettings
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	has_setting               gdextension.MethodForClass `hash:"3927539163"`
+	set_setting               gdextension.MethodForClass `hash:"402577236"`
+	get_setting               gdextension.MethodForClass `hash:"223050753"`
+	get_setting_with_override gdextension.MethodForClass `hash:"2760726917"`
+	get_global_class_list     gdextension.MethodForClass `hash:"2915620761"`
+	set_order                 gdextension.MethodForClass `hash:"2956805083"`
+	get_order                 gdextension.MethodForClass `hash:"1321353865"`
+	set_initial_value         gdextension.MethodForClass `hash:"402577236"`
+	set_as_basic              gdextension.MethodForClass `hash:"2678287736"`
+	set_as_internal           gdextension.MethodForClass `hash:"2678287736"`
+	add_property_info         gdextension.MethodForClass `hash:"4155329257"`
+	set_restart_if_changed    gdextension.MethodForClass `hash:"2678287736"`
+	clear                     gdextension.MethodForClass `hash:"83702148"`
+	localize_path             gdextension.MethodForClass `hash:"3135753539"`
+	globalize_path            gdextension.MethodForClass `hash:"3135753539"`
+	save                      gdextension.MethodForClass `hash:"166280745"`
+	load_resource_pack        gdextension.MethodForClass `hash:"708980503"`
+	save_custom               gdextension.MethodForClass `hash:"166001499"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ProjectSettings")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 var self [1]gdclass.ProjectSettings
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.ProjectSettings)))})
-	self = *(*[1]gdclass.ProjectSettings)(unsafe.Pointer(&obj))
+	self[0] = pointers.Raw[gdclass.ProjectSettings]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
 }
 
 /*
@@ -353,6 +385,20 @@ func Advanced() class { once.Do(singleton); return self }
 type class [1]gdclass.ProjectSettings
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ProjectSettings)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ProjectSettings)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -367,7 +413,7 @@ Returns [code]true[/code] if a configuration value is present.
 */
 //go:nosplit
 func (self class) HasSetting(name String.Readable) bool { //gd:ProjectSettings.has_setting
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_has_setting), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_setting, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -386,7 +432,7 @@ This can also be used to erase custom project settings. To do this change the se
 */
 //go:nosplit
 func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:ProjectSettings.set_setting
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_set_setting), 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_setting, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		name  gdextension.String
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalString(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
@@ -408,7 +454,7 @@ GD.Print(ProjectSettings.GetSetting("application/config/custom_description", "No
 */
 //go:nosplit
 func (self class) GetSetting(name String.Readable, default_value variant.Any) variant.Any { //gd:ProjectSettings.get_setting
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_get_setting), gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_setting, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		name          gdextension.String
 		default_value gdextension.Variant
 	}{pointers.Get(gd.InternalString(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(default_value)))}))
@@ -430,7 +476,7 @@ GD.Print(ProjectSettings.GetSettingWithOverride("application/config/name"));
 */
 //go:nosplit
 func (self class) GetSettingWithOverride(name String.Name) variant.Any { //gd:ProjectSettings.get_setting_with_override
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_get_setting_with_override), gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_setting_with_override, gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -446,7 +492,7 @@ Returns an [Array] of registered global classes. Each global class is represente
 */
 //go:nosplit
 func (self class) GetGlobalClassList() Array.Contains[Dictionary.Any] { //gd:ProjectSettings.get_global_class_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_get_global_class_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_global_class_list, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -456,7 +502,7 @@ Sets the order of a configuration value (influences when saved to the config fil
 */
 //go:nosplit
 func (self class) SetOrder(name String.Readable, position int64) { //gd:ProjectSettings.set_order
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_set_order), 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_order, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		name     gdextension.String
 		position int64
 	}{pointers.Get(gd.InternalString(name)), position}))
@@ -467,7 +513,7 @@ Returns the order of a configuration value (influences when saved to the config 
 */
 //go:nosplit
 func (self class) GetOrder(name String.Readable) int64 { //gd:ProjectSettings.get_order
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_get_order), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_order, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -477,7 +523,7 @@ Sets the specified setting's initial value. This is the value the setting revert
 */
 //go:nosplit
 func (self class) SetInitialValue(name String.Readable, value variant.Any) { //gd:ProjectSettings.set_initial_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_set_initial_value), 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_initial_value, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		name  gdextension.String
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalString(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
@@ -488,7 +534,7 @@ Defines if the specified setting is considered basic or advanced. Basic settings
 */
 //go:nosplit
 func (self class) SetAsBasic(name String.Readable, basic bool) { //gd:ProjectSettings.set_as_basic
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_set_as_basic), 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_basic, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		name  gdextension.String
 		basic bool
 	}{pointers.Get(gd.InternalString(name)), basic}))
@@ -499,7 +545,7 @@ Defines if the specified setting is considered internal. An internal setting won
 */
 //go:nosplit
 func (self class) SetAsInternal(name String.Readable, internal_ bool) { //gd:ProjectSettings.set_as_internal
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_set_as_internal), 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_internal, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		name      gdextension.String
 		internal_ bool
 	}{pointers.Get(gd.InternalString(name)), internal_}))
@@ -540,7 +586,7 @@ ProjectSettings.AddPropertyInfo(propertyInfo);
 */
 //go:nosplit
 func (self class) AddPropertyInfo(hint Dictionary.Any) { //gd:ProjectSettings.add_property_info
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_add_property_info), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ hint gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(hint))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_property_info, 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ hint gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(hint))}))
 }
 
 /*
@@ -549,7 +595,7 @@ Sets whether a setting requires restarting the editor to properly take effect.
 */
 //go:nosplit
 func (self class) SetRestartIfChanged(name String.Readable, restart bool) { //gd:ProjectSettings.set_restart_if_changed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_set_restart_if_changed), 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_restart_if_changed, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		name    gdextension.String
 		restart bool
 	}{pointers.Get(gd.InternalString(name)), restart}))
@@ -560,7 +606,7 @@ Clears the whole configuration (not recommended, may break things).
 */
 //go:nosplit
 func (self class) Clear(name String.Readable) { //gd:ProjectSettings.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_clear), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -568,7 +614,7 @@ Returns the localized path (starting with [code]res://[/code]) corresponding to 
 */
 //go:nosplit
 func (self class) LocalizePath(path String.Readable) String.Readable { //gd:ProjectSettings.localize_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_localize_path), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.localize_path, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -592,7 +638,7 @@ else:
 */
 //go:nosplit
 func (self class) GlobalizePath(path String.Readable) String.Readable { //gd:ProjectSettings.globalize_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_globalize_path), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.globalize_path, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -603,7 +649,7 @@ Saves the configuration to the [code]project.godot[/code] file.
 */
 //go:nosplit
 func (self class) Save() Error.Code { //gd:ProjectSettings.save
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_save), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -616,7 +662,7 @@ Loads the contents of the .pck or .zip file specified by [param pack] into the r
 */
 //go:nosplit
 func (self class) LoadResourcePack(pack String.Readable, replace_files bool, offset int64) bool { //gd:ProjectSettings.load_resource_pack
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_load_resource_pack), gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.load_resource_pack, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		pack          gdextension.String
 		replace_files bool
 		offset        int64
@@ -630,7 +676,7 @@ Saves the configuration to a custom file. The file extension must be [code].godo
 */
 //go:nosplit
 func (self class) SaveCustom(file String.Readable) Error.Code { //gd:ProjectSettings.save_custom
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ProjectSettings.Bind_save_custom), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_custom, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -652,9 +698,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ProjectSettings", func(ptr gd.Object) any {
-		return [1]gdclass.ProjectSettings{*(*gdclass.ProjectSettings)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ProjectSettings", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type GlobalClass struct {

@@ -80,6 +80,55 @@ A node that displays 2D texture information in a 3D environment. See also [Sprit
 */
 type Instance [1]gdclass.SpriteBase3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_centered                gdextension.MethodForClass `hash:"2586408642"`
+	is_centered                 gdextension.MethodForClass `hash:"36873697"`
+	set_offset                  gdextension.MethodForClass `hash:"743155724"`
+	get_offset                  gdextension.MethodForClass `hash:"3341600327"`
+	set_flip_h                  gdextension.MethodForClass `hash:"2586408642"`
+	is_flipped_h                gdextension.MethodForClass `hash:"36873697"`
+	set_flip_v                  gdextension.MethodForClass `hash:"2586408642"`
+	is_flipped_v                gdextension.MethodForClass `hash:"36873697"`
+	set_modulate                gdextension.MethodForClass `hash:"2920490490"`
+	get_modulate                gdextension.MethodForClass `hash:"3444240500"`
+	set_render_priority         gdextension.MethodForClass `hash:"1286410249"`
+	get_render_priority         gdextension.MethodForClass `hash:"3905245786"`
+	set_pixel_size              gdextension.MethodForClass `hash:"373806689"`
+	get_pixel_size              gdextension.MethodForClass `hash:"1740695150"`
+	set_axis                    gdextension.MethodForClass `hash:"1144690656"`
+	get_axis                    gdextension.MethodForClass `hash:"3050976882"`
+	set_draw_flag               gdextension.MethodForClass `hash:"1135633219"`
+	get_draw_flag               gdextension.MethodForClass `hash:"1733036628"`
+	set_alpha_cut_mode          gdextension.MethodForClass `hash:"227561226"`
+	get_alpha_cut_mode          gdextension.MethodForClass `hash:"336003791"`
+	set_alpha_scissor_threshold gdextension.MethodForClass `hash:"373806689"`
+	get_alpha_scissor_threshold gdextension.MethodForClass `hash:"1740695150"`
+	set_alpha_hash_scale        gdextension.MethodForClass `hash:"373806689"`
+	get_alpha_hash_scale        gdextension.MethodForClass `hash:"1740695150"`
+	set_alpha_antialiasing      gdextension.MethodForClass `hash:"3212649852"`
+	get_alpha_antialiasing      gdextension.MethodForClass `hash:"2889939400"`
+	set_alpha_antialiasing_edge gdextension.MethodForClass `hash:"373806689"`
+	get_alpha_antialiasing_edge gdextension.MethodForClass `hash:"1740695150"`
+	set_billboard_mode          gdextension.MethodForClass `hash:"4202036497"`
+	get_billboard_mode          gdextension.MethodForClass `hash:"1283840139"`
+	set_texture_filter          gdextension.MethodForClass `hash:"22904437"`
+	get_texture_filter          gdextension.MethodForClass `hash:"3289213076"`
+	get_item_rect               gdextension.MethodForClass `hash:"1639390495"`
+	generate_triangle_mesh      gdextension.MethodForClass `hash:"3476533166"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("SpriteBase3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -109,6 +158,20 @@ type Advanced = class
 type class [1]gdclass.SpriteBase3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SpriteBase3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SpriteBase3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -118,7 +181,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SpriteBase3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SpriteBase3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -286,96 +349,96 @@ func (self Instance) SetRenderPriority(value int) {
 
 //go:nosplit
 func (self class) SetCentered(centered bool) { //gd:SpriteBase3D.set_centered
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_centered), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ centered bool }{centered}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_centered, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ centered bool }{centered}))
 }
 
 //go:nosplit
 func (self class) IsCentered() bool { //gd:SpriteBase3D.is_centered
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_is_centered), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_centered, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffset(offset Vector2.XY) { //gd:SpriteBase3D.set_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetOffset() Vector2.XY { //gd:SpriteBase3D.get_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlipH(flip_h bool) { //gd:SpriteBase3D.set_flip_h
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_flip_h), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip_h bool }{flip_h}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_h, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip_h bool }{flip_h}))
 }
 
 //go:nosplit
 func (self class) IsFlippedH() bool { //gd:SpriteBase3D.is_flipped_h
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_is_flipped_h), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_h, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlipV(flip_v bool) { //gd:SpriteBase3D.set_flip_v
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_flip_v), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip_v bool }{flip_v}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_v, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flip_v bool }{flip_v}))
 }
 
 //go:nosplit
 func (self class) IsFlippedV() bool { //gd:SpriteBase3D.is_flipped_v
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_is_flipped_v), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_v, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetModulate(modulate Color.RGBA) { //gd:SpriteBase3D.set_modulate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_modulate), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ modulate Color.RGBA }{modulate}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ modulate Color.RGBA }{modulate}))
 }
 
 //go:nosplit
 func (self class) GetModulate() Color.RGBA { //gd:SpriteBase3D.get_modulate
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_modulate), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRenderPriority(priority int64) { //gd:SpriteBase3D.set_render_priority
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_render_priority), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_priority, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
 }
 
 //go:nosplit
 func (self class) GetRenderPriority() int64 { //gd:SpriteBase3D.get_render_priority
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_render_priority), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_render_priority, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPixelSize(pixel_size float64) { //gd:SpriteBase3D.set_pixel_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_pixel_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pixel_size float64 }{pixel_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pixel_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pixel_size float64 }{pixel_size}))
 }
 
 //go:nosplit
 func (self class) GetPixelSize() float64 { //gd:SpriteBase3D.get_pixel_size
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_pixel_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pixel_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAxis(axis Vector3.Axis) { //gd:SpriteBase3D.set_axis
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_axis), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ axis Vector3.Axis }{axis}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ axis Vector3.Axis }{axis}))
 }
 
 //go:nosplit
 func (self class) GetAxis() Vector3.Axis { //gd:SpriteBase3D.get_axis
-	var r_ret = gdextension.Call[Vector3.Axis](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_axis), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.Axis](gd.ObjectChecked(self.AsObject()), methods.get_axis, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -385,7 +448,7 @@ If [code]true[/code], the specified flag will be enabled. See [enum SpriteBase3D
 */
 //go:nosplit
 func (self class) SetDrawFlag(flag DrawFlags, enabled bool) { //gd:SpriteBase3D.set_draw_flag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_draw_flag), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_flag, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		flag    DrawFlags
 		enabled bool
 	}{flag, enabled}))
@@ -396,93 +459,93 @@ Returns the value of the specified flag.
 */
 //go:nosplit
 func (self class) GetDrawFlag(flag DrawFlags) bool { //gd:SpriteBase3D.get_draw_flag
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_draw_flag), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag DrawFlags }{flag}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_draw_flag, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag DrawFlags }{flag}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaCutMode(mode AlphaCutMode) { //gd:SpriteBase3D.set_alpha_cut_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_cut_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AlphaCutMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_cut_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AlphaCutMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetAlphaCutMode() AlphaCutMode { //gd:SpriteBase3D.get_alpha_cut_mode
-	var r_ret = gdextension.Call[AlphaCutMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_cut_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AlphaCutMode](gd.ObjectChecked(self.AsObject()), methods.get_alpha_cut_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaScissorThreshold(threshold float64) { //gd:SpriteBase3D.set_alpha_scissor_threshold
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_scissor_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_scissor_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
 }
 
 //go:nosplit
 func (self class) GetAlphaScissorThreshold() float64 { //gd:SpriteBase3D.get_alpha_scissor_threshold
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_scissor_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_scissor_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaHashScale(threshold float64) { //gd:SpriteBase3D.set_alpha_hash_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_hash_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_hash_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
 }
 
 //go:nosplit
 func (self class) GetAlphaHashScale() float64 { //gd:SpriteBase3D.get_alpha_hash_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_hash_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_hash_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaAntialiasing(alpha_aa BaseMaterial3D.AlphaAntiAliasing) { //gd:SpriteBase3D.set_alpha_antialiasing
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_antialiasing), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_antialiasing, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		alpha_aa BaseMaterial3D.AlphaAntiAliasing
 	}{alpha_aa}))
 }
 
 //go:nosplit
 func (self class) GetAlphaAntialiasing() BaseMaterial3D.AlphaAntiAliasing { //gd:SpriteBase3D.get_alpha_antialiasing
-	var r_ret = gdextension.Call[BaseMaterial3D.AlphaAntiAliasing](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_antialiasing), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BaseMaterial3D.AlphaAntiAliasing](gd.ObjectChecked(self.AsObject()), methods.get_alpha_antialiasing, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaAntialiasingEdge(edge float64) { //gd:SpriteBase3D.set_alpha_antialiasing_edge
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_alpha_antialiasing_edge), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ edge float64 }{edge}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_antialiasing_edge, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ edge float64 }{edge}))
 }
 
 //go:nosplit
 func (self class) GetAlphaAntialiasingEdge() float64 { //gd:SpriteBase3D.get_alpha_antialiasing_edge
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_alpha_antialiasing_edge), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_alpha_antialiasing_edge, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBillboardMode(mode BaseMaterial3D.BillboardMode) { //gd:SpriteBase3D.set_billboard_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_billboard_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode BaseMaterial3D.BillboardMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_billboard_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode BaseMaterial3D.BillboardMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetBillboardMode() BaseMaterial3D.BillboardMode { //gd:SpriteBase3D.get_billboard_mode
-	var r_ret = gdextension.Call[BaseMaterial3D.BillboardMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_billboard_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BaseMaterial3D.BillboardMode](gd.ObjectChecked(self.AsObject()), methods.get_billboard_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureFilter(mode BaseMaterial3D.TextureFilter) { //gd:SpriteBase3D.set_texture_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_set_texture_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode BaseMaterial3D.TextureFilter }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_filter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode BaseMaterial3D.TextureFilter }{mode}))
 }
 
 //go:nosplit
 func (self class) GetTextureFilter() BaseMaterial3D.TextureFilter { //gd:SpriteBase3D.get_texture_filter
-	var r_ret = gdextension.Call[BaseMaterial3D.TextureFilter](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_texture_filter), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BaseMaterial3D.TextureFilter](gd.ObjectChecked(self.AsObject()), methods.get_texture_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -492,7 +555,7 @@ Returns the rectangle representing this sprite.
 */
 //go:nosplit
 func (self class) GetItemRect() Rect2.PositionSize { //gd:SpriteBase3D.get_item_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_get_item_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_item_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -502,7 +565,7 @@ Returns a [TriangleMesh] with the sprite's vertices following its current config
 */
 //go:nosplit
 func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:SpriteBase3D.generate_triangle_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteBase3D.Bind_generate_triangle_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_triangle_mesh, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TriangleMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.TriangleMesh](r_ret)}
 	return ret
 }
@@ -548,9 +611,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SpriteBase3D", func(ptr gd.Object) any {
-		return [1]gdclass.SpriteBase3D{*(*gdclass.SpriteBase3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("SpriteBase3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type DrawFlags int //gd:SpriteBase3D.DrawFlags

@@ -220,6 +220,27 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintln(file, "\n*/")
 		}
 		fmt.Fprintf(file, "type Instance [1]gdclass.%s\n", class.Name)
+		fmt.Fprintf(file, "var otype gdextension.ObjectType\n")
+		fmt.Fprintf(file, "var sname gdextension.StringName\n")
+		fmt.Fprintf(file, "var methods struct {\n")
+		for _, method := range class.Methods {
+			if method.IsVirtual {
+				continue
+			}
+			fmt.Fprintf(file, "\t%[1]v gdextension.MethodForClass `hash:\"%d\"`\n", fixReserved(method.Name), method.Hash)
+		}
+		fmt.Fprintf(file, "}\n")
+		fmt.Fprintf(file, "func init() {\n")
+		fmt.Fprintf(file, "\tgd.Links = append(gd.Links, func() {\n")
+		fmt.Fprintf(file, "\t\tsname = gdextension.Host.Strings.Intern.UTF8(%q)\n", class.Name)
+		fmt.Fprintf(file, "\t\totype = gdextension.Host.Objects.Type(sname)\n")
+		fmt.Fprintf(file, "\t\tgd.LinkMethods(sname, &methods, %v)\n", class.APIType == "editor")
+		fmt.Fprintf(file, "\t\t})\n")
+		fmt.Fprintf(file, "\tgd.RegisterCleanup(func() {\n")
+		fmt.Fprintf(file, "\t\tpointers.Raw[gd.StringName](sname).Free()\n")
+		fmt.Fprintf(file, "\t})\n")
+		fmt.Fprintf(file, "}\n")
+
 		if class.Name != "Resource" {
 			fmt.Fprintf(file, "func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }\n")
 		}
@@ -227,8 +248,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "var self [1]gdclass.%s\n", class.Name)
 			fmt.Fprintf(file, "var once sync.Once\n")
 			fmt.Fprintf(file, "func singleton() {\n")
-			fmt.Fprintf(file, "\tobj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.%s)))})\n", class.Name)
-			fmt.Fprintf(file, "\tself = *(*[1]gdclass.%s)(unsafe.Pointer(&obj))\n", class.Name)
+			fmt.Fprintf(file, "\tself[0] = pointers.Raw[gdclass.%s]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})\n", class.Name)
 			fmt.Fprintf(file, "}\n")
 		} else {
 			var hasDefaults bool
@@ -388,6 +408,21 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		}
 		fmt.Fprintf(file, "type class [1]gdclass.%s\n", class.Name)
 		fmt.Fprintln(file, "func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }")
+		fmt.Fprintln(file, "func (self *class) SetObject(obj [1]gd.Object) bool {")
+		fmt.Fprintln(file, "\tif gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {")
+		fmt.Fprintf(file, "\t\tself[0] = *(*gdclass.%s)(unsafe.Pointer(&obj))\n", class.Name)
+		fmt.Fprintln(file, "\t\treturn true")
+		fmt.Fprintln(file, "\t}")
+		fmt.Fprintln(file, "\treturn false")
+		fmt.Fprintln(file, "}")
+		fmt.Fprintln(file, "func (self *Instance) SetObject(obj [1]gd.Object) bool {")
+		fmt.Fprintln(file, "\tif gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {")
+		fmt.Fprintf(file, "\t\tself[0] = *(*gdclass.%s)(unsafe.Pointer(&obj))\n", class.Name)
+		fmt.Fprintln(file, "\t\treturn true")
+		fmt.Fprintln(file, "\t}")
+		fmt.Fprintln(file, "\treturn false")
+		fmt.Fprintln(file, "}")
+
 		fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }\n")
 		fmt.Fprintln(file, "func (self Instance) AsObject() [1]gd.Object { return self[0].AsObject() }")
 		fmt.Fprintf(file, "\n\n//go:nosplit\nfunc (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }\n")
@@ -454,7 +489,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "}\n")
 		}
 		fmt.Fprintf(file, `func init() {`)
-		fmt.Fprintf(file, `gdclass.Register("%s", func(ptr gd.Object) any { return [1]gdclass.%[1]s{*(*gdclass.%[1]v)(unsafe.Pointer(&ptr))} })`, class.Name)
+		fmt.Fprintf(file, `gdclass.Register("%s", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })`, class.Name)
 		fmt.Fprintf(file, "}\n")
 		if class.Name != "RenderingDevice" {
 			for _, enum := range class.Enums {

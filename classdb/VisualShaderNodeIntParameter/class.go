@@ -73,6 +73,35 @@ A [VisualShaderNodeParameter] of type [int]. Offers additional customization for
 */
 type Instance [1]gdclass.VisualShaderNodeIntParameter
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_hint                  gdextension.MethodForClass `hash:"2540512075"`
+	get_hint                  gdextension.MethodForClass `hash:"4250814924"`
+	set_min                   gdextension.MethodForClass `hash:"1286410249"`
+	get_min                   gdextension.MethodForClass `hash:"3905245786"`
+	set_max                   gdextension.MethodForClass `hash:"1286410249"`
+	get_max                   gdextension.MethodForClass `hash:"3905245786"`
+	set_step                  gdextension.MethodForClass `hash:"1286410249"`
+	get_step                  gdextension.MethodForClass `hash:"3905245786"`
+	set_enum_names            gdextension.MethodForClass `hash:"4015028928"`
+	get_enum_names            gdextension.MethodForClass `hash:"1139954409"`
+	set_default_value_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_default_value_enabled  gdextension.MethodForClass `hash:"36873697"`
+	set_default_value         gdextension.MethodForClass `hash:"1286410249"`
+	get_default_value         gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VisualShaderNodeIntParameter")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +117,20 @@ type Advanced = class
 type class [1]gdclass.VisualShaderNodeIntParameter
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeIntParameter)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeIntParameter)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +140,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShaderNodeIntParameter"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisualShaderNodeIntParameter)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -162,86 +205,86 @@ func (self Instance) SetDefaultValue(value int) {
 
 //go:nosplit
 func (self class) SetHint(hint Hint) { //gd:VisualShaderNodeIntParameter.set_hint
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_set_hint), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hint Hint }{hint}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hint, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hint Hint }{hint}))
 }
 
 //go:nosplit
 func (self class) GetHint() Hint { //gd:VisualShaderNodeIntParameter.get_hint
-	var r_ret = gdextension.Call[Hint](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_hint), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Hint](gd.ObjectChecked(self.AsObject()), methods.get_hint, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMin(value int64) { //gd:VisualShaderNodeIntParameter.set_min
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_set_min), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value int64 }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value int64 }{value}))
 }
 
 //go:nosplit
 func (self class) GetMin() int64 { //gd:VisualShaderNodeIntParameter.get_min
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_min), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_min, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMax(value int64) { //gd:VisualShaderNodeIntParameter.set_max
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_set_max), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value int64 }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value int64 }{value}))
 }
 
 //go:nosplit
 func (self class) GetMax() int64 { //gd:VisualShaderNodeIntParameter.get_max
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_max), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStep(value int64) { //gd:VisualShaderNodeIntParameter.set_step
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_set_step), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value int64 }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_step, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value int64 }{value}))
 }
 
 //go:nosplit
 func (self class) GetStep() int64 { //gd:VisualShaderNodeIntParameter.get_step
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_step), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_step, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnumNames(names Packed.Strings) { //gd:VisualShaderNodeIntParameter.set_enum_names
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_set_enum_names), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enum_names, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		names gdextension.PackedArray[gdextension.String]
 	}{pointers.Get(gd.InternalPackedStrings(names))}))
 }
 
 //go:nosplit
 func (self class) GetEnumNames() Packed.Strings { //gd:VisualShaderNodeIntParameter.get_enum_names
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_enum_names), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_enum_names, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeIntParameter.set_default_value_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_set_default_value_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeIntParameter.is_default_value_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_is_default_value_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_default_value_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultValue(value int64) { //gd:VisualShaderNodeIntParameter.set_default_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_set_default_value), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value int64 }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value int64 }{value}))
 }
 
 //go:nosplit
 func (self class) GetDefaultValue() int64 { //gd:VisualShaderNodeIntParameter.get_default_value
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeIntParameter.Bind_get_default_value), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_default_value, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -301,9 +344,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisualShaderNodeIntParameter", func(ptr gd.Object) any {
-		return [1]gdclass.VisualShaderNodeIntParameter{*(*gdclass.VisualShaderNodeIntParameter)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VisualShaderNodeIntParameter", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Hint int //gd:VisualShaderNodeIntParameter.Hint

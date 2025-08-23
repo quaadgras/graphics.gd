@@ -74,6 +74,27 @@ type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 */
 type Instance [1]gdclass.VisualShaderNodeParticleMeshEmitter
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_mesh             gdextension.MethodForClass `hash:"194775623"`
+	get_mesh             gdextension.MethodForClass `hash:"1808005922"`
+	set_use_all_surfaces gdextension.MethodForClass `hash:"2586408642"`
+	is_use_all_surfaces  gdextension.MethodForClass `hash:"36873697"`
+	set_surface_index    gdextension.MethodForClass `hash:"1286410249"`
+	get_surface_index    gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VisualShaderNodeParticleMeshEmitter")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +110,20 @@ type Advanced = class
 type class [1]gdclass.VisualShaderNodeParticleMeshEmitter
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeParticleMeshEmitter)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeParticleMeshEmitter)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +133,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShaderNodeParticleMeshEmitter"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisualShaderNodeParticleMeshEmitter)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -131,36 +166,36 @@ func (self Instance) SetSurfaceIndex(value int) {
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:VisualShaderNodeParticleMeshEmitter.set_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleMeshEmitter.Bind_set_mesh), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:VisualShaderNodeParticleMeshEmitter.get_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleMeshEmitter.Bind_get_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseAllSurfaces(enabled bool) { //gd:VisualShaderNodeParticleMeshEmitter.set_use_all_surfaces
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleMeshEmitter.Bind_set_use_all_surfaces), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_all_surfaces, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsUseAllSurfaces() bool { //gd:VisualShaderNodeParticleMeshEmitter.is_use_all_surfaces
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleMeshEmitter.Bind_is_use_all_surfaces), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_use_all_surfaces, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSurfaceIndex(surface_index int64) { //gd:VisualShaderNodeParticleMeshEmitter.set_surface_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleMeshEmitter.Bind_set_surface_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_index int64 }{surface_index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_index int64 }{surface_index}))
 }
 
 //go:nosplit
 func (self class) GetSurfaceIndex() int64 { //gd:VisualShaderNodeParticleMeshEmitter.get_surface_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeParticleMeshEmitter.Bind_get_surface_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -220,7 +255,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisualShaderNodeParticleMeshEmitter", func(ptr gd.Object) any {
-		return [1]gdclass.VisualShaderNodeParticleMeshEmitter{*(*gdclass.VisualShaderNodeParticleMeshEmitter)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VisualShaderNodeParticleMeshEmitter", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

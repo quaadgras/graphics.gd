@@ -74,6 +74,47 @@ By setting various properties on this object, you can control how individual cha
 */
 type Instance [1]gdclass.CharFXTransform
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_transform      gdextension.MethodForClass `hash:"3761352769"`
+	set_transform      gdextension.MethodForClass `hash:"2761652528"`
+	get_range          gdextension.MethodForClass `hash:"2741790807"`
+	set_range          gdextension.MethodForClass `hash:"1130785943"`
+	get_elapsed_time   gdextension.MethodForClass `hash:"191475506"`
+	set_elapsed_time   gdextension.MethodForClass `hash:"373806689"`
+	is_visible         gdextension.MethodForClass `hash:"2240911060"`
+	set_visibility     gdextension.MethodForClass `hash:"2586408642"`
+	is_outline         gdextension.MethodForClass `hash:"2240911060"`
+	set_outline        gdextension.MethodForClass `hash:"2586408642"`
+	get_offset         gdextension.MethodForClass `hash:"1497962370"`
+	set_offset         gdextension.MethodForClass `hash:"743155724"`
+	get_color          gdextension.MethodForClass `hash:"3200896285"`
+	set_color          gdextension.MethodForClass `hash:"2920490490"`
+	get_environment    gdextension.MethodForClass `hash:"2382534195"`
+	set_environment    gdextension.MethodForClass `hash:"4155329257"`
+	get_glyph_index    gdextension.MethodForClass `hash:"3905245786"`
+	set_glyph_index    gdextension.MethodForClass `hash:"1286410249"`
+	get_relative_index gdextension.MethodForClass `hash:"3905245786"`
+	set_relative_index gdextension.MethodForClass `hash:"1286410249"`
+	get_glyph_count    gdextension.MethodForClass `hash:"3905245786"`
+	set_glyph_count    gdextension.MethodForClass `hash:"1286410249"`
+	get_glyph_flags    gdextension.MethodForClass `hash:"3905245786"`
+	set_glyph_flags    gdextension.MethodForClass `hash:"1286410249"`
+	get_font           gdextension.MethodForClass `hash:"2944877500"`
+	set_font           gdextension.MethodForClass `hash:"2722037293"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("CharFXTransform")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +130,20 @@ type Advanced = class
 type class [1]gdclass.CharFXTransform
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CharFXTransform)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CharFXTransform)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +153,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CharFXTransform"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.CharFXTransform)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -211,158 +266,158 @@ func (self Instance) SetFont(value RID.Any) {
 
 //go:nosplit
 func (self class) GetTransform() Transform2D.OriginXY { //gd:CharFXTransform.get_transform
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_get_transform), gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransform(transform Transform2D.OriginXY) { //gd:CharFXTransform.set_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_transform), 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ transform Transform2D.OriginXY }{transform}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ transform Transform2D.OriginXY }{transform}))
 }
 
 //go:nosplit
 func (self class) GetRange() Vector2i.XY { //gd:CharFXTransform.get_range
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_get_range), gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_range, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRange(arange Vector2i.XY) { //gd:CharFXTransform.set_range
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_range), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ arange Vector2i.XY }{arange}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ arange Vector2i.XY }{arange}))
 }
 
 //go:nosplit
 func (self class) GetElapsedTime() float64 { //gd:CharFXTransform.get_elapsed_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_get_elapsed_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_elapsed_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetElapsedTime(time float64) { //gd:CharFXTransform.set_elapsed_time
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_elapsed_time), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_elapsed_time, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
 }
 
 //go:nosplit
 func (self class) IsVisible() bool { //gd:CharFXTransform.is_visible
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_is_visible), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibility(visibility bool) { //gd:CharFXTransform.set_visibility
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_visibility), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visibility bool }{visibility}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visibility bool }{visibility}))
 }
 
 //go:nosplit
 func (self class) IsOutline() bool { //gd:CharFXTransform.is_outline
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_is_outline), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_outline, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOutline(outline bool) { //gd:CharFXTransform.set_outline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_outline), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ outline bool }{outline}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outline, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ outline bool }{outline}))
 }
 
 //go:nosplit
 func (self class) GetOffset() Vector2.XY { //gd:CharFXTransform.get_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_get_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffset(offset Vector2.XY) { //gd:CharFXTransform.set_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetColor() Color.RGBA { //gd:CharFXTransform.get_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_get_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColor(color Color.RGBA) { //gd:CharFXTransform.set_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetEnvironment() Dictionary.Any { //gd:CharFXTransform.get_environment
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_get_environment), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnvironment(environment Dictionary.Any) { //gd:CharFXTransform.set_environment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_environment), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ environment gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(environment))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ environment gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(environment))}))
 }
 
 //go:nosplit
 func (self class) GetGlyphIndex() int64 { //gd:CharFXTransform.get_glyph_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_get_glyph_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_glyph_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlyphIndex(glyph_index int64) { //gd:CharFXTransform.set_glyph_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_glyph_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ glyph_index int64 }{glyph_index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_glyph_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ glyph_index int64 }{glyph_index}))
 }
 
 //go:nosplit
 func (self class) GetRelativeIndex() int64 { //gd:CharFXTransform.get_relative_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_get_relative_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_relative_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRelativeIndex(relative_index int64) { //gd:CharFXTransform.set_relative_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_relative_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ relative_index int64 }{relative_index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_relative_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ relative_index int64 }{relative_index}))
 }
 
 //go:nosplit
 func (self class) GetGlyphCount() int64 { //gd:CharFXTransform.get_glyph_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_get_glyph_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_glyph_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlyphCount(glyph_count int64) { //gd:CharFXTransform.set_glyph_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_glyph_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ glyph_count int64 }{glyph_count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_glyph_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ glyph_count int64 }{glyph_count}))
 }
 
 //go:nosplit
 func (self class) GetGlyphFlags() int64 { //gd:CharFXTransform.get_glyph_flags
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_get_glyph_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_glyph_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlyphFlags(glyph_flags int64) { //gd:CharFXTransform.set_glyph_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_glyph_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ glyph_flags int64 }{glyph_flags}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_glyph_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ glyph_flags int64 }{glyph_flags}))
 }
 
 //go:nosplit
 func (self class) GetFont() RID.Any { //gd:CharFXTransform.get_font
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_get_font), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_font, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFont(font RID.Any) { //gd:CharFXTransform.set_font
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharFXTransform.Bind_set_font), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font RID.Any }{font}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ font RID.Any }{font}))
 }
 func (self class) AsCharFXTransform() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsCharFXTransform() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -389,7 +444,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CharFXTransform", func(ptr gd.Object) any {
-		return [1]gdclass.CharFXTransform{*(*gdclass.CharFXTransform)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("CharFXTransform", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -74,6 +74,27 @@ A rectangle box that displays only a colored border around its rectangle. It is 
 */
 type Instance [1]gdclass.ReferenceRect
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_border_color gdextension.MethodForClass `hash:"3444240500"`
+	set_border_color gdextension.MethodForClass `hash:"2920490490"`
+	get_border_width gdextension.MethodForClass `hash:"1740695150"`
+	set_border_width gdextension.MethodForClass `hash:"373806689"`
+	get_editor_only  gdextension.MethodForClass `hash:"36873697"`
+	set_editor_only  gdextension.MethodForClass `hash:"2586408642"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ReferenceRect")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +110,20 @@ type Advanced = class
 type class [1]gdclass.ReferenceRect
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ReferenceRect)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ReferenceRect)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +133,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ReferenceRect"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ReferenceRect)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -130,38 +165,38 @@ func (self Instance) SetEditorOnly(value bool) {
 
 //go:nosplit
 func (self class) GetBorderColor() Color.RGBA { //gd:ReferenceRect.get_border_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_get_border_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_border_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBorderColor(color Color.RGBA) { //gd:ReferenceRect.set_border_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_set_border_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_border_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetBorderWidth() float64 { //gd:ReferenceRect.get_border_width
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_get_border_width), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_border_width, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBorderWidth(width float64) { //gd:ReferenceRect.set_border_width
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_set_border_width), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ width float64 }{width}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_border_width, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ width float64 }{width}))
 }
 
 //go:nosplit
 func (self class) GetEditorOnly() bool { //gd:ReferenceRect.get_editor_only
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_get_editor_only), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_editor_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditorOnly(enabled bool) { //gd:ReferenceRect.set_editor_only
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReferenceRect.Bind_set_editor_only), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_only, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 func (self class) AsReferenceRect() Advanced           { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsReferenceRect() Instance        { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -196,7 +231,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ReferenceRect", func(ptr gd.Object) any {
-		return [1]gdclass.ReferenceRect{*(*gdclass.ReferenceRect)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ReferenceRect", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

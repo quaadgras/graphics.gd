@@ -73,6 +73,25 @@ A physics joint that restricts the rotation of a 3D physics body around an axis 
 */
 type Instance [1]gdclass.HingeJoint3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_param gdextension.MethodForClass `hash:"3082977519"`
+	get_param gdextension.MethodForClass `hash:"4066002676"`
+	set_flag  gdextension.MethodForClass `hash:"1083494620"`
+	get_flag  gdextension.MethodForClass `hash:"2841369610"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("HingeJoint3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -116,6 +135,20 @@ type Advanced = class
 type class [1]gdclass.HingeJoint3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.HingeJoint3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.HingeJoint3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -125,7 +158,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("HingeJoint3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.HingeJoint3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -136,7 +169,7 @@ Sets the value of the specified parameter.
 */
 //go:nosplit
 func (self class) SetParam(param Param, value float64) { //gd:HingeJoint3D.set_param
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HingeJoint3D.Bind_set_param), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		param Param
 		value float64
 	}{param, value}))
@@ -147,7 +180,7 @@ Returns the value of the specified parameter.
 */
 //go:nosplit
 func (self class) GetParam(param Param) float64 { //gd:HingeJoint3D.get_param
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HingeJoint3D.Bind_get_param), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
 	var ret = r_ret
 	return ret
 }
@@ -157,7 +190,7 @@ If [code]true[/code], enables the specified flag.
 */
 //go:nosplit
 func (self class) SetFlag(flag Flag, enabled bool) { //gd:HingeJoint3D.set_flag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HingeJoint3D.Bind_set_flag), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		flag    Flag
 		enabled bool
 	}{flag, enabled}))
@@ -168,7 +201,7 @@ Returns the value of the specified flag.
 */
 //go:nosplit
 func (self class) GetFlag(flag Flag) bool { //gd:HingeJoint3D.get_flag
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HingeJoint3D.Bind_get_flag), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
 	var ret = r_ret
 	return ret
 }
@@ -201,9 +234,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("HingeJoint3D", func(ptr gd.Object) any {
-		return [1]gdclass.HingeJoint3D{*(*gdclass.HingeJoint3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("HingeJoint3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Param int //gd:HingeJoint3D.Param

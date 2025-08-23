@@ -79,6 +79,61 @@ After instantiating the playback information data within the extended class, the
 */
 type Instance [1]gdclass.AnimationMixer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	add_animation_library                gdextension.MethodForClass `hash:"618909818"`
+	remove_animation_library             gdextension.MethodForClass `hash:"3304788590"`
+	rename_animation_library             gdextension.MethodForClass `hash:"3740211285"`
+	has_animation_library                gdextension.MethodForClass `hash:"2619796661"`
+	get_animation_library                gdextension.MethodForClass `hash:"147342321"`
+	get_animation_library_list           gdextension.MethodForClass `hash:"3995934104"`
+	has_animation                        gdextension.MethodForClass `hash:"2619796661"`
+	get_animation                        gdextension.MethodForClass `hash:"2933122410"`
+	get_animation_list                   gdextension.MethodForClass `hash:"1139954409"`
+	set_active                           gdextension.MethodForClass `hash:"2586408642"`
+	is_active                            gdextension.MethodForClass `hash:"36873697"`
+	set_deterministic                    gdextension.MethodForClass `hash:"2586408642"`
+	is_deterministic                     gdextension.MethodForClass `hash:"36873697"`
+	set_root_node                        gdextension.MethodForClass `hash:"1348162250"`
+	get_root_node                        gdextension.MethodForClass `hash:"4075236667"`
+	set_callback_mode_process            gdextension.MethodForClass `hash:"2153733086"`
+	get_callback_mode_process            gdextension.MethodForClass `hash:"1394468472"`
+	set_callback_mode_method             gdextension.MethodForClass `hash:"742218271"`
+	get_callback_mode_method             gdextension.MethodForClass `hash:"489449656"`
+	set_callback_mode_discrete           gdextension.MethodForClass `hash:"1998944670"`
+	get_callback_mode_discrete           gdextension.MethodForClass `hash:"3493168860"`
+	set_audio_max_polyphony              gdextension.MethodForClass `hash:"1286410249"`
+	get_audio_max_polyphony              gdextension.MethodForClass `hash:"3905245786"`
+	set_root_motion_track                gdextension.MethodForClass `hash:"1348162250"`
+	get_root_motion_track                gdextension.MethodForClass `hash:"4075236667"`
+	set_root_motion_local                gdextension.MethodForClass `hash:"2586408642"`
+	is_root_motion_local                 gdextension.MethodForClass `hash:"36873697"`
+	get_root_motion_position             gdextension.MethodForClass `hash:"3360562783"`
+	get_root_motion_rotation             gdextension.MethodForClass `hash:"1222331677"`
+	get_root_motion_scale                gdextension.MethodForClass `hash:"3360562783"`
+	get_root_motion_position_accumulator gdextension.MethodForClass `hash:"3360562783"`
+	get_root_motion_rotation_accumulator gdextension.MethodForClass `hash:"1222331677"`
+	get_root_motion_scale_accumulator    gdextension.MethodForClass `hash:"3360562783"`
+	clear_caches                         gdextension.MethodForClass `hash:"3218959716"`
+	advance                              gdextension.MethodForClass `hash:"373806689"`
+	capture                              gdextension.MethodForClass `hash:"1333632127"`
+	set_reset_on_save_enabled            gdextension.MethodForClass `hash:"2586408642"`
+	is_reset_on_save_enabled             gdextension.MethodForClass `hash:"36873697"`
+	find_animation                       gdextension.MethodForClass `hash:"1559484580"`
+	find_animation_library               gdextension.MethodForClass `hash:"1559484580"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AnimationMixer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.AnimationMixer
@@ -425,6 +480,20 @@ type Advanced = class
 type class [1]gdclass.AnimationMixer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AnimationMixer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AnimationMixer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -434,7 +503,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AnimationMixer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AnimationMixer)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -556,7 +625,7 @@ global_library.add_animation("animation_name", animation_resource)
 */
 //go:nosplit
 func (self class) AddAnimationLibrary(name String.Name, library [1]gdclass.AnimationLibrary) Error.Code { //gd:AnimationMixer.add_animation_library
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_add_animation_library), gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_animation_library, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name    gdextension.StringName
 		library gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(library[0].AsObject()))}))
@@ -569,7 +638,7 @@ Removes the [AnimationLibrary] associated with the key [param name].
 */
 //go:nosplit
 func (self class) RemoveAnimationLibrary(name String.Name) { //gd:AnimationMixer.remove_animation_library
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_remove_animation_library), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_animation_library, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -577,7 +646,7 @@ Moves the [AnimationLibrary] associated with the key [param name] to the key [pa
 */
 //go:nosplit
 func (self class) RenameAnimationLibrary(name String.Name, newname String.Name) { //gd:AnimationMixer.rename_animation_library
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_rename_animation_library), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_animation_library, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name    gdextension.StringName
 		newname gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(newname))}))
@@ -588,7 +657,7 @@ Returns [code]true[/code] if the [AnimationMixer] stores an [AnimationLibrary] w
 */
 //go:nosplit
 func (self class) HasAnimationLibrary(name String.Name) bool { //gd:AnimationMixer.has_animation_library
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_has_animation_library), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_animation_library, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -599,7 +668,7 @@ To get the [AnimationMixer]'s global animation library, use [code]get_animation_
 */
 //go:nosplit
 func (self class) GetAnimationLibrary(name String.Name) [1]gdclass.AnimationLibrary { //gd:AnimationMixer.get_animation_library
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_animation_library), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_animation_library, gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = [1]gdclass.AnimationLibrary{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationLibrary](r_ret)}
 	return ret
 }
@@ -609,7 +678,7 @@ Returns the list of stored library keys.
 */
 //go:nosplit
 func (self class) GetAnimationLibraryList() Array.Contains[String.Name] { //gd:AnimationMixer.get_animation_library_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_animation_library_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_animation_library_list, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -619,7 +688,7 @@ Returns [code]true[/code] if the [AnimationMixer] stores an [Animation] with key
 */
 //go:nosplit
 func (self class) HasAnimation(name String.Name) bool { //gd:AnimationMixer.has_animation
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_has_animation), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_animation, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -629,7 +698,7 @@ Returns the [Animation] with the key [param name]. If the animation does not exi
 */
 //go:nosplit
 func (self class) GetAnimation(name String.Name) [1]gdclass.Animation { //gd:AnimationMixer.get_animation
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_animation), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_animation, gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = [1]gdclass.Animation{gd.PointerWithOwnershipTransferredToGo[gdclass.Animation](r_ret)}
 	return ret
 }
@@ -639,115 +708,115 @@ Returns the list of stored animation keys.
 */
 //go:nosplit
 func (self class) GetAnimationList() Packed.Strings { //gd:AnimationMixer.get_animation_list
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_animation_list), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_animation_list, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetActive(active bool) { //gd:AnimationMixer.set_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_set_active), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
 }
 
 //go:nosplit
 func (self class) IsActive() bool { //gd:AnimationMixer.is_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_is_active), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeterministic(deterministic bool) { //gd:AnimationMixer.set_deterministic
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_set_deterministic), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ deterministic bool }{deterministic}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deterministic, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ deterministic bool }{deterministic}))
 }
 
 //go:nosplit
 func (self class) IsDeterministic() bool { //gd:AnimationMixer.is_deterministic
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_is_deterministic), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deterministic, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRootNode(path Path.ToNode) { //gd:AnimationMixer.set_root_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_set_root_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_node, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 }
 
 //go:nosplit
 func (self class) GetRootNode() Path.ToNode { //gd:AnimationMixer.get_root_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_root_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_node, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCallbackModeProcess(mode AnimationCallbackModeProcess) { //gd:AnimationMixer.set_callback_mode_process
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_set_callback_mode_process), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationCallbackModeProcess }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_callback_mode_process, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationCallbackModeProcess }{mode}))
 }
 
 //go:nosplit
 func (self class) GetCallbackModeProcess() AnimationCallbackModeProcess { //gd:AnimationMixer.get_callback_mode_process
-	var r_ret = gdextension.Call[AnimationCallbackModeProcess](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_process), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AnimationCallbackModeProcess](gd.ObjectChecked(self.AsObject()), methods.get_callback_mode_process, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCallbackModeMethod(mode AnimationCallbackModeMethod) { //gd:AnimationMixer.set_callback_mode_method
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_set_callback_mode_method), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationCallbackModeMethod }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_callback_mode_method, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationCallbackModeMethod }{mode}))
 }
 
 //go:nosplit
 func (self class) GetCallbackModeMethod() AnimationCallbackModeMethod { //gd:AnimationMixer.get_callback_mode_method
-	var r_ret = gdextension.Call[AnimationCallbackModeMethod](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_method), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AnimationCallbackModeMethod](gd.ObjectChecked(self.AsObject()), methods.get_callback_mode_method, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCallbackModeDiscrete(mode AnimationCallbackModeDiscrete) { //gd:AnimationMixer.set_callback_mode_discrete
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_set_callback_mode_discrete), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationCallbackModeDiscrete }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_callback_mode_discrete, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationCallbackModeDiscrete }{mode}))
 }
 
 //go:nosplit
 func (self class) GetCallbackModeDiscrete() AnimationCallbackModeDiscrete { //gd:AnimationMixer.get_callback_mode_discrete
-	var r_ret = gdextension.Call[AnimationCallbackModeDiscrete](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_callback_mode_discrete), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AnimationCallbackModeDiscrete](gd.ObjectChecked(self.AsObject()), methods.get_callback_mode_discrete, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAudioMaxPolyphony(max_polyphony int64) { //gd:AnimationMixer.set_audio_max_polyphony
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_set_audio_max_polyphony), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_polyphony int64 }{max_polyphony}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_audio_max_polyphony, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_polyphony int64 }{max_polyphony}))
 }
 
 //go:nosplit
 func (self class) GetAudioMaxPolyphony() int64 { //gd:AnimationMixer.get_audio_max_polyphony
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_audio_max_polyphony), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_audio_max_polyphony, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRootMotionTrack(path Path.ToNode) { //gd:AnimationMixer.set_root_motion_track
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_set_root_motion_track), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_motion_track, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 }
 
 //go:nosplit
 func (self class) GetRootMotionTrack() Path.ToNode { //gd:AnimationMixer.get_root_motion_track
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_track), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_track, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRootMotionLocal(enabled bool) { //gd:AnimationMixer.set_root_motion_local
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_set_root_motion_local), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_motion_local, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsRootMotionLocal() bool { //gd:AnimationMixer.is_root_motion_local
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_is_root_motion_local), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_root_motion_local, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -798,7 +867,7 @@ func _process(delta):
 */
 //go:nosplit
 func (self class) GetRootMotionPosition() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_position), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_position, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -819,7 +888,7 @@ func _process(delta):
 */
 //go:nosplit
 func (self class) GetRootMotionRotation() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation
-	var r_ret = gdextension.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_rotation), gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_rotation, gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -846,7 +915,7 @@ func _process(delta):
 */
 //go:nosplit
 func (self class) GetRootMotionScale() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_scale), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_scale, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -872,7 +941,7 @@ However, if the animation loops, an unintended discrete change may occur, so thi
 */
 //go:nosplit
 func (self class) GetRootMotionPositionAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_position_accumulator
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_position_accumulator), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_position_accumulator, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -899,7 +968,7 @@ However, if the animation loops, an unintended discrete change may occur, so thi
 */
 //go:nosplit
 func (self class) GetRootMotionRotationAccumulator() Quaternion.IJKX { //gd:AnimationMixer.get_root_motion_rotation_accumulator
-	var r_ret = gdextension.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_rotation_accumulator), gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_rotation_accumulator, gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -924,7 +993,7 @@ However, if the animation loops, an unintended discrete change may occur, so thi
 */
 //go:nosplit
 func (self class) GetRootMotionScaleAccumulator() Vector3.XYZ { //gd:AnimationMixer.get_root_motion_scale_accumulator
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_get_root_motion_scale_accumulator), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_root_motion_scale_accumulator, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -934,7 +1003,7 @@ func (self class) GetRootMotionScaleAccumulator() Vector3.XYZ { //gd:AnimationMi
 */
 //go:nosplit
 func (self class) ClearCaches() { //gd:AnimationMixer.clear_caches
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_clear_caches), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_caches, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -942,7 +1011,7 @@ Manually advance the animations by the specified time (in seconds).
 */
 //go:nosplit
 func (self class) Advance(delta float64) { //gd:AnimationMixer.advance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_advance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ delta float64 }{delta}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.advance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ delta float64 }{delta}))
 }
 
 /*
@@ -952,7 +1021,7 @@ You can specify [param trans_type] as the curve for the interpolation. For bette
 */
 //go:nosplit
 func (self class) Capture(name String.Name, duration float64, trans_type Tween.TransitionType, ease_type Tween.EaseType) { //gd:AnimationMixer.capture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_capture), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.capture, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		duration   float64
 		trans_type Tween.TransitionType
@@ -962,12 +1031,12 @@ func (self class) Capture(name String.Name, duration float64, trans_type Tween.T
 
 //go:nosplit
 func (self class) SetResetOnSaveEnabled(enabled bool) { //gd:AnimationMixer.set_reset_on_save_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_set_reset_on_save_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reset_on_save_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsResetOnSaveEnabled() bool { //gd:AnimationMixer.is_reset_on_save_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_is_reset_on_save_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_reset_on_save_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -977,7 +1046,7 @@ Returns the key of [param animation] or an empty [StringName] if not found.
 */
 //go:nosplit
 func (self class) FindAnimation(animation [1]gdclass.Animation) String.Name { //gd:AnimationMixer.find_animation
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_find_animation), gdextension.SizeStringName|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(animation[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation, gdextension.SizeStringName|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(animation[0].AsObject()))}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -987,7 +1056,7 @@ Returns the key for the [AnimationLibrary] that contains [param animation] or an
 */
 //go:nosplit
 func (self class) FindAnimationLibrary(animation [1]gdclass.Animation) String.Name { //gd:AnimationMixer.find_animation_library
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationMixer.Bind_find_animation_library), gdextension.SizeStringName|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(animation[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation_library, gdextension.SizeStringName|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(animation[0].AsObject()))}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -1044,9 +1113,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AnimationMixer", func(ptr gd.Object) any {
-		return [1]gdclass.AnimationMixer{*(*gdclass.AnimationMixer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AnimationMixer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type AnimationCallbackModeProcess int //gd:AnimationMixer.AnimationCallbackModeProcess

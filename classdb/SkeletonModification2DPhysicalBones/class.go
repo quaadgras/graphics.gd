@@ -72,6 +72,28 @@ This modification takes the transforms of [PhysicalBone2D] nodes and applies the
 */
 type Instance [1]gdclass.SkeletonModification2DPhysicalBones
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_physical_bone_chain_length gdextension.MethodForClass `hash:"1286410249"`
+	get_physical_bone_chain_length gdextension.MethodForClass `hash:"2455072627"`
+	set_physical_bone_node         gdextension.MethodForClass `hash:"2761262315"`
+	get_physical_bone_node         gdextension.MethodForClass `hash:"408788394"`
+	fetch_physical_bones           gdextension.MethodForClass `hash:"3218959716"`
+	start_simulation               gdextension.MethodForClass `hash:"2787316981"`
+	stop_simulation                gdextension.MethodForClass `hash:"2787316981"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("SkeletonModification2DPhysicalBones")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.SkeletonModification2DPhysicalBones
@@ -143,6 +165,20 @@ type Advanced = class
 type class [1]gdclass.SkeletonModification2DPhysicalBones
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SkeletonModification2DPhysicalBones)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SkeletonModification2DPhysicalBones)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -152,7 +188,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SkeletonModification2DPhysicalBones"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SkeletonModification2DPhysicalBones)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -169,12 +205,12 @@ func (self Instance) SetPhysicalBoneChainLength(value int) {
 
 //go:nosplit
 func (self class) SetPhysicalBoneChainLength(length int64) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_chain_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_set_physical_bone_chain_length), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ length int64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physical_bone_chain_length, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ length int64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetPhysicalBoneChainLength() int64 { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_chain_length
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_chain_length), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physical_bone_chain_length, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -185,7 +221,7 @@ Sets the [PhysicalBone2D] node at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetPhysicalBoneNode(joint_idx int64, physicalbone2d_node Path.ToNode) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_set_physical_bone_node), 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physical_bone_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
 		joint_idx           int64
 		physicalbone2d_node gdextension.NodePath
 	}{joint_idx, pointers.Get(gd.InternalNodePath(physicalbone2d_node))}))
@@ -196,7 +232,7 @@ Returns the [PhysicalBone2D] node at [param joint_idx].
 */
 //go:nosplit
 func (self class) GetPhysicalBoneNode(joint_idx int64) Path.ToNode { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_get_physical_bone_node), gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_physical_bone_node, gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -206,7 +242,7 @@ Empties the list of [PhysicalBone2D] nodes and populates it with all [PhysicalBo
 */
 //go:nosplit
 func (self class) FetchPhysicalBones() { //gd:SkeletonModification2DPhysicalBones.fetch_physical_bones
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_fetch_physical_bones), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fetch_physical_bones, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -215,7 +251,7 @@ Optionally, an array of bone names can be passed to this function, and that will
 */
 //go:nosplit
 func (self class) StartSimulation(bones Array.Contains[String.Name]) { //gd:SkeletonModification2DPhysicalBones.start_simulation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_start_simulation), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start_simulation, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))}))
 }
 
 /*
@@ -224,7 +260,7 @@ Optionally, an array of bone names can be passed to this function, and that will
 */
 //go:nosplit
 func (self class) StopSimulation(bones Array.Contains[String.Name]) { //gd:SkeletonModification2DPhysicalBones.stop_simulation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DPhysicalBones.Bind_stop_simulation), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_simulation, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))}))
 }
 func (self class) AsSkeletonModification2DPhysicalBones() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))
@@ -273,7 +309,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SkeletonModification2DPhysicalBones", func(ptr gd.Object) any {
-		return [1]gdclass.SkeletonModification2DPhysicalBones{*(*gdclass.SkeletonModification2DPhysicalBones)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("SkeletonModification2DPhysicalBones", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

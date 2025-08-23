@@ -195,6 +195,22 @@ To use [EditorImportPlugin], register it using the [method EditorPlugin.add_impo
 */
 type Instance [1]gdclass.EditorImportPlugin
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	append_import_external_resource gdextension.MethodForClass `hash:"320493106"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorImportPlugin")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.EditorImportPlugin
@@ -550,6 +566,20 @@ type Advanced = class
 type class [1]gdclass.EditorImportPlugin
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorImportPlugin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorImportPlugin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -559,7 +589,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorImportPlugin"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorImportPlugin)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -815,7 +845,7 @@ This function can only be called during the [method _import] callback and it all
 */
 //go:nosplit
 func (self class) AppendImportExternalResource(path String.Readable, custom_options Dictionary.Any, custom_importer String.Readable, generator_parameters variant.Any) Error.Code { //gd:EditorImportPlugin.append_import_external_resource
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorImportPlugin.Bind_append_import_external_resource), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8)|(gdextension.SizeString<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.append_import_external_resource, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8)|(gdextension.SizeString<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
 		path                 gdextension.String
 		custom_options       gdextension.Dictionary
 		custom_importer      gdextension.String
@@ -914,7 +944,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorImportPlugin", func(ptr gd.Object) any {
-		return [1]gdclass.EditorImportPlugin{*(*gdclass.EditorImportPlugin)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorImportPlugin", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

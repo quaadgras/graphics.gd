@@ -74,6 +74,29 @@ Use [XRBodyModifier3D] to animate a body mesh using body tracking data.
 */
 type Instance [1]gdclass.XRBodyTracker
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_has_tracking_data gdextension.MethodForClass `hash:"2586408642"`
+	get_has_tracking_data gdextension.MethodForClass `hash:"36873697"`
+	set_body_flags        gdextension.MethodForClass `hash:"2103235750"`
+	get_body_flags        gdextension.MethodForClass `hash:"3543166366"`
+	set_joint_flags       gdextension.MethodForClass `hash:"592144999"`
+	get_joint_flags       gdextension.MethodForClass `hash:"1030162609"`
+	set_joint_transform   gdextension.MethodForClass `hash:"2635424328"`
+	get_joint_transform   gdextension.MethodForClass `hash:"3474811534"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("XRBodyTracker")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -117,6 +140,20 @@ type Advanced = class
 type class [1]gdclass.XRBodyTracker
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRBodyTracker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRBodyTracker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -126,7 +163,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("XRBodyTracker"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.XRBodyTracker)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -151,24 +188,24 @@ func (self Instance) SetBodyFlags(value BodyFlags) {
 
 //go:nosplit
 func (self class) SetHasTrackingData(has_data bool) { //gd:XRBodyTracker.set_has_tracking_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyTracker.Bind_set_has_tracking_data), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ has_data bool }{has_data}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ has_data bool }{has_data}))
 }
 
 //go:nosplit
 func (self class) GetHasTrackingData() bool { //gd:XRBodyTracker.get_has_tracking_data
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyTracker.Bind_get_has_tracking_data), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBodyFlags(flags BodyFlags) { //gd:XRBodyTracker.set_body_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyTracker.Bind_set_body_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags BodyFlags }{flags}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags BodyFlags }{flags}))
 }
 
 //go:nosplit
 func (self class) GetBodyFlags() BodyFlags { //gd:XRBodyTracker.get_body_flags
-	var r_ret = gdextension.Call[BodyFlags](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyTracker.Bind_get_body_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BodyFlags](gd.ObjectChecked(self.AsObject()), methods.get_body_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -178,7 +215,7 @@ Sets flags about the validity of the tracking data for the given body joint.
 */
 //go:nosplit
 func (self class) SetJointFlags(joint Joint, flags JointFlags) { //gd:XRBodyTracker.set_joint_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyTracker.Bind_set_joint_flags), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_flags, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		joint Joint
 		flags JointFlags
 	}{joint, flags}))
@@ -189,7 +226,7 @@ Returns flags about the validity of the tracking data for the given body joint (
 */
 //go:nosplit
 func (self class) GetJointFlags(joint Joint) JointFlags { //gd:XRBodyTracker.get_joint_flags
-	var r_ret = gdextension.Call[JointFlags](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyTracker.Bind_get_joint_flags), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint Joint }{joint}))
+	var r_ret = gdextension.Call[JointFlags](gd.ObjectChecked(self.AsObject()), methods.get_joint_flags, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint Joint }{joint}))
 	var ret = r_ret
 	return ret
 }
@@ -199,7 +236,7 @@ Sets the transform for the given body joint.
 */
 //go:nosplit
 func (self class) SetJointTransform(joint Joint, transform Transform3D.BasisOrigin) { //gd:XRBodyTracker.set_joint_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyTracker.Bind_set_joint_transform), 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		joint     Joint
 		transform Transform3D.BasisOrigin
 	}{joint, gd.Transposed(transform)}))
@@ -210,7 +247,7 @@ Returns the transform for the given body joint.
 */
 //go:nosplit
 func (self class) GetJointTransform(joint Joint) Transform3D.BasisOrigin { //gd:XRBodyTracker.get_joint_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRBodyTracker.Bind_get_joint_transform), gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint Joint }{joint}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_joint_transform, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint Joint }{joint}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -255,9 +292,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRBodyTracker", func(ptr gd.Object) any {
-		return [1]gdclass.XRBodyTracker{*(*gdclass.XRBodyTracker)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("XRBodyTracker", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type BodyFlags int //gd:XRBodyTracker.BodyFlags

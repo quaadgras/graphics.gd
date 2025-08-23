@@ -79,6 +79,57 @@ The UV layout is arranged in 4 horizontal strips, top to bottom: 40% of the heig
 */
 type Instance [1]gdclass.TextMesh
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_horizontal_alignment                  gdextension.MethodForClass `hash:"2312603777"`
+	get_horizontal_alignment                  gdextension.MethodForClass `hash:"341400642"`
+	set_vertical_alignment                    gdextension.MethodForClass `hash:"1796458609"`
+	get_vertical_alignment                    gdextension.MethodForClass `hash:"3274884059"`
+	set_text                                  gdextension.MethodForClass `hash:"83702148"`
+	get_text                                  gdextension.MethodForClass `hash:"201670096"`
+	set_font                                  gdextension.MethodForClass `hash:"1262170328"`
+	get_font                                  gdextension.MethodForClass `hash:"3229501585"`
+	set_font_size                             gdextension.MethodForClass `hash:"1286410249"`
+	get_font_size                             gdextension.MethodForClass `hash:"3905245786"`
+	set_line_spacing                          gdextension.MethodForClass `hash:"373806689"`
+	get_line_spacing                          gdextension.MethodForClass `hash:"1740695150"`
+	set_autowrap_mode                         gdextension.MethodForClass `hash:"3289138044"`
+	get_autowrap_mode                         gdextension.MethodForClass `hash:"1549071663"`
+	set_justification_flags                   gdextension.MethodForClass `hash:"2877345813"`
+	get_justification_flags                   gdextension.MethodForClass `hash:"1583363614"`
+	set_depth                                 gdextension.MethodForClass `hash:"373806689"`
+	get_depth                                 gdextension.MethodForClass `hash:"1740695150"`
+	set_width                                 gdextension.MethodForClass `hash:"373806689"`
+	get_width                                 gdextension.MethodForClass `hash:"1740695150"`
+	set_pixel_size                            gdextension.MethodForClass `hash:"373806689"`
+	get_pixel_size                            gdextension.MethodForClass `hash:"1740695150"`
+	set_offset                                gdextension.MethodForClass `hash:"743155724"`
+	get_offset                                gdextension.MethodForClass `hash:"3341600327"`
+	set_curve_step                            gdextension.MethodForClass `hash:"373806689"`
+	get_curve_step                            gdextension.MethodForClass `hash:"1740695150"`
+	set_text_direction                        gdextension.MethodForClass `hash:"1418190634"`
+	get_text_direction                        gdextension.MethodForClass `hash:"2516697328"`
+	set_language                              gdextension.MethodForClass `hash:"83702148"`
+	get_language                              gdextension.MethodForClass `hash:"201670096"`
+	set_structured_text_bidi_override         gdextension.MethodForClass `hash:"55961453"`
+	get_structured_text_bidi_override         gdextension.MethodForClass `hash:"3385126229"`
+	set_structured_text_bidi_override_options gdextension.MethodForClass `hash:"381264803"`
+	get_structured_text_bidi_override_options gdextension.MethodForClass `hash:"3995934104"`
+	set_uppercase                             gdextension.MethodForClass `hash:"2586408642"`
+	is_uppercase                              gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("TextMesh")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -94,6 +145,20 @@ type Advanced = class
 type class [1]gdclass.TextMesh
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TextMesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TextMesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -103,7 +168,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TextMesh"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.TextMesh)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -256,218 +321,218 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:TextMesh.set_horizontal_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_horizontal_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:TextMesh.get_horizontal_alignment
-	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_horizontal_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVerticalAlignment(alignment GUI.VerticalAlignment) { //gd:TextMesh.set_vertical_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_vertical_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.VerticalAlignment }{alignment}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.VerticalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetVerticalAlignment() GUI.VerticalAlignment { //gd:TextMesh.get_vertical_alignment
-	var r_ret = gdextension.Call[GUI.VerticalAlignment](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_vertical_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.VerticalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_vertical_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetText(text String.Readable) { //gd:TextMesh.set_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
 }
 
 //go:nosplit
 func (self class) GetText() String.Readable { //gd:TextMesh.get_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFont(font [1]gdclass.Font) { //gd:TextMesh.set_font
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_font), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetFont() [1]gdclass.Font { //gd:TextMesh.get_font
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_font), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_font, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFontSize(font_size int64) { //gd:TextMesh.set_font_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_font_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
 }
 
 //go:nosplit
 func (self class) GetFontSize() int64 { //gd:TextMesh.get_font_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_font_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_font_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLineSpacing(line_spacing float64) { //gd:TextMesh.set_line_spacing
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_line_spacing), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ line_spacing float64 }{line_spacing}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_spacing, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ line_spacing float64 }{line_spacing}))
 }
 
 //go:nosplit
 func (self class) GetLineSpacing() float64 { //gd:TextMesh.get_line_spacing
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_line_spacing), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_spacing, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:TextMesh.set_autowrap_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_autowrap_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode}))
 }
 
 //go:nosplit
 func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:TextMesh.get_autowrap_mode
-	var r_ret = gdextension.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_autowrap_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJustificationFlags(justification_flags TextServer.JustificationFlag) { //gd:TextMesh.set_justification_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_justification_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ justification_flags TextServer.JustificationFlag }{justification_flags}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_justification_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ justification_flags TextServer.JustificationFlag }{justification_flags}))
 }
 
 //go:nosplit
 func (self class) GetJustificationFlags() TextServer.JustificationFlag { //gd:TextMesh.get_justification_flags
-	var r_ret = gdextension.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_justification_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), methods.get_justification_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepth(depth float64) { //gd:TextMesh.set_depth
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_depth), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ depth float64 }{depth}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ depth float64 }{depth}))
 }
 
 //go:nosplit
 func (self class) GetDepth() float64 { //gd:TextMesh.get_depth
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_depth), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWidth(width float64) { //gd:TextMesh.set_width
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_width), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ width float64 }{width}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ width float64 }{width}))
 }
 
 //go:nosplit
 func (self class) GetWidth() float64 { //gd:TextMesh.get_width
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_width), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPixelSize(pixel_size float64) { //gd:TextMesh.set_pixel_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_pixel_size), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pixel_size float64 }{pixel_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pixel_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pixel_size float64 }{pixel_size}))
 }
 
 //go:nosplit
 func (self class) GetPixelSize() float64 { //gd:TextMesh.get_pixel_size
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_pixel_size), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pixel_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffset(offset Vector2.XY) { //gd:TextMesh.set_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetOffset() Vector2.XY { //gd:TextMesh.get_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurveStep(curve_step float64) { //gd:TextMesh.set_curve_step
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_curve_step), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ curve_step float64 }{curve_step}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve_step, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ curve_step float64 }{curve_step}))
 }
 
 //go:nosplit
 func (self class) GetCurveStep() float64 { //gd:TextMesh.get_curve_step
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_curve_step), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_curve_step, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextDirection(direction TextServer.Direction) { //gd:TextMesh.set_text_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_text_direction), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction TextServer.Direction }{direction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_direction, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction TextServer.Direction }{direction}))
 }
 
 //go:nosplit
 func (self class) GetTextDirection() TextServer.Direction { //gd:TextMesh.get_text_direction
-	var r_ret = gdextension.Call[TextServer.Direction](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_text_direction), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.Direction](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:TextMesh.set_language
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_language), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:TextMesh.get_language
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:TextMesh.set_structured_text_bidi_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_structured_text_bidi_override), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		parser TextServer.StructuredTextParser
 	}{parser}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:TextMesh.get_structured_text_bidi_override
-	var r_ret = gdextension.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_structured_text_bidi_override), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:TextMesh.set_structured_text_bidi_override_options
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_structured_text_bidi_override_options), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:TextMesh.get_structured_text_bidi_override_options
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_get_structured_text_bidi_override_options), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUppercase(enable bool) { //gd:TextMesh.set_uppercase
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_set_uppercase), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uppercase, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUppercase() bool { //gd:TextMesh.is_uppercase
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextMesh.Bind_is_uppercase), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_uppercase, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -515,5 +580,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TextMesh", func(ptr gd.Object) any { return [1]gdclass.TextMesh{*(*gdclass.TextMesh)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("TextMesh", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

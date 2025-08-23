@@ -5,7 +5,6 @@ package gd
 import (
 	"fmt"
 	"reflect"
-	"runtime"
 	"strconv"
 	"strings"
 	"unsafe"
@@ -14,33 +13,27 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
+var Links []func()
+
 // Link needs to be called once for the API to load in all of the
 // dynamic function pointers. Typically, the link layer will take
 // care of this (and you won't need to call it yourself).
 func (Godot *API) Init(level GDExtensionInitializationLevel) {
 	if level == GDExtensionInitializationLevelScene {
 		Godot.linkBuiltin()
-		Godot.linkSingletons()
 		Godot.linkTypeset()
 		Godot.linkTypesetCreation()
-		Godot.linkMethods(false)
+		LinkMethods(pointers.Get(NewStringName("Object")), &object_methods, false)
+		LinkMethods(pointers.Get(NewStringName("RefCounted")), &refcounted_methods, false)
+		for _, fn := range Links {
+			fn()
+		}
 		Linked = true
 	}
 	if level == GDExtensionInitializationLevelEditor {
-		Godot.linkMethods(true)
 		for _, fn := range EditorStartupFunctions {
 			fn()
 		}
-	}
-}
-
-func (Godot *API) linkSingletons() {
-	rvalue := reflect.ValueOf(&Godot.Singletons).Elem()
-
-	for i := 0; i < rvalue.NumField(); i++ {
-		field := rvalue.Type().Field(i)
-		raw := pointers.Get(NewStringName(field.Name))
-		rvalue.Field(i).Set(reflect.ValueOf(pointers.Raw[StringName](raw)))
 	}
 }
 
@@ -66,59 +59,38 @@ func (Godot *API) linkBuiltin() {
 	}
 }
 
-// linkMethods, each field of cache.methods is a struct named after
-// the class it represents. Each field of that struct needs to be
-// filled in with a [MethodBind].
-func (Godot *API) linkMethods(editor bool) {
-	rvalue := reflect.ValueOf(&Godot.Methods).Elem()
-	for i := 0; i < rvalue.NumField(); i++ {
-		class := rvalue.Type().Field(i)
-		value := reflect.NewAt(class.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), class.Offset))
+func LinkMethods(className gdextension.StringName, methods any, editor bool) {
+	if editor {
+		EditorStartupFunctions = append(EditorStartupFunctions, func() {
+			LinkMethods(className, methods, false)
+		})
+		return
+	}
+	rvalue := reflect.ValueOf(methods)
+	for i := range rvalue.Elem().NumField() {
+		method := rvalue.Elem().Type().Field(i)
+		direct := reflect.NewAt(method.Type, unsafe.Add(rvalue.UnsafePointer(), method.Offset))
 
-		isEditorMethod := false
-		if strings.HasPrefix(class.Name, "Editor") {
-			isEditorMethod = true
-		}
-		switch class.Name {
-		case "FileSystemDock", "ScriptCreateDialog", "ScriptEditor", "ScriptEditorBase", "GridMapEditorPlugin":
-			isEditorMethod = true
-		case "JavaClassWrapper", "JavaScriptBridge", "JavaClass", "JavaObject":
-			continue
-		}
-		if runtime.GOOS == "js" && (strings.HasPrefix(class.Name, "OpenXR") || class.Name == "ResourceImporterOggVorbis") {
-			continue
-		}
-		if editor != isEditorMethod {
-			continue
-		}
+		method.Name = strings.TrimSuffix(method.Name, "_")
 
-		className := NewStringName(class.Name)
-		for j := 0; j < class.Type.NumField(); j++ {
-			method := class.Type.Field(j)
-			method.Name = strings.TrimSuffix(method.Name, "_")
-			method.Name = strings.TrimPrefix(method.Name, "Bind_")
-			direct := reflect.NewAt(method.Type, unsafe.Add(value.UnsafePointer(), method.Offset))
+		methodName := NewStringName(method.Name)
 
-			methodName := NewStringName(method.Name)
-
-			hash, err := strconv.ParseInt(method.Tag.Get("hash"), 10, 64)
-			if err != nil {
-				panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
-			}
-			bind := gdextension.Host.Objects.Method.Lookup(pointers.Get(className), pointers.Get(methodName), hash)
-			if bind == 0 {
-				fmt.Println("null bind ", class.Name, method.Name)
-			}
-			*(direct.Interface().(*gdextension.MethodForClass)) = bind
-
-			methodName.Free()
+		hash, err := strconv.ParseInt(method.Tag.Get("hash"), 10, 64)
+		if err != nil {
+			panic("gdextension.Link: invalid gd.API builtin function hash for " + method.Name + ": " + err.Error())
 		}
-		className.Free()
+		bind := gdextension.Host.Objects.Method.Lookup(className, pointers.Get(methodName), hash)
+		if bind == 0 {
+			fmt.Println("null bind ", pointers.Raw[StringName](className), method.Name)
+		}
+		*(direct.Interface().(*gdextension.MethodForClass)) = bind
+
+		methodName.Free()
 	}
 }
 
 func (Godot *API) linkTypeset() {
-	Godot.refCountedClassTag = Godot.ClassDB.GetClassTag(NewStringName("RefCounted"))
+	Godot.refCountedClassTag = gdextension.Host.Objects.Type(pointers.Get(NewStringName("RefCounted")))
 }
 
 // linkTypesetCreation, each field is an array of constructors.

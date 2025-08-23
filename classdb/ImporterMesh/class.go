@@ -76,6 +76,44 @@ Unlike its runtime counterpart, [ImporterMesh] contains mesh data before various
 */
 type Instance [1]gdclass.ImporterMesh
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	add_blend_shape                gdextension.MethodForClass `hash:"83702148"`
+	get_blend_shape_count          gdextension.MethodForClass `hash:"3905245786"`
+	get_blend_shape_name           gdextension.MethodForClass `hash:"844755477"`
+	set_blend_shape_mode           gdextension.MethodForClass `hash:"227983991"`
+	get_blend_shape_mode           gdextension.MethodForClass `hash:"836485024"`
+	add_surface                    gdextension.MethodForClass `hash:"1740448849"`
+	get_surface_count              gdextension.MethodForClass `hash:"3905245786"`
+	get_surface_primitive_type     gdextension.MethodForClass `hash:"3552571330"`
+	get_surface_name               gdextension.MethodForClass `hash:"844755477"`
+	get_surface_arrays             gdextension.MethodForClass `hash:"663333327"`
+	get_surface_blend_shape_arrays gdextension.MethodForClass `hash:"2345056839"`
+	get_surface_lod_count          gdextension.MethodForClass `hash:"923996154"`
+	get_surface_lod_size           gdextension.MethodForClass `hash:"3085491603"`
+	get_surface_lod_indices        gdextension.MethodForClass `hash:"1265128013"`
+	get_surface_material           gdextension.MethodForClass `hash:"2897466400"`
+	get_surface_format             gdextension.MethodForClass `hash:"923996154"`
+	set_surface_name               gdextension.MethodForClass `hash:"501894301"`
+	set_surface_material           gdextension.MethodForClass `hash:"3671737478"`
+	generate_lods                  gdextension.MethodForClass `hash:"2491878677"`
+	get_mesh                       gdextension.MethodForClass `hash:"1457573577"`
+	clear                          gdextension.MethodForClass `hash:"3218959716"`
+	set_lightmap_size_hint         gdextension.MethodForClass `hash:"1130785943"`
+	get_lightmap_size_hint         gdextension.MethodForClass `hash:"3690982128"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ImporterMesh")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.ImporterMesh
@@ -288,6 +326,20 @@ type Advanced = class
 type class [1]gdclass.ImporterMesh
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ImporterMesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ImporterMesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -297,7 +349,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ImporterMesh"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ImporterMesh)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -309,7 +361,7 @@ Adds name for a blend shape that will be added with [method add_surface]. Must b
 */
 //go:nosplit
 func (self class) AddBlendShape(name String.Readable) { //gd:ImporterMesh.add_blend_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_add_blend_shape), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_blend_shape, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 /*
@@ -317,7 +369,7 @@ Returns the number of blend shapes that the mesh holds.
 */
 //go:nosplit
 func (self class) GetBlendShapeCount() int64 { //gd:ImporterMesh.get_blend_shape_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_blend_shape_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -327,7 +379,7 @@ Returns the name of the blend shape at this index.
 */
 //go:nosplit
 func (self class) GetBlendShapeName(blend_shape_idx int64) String.Readable { //gd:ImporterMesh.get_blend_shape_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_blend_shape_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ blend_shape_idx int64 }{blend_shape_idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ blend_shape_idx int64 }{blend_shape_idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -337,7 +389,7 @@ Sets the blend shape mode to one of [enum Mesh.BlendShapeMode].
 */
 //go:nosplit
 func (self class) SetBlendShapeMode(mode Mesh.BlendShapeMode) { //gd:ImporterMesh.set_blend_shape_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_set_blend_shape_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mesh.BlendShapeMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_shape_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mesh.BlendShapeMode }{mode}))
 }
 
 /*
@@ -345,7 +397,7 @@ Returns the blend shape mode for this Mesh.
 */
 //go:nosplit
 func (self class) GetBlendShapeMode() Mesh.BlendShapeMode { //gd:ImporterMesh.get_blend_shape_mode
-	var r_ret = gdextension.Call[Mesh.BlendShapeMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_blend_shape_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Mesh.BlendShapeMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -361,7 +413,7 @@ The [param flags] argument is the bitwise OR of, as required: One value of [enum
 */
 //go:nosplit
 func (self class) AddSurface(primitive Mesh.PrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods Dictionary.Any, material [1]gdclass.Material, name String.Readable, flags int64) { //gd:ImporterMesh.add_surface
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_add_surface), 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeDictionary<<16)|(gdextension.SizeObject<<20)|(gdextension.SizeString<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_surface, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeDictionary<<16)|(gdextension.SizeObject<<20)|(gdextension.SizeString<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
 		primitive    Mesh.PrimitiveType
 		arrays       gdextension.Array
 		blend_shapes gdextension.Array
@@ -377,7 +429,7 @@ Returns the number of surfaces that the mesh holds.
 */
 //go:nosplit
 func (self class) GetSurfaceCount() int64 { //gd:ImporterMesh.get_surface_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_surface_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -387,7 +439,7 @@ Returns the primitive type of the requested surface (see [method add_surface]).
 */
 //go:nosplit
 func (self class) GetSurfacePrimitiveType(surface_idx int64) Mesh.PrimitiveType { //gd:ImporterMesh.get_surface_primitive_type
-	var r_ret = gdextension.Call[Mesh.PrimitiveType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_surface_primitive_type), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_idx int64 }{surface_idx}))
+	var r_ret = gdextension.Call[Mesh.PrimitiveType](gd.ObjectChecked(self.AsObject()), methods.get_surface_primitive_type, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_idx int64 }{surface_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -397,7 +449,7 @@ Gets the name assigned to this surface.
 */
 //go:nosplit
 func (self class) GetSurfaceName(surface_idx int64) String.Readable { //gd:ImporterMesh.get_surface_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_surface_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_idx int64 }{surface_idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_surface_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_idx int64 }{surface_idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -407,7 +459,7 @@ Returns the arrays for the vertices, normals, UVs, etc. that make up the request
 */
 //go:nosplit
 func (self class) GetSurfaceArrays(surface_idx int64) Array.Any { //gd:ImporterMesh.get_surface_arrays
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_surface_arrays), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_idx int64 }{surface_idx}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_surface_arrays, gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_idx int64 }{surface_idx}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -417,7 +469,7 @@ Returns a single set of blend shape arrays for the requested blend shape index f
 */
 //go:nosplit
 func (self class) GetSurfaceBlendShapeArrays(surface_idx int64, blend_shape_idx int64) Array.Any { //gd:ImporterMesh.get_surface_blend_shape_arrays
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_surface_blend_shape_arrays), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_surface_blend_shape_arrays, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		surface_idx     int64
 		blend_shape_idx int64
 	}{surface_idx, blend_shape_idx}))
@@ -430,7 +482,7 @@ Returns the number of lods that the mesh holds on a given surface.
 */
 //go:nosplit
 func (self class) GetSurfaceLodCount(surface_idx int64) int64 { //gd:ImporterMesh.get_surface_lod_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_surface_lod_count), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_idx int64 }{surface_idx}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_lod_count, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_idx int64 }{surface_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -440,7 +492,7 @@ Returns the screen ratio which activates a lod for a surface.
 */
 //go:nosplit
 func (self class) GetSurfaceLodSize(surface_idx int64, lod_idx int64) float64 { //gd:ImporterMesh.get_surface_lod_size
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_surface_lod_size), gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_surface_lod_size, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		surface_idx int64
 		lod_idx     int64
 	}{surface_idx, lod_idx}))
@@ -453,7 +505,7 @@ Returns the index buffer of a lod for a surface.
 */
 //go:nosplit
 func (self class) GetSurfaceLodIndices(surface_idx int64, lod_idx int64) Packed.Array[int32] { //gd:ImporterMesh.get_surface_lod_indices
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_surface_lod_indices), gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_surface_lod_indices, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		surface_idx int64
 		lod_idx     int64
 	}{surface_idx, lod_idx}))
@@ -466,7 +518,7 @@ Returns a [Material] in a given surface. Surface is rendered using this material
 */
 //go:nosplit
 func (self class) GetSurfaceMaterial(surface_idx int64) [1]gdclass.Material { //gd:ImporterMesh.get_surface_material
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_surface_material), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_idx int64 }{surface_idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_surface_material, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_idx int64 }{surface_idx}))
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
@@ -476,7 +528,7 @@ Returns the format of the surface that the mesh holds.
 */
 //go:nosplit
 func (self class) GetSurfaceFormat(surface_idx int64) int64 { //gd:ImporterMesh.get_surface_format
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_surface_format), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_idx int64 }{surface_idx}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_format, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surface_idx int64 }{surface_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -486,7 +538,7 @@ Sets a name for a given surface.
 */
 //go:nosplit
 func (self class) SetSurfaceName(surface_idx int64, name String.Readable) { //gd:ImporterMesh.set_surface_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_set_surface_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		surface_idx int64
 		name        gdextension.String
 	}{surface_idx, pointers.Get(gd.InternalString(name))}))
@@ -497,7 +549,7 @@ Sets a [Material] for a given surface. Surface will be rendered using this mater
 */
 //go:nosplit
 func (self class) SetSurfaceMaterial(surface_idx int64, material [1]gdclass.Material) { //gd:ImporterMesh.set_surface_material
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_set_surface_material), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		surface_idx int64
 		material    gdextension.Object
 	}{surface_idx, gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
@@ -512,7 +564,7 @@ The number of generated lods can be accessed using [method get_surface_lod_count
 */
 //go:nosplit
 func (self class) GenerateLods(normal_merge_angle float64, normal_split_angle float64, bone_transform_array Array.Any) { //gd:ImporterMesh.generate_lods
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_generate_lods), 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeArray<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate_lods, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeArray<<12), unsafe.Pointer(&struct {
 		normal_merge_angle   float64
 		normal_split_angle   float64
 		bone_transform_array gdextension.Array
@@ -526,7 +578,7 @@ If not yet cached and [param base_mesh] is provided, [param base_mesh] will be u
 */
 //go:nosplit
 func (self class) GetMesh(base_mesh [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:ImporterMesh.get_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_mesh), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ base_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(base_mesh[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ base_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(base_mesh[0].AsObject()))}))
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }
@@ -536,7 +588,7 @@ Removes all surfaces and blend shapes from this [ImporterMesh].
 */
 //go:nosplit
 func (self class) Clear() { //gd:ImporterMesh.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -544,7 +596,7 @@ Sets the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
 //go:nosplit
 func (self class) SetLightmapSizeHint(size Vector2i.XY) { //gd:ImporterMesh.set_lightmap_size_hint
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_set_lightmap_size_hint), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lightmap_size_hint, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
 }
 
 /*
@@ -552,7 +604,7 @@ Returns the size hint of this mesh for lightmap-unwrapping in UV-space.
 */
 //go:nosplit
 func (self class) GetLightmapSizeHint() Vector2i.XY { //gd:ImporterMesh.get_lightmap_size_hint
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImporterMesh.Bind_get_lightmap_size_hint), gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_lightmap_size_hint, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -588,7 +640,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ImporterMesh", func(ptr gd.Object) any {
-		return [1]gdclass.ImporterMesh{*(*gdclass.ImporterMesh)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ImporterMesh", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

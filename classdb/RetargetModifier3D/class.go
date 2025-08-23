@@ -76,6 +76,33 @@ This modifier rewrites the pose of the child skeleton directly in the parent ske
 */
 type Instance [1]gdclass.RetargetModifier3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_profile          gdextension.MethodForClass `hash:"3870374136"`
+	get_profile          gdextension.MethodForClass `hash:"4291782652"`
+	set_use_global_pose  gdextension.MethodForClass `hash:"2586408642"`
+	is_using_global_pose gdextension.MethodForClass `hash:"36873697"`
+	set_enable_flags     gdextension.MethodForClass `hash:"2687954213"`
+	get_enable_flags     gdextension.MethodForClass `hash:"358995420"`
+	set_position_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_position_enabled  gdextension.MethodForClass `hash:"36873697"`
+	set_rotation_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_rotation_enabled  gdextension.MethodForClass `hash:"36873697"`
+	set_scale_enabled    gdextension.MethodForClass `hash:"2586408642"`
+	is_scale_enabled     gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("RetargetModifier3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -133,6 +160,20 @@ type Advanced = class
 type class [1]gdclass.RetargetModifier3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RetargetModifier3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RetargetModifier3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -142,7 +183,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RetargetModifier3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RetargetModifier3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -174,36 +215,36 @@ func (self Instance) SetEnable(value TransformFlag) {
 
 //go:nosplit
 func (self class) SetProfile(profile [1]gdclass.SkeletonProfile) { //gd:RetargetModifier3D.set_profile
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RetargetModifier3D.Bind_set_profile), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(profile[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_profile, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(profile[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetProfile() [1]gdclass.SkeletonProfile { //gd:RetargetModifier3D.get_profile
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RetargetModifier3D.Bind_get_profile), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_profile, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SkeletonProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonProfile](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseGlobalPose(use_global_pose bool) { //gd:RetargetModifier3D.set_use_global_pose
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RetargetModifier3D.Bind_set_use_global_pose), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_global_pose bool }{use_global_pose}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_global_pose, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_global_pose bool }{use_global_pose}))
 }
 
 //go:nosplit
 func (self class) IsUsingGlobalPose() bool { //gd:RetargetModifier3D.is_using_global_pose
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RetargetModifier3D.Bind_is_using_global_pose), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_global_pose, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableFlags(enable_flags TransformFlag) { //gd:RetargetModifier3D.set_enable_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RetargetModifier3D.Bind_set_enable_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ enable_flags TransformFlag }{enable_flags}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ enable_flags TransformFlag }{enable_flags}))
 }
 
 //go:nosplit
 func (self class) GetEnableFlags() TransformFlag { //gd:RetargetModifier3D.get_enable_flags
-	var r_ret = gdextension.Call[TransformFlag](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RetargetModifier3D.Bind_get_enable_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TransformFlag](gd.ObjectChecked(self.AsObject()), methods.get_enable_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -213,7 +254,7 @@ Sets [constant TRANSFORM_FLAG_POSITION] into [member enable].
 */
 //go:nosplit
 func (self class) SetPositionEnabled(enabled bool) { //gd:RetargetModifier3D.set_position_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RetargetModifier3D.Bind_set_position_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 /*
@@ -221,7 +262,7 @@ Returns [code]true[/code] if [member enable] has [constant TRANSFORM_FLAG_POSITI
 */
 //go:nosplit
 func (self class) IsPositionEnabled() bool { //gd:RetargetModifier3D.is_position_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RetargetModifier3D.Bind_is_position_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_position_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -231,7 +272,7 @@ Sets [constant TRANSFORM_FLAG_ROTATION] into [member enable].
 */
 //go:nosplit
 func (self class) SetRotationEnabled(enabled bool) { //gd:RetargetModifier3D.set_rotation_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RetargetModifier3D.Bind_set_rotation_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 /*
@@ -239,7 +280,7 @@ Returns [code]true[/code] if [member enable] has [constant TRANSFORM_FLAG_ROTATI
 */
 //go:nosplit
 func (self class) IsRotationEnabled() bool { //gd:RetargetModifier3D.is_rotation_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RetargetModifier3D.Bind_is_rotation_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rotation_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -249,7 +290,7 @@ Sets [constant TRANSFORM_FLAG_SCALE] into [member enable].
 */
 //go:nosplit
 func (self class) SetScaleEnabled(enabled bool) { //gd:RetargetModifier3D.set_scale_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RetargetModifier3D.Bind_set_scale_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 /*
@@ -257,7 +298,7 @@ Returns [code]true[/code] if [member enable] has [constant TRANSFORM_FLAG_SCALE]
 */
 //go:nosplit
 func (self class) IsScaleEnabled() bool { //gd:RetargetModifier3D.is_scale_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RetargetModifier3D.Bind_is_scale_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scale_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -294,9 +335,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RetargetModifier3D", func(ptr gd.Object) any {
-		return [1]gdclass.RetargetModifier3D{*(*gdclass.RetargetModifier3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("RetargetModifier3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type TransformFlag int //gd:RetargetModifier3D.TransformFlag

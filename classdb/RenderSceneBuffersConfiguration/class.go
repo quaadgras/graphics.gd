@@ -72,6 +72,41 @@ This configuration object is created and populated by the render engine on a vie
 */
 type Instance [1]gdclass.RenderSceneBuffersConfiguration
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_render_target               gdextension.MethodForClass `hash:"2944877500"`
+	set_render_target               gdextension.MethodForClass `hash:"2722037293"`
+	get_internal_size               gdextension.MethodForClass `hash:"3690982128"`
+	set_internal_size               gdextension.MethodForClass `hash:"1130785943"`
+	get_target_size                 gdextension.MethodForClass `hash:"3690982128"`
+	set_target_size                 gdextension.MethodForClass `hash:"1130785943"`
+	get_view_count                  gdextension.MethodForClass `hash:"3905245786"`
+	set_view_count                  gdextension.MethodForClass `hash:"1286410249"`
+	get_scaling_3d_mode             gdextension.MethodForClass `hash:"976778074"`
+	set_scaling_3d_mode             gdextension.MethodForClass `hash:"447477857"`
+	get_msaa_3d                     gdextension.MethodForClass `hash:"3109158617"`
+	set_msaa_3d                     gdextension.MethodForClass `hash:"3952630748"`
+	get_screen_space_aa             gdextension.MethodForClass `hash:"641513172"`
+	set_screen_space_aa             gdextension.MethodForClass `hash:"139543108"`
+	get_fsr_sharpness               gdextension.MethodForClass `hash:"1740695150"`
+	set_fsr_sharpness               gdextension.MethodForClass `hash:"373806689"`
+	get_texture_mipmap_bias         gdextension.MethodForClass `hash:"1740695150"`
+	set_texture_mipmap_bias         gdextension.MethodForClass `hash:"373806689"`
+	get_anisotropic_filtering_level gdextension.MethodForClass `hash:"1617414954"`
+	set_anisotropic_filtering_level gdextension.MethodForClass `hash:"2559658741"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("RenderSceneBuffersConfiguration")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -87,6 +122,20 @@ type Advanced = class
 type class [1]gdclass.RenderSceneBuffersConfiguration
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RenderSceneBuffersConfiguration)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RenderSceneBuffersConfiguration)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -96,7 +145,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RenderSceneBuffersConfiguration"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RenderSceneBuffersConfiguration)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -185,126 +234,126 @@ func (self Instance) SetAnisotropicFilteringLevel(value RenderingServer.Viewport
 
 //go:nosplit
 func (self class) GetRenderTarget() RID.Any { //gd:RenderSceneBuffersConfiguration.get_render_target
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_render_target), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_render_target, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRenderTarget(render_target RID.Any) { //gd:RenderSceneBuffersConfiguration.set_render_target
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_set_render_target), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ render_target RID.Any }{render_target}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_target, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ render_target RID.Any }{render_target}))
 }
 
 //go:nosplit
 func (self class) GetInternalSize() Vector2i.XY { //gd:RenderSceneBuffersConfiguration.get_internal_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_internal_size), gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_internal_size, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInternalSize(internal_size Vector2i.XY) { //gd:RenderSceneBuffersConfiguration.set_internal_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_set_internal_size), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ internal_size Vector2i.XY }{internal_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_internal_size, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ internal_size Vector2i.XY }{internal_size}))
 }
 
 //go:nosplit
 func (self class) GetTargetSize() Vector2i.XY { //gd:RenderSceneBuffersConfiguration.get_target_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_target_size), gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_size, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTargetSize(target_size Vector2i.XY) { //gd:RenderSceneBuffersConfiguration.set_target_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_set_target_size), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ target_size Vector2i.XY }{target_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_size, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ target_size Vector2i.XY }{target_size}))
 }
 
 //go:nosplit
 func (self class) GetViewCount() int64 { //gd:RenderSceneBuffersConfiguration.get_view_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_view_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetViewCount(view_count int64) { //gd:RenderSceneBuffersConfiguration.set_view_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_set_view_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ view_count int64 }{view_count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_view_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ view_count int64 }{view_count}))
 }
 
 //go:nosplit
 func (self class) GetScaling3dMode() RenderingServer.ViewportScaling3DMode { //gd:RenderSceneBuffersConfiguration.get_scaling_3d_mode
-	var r_ret = gdextension.Call[RenderingServer.ViewportScaling3DMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_scaling_3d_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RenderingServer.ViewportScaling3DMode](gd.ObjectChecked(self.AsObject()), methods.get_scaling_3d_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScaling3dMode(scaling_3d_mode RenderingServer.ViewportScaling3DMode) { //gd:RenderSceneBuffersConfiguration.set_scaling_3d_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_set_scaling_3d_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scaling_3d_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		scaling_3d_mode RenderingServer.ViewportScaling3DMode
 	}{scaling_3d_mode}))
 }
 
 //go:nosplit
 func (self class) GetMsaa3d() RenderingServer.ViewportMSAA { //gd:RenderSceneBuffersConfiguration.get_msaa_3d
-	var r_ret = gdextension.Call[RenderingServer.ViewportMSAA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_msaa_3d), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RenderingServer.ViewportMSAA](gd.ObjectChecked(self.AsObject()), methods.get_msaa_3d, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMsaa3d(msaa_3d RenderingServer.ViewportMSAA) { //gd:RenderSceneBuffersConfiguration.set_msaa_3d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_set_msaa_3d), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msaa_3d RenderingServer.ViewportMSAA }{msaa_3d}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_msaa_3d, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msaa_3d RenderingServer.ViewportMSAA }{msaa_3d}))
 }
 
 //go:nosplit
 func (self class) GetScreenSpaceAa() RenderingServer.ViewportScreenSpaceAA { //gd:RenderSceneBuffersConfiguration.get_screen_space_aa
-	var r_ret = gdextension.Call[RenderingServer.ViewportScreenSpaceAA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_screen_space_aa), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RenderingServer.ViewportScreenSpaceAA](gd.ObjectChecked(self.AsObject()), methods.get_screen_space_aa, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScreenSpaceAa(screen_space_aa RenderingServer.ViewportScreenSpaceAA) { //gd:RenderSceneBuffersConfiguration.set_screen_space_aa
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_set_screen_space_aa), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_space_aa, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		screen_space_aa RenderingServer.ViewportScreenSpaceAA
 	}{screen_space_aa}))
 }
 
 //go:nosplit
 func (self class) GetFsrSharpness() float64 { //gd:RenderSceneBuffersConfiguration.get_fsr_sharpness
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_fsr_sharpness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fsr_sharpness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFsrSharpness(fsr_sharpness float64) { //gd:RenderSceneBuffersConfiguration.set_fsr_sharpness
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_set_fsr_sharpness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fsr_sharpness float64 }{fsr_sharpness}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fsr_sharpness, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fsr_sharpness float64 }{fsr_sharpness}))
 }
 
 //go:nosplit
 func (self class) GetTextureMipmapBias() float64 { //gd:RenderSceneBuffersConfiguration.get_texture_mipmap_bias
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_texture_mipmap_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texture_mipmap_bias, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureMipmapBias(texture_mipmap_bias float64) { //gd:RenderSceneBuffersConfiguration.set_texture_mipmap_bias
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_set_texture_mipmap_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ texture_mipmap_bias float64 }{texture_mipmap_bias}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_mipmap_bias, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ texture_mipmap_bias float64 }{texture_mipmap_bias}))
 }
 
 //go:nosplit
 func (self class) GetAnisotropicFilteringLevel() RenderingServer.ViewportAnisotropicFiltering { //gd:RenderSceneBuffersConfiguration.get_anisotropic_filtering_level
-	var r_ret = gdextension.Call[RenderingServer.ViewportAnisotropicFiltering](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_get_anisotropic_filtering_level), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RenderingServer.ViewportAnisotropicFiltering](gd.ObjectChecked(self.AsObject()), methods.get_anisotropic_filtering_level, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAnisotropicFilteringLevel(anisotropic_filtering_level RenderingServer.ViewportAnisotropicFiltering) { //gd:RenderSceneBuffersConfiguration.set_anisotropic_filtering_level
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneBuffersConfiguration.Bind_set_anisotropic_filtering_level), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anisotropic_filtering_level, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		anisotropic_filtering_level RenderingServer.ViewportAnisotropicFiltering
 	}{anisotropic_filtering_level}))
 }
@@ -339,7 +388,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RenderSceneBuffersConfiguration", func(ptr gd.Object) any {
-		return [1]gdclass.RenderSceneBuffersConfiguration{*(*gdclass.RenderSceneBuffersConfiguration)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("RenderSceneBuffersConfiguration", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

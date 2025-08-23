@@ -73,6 +73,29 @@ An OpenXR composition layer that allows rendering a [SubViewport] on an internal
 */
 type Instance [1]gdclass.OpenXRCompositionLayerCylinder
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_radius            gdextension.MethodForClass `hash:"373806689"`
+	get_radius            gdextension.MethodForClass `hash:"1740695150"`
+	set_aspect_ratio      gdextension.MethodForClass `hash:"373806689"`
+	get_aspect_ratio      gdextension.MethodForClass `hash:"1740695150"`
+	set_central_angle     gdextension.MethodForClass `hash:"373806689"`
+	get_central_angle     gdextension.MethodForClass `hash:"1740695150"`
+	set_fallback_segments gdextension.MethodForClass `hash:"1286410249"`
+	get_fallback_segments gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("OpenXRCompositionLayerCylinder")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +111,20 @@ type Advanced = class
 type class [1]gdclass.OpenXRCompositionLayerCylinder
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OpenXRCompositionLayerCylinder)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OpenXRCompositionLayerCylinder)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +134,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("OpenXRCompositionLayerCylinder"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.OpenXRCompositionLayerCylinder)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -137,48 +174,48 @@ func (self Instance) SetFallbackSegments(value int) {
 
 //go:nosplit
 func (self class) SetRadius(radius float64) { //gd:OpenXRCompositionLayerCylinder.set_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerCylinder.Bind_set_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:OpenXRCompositionLayerCylinder.get_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerCylinder.Bind_get_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAspectRatio(aspect_ratio float64) { //gd:OpenXRCompositionLayerCylinder.set_aspect_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerCylinder.Bind_set_aspect_ratio), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ aspect_ratio float64 }{aspect_ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aspect_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ aspect_ratio float64 }{aspect_ratio}))
 }
 
 //go:nosplit
 func (self class) GetAspectRatio() float64 { //gd:OpenXRCompositionLayerCylinder.get_aspect_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerCylinder.Bind_get_aspect_ratio), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_aspect_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCentralAngle(angle float64) { //gd:OpenXRCompositionLayerCylinder.set_central_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerCylinder.Bind_set_central_angle), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_central_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 //go:nosplit
 func (self class) GetCentralAngle() float64 { //gd:OpenXRCompositionLayerCylinder.get_central_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerCylinder.Bind_get_central_angle), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_central_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFallbackSegments(segments int64) { //gd:OpenXRCompositionLayerCylinder.set_fallback_segments
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerCylinder.Bind_set_fallback_segments), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ segments int64 }{segments}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_segments, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ segments int64 }{segments}))
 }
 
 //go:nosplit
 func (self class) GetFallbackSegments() int64 { //gd:OpenXRCompositionLayerCylinder.get_fallback_segments
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRCompositionLayerCylinder.Bind_get_fallback_segments), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_segments, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -221,7 +258,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("OpenXRCompositionLayerCylinder", func(ptr gd.Object) any {
-		return [1]gdclass.OpenXRCompositionLayerCylinder{*(*gdclass.OpenXRCompositionLayerCylinder)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("OpenXRCompositionLayerCylinder", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -77,6 +77,23 @@ This is the default binding modifier editor used in the OpenXR action map.
 */
 type Instance [1]gdclass.OpenXRBindingModifierEditor
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_binding_modifier gdextension.MethodForClass `hash:"2930765082"`
+	setup                gdextension.MethodForClass `hash:"1284787389"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("OpenXRBindingModifierEditor")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -106,6 +123,20 @@ type Advanced = class
 type class [1]gdclass.OpenXRBindingModifierEditor
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OpenXRBindingModifierEditor)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OpenXRBindingModifierEditor)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -115,7 +146,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("OpenXRBindingModifierEditor"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.OpenXRBindingModifierEditor)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -126,7 +157,7 @@ Returns the [OpenXRBindingModifier] currently being edited.
 */
 //go:nosplit
 func (self class) GetBindingModifier() [1]gdclass.OpenXRBindingModifier { //gd:OpenXRBindingModifierEditor.get_binding_modifier
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRBindingModifierEditor.Bind_get_binding_modifier), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_binding_modifier, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.OpenXRBindingModifier{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRBindingModifier](r_ret)}
 	return ret
 }
@@ -136,7 +167,7 @@ Setup this editor for the provided [param action_map] and [param binding_modifie
 */
 //go:nosplit
 func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, binding_modifier [1]gdclass.OpenXRBindingModifier) { //gd:OpenXRBindingModifierEditor.setup
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRBindingModifierEditor.Bind_setup), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action_map       gdextension.Object
 		binding_modifier gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(action_map[0].AsObject())), gdextension.Object(gd.ObjectChecked(binding_modifier[0].AsObject()))}))
@@ -200,7 +231,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("OpenXRBindingModifierEditor", func(ptr gd.Object) any {
-		return [1]gdclass.OpenXRBindingModifierEditor{*(*gdclass.OpenXRBindingModifierEditor)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("OpenXRBindingModifierEditor", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

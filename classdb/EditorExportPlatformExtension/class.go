@@ -77,6 +77,25 @@ To use [EditorExportPlatform], register it using the [method EditorPlugin.add_ex
 */
 type Instance [1]gdclass.EditorExportPlatformExtension
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_config_error             gdextension.MethodForClass `hash:"3089850668"`
+	get_config_error             gdextension.MethodForClass `hash:"201670096"`
+	set_config_missing_templates gdextension.MethodForClass `hash:"1695273946"`
+	get_config_missing_templates gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorExportPlatformExtension")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -849,6 +868,20 @@ type Advanced = class
 type class [1]gdclass.EditorExportPlatformExtension
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorExportPlatformExtension)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorExportPlatformExtension)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -858,7 +891,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorExportPlatformExtension"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorExportPlatformExtension)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -1430,7 +1463,7 @@ Sets current configuration error message text. This method should be called only
 */
 //go:nosplit
 func (self class) SetConfigError(error_text String.Readable) { //gd:EditorExportPlatformExtension.set_config_error
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatformExtension.Bind_set_config_error), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ error_text gdextension.String }{pointers.Get(gd.InternalString(error_text))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_config_error, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ error_text gdextension.String }{pointers.Get(gd.InternalString(error_text))}))
 }
 
 /*
@@ -1438,7 +1471,7 @@ Returns current configuration error message text. This method should be called o
 */
 //go:nosplit
 func (self class) GetConfigError() String.Readable { //gd:EditorExportPlatformExtension.get_config_error
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatformExtension.Bind_get_config_error), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_config_error, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1448,7 +1481,7 @@ Set to [code]true[/code] is export templates are missing from the current config
 */
 //go:nosplit
 func (self class) SetConfigMissingTemplates(missing_templates bool) { //gd:EditorExportPlatformExtension.set_config_missing_templates
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatformExtension.Bind_set_config_missing_templates), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ missing_templates bool }{missing_templates}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_config_missing_templates, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ missing_templates bool }{missing_templates}))
 }
 
 /*
@@ -1456,7 +1489,7 @@ Returns [code]true[/code] is export templates are missing from the current confi
 */
 //go:nosplit
 func (self class) GetConfigMissingTemplates() bool { //gd:EditorExportPlatformExtension.get_config_missing_templates
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorExportPlatformExtension.Bind_get_config_missing_templates), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_config_missing_templates, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1620,7 +1653,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorExportPlatformExtension", func(ptr gd.Object) any {
-		return [1]gdclass.EditorExportPlatformExtension{*(*gdclass.EditorExportPlatformExtension)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorExportPlatformExtension", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

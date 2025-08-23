@@ -74,6 +74,30 @@ A container that arranges its child controls horizontally or vertically and wrap
 */
 type Instance [1]gdclass.FlowContainer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_line_count          gdextension.MethodForClass `hash:"3905245786"`
+	set_alignment           gdextension.MethodForClass `hash:"575250951"`
+	get_alignment           gdextension.MethodForClass `hash:"3749743559"`
+	set_last_wrap_alignment gdextension.MethodForClass `hash:"2899697495"`
+	get_last_wrap_alignment gdextension.MethodForClass `hash:"3743456014"`
+	set_vertical            gdextension.MethodForClass `hash:"2586408642"`
+	is_vertical             gdextension.MethodForClass `hash:"36873697"`
+	set_reverse_fill        gdextension.MethodForClass `hash:"2586408642"`
+	is_reverse_fill         gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("FlowContainer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -96,6 +120,20 @@ type Advanced = class
 type class [1]gdclass.FlowContainer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.FlowContainer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.FlowContainer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -105,7 +143,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("FlowContainer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.FlowContainer)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -148,55 +186,55 @@ Returns the current line count.
 */
 //go:nosplit
 func (self class) GetLineCount() int64 { //gd:FlowContainer.get_line_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FlowContainer.Bind_get_line_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlignment(alignment AlignmentMode) { //gd:FlowContainer.set_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FlowContainer.Bind_set_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment AlignmentMode }{alignment}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment AlignmentMode }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetAlignment() AlignmentMode { //gd:FlowContainer.get_alignment
-	var r_ret = gdextension.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FlowContainer.Bind_get_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLastWrapAlignment(last_wrap_alignment LastWrapAlignmentMode) { //gd:FlowContainer.set_last_wrap_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FlowContainer.Bind_set_last_wrap_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ last_wrap_alignment LastWrapAlignmentMode }{last_wrap_alignment}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_last_wrap_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ last_wrap_alignment LastWrapAlignmentMode }{last_wrap_alignment}))
 }
 
 //go:nosplit
 func (self class) GetLastWrapAlignment() LastWrapAlignmentMode { //gd:FlowContainer.get_last_wrap_alignment
-	var r_ret = gdextension.Call[LastWrapAlignmentMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FlowContainer.Bind_get_last_wrap_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[LastWrapAlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_last_wrap_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVertical(vertical bool) { //gd:FlowContainer.set_vertical
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FlowContainer.Bind_set_vertical), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ vertical bool }{vertical}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ vertical bool }{vertical}))
 }
 
 //go:nosplit
 func (self class) IsVertical() bool { //gd:FlowContainer.is_vertical
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FlowContainer.Bind_is_vertical), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetReverseFill(reverse_fill bool) { //gd:FlowContainer.set_reverse_fill
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FlowContainer.Bind_set_reverse_fill), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ reverse_fill bool }{reverse_fill}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reverse_fill, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ reverse_fill bool }{reverse_fill}))
 }
 
 //go:nosplit
 func (self class) IsReverseFill() bool { //gd:FlowContainer.is_reverse_fill
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FlowContainer.Bind_is_reverse_fill), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_reverse_fill, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -240,9 +278,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("FlowContainer", func(ptr gd.Object) any {
-		return [1]gdclass.FlowContainer{*(*gdclass.FlowContainer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("FlowContainer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type AlignmentMode int //gd:FlowContainer.AlignmentMode

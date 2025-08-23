@@ -79,6 +79,33 @@ The [PhysicalBone2D] node is a [RigidBody2D]-based node that can be used to make
 */
 type Instance [1]gdclass.PhysicalBone2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_joint                       gdextension.MethodForClass `hash:"3582132112"`
+	get_auto_configure_joint        gdextension.MethodForClass `hash:"36873697"`
+	set_auto_configure_joint        gdextension.MethodForClass `hash:"2586408642"`
+	set_simulate_physics            gdextension.MethodForClass `hash:"2586408642"`
+	get_simulate_physics            gdextension.MethodForClass `hash:"36873697"`
+	is_simulating_physics           gdextension.MethodForClass `hash:"36873697"`
+	set_bone2d_nodepath             gdextension.MethodForClass `hash:"1348162250"`
+	get_bone2d_nodepath             gdextension.MethodForClass `hash:"4075236667"`
+	set_bone2d_index                gdextension.MethodForClass `hash:"1286410249"`
+	get_bone2d_index                gdextension.MethodForClass `hash:"3905245786"`
+	set_follow_bone_when_simulating gdextension.MethodForClass `hash:"2586408642"`
+	get_follow_bone_when_simulating gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PhysicalBone2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -108,6 +135,20 @@ type Advanced = class
 type class [1]gdclass.PhysicalBone2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PhysicalBone2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PhysicalBone2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -117,7 +158,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PhysicalBone2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.PhysicalBone2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -168,31 +209,31 @@ Returns the first [Joint2D] child node, if one exists. This is mainly a helper f
 */
 //go:nosplit
 func (self class) GetJoint() [1]gdclass.Joint2D { //gd:PhysicalBone2D.get_joint
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone2D.Bind_get_joint), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_joint, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Joint2D{gd.PointerMustAssertInstanceID[gdclass.Joint2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetAutoConfigureJoint() bool { //gd:PhysicalBone2D.get_auto_configure_joint
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone2D.Bind_get_auto_configure_joint), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_auto_configure_joint, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoConfigureJoint(auto_configure_joint bool) { //gd:PhysicalBone2D.set_auto_configure_joint
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone2D.Bind_set_auto_configure_joint), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ auto_configure_joint bool }{auto_configure_joint}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_configure_joint, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ auto_configure_joint bool }{auto_configure_joint}))
 }
 
 //go:nosplit
 func (self class) SetSimulatePhysics(simulate_physics bool) { //gd:PhysicalBone2D.set_simulate_physics
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone2D.Bind_set_simulate_physics), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ simulate_physics bool }{simulate_physics}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simulate_physics, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ simulate_physics bool }{simulate_physics}))
 }
 
 //go:nosplit
 func (self class) GetSimulatePhysics() bool { //gd:PhysicalBone2D.get_simulate_physics
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone2D.Bind_get_simulate_physics), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_simulate_physics, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -202,43 +243,43 @@ Returns a boolean that indicates whether the [PhysicalBone2D] is running and sim
 */
 //go:nosplit
 func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBone2D.is_simulating_physics
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone2D.Bind_is_simulating_physics), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBone2dNodepath(nodepath Path.ToNode) { //gd:PhysicalBone2D.set_bone2d_nodepath
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone2D.Bind_set_bone2d_nodepath), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(nodepath))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone2d_nodepath, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(nodepath))}))
 }
 
 //go:nosplit
 func (self class) GetBone2dNodepath() Path.ToNode { //gd:PhysicalBone2D.get_bone2d_nodepath
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone2D.Bind_get_bone2d_nodepath), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_bone2d_nodepath, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBone2dIndex(bone_index int64) { //gd:PhysicalBone2D.set_bone2d_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone2D.Bind_set_bone2d_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_index int64 }{bone_index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone2d_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_index int64 }{bone_index}))
 }
 
 //go:nosplit
 func (self class) GetBone2dIndex() int64 { //gd:PhysicalBone2D.get_bone2d_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone2D.Bind_get_bone2d_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone2d_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFollowBoneWhenSimulating(follow_bone bool) { //gd:PhysicalBone2D.set_follow_bone_when_simulating
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone2D.Bind_set_follow_bone_when_simulating), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ follow_bone bool }{follow_bone}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_bone_when_simulating, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ follow_bone bool }{follow_bone}))
 }
 
 //go:nosplit
 func (self class) GetFollowBoneWhenSimulating() bool { //gd:PhysicalBone2D.get_follow_bone_when_simulating
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBone2D.Bind_get_follow_bone_when_simulating), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_follow_bone_when_simulating, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -298,7 +339,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicalBone2D", func(ptr gd.Object) any {
-		return [1]gdclass.PhysicalBone2D{*(*gdclass.PhysicalBone2D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("PhysicalBone2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

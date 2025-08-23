@@ -73,6 +73,31 @@ Class representing a spherical [PrimitiveMesh].
 */
 type Instance [1]gdclass.SphereMesh
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_radius          gdextension.MethodForClass `hash:"373806689"`
+	get_radius          gdextension.MethodForClass `hash:"1740695150"`
+	set_height          gdextension.MethodForClass `hash:"373806689"`
+	get_height          gdextension.MethodForClass `hash:"1740695150"`
+	set_radial_segments gdextension.MethodForClass `hash:"1286410249"`
+	get_radial_segments gdextension.MethodForClass `hash:"3905245786"`
+	set_rings           gdextension.MethodForClass `hash:"1286410249"`
+	get_rings           gdextension.MethodForClass `hash:"3905245786"`
+	set_is_hemisphere   gdextension.MethodForClass `hash:"2586408642"`
+	get_is_hemisphere   gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("SphereMesh")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +113,20 @@ type Advanced = class
 type class [1]gdclass.SphereMesh
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SphereMesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SphereMesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +136,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SphereMesh"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SphereMesh)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -146,60 +185,60 @@ func (self Instance) SetIsHemisphere(value bool) {
 
 //go:nosplit
 func (self class) SetRadius(radius float64) { //gd:SphereMesh.set_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SphereMesh.Bind_set_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:SphereMesh.get_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SphereMesh.Bind_get_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeight(height float64) { //gd:SphereMesh.set_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SphereMesh.Bind_set_height), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height float64 }{height}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height float64 }{height}))
 }
 
 //go:nosplit
 func (self class) GetHeight() float64 { //gd:SphereMesh.get_height
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SphereMesh.Bind_get_height), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRadialSegments(radial_segments int64) { //gd:SphereMesh.set_radial_segments
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SphereMesh.Bind_set_radial_segments), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ radial_segments int64 }{radial_segments}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_segments, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ radial_segments int64 }{radial_segments}))
 }
 
 //go:nosplit
 func (self class) GetRadialSegments() int64 { //gd:SphereMesh.get_radial_segments
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SphereMesh.Bind_get_radial_segments), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_radial_segments, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRings(rings int64) { //gd:SphereMesh.set_rings
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SphereMesh.Bind_set_rings), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ rings int64 }{rings}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rings, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ rings int64 }{rings}))
 }
 
 //go:nosplit
 func (self class) GetRings() int64 { //gd:SphereMesh.get_rings
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SphereMesh.Bind_get_rings), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rings, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIsHemisphere(is_hemisphere bool) { //gd:SphereMesh.set_is_hemisphere
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SphereMesh.Bind_set_is_hemisphere), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ is_hemisphere bool }{is_hemisphere}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_hemisphere, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ is_hemisphere bool }{is_hemisphere}))
 }
 
 //go:nosplit
 func (self class) GetIsHemisphere() bool { //gd:SphereMesh.get_is_hemisphere
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SphereMesh.Bind_get_is_hemisphere), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_hemisphere, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -247,5 +286,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SphereMesh", func(ptr gd.Object) any { return [1]gdclass.SphereMesh{*(*gdclass.SphereMesh)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("SphereMesh", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -12,7 +12,6 @@ import (
 type cache struct {
 	builtin builtin
 	typeset typeset
-	Methods methods
 }
 
 type ObjectID uint64

@@ -74,6 +74,35 @@ It is also possible to extend or replace the default implementation via scriptin
 */
 type Instance [1]gdclass.MultiplayerAPI
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	has_multiplayer_peer        gdextension.MethodForClass `hash:"2240911060"`
+	get_multiplayer_peer        gdextension.MethodForClass `hash:"3223692825"`
+	set_multiplayer_peer        gdextension.MethodForClass `hash:"3694835298"`
+	get_unique_id               gdextension.MethodForClass `hash:"2455072627"`
+	is_server                   gdextension.MethodForClass `hash:"2240911060"`
+	get_remote_sender_id        gdextension.MethodForClass `hash:"2455072627"`
+	poll                        gdextension.MethodForClass `hash:"166280745"`
+	rpc                         gdextension.MethodForClass `hash:"2077486355"`
+	object_configuration_add    gdextension.MethodForClass `hash:"1171879464"`
+	object_configuration_remove gdextension.MethodForClass `hash:"1171879464"`
+	get_peers                   gdextension.MethodForClass `hash:"969006518"`
+	set_default_interface       gdextension.MethodForClass `hash:"3304788590"`
+	get_default_interface       gdextension.MethodForClass `hash:"2737447660"`
+	create_default_interface    gdextension.MethodForClass `hash:"3294156723"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("MultiplayerAPI")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.MultiplayerAPI
@@ -191,6 +220,20 @@ type Advanced = class
 type class [1]gdclass.MultiplayerAPI
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MultiplayerAPI)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MultiplayerAPI)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -200,7 +243,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("MultiplayerAPI"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.MultiplayerAPI)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -220,21 +263,21 @@ Returns [code]true[/code] if there is a [member multiplayer_peer] set.
 */
 //go:nosplit
 func (self class) HasMultiplayerPeer() bool { //gd:MultiplayerAPI.has_multiplayer_peer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_has_multiplayer_peer), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_multiplayer_peer, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetMultiplayerPeer() [1]gdclass.MultiplayerPeer { //gd:MultiplayerAPI.get_multiplayer_peer
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_get_multiplayer_peer), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_multiplayer_peer, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.MultiplayerPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerPeer](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMultiplayerPeer(peer [1]gdclass.MultiplayerPeer) { //gd:MultiplayerAPI.set_multiplayer_peer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_set_multiplayer_peer), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(peer[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer_peer, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(peer[0].AsObject()))}))
 }
 
 /*
@@ -242,7 +285,7 @@ Returns the unique peer ID of this MultiplayerAPI's [member multiplayer_peer].
 */
 //go:nosplit
 func (self class) GetUniqueId() int64 { //gd:MultiplayerAPI.get_unique_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_get_unique_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_unique_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -252,7 +295,7 @@ Returns [code]true[/code] if this MultiplayerAPI's [member multiplayer_peer] is 
 */
 //go:nosplit
 func (self class) IsServer() bool { //gd:MultiplayerAPI.is_server
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_is_server), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_server, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -263,7 +306,7 @@ Returns the sender's peer ID for the RPC currently being executed.
 */
 //go:nosplit
 func (self class) GetRemoteSenderId() int64 { //gd:MultiplayerAPI.get_remote_sender_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_get_remote_sender_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_remote_sender_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -274,7 +317,7 @@ Method used for polling the MultiplayerAPI. You only need to worry about this if
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:MultiplayerAPI.poll
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_poll), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -285,7 +328,7 @@ Sends an RPC to the target [param peer]. The given [param method] will be called
 */
 //go:nosplit
 func (self class) Rpc(peer int64, obj [1]gd.Object, method String.Name, arguments Array.Any) Error.Code { //gd:MultiplayerAPI.rpc
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_rpc), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeArray<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.rpc, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeArray<<16), unsafe.Pointer(&struct {
 		peer      int64
 		obj       gdextension.Object
 		method    gdextension.StringName
@@ -301,7 +344,7 @@ Notifies the MultiplayerAPI of a new [param configuration] for the given [param 
 */
 //go:nosplit
 func (self class) ObjectConfigurationAdd(obj [1]gd.Object, configuration variant.Any) Error.Code { //gd:MultiplayerAPI.object_configuration_add
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_object_configuration_add), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.object_configuration_add, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		obj           gdextension.Object
 		configuration gdextension.Variant
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0])), gdextension.Variant(pointers.Get(gd.InternalVariant(configuration)))}))
@@ -315,7 +358,7 @@ Notifies the MultiplayerAPI to remove a [param configuration] for the given [par
 */
 //go:nosplit
 func (self class) ObjectConfigurationRemove(obj [1]gd.Object, configuration variant.Any) Error.Code { //gd:MultiplayerAPI.object_configuration_remove
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_object_configuration_remove), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.object_configuration_remove, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		obj           gdextension.Object
 		configuration gdextension.Variant
 	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), gdextension.Variant(pointers.Get(gd.InternalVariant(configuration)))}))
@@ -328,7 +371,7 @@ Returns the peer IDs of all connected peers of this MultiplayerAPI's [member mul
 */
 //go:nosplit
 func (self class) GetPeers() Packed.Array[int32] { //gd:MultiplayerAPI.get_peers
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_get_peers), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_peers, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -338,7 +381,7 @@ Sets the default MultiplayerAPI implementation class. This method can be used by
 */
 //go:nosplit
 func (self class) SetDefaultInterface(interface_name String.Name) { //gd:MultiplayerAPI.set_default_interface
-	gdextension.CallStatic[struct{}](gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_set_default_interface), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ interface_name gdextension.StringName }{pointers.Get(gd.InternalStringName(interface_name))}))
+	gdextension.CallStatic[struct{}](methods.set_default_interface, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ interface_name gdextension.StringName }{pointers.Get(gd.InternalStringName(interface_name))}))
 }
 
 /*
@@ -346,7 +389,7 @@ Returns the default MultiplayerAPI implementation class name. This is usually [c
 */
 //go:nosplit
 func (self class) GetDefaultInterface() String.Name { //gd:MultiplayerAPI.get_default_interface
-	var r_ret = gdextension.CallStatic[gdextension.StringName](gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_get_default_interface), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.CallStatic[gdextension.StringName](methods.get_default_interface, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -356,7 +399,7 @@ Returns a new instance of the default MultiplayerAPI.
 */
 //go:nosplit
 func (self class) CreateDefaultInterface() [1]gdclass.MultiplayerAPI { //gd:MultiplayerAPI.create_default_interface
-	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.MultiplayerAPI.Bind_create_default_interface), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.create_default_interface, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerAPI](r_ret)}
 	return ret
 }
@@ -405,9 +448,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MultiplayerAPI", func(ptr gd.Object) any {
-		return [1]gdclass.MultiplayerAPI{*(*gdclass.MultiplayerAPI)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("MultiplayerAPI", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type RPCMode int //gd:MultiplayerAPI.RPCMode

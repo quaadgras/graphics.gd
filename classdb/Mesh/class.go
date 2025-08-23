@@ -80,6 +80,35 @@ Mesh is a type of [Resource] that contains vertex array-based geometry, divided 
 */
 type Instance [1]gdclass.Mesh
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_lightmap_size_hint         gdextension.MethodForClass `hash:"1130785943"`
+	get_lightmap_size_hint         gdextension.MethodForClass `hash:"3690982128"`
+	get_aabb                       gdextension.MethodForClass `hash:"1068685055"`
+	get_faces                      gdextension.MethodForClass `hash:"497664490"`
+	get_surface_count              gdextension.MethodForClass `hash:"3905245786"`
+	surface_get_arrays             gdextension.MethodForClass `hash:"663333327"`
+	surface_get_blend_shape_arrays gdextension.MethodForClass `hash:"663333327"`
+	surface_set_material           gdextension.MethodForClass `hash:"3671737478"`
+	surface_get_material           gdextension.MethodForClass `hash:"2897466400"`
+	create_placeholder             gdextension.MethodForClass `hash:"121922552"`
+	create_trimesh_shape           gdextension.MethodForClass `hash:"4160111210"`
+	create_convex_shape            gdextension.MethodForClass `hash:"2529984628"`
+	create_outline                 gdextension.MethodForClass `hash:"1208642001"`
+	generate_triangle_mesh         gdextension.MethodForClass `hash:"3476533166"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Mesh")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Mesh
@@ -439,6 +468,20 @@ type Advanced = class
 type class [1]gdclass.Mesh
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Mesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Mesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -448,7 +491,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Mesh"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Mesh)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -658,12 +701,12 @@ func (class) _get_aabb(impl func(ptr unsafe.Pointer) AABB.PositionSize) (cb gd.E
 
 //go:nosplit
 func (self class) SetLightmapSizeHint(size Vector2i.XY) { //gd:Mesh.set_lightmap_size_hint
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_set_lightmap_size_hint), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lightmap_size_hint, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
 }
 
 //go:nosplit
 func (self class) GetLightmapSizeHint() Vector2i.XY { //gd:Mesh.get_lightmap_size_hint
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_get_lightmap_size_hint), gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_lightmap_size_hint, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -674,7 +717,7 @@ Returns the smallest [AABB] enclosing this mesh in local space. Not affected by 
 */
 //go:nosplit
 func (self class) GetAabb() AABB.PositionSize { //gd:Mesh.get_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_get_aabb), gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_aabb, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -684,7 +727,7 @@ Returns all the vertices that make up the faces of the mesh. Each three vertices
 */
 //go:nosplit
 func (self class) GetFaces() Packed.Array[Vector3.XYZ] { //gd:Mesh.get_faces
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_get_faces), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_faces, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -694,7 +737,7 @@ Returns the number of surfaces that the [Mesh] holds. This is equivalent to [met
 */
 //go:nosplit
 func (self class) GetSurfaceCount() int64 { //gd:Mesh.get_surface_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_get_surface_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_surface_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -704,7 +747,7 @@ Returns the arrays for the vertices, normals, UVs, etc. that make up the request
 */
 //go:nosplit
 func (self class) SurfaceGetArrays(surf_idx int64) Array.Any { //gd:Mesh.surface_get_arrays
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_surface_get_arrays), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.surface_get_arrays, gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -714,7 +757,7 @@ Returns the blend shape arrays for the requested surface.
 */
 //go:nosplit
 func (self class) SurfaceGetBlendShapeArrays(surf_idx int64) Array.Contains[Array.Any] { //gd:Mesh.surface_get_blend_shape_arrays
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_surface_get_blend_shape_arrays), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.surface_get_blend_shape_arrays, gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
 	var ret = Array.Through(gd.ArrayProxy[Array.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -725,7 +768,7 @@ Sets a [Material] for a given surface. Surface will be rendered using this mater
 */
 //go:nosplit
 func (self class) SurfaceSetMaterial(surf_idx int64, material [1]gdclass.Material) { //gd:Mesh.surface_set_material
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_surface_set_material), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		surf_idx int64
 		material gdextension.Object
 	}{surf_idx, gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
@@ -737,7 +780,7 @@ Returns a [Material] in a given surface. Surface is rendered using this material
 */
 //go:nosplit
 func (self class) SurfaceGetMaterial(surf_idx int64) [1]gdclass.Material { //gd:Mesh.surface_get_material
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_surface_get_material), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.surface_get_material, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
@@ -747,7 +790,7 @@ Creates a placeholder version of this resource ([PlaceholderMesh]).
 */
 //go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Mesh.create_placeholder
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_create_placeholder), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
@@ -757,7 +800,7 @@ Calculate a [ConcavePolygonShape3D] from the mesh.
 */
 //go:nosplit
 func (self class) CreateTrimeshShape() [1]gdclass.ConcavePolygonShape3D { //gd:Mesh.create_trimesh_shape
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_create_trimesh_shape), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_trimesh_shape, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.ConcavePolygonShape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.ConcavePolygonShape3D](r_ret)}
 	return ret
 }
@@ -769,7 +812,7 @@ If [param simplify] is [code]true[/code], the geometry can be further simplified
 */
 //go:nosplit
 func (self class) CreateConvexShape(clean bool, simplify bool) [1]gdclass.ConvexPolygonShape3D { //gd:Mesh.create_convex_shape
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_create_convex_shape), gdextension.SizeObject|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_convex_shape, gdextension.SizeObject|(gdextension.SizeBool<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		clean    bool
 		simplify bool
 	}{clean, simplify}))
@@ -783,7 +826,7 @@ Calculate an outline mesh at a defined offset (margin) from the original mesh.
 */
 //go:nosplit
 func (self class) CreateOutline(margin float64) [1]gdclass.Mesh { //gd:Mesh.create_outline
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_create_outline), gdextension.SizeObject|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_outline, gdextension.SizeObject|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret)}
 	return ret
 }
@@ -793,7 +836,7 @@ Generate a [TriangleMesh] from the mesh. Considers only surfaces using one of th
 */
 //go:nosplit
 func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:Mesh.generate_triangle_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mesh.Bind_generate_triangle_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_triangle_mesh, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TriangleMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.TriangleMesh](r_ret)}
 	return ret
 }
@@ -885,7 +928,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Mesh", func(ptr gd.Object) any { return [1]gdclass.Mesh{*(*gdclass.Mesh)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Mesh", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type PrimitiveType int //gd:Mesh.PrimitiveType

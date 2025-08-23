@@ -75,6 +75,31 @@ By default the skeleton hand bones are repositioned to match the size of the tra
 */
 type Instance [1]gdclass.OpenXRHand
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_hand          gdextension.MethodForClass `hash:"1849328560"`
+	get_hand          gdextension.MethodForClass `hash:"2850644561"`
+	set_hand_skeleton gdextension.MethodForClass `hash:"1348162250"`
+	get_hand_skeleton gdextension.MethodForClass `hash:"4075236667"`
+	set_motion_range  gdextension.MethodForClass `hash:"3326516003"`
+	get_motion_range  gdextension.MethodForClass `hash:"2191822314"`
+	set_skeleton_rig  gdextension.MethodForClass `hash:"1528072213"`
+	get_skeleton_rig  gdextension.MethodForClass `hash:"968409338"`
+	set_bone_update   gdextension.MethodForClass `hash:"3144625444"`
+	get_bone_update   gdextension.MethodForClass `hash:"1310695248"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("OpenXRHand")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -90,6 +115,20 @@ type Advanced = class
 type class [1]gdclass.OpenXRHand
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OpenXRHand)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OpenXRHand)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -99,7 +138,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("OpenXRHand"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.OpenXRHand)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -147,60 +186,60 @@ func (self Instance) SetBoneUpdate(value BoneUpdate) {
 
 //go:nosplit
 func (self class) SetHand(hand Hands) { //gd:OpenXRHand.set_hand
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHand.Bind_set_hand), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hand Hands }{hand}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hand Hands }{hand}))
 }
 
 //go:nosplit
 func (self class) GetHand() Hands { //gd:OpenXRHand.get_hand
-	var r_ret = gdextension.Call[Hands](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHand.Bind_get_hand), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Hands](gd.ObjectChecked(self.AsObject()), methods.get_hand, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHandSkeleton(hand_skeleton Path.ToNode) { //gd:OpenXRHand.set_hand_skeleton
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHand.Bind_set_hand_skeleton), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ hand_skeleton gdextension.NodePath }{pointers.Get(gd.InternalNodePath(hand_skeleton))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand_skeleton, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ hand_skeleton gdextension.NodePath }{pointers.Get(gd.InternalNodePath(hand_skeleton))}))
 }
 
 //go:nosplit
 func (self class) GetHandSkeleton() Path.ToNode { //gd:OpenXRHand.get_hand_skeleton
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHand.Bind_get_hand_skeleton), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_hand_skeleton, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMotionRange(motion_range MotionRange) { //gd:OpenXRHand.set_motion_range
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHand.Bind_set_motion_range), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ motion_range MotionRange }{motion_range}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion_range, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ motion_range MotionRange }{motion_range}))
 }
 
 //go:nosplit
 func (self class) GetMotionRange() MotionRange { //gd:OpenXRHand.get_motion_range
-	var r_ret = gdextension.Call[MotionRange](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHand.Bind_get_motion_range), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[MotionRange](gd.ObjectChecked(self.AsObject()), methods.get_motion_range, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkeletonRig(skeleton_rig SkeletonRig) { //gd:OpenXRHand.set_skeleton_rig
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHand.Bind_set_skeleton_rig), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ skeleton_rig SkeletonRig }{skeleton_rig}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton_rig, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ skeleton_rig SkeletonRig }{skeleton_rig}))
 }
 
 //go:nosplit
 func (self class) GetSkeletonRig() SkeletonRig { //gd:OpenXRHand.get_skeleton_rig
-	var r_ret = gdextension.Call[SkeletonRig](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHand.Bind_get_skeleton_rig), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SkeletonRig](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_rig, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBoneUpdate(bone_update BoneUpdate) { //gd:OpenXRHand.set_bone_update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHand.Bind_set_bone_update), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_update BoneUpdate }{bone_update}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_update, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_update BoneUpdate }{bone_update}))
 }
 
 //go:nosplit
 func (self class) GetBoneUpdate() BoneUpdate { //gd:OpenXRHand.get_bone_update
-	var r_ret = gdextension.Call[BoneUpdate](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRHand.Bind_get_bone_update), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BoneUpdate](gd.ObjectChecked(self.AsObject()), methods.get_bone_update, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -228,7 +267,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("OpenXRHand", func(ptr gd.Object) any { return [1]gdclass.OpenXRHand{*(*gdclass.OpenXRHand)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("OpenXRHand", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Hands int //gd:OpenXRHand.Hands

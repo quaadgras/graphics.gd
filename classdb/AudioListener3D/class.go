@@ -73,6 +73,25 @@ Once added to the scene tree and enabled using [method make_current], this node 
 */
 type Instance [1]gdclass.AudioListener3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	make_current           gdextension.MethodForClass `hash:"3218959716"`
+	clear_current          gdextension.MethodForClass `hash:"3218959716"`
+	is_current             gdextension.MethodForClass `hash:"36873697"`
+	get_listener_transform gdextension.MethodForClass `hash:"3229777777"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioListener3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -117,6 +136,20 @@ type Advanced = class
 type class [1]gdclass.AudioListener3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioListener3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioListener3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -126,7 +159,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioListener3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioListener3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -137,7 +170,7 @@ Enables the listener. This will override the current camera's listener.
 */
 //go:nosplit
 func (self class) MakeCurrent() { //gd:AudioListener3D.make_current
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioListener3D.Bind_make_current), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_current, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -145,7 +178,7 @@ Disables the listener to use the current camera's listener instead.
 */
 //go:nosplit
 func (self class) ClearCurrent() { //gd:AudioListener3D.clear_current
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioListener3D.Bind_clear_current), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_current, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -154,7 +187,7 @@ Returns [code]true[/code] if the listener was made current using [method make_cu
 */
 //go:nosplit
 func (self class) IsCurrent() bool { //gd:AudioListener3D.is_current
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioListener3D.Bind_is_current), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -164,7 +197,7 @@ Returns the listener's global orthonormalized [Transform3D].
 */
 //go:nosplit
 func (self class) GetListenerTransform() Transform3D.BasisOrigin { //gd:AudioListener3D.get_listener_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioListener3D.Bind_get_listener_transform), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_listener_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -192,7 +225,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioListener3D", func(ptr gd.Object) any {
-		return [1]gdclass.AudioListener3D{*(*gdclass.AudioListener3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioListener3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

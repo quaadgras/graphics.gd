@@ -81,6 +81,30 @@ Textures are often created by loading them from a file. See [method @GDScript.lo
 */
 type Instance [1]gdclass.Texture2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_width          gdextension.MethodForClass `hash:"3905245786"`
+	get_height         gdextension.MethodForClass `hash:"3905245786"`
+	get_size           gdextension.MethodForClass `hash:"3341600327"`
+	has_alpha          gdextension.MethodForClass `hash:"36873697"`
+	draw               gdextension.MethodForClass `hash:"2729649137"`
+	draw_rect          gdextension.MethodForClass `hash:"3499451691"`
+	draw_rect_region   gdextension.MethodForClass `hash:"2963678660"`
+	get_image          gdextension.MethodForClass `hash:"4190603485"`
+	create_placeholder gdextension.MethodForClass `hash:"121922552"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Texture2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Texture2D
@@ -316,6 +340,20 @@ type Advanced = class
 type class [1]gdclass.Texture2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Texture2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Texture2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -325,7 +363,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Texture2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Texture2D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -431,7 +469,7 @@ Returns the texture width in pixels.
 */
 //go:nosplit
 func (self class) GetWidth() int64 { //gd:Texture2D.get_width
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Texture2D.Bind_get_width), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -441,7 +479,7 @@ Returns the texture height in pixels.
 */
 //go:nosplit
 func (self class) GetHeight() int64 { //gd:Texture2D.get_height
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Texture2D.Bind_get_height), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -451,7 +489,7 @@ Returns the texture size in pixels.
 */
 //go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:Texture2D.get_size
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Texture2D.Bind_get_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -461,7 +499,7 @@ Returns [code]true[/code] if this [Texture2D] has an alpha channel.
 */
 //go:nosplit
 func (self class) HasAlpha() bool { //gd:Texture2D.has_alpha
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Texture2D.Bind_has_alpha), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_alpha, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -471,7 +509,7 @@ Draws the texture using a [CanvasItem] with the [RenderingServer] API at the spe
 */
 //go:nosplit
 func (self class) Draw(canvas_item RID.Any, position Vector2.XY, modulate Color.RGBA, transpose bool) { //gd:Texture2D.draw
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Texture2D.Bind_draw), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		canvas_item RID.Any
 		position    Vector2.XY
 		modulate    Color.RGBA
@@ -484,7 +522,7 @@ Draws the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 //go:nosplit
 func (self class) DrawRect(canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) { //gd:Texture2D.draw_rect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Texture2D.Bind_draw_rect), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_rect, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		canvas_item RID.Any
 		rect        Rect2.PositionSize
 		tile        bool
@@ -498,7 +536,7 @@ Draws a part of the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 //go:nosplit
 func (self class) DrawRectRegion(canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:Texture2D.draw_rect_region
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Texture2D.Bind_draw_rect_region), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_rect_region, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
 		canvas_item RID.Any
 		rect        Rect2.PositionSize
 		src_rect    Rect2.PositionSize
@@ -515,7 +553,7 @@ Returns an [Image] that is a copy of data from this [Texture2D] (a new [Image] i
 */
 //go:nosplit
 func (self class) GetImage() [1]gdclass.Image { //gd:Texture2D.get_image
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Texture2D.Bind_get_image), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_image, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
@@ -525,7 +563,7 @@ Creates a placeholder version of this resource ([PlaceholderTexture2D]).
 */
 //go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture2D.create_placeholder
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Texture2D.Bind_create_placeholder), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
@@ -594,5 +632,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Texture2D", func(ptr gd.Object) any { return [1]gdclass.Texture2D{*(*gdclass.Texture2D)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Texture2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

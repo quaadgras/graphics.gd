@@ -74,6 +74,35 @@ This resource defines a custom rendering effect that can be applied to [Viewport
 */
 type Instance [1]gdclass.CompositorEffect
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_enabled                 gdextension.MethodForClass `hash:"2586408642"`
+	get_enabled                 gdextension.MethodForClass `hash:"36873697"`
+	set_effect_callback_type    gdextension.MethodForClass `hash:"1390728419"`
+	get_effect_callback_type    gdextension.MethodForClass `hash:"1221912590"`
+	set_access_resolved_color   gdextension.MethodForClass `hash:"2586408642"`
+	get_access_resolved_color   gdextension.MethodForClass `hash:"36873697"`
+	set_access_resolved_depth   gdextension.MethodForClass `hash:"2586408642"`
+	get_access_resolved_depth   gdextension.MethodForClass `hash:"36873697"`
+	set_needs_motion_vectors    gdextension.MethodForClass `hash:"2586408642"`
+	get_needs_motion_vectors    gdextension.MethodForClass `hash:"36873697"`
+	set_needs_normal_roughness  gdextension.MethodForClass `hash:"2586408642"`
+	get_needs_normal_roughness  gdextension.MethodForClass `hash:"36873697"`
+	set_needs_separate_specular gdextension.MethodForClass `hash:"2586408642"`
+	get_needs_separate_specular gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("CompositorEffect")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -116,6 +145,20 @@ type Advanced = class
 type class [1]gdclass.CompositorEffect
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CompositorEffect)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CompositorEffect)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -125,7 +168,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CompositorEffect"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.CompositorEffect)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -204,84 +247,84 @@ func (class) _render_callback(impl func(ptr unsafe.Pointer, effect_callback_type
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:CompositorEffect.set_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_set_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetEnabled() bool { //gd:CompositorEffect.get_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_get_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEffectCallbackType(effect_callback_type EffectCallbackType) { //gd:CompositorEffect.set_effect_callback_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_set_effect_callback_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ effect_callback_type EffectCallbackType }{effect_callback_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_effect_callback_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ effect_callback_type EffectCallbackType }{effect_callback_type}))
 }
 
 //go:nosplit
 func (self class) GetEffectCallbackType() EffectCallbackType { //gd:CompositorEffect.get_effect_callback_type
-	var r_ret = gdextension.Call[EffectCallbackType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_get_effect_callback_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[EffectCallbackType](gd.ObjectChecked(self.AsObject()), methods.get_effect_callback_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAccessResolvedColor(enable bool) { //gd:CompositorEffect.set_access_resolved_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_set_access_resolved_color), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_access_resolved_color, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetAccessResolvedColor() bool { //gd:CompositorEffect.get_access_resolved_color
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_get_access_resolved_color), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_access_resolved_color, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAccessResolvedDepth(enable bool) { //gd:CompositorEffect.set_access_resolved_depth
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_set_access_resolved_depth), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_access_resolved_depth, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetAccessResolvedDepth() bool { //gd:CompositorEffect.get_access_resolved_depth
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_get_access_resolved_depth), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_access_resolved_depth, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNeedsMotionVectors(enable bool) { //gd:CompositorEffect.set_needs_motion_vectors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_set_needs_motion_vectors), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_needs_motion_vectors, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetNeedsMotionVectors() bool { //gd:CompositorEffect.get_needs_motion_vectors
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_get_needs_motion_vectors), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_needs_motion_vectors, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNeedsNormalRoughness(enable bool) { //gd:CompositorEffect.set_needs_normal_roughness
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_set_needs_normal_roughness), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_needs_normal_roughness, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetNeedsNormalRoughness() bool { //gd:CompositorEffect.get_needs_normal_roughness
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_get_needs_normal_roughness), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_needs_normal_roughness, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNeedsSeparateSpecular(enable bool) { //gd:CompositorEffect.set_needs_separate_specular
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_set_needs_separate_specular), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_needs_separate_specular, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetNeedsSeparateSpecular() bool { //gd:CompositorEffect.get_needs_separate_specular
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CompositorEffect.Bind_get_needs_separate_specular), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_needs_separate_specular, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -321,9 +364,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CompositorEffect", func(ptr gd.Object) any {
-		return [1]gdclass.CompositorEffect{*(*gdclass.CompositorEffect)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("CompositorEffect", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type EffectCallbackType int //gd:CompositorEffect.EffectCallbackType

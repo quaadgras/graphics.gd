@@ -80,6 +80,132 @@ CodeEdit is a specialized [TextEdit] designed for editing plain text code files.
 */
 type Instance [1]gdclass.CodeEdit
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_indent_size                       gdextension.MethodForClass `hash:"1286410249"`
+	get_indent_size                       gdextension.MethodForClass `hash:"3905245786"`
+	set_indent_using_spaces               gdextension.MethodForClass `hash:"2586408642"`
+	is_indent_using_spaces                gdextension.MethodForClass `hash:"36873697"`
+	set_auto_indent_enabled               gdextension.MethodForClass `hash:"2586408642"`
+	is_auto_indent_enabled                gdextension.MethodForClass `hash:"36873697"`
+	set_auto_indent_prefixes              gdextension.MethodForClass `hash:"381264803"`
+	get_auto_indent_prefixes              gdextension.MethodForClass `hash:"3995934104"`
+	do_indent                             gdextension.MethodForClass `hash:"3218959716"`
+	indent_lines                          gdextension.MethodForClass `hash:"3218959716"`
+	unindent_lines                        gdextension.MethodForClass `hash:"3218959716"`
+	convert_indent                        gdextension.MethodForClass `hash:"423910286"`
+	set_auto_brace_completion_enabled     gdextension.MethodForClass `hash:"2586408642"`
+	is_auto_brace_completion_enabled      gdextension.MethodForClass `hash:"36873697"`
+	set_highlight_matching_braces_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_highlight_matching_braces_enabled  gdextension.MethodForClass `hash:"36873697"`
+	add_auto_brace_completion_pair        gdextension.MethodForClass `hash:"3186203200"`
+	set_auto_brace_completion_pairs       gdextension.MethodForClass `hash:"4155329257"`
+	get_auto_brace_completion_pairs       gdextension.MethodForClass `hash:"3102165223"`
+	has_auto_brace_completion_open_key    gdextension.MethodForClass `hash:"3927539163"`
+	has_auto_brace_completion_close_key   gdextension.MethodForClass `hash:"3927539163"`
+	get_auto_brace_completion_close_key   gdextension.MethodForClass `hash:"3135753539"`
+	set_draw_breakpoints_gutter           gdextension.MethodForClass `hash:"2586408642"`
+	is_drawing_breakpoints_gutter         gdextension.MethodForClass `hash:"36873697"`
+	set_draw_bookmarks_gutter             gdextension.MethodForClass `hash:"2586408642"`
+	is_drawing_bookmarks_gutter           gdextension.MethodForClass `hash:"36873697"`
+	set_draw_executing_lines_gutter       gdextension.MethodForClass `hash:"2586408642"`
+	is_drawing_executing_lines_gutter     gdextension.MethodForClass `hash:"36873697"`
+	set_line_as_breakpoint                gdextension.MethodForClass `hash:"300928843"`
+	is_line_breakpointed                  gdextension.MethodForClass `hash:"1116898809"`
+	clear_breakpointed_lines              gdextension.MethodForClass `hash:"3218959716"`
+	get_breakpointed_lines                gdextension.MethodForClass `hash:"1930428628"`
+	set_line_as_bookmarked                gdextension.MethodForClass `hash:"300928843"`
+	is_line_bookmarked                    gdextension.MethodForClass `hash:"1116898809"`
+	clear_bookmarked_lines                gdextension.MethodForClass `hash:"3218959716"`
+	get_bookmarked_lines                  gdextension.MethodForClass `hash:"1930428628"`
+	set_line_as_executing                 gdextension.MethodForClass `hash:"300928843"`
+	is_line_executing                     gdextension.MethodForClass `hash:"1116898809"`
+	clear_executing_lines                 gdextension.MethodForClass `hash:"3218959716"`
+	get_executing_lines                   gdextension.MethodForClass `hash:"1930428628"`
+	set_draw_line_numbers                 gdextension.MethodForClass `hash:"2586408642"`
+	is_draw_line_numbers_enabled          gdextension.MethodForClass `hash:"36873697"`
+	set_line_numbers_zero_padded          gdextension.MethodForClass `hash:"2586408642"`
+	is_line_numbers_zero_padded           gdextension.MethodForClass `hash:"36873697"`
+	set_draw_fold_gutter                  gdextension.MethodForClass `hash:"2586408642"`
+	is_drawing_fold_gutter                gdextension.MethodForClass `hash:"36873697"`
+	set_line_folding_enabled              gdextension.MethodForClass `hash:"2586408642"`
+	is_line_folding_enabled               gdextension.MethodForClass `hash:"36873697"`
+	can_fold_line                         gdextension.MethodForClass `hash:"1116898809"`
+	fold_line                             gdextension.MethodForClass `hash:"1286410249"`
+	unfold_line                           gdextension.MethodForClass `hash:"1286410249"`
+	fold_all_lines                        gdextension.MethodForClass `hash:"3218959716"`
+	unfold_all_lines                      gdextension.MethodForClass `hash:"3218959716"`
+	toggle_foldable_line                  gdextension.MethodForClass `hash:"1286410249"`
+	toggle_foldable_lines_at_carets       gdextension.MethodForClass `hash:"3218959716"`
+	is_line_folded                        gdextension.MethodForClass `hash:"1116898809"`
+	get_folded_lines                      gdextension.MethodForClass `hash:"3995934104"`
+	create_code_region                    gdextension.MethodForClass `hash:"3218959716"`
+	get_code_region_start_tag             gdextension.MethodForClass `hash:"201670096"`
+	get_code_region_end_tag               gdextension.MethodForClass `hash:"201670096"`
+	set_code_region_tags                  gdextension.MethodForClass `hash:"708800718"`
+	is_line_code_region_start             gdextension.MethodForClass `hash:"1116898809"`
+	is_line_code_region_end               gdextension.MethodForClass `hash:"1116898809"`
+	add_string_delimiter                  gdextension.MethodForClass `hash:"3146098955"`
+	remove_string_delimiter               gdextension.MethodForClass `hash:"83702148"`
+	has_string_delimiter                  gdextension.MethodForClass `hash:"3927539163"`
+	set_string_delimiters                 gdextension.MethodForClass `hash:"381264803"`
+	clear_string_delimiters               gdextension.MethodForClass `hash:"3218959716"`
+	get_string_delimiters                 gdextension.MethodForClass `hash:"3995934104"`
+	is_in_string                          gdextension.MethodForClass `hash:"688195400"`
+	add_comment_delimiter                 gdextension.MethodForClass `hash:"3146098955"`
+	remove_comment_delimiter              gdextension.MethodForClass `hash:"83702148"`
+	has_comment_delimiter                 gdextension.MethodForClass `hash:"3927539163"`
+	set_comment_delimiters                gdextension.MethodForClass `hash:"381264803"`
+	clear_comment_delimiters              gdextension.MethodForClass `hash:"3218959716"`
+	get_comment_delimiters                gdextension.MethodForClass `hash:"3995934104"`
+	is_in_comment                         gdextension.MethodForClass `hash:"688195400"`
+	get_delimiter_start_key               gdextension.MethodForClass `hash:"844755477"`
+	get_delimiter_end_key                 gdextension.MethodForClass `hash:"844755477"`
+	get_delimiter_start_position          gdextension.MethodForClass `hash:"3016396712"`
+	get_delimiter_end_position            gdextension.MethodForClass `hash:"3016396712"`
+	set_code_hint                         gdextension.MethodForClass `hash:"83702148"`
+	set_code_hint_draw_below              gdextension.MethodForClass `hash:"2586408642"`
+	get_text_for_code_completion          gdextension.MethodForClass `hash:"201670096"`
+	request_code_completion               gdextension.MethodForClass `hash:"107499316"`
+	add_code_completion_option            gdextension.MethodForClass `hash:"3944379502"`
+	update_code_completion_options        gdextension.MethodForClass `hash:"2586408642"`
+	get_code_completion_options           gdextension.MethodForClass `hash:"3995934104"`
+	get_code_completion_option            gdextension.MethodForClass `hash:"3485342025"`
+	get_code_completion_selected_index    gdextension.MethodForClass `hash:"3905245786"`
+	set_code_completion_selected_index    gdextension.MethodForClass `hash:"1286410249"`
+	confirm_code_completion               gdextension.MethodForClass `hash:"107499316"`
+	cancel_code_completion                gdextension.MethodForClass `hash:"3218959716"`
+	set_code_completion_enabled           gdextension.MethodForClass `hash:"2586408642"`
+	is_code_completion_enabled            gdextension.MethodForClass `hash:"36873697"`
+	set_code_completion_prefixes          gdextension.MethodForClass `hash:"381264803"`
+	get_code_completion_prefixes          gdextension.MethodForClass `hash:"3995934104"`
+	set_line_length_guidelines            gdextension.MethodForClass `hash:"381264803"`
+	get_line_length_guidelines            gdextension.MethodForClass `hash:"3995934104"`
+	set_symbol_lookup_on_click_enabled    gdextension.MethodForClass `hash:"2586408642"`
+	is_symbol_lookup_on_click_enabled     gdextension.MethodForClass `hash:"36873697"`
+	get_text_for_symbol_lookup            gdextension.MethodForClass `hash:"201670096"`
+	get_text_with_cursor_char             gdextension.MethodForClass `hash:"1391810591"`
+	set_symbol_lookup_word_as_valid       gdextension.MethodForClass `hash:"2586408642"`
+	set_symbol_tooltip_on_hover_enabled   gdextension.MethodForClass `hash:"2586408642"`
+	is_symbol_tooltip_on_hover_enabled    gdextension.MethodForClass `hash:"36873697"`
+	move_lines_up                         gdextension.MethodForClass `hash:"3218959716"`
+	move_lines_down                       gdextension.MethodForClass `hash:"3218959716"`
+	delete_lines                          gdextension.MethodForClass `hash:"3218959716"`
+	duplicate_selection                   gdextension.MethodForClass `hash:"3218959716"`
+	duplicate_lines                       gdextension.MethodForClass `hash:"3218959716"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("CodeEdit")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.CodeEdit
@@ -725,6 +851,20 @@ type Advanced = class
 type class [1]gdclass.CodeEdit
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CodeEdit)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CodeEdit)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -734,7 +874,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CodeEdit"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.CodeEdit)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -951,48 +1091,48 @@ func (class) _filter_code_completion_candidates(impl func(ptr unsafe.Pointer, ca
 
 //go:nosplit
 func (self class) SetIndentSize(size int64) { //gd:CodeEdit.set_indent_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_indent_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_indent_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetIndentSize() int64 { //gd:CodeEdit.get_indent_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_indent_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_indent_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIndentUsingSpaces(use_spaces bool) { //gd:CodeEdit.set_indent_using_spaces
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_indent_using_spaces), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_spaces bool }{use_spaces}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_indent_using_spaces, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_spaces bool }{use_spaces}))
 }
 
 //go:nosplit
 func (self class) IsIndentUsingSpaces() bool { //gd:CodeEdit.is_indent_using_spaces
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_indent_using_spaces), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_indent_using_spaces, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoIndentEnabled(enable bool) { //gd:CodeEdit.set_auto_indent_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_auto_indent_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_indent_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsAutoIndentEnabled() bool { //gd:CodeEdit.is_auto_indent_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_auto_indent_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_indent_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoIndentPrefixes(prefixes Array.Contains[String.Readable]) { //gd:CodeEdit.set_auto_indent_prefixes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_auto_indent_prefixes), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ prefixes gdextension.Array }{pointers.Get(gd.InternalArray(prefixes))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_indent_prefixes, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ prefixes gdextension.Array }{pointers.Get(gd.InternalArray(prefixes))}))
 }
 
 //go:nosplit
 func (self class) GetAutoIndentPrefixes() Array.Contains[String.Readable] { //gd:CodeEdit.get_auto_indent_prefixes
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_auto_indent_prefixes), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_auto_indent_prefixes, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1002,7 +1142,7 @@ If there is no selection, indentation is inserted at the caret. Otherwise, the s
 */
 //go:nosplit
 func (self class) DoIndent() { //gd:CodeEdit.do_indent
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_do_indent), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.do_indent, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1010,7 +1150,7 @@ Indents all lines that are selected or have a caret on them. Uses spaces or a ta
 */
 //go:nosplit
 func (self class) IndentLines() { //gd:CodeEdit.indent_lines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_indent_lines), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.indent_lines, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1018,7 +1158,7 @@ Unindents all lines that are selected or have a caret on them. Uses spaces or a 
 */
 //go:nosplit
 func (self class) UnindentLines() { //gd:CodeEdit.unindent_lines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_unindent_lines), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unindent_lines, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1027,7 +1167,7 @@ Values of [code]-1[/code] convert the entire text.
 */
 //go:nosplit
 func (self class) ConvertIndent(from_line int64, to_line int64) { //gd:CodeEdit.convert_indent
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_convert_indent), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.convert_indent, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		from_line int64
 		to_line   int64
 	}{from_line, to_line}))
@@ -1035,24 +1175,24 @@ func (self class) ConvertIndent(from_line int64, to_line int64) { //gd:CodeEdit.
 
 //go:nosplit
 func (self class) SetAutoBraceCompletionEnabled(enable bool) { //gd:CodeEdit.set_auto_brace_completion_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_auto_brace_completion_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_brace_completion_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsAutoBraceCompletionEnabled() bool { //gd:CodeEdit.is_auto_brace_completion_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_auto_brace_completion_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_brace_completion_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHighlightMatchingBracesEnabled(enable bool) { //gd:CodeEdit.set_highlight_matching_braces_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_highlight_matching_braces_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_highlight_matching_braces_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsHighlightMatchingBracesEnabled() bool { //gd:CodeEdit.is_highlight_matching_braces_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_highlight_matching_braces_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_highlight_matching_braces_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1063,7 +1203,7 @@ Both the start and end keys must be symbols. Only the start key has to be unique
 */
 //go:nosplit
 func (self class) AddAutoBraceCompletionPair(start_key String.Readable, end_key String.Readable) { //gd:CodeEdit.add_auto_brace_completion_pair
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_add_auto_brace_completion_pair), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_auto_brace_completion_pair, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		start_key gdextension.String
 		end_key   gdextension.String
 	}{pointers.Get(gd.InternalString(start_key)), pointers.Get(gd.InternalString(end_key))}))
@@ -1071,12 +1211,12 @@ func (self class) AddAutoBraceCompletionPair(start_key String.Readable, end_key 
 
 //go:nosplit
 func (self class) SetAutoBraceCompletionPairs(pairs Dictionary.Any) { //gd:CodeEdit.set_auto_brace_completion_pairs
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_auto_brace_completion_pairs), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ pairs gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(pairs))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_brace_completion_pairs, 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ pairs gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(pairs))}))
 }
 
 //go:nosplit
 func (self class) GetAutoBraceCompletionPairs() Dictionary.Any { //gd:CodeEdit.get_auto_brace_completion_pairs
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_auto_brace_completion_pairs), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_auto_brace_completion_pairs, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -1086,7 +1226,7 @@ Returns [code]true[/code] if open key [param open_key] exists.
 */
 //go:nosplit
 func (self class) HasAutoBraceCompletionOpenKey(open_key String.Readable) bool { //gd:CodeEdit.has_auto_brace_completion_open_key
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_has_auto_brace_completion_open_key), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ open_key gdextension.String }{pointers.Get(gd.InternalString(open_key))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_auto_brace_completion_open_key, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ open_key gdextension.String }{pointers.Get(gd.InternalString(open_key))}))
 	var ret = r_ret
 	return ret
 }
@@ -1096,7 +1236,7 @@ Returns [code]true[/code] if close key [param close_key] exists.
 */
 //go:nosplit
 func (self class) HasAutoBraceCompletionCloseKey(close_key String.Readable) bool { //gd:CodeEdit.has_auto_brace_completion_close_key
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_has_auto_brace_completion_close_key), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ close_key gdextension.String }{pointers.Get(gd.InternalString(close_key))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_auto_brace_completion_close_key, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ close_key gdextension.String }{pointers.Get(gd.InternalString(close_key))}))
 	var ret = r_ret
 	return ret
 }
@@ -1106,43 +1246,43 @@ Gets the matching auto brace close key for [param open_key].
 */
 //go:nosplit
 func (self class) GetAutoBraceCompletionCloseKey(open_key String.Readable) String.Readable { //gd:CodeEdit.get_auto_brace_completion_close_key
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_auto_brace_completion_close_key), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ open_key gdextension.String }{pointers.Get(gd.InternalString(open_key))}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_auto_brace_completion_close_key, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ open_key gdextension.String }{pointers.Get(gd.InternalString(open_key))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawBreakpointsGutter(enable bool) { //gd:CodeEdit.set_draw_breakpoints_gutter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_draw_breakpoints_gutter), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_breakpoints_gutter, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDrawingBreakpointsGutter() bool { //gd:CodeEdit.is_drawing_breakpoints_gutter
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_drawing_breakpoints_gutter), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_breakpoints_gutter, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawBookmarksGutter(enable bool) { //gd:CodeEdit.set_draw_bookmarks_gutter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_draw_bookmarks_gutter), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_bookmarks_gutter, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDrawingBookmarksGutter() bool { //gd:CodeEdit.is_drawing_bookmarks_gutter
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_drawing_bookmarks_gutter), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_bookmarks_gutter, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawExecutingLinesGutter(enable bool) { //gd:CodeEdit.set_draw_executing_lines_gutter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_draw_executing_lines_gutter), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_executing_lines_gutter, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDrawingExecutingLinesGutter() bool { //gd:CodeEdit.is_drawing_executing_lines_gutter
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_drawing_executing_lines_gutter), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_executing_lines_gutter, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1152,7 +1292,7 @@ Sets the given line as a breakpoint. If [code]true[/code] and [member gutters_dr
 */
 //go:nosplit
 func (self class) SetLineAsBreakpoint(line int64, breakpointed bool) { //gd:CodeEdit.set_line_as_breakpoint
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_line_as_breakpoint), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_as_breakpoint, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		line         int64
 		breakpointed bool
 	}{line, breakpointed}))
@@ -1163,7 +1303,7 @@ Returns [code]true[/code] if the given line is breakpointed. See [method set_lin
 */
 //go:nosplit
 func (self class) IsLineBreakpointed(line int64) bool { //gd:CodeEdit.is_line_breakpointed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_line_breakpointed), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_line_breakpointed, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = r_ret
 	return ret
 }
@@ -1173,7 +1313,7 @@ Clears all breakpointed lines.
 */
 //go:nosplit
 func (self class) ClearBreakpointedLines() { //gd:CodeEdit.clear_breakpointed_lines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_clear_breakpointed_lines), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_breakpointed_lines, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1181,7 +1321,7 @@ Gets all breakpointed lines.
 */
 //go:nosplit
 func (self class) GetBreakpointedLines() Packed.Array[int32] { //gd:CodeEdit.get_breakpointed_lines
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_breakpointed_lines), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_breakpointed_lines, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1191,7 +1331,7 @@ Sets the given line as bookmarked. If [code]true[/code] and [member gutters_draw
 */
 //go:nosplit
 func (self class) SetLineAsBookmarked(line int64, bookmarked bool) { //gd:CodeEdit.set_line_as_bookmarked
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_line_as_bookmarked), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_as_bookmarked, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		line       int64
 		bookmarked bool
 	}{line, bookmarked}))
@@ -1202,7 +1342,7 @@ Returns [code]true[/code] if the given line is bookmarked. See [method set_line_
 */
 //go:nosplit
 func (self class) IsLineBookmarked(line int64) bool { //gd:CodeEdit.is_line_bookmarked
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_line_bookmarked), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_line_bookmarked, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = r_ret
 	return ret
 }
@@ -1212,7 +1352,7 @@ Clears all bookmarked lines.
 */
 //go:nosplit
 func (self class) ClearBookmarkedLines() { //gd:CodeEdit.clear_bookmarked_lines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_clear_bookmarked_lines), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_bookmarked_lines, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1220,7 +1360,7 @@ Gets all bookmarked lines.
 */
 //go:nosplit
 func (self class) GetBookmarkedLines() Packed.Array[int32] { //gd:CodeEdit.get_bookmarked_lines
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_bookmarked_lines), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_bookmarked_lines, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1230,7 +1370,7 @@ Sets the given line as executing. If [code]true[/code] and [member gutters_draw_
 */
 //go:nosplit
 func (self class) SetLineAsExecuting(line int64, executing bool) { //gd:CodeEdit.set_line_as_executing
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_line_as_executing), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_as_executing, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		line      int64
 		executing bool
 	}{line, executing}))
@@ -1241,7 +1381,7 @@ Returns [code]true[/code] if the given line is marked as executing. See [method 
 */
 //go:nosplit
 func (self class) IsLineExecuting(line int64) bool { //gd:CodeEdit.is_line_executing
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_line_executing), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_line_executing, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = r_ret
 	return ret
 }
@@ -1251,7 +1391,7 @@ Clears all executed lines.
 */
 //go:nosplit
 func (self class) ClearExecutingLines() { //gd:CodeEdit.clear_executing_lines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_clear_executing_lines), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_executing_lines, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1259,55 +1399,55 @@ Gets all executing lines.
 */
 //go:nosplit
 func (self class) GetExecutingLines() Packed.Array[int32] { //gd:CodeEdit.get_executing_lines
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_executing_lines), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_executing_lines, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawLineNumbers(enable bool) { //gd:CodeEdit.set_draw_line_numbers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_draw_line_numbers), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_line_numbers, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDrawLineNumbersEnabled() bool { //gd:CodeEdit.is_draw_line_numbers_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_draw_line_numbers_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_line_numbers_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLineNumbersZeroPadded(enable bool) { //gd:CodeEdit.set_line_numbers_zero_padded
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_line_numbers_zero_padded), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_numbers_zero_padded, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsLineNumbersZeroPadded() bool { //gd:CodeEdit.is_line_numbers_zero_padded
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_line_numbers_zero_padded), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_line_numbers_zero_padded, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawFoldGutter(enable bool) { //gd:CodeEdit.set_draw_fold_gutter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_draw_fold_gutter), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_fold_gutter, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDrawingFoldGutter() bool { //gd:CodeEdit.is_drawing_fold_gutter
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_drawing_fold_gutter), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drawing_fold_gutter, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLineFoldingEnabled(enabled bool) { //gd:CodeEdit.set_line_folding_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_line_folding_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_folding_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsLineFoldingEnabled() bool { //gd:CodeEdit.is_line_folding_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_line_folding_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_line_folding_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1317,7 +1457,7 @@ Returns [code]true[/code] if the given line is foldable. A line is foldable if i
 */
 //go:nosplit
 func (self class) CanFoldLine(line int64) bool { //gd:CodeEdit.can_fold_line
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_can_fold_line), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_fold_line, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = r_ret
 	return ret
 }
@@ -1327,7 +1467,7 @@ Folds the given line, if possible (see [method can_fold_line]).
 */
 //go:nosplit
 func (self class) FoldLine(line int64) { //gd:CodeEdit.fold_line
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_fold_line), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fold_line, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 }
 
 /*
@@ -1335,7 +1475,7 @@ Unfolds the given line if it is folded or if it is hidden under a folded line.
 */
 //go:nosplit
 func (self class) UnfoldLine(line int64) { //gd:CodeEdit.unfold_line
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_unfold_line), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unfold_line, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 }
 
 /*
@@ -1343,7 +1483,7 @@ Folds all lines that are possible to be folded (see [method can_fold_line]).
 */
 //go:nosplit
 func (self class) FoldAllLines() { //gd:CodeEdit.fold_all_lines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_fold_all_lines), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fold_all_lines, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1351,7 +1491,7 @@ Unfolds all lines that are folded.
 */
 //go:nosplit
 func (self class) UnfoldAllLines() { //gd:CodeEdit.unfold_all_lines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_unfold_all_lines), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unfold_all_lines, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1359,7 +1499,7 @@ Toggle the folding of the code block at the given line.
 */
 //go:nosplit
 func (self class) ToggleFoldableLine(line int64) { //gd:CodeEdit.toggle_foldable_line
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_toggle_foldable_line), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.toggle_foldable_line, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 }
 
 /*
@@ -1367,7 +1507,7 @@ Toggle the folding of the code block on all lines with a caret on them.
 */
 //go:nosplit
 func (self class) ToggleFoldableLinesAtCarets() { //gd:CodeEdit.toggle_foldable_lines_at_carets
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_toggle_foldable_lines_at_carets), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.toggle_foldable_lines_at_carets, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1375,7 +1515,7 @@ Returns [code]true[/code] if the given line is folded. See [method fold_line].
 */
 //go:nosplit
 func (self class) IsLineFolded(line int64) bool { //gd:CodeEdit.is_line_folded
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_line_folded), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_line_folded, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = r_ret
 	return ret
 }
@@ -1385,7 +1525,7 @@ Returns all lines that are currently folded.
 */
 //go:nosplit
 func (self class) GetFoldedLines() Array.Contains[int64] { //gd:CodeEdit.get_folded_lines
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_folded_lines), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_folded_lines, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1398,7 +1538,7 @@ Code regions are delimited using start and end tags (respectively [code]region[/
 */
 //go:nosplit
 func (self class) CreateCodeRegion() { //gd:CodeEdit.create_code_region
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_create_code_region), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_code_region, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1406,7 +1546,7 @@ Returns the code region start tag (without comment delimiter).
 */
 //go:nosplit
 func (self class) GetCodeRegionStartTag() String.Readable { //gd:CodeEdit.get_code_region_start_tag
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_code_region_start_tag), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code_region_start_tag, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1416,7 +1556,7 @@ Returns the code region end tag (without comment delimiter).
 */
 //go:nosplit
 func (self class) GetCodeRegionEndTag() String.Readable { //gd:CodeEdit.get_code_region_end_tag
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_code_region_end_tag), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code_region_end_tag, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1426,7 +1566,7 @@ Sets the code region start and end tags (without comment delimiter).
 */
 //go:nosplit
 func (self class) SetCodeRegionTags(start String.Readable, end String.Readable) { //gd:CodeEdit.set_code_region_tags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_code_region_tags), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_code_region_tags, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		start gdextension.String
 		end   gdextension.String
 	}{pointers.Get(gd.InternalString(start)), pointers.Get(gd.InternalString(end))}))
@@ -1437,7 +1577,7 @@ Returns [code]true[/code] if the given line is a code region start. See [method 
 */
 //go:nosplit
 func (self class) IsLineCodeRegionStart(line int64) bool { //gd:CodeEdit.is_line_code_region_start
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_line_code_region_start), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_line_code_region_start, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = r_ret
 	return ret
 }
@@ -1447,7 +1587,7 @@ Returns [code]true[/code] if the given line is a code region end. See [method se
 */
 //go:nosplit
 func (self class) IsLineCodeRegionEnd(line int64) bool { //gd:CodeEdit.is_line_code_region_end
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_line_code_region_end), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_line_code_region_end, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = r_ret
 	return ret
 }
@@ -1458,7 +1598,7 @@ If [param line_only] is [code]true[/code] or [param end_key] is an empty [String
 */
 //go:nosplit
 func (self class) AddStringDelimiter(start_key String.Readable, end_key String.Readable, line_only bool) { //gd:CodeEdit.add_string_delimiter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_add_string_delimiter), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_string_delimiter, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		start_key gdextension.String
 		end_key   gdextension.String
 		line_only bool
@@ -1470,7 +1610,7 @@ Removes the string delimiter with [param start_key].
 */
 //go:nosplit
 func (self class) RemoveStringDelimiter(start_key String.Readable) { //gd:CodeEdit.remove_string_delimiter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_remove_string_delimiter), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_string_delimiter, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))}))
 }
 
 /*
@@ -1478,14 +1618,14 @@ Returns [code]true[/code] if string [param start_key] exists.
 */
 //go:nosplit
 func (self class) HasStringDelimiter(start_key String.Readable) bool { //gd:CodeEdit.has_string_delimiter
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_has_string_delimiter), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_string_delimiter, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStringDelimiters(string_delimiters Array.Contains[String.Readable]) { //gd:CodeEdit.set_string_delimiters
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_string_delimiters), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ string_delimiters gdextension.Array }{pointers.Get(gd.InternalArray(string_delimiters))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_string_delimiters, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ string_delimiters gdextension.Array }{pointers.Get(gd.InternalArray(string_delimiters))}))
 }
 
 /*
@@ -1493,12 +1633,12 @@ Removes all string delimiters.
 */
 //go:nosplit
 func (self class) ClearStringDelimiters() { //gd:CodeEdit.clear_string_delimiters
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_clear_string_delimiters), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_string_delimiters, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) GetStringDelimiters() Array.Contains[String.Readable] { //gd:CodeEdit.get_string_delimiters
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_string_delimiters), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_string_delimiters, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1508,7 +1648,7 @@ Returns the delimiter index if [param line] [param column] is in a string. If [p
 */
 //go:nosplit
 func (self class) IsInString(line int64, column int64) int64 { //gd:CodeEdit.is_in_string
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_in_string), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.is_in_string, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		line   int64
 		column int64
 	}{line, column}))
@@ -1522,7 +1662,7 @@ If [param line_only] is [code]true[/code] or [param end_key] is an empty [String
 */
 //go:nosplit
 func (self class) AddCommentDelimiter(start_key String.Readable, end_key String.Readable, line_only bool) { //gd:CodeEdit.add_comment_delimiter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_add_comment_delimiter), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_comment_delimiter, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		start_key gdextension.String
 		end_key   gdextension.String
 		line_only bool
@@ -1534,7 +1674,7 @@ Removes the comment delimiter with [param start_key].
 */
 //go:nosplit
 func (self class) RemoveCommentDelimiter(start_key String.Readable) { //gd:CodeEdit.remove_comment_delimiter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_remove_comment_delimiter), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_comment_delimiter, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))}))
 }
 
 /*
@@ -1542,14 +1682,14 @@ Returns [code]true[/code] if comment [param start_key] exists.
 */
 //go:nosplit
 func (self class) HasCommentDelimiter(start_key String.Readable) bool { //gd:CodeEdit.has_comment_delimiter
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_has_comment_delimiter), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_comment_delimiter, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCommentDelimiters(comment_delimiters Array.Contains[String.Readable]) { //gd:CodeEdit.set_comment_delimiters
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_comment_delimiters), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ comment_delimiters gdextension.Array }{pointers.Get(gd.InternalArray(comment_delimiters))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_comment_delimiters, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ comment_delimiters gdextension.Array }{pointers.Get(gd.InternalArray(comment_delimiters))}))
 }
 
 /*
@@ -1557,12 +1697,12 @@ Removes all comment delimiters.
 */
 //go:nosplit
 func (self class) ClearCommentDelimiters() { //gd:CodeEdit.clear_comment_delimiters
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_clear_comment_delimiters), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_comment_delimiters, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) GetCommentDelimiters() Array.Contains[String.Readable] { //gd:CodeEdit.get_comment_delimiters
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_comment_delimiters), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_comment_delimiters, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1572,7 +1712,7 @@ Returns delimiter index if [param line] [param column] is in a comment. If [para
 */
 //go:nosplit
 func (self class) IsInComment(line int64, column int64) int64 { //gd:CodeEdit.is_in_comment
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_in_comment), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.is_in_comment, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		line   int64
 		column int64
 	}{line, column}))
@@ -1585,7 +1725,7 @@ Gets the start key for a string or comment region index.
 */
 //go:nosplit
 func (self class) GetDelimiterStartKey(delimiter_index int64) String.Readable { //gd:CodeEdit.get_delimiter_start_key
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_delimiter_start_key), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ delimiter_index int64 }{delimiter_index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_delimiter_start_key, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ delimiter_index int64 }{delimiter_index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1595,7 +1735,7 @@ Gets the end key for a string or comment region index.
 */
 //go:nosplit
 func (self class) GetDelimiterEndKey(delimiter_index int64) String.Readable { //gd:CodeEdit.get_delimiter_end_key
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_delimiter_end_key), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ delimiter_index int64 }{delimiter_index}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_delimiter_end_key, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ delimiter_index int64 }{delimiter_index}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1605,7 +1745,7 @@ If [param line] [param column] is in a string or comment, returns the start posi
 */
 //go:nosplit
 func (self class) GetDelimiterStartPosition(line int64, column int64) Vector2.XY { //gd:CodeEdit.get_delimiter_start_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_delimiter_start_position), gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_delimiter_start_position, gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		line   int64
 		column int64
 	}{line, column}))
@@ -1618,7 +1758,7 @@ If [param line] [param column] is in a string or comment, returns the end positi
 */
 //go:nosplit
 func (self class) GetDelimiterEndPosition(line int64, column int64) Vector2.XY { //gd:CodeEdit.get_delimiter_end_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_delimiter_end_position), gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_delimiter_end_position, gdextension.SizeVector2|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		line   int64
 		column int64
 	}{line, column}))
@@ -1631,7 +1771,7 @@ Sets the code hint text. Pass an empty string to clear.
 */
 //go:nosplit
 func (self class) SetCodeHint(code_hint String.Readable) { //gd:CodeEdit.set_code_hint
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_code_hint), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ code_hint gdextension.String }{pointers.Get(gd.InternalString(code_hint))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_code_hint, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ code_hint gdextension.String }{pointers.Get(gd.InternalString(code_hint))}))
 }
 
 /*
@@ -1639,7 +1779,7 @@ If [code]true[/code], the code hint will draw below the main caret. If [code]fal
 */
 //go:nosplit
 func (self class) SetCodeHintDrawBelow(draw_below bool) { //gd:CodeEdit.set_code_hint_draw_below
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_code_hint_draw_below), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_below bool }{draw_below}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_code_hint_draw_below, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_below bool }{draw_below}))
 }
 
 /*
@@ -1647,7 +1787,7 @@ Returns the full text with char [code]0xFFFF[/code] at the caret location.
 */
 //go:nosplit
 func (self class) GetTextForCodeCompletion() String.Readable { //gd:CodeEdit.get_text_for_code_completion
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_text_for_code_completion), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text_for_code_completion, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1657,7 +1797,7 @@ Emits [signal code_completion_requested], if [param force] is [code]true[/code] 
 */
 //go:nosplit
 func (self class) RequestCodeCompletion(force bool) { //gd:CodeEdit.request_code_completion
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_request_code_completion), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ force bool }{force}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_code_completion, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ force bool }{force}))
 }
 
 /*
@@ -1667,7 +1807,7 @@ Submits an item to the queue of potential candidates for the autocomplete menu. 
 */
 //go:nosplit
 func (self class) AddCodeCompletionOption(atype CodeCompletionKind, display_text String.Readable, insert_text String.Readable, text_color Color.RGBA, icon [1]gdclass.Resource, value variant.Any, location int64) { //gd:CodeEdit.add_code_completion_option
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_add_code_completion_option), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeObject<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_code_completion_option, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeObject<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
 		atype        CodeCompletionKind
 		display_text gdextension.String
 		insert_text  gdextension.String
@@ -1684,7 +1824,7 @@ Submits all completion options added with [method add_code_completion_option]. W
 */
 //go:nosplit
 func (self class) UpdateCodeCompletionOptions(force bool) { //gd:CodeEdit.update_code_completion_options
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_update_code_completion_options), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ force bool }{force}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_code_completion_options, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ force bool }{force}))
 }
 
 /*
@@ -1692,7 +1832,7 @@ Gets all completion options, see [method get_code_completion_option] for return 
 */
 //go:nosplit
 func (self class) GetCodeCompletionOptions() Array.Contains[Dictionary.Any] { //gd:CodeEdit.get_code_completion_options
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_code_completion_options), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_code_completion_options, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1708,7 +1848,7 @@ Gets the completion option at [param index]. The return [Dictionary] has the fol
 */
 //go:nosplit
 func (self class) GetCodeCompletionOption(index int64) Dictionary.Any { //gd:CodeEdit.get_code_completion_option
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_code_completion_option), gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_code_completion_option, gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -1718,7 +1858,7 @@ Gets the index of the current selected completion option.
 */
 //go:nosplit
 func (self class) GetCodeCompletionSelectedIndex() int64 { //gd:CodeEdit.get_code_completion_selected_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_code_completion_selected_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_code_completion_selected_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1728,7 +1868,7 @@ Sets the current selected completion option.
 */
 //go:nosplit
 func (self class) SetCodeCompletionSelectedIndex(index int64) { //gd:CodeEdit.set_code_completion_selected_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_code_completion_selected_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_code_completion_selected_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 /*
@@ -1736,7 +1876,7 @@ Inserts the selected entry into the text. If [param replace] is [code]true[/code
 */
 //go:nosplit
 func (self class) ConfirmCodeCompletion(replace bool) { //gd:CodeEdit.confirm_code_completion
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_confirm_code_completion), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ replace bool }{replace}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.confirm_code_completion, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ replace bool }{replace}))
 }
 
 /*
@@ -1744,53 +1884,53 @@ Cancels the autocomplete menu.
 */
 //go:nosplit
 func (self class) CancelCodeCompletion() { //gd:CodeEdit.cancel_code_completion
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_cancel_code_completion), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cancel_code_completion, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetCodeCompletionEnabled(enable bool) { //gd:CodeEdit.set_code_completion_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_code_completion_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_code_completion_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsCodeCompletionEnabled() bool { //gd:CodeEdit.is_code_completion_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_code_completion_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_code_completion_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCodeCompletionPrefixes(prefixes Array.Contains[String.Readable]) { //gd:CodeEdit.set_code_completion_prefixes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_code_completion_prefixes), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ prefixes gdextension.Array }{pointers.Get(gd.InternalArray(prefixes))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_code_completion_prefixes, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ prefixes gdextension.Array }{pointers.Get(gd.InternalArray(prefixes))}))
 }
 
 //go:nosplit
 func (self class) GetCodeCompletionPrefixes() Array.Contains[String.Readable] { //gd:CodeEdit.get_code_completion_prefixes
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_code_completion_prefixes), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_code_completion_prefixes, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLineLengthGuidelines(guideline_columns Array.Contains[int64]) { //gd:CodeEdit.set_line_length_guidelines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_line_length_guidelines), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ guideline_columns gdextension.Array }{pointers.Get(gd.InternalArray(guideline_columns))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_length_guidelines, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ guideline_columns gdextension.Array }{pointers.Get(gd.InternalArray(guideline_columns))}))
 }
 
 //go:nosplit
 func (self class) GetLineLengthGuidelines() Array.Contains[int64] { //gd:CodeEdit.get_line_length_guidelines
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_line_length_guidelines), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_line_length_guidelines, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSymbolLookupOnClickEnabled(enable bool) { //gd:CodeEdit.set_symbol_lookup_on_click_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_symbol_lookup_on_click_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_symbol_lookup_on_click_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSymbolLookupOnClickEnabled() bool { //gd:CodeEdit.is_symbol_lookup_on_click_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_symbol_lookup_on_click_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_symbol_lookup_on_click_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1800,7 +1940,7 @@ Returns the full text with char [code]0xFFFF[/code] at the cursor location.
 */
 //go:nosplit
 func (self class) GetTextForSymbolLookup() String.Readable { //gd:CodeEdit.get_text_for_symbol_lookup
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_text_for_symbol_lookup), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text_for_symbol_lookup, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1810,7 +1950,7 @@ Returns the full text with char [code]0xFFFF[/code] at the specified location.
 */
 //go:nosplit
 func (self class) GetTextWithCursorChar(line int64, column int64) String.Readable { //gd:CodeEdit.get_text_with_cursor_char
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_get_text_with_cursor_char), gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text_with_cursor_char, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		line   int64
 		column int64
 	}{line, column}))
@@ -1823,17 +1963,17 @@ Sets the symbol emitted by [signal symbol_validate] as a valid lookup.
 */
 //go:nosplit
 func (self class) SetSymbolLookupWordAsValid(valid bool) { //gd:CodeEdit.set_symbol_lookup_word_as_valid
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_symbol_lookup_word_as_valid), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ valid bool }{valid}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_symbol_lookup_word_as_valid, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ valid bool }{valid}))
 }
 
 //go:nosplit
 func (self class) SetSymbolTooltipOnHoverEnabled(enable bool) { //gd:CodeEdit.set_symbol_tooltip_on_hover_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_set_symbol_tooltip_on_hover_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_symbol_tooltip_on_hover_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSymbolTooltipOnHoverEnabled() bool { //gd:CodeEdit.is_symbol_tooltip_on_hover_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_is_symbol_tooltip_on_hover_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_symbol_tooltip_on_hover_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1843,7 +1983,7 @@ Moves all lines up that are selected or have a caret on them.
 */
 //go:nosplit
 func (self class) MoveLinesUp() { //gd:CodeEdit.move_lines_up
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_move_lines_up), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_lines_up, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1851,7 +1991,7 @@ Moves all lines down that are selected or have a caret on them.
 */
 //go:nosplit
 func (self class) MoveLinesDown() { //gd:CodeEdit.move_lines_down
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_move_lines_down), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_lines_down, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1859,7 +1999,7 @@ Deletes all lines that are selected or have a caret on them.
 */
 //go:nosplit
 func (self class) DeleteLines() { //gd:CodeEdit.delete_lines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_delete_lines), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delete_lines, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1867,7 +2007,7 @@ Duplicates all selected text and duplicates all lines with a caret on them.
 */
 //go:nosplit
 func (self class) DuplicateSelection() { //gd:CodeEdit.duplicate_selection
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_duplicate_selection), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.duplicate_selection, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1875,7 +2015,7 @@ Duplicates all lines currently selected with any caret. Duplicates the entire li
 */
 //go:nosplit
 func (self class) DuplicateLines() { //gd:CodeEdit.duplicate_lines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CodeEdit.Bind_duplicate_lines), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.duplicate_lines, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self Instance) OnBreakpointToggled(cb func(line int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("breakpoint_toggled"), gd.NewCallable(cb), 0)
@@ -1949,7 +2089,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CodeEdit", func(ptr gd.Object) any { return [1]gdclass.CodeEdit{*(*gdclass.CodeEdit)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("CodeEdit", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type CodeCompletionKind int //gd:CodeEdit.CodeCompletionKind

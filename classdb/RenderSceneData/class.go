@@ -74,6 +74,27 @@ Abstract scene data object, exists for the duration of rendering a single viewpo
 */
 type Instance [1]gdclass.RenderSceneData
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_cam_transform   gdextension.MethodForClass `hash:"3229777777"`
+	get_cam_projection  gdextension.MethodForClass `hash:"2910717950"`
+	get_view_count      gdextension.MethodForClass `hash:"3905245786"`
+	get_view_eye_offset gdextension.MethodForClass `hash:"711720468"`
+	get_view_projection gdextension.MethodForClass `hash:"3179846605"`
+	get_uniform_buffer  gdextension.MethodForClass `hash:"2944877500"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("RenderSceneData")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -134,6 +155,20 @@ type Advanced = class
 type class [1]gdclass.RenderSceneData
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RenderSceneData)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RenderSceneData)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -143,7 +178,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RenderSceneData"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RenderSceneData)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -155,7 +190,7 @@ Returns the camera transform used to render this frame.
 */
 //go:nosplit
 func (self class) GetCamTransform() Transform3D.BasisOrigin { //gd:RenderSceneData.get_cam_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneData.Bind_get_cam_transform), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_cam_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -166,7 +201,7 @@ Returns the camera projection used to render this frame.
 */
 //go:nosplit
 func (self class) GetCamProjection() Projection.XYZW { //gd:RenderSceneData.get_cam_projection
-	var r_ret = gdextension.Call[Projection.XYZW](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneData.Bind_get_cam_projection), gdextension.SizeProjection, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Projection.XYZW](gd.ObjectChecked(self.AsObject()), methods.get_cam_projection, gdextension.SizeProjection, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -176,7 +211,7 @@ Returns the number of views being rendered.
 */
 //go:nosplit
 func (self class) GetViewCount() int64 { //gd:RenderSceneData.get_view_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneData.Bind_get_view_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -186,7 +221,7 @@ Returns the eye offset per view used to render this frame. This is the offset be
 */
 //go:nosplit
 func (self class) GetViewEyeOffset(view int64) Vector3.XYZ { //gd:RenderSceneData.get_view_eye_offset
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneData.Bind_get_view_eye_offset), gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ view int64 }{view}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_view_eye_offset, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ view int64 }{view}))
 	var ret = r_ret
 	return ret
 }
@@ -197,7 +232,7 @@ Returns the view projection per view used to render this frame.
 */
 //go:nosplit
 func (self class) GetViewProjection(view int64) Projection.XYZW { //gd:RenderSceneData.get_view_projection
-	var r_ret = gdextension.Call[Projection.XYZW](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneData.Bind_get_view_projection), gdextension.SizeProjection|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ view int64 }{view}))
+	var r_ret = gdextension.Call[Projection.XYZW](gd.ObjectChecked(self.AsObject()), methods.get_view_projection, gdextension.SizeProjection|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ view int64 }{view}))
 	var ret = r_ret
 	return ret
 }
@@ -207,7 +242,7 @@ Return the [RID] of the uniform buffer containing the scene data as a UBO.
 */
 //go:nosplit
 func (self class) GetUniformBuffer() RID.Any { //gd:RenderSceneData.get_uniform_buffer
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RenderSceneData.Bind_get_uniform_buffer), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_uniform_buffer, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -229,7 +264,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RenderSceneData", func(ptr gd.Object) any {
-		return [1]gdclass.RenderSceneData{*(*gdclass.RenderSceneData)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("RenderSceneData", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

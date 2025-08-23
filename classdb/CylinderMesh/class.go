@@ -73,6 +73,35 @@ Class representing a cylindrical [PrimitiveMesh]. This class can be used to crea
 */
 type Instance [1]gdclass.CylinderMesh
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_top_radius      gdextension.MethodForClass `hash:"373806689"`
+	get_top_radius      gdextension.MethodForClass `hash:"1740695150"`
+	set_bottom_radius   gdextension.MethodForClass `hash:"373806689"`
+	get_bottom_radius   gdextension.MethodForClass `hash:"1740695150"`
+	set_height          gdextension.MethodForClass `hash:"373806689"`
+	get_height          gdextension.MethodForClass `hash:"1740695150"`
+	set_radial_segments gdextension.MethodForClass `hash:"1286410249"`
+	get_radial_segments gdextension.MethodForClass `hash:"3905245786"`
+	set_rings           gdextension.MethodForClass `hash:"1286410249"`
+	get_rings           gdextension.MethodForClass `hash:"3905245786"`
+	set_cap_top         gdextension.MethodForClass `hash:"2586408642"`
+	is_cap_top          gdextension.MethodForClass `hash:"36873697"`
+	set_cap_bottom      gdextension.MethodForClass `hash:"2586408642"`
+	is_cap_bottom       gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("CylinderMesh")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +117,20 @@ type Advanced = class
 type class [1]gdclass.CylinderMesh
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CylinderMesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CylinderMesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +140,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CylinderMesh"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.CylinderMesh)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -162,84 +205,84 @@ func (self Instance) SetCapBottom(value bool) {
 
 //go:nosplit
 func (self class) SetTopRadius(radius float64) { //gd:CylinderMesh.set_top_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_set_top_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_top_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetTopRadius() float64 { //gd:CylinderMesh.get_top_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_get_top_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_top_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBottomRadius(radius float64) { //gd:CylinderMesh.set_bottom_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_set_bottom_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bottom_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetBottomRadius() float64 { //gd:CylinderMesh.get_bottom_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_get_bottom_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bottom_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeight(height float64) { //gd:CylinderMesh.set_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_set_height), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height float64 }{height}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height float64 }{height}))
 }
 
 //go:nosplit
 func (self class) GetHeight() float64 { //gd:CylinderMesh.get_height
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_get_height), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRadialSegments(segments int64) { //gd:CylinderMesh.set_radial_segments
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_set_radial_segments), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ segments int64 }{segments}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_segments, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ segments int64 }{segments}))
 }
 
 //go:nosplit
 func (self class) GetRadialSegments() int64 { //gd:CylinderMesh.get_radial_segments
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_get_radial_segments), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_radial_segments, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRings(rings int64) { //gd:CylinderMesh.set_rings
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_set_rings), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ rings int64 }{rings}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rings, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ rings int64 }{rings}))
 }
 
 //go:nosplit
 func (self class) GetRings() int64 { //gd:CylinderMesh.get_rings
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_get_rings), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rings, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCapTop(cap_top bool) { //gd:CylinderMesh.set_cap_top
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_set_cap_top), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cap_top bool }{cap_top}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cap_top, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cap_top bool }{cap_top}))
 }
 
 //go:nosplit
 func (self class) IsCapTop() bool { //gd:CylinderMesh.is_cap_top
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_is_cap_top), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_top, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCapBottom(cap_bottom bool) { //gd:CylinderMesh.set_cap_bottom
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_set_cap_bottom), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cap_bottom bool }{cap_bottom}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cap_bottom, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cap_bottom bool }{cap_bottom}))
 }
 
 //go:nosplit
 func (self class) IsCapBottom() bool { //gd:CylinderMesh.is_cap_bottom
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CylinderMesh.Bind_is_cap_bottom), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_bottom, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -287,7 +330,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CylinderMesh", func(ptr gd.Object) any {
-		return [1]gdclass.CylinderMesh{*(*gdclass.CylinderMesh)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("CylinderMesh", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -73,6 +73,34 @@ Orientation, location, linear velocity and angular velocity are all provided for
 */
 type Instance [1]gdclass.XRPose
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_has_tracking_data   gdextension.MethodForClass `hash:"2586408642"`
+	get_has_tracking_data   gdextension.MethodForClass `hash:"36873697"`
+	set_name                gdextension.MethodForClass `hash:"3304788590"`
+	get_name                gdextension.MethodForClass `hash:"2002593661"`
+	set_transform           gdextension.MethodForClass `hash:"2952846383"`
+	get_transform           gdextension.MethodForClass `hash:"3229777777"`
+	get_adjusted_transform  gdextension.MethodForClass `hash:"3229777777"`
+	set_linear_velocity     gdextension.MethodForClass `hash:"3460891852"`
+	get_linear_velocity     gdextension.MethodForClass `hash:"3360562783"`
+	set_angular_velocity    gdextension.MethodForClass `hash:"3460891852"`
+	get_angular_velocity    gdextension.MethodForClass `hash:"3360562783"`
+	set_tracking_confidence gdextension.MethodForClass `hash:"4171656666"`
+	get_tracking_confidence gdextension.MethodForClass `hash:"2064923680"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("XRPose")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -95,6 +123,20 @@ type Advanced = class
 type class [1]gdclass.XRPose
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRPose)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRPose)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -104,7 +146,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("XRPose"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.XRPose)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -161,36 +203,36 @@ func (self Instance) SetTrackingConfidence(value TrackingConfidence) {
 
 //go:nosplit
 func (self class) SetHasTrackingData(has_tracking_data bool) { //gd:XRPose.set_has_tracking_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_has_tracking_data), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ has_tracking_data bool }{has_tracking_data}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ has_tracking_data bool }{has_tracking_data}))
 }
 
 //go:nosplit
 func (self class) GetHasTrackingData() bool { //gd:XRPose.get_has_tracking_data
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_has_tracking_data), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetName(name String.Name) { //gd:XRPose.set_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 //go:nosplit
 func (self class) GetName() String.Name { //gd:XRPose.get_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransform(transform Transform3D.BasisOrigin) { //gd:XRPose.set_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_transform), 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ transform Transform3D.BasisOrigin }{gd.Transposed(transform)}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ transform Transform3D.BasisOrigin }{gd.Transposed(transform)}))
 }
 
 //go:nosplit
 func (self class) GetTransform() Transform3D.BasisOrigin { //gd:XRPose.get_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_transform), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -200,43 +242,43 @@ Returns the [member transform] with world scale and our reference frame applied.
 */
 //go:nosplit
 func (self class) GetAdjustedTransform() Transform3D.BasisOrigin { //gd:XRPose.get_adjusted_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_adjusted_transform), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_adjusted_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearVelocity(velocity Vector3.XYZ) { //gd:XRPose.set_linear_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_linear_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ velocity Vector3.XYZ }{velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ velocity Vector3.XYZ }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:XRPose.get_linear_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_linear_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularVelocity(velocity Vector3.XYZ) { //gd:XRPose.set_angular_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_angular_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ velocity Vector3.XYZ }{velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ velocity Vector3.XYZ }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:XRPose.get_angular_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_angular_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackingConfidence(tracking_confidence TrackingConfidence) { //gd:XRPose.set_tracking_confidence
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_set_tracking_confidence), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tracking_confidence TrackingConfidence }{tracking_confidence}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracking_confidence, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ tracking_confidence TrackingConfidence }{tracking_confidence}))
 }
 
 //go:nosplit
 func (self class) GetTrackingConfidence() TrackingConfidence { //gd:XRPose.get_tracking_confidence
-	var r_ret = gdextension.Call[TrackingConfidence](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRPose.Bind_get_tracking_confidence), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TrackingConfidence](gd.ObjectChecked(self.AsObject()), methods.get_tracking_confidence, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -265,7 +307,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRPose", func(ptr gd.Object) any { return [1]gdclass.XRPose{*(*gdclass.XRPose)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("XRPose", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type TrackingConfidence int //gd:XRPose.TrackingConfidence

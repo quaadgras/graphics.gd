@@ -142,6 +142,25 @@ if (result == Error.Ok)
 */
 type Instance [1]gdclass.PackedScene
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	pack            gdextension.MethodForClass `hash:"2584678054"`
+	instantiate     gdextension.MethodForClass `hash:"2628778455"`
+	can_instantiate gdextension.MethodForClass `hash:"36873697"`
+	get_state       gdextension.MethodForClass `hash:"3479783971"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PackedScene")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.PackedScene
@@ -187,6 +206,20 @@ type Advanced = class
 type class [1]gdclass.PackedScene
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PackedScene)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PackedScene)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -196,7 +229,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PackedScene"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.PackedScene)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -208,7 +241,7 @@ Packs the [param path] node, and all owned sub-nodes, into this [PackedScene]. A
 */
 //go:nosplit
 func (self class) Pack(path [1]gdclass.Node) Error.Code { //gd:PackedScene.pack
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PackedScene.Bind_pack), gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ path gdextension.Object }{gdextension.Object(gd.ObjectChecked(path[0].AsObject()))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pack, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ path gdextension.Object }{gdextension.Object(gd.ObjectChecked(path[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -218,7 +251,7 @@ Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). 
 */
 //go:nosplit
 func (self class) Instantiate(edit_state GenEditState) [1]gdclass.Node { //gd:PackedScene.instantiate
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PackedScene.Bind_instantiate), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ edit_state GenEditState }{edit_state}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.instantiate, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ edit_state GenEditState }{edit_state}))
 	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret)}
 	return ret
 }
@@ -228,7 +261,7 @@ Returns [code]true[/code] if the scene file has nodes.
 */
 //go:nosplit
 func (self class) CanInstantiate() bool { //gd:PackedScene.can_instantiate
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PackedScene.Bind_can_instantiate), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_instantiate, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -238,7 +271,7 @@ Returns the [SceneState] representing the scene file contents.
 */
 //go:nosplit
 func (self class) GetState() [1]gdclass.SceneState { //gd:PackedScene.get_state
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PackedScene.Bind_get_state), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_state, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SceneState{gd.PointerWithOwnershipTransferredToGo[gdclass.SceneState](r_ret)}
 	return ret
 }
@@ -274,7 +307,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PackedScene", func(ptr gd.Object) any { return [1]gdclass.PackedScene{*(*gdclass.PackedScene)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("PackedScene", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type GenEditState int //gd:PackedScene.GenEditState

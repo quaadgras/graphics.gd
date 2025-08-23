@@ -74,6 +74,23 @@ Translated to [code skip-lint]bool[/code] in the shader language.
 */
 type Instance [1]gdclass.VisualShaderNodeBooleanConstant
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_constant gdextension.MethodForClass `hash:"2586408642"`
+	get_constant gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VisualShaderNodeBooleanConstant")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +106,20 @@ type Advanced = class
 type class [1]gdclass.VisualShaderNodeBooleanConstant
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeBooleanConstant)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeBooleanConstant)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +129,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShaderNodeBooleanConstant"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisualShaderNodeBooleanConstant)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -115,12 +146,12 @@ func (self Instance) SetConstant(value bool) {
 
 //go:nosplit
 func (self class) SetConstant(constant bool) { //gd:VisualShaderNodeBooleanConstant.set_constant
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBooleanConstant.Bind_set_constant), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ constant bool }{constant}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ constant bool }{constant}))
 }
 
 //go:nosplit
 func (self class) GetConstant() bool { //gd:VisualShaderNodeBooleanConstant.get_constant
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBooleanConstant.Bind_get_constant), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -180,7 +211,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisualShaderNodeBooleanConstant", func(ptr gd.Object) any {
-		return [1]gdclass.VisualShaderNodeBooleanConstant{*(*gdclass.VisualShaderNodeBooleanConstant)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VisualShaderNodeBooleanConstant", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

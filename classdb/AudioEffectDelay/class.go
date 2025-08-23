@@ -72,6 +72,47 @@ Plays input signal back after a period of time. The delayed signal may be played
 */
 type Instance [1]gdclass.AudioEffectDelay
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_dry               gdextension.MethodForClass `hash:"373806689"`
+	get_dry               gdextension.MethodForClass `hash:"191475506"`
+	set_tap1_active       gdextension.MethodForClass `hash:"2586408642"`
+	is_tap1_active        gdextension.MethodForClass `hash:"36873697"`
+	set_tap1_delay_ms     gdextension.MethodForClass `hash:"373806689"`
+	get_tap1_delay_ms     gdextension.MethodForClass `hash:"1740695150"`
+	set_tap1_level_db     gdextension.MethodForClass `hash:"373806689"`
+	get_tap1_level_db     gdextension.MethodForClass `hash:"1740695150"`
+	set_tap1_pan          gdextension.MethodForClass `hash:"373806689"`
+	get_tap1_pan          gdextension.MethodForClass `hash:"1740695150"`
+	set_tap2_active       gdextension.MethodForClass `hash:"2586408642"`
+	is_tap2_active        gdextension.MethodForClass `hash:"36873697"`
+	set_tap2_delay_ms     gdextension.MethodForClass `hash:"373806689"`
+	get_tap2_delay_ms     gdextension.MethodForClass `hash:"1740695150"`
+	set_tap2_level_db     gdextension.MethodForClass `hash:"373806689"`
+	get_tap2_level_db     gdextension.MethodForClass `hash:"1740695150"`
+	set_tap2_pan          gdextension.MethodForClass `hash:"373806689"`
+	get_tap2_pan          gdextension.MethodForClass `hash:"1740695150"`
+	set_feedback_active   gdextension.MethodForClass `hash:"2586408642"`
+	is_feedback_active    gdextension.MethodForClass `hash:"36873697"`
+	set_feedback_delay_ms gdextension.MethodForClass `hash:"373806689"`
+	get_feedback_delay_ms gdextension.MethodForClass `hash:"1740695150"`
+	set_feedback_level_db gdextension.MethodForClass `hash:"373806689"`
+	get_feedback_level_db gdextension.MethodForClass `hash:"1740695150"`
+	set_feedback_lowpass  gdextension.MethodForClass `hash:"373806689"`
+	get_feedback_lowpass  gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioEffectDelay")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -87,6 +128,20 @@ type Advanced = class
 type class [1]gdclass.AudioEffectDelay
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectDelay)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectDelay)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -96,7 +151,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioEffectDelay"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioEffectDelay)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -209,156 +264,156 @@ func (self Instance) SetFeedbackLowpass(value Float.X) {
 
 //go:nosplit
 func (self class) SetDry(amount float64) { //gd:AudioEffectDelay.set_dry
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_set_dry), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dry, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetDry() float64 { //gd:AudioEffectDelay.get_dry
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_get_dry), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dry, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTap1Active(amount bool) { //gd:AudioEffectDelay.set_tap1_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_set_tap1_active), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ amount bool }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tap1_active, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ amount bool }{amount}))
 }
 
 //go:nosplit
 func (self class) IsTap1Active() bool { //gd:AudioEffectDelay.is_tap1_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_is_tap1_active), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tap1_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTap1DelayMs(amount float64) { //gd:AudioEffectDelay.set_tap1_delay_ms
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_set_tap1_delay_ms), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tap1_delay_ms, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetTap1DelayMs() float64 { //gd:AudioEffectDelay.get_tap1_delay_ms
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_get_tap1_delay_ms), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tap1_delay_ms, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTap1LevelDb(amount float64) { //gd:AudioEffectDelay.set_tap1_level_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_set_tap1_level_db), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tap1_level_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetTap1LevelDb() float64 { //gd:AudioEffectDelay.get_tap1_level_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_get_tap1_level_db), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tap1_level_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTap1Pan(amount float64) { //gd:AudioEffectDelay.set_tap1_pan
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_set_tap1_pan), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tap1_pan, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetTap1Pan() float64 { //gd:AudioEffectDelay.get_tap1_pan
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_get_tap1_pan), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tap1_pan, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTap2Active(amount bool) { //gd:AudioEffectDelay.set_tap2_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_set_tap2_active), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ amount bool }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tap2_active, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ amount bool }{amount}))
 }
 
 //go:nosplit
 func (self class) IsTap2Active() bool { //gd:AudioEffectDelay.is_tap2_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_is_tap2_active), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tap2_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTap2DelayMs(amount float64) { //gd:AudioEffectDelay.set_tap2_delay_ms
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_set_tap2_delay_ms), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tap2_delay_ms, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetTap2DelayMs() float64 { //gd:AudioEffectDelay.get_tap2_delay_ms
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_get_tap2_delay_ms), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tap2_delay_ms, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTap2LevelDb(amount float64) { //gd:AudioEffectDelay.set_tap2_level_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_set_tap2_level_db), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tap2_level_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetTap2LevelDb() float64 { //gd:AudioEffectDelay.get_tap2_level_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_get_tap2_level_db), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tap2_level_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTap2Pan(amount float64) { //gd:AudioEffectDelay.set_tap2_pan
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_set_tap2_pan), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tap2_pan, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetTap2Pan() float64 { //gd:AudioEffectDelay.get_tap2_pan
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_get_tap2_pan), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_tap2_pan, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFeedbackActive(amount bool) { //gd:AudioEffectDelay.set_feedback_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_set_feedback_active), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ amount bool }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_feedback_active, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ amount bool }{amount}))
 }
 
 //go:nosplit
 func (self class) IsFeedbackActive() bool { //gd:AudioEffectDelay.is_feedback_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_is_feedback_active), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_feedback_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFeedbackDelayMs(amount float64) { //gd:AudioEffectDelay.set_feedback_delay_ms
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_set_feedback_delay_ms), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_feedback_delay_ms, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetFeedbackDelayMs() float64 { //gd:AudioEffectDelay.get_feedback_delay_ms
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_get_feedback_delay_ms), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_feedback_delay_ms, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFeedbackLevelDb(amount float64) { //gd:AudioEffectDelay.set_feedback_level_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_set_feedback_level_db), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_feedback_level_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetFeedbackLevelDb() float64 { //gd:AudioEffectDelay.get_feedback_level_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_get_feedback_level_db), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_feedback_level_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFeedbackLowpass(amount float64) { //gd:AudioEffectDelay.set_feedback_lowpass
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_set_feedback_lowpass), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_feedback_lowpass, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetFeedbackLowpass() float64 { //gd:AudioEffectDelay.get_feedback_lowpass
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDelay.Bind_get_feedback_lowpass), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_feedback_lowpass, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -401,7 +456,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioEffectDelay", func(ptr gd.Object) any {
-		return [1]gdclass.AudioEffectDelay{*(*gdclass.AudioEffectDelay)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioEffectDelay", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

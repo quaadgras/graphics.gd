@@ -73,6 +73,26 @@ Node that can be the parent of [PhysicalBone3D] and can apply the simulation res
 */
 type Instance [1]gdclass.PhysicalBoneSimulator3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	is_simulating_physics                     gdextension.MethodForClass `hash:"36873697"`
+	physical_bones_stop_simulation            gdextension.MethodForClass `hash:"3218959716"`
+	physical_bones_start_simulation           gdextension.MethodForClass `hash:"2787316981"`
+	physical_bones_add_collision_exception    gdextension.MethodForClass `hash:"2722037293"`
+	physical_bones_remove_collision_exception gdextension.MethodForClass `hash:"2722037293"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PhysicalBoneSimulator3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.PhysicalBoneSimulator3D
@@ -136,6 +156,20 @@ type Advanced = class
 type class [1]gdclass.PhysicalBoneSimulator3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PhysicalBoneSimulator3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PhysicalBoneSimulator3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -145,7 +179,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PhysicalBoneSimulator3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.PhysicalBoneSimulator3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -156,7 +190,7 @@ Returns a boolean that indicates whether the [PhysicalBoneSimulator3D] is runnin
 */
 //go:nosplit
 func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBoneSimulator3D.is_simulating_physics
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBoneSimulator3D.Bind_is_simulating_physics), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -166,7 +200,7 @@ Tells the [PhysicalBone3D] nodes in the Skeleton to stop simulating.
 */
 //go:nosplit
 func (self class) PhysicalBonesStopSimulation() { //gd:PhysicalBoneSimulator3D.physical_bones_stop_simulation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBoneSimulator3D.Bind_physical_bones_stop_simulation), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_stop_simulation, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -175,7 +209,7 @@ Optionally, a list of bone names can be passed-in, allowing only the passed-in b
 */
 //go:nosplit
 func (self class) PhysicalBonesStartSimulation(bones Array.Contains[String.Name]) { //gd:PhysicalBoneSimulator3D.physical_bones_start_simulation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBoneSimulator3D.Bind_physical_bones_start_simulation), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_start_simulation, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))}))
 }
 
 /*
@@ -184,7 +218,7 @@ Works just like the [RigidBody3D] node.
 */
 //go:nosplit
 func (self class) PhysicalBonesAddCollisionException(exception RID.Any) { //gd:PhysicalBoneSimulator3D.physical_bones_add_collision_exception
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBoneSimulator3D.Bind_physical_bones_add_collision_exception), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ exception RID.Any }{exception}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_add_collision_exception, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ exception RID.Any }{exception}))
 }
 
 /*
@@ -193,7 +227,7 @@ Works just like the [RigidBody3D] node.
 */
 //go:nosplit
 func (self class) PhysicalBonesRemoveCollisionException(exception RID.Any) { //gd:PhysicalBoneSimulator3D.physical_bones_remove_collision_exception
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicalBoneSimulator3D.Bind_physical_bones_remove_collision_exception), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ exception RID.Any }{exception}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_remove_collision_exception, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ exception RID.Any }{exception}))
 }
 func (self class) AsPhysicalBoneSimulator3D() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPhysicalBoneSimulator3D() Instance {
@@ -232,7 +266,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicalBoneSimulator3D", func(ptr gd.Object) any {
-		return [1]gdclass.PhysicalBoneSimulator3D{*(*gdclass.PhysicalBoneSimulator3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("PhysicalBoneSimulator3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

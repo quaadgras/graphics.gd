@@ -223,6 +223,23 @@ public partial class ClientNode : Node
 */
 type Instance [1]gdclass.DTLSServer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	setup           gdextension.MethodForClass `hash:"1262296096"`
+	take_connection gdextension.MethodForClass `hash:"3946580474"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("DTLSServer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -253,6 +270,20 @@ type Advanced = class
 type class [1]gdclass.DTLSServer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.DTLSServer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.DTLSServer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -262,7 +293,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("DTLSServer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.DTLSServer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -274,7 +305,7 @@ Setup the DTLS server to use the given [param server_options]. See [method TLSOp
 */
 //go:nosplit
 func (self class) Setup(server_options [1]gdclass.TLSOptions) Error.Code { //gd:DTLSServer.setup
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DTLSServer.Bind_setup), gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(server_options[0].AsObject()))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.setup, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(server_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -285,7 +316,7 @@ Try to initiate the DTLS handshake with the given [param udp_peer] which must be
 */
 //go:nosplit
 func (self class) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS { //gd:DTLSServer.take_connection
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DTLSServer.Bind_take_connection), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ udp_peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(udp_peer[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ udp_peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(udp_peer[0].AsObject()))}))
 	var ret = [1]gdclass.PacketPeerDTLS{gd.PointerWithOwnershipTransferredToGo[gdclass.PacketPeerDTLS](r_ret)}
 	return ret
 }
@@ -314,5 +345,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("DTLSServer", func(ptr gd.Object) any { return [1]gdclass.DTLSServer{*(*gdclass.DTLSServer)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("DTLSServer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

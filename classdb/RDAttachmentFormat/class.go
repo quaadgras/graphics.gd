@@ -71,6 +71,27 @@ This object is used by [RenderingDevice].
 */
 type Instance [1]gdclass.RDAttachmentFormat
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_format      gdextension.MethodForClass `hash:"565531219"`
+	get_format      gdextension.MethodForClass `hash:"2235804183"`
+	set_samples     gdextension.MethodForClass `hash:"3774171498"`
+	get_samples     gdextension.MethodForClass `hash:"407791724"`
+	set_usage_flags gdextension.MethodForClass `hash:"1286410249"`
+	get_usage_flags gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("RDAttachmentFormat")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -86,6 +107,20 @@ type Advanced = class
 type class [1]gdclass.RDAttachmentFormat
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDAttachmentFormat)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDAttachmentFormat)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -95,7 +130,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RDAttachmentFormat"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RDAttachmentFormat)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -128,36 +163,36 @@ func (self Instance) SetUsageFlags(value int) {
 
 //go:nosplit
 func (self class) SetFormat(p_member Rendering.DataFormat) { //gd:RDAttachmentFormat.set_format
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDAttachmentFormat.Bind_set_format), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.DataFormat }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.DataFormat }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetFormat() Rendering.DataFormat { //gd:RDAttachmentFormat.get_format
-	var r_ret = gdextension.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDAttachmentFormat.Bind_get_format), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSamples(p_member Rendering.TextureSamples) { //gd:RDAttachmentFormat.set_samples
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDAttachmentFormat.Bind_set_samples), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSamples }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_samples, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSamples }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetSamples() Rendering.TextureSamples { //gd:RDAttachmentFormat.get_samples
-	var r_ret = gdextension.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDAttachmentFormat.Bind_get_samples), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.get_samples, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUsageFlags(p_member int64) { //gd:RDAttachmentFormat.set_usage_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDAttachmentFormat.Bind_set_usage_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_usage_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetUsageFlags() int64 { //gd:RDAttachmentFormat.get_usage_flags
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDAttachmentFormat.Bind_get_usage_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_usage_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -186,7 +221,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RDAttachmentFormat", func(ptr gd.Object) any {
-		return [1]gdclass.RDAttachmentFormat{*(*gdclass.RDAttachmentFormat)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("RDAttachmentFormat", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

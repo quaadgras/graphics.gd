@@ -85,6 +85,101 @@ All [code]set_*[/code] methods allow negative item indices, i.e. [code]-1[/code]
 */
 type Instance [1]gdclass.ItemList
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	add_item                     gdextension.MethodForClass `hash:"359861678"`
+	add_icon_item                gdextension.MethodForClass `hash:"4256579627"`
+	set_item_text                gdextension.MethodForClass `hash:"501894301"`
+	get_item_text                gdextension.MethodForClass `hash:"844755477"`
+	set_item_icon                gdextension.MethodForClass `hash:"666127730"`
+	get_item_icon                gdextension.MethodForClass `hash:"3536238170"`
+	set_item_text_direction      gdextension.MethodForClass `hash:"1707680378"`
+	get_item_text_direction      gdextension.MethodForClass `hash:"4235602388"`
+	set_item_language            gdextension.MethodForClass `hash:"501894301"`
+	get_item_language            gdextension.MethodForClass `hash:"844755477"`
+	set_item_auto_translate_mode gdextension.MethodForClass `hash:"287402019"`
+	get_item_auto_translate_mode gdextension.MethodForClass `hash:"906302372"`
+	set_item_icon_transposed     gdextension.MethodForClass `hash:"300928843"`
+	is_item_icon_transposed      gdextension.MethodForClass `hash:"1116898809"`
+	set_item_icon_region         gdextension.MethodForClass `hash:"1356297692"`
+	get_item_icon_region         gdextension.MethodForClass `hash:"3327874267"`
+	set_item_icon_modulate       gdextension.MethodForClass `hash:"2878471219"`
+	get_item_icon_modulate       gdextension.MethodForClass `hash:"3457211756"`
+	set_item_selectable          gdextension.MethodForClass `hash:"300928843"`
+	is_item_selectable           gdextension.MethodForClass `hash:"1116898809"`
+	set_item_disabled            gdextension.MethodForClass `hash:"300928843"`
+	is_item_disabled             gdextension.MethodForClass `hash:"1116898809"`
+	set_item_metadata            gdextension.MethodForClass `hash:"2152698145"`
+	get_item_metadata            gdextension.MethodForClass `hash:"4227898402"`
+	set_item_custom_bg_color     gdextension.MethodForClass `hash:"2878471219"`
+	get_item_custom_bg_color     gdextension.MethodForClass `hash:"3457211756"`
+	set_item_custom_fg_color     gdextension.MethodForClass `hash:"2878471219"`
+	get_item_custom_fg_color     gdextension.MethodForClass `hash:"3457211756"`
+	get_item_rect                gdextension.MethodForClass `hash:"159227807"`
+	set_item_tooltip_enabled     gdextension.MethodForClass `hash:"300928843"`
+	is_item_tooltip_enabled      gdextension.MethodForClass `hash:"1116898809"`
+	set_item_tooltip             gdextension.MethodForClass `hash:"501894301"`
+	get_item_tooltip             gdextension.MethodForClass `hash:"844755477"`
+	select_                      gdextension.MethodForClass `hash:"972357352"`
+	deselect                     gdextension.MethodForClass `hash:"1286410249"`
+	deselect_all                 gdextension.MethodForClass `hash:"3218959716"`
+	is_selected                  gdextension.MethodForClass `hash:"1116898809"`
+	get_selected_items           gdextension.MethodForClass `hash:"969006518"`
+	move_item                    gdextension.MethodForClass `hash:"3937882851"`
+	set_item_count               gdextension.MethodForClass `hash:"1286410249"`
+	get_item_count               gdextension.MethodForClass `hash:"3905245786"`
+	remove_item                  gdextension.MethodForClass `hash:"1286410249"`
+	clear                        gdextension.MethodForClass `hash:"3218959716"`
+	sort_items_by_text           gdextension.MethodForClass `hash:"3218959716"`
+	set_fixed_column_width       gdextension.MethodForClass `hash:"1286410249"`
+	get_fixed_column_width       gdextension.MethodForClass `hash:"3905245786"`
+	set_same_column_width        gdextension.MethodForClass `hash:"2586408642"`
+	is_same_column_width         gdextension.MethodForClass `hash:"36873697"`
+	set_max_text_lines           gdextension.MethodForClass `hash:"1286410249"`
+	get_max_text_lines           gdextension.MethodForClass `hash:"3905245786"`
+	set_max_columns              gdextension.MethodForClass `hash:"1286410249"`
+	get_max_columns              gdextension.MethodForClass `hash:"3905245786"`
+	set_select_mode              gdextension.MethodForClass `hash:"928267388"`
+	get_select_mode              gdextension.MethodForClass `hash:"1191945842"`
+	set_icon_mode                gdextension.MethodForClass `hash:"2025053633"`
+	get_icon_mode                gdextension.MethodForClass `hash:"3353929232"`
+	set_fixed_icon_size          gdextension.MethodForClass `hash:"1130785943"`
+	get_fixed_icon_size          gdextension.MethodForClass `hash:"3690982128"`
+	set_icon_scale               gdextension.MethodForClass `hash:"373806689"`
+	get_icon_scale               gdextension.MethodForClass `hash:"1740695150"`
+	set_allow_rmb_select         gdextension.MethodForClass `hash:"2586408642"`
+	get_allow_rmb_select         gdextension.MethodForClass `hash:"36873697"`
+	set_allow_reselect           gdextension.MethodForClass `hash:"2586408642"`
+	get_allow_reselect           gdextension.MethodForClass `hash:"36873697"`
+	set_allow_search             gdextension.MethodForClass `hash:"2586408642"`
+	get_allow_search             gdextension.MethodForClass `hash:"36873697"`
+	set_auto_width               gdextension.MethodForClass `hash:"2586408642"`
+	has_auto_width               gdextension.MethodForClass `hash:"36873697"`
+	set_auto_height              gdextension.MethodForClass `hash:"2586408642"`
+	has_auto_height              gdextension.MethodForClass `hash:"36873697"`
+	is_anything_selected         gdextension.MethodForClass `hash:"2240911060"`
+	get_item_at_position         gdextension.MethodForClass `hash:"2300324924"`
+	ensure_current_is_visible    gdextension.MethodForClass `hash:"3218959716"`
+	get_v_scroll_bar             gdextension.MethodForClass `hash:"2630340773"`
+	get_h_scroll_bar             gdextension.MethodForClass `hash:"4004517983"`
+	set_text_overrun_behavior    gdextension.MethodForClass `hash:"1008890932"`
+	get_text_overrun_behavior    gdextension.MethodForClass `hash:"3779142101"`
+	set_wraparound_items         gdextension.MethodForClass `hash:"2586408642"`
+	has_wraparound_items         gdextension.MethodForClass `hash:"36873697"`
+	force_update_list_size       gdextension.MethodForClass `hash:"3218959716"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ItemList")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.ItemList
@@ -489,6 +584,20 @@ type Advanced = class
 type class [1]gdclass.ItemList
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ItemList)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ItemList)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -498,7 +607,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ItemList"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ItemList)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -639,7 +748,7 @@ If [param selectable] is [code]true[/code], the list item will be selectable.
 */
 //go:nosplit
 func (self class) AddItem(text String.Readable, icon [1]gdclass.Texture2D, selectable bool) int64 { //gd:ItemList.add_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_add_item), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		text       gdextension.String
 		icon       gdextension.Object
 		selectable bool
@@ -653,7 +762,7 @@ Adds an item to the item list with no text, only an icon. Returns the index of a
 */
 //go:nosplit
 func (self class) AddIconItem(icon [1]gdclass.Texture2D, selectable bool) int64 { //gd:ItemList.add_icon_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_add_icon_item), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_item, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		icon       gdextension.Object
 		selectable bool
 	}{gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), selectable}))
@@ -666,7 +775,7 @@ Sets text of the item associated with the specified index.
 */
 //go:nosplit
 func (self class) SetItemText(idx int64, text String.Readable) { //gd:ItemList.set_item_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_text), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		idx  int64
 		text gdextension.String
 	}{idx, pointers.Get(gd.InternalString(text))}))
@@ -677,7 +786,7 @@ Returns the text associated with the specified index.
 */
 //go:nosplit
 func (self class) GetItemText(idx int64) String.Readable { //gd:ItemList.get_item_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_text), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_text, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -687,7 +796,7 @@ Sets (or replaces) the icon's [Texture2D] associated with the specified index.
 */
 //go:nosplit
 func (self class) SetItemIcon(idx int64, icon [1]gdclass.Texture2D) { //gd:ItemList.set_item_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_icon), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		idx  int64
 		icon gdextension.Object
 	}{idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
@@ -698,7 +807,7 @@ Returns the icon associated with the specified index.
 */
 //go:nosplit
 func (self class) GetItemIcon(idx int64) [1]gdclass.Texture2D { //gd:ItemList.get_item_icon
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_icon), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -708,7 +817,7 @@ Sets item's text base writing direction.
 */
 //go:nosplit
 func (self class) SetItemTextDirection(idx int64, direction Control.TextDirection) { //gd:ItemList.set_item_text_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_text_direction), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_text_direction, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		idx       int64
 		direction Control.TextDirection
 	}{idx, direction}))
@@ -719,7 +828,7 @@ Returns item's text base writing direction.
 */
 //go:nosplit
 func (self class) GetItemTextDirection(idx int64) Control.TextDirection { //gd:ItemList.get_item_text_direction
-	var r_ret = gdextension.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_text_direction), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_item_text_direction, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -729,7 +838,7 @@ Sets language code of item's text used for line-breaking and text shaping algori
 */
 //go:nosplit
 func (self class) SetItemLanguage(idx int64, language String.Readable) { //gd:ItemList.set_item_language
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_language), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_language, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		idx      int64
 		language gdextension.String
 	}{idx, pointers.Get(gd.InternalString(language))}))
@@ -740,7 +849,7 @@ Returns item's text language code.
 */
 //go:nosplit
 func (self class) GetItemLanguage(idx int64) String.Readable { //gd:ItemList.get_item_language
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_language), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_language, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -751,7 +860,7 @@ Items use [constant Node.AUTO_TRANSLATE_MODE_INHERIT] by default, which uses the
 */
 //go:nosplit
 func (self class) SetItemAutoTranslateMode(idx int64, mode Node.AutoTranslateMode) { //gd:ItemList.set_item_auto_translate_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_auto_translate_mode), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_auto_translate_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		idx  int64
 		mode Node.AutoTranslateMode
 	}{idx, mode}))
@@ -762,7 +871,7 @@ Returns item's auto translate mode.
 */
 //go:nosplit
 func (self class) GetItemAutoTranslateMode(idx int64) Node.AutoTranslateMode { //gd:ItemList.get_item_auto_translate_mode
-	var r_ret = gdextension.Call[Node.AutoTranslateMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_auto_translate_mode), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[Node.AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_item_auto_translate_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -772,7 +881,7 @@ Sets whether the item icon will be drawn transposed.
 */
 //go:nosplit
 func (self class) SetItemIconTransposed(idx int64, transposed bool) { //gd:ItemList.set_item_icon_transposed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_icon_transposed), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon_transposed, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		idx        int64
 		transposed bool
 	}{idx, transposed}))
@@ -783,7 +892,7 @@ Returns [code]true[/code] if the item icon will be drawn transposed, i.e. the X 
 */
 //go:nosplit
 func (self class) IsItemIconTransposed(idx int64) bool { //gd:ItemList.is_item_icon_transposed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_is_item_icon_transposed), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_icon_transposed, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -793,7 +902,7 @@ Sets the region of item's icon used. The whole icon will be used if the region h
 */
 //go:nosplit
 func (self class) SetItemIconRegion(idx int64, rect Rect2.PositionSize) { //gd:ItemList.set_item_icon_region
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_icon_region), 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon_region, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2<<8), unsafe.Pointer(&struct {
 		idx  int64
 		rect Rect2.PositionSize
 	}{idx, rect}))
@@ -804,7 +913,7 @@ Returns the region of item's icon used. The whole icon will be used if the regio
 */
 //go:nosplit
 func (self class) GetItemIconRegion(idx int64) Rect2.PositionSize { //gd:ItemList.get_item_icon_region
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_icon_region), gdextension.SizeRect2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_item_icon_region, gdextension.SizeRect2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -814,7 +923,7 @@ Sets a modulating [Color] of the item associated with the specified index.
 */
 //go:nosplit
 func (self class) SetItemIconModulate(idx int64, modulate Color.RGBA) { //gd:ItemList.set_item_icon_modulate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_icon_modulate), 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon_modulate, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		idx      int64
 		modulate Color.RGBA
 	}{idx, modulate}))
@@ -825,7 +934,7 @@ Returns a [Color] modulating item's icon at the specified index.
 */
 //go:nosplit
 func (self class) GetItemIconModulate(idx int64) Color.RGBA { //gd:ItemList.get_item_icon_modulate
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_icon_modulate), gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_item_icon_modulate, gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -835,7 +944,7 @@ Allows or disallows selection of the item associated with the specified index.
 */
 //go:nosplit
 func (self class) SetItemSelectable(idx int64, selectable bool) { //gd:ItemList.set_item_selectable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_selectable), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_selectable, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		idx        int64
 		selectable bool
 	}{idx, selectable}))
@@ -846,7 +955,7 @@ Returns [code]true[/code] if the item at the specified index is selectable.
 */
 //go:nosplit
 func (self class) IsItemSelectable(idx int64) bool { //gd:ItemList.is_item_selectable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_is_item_selectable), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_selectable, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -857,7 +966,7 @@ Disabled items cannot be selected and do not trigger activation signals (when do
 */
 //go:nosplit
 func (self class) SetItemDisabled(idx int64, disabled bool) { //gd:ItemList.set_item_disabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_disabled), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		idx      int64
 		disabled bool
 	}{idx, disabled}))
@@ -868,7 +977,7 @@ Returns [code]true[/code] if the item at the specified index is disabled.
 */
 //go:nosplit
 func (self class) IsItemDisabled(idx int64) bool { //gd:ItemList.is_item_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_is_item_disabled), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -878,7 +987,7 @@ Sets a value (of any type) to be stored with the item associated with the specif
 */
 //go:nosplit
 func (self class) SetItemMetadata(idx int64, metadata variant.Any) { //gd:ItemList.set_item_metadata
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_metadata), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_metadata, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		idx      int64
 		metadata gdextension.Variant
 	}{idx, gdextension.Variant(pointers.Get(gd.InternalVariant(metadata)))}))
@@ -889,7 +998,7 @@ Returns the metadata value of the specified index.
 */
 //go:nosplit
 func (self class) GetItemMetadata(idx int64) variant.Any { //gd:ItemList.get_item_metadata
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_metadata), gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_item_metadata, gdextension.SizeVariant|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -899,7 +1008,7 @@ Sets the background color of the item specified by [param idx] index to the spec
 */
 //go:nosplit
 func (self class) SetItemCustomBgColor(idx int64, custom_bg_color Color.RGBA) { //gd:ItemList.set_item_custom_bg_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_custom_bg_color), 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_custom_bg_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		idx             int64
 		custom_bg_color Color.RGBA
 	}{idx, custom_bg_color}))
@@ -910,7 +1019,7 @@ Returns the custom background color of the item specified by [param idx] index.
 */
 //go:nosplit
 func (self class) GetItemCustomBgColor(idx int64) Color.RGBA { //gd:ItemList.get_item_custom_bg_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_custom_bg_color), gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_item_custom_bg_color, gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -920,7 +1029,7 @@ Sets the foreground color of the item specified by [param idx] index to the spec
 */
 //go:nosplit
 func (self class) SetItemCustomFgColor(idx int64, custom_fg_color Color.RGBA) { //gd:ItemList.set_item_custom_fg_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_custom_fg_color), 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_custom_fg_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		idx             int64
 		custom_fg_color Color.RGBA
 	}{idx, custom_fg_color}))
@@ -931,7 +1040,7 @@ Returns the custom foreground color of the item specified by [param idx] index.
 */
 //go:nosplit
 func (self class) GetItemCustomFgColor(idx int64) Color.RGBA { //gd:ItemList.get_item_custom_fg_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_custom_fg_color), gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_item_custom_fg_color, gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -942,7 +1051,7 @@ Returns the position and size of the item with the specified index, in the coord
 */
 //go:nosplit
 func (self class) GetItemRect(idx int64, expand bool) Rect2.PositionSize { //gd:ItemList.get_item_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_rect), gdextension.SizeRect2|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_item_rect, gdextension.SizeRect2|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		idx    int64
 		expand bool
 	}{idx, expand}))
@@ -955,7 +1064,7 @@ Sets whether the tooltip hint is enabled for specified item index.
 */
 //go:nosplit
 func (self class) SetItemTooltipEnabled(idx int64, enable bool) { //gd:ItemList.set_item_tooltip_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_tooltip_enabled), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tooltip_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		idx    int64
 		enable bool
 	}{idx, enable}))
@@ -966,7 +1075,7 @@ Returns [code]true[/code] if the tooltip is enabled for specified item index.
 */
 //go:nosplit
 func (self class) IsItemTooltipEnabled(idx int64) bool { //gd:ItemList.is_item_tooltip_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_is_item_tooltip_enabled), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_tooltip_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -976,7 +1085,7 @@ Sets the tooltip hint for the item associated with the specified index.
 */
 //go:nosplit
 func (self class) SetItemTooltip(idx int64, tooltip String.Readable) { //gd:ItemList.set_item_tooltip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_tooltip), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		idx     int64
 		tooltip gdextension.String
 	}{idx, pointers.Get(gd.InternalString(tooltip))}))
@@ -987,7 +1096,7 @@ Returns the tooltip hint associated with the specified index.
 */
 //go:nosplit
 func (self class) GetItemTooltip(idx int64) String.Readable { //gd:ItemList.get_item_tooltip
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_tooltip), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_tooltip, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -998,7 +1107,7 @@ Select the item at the specified index.
 */
 //go:nosplit
 func (self class) Select(idx int64, single bool) { //gd:ItemList.select_
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_select_), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		idx    int64
 		single bool
 	}{idx, single}))
@@ -1009,7 +1118,7 @@ Ensures the item associated with the specified index is not selected.
 */
 //go:nosplit
 func (self class) Deselect(idx int64) { //gd:ItemList.deselect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_deselect), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.deselect, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 }
 
 /*
@@ -1017,7 +1126,7 @@ Ensures there are no items selected.
 */
 //go:nosplit
 func (self class) DeselectAll() { //gd:ItemList.deselect_all
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_deselect_all), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.deselect_all, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1025,7 +1134,7 @@ Returns [code]true[/code] if the item at the specified index is currently select
 */
 //go:nosplit
 func (self class) IsSelected(idx int64) bool { //gd:ItemList.is_selected
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_is_selected), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selected, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -1035,7 +1144,7 @@ Returns an array with the indexes of the selected items.
 */
 //go:nosplit
 func (self class) GetSelectedItems() Packed.Array[int32] { //gd:ItemList.get_selected_items
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_selected_items), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_selected_items, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1045,7 +1154,7 @@ Moves item from index [param from_idx] to [param to_idx].
 */
 //go:nosplit
 func (self class) MoveItem(from_idx int64, to_idx int64) { //gd:ItemList.move_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_move_item), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_item, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		from_idx int64
 		to_idx   int64
 	}{from_idx, to_idx}))
@@ -1053,12 +1162,12 @@ func (self class) MoveItem(from_idx int64, to_idx int64) { //gd:ItemList.move_it
 
 //go:nosplit
 func (self class) SetItemCount(count int64) { //gd:ItemList.set_item_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_item_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 //go:nosplit
 func (self class) GetItemCount() int64 { //gd:ItemList.get_item_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1068,7 +1177,7 @@ Removes the item specified by [param idx] index from the list.
 */
 //go:nosplit
 func (self class) RemoveItem(idx int64) { //gd:ItemList.remove_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_remove_item), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_item, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 }
 
 /*
@@ -1076,7 +1185,7 @@ Removes all items from the list.
 */
 //go:nosplit
 func (self class) Clear() { //gd:ItemList.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1084,161 +1193,161 @@ Sorts items in the list by their text.
 */
 //go:nosplit
 func (self class) SortItemsByText() { //gd:ItemList.sort_items_by_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_sort_items_by_text), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.sort_items_by_text, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetFixedColumnWidth(width int64) { //gd:ItemList.set_fixed_column_width
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_fixed_column_width), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ width int64 }{width}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fixed_column_width, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ width int64 }{width}))
 }
 
 //go:nosplit
 func (self class) GetFixedColumnWidth() int64 { //gd:ItemList.get_fixed_column_width
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_fixed_column_width), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fixed_column_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSameColumnWidth(enable bool) { //gd:ItemList.set_same_column_width
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_same_column_width), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_same_column_width, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSameColumnWidth() bool { //gd:ItemList.is_same_column_width
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_is_same_column_width), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_same_column_width, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxTextLines(lines int64) { //gd:ItemList.set_max_text_lines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_max_text_lines), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ lines int64 }{lines}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_text_lines, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ lines int64 }{lines}))
 }
 
 //go:nosplit
 func (self class) GetMaxTextLines() int64 { //gd:ItemList.get_max_text_lines
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_max_text_lines), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_text_lines, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxColumns(amount int64) { //gd:ItemList.set_max_columns
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_max_columns), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_columns, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetMaxColumns() int64 { //gd:ItemList.get_max_columns
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_max_columns), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_columns, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectMode(mode SelectMode) { //gd:ItemList.set_select_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_select_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode SelectMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_select_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode SelectMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetSelectMode() SelectMode { //gd:ItemList.get_select_mode
-	var r_ret = gdextension.Call[SelectMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_select_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SelectMode](gd.ObjectChecked(self.AsObject()), methods.get_select_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIconMode(mode IconMode) { //gd:ItemList.set_icon_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_icon_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode IconMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode IconMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetIconMode() IconMode { //gd:ItemList.get_icon_mode
-	var r_ret = gdextension.Call[IconMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_icon_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[IconMode](gd.ObjectChecked(self.AsObject()), methods.get_icon_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFixedIconSize(size Vector2i.XY) { //gd:ItemList.set_fixed_icon_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_fixed_icon_size), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fixed_icon_size, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
 }
 
 //go:nosplit
 func (self class) GetFixedIconSize() Vector2i.XY { //gd:ItemList.get_fixed_icon_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_fixed_icon_size), gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_fixed_icon_size, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIconScale(scale float64) { //gd:ItemList.set_icon_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_icon_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
 }
 
 //go:nosplit
 func (self class) GetIconScale() float64 { //gd:ItemList.get_icon_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_icon_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_icon_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowRmbSelect(allow bool) { //gd:ItemList.set_allow_rmb_select
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_allow_rmb_select), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_rmb_select, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
 }
 
 //go:nosplit
 func (self class) GetAllowRmbSelect() bool { //gd:ItemList.get_allow_rmb_select
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_allow_rmb_select), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_rmb_select, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowReselect(allow bool) { //gd:ItemList.set_allow_reselect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_allow_reselect), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_reselect, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
 }
 
 //go:nosplit
 func (self class) GetAllowReselect() bool { //gd:ItemList.get_allow_reselect
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_allow_reselect), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_reselect, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowSearch(allow bool) { //gd:ItemList.set_allow_search
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_allow_search), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_search, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
 }
 
 //go:nosplit
 func (self class) GetAllowSearch() bool { //gd:ItemList.get_allow_search
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_allow_search), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_search, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoWidth(enable bool) { //gd:ItemList.set_auto_width
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_auto_width), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_width, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) HasAutoWidth() bool { //gd:ItemList.has_auto_width
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_has_auto_width), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_auto_width, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoHeight(enable bool) { //gd:ItemList.set_auto_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_auto_height), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_height, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) HasAutoHeight() bool { //gd:ItemList.has_auto_height
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_has_auto_height), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_auto_height, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1248,7 +1357,7 @@ Returns [code]true[/code] if one or more items are selected.
 */
 //go:nosplit
 func (self class) IsAnythingSelected() bool { //gd:ItemList.is_anything_selected
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_is_anything_selected), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_anything_selected, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1260,7 +1369,7 @@ When there is no item at that point, -1 will be returned if [param exact] is [co
 */
 //go:nosplit
 func (self class) GetItemAtPosition(position Vector2.XY, exact bool) int64 { //gd:ItemList.get_item_at_position
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_item_at_position), gdextension.SizeInt|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_at_position, gdextension.SizeInt|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		position Vector2.XY
 		exact    bool
 	}{position, exact}))
@@ -1273,7 +1382,7 @@ Ensure current selection is visible, adjusting the scroll position as necessary.
 */
 //go:nosplit
 func (self class) EnsureCurrentIsVisible() { //gd:ItemList.ensure_current_is_visible
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_ensure_current_is_visible), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ensure_current_is_visible, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1282,7 +1391,7 @@ Returns the vertical scrollbar.
 */
 //go:nosplit
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ItemList.get_v_scroll_bar
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_v_scroll_bar), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret)}
 	return ret
 }
@@ -1293,31 +1402,31 @@ Returns the horizontal scrollbar.
 */
 //go:nosplit
 func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ItemList.get_h_scroll_bar
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_h_scroll_bar), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_h_scroll_bar, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.HScrollBar{gd.PointerLifetimeBoundTo[gdclass.HScrollBar](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:ItemList.set_text_overrun_behavior
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_text_overrun_behavior), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior}))
 }
 
 //go:nosplit
 func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:ItemList.get_text_overrun_behavior
-	var r_ret = gdextension.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_get_text_overrun_behavior), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWraparoundItems(enable bool) { //gd:ItemList.set_wraparound_items
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_set_wraparound_items), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wraparound_items, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) HasWraparoundItems() bool { //gd:ItemList.has_wraparound_items
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_has_wraparound_items), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_wraparound_items, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1327,7 +1436,7 @@ Forces an update to the list size based on its items. This happens automatically
 */
 //go:nosplit
 func (self class) ForceUpdateListSize() { //gd:ItemList.force_update_list_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ItemList.Bind_force_update_list_size), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update_list_size, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self Instance) OnItemSelected(cb func(index int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), 0)
@@ -1382,7 +1491,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ItemList", func(ptr gd.Object) any { return [1]gdclass.ItemList{*(*gdclass.ItemList)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("ItemList", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type IconMode int //gd:ItemList.IconMode

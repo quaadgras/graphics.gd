@@ -74,6 +74,55 @@ A node used as a child of a [VehicleBody3D] parent to simulate the behavior of o
 */
 type Instance [1]gdclass.VehicleWheel3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_radius                 gdextension.MethodForClass `hash:"373806689"`
+	get_radius                 gdextension.MethodForClass `hash:"1740695150"`
+	set_suspension_rest_length gdextension.MethodForClass `hash:"373806689"`
+	get_suspension_rest_length gdextension.MethodForClass `hash:"1740695150"`
+	set_suspension_travel      gdextension.MethodForClass `hash:"373806689"`
+	get_suspension_travel      gdextension.MethodForClass `hash:"1740695150"`
+	set_suspension_stiffness   gdextension.MethodForClass `hash:"373806689"`
+	get_suspension_stiffness   gdextension.MethodForClass `hash:"1740695150"`
+	set_suspension_max_force   gdextension.MethodForClass `hash:"373806689"`
+	get_suspension_max_force   gdextension.MethodForClass `hash:"1740695150"`
+	set_damping_compression    gdextension.MethodForClass `hash:"373806689"`
+	get_damping_compression    gdextension.MethodForClass `hash:"1740695150"`
+	set_damping_relaxation     gdextension.MethodForClass `hash:"373806689"`
+	get_damping_relaxation     gdextension.MethodForClass `hash:"1740695150"`
+	set_use_as_traction        gdextension.MethodForClass `hash:"2586408642"`
+	is_used_as_traction        gdextension.MethodForClass `hash:"36873697"`
+	set_use_as_steering        gdextension.MethodForClass `hash:"2586408642"`
+	is_used_as_steering        gdextension.MethodForClass `hash:"36873697"`
+	set_friction_slip          gdextension.MethodForClass `hash:"373806689"`
+	get_friction_slip          gdextension.MethodForClass `hash:"1740695150"`
+	is_in_contact              gdextension.MethodForClass `hash:"36873697"`
+	get_contact_body           gdextension.MethodForClass `hash:"151077316"`
+	get_contact_point          gdextension.MethodForClass `hash:"3360562783"`
+	get_contact_normal         gdextension.MethodForClass `hash:"3360562783"`
+	set_roll_influence         gdextension.MethodForClass `hash:"373806689"`
+	get_roll_influence         gdextension.MethodForClass `hash:"1740695150"`
+	get_skidinfo               gdextension.MethodForClass `hash:"1740695150"`
+	get_rpm                    gdextension.MethodForClass `hash:"1740695150"`
+	set_engine_force           gdextension.MethodForClass `hash:"373806689"`
+	get_engine_force           gdextension.MethodForClass `hash:"1740695150"`
+	set_brake                  gdextension.MethodForClass `hash:"373806689"`
+	get_brake                  gdextension.MethodForClass `hash:"1740695150"`
+	set_steering               gdextension.MethodForClass `hash:"373806689"`
+	get_steering               gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VehicleWheel3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -132,6 +181,20 @@ type Advanced = class
 type class [1]gdclass.VehicleWheel3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VehicleWheel3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VehicleWheel3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -141,7 +204,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VehicleWheel3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VehicleWheel3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -261,120 +324,120 @@ func (self Instance) SetDampingRelaxation(value Float.X) {
 
 //go:nosplit
 func (self class) SetRadius(length float64) { //gd:VehicleWheel3D.set_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:VehicleWheel3D.get_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSuspensionRestLength(length float64) { //gd:VehicleWheel3D.set_suspension_rest_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_suspension_rest_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suspension_rest_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetSuspensionRestLength() float64 { //gd:VehicleWheel3D.get_suspension_rest_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_suspension_rest_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_suspension_rest_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSuspensionTravel(length float64) { //gd:VehicleWheel3D.set_suspension_travel
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_suspension_travel), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suspension_travel, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetSuspensionTravel() float64 { //gd:VehicleWheel3D.get_suspension_travel
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_suspension_travel), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_suspension_travel, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSuspensionStiffness(length float64) { //gd:VehicleWheel3D.set_suspension_stiffness
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_suspension_stiffness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suspension_stiffness, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetSuspensionStiffness() float64 { //gd:VehicleWheel3D.get_suspension_stiffness
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_suspension_stiffness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_suspension_stiffness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSuspensionMaxForce(length float64) { //gd:VehicleWheel3D.set_suspension_max_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_suspension_max_force), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suspension_max_force, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetSuspensionMaxForce() float64 { //gd:VehicleWheel3D.get_suspension_max_force
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_suspension_max_force), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_suspension_max_force, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDampingCompression(length float64) { //gd:VehicleWheel3D.set_damping_compression
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_damping_compression), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping_compression, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetDampingCompression() float64 { //gd:VehicleWheel3D.get_damping_compression
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_damping_compression), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping_compression, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDampingRelaxation(length float64) { //gd:VehicleWheel3D.set_damping_relaxation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_damping_relaxation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping_relaxation, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetDampingRelaxation() float64 { //gd:VehicleWheel3D.get_damping_relaxation
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_damping_relaxation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping_relaxation, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseAsTraction(enable bool) { //gd:VehicleWheel3D.set_use_as_traction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_use_as_traction), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_as_traction, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsedAsTraction() bool { //gd:VehicleWheel3D.is_used_as_traction
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_is_used_as_traction), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_used_as_traction, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseAsSteering(enable bool) { //gd:VehicleWheel3D.set_use_as_steering
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_use_as_steering), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_as_steering, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsedAsSteering() bool { //gd:VehicleWheel3D.is_used_as_steering
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_is_used_as_steering), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_used_as_steering, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrictionSlip(length float64) { //gd:VehicleWheel3D.set_friction_slip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_friction_slip), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_friction_slip, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetFrictionSlip() float64 { //gd:VehicleWheel3D.get_friction_slip
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_friction_slip), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_friction_slip, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -384,7 +447,7 @@ Returns [code]true[/code] if this wheel is in contact with a surface.
 */
 //go:nosplit
 func (self class) IsInContact() bool { //gd:VehicleWheel3D.is_in_contact
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_is_in_contact), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_in_contact, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -395,7 +458,7 @@ Returns [code]null[/code] if the wheel is not in contact with a surface, or the 
 */
 //go:nosplit
 func (self class) GetContactBody() [1]gdclass.Node3D { //gd:VehicleWheel3D.get_contact_body
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_contact_body), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_contact_body, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node3D{gd.PointerMustAssertInstanceID[gdclass.Node3D](r_ret)}
 	return ret
 }
@@ -405,7 +468,7 @@ Returns the point of the suspension's collision in world space if the wheel is i
 */
 //go:nosplit
 func (self class) GetContactPoint() Vector3.XYZ { //gd:VehicleWheel3D.get_contact_point
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_contact_point), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_contact_point, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -415,19 +478,19 @@ Returns the normal of the suspension's collision in world space if the wheel is 
 */
 //go:nosplit
 func (self class) GetContactNormal() Vector3.XYZ { //gd:VehicleWheel3D.get_contact_normal
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_contact_normal), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_contact_normal, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRollInfluence(roll_influence float64) { //gd:VehicleWheel3D.set_roll_influence
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_roll_influence), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ roll_influence float64 }{roll_influence}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_roll_influence, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ roll_influence float64 }{roll_influence}))
 }
 
 //go:nosplit
 func (self class) GetRollInfluence() float64 { //gd:VehicleWheel3D.get_roll_influence
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_roll_influence), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_roll_influence, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -437,7 +500,7 @@ Returns a value between 0.0 and 1.0 that indicates whether this wheel is skiddin
 */
 //go:nosplit
 func (self class) GetSkidinfo() float64 { //gd:VehicleWheel3D.get_skidinfo
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_skidinfo), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_skidinfo, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -447,43 +510,43 @@ Returns the rotational speed of the wheel in revolutions per minute.
 */
 //go:nosplit
 func (self class) GetRpm() float64 { //gd:VehicleWheel3D.get_rpm
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_rpm), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rpm, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEngineForce(engine_force float64) { //gd:VehicleWheel3D.set_engine_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_engine_force), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ engine_force float64 }{engine_force}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_engine_force, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ engine_force float64 }{engine_force}))
 }
 
 //go:nosplit
 func (self class) GetEngineForce() float64 { //gd:VehicleWheel3D.get_engine_force
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_engine_force), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_engine_force, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBrake(brake float64) { //gd:VehicleWheel3D.set_brake
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_brake), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ brake float64 }{brake}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_brake, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ brake float64 }{brake}))
 }
 
 //go:nosplit
 func (self class) GetBrake() float64 { //gd:VehicleWheel3D.get_brake
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_brake), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_brake, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSteering(steering float64) { //gd:VehicleWheel3D.set_steering
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_set_steering), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ steering float64 }{steering}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_steering, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ steering float64 }{steering}))
 }
 
 //go:nosplit
 func (self class) GetSteering() float64 { //gd:VehicleWheel3D.get_steering
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VehicleWheel3D.Bind_get_steering), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_steering, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -511,7 +574,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VehicleWheel3D", func(ptr gd.Object) any {
-		return [1]gdclass.VehicleWheel3D{*(*gdclass.VehicleWheel3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VehicleWheel3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

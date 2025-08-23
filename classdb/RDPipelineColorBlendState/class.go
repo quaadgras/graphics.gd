@@ -73,6 +73,29 @@ This object is used by [RenderingDevice].
 */
 type Instance [1]gdclass.RDPipelineColorBlendState
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_enable_logic_op gdextension.MethodForClass `hash:"2586408642"`
+	get_enable_logic_op gdextension.MethodForClass `hash:"36873697"`
+	set_logic_op        gdextension.MethodForClass `hash:"3610841058"`
+	get_logic_op        gdextension.MethodForClass `hash:"988254690"`
+	set_blend_constant  gdextension.MethodForClass `hash:"2920490490"`
+	get_blend_constant  gdextension.MethodForClass `hash:"3444240500"`
+	set_attachments     gdextension.MethodForClass `hash:"381264803"`
+	get_attachments     gdextension.MethodForClass `hash:"3995934104"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("RDPipelineColorBlendState")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +111,20 @@ type Advanced = class
 type class [1]gdclass.RDPipelineColorBlendState
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDPipelineColorBlendState)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDPipelineColorBlendState)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +134,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RDPipelineColorBlendState"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RDPipelineColorBlendState)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -138,48 +175,48 @@ func (self Instance) SetAttachments(value []RDPipelineColorBlendStateAttachment.
 
 //go:nosplit
 func (self class) SetEnableLogicOp(p_member bool) { //gd:RDPipelineColorBlendState.set_enable_logic_op
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineColorBlendState.Bind_set_enable_logic_op), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_logic_op, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetEnableLogicOp() bool { //gd:RDPipelineColorBlendState.get_enable_logic_op
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineColorBlendState.Bind_get_enable_logic_op), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_logic_op, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLogicOp(p_member Rendering.LogicOperation) { //gd:RDPipelineColorBlendState.set_logic_op
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineColorBlendState.Bind_set_logic_op), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.LogicOperation }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_logic_op, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.LogicOperation }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetLogicOp() Rendering.LogicOperation { //gd:RDPipelineColorBlendState.get_logic_op
-	var r_ret = gdextension.Call[Rendering.LogicOperation](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineColorBlendState.Bind_get_logic_op), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.LogicOperation](gd.ObjectChecked(self.AsObject()), methods.get_logic_op, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlendConstant(p_member Color.RGBA) { //gd:RDPipelineColorBlendState.set_blend_constant
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineColorBlendState.Bind_set_blend_constant), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ p_member Color.RGBA }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_constant, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ p_member Color.RGBA }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetBlendConstant() Color.RGBA { //gd:RDPipelineColorBlendState.get_blend_constant
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineColorBlendState.Bind_get_blend_constant), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_blend_constant, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAttachments(attachments Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment]) { //gd:RDPipelineColorBlendState.set_attachments
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineColorBlendState.Bind_set_attachments), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ attachments gdextension.Array }{pointers.Get(gd.InternalArray(attachments))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attachments, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ attachments gdextension.Array }{pointers.Get(gd.InternalArray(attachments))}))
 }
 
 //go:nosplit
 func (self class) GetAttachments() Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment] { //gd:RDPipelineColorBlendState.get_attachments
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDPipelineColorBlendState.Bind_get_attachments), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_attachments, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.RDPipelineColorBlendStateAttachment]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -214,7 +251,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RDPipelineColorBlendState", func(ptr gd.Object) any {
-		return [1]gdclass.RDPipelineColorBlendState{*(*gdclass.RDPipelineColorBlendState)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("RDPipelineColorBlendState", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

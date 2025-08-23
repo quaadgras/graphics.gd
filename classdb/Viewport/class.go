@@ -88,6 +88,142 @@ Finally, viewports can also behave as render targets, in which case they will no
 */
 type Instance [1]gdclass.Viewport
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_world_2d                                gdextension.MethodForClass `hash:"2736080068"`
+	get_world_2d                                gdextension.MethodForClass `hash:"2339128592"`
+	find_world_2d                               gdextension.MethodForClass `hash:"2339128592"`
+	set_canvas_transform                        gdextension.MethodForClass `hash:"2761652528"`
+	get_canvas_transform                        gdextension.MethodForClass `hash:"3814499831"`
+	set_global_canvas_transform                 gdextension.MethodForClass `hash:"2761652528"`
+	get_global_canvas_transform                 gdextension.MethodForClass `hash:"3814499831"`
+	get_stretch_transform                       gdextension.MethodForClass `hash:"3814499831"`
+	get_final_transform                         gdextension.MethodForClass `hash:"3814499831"`
+	get_screen_transform                        gdextension.MethodForClass `hash:"3814499831"`
+	get_visible_rect                            gdextension.MethodForClass `hash:"1639390495"`
+	set_transparent_background                  gdextension.MethodForClass `hash:"2586408642"`
+	has_transparent_background                  gdextension.MethodForClass `hash:"36873697"`
+	set_use_hdr_2d                              gdextension.MethodForClass `hash:"2586408642"`
+	is_using_hdr_2d                             gdextension.MethodForClass `hash:"36873697"`
+	set_msaa_2d                                 gdextension.MethodForClass `hash:"3330258708"`
+	get_msaa_2d                                 gdextension.MethodForClass `hash:"2542055527"`
+	set_msaa_3d                                 gdextension.MethodForClass `hash:"3330258708"`
+	get_msaa_3d                                 gdextension.MethodForClass `hash:"2542055527"`
+	set_screen_space_aa                         gdextension.MethodForClass `hash:"3544169389"`
+	get_screen_space_aa                         gdextension.MethodForClass `hash:"1390814124"`
+	set_use_taa                                 gdextension.MethodForClass `hash:"2586408642"`
+	is_using_taa                                gdextension.MethodForClass `hash:"36873697"`
+	set_use_debanding                           gdextension.MethodForClass `hash:"2586408642"`
+	is_using_debanding                          gdextension.MethodForClass `hash:"36873697"`
+	set_use_occlusion_culling                   gdextension.MethodForClass `hash:"2586408642"`
+	is_using_occlusion_culling                  gdextension.MethodForClass `hash:"36873697"`
+	set_debug_draw                              gdextension.MethodForClass `hash:"1970246205"`
+	get_debug_draw                              gdextension.MethodForClass `hash:"579191299"`
+	get_render_info                             gdextension.MethodForClass `hash:"481977019"`
+	get_texture                                 gdextension.MethodForClass `hash:"1746695840"`
+	set_physics_object_picking                  gdextension.MethodForClass `hash:"2586408642"`
+	get_physics_object_picking                  gdextension.MethodForClass `hash:"2240911060"`
+	set_physics_object_picking_sort             gdextension.MethodForClass `hash:"2586408642"`
+	get_physics_object_picking_sort             gdextension.MethodForClass `hash:"2240911060"`
+	set_physics_object_picking_first_only       gdextension.MethodForClass `hash:"2586408642"`
+	get_physics_object_picking_first_only       gdextension.MethodForClass `hash:"2240911060"`
+	get_viewport_rid                            gdextension.MethodForClass `hash:"2944877500"`
+	push_text_input                             gdextension.MethodForClass `hash:"83702148"`
+	push_input                                  gdextension.MethodForClass `hash:"3644664830"`
+	push_unhandled_input                        gdextension.MethodForClass `hash:"3644664830"`
+	notify_mouse_entered                        gdextension.MethodForClass `hash:"3218959716"`
+	notify_mouse_exited                         gdextension.MethodForClass `hash:"3218959716"`
+	get_mouse_position                          gdextension.MethodForClass `hash:"3341600327"`
+	warp_mouse                                  gdextension.MethodForClass `hash:"743155724"`
+	update_mouse_cursor_state                   gdextension.MethodForClass `hash:"3218959716"`
+	gui_cancel_drag                             gdextension.MethodForClass `hash:"3218959716"`
+	gui_get_drag_data                           gdextension.MethodForClass `hash:"1214101251"`
+	gui_is_dragging                             gdextension.MethodForClass `hash:"36873697"`
+	gui_is_drag_successful                      gdextension.MethodForClass `hash:"36873697"`
+	gui_release_focus                           gdextension.MethodForClass `hash:"3218959716"`
+	gui_get_focus_owner                         gdextension.MethodForClass `hash:"2783021301"`
+	gui_get_hovered_control                     gdextension.MethodForClass `hash:"2783021301"`
+	set_disable_input                           gdextension.MethodForClass `hash:"2586408642"`
+	is_input_disabled                           gdextension.MethodForClass `hash:"36873697"`
+	set_positional_shadow_atlas_size            gdextension.MethodForClass `hash:"1286410249"`
+	get_positional_shadow_atlas_size            gdextension.MethodForClass `hash:"3905245786"`
+	set_positional_shadow_atlas_16_bits         gdextension.MethodForClass `hash:"2586408642"`
+	get_positional_shadow_atlas_16_bits         gdextension.MethodForClass `hash:"36873697"`
+	set_snap_controls_to_pixels                 gdextension.MethodForClass `hash:"2586408642"`
+	is_snap_controls_to_pixels_enabled          gdextension.MethodForClass `hash:"36873697"`
+	set_snap_2d_transforms_to_pixel             gdextension.MethodForClass `hash:"2586408642"`
+	is_snap_2d_transforms_to_pixel_enabled      gdextension.MethodForClass `hash:"36873697"`
+	set_snap_2d_vertices_to_pixel               gdextension.MethodForClass `hash:"2586408642"`
+	is_snap_2d_vertices_to_pixel_enabled        gdextension.MethodForClass `hash:"36873697"`
+	set_positional_shadow_atlas_quadrant_subdiv gdextension.MethodForClass `hash:"2596956071"`
+	get_positional_shadow_atlas_quadrant_subdiv gdextension.MethodForClass `hash:"2676778355"`
+	set_input_as_handled                        gdextension.MethodForClass `hash:"3218959716"`
+	is_input_handled                            gdextension.MethodForClass `hash:"36873697"`
+	set_handle_input_locally                    gdextension.MethodForClass `hash:"2586408642"`
+	is_handling_input_locally                   gdextension.MethodForClass `hash:"36873697"`
+	set_default_canvas_item_texture_filter      gdextension.MethodForClass `hash:"2815160100"`
+	get_default_canvas_item_texture_filter      gdextension.MethodForClass `hash:"896601198"`
+	set_embedding_subwindows                    gdextension.MethodForClass `hash:"2586408642"`
+	is_embedding_subwindows                     gdextension.MethodForClass `hash:"36873697"`
+	get_embedded_subwindows                     gdextension.MethodForClass `hash:"3995934104"`
+	set_canvas_cull_mask                        gdextension.MethodForClass `hash:"1286410249"`
+	get_canvas_cull_mask                        gdextension.MethodForClass `hash:"3905245786"`
+	set_canvas_cull_mask_bit                    gdextension.MethodForClass `hash:"300928843"`
+	get_canvas_cull_mask_bit                    gdextension.MethodForClass `hash:"1116898809"`
+	set_default_canvas_item_texture_repeat      gdextension.MethodForClass `hash:"1658513413"`
+	get_default_canvas_item_texture_repeat      gdextension.MethodForClass `hash:"4049774160"`
+	set_sdf_oversize                            gdextension.MethodForClass `hash:"2574159017"`
+	get_sdf_oversize                            gdextension.MethodForClass `hash:"2631427510"`
+	set_sdf_scale                               gdextension.MethodForClass `hash:"1402773951"`
+	get_sdf_scale                               gdextension.MethodForClass `hash:"3162688184"`
+	set_mesh_lod_threshold                      gdextension.MethodForClass `hash:"373806689"`
+	get_mesh_lod_threshold                      gdextension.MethodForClass `hash:"1740695150"`
+	set_as_audio_listener_2d                    gdextension.MethodForClass `hash:"2586408642"`
+	is_audio_listener_2d                        gdextension.MethodForClass `hash:"36873697"`
+	get_audio_listener_2d                       gdextension.MethodForClass `hash:"1840977180"`
+	get_camera_2d                               gdextension.MethodForClass `hash:"3551466917"`
+	set_world_3d                                gdextension.MethodForClass `hash:"1400875337"`
+	get_world_3d                                gdextension.MethodForClass `hash:"317588385"`
+	find_world_3d                               gdextension.MethodForClass `hash:"317588385"`
+	set_use_own_world_3d                        gdextension.MethodForClass `hash:"2586408642"`
+	is_using_own_world_3d                       gdextension.MethodForClass `hash:"36873697"`
+	get_audio_listener_3d                       gdextension.MethodForClass `hash:"3472246991"`
+	get_camera_3d                               gdextension.MethodForClass `hash:"2285090890"`
+	set_as_audio_listener_3d                    gdextension.MethodForClass `hash:"2586408642"`
+	is_audio_listener_3d                        gdextension.MethodForClass `hash:"36873697"`
+	set_disable_3d                              gdextension.MethodForClass `hash:"2586408642"`
+	is_3d_disabled                              gdextension.MethodForClass `hash:"36873697"`
+	set_use_xr                                  gdextension.MethodForClass `hash:"2586408642"`
+	is_using_xr                                 gdextension.MethodForClass `hash:"2240911060"`
+	set_scaling_3d_mode                         gdextension.MethodForClass `hash:"1531597597"`
+	get_scaling_3d_mode                         gdextension.MethodForClass `hash:"2597660574"`
+	set_scaling_3d_scale                        gdextension.MethodForClass `hash:"373806689"`
+	get_scaling_3d_scale                        gdextension.MethodForClass `hash:"1740695150"`
+	set_fsr_sharpness                           gdextension.MethodForClass `hash:"373806689"`
+	get_fsr_sharpness                           gdextension.MethodForClass `hash:"1740695150"`
+	set_texture_mipmap_bias                     gdextension.MethodForClass `hash:"373806689"`
+	get_texture_mipmap_bias                     gdextension.MethodForClass `hash:"1740695150"`
+	set_anisotropic_filtering_level             gdextension.MethodForClass `hash:"3445583046"`
+	get_anisotropic_filtering_level             gdextension.MethodForClass `hash:"3991528932"`
+	set_vrs_mode                                gdextension.MethodForClass `hash:"2749867817"`
+	get_vrs_mode                                gdextension.MethodForClass `hash:"349660525"`
+	set_vrs_update_mode                         gdextension.MethodForClass `hash:"3182412319"`
+	get_vrs_update_mode                         gdextension.MethodForClass `hash:"2255951583"`
+	set_vrs_texture                             gdextension.MethodForClass `hash:"4051416890"`
+	get_vrs_texture                             gdextension.MethodForClass `hash:"3635182373"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Viewport")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Viewport
@@ -404,6 +540,20 @@ type Advanced = class
 type class [1]gdclass.Viewport
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Viewport)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Viewport)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -413,7 +563,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Viewport"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Viewport)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -797,12 +947,12 @@ func (self Instance) SetCanvasCullMask(value int) {
 
 //go:nosplit
 func (self class) SetWorld2d(world_2d [1]gdclass.World2D) { //gd:Viewport.set_world_2d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_world_2d), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ world_2d gdextension.Object }{gdextension.Object(gd.ObjectChecked(world_2d[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_2d, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ world_2d gdextension.Object }{gdextension.Object(gd.ObjectChecked(world_2d[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetWorld2d() [1]gdclass.World2D { //gd:Viewport.get_world_2d
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_world_2d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_world_2d, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.World2D{gd.PointerWithOwnershipTransferredToGo[gdclass.World2D](r_ret)}
 	return ret
 }
@@ -812,31 +962,31 @@ Returns the first valid [World2D] for this viewport, searching the [member world
 */
 //go:nosplit
 func (self class) FindWorld2d() [1]gdclass.World2D { //gd:Viewport.find_world_2d
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_find_world_2d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_world_2d, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.World2D{gd.PointerWithOwnershipTransferredToGo[gdclass.World2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCanvasTransform(xform Transform2D.OriginXY) { //gd:Viewport.set_canvas_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_canvas_transform), 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ xform Transform2D.OriginXY }{xform}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canvas_transform, 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ xform Transform2D.OriginXY }{xform}))
 }
 
 //go:nosplit
 func (self class) GetCanvasTransform() Transform2D.OriginXY { //gd:Viewport.get_canvas_transform
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_canvas_transform), gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_canvas_transform, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlobalCanvasTransform(xform Transform2D.OriginXY) { //gd:Viewport.set_global_canvas_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_global_canvas_transform), 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ xform Transform2D.OriginXY }{xform}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_canvas_transform, 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ xform Transform2D.OriginXY }{xform}))
 }
 
 //go:nosplit
 func (self class) GetGlobalCanvasTransform() Transform2D.OriginXY { //gd:Viewport.get_global_canvas_transform
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_global_canvas_transform), gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_global_canvas_transform, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -847,7 +997,7 @@ Returns the automatically computed 2D stretch transform, taking the [Viewport]'s
 */
 //go:nosplit
 func (self class) GetStretchTransform() Transform2D.OriginXY { //gd:Viewport.get_stretch_transform
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_stretch_transform), gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_stretch_transform, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -857,7 +1007,7 @@ Returns the transform from the viewport's coordinate system to the embedder's co
 */
 //go:nosplit
 func (self class) GetFinalTransform() Transform2D.OriginXY { //gd:Viewport.get_final_transform
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_final_transform), gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_final_transform, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -867,7 +1017,7 @@ Returns the transform from the Viewport's coordinates to the screen coordinates 
 */
 //go:nosplit
 func (self class) GetScreenTransform() Transform2D.OriginXY { //gd:Viewport.get_screen_transform
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_screen_transform), gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_screen_transform, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -877,115 +1027,115 @@ Returns the visible rectangle in global screen coordinates.
 */
 //go:nosplit
 func (self class) GetVisibleRect() Rect2.PositionSize { //gd:Viewport.get_visible_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_visible_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_visible_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransparentBackground(enable bool) { //gd:Viewport.set_transparent_background
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_transparent_background), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transparent_background, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) HasTransparentBackground() bool { //gd:Viewport.has_transparent_background
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_has_transparent_background), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_transparent_background, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseHdr2d(enable bool) { //gd:Viewport.set_use_hdr_2d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_use_hdr_2d), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_hdr_2d, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingHdr2d() bool { //gd:Viewport.is_using_hdr_2d
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_using_hdr_2d), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_hdr_2d, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMsaa2d(msaa MSAA) { //gd:Viewport.set_msaa_2d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_msaa_2d), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msaa MSAA }{msaa}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_msaa_2d, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msaa MSAA }{msaa}))
 }
 
 //go:nosplit
 func (self class) GetMsaa2d() MSAA { //gd:Viewport.get_msaa_2d
-	var r_ret = gdextension.Call[MSAA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_msaa_2d), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[MSAA](gd.ObjectChecked(self.AsObject()), methods.get_msaa_2d, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMsaa3d(msaa MSAA) { //gd:Viewport.set_msaa_3d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_msaa_3d), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msaa MSAA }{msaa}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_msaa_3d, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msaa MSAA }{msaa}))
 }
 
 //go:nosplit
 func (self class) GetMsaa3d() MSAA { //gd:Viewport.get_msaa_3d
-	var r_ret = gdextension.Call[MSAA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_msaa_3d), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[MSAA](gd.ObjectChecked(self.AsObject()), methods.get_msaa_3d, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScreenSpaceAa(screen_space_aa ScreenSpaceAA) { //gd:Viewport.set_screen_space_aa
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_screen_space_aa), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ screen_space_aa ScreenSpaceAA }{screen_space_aa}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_space_aa, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ screen_space_aa ScreenSpaceAA }{screen_space_aa}))
 }
 
 //go:nosplit
 func (self class) GetScreenSpaceAa() ScreenSpaceAA { //gd:Viewport.get_screen_space_aa
-	var r_ret = gdextension.Call[ScreenSpaceAA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_screen_space_aa), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ScreenSpaceAA](gd.ObjectChecked(self.AsObject()), methods.get_screen_space_aa, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseTaa(enable bool) { //gd:Viewport.set_use_taa
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_use_taa), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_taa, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingTaa() bool { //gd:Viewport.is_using_taa
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_using_taa), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_taa, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseDebanding(enable bool) { //gd:Viewport.set_use_debanding
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_use_debanding), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_debanding, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingDebanding() bool { //gd:Viewport.is_using_debanding
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_using_debanding), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_debanding, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseOcclusionCulling(enable bool) { //gd:Viewport.set_use_occlusion_culling
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_use_occlusion_culling), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_occlusion_culling, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingOcclusionCulling() bool { //gd:Viewport.is_using_occlusion_culling
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_using_occlusion_culling), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_occlusion_culling, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDebugDraw(debug_draw DebugDraw) { //gd:Viewport.set_debug_draw
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_debug_draw), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ debug_draw DebugDraw }{debug_draw}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_draw, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ debug_draw DebugDraw }{debug_draw}))
 }
 
 //go:nosplit
 func (self class) GetDebugDraw() DebugDraw { //gd:Viewport.get_debug_draw
-	var r_ret = gdextension.Call[DebugDraw](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_debug_draw), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DebugDraw](gd.ObjectChecked(self.AsObject()), methods.get_debug_draw, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -995,7 +1145,7 @@ Returns rendering statistics of the given type. See [enum RenderInfoType] and [e
 */
 //go:nosplit
 func (self class) GetRenderInfo(atype RenderInfoType, info RenderInfo) int64 { //gd:Viewport.get_render_info
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_render_info), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_render_info, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		atype RenderInfoType
 		info  RenderInfo
 	}{atype, info}))
@@ -1015,43 +1165,43 @@ func _ready():
 */
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.ViewportTexture { //gd:Viewport.get_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.ViewportTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.ViewportTexture](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicsObjectPicking(enable bool) { //gd:Viewport.set_physics_object_picking
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_physics_object_picking), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_object_picking, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetPhysicsObjectPicking() bool { //gd:Viewport.get_physics_object_picking
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_physics_object_picking), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_physics_object_picking, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicsObjectPickingSort(enable bool) { //gd:Viewport.set_physics_object_picking_sort
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_physics_object_picking_sort), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_object_picking_sort, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetPhysicsObjectPickingSort() bool { //gd:Viewport.get_physics_object_picking_sort
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_physics_object_picking_sort), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_physics_object_picking_sort, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicsObjectPickingFirstOnly(enable bool) { //gd:Viewport.set_physics_object_picking_first_only
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_physics_object_picking_first_only), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_object_picking_first_only, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetPhysicsObjectPickingFirstOnly() bool { //gd:Viewport.get_physics_object_picking_first_only
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_physics_object_picking_first_only), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_physics_object_picking_first_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1061,7 +1211,7 @@ Returns the viewport's RID from the [RenderingServer].
 */
 //go:nosplit
 func (self class) GetViewportRid() RID.Any { //gd:Viewport.get_viewport_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_viewport_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_viewport_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1071,7 +1221,7 @@ Helper method which calls the [code]set_text()[/code] method on the currently fo
 */
 //go:nosplit
 func (self class) PushTextInput(text String.Readable) { //gd:Viewport.push_text_input
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_push_text_input), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_text_input, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
 }
 
 /*
@@ -1089,7 +1239,7 @@ If none of the methods handle the event and [member physics_object_picking] is [
 */
 //go:nosplit
 func (self class) PushInput(event [1]gdclass.InputEvent, in_local_coords bool) { //gd:Viewport.push_input
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_push_input), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_input, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		event           gdextension.Object
 		in_local_coords bool
 	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), in_local_coords}))
@@ -1108,7 +1258,7 @@ If none of the methods handle the event and [member physics_object_picking] is [
 */
 //go:nosplit
 func (self class) PushUnhandledInput(event [1]gdclass.InputEvent, in_local_coords bool) { //gd:Viewport.push_unhandled_input
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_push_unhandled_input), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_unhandled_input, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		event           gdextension.Object
 		in_local_coords bool
 	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), in_local_coords}))
@@ -1120,7 +1270,7 @@ Inform the Viewport that the mouse has entered its area. Use this function befor
 */
 //go:nosplit
 func (self class) NotifyMouseEntered() { //gd:Viewport.notify_mouse_entered
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_notify_mouse_entered), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_mouse_entered, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1129,7 +1279,7 @@ Inform the Viewport that the mouse has left its area. Use this function when the
 */
 //go:nosplit
 func (self class) NotifyMouseExited() { //gd:Viewport.notify_mouse_exited
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_notify_mouse_exited), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_mouse_exited, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1137,7 +1287,7 @@ Returns the mouse's position in this [Viewport] using the coordinate system of t
 */
 //go:nosplit
 func (self class) GetMousePosition() Vector2.XY { //gd:Viewport.get_mouse_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_mouse_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_mouse_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1148,7 +1298,7 @@ Moves the mouse pointer to the specified position in this [Viewport] using the c
 */
 //go:nosplit
 func (self class) WarpMouse(position Vector2.XY) { //gd:Viewport.warp_mouse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_warp_mouse), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 /*
@@ -1156,7 +1306,7 @@ Force instantly updating the display based on the current mouse cursor position.
 */
 //go:nosplit
 func (self class) UpdateMouseCursorState() { //gd:Viewport.update_mouse_cursor_state
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_update_mouse_cursor_state), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_mouse_cursor_state, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1164,7 +1314,7 @@ Cancels the drag operation that was previously started through [method Control._
 */
 //go:nosplit
 func (self class) GuiCancelDrag() { //gd:Viewport.gui_cancel_drag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_gui_cancel_drag), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.gui_cancel_drag, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1172,7 +1322,7 @@ Returns the drag data from the GUI, that was previously returned by [method Cont
 */
 //go:nosplit
 func (self class) GuiGetDragData() variant.Any { //gd:Viewport.gui_get_drag_data
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_gui_get_drag_data), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.gui_get_drag_data, gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -1183,7 +1333,7 @@ Alternative to [constant Node.NOTIFICATION_DRAG_BEGIN] and [constant Node.NOTIFI
 */
 //go:nosplit
 func (self class) GuiIsDragging() bool { //gd:Viewport.gui_is_dragging
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_gui_is_dragging), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.gui_is_dragging, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1193,7 +1343,7 @@ Returns [code]true[/code] if the drag operation is successful.
 */
 //go:nosplit
 func (self class) GuiIsDragSuccessful() bool { //gd:Viewport.gui_is_drag_successful
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_gui_is_drag_successful), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.gui_is_drag_successful, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1203,7 +1353,7 @@ Removes the focus from the currently focused [Control] within this viewport. If 
 */
 //go:nosplit
 func (self class) GuiReleaseFocus() { //gd:Viewport.gui_release_focus
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_gui_release_focus), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.gui_release_focus, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1211,7 +1361,7 @@ Returns the currently focused [Control] within this viewport. If no [Control] is
 */
 //go:nosplit
 func (self class) GuiGetFocusOwner() [1]gdclass.Control { //gd:Viewport.gui_get_focus_owner
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_gui_get_focus_owner), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.gui_get_focus_owner, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
@@ -1222,79 +1372,79 @@ Typically the leaf [Control] node or deepest level of the subtree which claims h
 */
 //go:nosplit
 func (self class) GuiGetHoveredControl() [1]gdclass.Control { //gd:Viewport.gui_get_hovered_control
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_gui_get_hovered_control), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.gui_get_hovered_control, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisableInput(disable bool) { //gd:Viewport.set_disable_input
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_disable_input), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disable bool }{disable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_input, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disable bool }{disable}))
 }
 
 //go:nosplit
 func (self class) IsInputDisabled() bool { //gd:Viewport.is_input_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_input_disabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_input_disabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPositionalShadowAtlasSize(size int64) { //gd:Viewport.set_positional_shadow_atlas_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_positional_shadow_atlas_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_positional_shadow_atlas_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetPositionalShadowAtlasSize() int64 { //gd:Viewport.get_positional_shadow_atlas_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_positional_shadow_atlas_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_positional_shadow_atlas_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPositionalShadowAtlas16Bits(enable bool) { //gd:Viewport.set_positional_shadow_atlas_16_bits
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_positional_shadow_atlas_16_bits), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_positional_shadow_atlas_16_bits, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetPositionalShadowAtlas16Bits() bool { //gd:Viewport.get_positional_shadow_atlas_16_bits
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_positional_shadow_atlas_16_bits), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_positional_shadow_atlas_16_bits, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSnapControlsToPixels(enabled bool) { //gd:Viewport.set_snap_controls_to_pixels
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_snap_controls_to_pixels), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snap_controls_to_pixels, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSnapControlsToPixelsEnabled() bool { //gd:Viewport.is_snap_controls_to_pixels_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_snap_controls_to_pixels_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_snap_controls_to_pixels_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSnap2dTransformsToPixel(enabled bool) { //gd:Viewport.set_snap_2d_transforms_to_pixel
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_snap_2d_transforms_to_pixel), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snap_2d_transforms_to_pixel, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSnap2dTransformsToPixelEnabled() bool { //gd:Viewport.is_snap_2d_transforms_to_pixel_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_snap_2d_transforms_to_pixel_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_snap_2d_transforms_to_pixel_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSnap2dVerticesToPixel(enabled bool) { //gd:Viewport.set_snap_2d_vertices_to_pixel
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_snap_2d_vertices_to_pixel), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snap_2d_vertices_to_pixel, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSnap2dVerticesToPixelEnabled() bool { //gd:Viewport.is_snap_2d_vertices_to_pixel_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_snap_2d_vertices_to_pixel_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_snap_2d_vertices_to_pixel_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1304,7 +1454,7 @@ Sets the number of subdivisions to use in the specified quadrant. A higher numbe
 */
 //go:nosplit
 func (self class) SetPositionalShadowAtlasQuadrantSubdiv(quadrant int64, subdiv PositionalShadowAtlasQuadrantSubdiv) { //gd:Viewport.set_positional_shadow_atlas_quadrant_subdiv
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_positional_shadow_atlas_quadrant_subdiv), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_positional_shadow_atlas_quadrant_subdiv, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		quadrant int64
 		subdiv   PositionalShadowAtlasQuadrantSubdiv
 	}{quadrant, subdiv}))
@@ -1315,7 +1465,7 @@ Returns the positional shadow atlas quadrant subdivision of the specified quadra
 */
 //go:nosplit
 func (self class) GetPositionalShadowAtlasQuadrantSubdiv(quadrant int64) PositionalShadowAtlasQuadrantSubdiv { //gd:Viewport.get_positional_shadow_atlas_quadrant_subdiv
-	var r_ret = gdextension.Call[PositionalShadowAtlasQuadrantSubdiv](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_positional_shadow_atlas_quadrant_subdiv), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ quadrant int64 }{quadrant}))
+	var r_ret = gdextension.Call[PositionalShadowAtlasQuadrantSubdiv](gd.ObjectChecked(self.AsObject()), methods.get_positional_shadow_atlas_quadrant_subdiv, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ quadrant int64 }{quadrant}))
 	var ret = r_ret
 	return ret
 }
@@ -1326,7 +1476,7 @@ Stops the input from propagating further down the [SceneTree].
 */
 //go:nosplit
 func (self class) SetInputAsHandled() { //gd:Viewport.set_input_as_handled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_input_as_handled), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_as_handled, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1336,45 +1486,45 @@ If [member handle_input_locally] is set to [code]false[/code], this method will 
 */
 //go:nosplit
 func (self class) IsInputHandled() bool { //gd:Viewport.is_input_handled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_input_handled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_input_handled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHandleInputLocally(enable bool) { //gd:Viewport.set_handle_input_locally
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_handle_input_locally), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_handle_input_locally, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsHandlingInputLocally() bool { //gd:Viewport.is_handling_input_locally
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_handling_input_locally), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_handling_input_locally, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultCanvasItemTextureFilter(mode DefaultCanvasItemTextureFilter) { //gd:Viewport.set_default_canvas_item_texture_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_default_canvas_item_texture_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_canvas_item_texture_filter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		mode DefaultCanvasItemTextureFilter
 	}{mode}))
 }
 
 //go:nosplit
 func (self class) GetDefaultCanvasItemTextureFilter() DefaultCanvasItemTextureFilter { //gd:Viewport.get_default_canvas_item_texture_filter
-	var r_ret = gdextension.Call[DefaultCanvasItemTextureFilter](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_default_canvas_item_texture_filter), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DefaultCanvasItemTextureFilter](gd.ObjectChecked(self.AsObject()), methods.get_default_canvas_item_texture_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmbeddingSubwindows(enable bool) { //gd:Viewport.set_embedding_subwindows
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_embedding_subwindows), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_embedding_subwindows, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsEmbeddingSubwindows() bool { //gd:Viewport.is_embedding_subwindows
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_embedding_subwindows), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_embedding_subwindows, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1385,19 +1535,19 @@ Returns a list of the visible embedded [Window]s inside the viewport.
 */
 //go:nosplit
 func (self class) GetEmbeddedSubwindows() Array.Contains[[1]gdclass.Window] { //gd:Viewport.get_embedded_subwindows
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_embedded_subwindows), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_embedded_subwindows, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Window]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCanvasCullMask(mask int64) { //gd:Viewport.set_canvas_cull_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_canvas_cull_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canvas_cull_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetCanvasCullMask() int64 { //gd:Viewport.get_canvas_cull_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_canvas_cull_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_canvas_cull_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1407,7 +1557,7 @@ Set/clear individual bits on the rendering layer mask. This simplifies editing t
 */
 //go:nosplit
 func (self class) SetCanvasCullMaskBit(layer int64, enable bool) { //gd:Viewport.set_canvas_cull_mask_bit
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_canvas_cull_mask_bit), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canvas_cull_mask_bit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		layer  int64
 		enable bool
 	}{layer, enable}))
@@ -1418,69 +1568,69 @@ Returns an individual bit on the rendering layer mask.
 */
 //go:nosplit
 func (self class) GetCanvasCullMaskBit(layer int64) bool { //gd:Viewport.get_canvas_cull_mask_bit
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_canvas_cull_mask_bit), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_canvas_cull_mask_bit, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultCanvasItemTextureRepeat(mode DefaultCanvasItemTextureRepeat) { //gd:Viewport.set_default_canvas_item_texture_repeat
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_default_canvas_item_texture_repeat), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_canvas_item_texture_repeat, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		mode DefaultCanvasItemTextureRepeat
 	}{mode}))
 }
 
 //go:nosplit
 func (self class) GetDefaultCanvasItemTextureRepeat() DefaultCanvasItemTextureRepeat { //gd:Viewport.get_default_canvas_item_texture_repeat
-	var r_ret = gdextension.Call[DefaultCanvasItemTextureRepeat](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_default_canvas_item_texture_repeat), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DefaultCanvasItemTextureRepeat](gd.ObjectChecked(self.AsObject()), methods.get_default_canvas_item_texture_repeat, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfOversize(oversize SDFOversize) { //gd:Viewport.set_sdf_oversize
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_sdf_oversize), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ oversize SDFOversize }{oversize}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sdf_oversize, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ oversize SDFOversize }{oversize}))
 }
 
 //go:nosplit
 func (self class) GetSdfOversize() SDFOversize { //gd:Viewport.get_sdf_oversize
-	var r_ret = gdextension.Call[SDFOversize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_sdf_oversize), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SDFOversize](gd.ObjectChecked(self.AsObject()), methods.get_sdf_oversize, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSdfScale(scale SDFScale) { //gd:Viewport.set_sdf_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_sdf_scale), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ scale SDFScale }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sdf_scale, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ scale SDFScale }{scale}))
 }
 
 //go:nosplit
 func (self class) GetSdfScale() SDFScale { //gd:Viewport.get_sdf_scale
-	var r_ret = gdextension.Call[SDFScale](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_sdf_scale), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SDFScale](gd.ObjectChecked(self.AsObject()), methods.get_sdf_scale, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMeshLodThreshold(pixels float64) { //gd:Viewport.set_mesh_lod_threshold
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_mesh_lod_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pixels float64 }{pixels}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_lod_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pixels float64 }{pixels}))
 }
 
 //go:nosplit
 func (self class) GetMeshLodThreshold() float64 { //gd:Viewport.get_mesh_lod_threshold
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_mesh_lod_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mesh_lod_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAsAudioListener2d(enable bool) { //gd:Viewport.set_as_audio_listener_2d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_as_audio_listener_2d), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_audio_listener_2d, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsAudioListener2d() bool { //gd:Viewport.is_audio_listener_2d
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_audio_listener_2d), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_audio_listener_2d, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1490,7 +1640,7 @@ Returns the currently active 2D audio listener. Returns [code]null[/code] if the
 */
 //go:nosplit
 func (self class) GetAudioListener2d() [1]gdclass.AudioListener2D { //gd:Viewport.get_audio_listener_2d
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_audio_listener_2d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_audio_listener_2d, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.AudioListener2D{gd.PointerLifetimeBoundTo[gdclass.AudioListener2D](self.AsObject(), r_ret)}
 	return ret
 }
@@ -1500,19 +1650,19 @@ Returns the currently active 2D camera. Returns [code]null[/code] if there are n
 */
 //go:nosplit
 func (self class) GetCamera2d() [1]gdclass.Camera2D { //gd:Viewport.get_camera_2d
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_camera_2d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_2d, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Camera2D{gd.PointerMustAssertInstanceID[gdclass.Camera2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWorld3d(world_3d [1]gdclass.World3D) { //gd:Viewport.set_world_3d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_world_3d), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ world_3d gdextension.Object }{gdextension.Object(gd.ObjectChecked(world_3d[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_3d, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ world_3d gdextension.Object }{gdextension.Object(gd.ObjectChecked(world_3d[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetWorld3d() [1]gdclass.World3D { //gd:Viewport.get_world_3d
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_world_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_world_3d, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.World3D{gd.PointerWithOwnershipTransferredToGo[gdclass.World3D](r_ret)}
 	return ret
 }
@@ -1522,19 +1672,19 @@ Returns the first valid [World3D] for this viewport, searching the [member world
 */
 //go:nosplit
 func (self class) FindWorld3d() [1]gdclass.World3D { //gd:Viewport.find_world_3d
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_find_world_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_world_3d, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.World3D{gd.PointerWithOwnershipTransferredToGo[gdclass.World3D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseOwnWorld3d(enable bool) { //gd:Viewport.set_use_own_world_3d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_use_own_world_3d), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_own_world_3d, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingOwnWorld3d() bool { //gd:Viewport.is_using_own_world_3d
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_using_own_world_3d), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_own_world_3d, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1544,7 +1694,7 @@ Returns the currently active 3D audio listener. Returns [code]null[/code] if the
 */
 //go:nosplit
 func (self class) GetAudioListener3d() [1]gdclass.AudioListener3D { //gd:Viewport.get_audio_listener_3d
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_audio_listener_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_audio_listener_3d, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.AudioListener3D{gd.PointerLifetimeBoundTo[gdclass.AudioListener3D](self.AsObject(), r_ret)}
 	return ret
 }
@@ -1554,139 +1704,139 @@ Returns the currently active 3D camera.
 */
 //go:nosplit
 func (self class) GetCamera3d() [1]gdclass.Camera3D { //gd:Viewport.get_camera_3d
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_camera_3d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_3d, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Camera3D{gd.PointerMustAssertInstanceID[gdclass.Camera3D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAsAudioListener3d(enable bool) { //gd:Viewport.set_as_audio_listener_3d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_as_audio_listener_3d), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_audio_listener_3d, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsAudioListener3d() bool { //gd:Viewport.is_audio_listener_3d
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_audio_listener_3d), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_audio_listener_3d, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisable3d(disable bool) { //gd:Viewport.set_disable_3d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_disable_3d), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disable bool }{disable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_3d, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disable bool }{disable}))
 }
 
 //go:nosplit
 func (self class) Is3dDisabled() bool { //gd:Viewport.is_3d_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_3d_disabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_3d_disabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseXr(use bool) { //gd:Viewport.set_use_xr
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_use_xr), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use bool }{use}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_xr, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use bool }{use}))
 }
 
 //go:nosplit
 func (self class) IsUsingXr() bool { //gd:Viewport.is_using_xr
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_is_using_xr), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_xr, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScaling3dMode(scaling_3d_mode Scaling3DMode) { //gd:Viewport.set_scaling_3d_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_scaling_3d_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ scaling_3d_mode Scaling3DMode }{scaling_3d_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scaling_3d_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ scaling_3d_mode Scaling3DMode }{scaling_3d_mode}))
 }
 
 //go:nosplit
 func (self class) GetScaling3dMode() Scaling3DMode { //gd:Viewport.get_scaling_3d_mode
-	var r_ret = gdextension.Call[Scaling3DMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_scaling_3d_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Scaling3DMode](gd.ObjectChecked(self.AsObject()), methods.get_scaling_3d_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScaling3dScale(scale float64) { //gd:Viewport.set_scaling_3d_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_scaling_3d_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scaling_3d_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
 }
 
 //go:nosplit
 func (self class) GetScaling3dScale() float64 { //gd:Viewport.get_scaling_3d_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_scaling_3d_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_scaling_3d_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFsrSharpness(fsr_sharpness float64) { //gd:Viewport.set_fsr_sharpness
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_fsr_sharpness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fsr_sharpness float64 }{fsr_sharpness}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fsr_sharpness, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fsr_sharpness float64 }{fsr_sharpness}))
 }
 
 //go:nosplit
 func (self class) GetFsrSharpness() float64 { //gd:Viewport.get_fsr_sharpness
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_fsr_sharpness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fsr_sharpness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureMipmapBias(texture_mipmap_bias float64) { //gd:Viewport.set_texture_mipmap_bias
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_texture_mipmap_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ texture_mipmap_bias float64 }{texture_mipmap_bias}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_mipmap_bias, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ texture_mipmap_bias float64 }{texture_mipmap_bias}))
 }
 
 //go:nosplit
 func (self class) GetTextureMipmapBias() float64 { //gd:Viewport.get_texture_mipmap_bias
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_texture_mipmap_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texture_mipmap_bias, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAnisotropicFilteringLevel(anisotropic_filtering_level AnisotropicFiltering) { //gd:Viewport.set_anisotropic_filtering_level
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_anisotropic_filtering_level), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ anisotropic_filtering_level AnisotropicFiltering }{anisotropic_filtering_level}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anisotropic_filtering_level, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ anisotropic_filtering_level AnisotropicFiltering }{anisotropic_filtering_level}))
 }
 
 //go:nosplit
 func (self class) GetAnisotropicFilteringLevel() AnisotropicFiltering { //gd:Viewport.get_anisotropic_filtering_level
-	var r_ret = gdextension.Call[AnisotropicFiltering](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_anisotropic_filtering_level), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AnisotropicFiltering](gd.ObjectChecked(self.AsObject()), methods.get_anisotropic_filtering_level, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVrsMode(mode VRSMode) { //gd:Viewport.set_vrs_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_vrs_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode VRSMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode VRSMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetVrsMode() VRSMode { //gd:Viewport.get_vrs_mode
-	var r_ret = gdextension.Call[VRSMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_vrs_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[VRSMode](gd.ObjectChecked(self.AsObject()), methods.get_vrs_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVrsUpdateMode(mode VRSUpdateMode) { //gd:Viewport.set_vrs_update_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_vrs_update_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode VRSUpdateMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_update_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode VRSUpdateMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetVrsUpdateMode() VRSUpdateMode { //gd:Viewport.get_vrs_update_mode
-	var r_ret = gdextension.Call[VRSUpdateMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_vrs_update_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[VRSUpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_vrs_update_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVrsTexture(texture [1]gdclass.Texture2D) { //gd:Viewport.set_vrs_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_set_vrs_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetVrsTexture() [1]gdclass.Texture2D { //gd:Viewport.get_vrs_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Viewport.Bind_get_vrs_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_vrs_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -1719,7 +1869,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Viewport", func(ptr gd.Object) any { return [1]gdclass.Viewport{*(*gdclass.Viewport)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Viewport", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type PositionalShadowAtlasQuadrantSubdiv int //gd:Viewport.PositionalShadowAtlasQuadrantSubdiv

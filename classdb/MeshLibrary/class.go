@@ -76,6 +76,45 @@ A library of meshes. Contains a list of [Mesh] resources, each with a name and I
 */
 type Instance [1]gdclass.MeshLibrary
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	create_item                        gdextension.MethodForClass `hash:"1286410249"`
+	set_item_name                      gdextension.MethodForClass `hash:"501894301"`
+	set_item_mesh                      gdextension.MethodForClass `hash:"969122797"`
+	set_item_mesh_transform            gdextension.MethodForClass `hash:"3616898986"`
+	set_item_mesh_cast_shadow          gdextension.MethodForClass `hash:"3923400443"`
+	set_item_navigation_mesh           gdextension.MethodForClass `hash:"3483353960"`
+	set_item_navigation_mesh_transform gdextension.MethodForClass `hash:"3616898986"`
+	set_item_navigation_layers         gdextension.MethodForClass `hash:"3937882851"`
+	set_item_shapes                    gdextension.MethodForClass `hash:"537221740"`
+	set_item_preview                   gdextension.MethodForClass `hash:"666127730"`
+	get_item_name                      gdextension.MethodForClass `hash:"844755477"`
+	get_item_mesh                      gdextension.MethodForClass `hash:"1576363275"`
+	get_item_mesh_transform            gdextension.MethodForClass `hash:"1965739696"`
+	get_item_mesh_cast_shadow          gdextension.MethodForClass `hash:"1841766007"`
+	get_item_navigation_mesh           gdextension.MethodForClass `hash:"2729647406"`
+	get_item_navigation_mesh_transform gdextension.MethodForClass `hash:"1965739696"`
+	get_item_navigation_layers         gdextension.MethodForClass `hash:"923996154"`
+	get_item_shapes                    gdextension.MethodForClass `hash:"663333327"`
+	get_item_preview                   gdextension.MethodForClass `hash:"3536238170"`
+	remove_item                        gdextension.MethodForClass `hash:"1286410249"`
+	find_item_by_name                  gdextension.MethodForClass `hash:"1321353865"`
+	clear                              gdextension.MethodForClass `hash:"3218959716"`
+	get_item_list                      gdextension.MethodForClass `hash:"1930428628"`
+	get_last_unused_item_id            gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("MeshLibrary")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -263,6 +302,20 @@ type Advanced = class
 type class [1]gdclass.MeshLibrary
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MeshLibrary)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MeshLibrary)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -272,7 +325,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("MeshLibrary"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.MeshLibrary)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -285,7 +338,7 @@ You can get an unused ID from [method get_last_unused_item_id].
 */
 //go:nosplit
 func (self class) CreateItem(id int64) { //gd:MeshLibrary.create_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_create_item), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_item, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 }
 
 /*
@@ -294,7 +347,7 @@ This name is shown in the editor. It can also be used to look up the item later 
 */
 //go:nosplit
 func (self class) SetItemName(id int64, name String.Readable) { //gd:MeshLibrary.set_item_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_set_item_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		id   int64
 		name gdextension.String
 	}{id, pointers.Get(gd.InternalString(name))}))
@@ -305,7 +358,7 @@ Sets the item's mesh.
 */
 //go:nosplit
 func (self class) SetItemMesh(id int64, mesh [1]gdclass.Mesh) { //gd:MeshLibrary.set_item_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_set_item_mesh), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		id   int64
 		mesh gdextension.Object
 	}{id, gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
@@ -316,7 +369,7 @@ Sets the transform to apply to the item's mesh.
 */
 //go:nosplit
 func (self class) SetItemMeshTransform(id int64, mesh_transform Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_mesh_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_set_item_mesh_transform), 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_mesh_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		id             int64
 		mesh_transform Transform3D.BasisOrigin
 	}{id, gd.Transposed(mesh_transform)}))
@@ -327,7 +380,7 @@ Sets the item's shadow casting mode. See [enum RenderingServer.ShadowCastingSett
 */
 //go:nosplit
 func (self class) SetItemMeshCastShadow(id int64, shadow_casting_setting RenderingServer.ShadowCastingSetting) { //gd:MeshLibrary.set_item_mesh_cast_shadow
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_set_item_mesh_cast_shadow), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_mesh_cast_shadow, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		id                     int64
 		shadow_casting_setting RenderingServer.ShadowCastingSetting
 	}{id, shadow_casting_setting}))
@@ -338,7 +391,7 @@ Sets the item's navigation mesh.
 */
 //go:nosplit
 func (self class) SetItemNavigationMesh(id int64, navigation_mesh [1]gdclass.NavigationMesh) { //gd:MeshLibrary.set_item_navigation_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_set_item_navigation_mesh), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_navigation_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		id              int64
 		navigation_mesh gdextension.Object
 	}{id, gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))}))
@@ -349,7 +402,7 @@ Sets the transform to apply to the item's navigation mesh.
 */
 //go:nosplit
 func (self class) SetItemNavigationMeshTransform(id int64, navigation_mesh Transform3D.BasisOrigin) { //gd:MeshLibrary.set_item_navigation_mesh_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_set_item_navigation_mesh_transform), 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_navigation_mesh_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		id              int64
 		navigation_mesh Transform3D.BasisOrigin
 	}{id, gd.Transposed(navigation_mesh)}))
@@ -360,7 +413,7 @@ Sets the item's navigation layers bitmask.
 */
 //go:nosplit
 func (self class) SetItemNavigationLayers(id int64, navigation_layers int64) { //gd:MeshLibrary.set_item_navigation_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_set_item_navigation_layers), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_navigation_layers, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		id                int64
 		navigation_layers int64
 	}{id, navigation_layers}))
@@ -372,7 +425,7 @@ The array should consist of [Shape3D] objects, each followed by a [Transform3D] 
 */
 //go:nosplit
 func (self class) SetItemShapes(id int64, shapes Array.Any) { //gd:MeshLibrary.set_item_shapes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_set_item_shapes), 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_shapes, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		id     int64
 		shapes gdextension.Array
 	}{id, pointers.Get(gd.InternalArray(shapes))}))
@@ -383,7 +436,7 @@ Sets a texture to use as the item's preview icon in the editor.
 */
 //go:nosplit
 func (self class) SetItemPreview(id int64, texture [1]gdclass.Texture2D) { //gd:MeshLibrary.set_item_preview
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_set_item_preview), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_preview, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		id      int64
 		texture gdextension.Object
 	}{id, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
@@ -394,7 +447,7 @@ Returns the item's name.
 */
 //go:nosplit
 func (self class) GetItemName(id int64) String.Readable { //gd:MeshLibrary.get_item_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_get_item_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -404,7 +457,7 @@ Returns the item's mesh.
 */
 //go:nosplit
 func (self class) GetItemMesh(id int64) [1]gdclass.Mesh { //gd:MeshLibrary.get_item_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_get_item_mesh), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_mesh, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret)}
 	return ret
 }
@@ -414,7 +467,7 @@ Returns the transform applied to the item's mesh.
 */
 //go:nosplit
 func (self class) GetItemMeshTransform(id int64) Transform3D.BasisOrigin { //gd:MeshLibrary.get_item_mesh_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_get_item_mesh_transform), gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_item_mesh_transform, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -424,7 +477,7 @@ Returns the item's shadow casting mode. See [enum RenderingServer.ShadowCastingS
 */
 //go:nosplit
 func (self class) GetItemMeshCastShadow(id int64) RenderingServer.ShadowCastingSetting { //gd:MeshLibrary.get_item_mesh_cast_shadow
-	var r_ret = gdextension.Call[RenderingServer.ShadowCastingSetting](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_get_item_mesh_cast_shadow), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[RenderingServer.ShadowCastingSetting](gd.ObjectChecked(self.AsObject()), methods.get_item_mesh_cast_shadow, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = r_ret
 	return ret
 }
@@ -434,7 +487,7 @@ Returns the item's navigation mesh.
 */
 //go:nosplit
 func (self class) GetItemNavigationMesh(id int64) [1]gdclass.NavigationMesh { //gd:MeshLibrary.get_item_navigation_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_get_item_navigation_mesh), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_navigation_mesh, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = [1]gdclass.NavigationMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.NavigationMesh](r_ret)}
 	return ret
 }
@@ -444,7 +497,7 @@ Returns the transform applied to the item's navigation mesh.
 */
 //go:nosplit
 func (self class) GetItemNavigationMeshTransform(id int64) Transform3D.BasisOrigin { //gd:MeshLibrary.get_item_navigation_mesh_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_get_item_navigation_mesh_transform), gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_item_navigation_mesh_transform, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -454,7 +507,7 @@ Returns the item's navigation layers bitmask.
 */
 //go:nosplit
 func (self class) GetItemNavigationLayers(id int64) int64 { //gd:MeshLibrary.get_item_navigation_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_get_item_navigation_layers), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_navigation_layers, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = r_ret
 	return ret
 }
@@ -465,7 +518,7 @@ The array consists of each [Shape3D] followed by its [Transform3D].
 */
 //go:nosplit
 func (self class) GetItemShapes(id int64) Array.Any { //gd:MeshLibrary.get_item_shapes
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_get_item_shapes), gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_item_shapes, gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -475,7 +528,7 @@ When running in the editor, returns a generated item preview (a 3D rendering in 
 */
 //go:nosplit
 func (self class) GetItemPreview(id int64) [1]gdclass.Texture2D { //gd:MeshLibrary.get_item_preview
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_get_item_preview), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_preview, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -485,7 +538,7 @@ Removes the item.
 */
 //go:nosplit
 func (self class) RemoveItem(id int64) { //gd:MeshLibrary.remove_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_remove_item), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_item, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 }
 
 /*
@@ -493,7 +546,7 @@ Returns the first item with the given name, or [code]-1[/code] if no item is fou
 */
 //go:nosplit
 func (self class) FindItemByName(name String.Readable) int64 { //gd:MeshLibrary.find_item_by_name
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_find_item_by_name), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_by_name, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -503,7 +556,7 @@ Clears the library.
 */
 //go:nosplit
 func (self class) Clear() { //gd:MeshLibrary.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -511,7 +564,7 @@ Returns the list of item IDs in use.
 */
 //go:nosplit
 func (self class) GetItemList() Packed.Array[int32] { //gd:MeshLibrary.get_item_list
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_get_item_list), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_item_list, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -521,7 +574,7 @@ Gets an unused ID for a new item.
 */
 //go:nosplit
 func (self class) GetLastUnusedItemId() int64 { //gd:MeshLibrary.get_last_unused_item_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshLibrary.Bind_get_last_unused_item_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_last_unused_item_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -557,5 +610,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MeshLibrary", func(ptr gd.Object) any { return [1]gdclass.MeshLibrary{*(*gdclass.MeshLibrary)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("MeshLibrary", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

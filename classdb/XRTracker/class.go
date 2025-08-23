@@ -70,6 +70,27 @@ This object is the base of all XR trackers.
 */
 type Instance [1]gdclass.XRTracker
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_tracker_type gdextension.MethodForClass `hash:"2784508102"`
+	set_tracker_type gdextension.MethodForClass `hash:"3055763575"`
+	get_tracker_name gdextension.MethodForClass `hash:"2002593661"`
+	set_tracker_name gdextension.MethodForClass `hash:"3304788590"`
+	get_tracker_desc gdextension.MethodForClass `hash:"201670096"`
+	set_tracker_desc gdextension.MethodForClass `hash:"83702148"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("XRTracker")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -85,6 +106,20 @@ type Advanced = class
 type class [1]gdclass.XRTracker
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRTracker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRTracker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -94,7 +129,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("XRTracker"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.XRTracker)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -127,38 +162,38 @@ func (self Instance) SetDescription(value string) {
 
 //go:nosplit
 func (self class) GetTrackerType() Type { //gd:XRTracker.get_tracker_type
-	var r_ret = gdextension.Call[Type](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRTracker.Bind_get_tracker_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Type](gd.ObjectChecked(self.AsObject()), methods.get_tracker_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerType(atype Type) { //gd:XRTracker.set_tracker_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRTracker.Bind_set_tracker_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype Type }{atype}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype Type }{atype}))
 }
 
 //go:nosplit
 func (self class) GetTrackerName() String.Name { //gd:XRTracker.get_tracker_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRTracker.Bind_get_tracker_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker_name, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerName(name String.Name) { //gd:XRTracker.set_tracker_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRTracker.Bind_set_tracker_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_name, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 //go:nosplit
 func (self class) GetTrackerDesc() String.Readable { //gd:XRTracker.get_tracker_desc
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRTracker.Bind_get_tracker_desc), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tracker_desc, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerDesc(description String.Readable) { //gd:XRTracker.set_tracker_desc
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRTracker.Bind_set_tracker_desc), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_desc, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))}))
 }
 func (self class) AsXRTracker() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsXRTracker() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -185,7 +220,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRTracker", func(ptr gd.Object) any { return [1]gdclass.XRTracker{*(*gdclass.XRTracker)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("XRTracker", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Type int //gd:XRServer.TrackerType

@@ -675,7 +675,7 @@ func (instance *instanceImplementation) Free() {
 // TODO this could be partially pre-compiled for a given [Register] type and cached in
 // order to avoid any use of reflection at instantiation time.
 func (instance *instanceImplementation) ready() {
-	parent, ok := As[NodeClass.Instance](Object.Instance(gdclass.GetObject(instance.Value)))
+	parent, ok := Object.As[NodeClass.Instance](Object.Instance(gdclass.GetObject(instance.Value)))
 	if !ok {
 		return
 	}

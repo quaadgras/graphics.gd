@@ -84,6 +84,74 @@ To force an update earlier on, call [method update_internals].
 */
 type Instance [1]gdclass.TileMapLayer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_cell                        gdextension.MethodForClass `hash:"2428518503"`
+	erase_cell                      gdextension.MethodForClass `hash:"1130785943"`
+	fix_invalid_tiles               gdextension.MethodForClass `hash:"3218959716"`
+	clear                           gdextension.MethodForClass `hash:"3218959716"`
+	get_cell_source_id              gdextension.MethodForClass `hash:"2485466453"`
+	get_cell_atlas_coords           gdextension.MethodForClass `hash:"3050897911"`
+	get_cell_alternative_tile       gdextension.MethodForClass `hash:"2485466453"`
+	get_cell_tile_data              gdextension.MethodForClass `hash:"205084707"`
+	is_cell_flipped_h               gdextension.MethodForClass `hash:"3900751641"`
+	is_cell_flipped_v               gdextension.MethodForClass `hash:"3900751641"`
+	is_cell_transposed              gdextension.MethodForClass `hash:"3900751641"`
+	get_used_cells                  gdextension.MethodForClass `hash:"3995934104"`
+	get_used_cells_by_id            gdextension.MethodForClass `hash:"4175304538"`
+	get_used_rect                   gdextension.MethodForClass `hash:"410525958"`
+	get_pattern                     gdextension.MethodForClass `hash:"3820813253"`
+	set_pattern                     gdextension.MethodForClass `hash:"1491151770"`
+	set_cells_terrain_connect       gdextension.MethodForClass `hash:"748968311"`
+	set_cells_terrain_path          gdextension.MethodForClass `hash:"748968311"`
+	has_body_rid                    gdextension.MethodForClass `hash:"4155700596"`
+	get_coords_for_body_rid         gdextension.MethodForClass `hash:"733700038"`
+	update_internals                gdextension.MethodForClass `hash:"3218959716"`
+	notify_runtime_tile_data_update gdextension.MethodForClass `hash:"3218959716"`
+	map_pattern                     gdextension.MethodForClass `hash:"1864516957"`
+	get_surrounding_cells           gdextension.MethodForClass `hash:"2673526557"`
+	get_neighbor_cell               gdextension.MethodForClass `hash:"986575103"`
+	map_to_local                    gdextension.MethodForClass `hash:"108438297"`
+	local_to_map                    gdextension.MethodForClass `hash:"837806996"`
+	set_tile_map_data_from_array    gdextension.MethodForClass `hash:"2971499966"`
+	get_tile_map_data_as_array      gdextension.MethodForClass `hash:"2362200018"`
+	set_enabled                     gdextension.MethodForClass `hash:"2586408642"`
+	is_enabled                      gdextension.MethodForClass `hash:"36873697"`
+	set_tile_set                    gdextension.MethodForClass `hash:"774531446"`
+	get_tile_set                    gdextension.MethodForClass `hash:"2678226422"`
+	set_y_sort_origin               gdextension.MethodForClass `hash:"1286410249"`
+	get_y_sort_origin               gdextension.MethodForClass `hash:"3905245786"`
+	set_x_draw_order_reversed       gdextension.MethodForClass `hash:"2586408642"`
+	is_x_draw_order_reversed        gdextension.MethodForClass `hash:"36873697"`
+	set_rendering_quadrant_size     gdextension.MethodForClass `hash:"1286410249"`
+	get_rendering_quadrant_size     gdextension.MethodForClass `hash:"3905245786"`
+	set_collision_enabled           gdextension.MethodForClass `hash:"2586408642"`
+	is_collision_enabled            gdextension.MethodForClass `hash:"36873697"`
+	set_use_kinematic_bodies        gdextension.MethodForClass `hash:"2586408642"`
+	is_using_kinematic_bodies       gdextension.MethodForClass `hash:"36873697"`
+	set_collision_visibility_mode   gdextension.MethodForClass `hash:"3508099847"`
+	get_collision_visibility_mode   gdextension.MethodForClass `hash:"338220793"`
+	set_occlusion_enabled           gdextension.MethodForClass `hash:"2586408642"`
+	is_occlusion_enabled            gdextension.MethodForClass `hash:"36873697"`
+	set_navigation_enabled          gdextension.MethodForClass `hash:"2586408642"`
+	is_navigation_enabled           gdextension.MethodForClass `hash:"36873697"`
+	set_navigation_map              gdextension.MethodForClass `hash:"2722037293"`
+	get_navigation_map              gdextension.MethodForClass `hash:"2944877500"`
+	set_navigation_visibility_mode  gdextension.MethodForClass `hash:"3508099847"`
+	get_navigation_visibility_mode  gdextension.MethodForClass `hash:"338220793"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("TileMapLayer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.TileMapLayer
@@ -434,8 +502,8 @@ func (self Instance) LocalToMap(local_position Vector2.XY) Vector2i.XY { //gd:Ti
 /*
 Sets a custom [param map] as a [NavigationServer2D] navigation map. If not set, uses the default [World2D] navigation map instead.
 */
-func (self Instance) SetNavigationMap(mapping RID.NavigationMap2D) { //gd:TileMapLayer.set_navigation_map
-	Advanced(self).SetNavigationMap(RID.Any(mapping))
+func (self Instance) SetNavigationMap(map_ RID.NavigationMap2D) { //gd:TileMapLayer.set_navigation_map
+	Advanced(self).SetNavigationMap(RID.Any(map_))
 }
 
 /*
@@ -451,6 +519,20 @@ type Advanced = class
 type class [1]gdclass.TileMapLayer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TileMapLayer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TileMapLayer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -460,7 +542,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TileMapLayer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.TileMapLayer)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -622,7 +704,7 @@ If [param source_id] is set to [code]-1[/code], [param atlas_coords] to [code]Ve
 */
 //go:nosplit
 func (self class) SetCell(coords Vector2i.XY, source_id int64, atlas_coords Vector2i.XY, alternative_tile int64) { //gd:TileMapLayer.set_cell
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_cell), 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2i<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2i<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		coords           Vector2i.XY
 		source_id        int64
 		atlas_coords     Vector2i.XY
@@ -635,7 +717,7 @@ Erases the cell at coordinates [param coords].
 */
 //go:nosplit
 func (self class) EraseCell(coords Vector2i.XY) { //gd:TileMapLayer.erase_cell
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_erase_cell), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_cell, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 }
 
 /*
@@ -643,7 +725,7 @@ Clears cells containing tiles that do not exist in the [member tile_set].
 */
 //go:nosplit
 func (self class) FixInvalidTiles() { //gd:TileMapLayer.fix_invalid_tiles
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_fix_invalid_tiles), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fix_invalid_tiles, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -651,7 +733,7 @@ Clears all cells.
 */
 //go:nosplit
 func (self class) Clear() { //gd:TileMapLayer.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -659,7 +741,7 @@ Returns the tile source ID of the cell at coordinates [param coords]. Returns [c
 */
 //go:nosplit
 func (self class) GetCellSourceId(coords Vector2i.XY) int64 { //gd:TileMapLayer.get_cell_source_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_cell_source_id), gdextension.SizeInt|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cell_source_id, gdextension.SizeInt|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 	var ret = r_ret
 	return ret
 }
@@ -669,7 +751,7 @@ Returns the tile atlas coordinates ID of the cell at coordinates [param coords].
 */
 //go:nosplit
 func (self class) GetCellAtlasCoords(coords Vector2i.XY) Vector2i.XY { //gd:TileMapLayer.get_cell_atlas_coords
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_cell_atlas_coords), gdextension.SizeVector2i|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_cell_atlas_coords, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 	var ret = r_ret
 	return ret
 }
@@ -679,7 +761,7 @@ Returns the tile alternative ID of the cell at coordinates [param coords].
 */
 //go:nosplit
 func (self class) GetCellAlternativeTile(coords Vector2i.XY) int64 { //gd:TileMapLayer.get_cell_alternative_tile
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_cell_alternative_tile), gdextension.SizeInt|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cell_alternative_tile, gdextension.SizeInt|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 	var ret = r_ret
 	return ret
 }
@@ -698,7 +780,7 @@ func get_clicked_tile_power():
 */
 //go:nosplit
 func (self class) GetCellTileData(coords Vector2i.XY) [1]gdclass.TileData { //gd:TileMapLayer.get_cell_tile_data
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_cell_tile_data), gdextension.SizeObject|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_cell_tile_data, gdextension.SizeObject|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 	var ret = [1]gdclass.TileData{gd.PointerMustAssertInstanceID[gdclass.TileData](r_ret)}
 	return ret
 }
@@ -708,7 +790,7 @@ Returns [code]true[/code] if the cell at coordinates [param coords] is flipped h
 */
 //go:nosplit
 func (self class) IsCellFlippedH(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_flipped_h
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_is_cell_flipped_h), gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cell_flipped_h, gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 	var ret = r_ret
 	return ret
 }
@@ -718,7 +800,7 @@ Returns [code]true[/code] if the cell at coordinates [param coords] is flipped v
 */
 //go:nosplit
 func (self class) IsCellFlippedV(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_flipped_v
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_is_cell_flipped_v), gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cell_flipped_v, gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 	var ret = r_ret
 	return ret
 }
@@ -728,7 +810,7 @@ Returns [code]true[/code] if the cell at coordinates [param coords] is transpose
 */
 //go:nosplit
 func (self class) IsCellTransposed(coords Vector2i.XY) bool { //gd:TileMapLayer.is_cell_transposed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_is_cell_transposed), gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cell_transposed, gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 	var ret = r_ret
 	return ret
 }
@@ -738,7 +820,7 @@ Returns a [Vector2i] array with the positions of all cells containing a tile. A 
 */
 //go:nosplit
 func (self class) GetUsedCells() Array.Contains[Vector2i.XY] { //gd:TileMapLayer.get_used_cells
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_used_cells), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_used_cells, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -750,7 +832,7 @@ A cell is considered empty if its source identifier equals [code]-1[/code], its 
 */
 //go:nosplit
 func (self class) GetUsedCellsById(source_id int64, atlas_coords Vector2i.XY, alternative_tile int64) Array.Contains[Vector2i.XY] { //gd:TileMapLayer.get_used_cells_by_id
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_used_cells_by_id), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_used_cells_by_id, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		source_id        int64
 		atlas_coords     Vector2i.XY
 		alternative_tile int64
@@ -764,7 +846,7 @@ Returns a rectangle enclosing the used (non-empty) tiles of the map.
 */
 //go:nosplit
 func (self class) GetUsedRect() Rect2i.PositionSize { //gd:TileMapLayer.get_used_rect
-	var r_ret = gdextension.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_used_rect), gdextension.SizeRect2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_used_rect, gdextension.SizeRect2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -774,7 +856,7 @@ Creates and returns a new [TileMapPattern] from the given array of cells. See al
 */
 //go:nosplit
 func (self class) GetPattern(coords_array Array.Contains[Vector2i.XY]) [1]gdclass.TileMapPattern { //gd:TileMapLayer.get_pattern
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_pattern), gdextension.SizeObject|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ coords_array gdextension.Array }{pointers.Get(gd.InternalArray(coords_array))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_pattern, gdextension.SizeObject|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ coords_array gdextension.Array }{pointers.Get(gd.InternalArray(coords_array))}))
 	var ret = [1]gdclass.TileMapPattern{gd.PointerWithOwnershipTransferredToGo[gdclass.TileMapPattern](r_ret)}
 	return ret
 }
@@ -784,7 +866,7 @@ Pastes the [TileMapPattern] at the given [param position] in the tile map. See a
 */
 //go:nosplit
 func (self class) SetPattern(position Vector2i.XY, pattern [1]gdclass.TileMapPattern) { //gd:TileMapLayer.set_pattern
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_pattern), 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pattern, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		position Vector2i.XY
 		pattern  gdextension.Object
 	}{position, gdextension.Object(gd.ObjectChecked(pattern[0].AsObject()))}))
@@ -797,7 +879,7 @@ If [param ignore_empty_terrains] is [code]true[/code], empty terrains will be ig
 */
 //go:nosplit
 func (self class) SetCellsTerrainConnect(cells Array.Contains[Vector2i.XY], terrain_set int64, terrain int64, ignore_empty_terrains bool) { //gd:TileMapLayer.set_cells_terrain_connect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_cells_terrain_connect), 0|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cells_terrain_connect, 0|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		cells                 gdextension.Array
 		terrain_set           int64
 		terrain               int64
@@ -812,7 +894,7 @@ If [param ignore_empty_terrains] is [code]true[/code], empty terrains will be ig
 */
 //go:nosplit
 func (self class) SetCellsTerrainPath(path Array.Contains[Vector2i.XY], terrain_set int64, terrain int64, ignore_empty_terrains bool) { //gd:TileMapLayer.set_cells_terrain_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_cells_terrain_path), 0|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cells_terrain_path, 0|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		path                  gdextension.Array
 		terrain_set           int64
 		terrain               int64
@@ -825,7 +907,7 @@ Returns whether the provided [param body] [RID] belongs to one of this [TileMapL
 */
 //go:nosplit
 func (self class) HasBodyRid(body RID.Any) bool { //gd:TileMapLayer.has_body_rid
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_has_body_rid), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_body_rid, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
 	var ret = r_ret
 	return ret
 }
@@ -835,7 +917,7 @@ Returns the coordinates of the tile for given physics body [RID]. Such an [RID] 
 */
 //go:nosplit
 func (self class) GetCoordsForBodyRid(body RID.Any) Vector2i.XY { //gd:TileMapLayer.get_coords_for_body_rid
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_coords_for_body_rid), gdextension.SizeVector2i|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_coords_for_body_rid, gdextension.SizeVector2i|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
 	var ret = r_ret
 	return ret
 }
@@ -847,7 +929,7 @@ However, for performance reasons, those updates are batched and delayed to the e
 */
 //go:nosplit
 func (self class) UpdateInternals() { //gd:TileMapLayer.update_internals
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_update_internals), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_internals, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -857,7 +939,7 @@ Notifies the [TileMapLayer] node that calls to [method _use_tile_data_runtime_up
 */
 //go:nosplit
 func (self class) NotifyRuntimeTileDataUpdate() { //gd:TileMapLayer.notify_runtime_tile_data_update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_notify_runtime_tile_data_update), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_runtime_tile_data_update, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -865,7 +947,7 @@ Returns for the given coordinates [param coords_in_pattern] in a [TileMapPattern
 */
 //go:nosplit
 func (self class) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern Vector2i.XY, pattern [1]gdclass.TileMapPattern) Vector2i.XY { //gd:TileMapLayer.map_pattern
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_map_pattern), gdextension.SizeVector2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.map_pattern, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		position_in_tilemap Vector2i.XY
 		coords_in_pattern   Vector2i.XY
 		pattern             gdextension.Object
@@ -879,7 +961,7 @@ Returns the list of all neighboring cells to the one at [param coords]. Any neig
 */
 //go:nosplit
 func (self class) GetSurroundingCells(coords Vector2i.XY) Array.Contains[Vector2i.XY] { //gd:TileMapLayer.get_surrounding_cells
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_surrounding_cells), gdextension.SizeArray|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_surrounding_cells, gdextension.SizeArray|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ coords Vector2i.XY }{coords}))
 	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -889,7 +971,7 @@ Returns the neighboring cell to the one at coordinates [param coords], identifie
 */
 //go:nosplit
 func (self class) GetNeighborCell(coords Vector2i.XY, neighbor TileSet.CellNeighbor) Vector2i.XY { //gd:TileMapLayer.get_neighbor_cell
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_neighbor_cell), gdextension.SizeVector2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_neighbor_cell, gdextension.SizeVector2i|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		coords   Vector2i.XY
 		neighbor TileSet.CellNeighbor
 	}{coords, neighbor}))
@@ -903,7 +985,7 @@ Returns the centered position of a cell in the [TileMapLayer]'s local coordinate
 */
 //go:nosplit
 func (self class) MapToLocal(map_position Vector2i.XY) Vector2.XY { //gd:TileMapLayer.map_to_local
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_map_to_local), gdextension.SizeVector2|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ map_position Vector2i.XY }{map_position}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.map_to_local, gdextension.SizeVector2|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ map_position Vector2i.XY }{map_position}))
 	var ret = r_ret
 	return ret
 }
@@ -913,139 +995,139 @@ Returns the map coordinates of the cell containing the given [param local_positi
 */
 //go:nosplit
 func (self class) LocalToMap(local_position Vector2.XY) Vector2i.XY { //gd:TileMapLayer.local_to_map
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_local_to_map), gdextension.SizeVector2i|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ local_position Vector2.XY }{local_position}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.local_to_map, gdextension.SizeVector2i|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ local_position Vector2.XY }{local_position}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTileMapDataFromArray(tile_map_layer_data Packed.Bytes) { //gd:TileMapLayer.set_tile_map_data_from_array
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_tile_map_data_from_array), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ tile_map_layer_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](tile_map_layer_data)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_map_data_from_array, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ tile_map_layer_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](tile_map_layer_data)))}))
 }
 
 //go:nosplit
 func (self class) GetTileMapDataAsArray() Packed.Bytes { //gd:TileMapLayer.get_tile_map_data_as_array
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_tile_map_data_as_array), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_tile_map_data_as_array, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:TileMapLayer.set_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsEnabled() bool { //gd:TileMapLayer.is_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_is_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTileSet(tile_set [1]gdclass.TileSet) { //gd:TileMapLayer.set_tile_set
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_tile_set), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tile_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(tile_set[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tile_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(tile_set[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTileSet() [1]gdclass.TileSet { //gd:TileMapLayer.get_tile_set
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_tile_set), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tile_set, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TileSet{gd.PointerWithOwnershipTransferredToGo[gdclass.TileSet](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetYSortOrigin(y_sort_origin int64) { //gd:TileMapLayer.set_y_sort_origin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_y_sort_origin), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ y_sort_origin int64 }{y_sort_origin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_y_sort_origin, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ y_sort_origin int64 }{y_sort_origin}))
 }
 
 //go:nosplit
 func (self class) GetYSortOrigin() int64 { //gd:TileMapLayer.get_y_sort_origin
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_y_sort_origin), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_y_sort_origin, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetXDrawOrderReversed(x_draw_order_reversed bool) { //gd:TileMapLayer.set_x_draw_order_reversed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_x_draw_order_reversed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ x_draw_order_reversed bool }{x_draw_order_reversed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_x_draw_order_reversed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ x_draw_order_reversed bool }{x_draw_order_reversed}))
 }
 
 //go:nosplit
 func (self class) IsXDrawOrderReversed() bool { //gd:TileMapLayer.is_x_draw_order_reversed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_is_x_draw_order_reversed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_x_draw_order_reversed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRenderingQuadrantSize(size int64) { //gd:TileMapLayer.set_rendering_quadrant_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_rendering_quadrant_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rendering_quadrant_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 }
 
 //go:nosplit
 func (self class) GetRenderingQuadrantSize() int64 { //gd:TileMapLayer.get_rendering_quadrant_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_rendering_quadrant_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rendering_quadrant_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionEnabled(enabled bool) { //gd:TileMapLayer.set_collision_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_collision_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsCollisionEnabled() bool { //gd:TileMapLayer.is_collision_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_is_collision_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collision_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseKinematicBodies(use_kinematic_bodies bool) { //gd:TileMapLayer.set_use_kinematic_bodies
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_use_kinematic_bodies), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_kinematic_bodies bool }{use_kinematic_bodies}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_kinematic_bodies, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_kinematic_bodies bool }{use_kinematic_bodies}))
 }
 
 //go:nosplit
 func (self class) IsUsingKinematicBodies() bool { //gd:TileMapLayer.is_using_kinematic_bodies
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_is_using_kinematic_bodies), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_kinematic_bodies, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionVisibilityMode(visibility_mode DebugVisibilityMode) { //gd:TileMapLayer.set_collision_visibility_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_collision_visibility_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ visibility_mode DebugVisibilityMode }{visibility_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_visibility_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ visibility_mode DebugVisibilityMode }{visibility_mode}))
 }
 
 //go:nosplit
 func (self class) GetCollisionVisibilityMode() DebugVisibilityMode { //gd:TileMapLayer.get_collision_visibility_mode
-	var r_ret = gdextension.Call[DebugVisibilityMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_collision_visibility_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DebugVisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_collision_visibility_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOcclusionEnabled(enabled bool) { //gd:TileMapLayer.set_occlusion_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_occlusion_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occlusion_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsOcclusionEnabled() bool { //gd:TileMapLayer.is_occlusion_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_is_occlusion_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_occlusion_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationEnabled(enabled bool) { //gd:TileMapLayer.set_navigation_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_navigation_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsNavigationEnabled() bool { //gd:TileMapLayer.is_navigation_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_is_navigation_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_navigation_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1055,7 +1137,7 @@ Sets a custom [param map] as a [NavigationServer2D] navigation map. If not set, 
 */
 //go:nosplit
 func (self class) SetNavigationMap(mapping RID.Any) { //gd:TileMapLayer.set_navigation_map
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_navigation_map), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_map, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 }
 
 /*
@@ -1064,19 +1146,19 @@ By default this returns the default [World2D] navigation map, unless a custom ma
 */
 //go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:TileMapLayer.get_navigation_map
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_navigation_map), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationVisibilityMode(show_navigation DebugVisibilityMode) { //gd:TileMapLayer.set_navigation_visibility_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_set_navigation_visibility_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ show_navigation DebugVisibilityMode }{show_navigation}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_visibility_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ show_navigation DebugVisibilityMode }{show_navigation}))
 }
 
 //go:nosplit
 func (self class) GetNavigationVisibilityMode() DebugVisibilityMode { //gd:TileMapLayer.get_navigation_visibility_mode
-	var r_ret = gdextension.Call[DebugVisibilityMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TileMapLayer.Bind_get_navigation_visibility_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DebugVisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_navigation_visibility_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1127,9 +1209,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TileMapLayer", func(ptr gd.Object) any {
-		return [1]gdclass.TileMapLayer{*(*gdclass.TileMapLayer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("TileMapLayer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type DebugVisibilityMode int //gd:TileMapLayer.DebugVisibilityMode

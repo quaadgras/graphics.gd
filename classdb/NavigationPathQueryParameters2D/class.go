@@ -71,6 +71,39 @@ By changing various properties of this object, such as the start and target posi
 */
 type Instance [1]gdclass.NavigationPathQueryParameters2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_pathfinding_algorithm gdextension.MethodForClass `hash:"2783519915"`
+	get_pathfinding_algorithm gdextension.MethodForClass `hash:"3000421146"`
+	set_path_postprocessing   gdextension.MethodForClass `hash:"2864409082"`
+	get_path_postprocessing   gdextension.MethodForClass `hash:"3798118993"`
+	set_map                   gdextension.MethodForClass `hash:"2722037293"`
+	get_map                   gdextension.MethodForClass `hash:"2944877500"`
+	set_start_position        gdextension.MethodForClass `hash:"743155724"`
+	get_start_position        gdextension.MethodForClass `hash:"3341600327"`
+	set_target_position       gdextension.MethodForClass `hash:"743155724"`
+	get_target_position       gdextension.MethodForClass `hash:"3341600327"`
+	set_navigation_layers     gdextension.MethodForClass `hash:"1286410249"`
+	get_navigation_layers     gdextension.MethodForClass `hash:"3905245786"`
+	set_metadata_flags        gdextension.MethodForClass `hash:"24274129"`
+	get_metadata_flags        gdextension.MethodForClass `hash:"488152976"`
+	set_simplify_path         gdextension.MethodForClass `hash:"2586408642"`
+	get_simplify_path         gdextension.MethodForClass `hash:"36873697"`
+	set_simplify_epsilon      gdextension.MethodForClass `hash:"373806689"`
+	get_simplify_epsilon      gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("NavigationPathQueryParameters2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -86,6 +119,20 @@ type Advanced = class
 type class [1]gdclass.NavigationPathQueryParameters2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.NavigationPathQueryParameters2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.NavigationPathQueryParameters2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -95,7 +142,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("NavigationPathQueryParameters2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.NavigationPathQueryParameters2D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -176,108 +223,108 @@ func (self Instance) SetSimplifyEpsilon(value Float.X) {
 
 //go:nosplit
 func (self class) SetPathfindingAlgorithm(pathfinding_algorithm PathfindingAlgorithm) { //gd:NavigationPathQueryParameters2D.set_pathfinding_algorithm
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_pathfinding_algorithm), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pathfinding_algorithm PathfindingAlgorithm }{pathfinding_algorithm}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pathfinding_algorithm, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pathfinding_algorithm PathfindingAlgorithm }{pathfinding_algorithm}))
 }
 
 //go:nosplit
 func (self class) GetPathfindingAlgorithm() PathfindingAlgorithm { //gd:NavigationPathQueryParameters2D.get_pathfinding_algorithm
-	var r_ret = gdextension.Call[PathfindingAlgorithm](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_pathfinding_algorithm), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PathfindingAlgorithm](gd.ObjectChecked(self.AsObject()), methods.get_pathfinding_algorithm, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathPostprocessing(path_postprocessing PathPostProcessing) { //gd:NavigationPathQueryParameters2D.set_path_postprocessing
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_path_postprocessing), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ path_postprocessing PathPostProcessing }{path_postprocessing}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_postprocessing, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ path_postprocessing PathPostProcessing }{path_postprocessing}))
 }
 
 //go:nosplit
 func (self class) GetPathPostprocessing() PathPostProcessing { //gd:NavigationPathQueryParameters2D.get_path_postprocessing
-	var r_ret = gdextension.Call[PathPostProcessing](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_path_postprocessing), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PathPostProcessing](gd.ObjectChecked(self.AsObject()), methods.get_path_postprocessing, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMap(mapping RID.Any) { //gd:NavigationPathQueryParameters2D.set_map
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_map), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_map, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ mapping RID.Any }{mapping}))
 }
 
 //go:nosplit
 func (self class) GetMap() RID.Any { //gd:NavigationPathQueryParameters2D.get_map
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_map), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_map, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStartPosition(start_position Vector2.XY) { //gd:NavigationPathQueryParameters2D.set_start_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_start_position), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ start_position Vector2.XY }{start_position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_start_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ start_position Vector2.XY }{start_position}))
 }
 
 //go:nosplit
 func (self class) GetStartPosition() Vector2.XY { //gd:NavigationPathQueryParameters2D.get_start_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_start_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_start_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTargetPosition(target_position Vector2.XY) { //gd:NavigationPathQueryParameters2D.set_target_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_target_position), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ target_position Vector2.XY }{target_position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ target_position Vector2.XY }{target_position}))
 }
 
 //go:nosplit
 func (self class) GetTargetPosition() Vector2.XY { //gd:NavigationPathQueryParameters2D.get_target_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_target_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationLayers(navigation_layers int64) { //gd:NavigationPathQueryParameters2D.set_navigation_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_navigation_layers), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ navigation_layers int64 }{navigation_layers}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ navigation_layers int64 }{navigation_layers}))
 }
 
 //go:nosplit
 func (self class) GetNavigationLayers() int64 { //gd:NavigationPathQueryParameters2D.get_navigation_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_navigation_layers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMetadataFlags(flags PathMetadataFlags) { //gd:NavigationPathQueryParameters2D.set_metadata_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_metadata_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags PathMetadataFlags }{flags}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_metadata_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags PathMetadataFlags }{flags}))
 }
 
 //go:nosplit
 func (self class) GetMetadataFlags() PathMetadataFlags { //gd:NavigationPathQueryParameters2D.get_metadata_flags
-	var r_ret = gdextension.Call[PathMetadataFlags](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_metadata_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PathMetadataFlags](gd.ObjectChecked(self.AsObject()), methods.get_metadata_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSimplifyPath(enabled bool) { //gd:NavigationPathQueryParameters2D.set_simplify_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_simplify_path), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simplify_path, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetSimplifyPath() bool { //gd:NavigationPathQueryParameters2D.get_simplify_path
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_simplify_path), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_simplify_path, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSimplifyEpsilon(epsilon float64) { //gd:NavigationPathQueryParameters2D.set_simplify_epsilon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_set_simplify_epsilon), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ epsilon float64 }{epsilon}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simplify_epsilon, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ epsilon float64 }{epsilon}))
 }
 
 //go:nosplit
 func (self class) GetSimplifyEpsilon() float64 { //gd:NavigationPathQueryParameters2D.get_simplify_epsilon
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NavigationPathQueryParameters2D.Bind_get_simplify_epsilon), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_simplify_epsilon, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -312,9 +359,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("NavigationPathQueryParameters2D", func(ptr gd.Object) any {
-		return [1]gdclass.NavigationPathQueryParameters2D{*(*gdclass.NavigationPathQueryParameters2D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("NavigationPathQueryParameters2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type PathfindingAlgorithm int //gd:NavigationPathQueryParameters2D.PathfindingAlgorithm

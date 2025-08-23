@@ -75,6 +75,33 @@ The [VisualInstance3D] is used to connect a resource to a visual representation.
 */
 type Instance [1]gdclass.VisualInstance3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_base                    gdextension.MethodForClass `hash:"2722037293"`
+	get_base                    gdextension.MethodForClass `hash:"2944877500"`
+	get_instance                gdextension.MethodForClass `hash:"2944877500"`
+	set_layer_mask              gdextension.MethodForClass `hash:"1286410249"`
+	get_layer_mask              gdextension.MethodForClass `hash:"3905245786"`
+	set_layer_mask_value        gdextension.MethodForClass `hash:"300928843"`
+	get_layer_mask_value        gdextension.MethodForClass `hash:"1116898809"`
+	set_sorting_offset          gdextension.MethodForClass `hash:"373806689"`
+	get_sorting_offset          gdextension.MethodForClass `hash:"1740695150"`
+	set_sorting_use_aabb_center gdextension.MethodForClass `hash:"2586408642"`
+	is_sorting_use_aabb_center  gdextension.MethodForClass `hash:"36873697"`
+	get_aabb                    gdextension.MethodForClass `hash:"1068685055"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VisualInstance3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -149,6 +176,20 @@ type Advanced = class
 type class [1]gdclass.VisualInstance3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualInstance3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualInstance3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -158,7 +199,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualInstance3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisualInstance3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -201,7 +242,7 @@ Sets the resource that is instantiated by this [VisualInstance3D], which changes
 */
 //go:nosplit
 func (self class) SetBase(base RID.Any) { //gd:VisualInstance3D.set_base
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualInstance3D.Bind_set_base), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ base RID.Any }{base}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ base RID.Any }{base}))
 }
 
 /*
@@ -209,7 +250,7 @@ Returns the RID of the resource associated with this [VisualInstance3D]. For exa
 */
 //go:nosplit
 func (self class) GetBase() RID.Any { //gd:VisualInstance3D.get_base
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualInstance3D.Bind_get_base), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_base, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -219,19 +260,19 @@ Returns the RID of this instance. This RID is the same as the RID returned by [m
 */
 //go:nosplit
 func (self class) GetInstance() RID.Any { //gd:VisualInstance3D.get_instance
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualInstance3D.Bind_get_instance), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_instance, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLayerMask(mask int64) { //gd:VisualInstance3D.set_layer_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualInstance3D.Bind_set_layer_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetLayerMask() int64 { //gd:VisualInstance3D.get_layer_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualInstance3D.Bind_get_layer_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -241,7 +282,7 @@ Based on [param value], enables or disables the specified layer in the [member l
 */
 //go:nosplit
 func (self class) SetLayerMaskValue(layer_number int64, value bool) { //gd:VisualInstance3D.set_layer_mask_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualInstance3D.Bind_set_layer_mask_value), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value}))
@@ -252,31 +293,31 @@ Returns whether or not the specified layer of the [member layers] is enabled, gi
 */
 //go:nosplit
 func (self class) GetLayerMaskValue(layer_number int64) bool { //gd:VisualInstance3D.get_layer_mask_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualInstance3D.Bind_get_layer_mask_value), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_layer_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSortingOffset(offset float64) { //gd:VisualInstance3D.set_sorting_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualInstance3D.Bind_set_sorting_offset), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sorting_offset, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
 }
 
 //go:nosplit
 func (self class) GetSortingOffset() float64 { //gd:VisualInstance3D.get_sorting_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualInstance3D.Bind_get_sorting_offset), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sorting_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSortingUseAabbCenter(enabled bool) { //gd:VisualInstance3D.set_sorting_use_aabb_center
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualInstance3D.Bind_set_sorting_use_aabb_center), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sorting_use_aabb_center, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSortingUseAabbCenter() bool { //gd:VisualInstance3D.is_sorting_use_aabb_center
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualInstance3D.Bind_is_sorting_use_aabb_center), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sorting_use_aabb_center, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -286,7 +327,7 @@ Returns the [AABB] (also known as the bounding box) for this [VisualInstance3D].
 */
 //go:nosplit
 func (self class) GetAabb() AABB.PositionSize { //gd:VisualInstance3D.get_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualInstance3D.Bind_get_aabb), gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_aabb, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -318,7 +359,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisualInstance3D", func(ptr gd.Object) any {
-		return [1]gdclass.VisualInstance3D{*(*gdclass.VisualInstance3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VisualInstance3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -72,6 +72,23 @@ Constrains a value to lie between [code]min[/code] and [code]max[/code] values.
 */
 type Instance [1]gdclass.VisualShaderNodeClamp
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_op_type gdextension.MethodForClass `hash:"405010749"`
+	get_op_type gdextension.MethodForClass `hash:"233276050"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VisualShaderNodeClamp")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -87,6 +104,20 @@ type Advanced = class
 type class [1]gdclass.VisualShaderNodeClamp
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeClamp)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeClamp)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -96,7 +127,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShaderNodeClamp"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisualShaderNodeClamp)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -113,12 +144,12 @@ func (self Instance) SetOpType(value OpType) {
 
 //go:nosplit
 func (self class) SetOpType(op_type OpType) { //gd:VisualShaderNodeClamp.set_op_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeClamp.Bind_set_op_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ op_type OpType }{op_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_op_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ op_type OpType }{op_type}))
 }
 
 //go:nosplit
 func (self class) GetOpType() OpType { //gd:VisualShaderNodeClamp.get_op_type
-	var r_ret = gdextension.Call[OpType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeClamp.Bind_get_op_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[OpType](gd.ObjectChecked(self.AsObject()), methods.get_op_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -165,9 +196,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisualShaderNodeClamp", func(ptr gd.Object) any {
-		return [1]gdclass.VisualShaderNodeClamp{*(*gdclass.VisualShaderNodeClamp)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VisualShaderNodeClamp", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type OpType int //gd:VisualShaderNodeClamp.OpType

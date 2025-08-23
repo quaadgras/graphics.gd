@@ -93,6 +93,151 @@ Sets [member mouse_filter] to [constant MOUSE_FILTER_IGNORE] to tell a [Control]
 */
 type Instance [1]gdclass.Control
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	accept_event                    gdextension.MethodForClass `hash:"3218959716"`
+	get_minimum_size                gdextension.MethodForClass `hash:"3341600327"`
+	get_combined_minimum_size       gdextension.MethodForClass `hash:"3341600327"`
+	set_anchors_preset              gdextension.MethodForClass `hash:"509135270"`
+	set_offsets_preset              gdextension.MethodForClass `hash:"3724524307"`
+	set_anchors_and_offsets_preset  gdextension.MethodForClass `hash:"3724524307"`
+	set_anchor                      gdextension.MethodForClass `hash:"2302782885"`
+	get_anchor                      gdextension.MethodForClass `hash:"2869120046"`
+	set_offset                      gdextension.MethodForClass `hash:"4290182280"`
+	get_offset                      gdextension.MethodForClass `hash:"2869120046"`
+	set_anchor_and_offset           gdextension.MethodForClass `hash:"4031722181"`
+	set_begin                       gdextension.MethodForClass `hash:"743155724"`
+	set_end                         gdextension.MethodForClass `hash:"743155724"`
+	set_position                    gdextension.MethodForClass `hash:"2436320129"`
+	set_size                        gdextension.MethodForClass `hash:"2436320129"`
+	reset_size                      gdextension.MethodForClass `hash:"3218959716"`
+	set_custom_minimum_size         gdextension.MethodForClass `hash:"743155724"`
+	set_global_position             gdextension.MethodForClass `hash:"2436320129"`
+	set_rotation                    gdextension.MethodForClass `hash:"373806689"`
+	set_rotation_degrees            gdextension.MethodForClass `hash:"373806689"`
+	set_scale                       gdextension.MethodForClass `hash:"743155724"`
+	set_pivot_offset                gdextension.MethodForClass `hash:"743155724"`
+	get_begin                       gdextension.MethodForClass `hash:"3341600327"`
+	get_end                         gdextension.MethodForClass `hash:"3341600327"`
+	get_position                    gdextension.MethodForClass `hash:"3341600327"`
+	get_size                        gdextension.MethodForClass `hash:"3341600327"`
+	get_rotation                    gdextension.MethodForClass `hash:"1740695150"`
+	get_rotation_degrees            gdextension.MethodForClass `hash:"1740695150"`
+	get_scale                       gdextension.MethodForClass `hash:"3341600327"`
+	get_pivot_offset                gdextension.MethodForClass `hash:"3341600327"`
+	get_custom_minimum_size         gdextension.MethodForClass `hash:"3341600327"`
+	get_parent_area_size            gdextension.MethodForClass `hash:"3341600327"`
+	get_global_position             gdextension.MethodForClass `hash:"3341600327"`
+	get_screen_position             gdextension.MethodForClass `hash:"3341600327"`
+	get_rect                        gdextension.MethodForClass `hash:"1639390495"`
+	get_global_rect                 gdextension.MethodForClass `hash:"1639390495"`
+	set_focus_mode                  gdextension.MethodForClass `hash:"3232914922"`
+	get_focus_mode                  gdextension.MethodForClass `hash:"2132829277"`
+	has_focus                       gdextension.MethodForClass `hash:"36873697"`
+	grab_focus                      gdextension.MethodForClass `hash:"3218959716"`
+	release_focus                   gdextension.MethodForClass `hash:"3218959716"`
+	find_prev_valid_focus           gdextension.MethodForClass `hash:"2783021301"`
+	find_next_valid_focus           gdextension.MethodForClass `hash:"2783021301"`
+	find_valid_focus_neighbor       gdextension.MethodForClass `hash:"1543910170"`
+	set_h_size_flags                gdextension.MethodForClass `hash:"394851643"`
+	get_h_size_flags                gdextension.MethodForClass `hash:"3781367401"`
+	set_stretch_ratio               gdextension.MethodForClass `hash:"373806689"`
+	get_stretch_ratio               gdextension.MethodForClass `hash:"1740695150"`
+	set_v_size_flags                gdextension.MethodForClass `hash:"394851643"`
+	get_v_size_flags                gdextension.MethodForClass `hash:"3781367401"`
+	set_theme                       gdextension.MethodForClass `hash:"2326690814"`
+	get_theme                       gdextension.MethodForClass `hash:"3846893731"`
+	set_theme_type_variation        gdextension.MethodForClass `hash:"3304788590"`
+	get_theme_type_variation        gdextension.MethodForClass `hash:"2002593661"`
+	begin_bulk_theme_override       gdextension.MethodForClass `hash:"3218959716"`
+	end_bulk_theme_override         gdextension.MethodForClass `hash:"3218959716"`
+	add_theme_icon_override         gdextension.MethodForClass `hash:"1373065600"`
+	add_theme_stylebox_override     gdextension.MethodForClass `hash:"4188838905"`
+	add_theme_font_override         gdextension.MethodForClass `hash:"3518018674"`
+	add_theme_font_size_override    gdextension.MethodForClass `hash:"2415702435"`
+	add_theme_color_override        gdextension.MethodForClass `hash:"4260178595"`
+	add_theme_constant_override     gdextension.MethodForClass `hash:"2415702435"`
+	remove_theme_icon_override      gdextension.MethodForClass `hash:"3304788590"`
+	remove_theme_stylebox_override  gdextension.MethodForClass `hash:"3304788590"`
+	remove_theme_font_override      gdextension.MethodForClass `hash:"3304788590"`
+	remove_theme_font_size_override gdextension.MethodForClass `hash:"3304788590"`
+	remove_theme_color_override     gdextension.MethodForClass `hash:"3304788590"`
+	remove_theme_constant_override  gdextension.MethodForClass `hash:"3304788590"`
+	get_theme_icon                  gdextension.MethodForClass `hash:"3163973443"`
+	get_theme_stylebox              gdextension.MethodForClass `hash:"604739069"`
+	get_theme_font                  gdextension.MethodForClass `hash:"2826986490"`
+	get_theme_font_size             gdextension.MethodForClass `hash:"1327056374"`
+	get_theme_color                 gdextension.MethodForClass `hash:"2798751242"`
+	get_theme_constant              gdextension.MethodForClass `hash:"1327056374"`
+	has_theme_icon_override         gdextension.MethodForClass `hash:"2619796661"`
+	has_theme_stylebox_override     gdextension.MethodForClass `hash:"2619796661"`
+	has_theme_font_override         gdextension.MethodForClass `hash:"2619796661"`
+	has_theme_font_size_override    gdextension.MethodForClass `hash:"2619796661"`
+	has_theme_color_override        gdextension.MethodForClass `hash:"2619796661"`
+	has_theme_constant_override     gdextension.MethodForClass `hash:"2619796661"`
+	has_theme_icon                  gdextension.MethodForClass `hash:"866386512"`
+	has_theme_stylebox              gdextension.MethodForClass `hash:"866386512"`
+	has_theme_font                  gdextension.MethodForClass `hash:"866386512"`
+	has_theme_font_size             gdextension.MethodForClass `hash:"866386512"`
+	has_theme_color                 gdextension.MethodForClass `hash:"866386512"`
+	has_theme_constant              gdextension.MethodForClass `hash:"866386512"`
+	get_theme_default_base_scale    gdextension.MethodForClass `hash:"1740695150"`
+	get_theme_default_font          gdextension.MethodForClass `hash:"3229501585"`
+	get_theme_default_font_size     gdextension.MethodForClass `hash:"3905245786"`
+	get_parent_control              gdextension.MethodForClass `hash:"2783021301"`
+	set_h_grow_direction            gdextension.MethodForClass `hash:"2022385301"`
+	get_h_grow_direction            gdextension.MethodForClass `hash:"3635610155"`
+	set_v_grow_direction            gdextension.MethodForClass `hash:"2022385301"`
+	get_v_grow_direction            gdextension.MethodForClass `hash:"3635610155"`
+	set_tooltip_auto_translate_mode gdextension.MethodForClass `hash:"776149714"`
+	get_tooltip_auto_translate_mode gdextension.MethodForClass `hash:"2498906432"`
+	set_tooltip_text                gdextension.MethodForClass `hash:"83702148"`
+	get_tooltip_text                gdextension.MethodForClass `hash:"201670096"`
+	get_tooltip                     gdextension.MethodForClass `hash:"2895288280"`
+	set_default_cursor_shape        gdextension.MethodForClass `hash:"217062046"`
+	get_default_cursor_shape        gdextension.MethodForClass `hash:"2359535750"`
+	get_cursor_shape                gdextension.MethodForClass `hash:"1395773853"`
+	set_focus_neighbor              gdextension.MethodForClass `hash:"2024461774"`
+	get_focus_neighbor              gdextension.MethodForClass `hash:"2757935761"`
+	set_focus_next                  gdextension.MethodForClass `hash:"1348162250"`
+	get_focus_next                  gdextension.MethodForClass `hash:"4075236667"`
+	set_focus_previous              gdextension.MethodForClass `hash:"1348162250"`
+	get_focus_previous              gdextension.MethodForClass `hash:"4075236667"`
+	force_drag                      gdextension.MethodForClass `hash:"3191844692"`
+	set_mouse_filter                gdextension.MethodForClass `hash:"3891156122"`
+	get_mouse_filter                gdextension.MethodForClass `hash:"1572545674"`
+	set_force_pass_scroll_events    gdextension.MethodForClass `hash:"2586408642"`
+	is_force_pass_scroll_events     gdextension.MethodForClass `hash:"36873697"`
+	set_clip_contents               gdextension.MethodForClass `hash:"2586408642"`
+	is_clipping_contents            gdextension.MethodForClass `hash:"2240911060"`
+	grab_click_focus                gdextension.MethodForClass `hash:"3218959716"`
+	set_drag_forwarding             gdextension.MethodForClass `hash:"1076571380"`
+	set_drag_preview                gdextension.MethodForClass `hash:"1496901182"`
+	is_drag_successful              gdextension.MethodForClass `hash:"36873697"`
+	warp_mouse                      gdextension.MethodForClass `hash:"743155724"`
+	set_shortcut_context            gdextension.MethodForClass `hash:"1078189570"`
+	get_shortcut_context            gdextension.MethodForClass `hash:"3160264692"`
+	update_minimum_size             gdextension.MethodForClass `hash:"3218959716"`
+	set_layout_direction            gdextension.MethodForClass `hash:"3310692370"`
+	get_layout_direction            gdextension.MethodForClass `hash:"1546772008"`
+	is_layout_rtl                   gdextension.MethodForClass `hash:"36873697"`
+	set_auto_translate              gdextension.MethodForClass `hash:"2586408642"`
+	is_auto_translating             gdextension.MethodForClass `hash:"36873697"`
+	set_localize_numeral_system     gdextension.MethodForClass `hash:"2586408642"`
+	is_localizing_numeral_system    gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Control")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Control
@@ -1433,6 +1578,20 @@ type Advanced = class
 type class [1]gdclass.Control
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Control)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Control)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -1442,7 +1601,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Control"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Control)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -2034,7 +2193,7 @@ Marks an input event as handled. Once you accept an input event, it stops propag
 */
 //go:nosplit
 func (self class) AcceptEvent() { //gd:Control.accept_event
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_accept_event), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accept_event, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2042,7 +2201,7 @@ Returns the minimum size for this control. See [member custom_minimum_size].
 */
 //go:nosplit
 func (self class) GetMinimumSize() Vector2.XY { //gd:Control.get_minimum_size
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_minimum_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_minimum_size, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2052,7 +2211,7 @@ Returns combined minimum size from [member custom_minimum_size] and [method get_
 */
 //go:nosplit
 func (self class) GetCombinedMinimumSize() Vector2.XY { //gd:Control.get_combined_minimum_size
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_combined_minimum_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_combined_minimum_size, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2063,7 +2222,7 @@ If [param keep_offsets] is [code]true[/code], control's position will also be up
 */
 //go:nosplit
 func (self class) SetAnchorsPreset(preset LayoutPreset, keep_offsets bool) { //gd:Control.set_anchors_preset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_anchors_preset), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchors_preset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		preset       LayoutPreset
 		keep_offsets bool
 	}{preset, keep_offsets}))
@@ -2076,7 +2235,7 @@ Use parameter [param margin] to determine the gap between the [Control] and the 
 */
 //go:nosplit
 func (self class) SetOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int64) { //gd:Control.set_offsets_preset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_offsets_preset), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offsets_preset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		preset      LayoutPreset
 		resize_mode LayoutPresetMode
 		margin      int64
@@ -2088,7 +2247,7 @@ Sets both anchor preset and offset preset. See [method set_anchors_preset] and [
 */
 //go:nosplit
 func (self class) SetAnchorsAndOffsetsPreset(preset LayoutPreset, resize_mode LayoutPresetMode, margin int64) { //gd:Control.set_anchors_and_offsets_preset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_anchors_and_offsets_preset), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchors_and_offsets_preset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		preset      LayoutPreset
 		resize_mode LayoutPresetMode
 		margin      int64
@@ -2102,7 +2261,7 @@ If [param push_opposite_anchor] is [code]true[/code] and the opposite anchor ove
 */
 //go:nosplit
 func (self class) SetAnchor(side Rect2.Side, anchor float64, keep_offset bool, push_opposite_anchor bool) { //gd:Control.set_anchor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_anchor), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchor, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		side                 Rect2.Side
 		anchor               float64
 		keep_offset          bool
@@ -2115,7 +2274,7 @@ Returns the anchor for the specified [enum Side]. A getter method for [member an
 */
 //go:nosplit
 func (self class) GetAnchor(side Rect2.Side) float64 { //gd:Control.get_anchor
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_anchor), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ side Rect2.Side }{side}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_anchor, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ side Rect2.Side }{side}))
 	var ret = r_ret
 	return ret
 }
@@ -2125,7 +2284,7 @@ Sets the offset for the specified [enum Side] to [param offset]. A setter method
 */
 //go:nosplit
 func (self class) SetOffset(side Rect2.Side, offset float64) { //gd:Control.set_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_offset), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		side   Rect2.Side
 		offset float64
 	}{side, offset}))
@@ -2136,7 +2295,7 @@ Returns the offset for the specified [enum Side]. A getter method for [member of
 */
 //go:nosplit
 func (self class) GetOffset(offset Rect2.Side) float64 { //gd:Control.get_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_offset), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ offset Rect2.Side }{offset}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ offset Rect2.Side }{offset}))
 	var ret = r_ret
 	return ret
 }
@@ -2146,7 +2305,7 @@ Works the same as [method set_anchor], but instead of [code]keep_offset[/code] a
 */
 //go:nosplit
 func (self class) SetAnchorAndOffset(side Rect2.Side, anchor float64, offset float64, push_opposite_anchor bool) { //gd:Control.set_anchor_and_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_anchor_and_offset), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchor_and_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		side                 Rect2.Side
 		anchor               float64
 		offset               float64
@@ -2159,7 +2318,7 @@ Sets [member offset_left] and [member offset_top] at the same time. Equivalent o
 */
 //go:nosplit
 func (self class) SetBegin(position Vector2.XY) { //gd:Control.set_begin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_begin), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_begin, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 /*
@@ -2167,7 +2326,7 @@ Sets [member offset_right] and [member offset_bottom] at the same time.
 */
 //go:nosplit
 func (self class) SetEnd(position Vector2.XY) { //gd:Control.set_end
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_end), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_end, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 /*
@@ -2176,7 +2335,7 @@ If [param keep_offsets] is [code]true[/code], control's anchors will be updated 
 */
 //go:nosplit
 func (self class) SetPosition(position Vector2.XY, keep_offsets bool) { //gd:Control.set_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_position), 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		position     Vector2.XY
 		keep_offsets bool
 	}{position, keep_offsets}))
@@ -2188,7 +2347,7 @@ If [param keep_offsets] is [code]true[/code], control's anchors will be updated 
 */
 //go:nosplit
 func (self class) SetSize(size Vector2.XY, keep_offsets bool) { //gd:Control.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_size), 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		size         Vector2.XY
 		keep_offsets bool
 	}{size, keep_offsets}))
@@ -2199,12 +2358,12 @@ Resets the size to [method get_combined_minimum_size]. This is equivalent to cal
 */
 //go:nosplit
 func (self class) ResetSize() { //gd:Control.reset_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_reset_size), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_size, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetCustomMinimumSize(size Vector2.XY) { //gd:Control.set_custom_minimum_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_custom_minimum_size), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_minimum_size, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
 }
 
 /*
@@ -2213,7 +2372,7 @@ If [param keep_offsets] is [code]true[/code], control's anchors will be updated 
 */
 //go:nosplit
 func (self class) SetGlobalPosition(position Vector2.XY, keep_offsets bool) { //gd:Control.set_global_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_global_position), 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_position, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		position     Vector2.XY
 		keep_offsets bool
 	}{position, keep_offsets}))
@@ -2221,22 +2380,22 @@ func (self class) SetGlobalPosition(position Vector2.XY, keep_offsets bool) { //
 
 //go:nosplit
 func (self class) SetRotation(radians float64) { //gd:Control.set_rotation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_rotation), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
 }
 
 //go:nosplit
 func (self class) SetRotationDegrees(degrees float64) { //gd:Control.set_rotation_degrees
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_rotation_degrees), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ degrees float64 }{degrees}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_degrees, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ degrees float64 }{degrees}))
 }
 
 //go:nosplit
 func (self class) SetScale(scale Vector2.XY) { //gd:Control.set_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_scale), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
 }
 
 //go:nosplit
 func (self class) SetPivotOffset(pivot_offset Vector2.XY) { //gd:Control.set_pivot_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_pivot_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ pivot_offset Vector2.XY }{pivot_offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pivot_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ pivot_offset Vector2.XY }{pivot_offset}))
 }
 
 /*
@@ -2244,7 +2403,7 @@ Returns [member offset_left] and [member offset_top]. See also [member position]
 */
 //go:nosplit
 func (self class) GetBegin() Vector2.XY { //gd:Control.get_begin
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_begin), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_begin, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2254,56 +2413,56 @@ Returns [member offset_right] and [member offset_bottom].
 */
 //go:nosplit
 func (self class) GetEnd() Vector2.XY { //gd:Control.get_end
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_end), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_end, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:Control.get_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:Control.get_size
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetRotation() float64 { //gd:Control.get_rotation
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_rotation), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetRotationDegrees() float64 { //gd:Control.get_rotation_degrees
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_rotation_degrees), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation_degrees, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetScale() Vector2.XY { //gd:Control.get_scale
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_scale), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scale, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetPivotOffset() Vector2.XY { //gd:Control.get_pivot_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_pivot_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_pivot_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCustomMinimumSize() Vector2.XY { //gd:Control.get_custom_minimum_size
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_custom_minimum_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_custom_minimum_size, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2313,14 +2472,14 @@ Returns the width/height occupied in the parent control.
 */
 //go:nosplit
 func (self class) GetParentAreaSize() Vector2.XY { //gd:Control.get_parent_area_size
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_parent_area_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_parent_area_size, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetGlobalPosition() Vector2.XY { //gd:Control.get_global_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_global_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_global_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2337,7 +2496,7 @@ popup_menu.popup()
 */
 //go:nosplit
 func (self class) GetScreenPosition() Vector2.XY { //gd:Control.get_screen_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_screen_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2349,7 +2508,7 @@ Returns the position and size of the control in the coordinate system of the con
 */
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:Control.get_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2361,19 +2520,19 @@ Returns the position and size of the control relative to the containing canvas. 
 */
 //go:nosplit
 func (self class) GetGlobalRect() Rect2.PositionSize { //gd:Control.get_global_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_global_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_global_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFocusMode(mode FocusMode) { //gd:Control.set_focus_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_focus_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode FocusMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode FocusMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetFocusMode() FocusMode { //gd:Control.get_focus_mode
-	var r_ret = gdextension.Call[FocusMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_focus_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_focus_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2383,7 +2542,7 @@ Returns [code]true[/code] if this is the current focused control. See [member fo
 */
 //go:nosplit
 func (self class) HasFocus() bool { //gd:Control.has_focus
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_has_focus), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_focus, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2394,7 +2553,7 @@ Steal the focus from another control and become the focused control (see [member
 */
 //go:nosplit
 func (self class) GrabFocus() { //gd:Control.grab_focus
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_grab_focus), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grab_focus, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2402,7 +2561,7 @@ Give up the focus. No other control will be able to receive input.
 */
 //go:nosplit
 func (self class) ReleaseFocus() { //gd:Control.release_focus
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_release_focus), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.release_focus, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2410,7 +2569,7 @@ Finds the previous (above in the tree) [Control] that can receive the focus.
 */
 //go:nosplit
 func (self class) FindPrevValidFocus() [1]gdclass.Control { //gd:Control.find_prev_valid_focus
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_find_prev_valid_focus), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_prev_valid_focus, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
@@ -2420,7 +2579,7 @@ Finds the next (below in the tree) [Control] that can receive the focus.
 */
 //go:nosplit
 func (self class) FindNextValidFocus() [1]gdclass.Control { //gd:Control.find_next_valid_focus
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_find_next_valid_focus), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_next_valid_focus, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
@@ -2431,67 +2590,67 @@ Finds the next [Control] that can receive the focus on the specified [enum Side]
 */
 //go:nosplit
 func (self class) FindValidFocusNeighbor(side Rect2.Side) [1]gdclass.Control { //gd:Control.find_valid_focus_neighbor
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_find_valid_focus_neighbor), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ side Rect2.Side }{side}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_valid_focus_neighbor, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ side Rect2.Side }{side}))
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHSizeFlags(flags SizeFlags) { //gd:Control.set_h_size_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_h_size_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags SizeFlags }{flags}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_size_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags SizeFlags }{flags}))
 }
 
 //go:nosplit
 func (self class) GetHSizeFlags() SizeFlags { //gd:Control.get_h_size_flags
-	var r_ret = gdextension.Call[SizeFlags](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_h_size_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SizeFlags](gd.ObjectChecked(self.AsObject()), methods.get_h_size_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStretchRatio(ratio float64) { //gd:Control.set_stretch_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_stretch_ratio), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
 }
 
 //go:nosplit
 func (self class) GetStretchRatio() float64 { //gd:Control.get_stretch_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_stretch_ratio), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stretch_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVSizeFlags(flags SizeFlags) { //gd:Control.set_v_size_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_v_size_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags SizeFlags }{flags}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_size_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags SizeFlags }{flags}))
 }
 
 //go:nosplit
 func (self class) GetVSizeFlags() SizeFlags { //gd:Control.get_v_size_flags
-	var r_ret = gdextension.Call[SizeFlags](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_v_size_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SizeFlags](gd.ObjectChecked(self.AsObject()), methods.get_v_size_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTheme(theme [1]gdclass.Theme) { //gd:Control.set_theme
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_theme), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ theme gdextension.Object }{gdextension.Object(gd.ObjectChecked(theme[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ theme gdextension.Object }{gdextension.Object(gd.ObjectChecked(theme[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTheme() [1]gdclass.Theme { //gd:Control.get_theme
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_theme), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetThemeTypeVariation(theme_type String.Name) { //gd:Control.set_theme_type_variation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_theme_type_variation), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ theme_type gdextension.StringName }{pointers.Get(gd.InternalStringName(theme_type))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme_type_variation, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ theme_type gdextension.StringName }{pointers.Get(gd.InternalStringName(theme_type))}))
 }
 
 //go:nosplit
 func (self class) GetThemeTypeVariation() String.Name { //gd:Control.get_theme_type_variation
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_theme_type_variation), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_theme_type_variation, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -2501,7 +2660,7 @@ Prevents [code]*_theme_*_override[/code] methods from emitting [constant NOTIFIC
 */
 //go:nosplit
 func (self class) BeginBulkThemeOverride() { //gd:Control.begin_bulk_theme_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_begin_bulk_theme_override), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.begin_bulk_theme_override, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2509,7 +2668,7 @@ Ends a bulk theme override update. See [method begin_bulk_theme_override].
 */
 //go:nosplit
 func (self class) EndBulkThemeOverride() { //gd:Control.end_bulk_theme_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_end_bulk_theme_override), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.end_bulk_theme_override, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2518,7 +2677,7 @@ See also [method get_theme_icon].
 */
 //go:nosplit
 func (self class) AddThemeIconOverride(name String.Name, texture [1]gdclass.Texture2D) { //gd:Control.add_theme_icon_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_add_theme_icon_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_icon_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name    gdextension.StringName
 		texture gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
@@ -2555,7 +2714,7 @@ GetNode<Button>("MyButton").RemoveThemeStyleboxOverride("normal");
 */
 //go:nosplit
 func (self class) AddThemeStyleboxOverride(name String.Name, stylebox [1]gdclass.StyleBox) { //gd:Control.add_theme_stylebox_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_add_theme_stylebox_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_stylebox_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		stylebox gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(stylebox[0].AsObject()))}))
@@ -2567,7 +2726,7 @@ See also [method get_theme_font].
 */
 //go:nosplit
 func (self class) AddThemeFontOverride(name String.Name, font [1]gdclass.Font) { //gd:Control.add_theme_font_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_add_theme_font_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name gdextension.StringName
 		font gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
@@ -2579,7 +2738,7 @@ See also [method get_theme_font_size].
 */
 //go:nosplit
 func (self class) AddThemeFontSizeOverride(name String.Name, font_size int64) { //gd:Control.add_theme_font_size_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_add_theme_font_size_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_size_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		name      gdextension.StringName
 		font_size int64
 	}{pointers.Get(gd.InternalStringName(name)), font_size}))
@@ -2610,7 +2769,7 @@ GetNode<Label>("MyLabel").AddThemeColorOverride("font_color", GetThemeColor("fon
 */
 //go:nosplit
 func (self class) AddThemeColorOverride(name String.Name, color Color.RGBA) { //gd:Control.add_theme_color_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_add_theme_color_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_color_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		name  gdextension.StringName
 		color Color.RGBA
 	}{pointers.Get(gd.InternalStringName(name)), color}))
@@ -2622,7 +2781,7 @@ See also [method get_theme_constant].
 */
 //go:nosplit
 func (self class) AddThemeConstantOverride(name String.Name, constant int64) { //gd:Control.add_theme_constant_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_add_theme_constant_override), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_constant_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		constant int64
 	}{pointers.Get(gd.InternalStringName(name)), constant}))
@@ -2633,7 +2792,7 @@ Removes a local override for a theme icon with the specified [param name] previo
 */
 //go:nosplit
 func (self class) RemoveThemeIconOverride(name String.Name) { //gd:Control.remove_theme_icon_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_remove_theme_icon_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_icon_override, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -2641,7 +2800,7 @@ Removes a local override for a theme [StyleBox] with the specified [param name] 
 */
 //go:nosplit
 func (self class) RemoveThemeStyleboxOverride(name String.Name) { //gd:Control.remove_theme_stylebox_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_remove_theme_stylebox_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_stylebox_override, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -2649,7 +2808,7 @@ Removes a local override for a theme [Font] with the specified [param name] prev
 */
 //go:nosplit
 func (self class) RemoveThemeFontOverride(name String.Name) { //gd:Control.remove_theme_font_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_remove_theme_font_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_font_override, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -2657,7 +2816,7 @@ Removes a local override for a theme font size with the specified [param name] p
 */
 //go:nosplit
 func (self class) RemoveThemeFontSizeOverride(name String.Name) { //gd:Control.remove_theme_font_size_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_remove_theme_font_size_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_font_size_override, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -2665,7 +2824,7 @@ Removes a local override for a theme [Color] with the specified [param name] pre
 */
 //go:nosplit
 func (self class) RemoveThemeColorOverride(name String.Name) { //gd:Control.remove_theme_color_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_remove_theme_color_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_color_override, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -2673,7 +2832,7 @@ Removes a local override for a theme constant with the specified [param name] pr
 */
 //go:nosplit
 func (self class) RemoveThemeConstantOverride(name String.Name) { //gd:Control.remove_theme_constant_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_remove_theme_constant_override), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_theme_constant_override, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -2682,7 +2841,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) GetThemeIcon(name String.Name, theme_type String.Name) [1]gdclass.Texture2D { //gd:Control.get_theme_icon
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_theme_icon), gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_icon, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
@@ -2696,7 +2855,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) GetThemeStylebox(name String.Name, theme_type String.Name) [1]gdclass.StyleBox { //gd:Control.get_theme_stylebox
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_theme_stylebox), gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_stylebox, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
@@ -2710,7 +2869,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) GetThemeFont(name String.Name, theme_type String.Name) [1]gdclass.Font { //gd:Control.get_theme_font
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_theme_font), gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_font, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
@@ -2724,7 +2883,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) GetThemeFontSize(name String.Name, theme_type String.Name) int64 { //gd:Control.get_theme_font_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_theme_font_size), gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_theme_font_size, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
@@ -2756,7 +2915,7 @@ public override void _Ready()
 */
 //go:nosplit
 func (self class) GetThemeColor(name String.Name, theme_type String.Name) Color.RGBA { //gd:Control.get_theme_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_theme_color), gdextension.SizeColor|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_theme_color, gdextension.SizeColor|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
@@ -2770,7 +2929,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) GetThemeConstant(name String.Name, theme_type String.Name) int64 { //gd:Control.get_theme_constant
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_theme_constant), gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_theme_constant, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
@@ -2784,7 +2943,7 @@ See [method add_theme_icon_override].
 */
 //go:nosplit
 func (self class) HasThemeIconOverride(name String.Name) bool { //gd:Control.has_theme_icon_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_has_theme_icon_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_icon_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -2795,7 +2954,7 @@ See [method add_theme_stylebox_override].
 */
 //go:nosplit
 func (self class) HasThemeStyleboxOverride(name String.Name) bool { //gd:Control.has_theme_stylebox_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_has_theme_stylebox_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_stylebox_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -2806,7 +2965,7 @@ See [method add_theme_font_override].
 */
 //go:nosplit
 func (self class) HasThemeFontOverride(name String.Name) bool { //gd:Control.has_theme_font_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_has_theme_font_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -2817,7 +2976,7 @@ See [method add_theme_font_size_override].
 */
 //go:nosplit
 func (self class) HasThemeFontSizeOverride(name String.Name) bool { //gd:Control.has_theme_font_size_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_has_theme_font_size_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font_size_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -2828,7 +2987,7 @@ See [method add_theme_color_override].
 */
 //go:nosplit
 func (self class) HasThemeColorOverride(name String.Name) bool { //gd:Control.has_theme_color_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_has_theme_color_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_color_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -2839,7 +2998,7 @@ See [method add_theme_constant_override].
 */
 //go:nosplit
 func (self class) HasThemeConstantOverride(name String.Name) bool { //gd:Control.has_theme_constant_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_has_theme_constant_override), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_constant_override, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -2850,7 +3009,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) HasThemeIcon(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_icon
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_has_theme_icon), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_icon, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
@@ -2864,7 +3023,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) HasThemeStylebox(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_stylebox
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_has_theme_stylebox), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_stylebox, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
@@ -2878,7 +3037,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) HasThemeFont(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_font
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_has_theme_font), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
@@ -2892,7 +3051,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) HasThemeFontSize(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_font_size
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_has_theme_font_size), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_font_size, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
@@ -2906,7 +3065,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) HasThemeColor(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_color
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_has_theme_color), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_color, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
@@ -2920,7 +3079,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) HasThemeConstant(name String.Name, theme_type String.Name) bool { //gd:Control.has_theme_constant
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_has_theme_constant), gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_theme_constant, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type))}))
@@ -2934,7 +3093,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) GetThemeDefaultBaseScale() float64 { //gd:Control.get_theme_default_base_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_theme_default_base_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_base_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2945,7 +3104,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) GetThemeDefaultFont() [1]gdclass.Font { //gd:Control.get_theme_default_font
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_theme_default_font), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_font, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
 	return ret
 }
@@ -2956,7 +3115,7 @@ See [method get_theme_color] for details.
 */
 //go:nosplit
 func (self class) GetThemeDefaultFontSize() int64 { //gd:Control.get_theme_default_font_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_theme_default_font_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_theme_default_font_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2966,55 +3125,55 @@ Returns the parent control node.
 */
 //go:nosplit
 func (self class) GetParentControl() [1]gdclass.Control { //gd:Control.get_parent_control
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_parent_control), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent_control, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Control{gd.PointerMustAssertInstanceID[gdclass.Control](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHGrowDirection(direction GrowDirection) { //gd:Control.set_h_grow_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_h_grow_direction), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction GrowDirection }{direction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_grow_direction, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction GrowDirection }{direction}))
 }
 
 //go:nosplit
 func (self class) GetHGrowDirection() GrowDirection { //gd:Control.get_h_grow_direction
-	var r_ret = gdextension.Call[GrowDirection](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_h_grow_direction), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GrowDirection](gd.ObjectChecked(self.AsObject()), methods.get_h_grow_direction, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVGrowDirection(direction GrowDirection) { //gd:Control.set_v_grow_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_v_grow_direction), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction GrowDirection }{direction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_grow_direction, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction GrowDirection }{direction}))
 }
 
 //go:nosplit
 func (self class) GetVGrowDirection() GrowDirection { //gd:Control.get_v_grow_direction
-	var r_ret = gdextension.Call[GrowDirection](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_v_grow_direction), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GrowDirection](gd.ObjectChecked(self.AsObject()), methods.get_v_grow_direction, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTooltipAutoTranslateMode(mode Node.AutoTranslateMode) { //gd:Control.set_tooltip_auto_translate_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_tooltip_auto_translate_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Node.AutoTranslateMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tooltip_auto_translate_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Node.AutoTranslateMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetTooltipAutoTranslateMode() Node.AutoTranslateMode { //gd:Control.get_tooltip_auto_translate_mode
-	var r_ret = gdextension.Call[Node.AutoTranslateMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_tooltip_auto_translate_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Node.AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_tooltip_auto_translate_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTooltipText(hint String.Readable) { //gd:Control.set_tooltip_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_tooltip_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ hint gdextension.String }{pointers.Get(gd.InternalString(hint))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tooltip_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ hint gdextension.String }{pointers.Get(gd.InternalString(hint))}))
 }
 
 //go:nosplit
 func (self class) GetTooltipText() String.Readable { //gd:Control.get_tooltip_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_tooltip_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3026,19 +3185,19 @@ This method can be overridden to customize its behavior. See [method _get_toolti
 */
 //go:nosplit
 func (self class) GetTooltip(at_position Vector2.XY) String.Readable { //gd:Control.get_tooltip
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_tooltip), gdextension.SizeString|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ at_position Vector2.XY }{at_position}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip, gdextension.SizeString|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ at_position Vector2.XY }{at_position}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultCursorShape(shape CursorShape) { //gd:Control.set_default_cursor_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_default_cursor_shape), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shape CursorShape }{shape}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_cursor_shape, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shape CursorShape }{shape}))
 }
 
 //go:nosplit
 func (self class) GetDefaultCursorShape() CursorShape { //gd:Control.get_default_cursor_shape
-	var r_ret = gdextension.Call[CursorShape](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_default_cursor_shape), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_default_cursor_shape, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -3048,7 +3207,7 @@ Returns the mouse cursor shape the control displays on mouse hover. See [enum Cu
 */
 //go:nosplit
 func (self class) GetCursorShape(position Vector2.XY) CursorShape { //gd:Control.get_cursor_shape
-	var r_ret = gdextension.Call[CursorShape](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_cursor_shape), gdextension.SizeInt|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	var r_ret = gdextension.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_cursor_shape, gdextension.SizeInt|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 	var ret = r_ret
 	return ret
 }
@@ -3058,7 +3217,7 @@ Sets the focus neighbor for the specified [enum Side] to the [Control] at [param
 */
 //go:nosplit
 func (self class) SetFocusNeighbor(side Rect2.Side, neighbor Path.ToNode) { //gd:Control.set_focus_neighbor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_focus_neighbor), 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_neighbor, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
 		side     Rect2.Side
 		neighbor gdextension.NodePath
 	}{side, pointers.Get(gd.InternalNodePath(neighbor))}))
@@ -3070,31 +3229,31 @@ Returns the focus neighbor for the specified [enum Side]. A getter method for [m
 */
 //go:nosplit
 func (self class) GetFocusNeighbor(side Rect2.Side) Path.ToNode { //gd:Control.get_focus_neighbor
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_focus_neighbor), gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ side Rect2.Side }{side}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_focus_neighbor, gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ side Rect2.Side }{side}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFocusNext(next Path.ToNode) { //gd:Control.set_focus_next
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_focus_next), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ next gdextension.NodePath }{pointers.Get(gd.InternalNodePath(next))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_next, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ next gdextension.NodePath }{pointers.Get(gd.InternalNodePath(next))}))
 }
 
 //go:nosplit
 func (self class) GetFocusNext() Path.ToNode { //gd:Control.get_focus_next
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_focus_next), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_focus_next, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFocusPrevious(previous Path.ToNode) { //gd:Control.set_focus_previous
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_focus_previous), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ previous gdextension.NodePath }{pointers.Get(gd.InternalNodePath(previous))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_previous, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ previous gdextension.NodePath }{pointers.Get(gd.InternalNodePath(previous))}))
 }
 
 //go:nosplit
 func (self class) GetFocusPrevious() Path.ToNode { //gd:Control.get_focus_previous
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_focus_previous), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_focus_previous, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -3105,7 +3264,7 @@ The methods [method _can_drop_data] and [method _drop_data] must be implemented 
 */
 //go:nosplit
 func (self class) ForceDrag(data variant.Any, preview [1]gdclass.Control) { //gd:Control.force_drag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_force_drag), 0|(gdextension.SizeVariant<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_drag, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		data    gdextension.Variant
 		preview gdextension.Object
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(data))), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(preview[0].AsObject()[0]))}))
@@ -3113,36 +3272,36 @@ func (self class) ForceDrag(data variant.Any, preview [1]gdclass.Control) { //gd
 
 //go:nosplit
 func (self class) SetMouseFilter(filter MouseFilter) { //gd:Control.set_mouse_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_mouse_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter MouseFilter }{filter}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_filter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter MouseFilter }{filter}))
 }
 
 //go:nosplit
 func (self class) GetMouseFilter() MouseFilter { //gd:Control.get_mouse_filter
-	var r_ret = gdextension.Call[MouseFilter](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_mouse_filter), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[MouseFilter](gd.ObjectChecked(self.AsObject()), methods.get_mouse_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetForcePassScrollEvents(force_pass_scroll_events bool) { //gd:Control.set_force_pass_scroll_events
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_force_pass_scroll_events), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ force_pass_scroll_events bool }{force_pass_scroll_events}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_force_pass_scroll_events, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ force_pass_scroll_events bool }{force_pass_scroll_events}))
 }
 
 //go:nosplit
 func (self class) IsForcePassScrollEvents() bool { //gd:Control.is_force_pass_scroll_events
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_is_force_pass_scroll_events), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_force_pass_scroll_events, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClipContents(enable bool) { //gd:Control.set_clip_contents
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_clip_contents), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_contents, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsClippingContents() bool { //gd:Control.is_clipping_contents
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_is_clipping_contents), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_clipping_contents, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -3164,7 +3323,7 @@ public override void _Process(double delta)
 */
 //go:nosplit
 func (self class) GrabClickFocus() { //gd:Control.grab_click_focus
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_grab_click_focus), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grab_click_focus, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -3176,7 +3335,7 @@ The arguments for each callable should be exactly the same as their respective v
 */
 //go:nosplit
 func (self class) SetDragForwarding(drag_func Callable.Function, can_drop_func Callable.Function, drop_func Callable.Function) { //gd:Control.set_drag_forwarding
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_drag_forwarding), 0|(gdextension.SizeCallable<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_forwarding, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
 		drag_func     gdextension.Callable
 		can_drop_func gdextension.Callable
 		drop_func     gdextension.Callable
@@ -3215,7 +3374,7 @@ public override Variant _GetDragData(Vector2 atPosition)
 */
 //go:nosplit
 func (self class) SetDragPreview(control [1]gdclass.Control) { //gd:Control.set_drag_preview
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_drag_preview), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_preview, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))}))
 }
 
 /*
@@ -3224,7 +3383,7 @@ Best used with [constant Node.NOTIFICATION_DRAG_END].
 */
 //go:nosplit
 func (self class) IsDragSuccessful() bool { //gd:Control.is_drag_successful
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_is_drag_successful), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_successful, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -3235,17 +3394,17 @@ Moves the mouse cursor to [param position], relative to [member position] of thi
 */
 //go:nosplit
 func (self class) WarpMouse(position Vector2.XY) { //gd:Control.warp_mouse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_warp_mouse), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
 }
 
 //go:nosplit
 func (self class) SetShortcutContext(node [1]gdclass.Node) { //gd:Control.set_shortcut_context
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_shortcut_context), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_context, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetShortcutContext() [1]gdclass.Node { //gd:Control.get_shortcut_context
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_shortcut_context), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut_context, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -3255,17 +3414,17 @@ Invalidates the size cache in this node and in parent nodes up to top level. Int
 */
 //go:nosplit
 func (self class) UpdateMinimumSize() { //gd:Control.update_minimum_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_update_minimum_size), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_minimum_size, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetLayoutDirection(direction LayoutDirection) { //gd:Control.set_layout_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_layout_direction), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction LayoutDirection }{direction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layout_direction, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction LayoutDirection }{direction}))
 }
 
 //go:nosplit
 func (self class) GetLayoutDirection() LayoutDirection { //gd:Control.get_layout_direction
-	var r_ret = gdextension.Call[LayoutDirection](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_get_layout_direction), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[LayoutDirection](gd.ObjectChecked(self.AsObject()), methods.get_layout_direction, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -3275,31 +3434,31 @@ Returns [code]true[/code] if layout is right-to-left. See also [member layout_di
 */
 //go:nosplit
 func (self class) IsLayoutRtl() bool { //gd:Control.is_layout_rtl
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_is_layout_rtl), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_layout_rtl, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoTranslate(enable bool) { //gd:Control.set_auto_translate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_auto_translate), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_translate, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsAutoTranslating() bool { //gd:Control.is_auto_translating
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_is_auto_translating), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_translating, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLocalizeNumeralSystem(enable bool) { //gd:Control.set_localize_numeral_system
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_set_localize_numeral_system), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_localize_numeral_system, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsLocalizingNumeralSystem() bool { //gd:Control.is_localizing_numeral_system
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Control.Bind_is_localizing_numeral_system), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_localizing_numeral_system, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -3403,7 +3562,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Control", func(ptr gd.Object) any { return [1]gdclass.Control{*(*gdclass.Control)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Control", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type FocusMode int //gd:Control.FocusMode

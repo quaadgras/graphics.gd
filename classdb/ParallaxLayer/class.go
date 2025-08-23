@@ -76,6 +76,27 @@ This node's children will be affected by its scroll offset.
 */
 type Instance [1]gdclass.ParallaxLayer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_motion_scale  gdextension.MethodForClass `hash:"743155724"`
+	get_motion_scale  gdextension.MethodForClass `hash:"3341600327"`
+	set_motion_offset gdextension.MethodForClass `hash:"743155724"`
+	get_motion_offset gdextension.MethodForClass `hash:"3341600327"`
+	set_mirroring     gdextension.MethodForClass `hash:"743155724"`
+	get_mirroring     gdextension.MethodForClass `hash:"3341600327"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ParallaxLayer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -91,6 +112,20 @@ type Advanced = class
 type class [1]gdclass.ParallaxLayer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ParallaxLayer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ParallaxLayer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -100,7 +135,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ParallaxLayer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ParallaxLayer)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -132,36 +167,36 @@ func (self Instance) SetMotionMirroring(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetMotionScale(scale Vector2.XY) { //gd:ParallaxLayer.set_motion_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ParallaxLayer.Bind_set_motion_scale), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion_scale, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ scale Vector2.XY }{scale}))
 }
 
 //go:nosplit
 func (self class) GetMotionScale() Vector2.XY { //gd:ParallaxLayer.get_motion_scale
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ParallaxLayer.Bind_get_motion_scale), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_motion_scale, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMotionOffset(offset Vector2.XY) { //gd:ParallaxLayer.set_motion_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ParallaxLayer.Bind_set_motion_offset), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
 }
 
 //go:nosplit
 func (self class) GetMotionOffset() Vector2.XY { //gd:ParallaxLayer.get_motion_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ParallaxLayer.Bind_get_motion_offset), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_motion_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMirroring(mirror Vector2.XY) { //gd:ParallaxLayer.set_mirroring
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ParallaxLayer.Bind_set_mirroring), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ mirror Vector2.XY }{mirror}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mirroring, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ mirror Vector2.XY }{mirror}))
 }
 
 //go:nosplit
 func (self class) GetMirroring() Vector2.XY { //gd:ParallaxLayer.get_mirroring
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ParallaxLayer.Bind_get_mirroring), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_mirroring, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -196,7 +231,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ParallaxLayer", func(ptr gd.Object) any {
-		return [1]gdclass.ParallaxLayer{*(*gdclass.ParallaxLayer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ParallaxLayer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

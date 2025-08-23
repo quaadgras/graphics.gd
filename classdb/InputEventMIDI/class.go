@@ -134,6 +134,37 @@ private void PrintMIDIInfo(InputEventMidi midiEvent)
 */
 type Instance [1]gdclass.InputEventMIDI
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_channel           gdextension.MethodForClass `hash:"1286410249"`
+	get_channel           gdextension.MethodForClass `hash:"3905245786"`
+	set_message           gdextension.MethodForClass `hash:"1064271510"`
+	get_message           gdextension.MethodForClass `hash:"1936512097"`
+	set_pitch             gdextension.MethodForClass `hash:"1286410249"`
+	get_pitch             gdextension.MethodForClass `hash:"3905245786"`
+	set_velocity          gdextension.MethodForClass `hash:"1286410249"`
+	get_velocity          gdextension.MethodForClass `hash:"3905245786"`
+	set_instrument        gdextension.MethodForClass `hash:"1286410249"`
+	get_instrument        gdextension.MethodForClass `hash:"3905245786"`
+	set_pressure          gdextension.MethodForClass `hash:"1286410249"`
+	get_pressure          gdextension.MethodForClass `hash:"3905245786"`
+	set_controller_number gdextension.MethodForClass `hash:"1286410249"`
+	get_controller_number gdextension.MethodForClass `hash:"3905245786"`
+	set_controller_value  gdextension.MethodForClass `hash:"1286410249"`
+	get_controller_value  gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("InputEventMIDI")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -149,6 +180,20 @@ type Advanced = class
 type class [1]gdclass.InputEventMIDI
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventMIDI)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventMIDI)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -158,7 +203,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("InputEventMIDI"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.InputEventMIDI)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -231,96 +276,96 @@ func (self Instance) SetControllerValue(value int) {
 
 //go:nosplit
 func (self class) SetChannel(channel int64) { //gd:InputEventMIDI.set_channel
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_set_channel), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ channel int64 }{channel}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_channel, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ channel int64 }{channel}))
 }
 
 //go:nosplit
 func (self class) GetChannel() int64 { //gd:InputEventMIDI.get_channel
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_get_channel), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_channel, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMessage(message Message) { //gd:InputEventMIDI.set_message
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_set_message), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ message Message }{message}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_message, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ message Message }{message}))
 }
 
 //go:nosplit
 func (self class) GetMessage() Message { //gd:InputEventMIDI.get_message
-	var r_ret = gdextension.Call[Message](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_get_message), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Message](gd.ObjectChecked(self.AsObject()), methods.get_message, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPitch(pitch int64) { //gd:InputEventMIDI.set_pitch
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_set_pitch), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pitch int64 }{pitch}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pitch, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pitch int64 }{pitch}))
 }
 
 //go:nosplit
 func (self class) GetPitch() int64 { //gd:InputEventMIDI.get_pitch
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_get_pitch), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_pitch, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVelocity(velocity int64) { //gd:InputEventMIDI.set_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_set_velocity), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ velocity int64 }{velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ velocity int64 }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetVelocity() int64 { //gd:InputEventMIDI.get_velocity
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_get_velocity), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInstrument(instrument int64) { //gd:InputEventMIDI.set_instrument
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_set_instrument), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ instrument int64 }{instrument}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instrument, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ instrument int64 }{instrument}))
 }
 
 //go:nosplit
 func (self class) GetInstrument() int64 { //gd:InputEventMIDI.get_instrument
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_get_instrument), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_instrument, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressure(pressure int64) { //gd:InputEventMIDI.set_pressure
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_set_pressure), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pressure int64 }{pressure}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pressure int64 }{pressure}))
 }
 
 //go:nosplit
 func (self class) GetPressure() int64 { //gd:InputEventMIDI.get_pressure
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_get_pressure), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetControllerNumber(controller_number int64) { //gd:InputEventMIDI.set_controller_number
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_set_controller_number), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ controller_number int64 }{controller_number}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_controller_number, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ controller_number int64 }{controller_number}))
 }
 
 //go:nosplit
 func (self class) GetControllerNumber() int64 { //gd:InputEventMIDI.get_controller_number
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_get_controller_number), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_controller_number, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetControllerValue(controller_value int64) { //gd:InputEventMIDI.set_controller_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_set_controller_value), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ controller_value int64 }{controller_value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_controller_value, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ controller_value int64 }{controller_value}))
 }
 
 //go:nosplit
 func (self class) GetControllerValue() int64 { //gd:InputEventMIDI.get_controller_value
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMIDI.Bind_get_controller_value), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_controller_value, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -363,9 +408,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("InputEventMIDI", func(ptr gd.Object) any {
-		return [1]gdclass.InputEventMIDI{*(*gdclass.InputEventMIDI)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("InputEventMIDI", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Message int //gd:MIDIMessage

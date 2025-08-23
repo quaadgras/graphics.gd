@@ -76,6 +76,82 @@ When applying multiple [LookAtModifier3D]s, the [LookAtModifier3D] assigned to t
 */
 type Instance [1]gdclass.LookAtModifier3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_target_node                       gdextension.MethodForClass `hash:"1348162250"`
+	get_target_node                       gdextension.MethodForClass `hash:"4075236667"`
+	set_bone_name                         gdextension.MethodForClass `hash:"83702148"`
+	get_bone_name                         gdextension.MethodForClass `hash:"201670096"`
+	set_bone                              gdextension.MethodForClass `hash:"1286410249"`
+	get_bone                              gdextension.MethodForClass `hash:"3905245786"`
+	set_forward_axis                      gdextension.MethodForClass `hash:"3199955933"`
+	get_forward_axis                      gdextension.MethodForClass `hash:"4076020284"`
+	set_primary_rotation_axis             gdextension.MethodForClass `hash:"1144690656"`
+	get_primary_rotation_axis             gdextension.MethodForClass `hash:"3050976882"`
+	set_use_secondary_rotation            gdextension.MethodForClass `hash:"2586408642"`
+	is_using_secondary_rotation           gdextension.MethodForClass `hash:"36873697"`
+	set_origin_safe_margin                gdextension.MethodForClass `hash:"373806689"`
+	get_origin_safe_margin                gdextension.MethodForClass `hash:"1740695150"`
+	set_origin_from                       gdextension.MethodForClass `hash:"4254695669"`
+	get_origin_from                       gdextension.MethodForClass `hash:"4057166297"`
+	set_origin_bone_name                  gdextension.MethodForClass `hash:"83702148"`
+	get_origin_bone_name                  gdextension.MethodForClass `hash:"201670096"`
+	set_origin_bone                       gdextension.MethodForClass `hash:"1286410249"`
+	get_origin_bone                       gdextension.MethodForClass `hash:"3905245786"`
+	set_origin_external_node              gdextension.MethodForClass `hash:"1348162250"`
+	get_origin_external_node              gdextension.MethodForClass `hash:"4075236667"`
+	set_origin_offset                     gdextension.MethodForClass `hash:"3460891852"`
+	get_origin_offset                     gdextension.MethodForClass `hash:"3360562783"`
+	set_duration                          gdextension.MethodForClass `hash:"373806689"`
+	get_duration                          gdextension.MethodForClass `hash:"1740695150"`
+	set_transition_type                   gdextension.MethodForClass `hash:"1058637742"`
+	get_transition_type                   gdextension.MethodForClass `hash:"3842314528"`
+	set_ease_type                         gdextension.MethodForClass `hash:"1208105857"`
+	get_ease_type                         gdextension.MethodForClass `hash:"631880200"`
+	set_use_angle_limitation              gdextension.MethodForClass `hash:"2586408642"`
+	is_using_angle_limitation             gdextension.MethodForClass `hash:"36873697"`
+	set_symmetry_limitation               gdextension.MethodForClass `hash:"2586408642"`
+	is_limitation_symmetry                gdextension.MethodForClass `hash:"36873697"`
+	set_primary_limit_angle               gdextension.MethodForClass `hash:"373806689"`
+	get_primary_limit_angle               gdextension.MethodForClass `hash:"1740695150"`
+	set_primary_damp_threshold            gdextension.MethodForClass `hash:"373806689"`
+	get_primary_damp_threshold            gdextension.MethodForClass `hash:"1740695150"`
+	set_primary_positive_limit_angle      gdextension.MethodForClass `hash:"373806689"`
+	get_primary_positive_limit_angle      gdextension.MethodForClass `hash:"1740695150"`
+	set_primary_positive_damp_threshold   gdextension.MethodForClass `hash:"373806689"`
+	get_primary_positive_damp_threshold   gdextension.MethodForClass `hash:"1740695150"`
+	set_primary_negative_limit_angle      gdextension.MethodForClass `hash:"373806689"`
+	get_primary_negative_limit_angle      gdextension.MethodForClass `hash:"1740695150"`
+	set_primary_negative_damp_threshold   gdextension.MethodForClass `hash:"373806689"`
+	get_primary_negative_damp_threshold   gdextension.MethodForClass `hash:"1740695150"`
+	set_secondary_limit_angle             gdextension.MethodForClass `hash:"373806689"`
+	get_secondary_limit_angle             gdextension.MethodForClass `hash:"1740695150"`
+	set_secondary_damp_threshold          gdextension.MethodForClass `hash:"373806689"`
+	get_secondary_damp_threshold          gdextension.MethodForClass `hash:"1740695150"`
+	set_secondary_positive_limit_angle    gdextension.MethodForClass `hash:"373806689"`
+	get_secondary_positive_limit_angle    gdextension.MethodForClass `hash:"1740695150"`
+	set_secondary_positive_damp_threshold gdextension.MethodForClass `hash:"373806689"`
+	get_secondary_positive_damp_threshold gdextension.MethodForClass `hash:"1740695150"`
+	set_secondary_negative_limit_angle    gdextension.MethodForClass `hash:"373806689"`
+	get_secondary_negative_limit_angle    gdextension.MethodForClass `hash:"1740695150"`
+	set_secondary_negative_damp_threshold gdextension.MethodForClass `hash:"373806689"`
+	get_secondary_negative_damp_threshold gdextension.MethodForClass `hash:"1740695150"`
+	get_interpolation_remaining           gdextension.MethodForClass `hash:"1740695150"`
+	is_interpolating                      gdextension.MethodForClass `hash:"36873697"`
+	is_target_within_limitation           gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("LookAtModifier3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -114,6 +190,20 @@ type Advanced = class
 type class [1]gdclass.LookAtModifier3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.LookAtModifier3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.LookAtModifier3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -123,7 +213,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("LookAtModifier3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.LookAtModifier3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -363,348 +453,348 @@ func (self Instance) SetSecondaryNegativeDampThreshold(value Float.X) {
 
 //go:nosplit
 func (self class) SetTargetNode(target_node Path.ToNode) { //gd:LookAtModifier3D.set_target_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_target_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target_node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_node))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_node, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target_node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_node))}))
 }
 
 //go:nosplit
 func (self class) GetTargetNode() Path.ToNode { //gd:LookAtModifier3D.get_target_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_target_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBoneName(bone_name String.Readable) { //gd:LookAtModifier3D.set_bone_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_bone_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bone_name gdextension.String }{pointers.Get(gd.InternalString(bone_name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bone_name gdextension.String }{pointers.Get(gd.InternalString(bone_name))}))
 }
 
 //go:nosplit
 func (self class) GetBoneName() String.Readable { //gd:LookAtModifier3D.get_bone_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_bone_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_bone_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBone(bone int64) { //gd:LookAtModifier3D.set_bone
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_bone), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone int64 }{bone}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone int64 }{bone}))
 }
 
 //go:nosplit
 func (self class) GetBone() int64 { //gd:LookAtModifier3D.get_bone
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_bone), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetForwardAxis(forward_axis SkeletonModifier3D.BoneAxis) { //gd:LookAtModifier3D.set_forward_axis
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_forward_axis), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ forward_axis SkeletonModifier3D.BoneAxis }{forward_axis}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_forward_axis, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ forward_axis SkeletonModifier3D.BoneAxis }{forward_axis}))
 }
 
 //go:nosplit
 func (self class) GetForwardAxis() SkeletonModifier3D.BoneAxis { //gd:LookAtModifier3D.get_forward_axis
-	var r_ret = gdextension.Call[SkeletonModifier3D.BoneAxis](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_forward_axis), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SkeletonModifier3D.BoneAxis](gd.ObjectChecked(self.AsObject()), methods.get_forward_axis, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrimaryRotationAxis(axis Vector3.Axis) { //gd:LookAtModifier3D.set_primary_rotation_axis
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_rotation_axis), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ axis Vector3.Axis }{axis}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_rotation_axis, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ axis Vector3.Axis }{axis}))
 }
 
 //go:nosplit
 func (self class) GetPrimaryRotationAxis() Vector3.Axis { //gd:LookAtModifier3D.get_primary_rotation_axis
-	var r_ret = gdextension.Call[Vector3.Axis](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_rotation_axis), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.Axis](gd.ObjectChecked(self.AsObject()), methods.get_primary_rotation_axis, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseSecondaryRotation(enabled bool) { //gd:LookAtModifier3D.set_use_secondary_rotation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_use_secondary_rotation), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_secondary_rotation, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsUsingSecondaryRotation() bool { //gd:LookAtModifier3D.is_using_secondary_rotation
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_is_using_secondary_rotation), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_secondary_rotation, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOriginSafeMargin(margin float64) { //gd:LookAtModifier3D.set_origin_safe_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_safe_margin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_origin_safe_margin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
 }
 
 //go:nosplit
 func (self class) GetOriginSafeMargin() float64 { //gd:LookAtModifier3D.get_origin_safe_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_safe_margin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_origin_safe_margin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOriginFrom(origin_from OriginFrom) { //gd:LookAtModifier3D.set_origin_from
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_from), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ origin_from OriginFrom }{origin_from}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_origin_from, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ origin_from OriginFrom }{origin_from}))
 }
 
 //go:nosplit
 func (self class) GetOriginFrom() OriginFrom { //gd:LookAtModifier3D.get_origin_from
-	var r_ret = gdextension.Call[OriginFrom](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_from), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[OriginFrom](gd.ObjectChecked(self.AsObject()), methods.get_origin_from, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOriginBoneName(bone_name String.Readable) { //gd:LookAtModifier3D.set_origin_bone_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_bone_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bone_name gdextension.String }{pointers.Get(gd.InternalString(bone_name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_origin_bone_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ bone_name gdextension.String }{pointers.Get(gd.InternalString(bone_name))}))
 }
 
 //go:nosplit
 func (self class) GetOriginBoneName() String.Readable { //gd:LookAtModifier3D.get_origin_bone_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_bone_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_origin_bone_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOriginBone(bone int64) { //gd:LookAtModifier3D.set_origin_bone
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_bone), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone int64 }{bone}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_origin_bone, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone int64 }{bone}))
 }
 
 //go:nosplit
 func (self class) GetOriginBone() int64 { //gd:LookAtModifier3D.get_origin_bone
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_bone), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_origin_bone, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOriginExternalNode(external_node Path.ToNode) { //gd:LookAtModifier3D.set_origin_external_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_external_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ external_node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(external_node))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_origin_external_node, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ external_node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(external_node))}))
 }
 
 //go:nosplit
 func (self class) GetOriginExternalNode() Path.ToNode { //gd:LookAtModifier3D.get_origin_external_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_external_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_origin_external_node, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOriginOffset(offset Vector3.XYZ) { //gd:LookAtModifier3D.set_origin_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_origin_offset), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_origin_offset, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
 }
 
 //go:nosplit
 func (self class) GetOriginOffset() Vector3.XYZ { //gd:LookAtModifier3D.get_origin_offset
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_origin_offset), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_origin_offset, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDuration(duration float64) { //gd:LookAtModifier3D.set_duration
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_duration), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ duration float64 }{duration}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_duration, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ duration float64 }{duration}))
 }
 
 //go:nosplit
 func (self class) GetDuration() float64 { //gd:LookAtModifier3D.get_duration
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_duration), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_duration, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransitionType(transition_type Tween.TransitionType) { //gd:LookAtModifier3D.set_transition_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_transition_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ transition_type Tween.TransitionType }{transition_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transition_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ transition_type Tween.TransitionType }{transition_type}))
 }
 
 //go:nosplit
 func (self class) GetTransitionType() Tween.TransitionType { //gd:LookAtModifier3D.get_transition_type
-	var r_ret = gdextension.Call[Tween.TransitionType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_transition_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Tween.TransitionType](gd.ObjectChecked(self.AsObject()), methods.get_transition_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEaseType(ease_type Tween.EaseType) { //gd:LookAtModifier3D.set_ease_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_ease_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ease_type Tween.EaseType }{ease_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ease_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ease_type Tween.EaseType }{ease_type}))
 }
 
 //go:nosplit
 func (self class) GetEaseType() Tween.EaseType { //gd:LookAtModifier3D.get_ease_type
-	var r_ret = gdextension.Call[Tween.EaseType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_ease_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Tween.EaseType](gd.ObjectChecked(self.AsObject()), methods.get_ease_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseAngleLimitation(enabled bool) { //gd:LookAtModifier3D.set_use_angle_limitation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_use_angle_limitation), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_angle_limitation, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsUsingAngleLimitation() bool { //gd:LookAtModifier3D.is_using_angle_limitation
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_is_using_angle_limitation), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_angle_limitation, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSymmetryLimitation(enabled bool) { //gd:LookAtModifier3D.set_symmetry_limitation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_symmetry_limitation), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_symmetry_limitation, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsLimitationSymmetry() bool { //gd:LookAtModifier3D.is_limitation_symmetry
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_is_limitation_symmetry), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_limitation_symmetry, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrimaryLimitAngle(angle float64) { //gd:LookAtModifier3D.set_primary_limit_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_limit_angle), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_limit_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 //go:nosplit
 func (self class) GetPrimaryLimitAngle() float64 { //gd:LookAtModifier3D.get_primary_limit_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_limit_angle), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_primary_limit_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrimaryDampThreshold(power float64) { //gd:LookAtModifier3D.set_primary_damp_threshold
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_damp_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_damp_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
 }
 
 //go:nosplit
 func (self class) GetPrimaryDampThreshold() float64 { //gd:LookAtModifier3D.get_primary_damp_threshold
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_damp_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_primary_damp_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrimaryPositiveLimitAngle(angle float64) { //gd:LookAtModifier3D.set_primary_positive_limit_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_positive_limit_angle), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_positive_limit_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 //go:nosplit
 func (self class) GetPrimaryPositiveLimitAngle() float64 { //gd:LookAtModifier3D.get_primary_positive_limit_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_positive_limit_angle), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_primary_positive_limit_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrimaryPositiveDampThreshold(power float64) { //gd:LookAtModifier3D.set_primary_positive_damp_threshold
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_positive_damp_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_positive_damp_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
 }
 
 //go:nosplit
 func (self class) GetPrimaryPositiveDampThreshold() float64 { //gd:LookAtModifier3D.get_primary_positive_damp_threshold
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_positive_damp_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_primary_positive_damp_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrimaryNegativeLimitAngle(angle float64) { //gd:LookAtModifier3D.set_primary_negative_limit_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_negative_limit_angle), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_negative_limit_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 //go:nosplit
 func (self class) GetPrimaryNegativeLimitAngle() float64 { //gd:LookAtModifier3D.get_primary_negative_limit_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_negative_limit_angle), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_primary_negative_limit_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrimaryNegativeDampThreshold(power float64) { //gd:LookAtModifier3D.set_primary_negative_damp_threshold
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_primary_negative_damp_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_negative_damp_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
 }
 
 //go:nosplit
 func (self class) GetPrimaryNegativeDampThreshold() float64 { //gd:LookAtModifier3D.get_primary_negative_damp_threshold
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_primary_negative_damp_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_primary_negative_damp_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSecondaryLimitAngle(angle float64) { //gd:LookAtModifier3D.set_secondary_limit_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_secondary_limit_angle), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_secondary_limit_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 //go:nosplit
 func (self class) GetSecondaryLimitAngle() float64 { //gd:LookAtModifier3D.get_secondary_limit_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_secondary_limit_angle), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_secondary_limit_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSecondaryDampThreshold(power float64) { //gd:LookAtModifier3D.set_secondary_damp_threshold
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_secondary_damp_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_secondary_damp_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
 }
 
 //go:nosplit
 func (self class) GetSecondaryDampThreshold() float64 { //gd:LookAtModifier3D.get_secondary_damp_threshold
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_secondary_damp_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_secondary_damp_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSecondaryPositiveLimitAngle(angle float64) { //gd:LookAtModifier3D.set_secondary_positive_limit_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_secondary_positive_limit_angle), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_secondary_positive_limit_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 //go:nosplit
 func (self class) GetSecondaryPositiveLimitAngle() float64 { //gd:LookAtModifier3D.get_secondary_positive_limit_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_secondary_positive_limit_angle), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_secondary_positive_limit_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSecondaryPositiveDampThreshold(power float64) { //gd:LookAtModifier3D.set_secondary_positive_damp_threshold
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_secondary_positive_damp_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_secondary_positive_damp_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
 }
 
 //go:nosplit
 func (self class) GetSecondaryPositiveDampThreshold() float64 { //gd:LookAtModifier3D.get_secondary_positive_damp_threshold
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_secondary_positive_damp_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_secondary_positive_damp_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSecondaryNegativeLimitAngle(angle float64) { //gd:LookAtModifier3D.set_secondary_negative_limit_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_secondary_negative_limit_angle), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_secondary_negative_limit_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 //go:nosplit
 func (self class) GetSecondaryNegativeLimitAngle() float64 { //gd:LookAtModifier3D.get_secondary_negative_limit_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_secondary_negative_limit_angle), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_secondary_negative_limit_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSecondaryNegativeDampThreshold(power float64) { //gd:LookAtModifier3D.set_secondary_negative_damp_threshold
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_set_secondary_negative_damp_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_secondary_negative_damp_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ power float64 }{power}))
 }
 
 //go:nosplit
 func (self class) GetSecondaryNegativeDampThreshold() float64 { //gd:LookAtModifier3D.get_secondary_negative_damp_threshold
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_secondary_negative_damp_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_secondary_negative_damp_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -714,7 +804,7 @@ Returns the remaining seconds of the time-based interpolation.
 */
 //go:nosplit
 func (self class) GetInterpolationRemaining() float64 { //gd:LookAtModifier3D.get_interpolation_remaining
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_get_interpolation_remaining), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_interpolation_remaining, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -725,7 +815,7 @@ This is useful to determine whether a [LookAtModifier3D] can be removed safely.
 */
 //go:nosplit
 func (self class) IsInterpolating() bool { //gd:LookAtModifier3D.is_interpolating
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_is_interpolating), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_interpolating, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -736,7 +826,7 @@ Returns whether the target is within the angle limitations. It is useful for uns
 */
 //go:nosplit
 func (self class) IsTargetWithinLimitation() bool { //gd:LookAtModifier3D.is_target_within_limitation
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LookAtModifier3D.Bind_is_target_within_limitation), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_target_within_limitation, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -773,9 +863,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("LookAtModifier3D", func(ptr gd.Object) any {
-		return [1]gdclass.LookAtModifier3D{*(*gdclass.LookAtModifier3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("LookAtModifier3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type OriginFrom int //gd:LookAtModifier3D.OriginFrom

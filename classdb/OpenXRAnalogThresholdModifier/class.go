@@ -75,6 +75,29 @@ See [url=https://registry.khronos.org/OpenXR/specs/1.1/html/xrspec.html#XR_VALVE
 */
 type Instance [1]gdclass.OpenXRAnalogThresholdModifier
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_on_threshold  gdextension.MethodForClass `hash:"373806689"`
+	get_on_threshold  gdextension.MethodForClass `hash:"1740695150"`
+	set_off_threshold gdextension.MethodForClass `hash:"373806689"`
+	get_off_threshold gdextension.MethodForClass `hash:"1740695150"`
+	set_on_haptic     gdextension.MethodForClass `hash:"2998020150"`
+	get_on_haptic     gdextension.MethodForClass `hash:"922310751"`
+	set_off_haptic    gdextension.MethodForClass `hash:"2998020150"`
+	get_off_haptic    gdextension.MethodForClass `hash:"922310751"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("OpenXRAnalogThresholdModifier")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -90,6 +113,20 @@ type Advanced = class
 type class [1]gdclass.OpenXRAnalogThresholdModifier
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OpenXRAnalogThresholdModifier)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OpenXRAnalogThresholdModifier)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -99,7 +136,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("OpenXRAnalogThresholdModifier"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.OpenXRAnalogThresholdModifier)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -140,48 +177,48 @@ func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) {
 
 //go:nosplit
 func (self class) SetOnThreshold(on_threshold float64) { //gd:OpenXRAnalogThresholdModifier.set_on_threshold
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_set_on_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ on_threshold float64 }{on_threshold}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_on_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ on_threshold float64 }{on_threshold}))
 }
 
 //go:nosplit
 func (self class) GetOnThreshold() float64 { //gd:OpenXRAnalogThresholdModifier.get_on_threshold
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_get_on_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_on_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffThreshold(off_threshold float64) { //gd:OpenXRAnalogThresholdModifier.set_off_threshold
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_set_off_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ off_threshold float64 }{off_threshold}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_off_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ off_threshold float64 }{off_threshold}))
 }
 
 //go:nosplit
 func (self class) GetOffThreshold() float64 { //gd:OpenXRAnalogThresholdModifier.get_off_threshold
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_get_off_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_off_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOnHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRAnalogThresholdModifier.set_on_haptic
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_set_on_haptic), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(haptic[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_on_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(haptic[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetOnHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRAnalogThresholdModifier.get_on_haptic
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_get_on_haptic), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_on_haptic, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRAnalogThresholdModifier.set_off_haptic
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_set_off_haptic), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(haptic[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_off_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(haptic[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetOffHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRAnalogThresholdModifier.get_off_haptic
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OpenXRAnalogThresholdModifier.Bind_get_off_haptic), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_off_haptic, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.OpenXRHapticBase{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRHapticBase](r_ret)}
 	return ret
 }
@@ -241,7 +278,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("OpenXRAnalogThresholdModifier", func(ptr gd.Object) any {
-		return [1]gdclass.OpenXRAnalogThresholdModifier{*(*gdclass.OpenXRAnalogThresholdModifier)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("OpenXRAnalogThresholdModifier", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

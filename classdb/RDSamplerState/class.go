@@ -71,6 +71,51 @@ This object is used by [RenderingDevice].
 */
 type Instance [1]gdclass.RDSamplerState
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_mag_filter       gdextension.MethodForClass `hash:"1493420382"`
+	get_mag_filter       gdextension.MethodForClass `hash:"2209202801"`
+	set_min_filter       gdextension.MethodForClass `hash:"1493420382"`
+	get_min_filter       gdextension.MethodForClass `hash:"2209202801"`
+	set_mip_filter       gdextension.MethodForClass `hash:"1493420382"`
+	get_mip_filter       gdextension.MethodForClass `hash:"2209202801"`
+	set_repeat_u         gdextension.MethodForClass `hash:"246127626"`
+	get_repeat_u         gdextension.MethodForClass `hash:"3227895872"`
+	set_repeat_v         gdextension.MethodForClass `hash:"246127626"`
+	get_repeat_v         gdextension.MethodForClass `hash:"3227895872"`
+	set_repeat_w         gdextension.MethodForClass `hash:"246127626"`
+	get_repeat_w         gdextension.MethodForClass `hash:"3227895872"`
+	set_lod_bias         gdextension.MethodForClass `hash:"373806689"`
+	get_lod_bias         gdextension.MethodForClass `hash:"1740695150"`
+	set_use_anisotropy   gdextension.MethodForClass `hash:"2586408642"`
+	get_use_anisotropy   gdextension.MethodForClass `hash:"36873697"`
+	set_anisotropy_max   gdextension.MethodForClass `hash:"373806689"`
+	get_anisotropy_max   gdextension.MethodForClass `hash:"1740695150"`
+	set_enable_compare   gdextension.MethodForClass `hash:"2586408642"`
+	get_enable_compare   gdextension.MethodForClass `hash:"36873697"`
+	set_compare_op       gdextension.MethodForClass `hash:"2573711505"`
+	get_compare_op       gdextension.MethodForClass `hash:"269730778"`
+	set_min_lod          gdextension.MethodForClass `hash:"373806689"`
+	get_min_lod          gdextension.MethodForClass `hash:"1740695150"`
+	set_max_lod          gdextension.MethodForClass `hash:"373806689"`
+	get_max_lod          gdextension.MethodForClass `hash:"1740695150"`
+	set_border_color     gdextension.MethodForClass `hash:"1115869595"`
+	get_border_color     gdextension.MethodForClass `hash:"3514246478"`
+	set_unnormalized_uvw gdextension.MethodForClass `hash:"2586408642"`
+	get_unnormalized_uvw gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("RDSamplerState")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -86,6 +131,20 @@ type Advanced = class
 type class [1]gdclass.RDSamplerState
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDSamplerState)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDSamplerState)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -95,7 +154,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RDSamplerState"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RDSamplerState)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -224,180 +283,180 @@ func (self Instance) SetUnnormalizedUvw(value bool) {
 
 //go:nosplit
 func (self class) SetMagFilter(p_member Rendering.SamplerFilter) { //gd:RDSamplerState.set_mag_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_mag_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerFilter }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mag_filter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerFilter }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetMagFilter() Rendering.SamplerFilter { //gd:RDSamplerState.get_mag_filter
-	var r_ret = gdextension.Call[Rendering.SamplerFilter](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_mag_filter), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.SamplerFilter](gd.ObjectChecked(self.AsObject()), methods.get_mag_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinFilter(p_member Rendering.SamplerFilter) { //gd:RDSamplerState.set_min_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_min_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerFilter }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_filter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerFilter }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetMinFilter() Rendering.SamplerFilter { //gd:RDSamplerState.get_min_filter
-	var r_ret = gdextension.Call[Rendering.SamplerFilter](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_min_filter), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.SamplerFilter](gd.ObjectChecked(self.AsObject()), methods.get_min_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMipFilter(p_member Rendering.SamplerFilter) { //gd:RDSamplerState.set_mip_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_mip_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerFilter }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mip_filter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerFilter }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetMipFilter() Rendering.SamplerFilter { //gd:RDSamplerState.get_mip_filter
-	var r_ret = gdextension.Call[Rendering.SamplerFilter](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_mip_filter), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.SamplerFilter](gd.ObjectChecked(self.AsObject()), methods.get_mip_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRepeatU(p_member Rendering.SamplerRepeatMode) { //gd:RDSamplerState.set_repeat_u
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_repeat_u), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerRepeatMode }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_repeat_u, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerRepeatMode }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetRepeatU() Rendering.SamplerRepeatMode { //gd:RDSamplerState.get_repeat_u
-	var r_ret = gdextension.Call[Rendering.SamplerRepeatMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_repeat_u), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.SamplerRepeatMode](gd.ObjectChecked(self.AsObject()), methods.get_repeat_u, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRepeatV(p_member Rendering.SamplerRepeatMode) { //gd:RDSamplerState.set_repeat_v
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_repeat_v), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerRepeatMode }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_repeat_v, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerRepeatMode }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetRepeatV() Rendering.SamplerRepeatMode { //gd:RDSamplerState.get_repeat_v
-	var r_ret = gdextension.Call[Rendering.SamplerRepeatMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_repeat_v), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.SamplerRepeatMode](gd.ObjectChecked(self.AsObject()), methods.get_repeat_v, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRepeatW(p_member Rendering.SamplerRepeatMode) { //gd:RDSamplerState.set_repeat_w
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_repeat_w), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerRepeatMode }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_repeat_w, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerRepeatMode }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetRepeatW() Rendering.SamplerRepeatMode { //gd:RDSamplerState.get_repeat_w
-	var r_ret = gdextension.Call[Rendering.SamplerRepeatMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_repeat_w), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.SamplerRepeatMode](gd.ObjectChecked(self.AsObject()), methods.get_repeat_w, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLodBias(p_member float64) { //gd:RDSamplerState.set_lod_bias
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_lod_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lod_bias, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetLodBias() float64 { //gd:RDSamplerState.get_lod_bias
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_lod_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lod_bias, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseAnisotropy(p_member bool) { //gd:RDSamplerState.set_use_anisotropy
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_use_anisotropy), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_anisotropy, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetUseAnisotropy() bool { //gd:RDSamplerState.get_use_anisotropy
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_use_anisotropy), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_anisotropy, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAnisotropyMax(p_member float64) { //gd:RDSamplerState.set_anisotropy_max
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_anisotropy_max), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anisotropy_max, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetAnisotropyMax() float64 { //gd:RDSamplerState.get_anisotropy_max
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_anisotropy_max), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_anisotropy_max, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableCompare(p_member bool) { //gd:RDSamplerState.set_enable_compare
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_enable_compare), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_compare, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetEnableCompare() bool { //gd:RDSamplerState.get_enable_compare
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_enable_compare), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_compare, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCompareOp(p_member Rendering.CompareOperator) { //gd:RDSamplerState.set_compare_op
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_compare_op), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.CompareOperator }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compare_op, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.CompareOperator }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetCompareOp() Rendering.CompareOperator { //gd:RDSamplerState.get_compare_op
-	var r_ret = gdextension.Call[Rendering.CompareOperator](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_compare_op), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.CompareOperator](gd.ObjectChecked(self.AsObject()), methods.get_compare_op, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinLod(p_member float64) { //gd:RDSamplerState.set_min_lod
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_min_lod), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_lod, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetMinLod() float64 { //gd:RDSamplerState.get_min_lod
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_min_lod), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_lod, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxLod(p_member float64) { //gd:RDSamplerState.set_max_lod
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_max_lod), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_lod, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetMaxLod() float64 { //gd:RDSamplerState.get_max_lod
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_max_lod), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_lod, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBorderColor(p_member Rendering.SamplerBorderColor) { //gd:RDSamplerState.set_border_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_border_color), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerBorderColor }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_border_color, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.SamplerBorderColor }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetBorderColor() Rendering.SamplerBorderColor { //gd:RDSamplerState.get_border_color
-	var r_ret = gdextension.Call[Rendering.SamplerBorderColor](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_border_color), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.SamplerBorderColor](gd.ObjectChecked(self.AsObject()), methods.get_border_color, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUnnormalizedUvw(p_member bool) { //gd:RDSamplerState.set_unnormalized_uvw
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_set_unnormalized_uvw), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unnormalized_uvw, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
 }
 
 //go:nosplit
 func (self class) GetUnnormalizedUvw() bool { //gd:RDSamplerState.get_unnormalized_uvw
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDSamplerState.Bind_get_unnormalized_uvw), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_unnormalized_uvw, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -426,7 +485,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RDSamplerState", func(ptr gd.Object) any {
-		return [1]gdclass.RDSamplerState{*(*gdclass.RDSamplerState)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("RDSamplerState", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

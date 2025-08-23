@@ -75,6 +75,25 @@ Base class for syntax highlighters. Provides syntax highlighting data to a [Text
 */
 type Instance [1]gdclass.SyntaxHighlighter
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_line_syntax_highlighting gdextension.MethodForClass `hash:"3554694381"`
+	update_cache                 gdextension.MethodForClass `hash:"3218959716"`
+	clear_highlighting_cache     gdextension.MethodForClass `hash:"3218959716"`
+	get_text_edit                gdextension.MethodForClass `hash:"1893027089"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("SyntaxHighlighter")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -196,6 +215,20 @@ type Advanced = class
 type class [1]gdclass.SyntaxHighlighter
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SyntaxHighlighter)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SyntaxHighlighter)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -205,7 +238,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SyntaxHighlighter"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SyntaxHighlighter)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -267,7 +300,7 @@ Each entry is a column number containing a nested [Dictionary]. The column numbe
 */
 //go:nosplit
 func (self class) GetLineSyntaxHighlighting(line int64) Dictionary.Any { //gd:SyntaxHighlighter.get_line_syntax_highlighting
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SyntaxHighlighter.Bind_get_line_syntax_highlighting), gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_line_syntax_highlighting, gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -278,7 +311,7 @@ Clears then updates the [SyntaxHighlighter] caches. Override [method _update_cac
 */
 //go:nosplit
 func (self class) UpdateCache() { //gd:SyntaxHighlighter.update_cache
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SyntaxHighlighter.Bind_update_cache), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_cache, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -287,7 +320,7 @@ Then calls overridable method [method _clear_highlighting_cache].
 */
 //go:nosplit
 func (self class) ClearHighlightingCache() { //gd:SyntaxHighlighter.clear_highlighting_cache
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SyntaxHighlighter.Bind_clear_highlighting_cache), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_highlighting_cache, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -295,7 +328,7 @@ Returns the associated [TextEdit] node.
 */
 //go:nosplit
 func (self class) GetTextEdit() [1]gdclass.TextEdit { //gd:SyntaxHighlighter.get_text_edit
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SyntaxHighlighter.Bind_get_text_edit), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_text_edit, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.TextEdit{gd.PointerMustAssertInstanceID[gdclass.TextEdit](r_ret)}
 	return ret
 }
@@ -343,9 +376,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SyntaxHighlighter", func(ptr gd.Object) any {
-		return [1]gdclass.SyntaxHighlighter{*(*gdclass.SyntaxHighlighter)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("SyntaxHighlighter", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Entry struct {

@@ -118,6 +118,25 @@ private void OnTextEntered(string command)
 */
 type Instance [1]gdclass.Expression
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	parse              gdextension.MethodForClass `hash:"3069722906"`
+	execute            gdextension.MethodForClass `hash:"3712471238"`
+	has_execute_failed gdextension.MethodForClass `hash:"36873697"`
+	get_error_text     gdextension.MethodForClass `hash:"201670096"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Expression")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Expression
@@ -181,6 +200,20 @@ type Advanced = class
 type class [1]gdclass.Expression
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Expression)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Expression)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -190,7 +223,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Expression"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Expression)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -203,7 +236,7 @@ You can optionally specify names of variables that may appear in the expression 
 */
 //go:nosplit
 func (self class) Parse(expression String.Readable, input_names Packed.Strings) Error.Code { //gd:Expression.parse
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_parse), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.parse, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		expression  gdextension.String
 		input_names gdextension.PackedArray[gdextension.String]
 	}{pointers.Get(gd.InternalString(expression)), pointers.Get(gd.InternalPackedStrings(input_names))}))
@@ -217,7 +250,7 @@ If you defined input variables in [method parse], you can specify their values i
 */
 //go:nosplit
 func (self class) Execute(inputs Array.Any, base_instance [1]gd.Object, show_error bool, const_calls_only bool) variant.Any { //gd:Expression.execute
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_execute), gdextension.SizeVariant|(gdextension.SizeArray<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.execute, gdextension.SizeVariant|(gdextension.SizeArray<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		inputs           gdextension.Array
 		base_instance    gdextension.Object
 		show_error       bool
@@ -232,7 +265,7 @@ Returns [code]true[/code] if [method execute] has failed.
 */
 //go:nosplit
 func (self class) HasExecuteFailed() bool { //gd:Expression.has_execute_failed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_has_execute_failed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_execute_failed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -242,7 +275,7 @@ Returns the error text if [method parse] or [method execute] has failed.
 */
 //go:nosplit
 func (self class) GetErrorText() String.Readable { //gd:Expression.get_error_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Expression.Bind_get_error_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_error_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -271,5 +304,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Expression", func(ptr gd.Object) any { return [1]gdclass.Expression{*(*gdclass.Expression)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Expression", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

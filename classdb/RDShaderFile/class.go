@@ -73,6 +73,26 @@ See also [RDShaderSource]. [RDShaderFile] is only meant to be used with the [Ren
 */
 type Instance [1]gdclass.RDShaderFile
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_bytecode     gdextension.MethodForClass `hash:"1526857008"`
+	get_spirv        gdextension.MethodForClass `hash:"2689310080"`
+	get_version_list gdextension.MethodForClass `hash:"3995934104"`
+	set_base_error   gdextension.MethodForClass `hash:"83702148"`
+	get_base_error   gdextension.MethodForClass `hash:"201670096"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("RDShaderFile")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.RDShaderFile
@@ -125,6 +145,20 @@ type Advanced = class
 type class [1]gdclass.RDShaderFile
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDShaderFile)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDShaderFile)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -134,7 +168,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RDShaderFile"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RDShaderFile)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -154,7 +188,7 @@ Sets the SPIR-V [param bytecode] that will be compiled for the specified [param 
 */
 //go:nosplit
 func (self class) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV, version String.Name) { //gd:RDShaderFile.set_bytecode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_set_bytecode), 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bytecode, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		bytecode gdextension.Object
 		version  gdextension.StringName
 	}{gdextension.Object(gd.ObjectChecked(bytecode[0].AsObject())), pointers.Get(gd.InternalStringName(version))}))
@@ -165,7 +199,7 @@ Returns the SPIR-V intermediate representation for the specified shader [param v
 */
 //go:nosplit
 func (self class) GetSpirv(version String.Name) [1]gdclass.RDShaderSPIRV { //gd:RDShaderFile.get_spirv
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_spirv), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ version gdextension.StringName }{pointers.Get(gd.InternalStringName(version))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_spirv, gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ version gdextension.StringName }{pointers.Get(gd.InternalStringName(version))}))
 	var ret = [1]gdclass.RDShaderSPIRV{gd.PointerWithOwnershipTransferredToGo[gdclass.RDShaderSPIRV](r_ret)}
 	return ret
 }
@@ -175,19 +209,19 @@ Returns the list of compiled versions for this shader.
 */
 //go:nosplit
 func (self class) GetVersionList() Array.Contains[String.Name] { //gd:RDShaderFile.get_version_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_version_list), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_version_list, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBaseError(error String.Readable) { //gd:RDShaderFile.set_base_error
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_set_base_error), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ error gdextension.String }{pointers.Get(gd.InternalString(error))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_error, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ error gdextension.String }{pointers.Get(gd.InternalString(error))}))
 }
 
 //go:nosplit
 func (self class) GetBaseError() String.Readable { //gd:RDShaderFile.get_base_error
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderFile.Bind_get_base_error), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_error, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -223,7 +257,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RDShaderFile", func(ptr gd.Object) any {
-		return [1]gdclass.RDShaderFile{*(*gdclass.RDShaderFile)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("RDShaderFile", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

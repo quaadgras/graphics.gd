@@ -437,15 +437,74 @@ func (s StringName) CasecmpTo(other String) int64 {
 	}))
 }
 
+var object_methods struct {
+	get_class                    gdextension.MethodForClass `hash:"201670096"`
+	is_class                     gdextension.MethodForClass `hash:"3927539163"`
+	set                          gdextension.MethodForClass `hash:"3776071444"`
+	get                          gdextension.MethodForClass `hash:"2760726917"`
+	set_indexed                  gdextension.MethodForClass `hash:"3500910842"`
+	get_indexed                  gdextension.MethodForClass `hash:"4006125091"`
+	get_property_list            gdextension.MethodForClass `hash:"3995934104"`
+	get_method_list              gdextension.MethodForClass `hash:"3995934104"`
+	property_can_revert          gdextension.MethodForClass `hash:"2619796661"`
+	property_get_revert          gdextension.MethodForClass `hash:"2760726917"`
+	notification                 gdextension.MethodForClass `hash:"4023243586"`
+	to_string                    gdextension.MethodForClass `hash:"2841200299"`
+	get_instance_id              gdextension.MethodForClass `hash:"3905245786"`
+	set_script                   gdextension.MethodForClass `hash:"1114965689"`
+	get_script                   gdextension.MethodForClass `hash:"1214101251"`
+	set_meta                     gdextension.MethodForClass `hash:"3776071444"`
+	remove_meta                  gdextension.MethodForClass `hash:"3304788590"`
+	get_meta                     gdextension.MethodForClass `hash:"3990617847"`
+	has_meta                     gdextension.MethodForClass `hash:"2619796661"`
+	get_meta_list                gdextension.MethodForClass `hash:"3995934104"`
+	add_user_signal              gdextension.MethodForClass `hash:"85656714"`
+	has_user_signal              gdextension.MethodForClass `hash:"2619796661"`
+	remove_user_signal           gdextension.MethodForClass `hash:"3304788590"`
+	emit_signal                  gdextension.MethodForClass `hash:"4047867050"`
+	call                         gdextension.MethodForClass `hash:"3400424181"`
+	call_deferred                gdextension.MethodForClass `hash:"3400424181"`
+	set_deferred                 gdextension.MethodForClass `hash:"3776071444"`
+	callv                        gdextension.MethodForClass `hash:"1260104456"`
+	has_method                   gdextension.MethodForClass `hash:"2619796661"`
+	get_method_argument_count    gdextension.MethodForClass `hash:"2458036349"`
+	has_signal                   gdextension.MethodForClass `hash:"2619796661"`
+	get_signal_list              gdextension.MethodForClass `hash:"3995934104"`
+	get_signal_connection_list   gdextension.MethodForClass `hash:"3147814860"`
+	get_incoming_connections     gdextension.MethodForClass `hash:"3995934104"`
+	connect                      gdextension.MethodForClass `hash:"1518946055"`
+	disconnect                   gdextension.MethodForClass `hash:"1874754934"`
+	is_connected                 gdextension.MethodForClass `hash:"768136979"`
+	has_connections              gdextension.MethodForClass `hash:"2619796661"`
+	set_block_signals            gdextension.MethodForClass `hash:"2586408642"`
+	is_blocking_signals          gdextension.MethodForClass `hash:"36873697"`
+	notify_property_list_changed gdextension.MethodForClass `hash:"3218959716"`
+	set_message_translation      gdextension.MethodForClass `hash:"2586408642"`
+	can_translate_messages       gdextension.MethodForClass `hash:"36873697"`
+	tr                           gdextension.MethodForClass `hash:"1195764410"`
+	tr_n                         gdextension.MethodForClass `hash:"162698058"`
+	get_translation_domain       gdextension.MethodForClass `hash:"2002593661"`
+	set_translation_domain       gdextension.MethodForClass `hash:"3304788590"`
+	is_queued_for_deletion       gdextension.MethodForClass `hash:"36873697"`
+	cancel_free                  gdextension.MethodForClass `hash:"3218959716"`
+}
+
+var refcounted_methods struct {
+	init_ref            gdextension.MethodForClass `hash:"2240911060"`
+	reference           gdextension.MethodForClass `hash:"2240911060"`
+	unreference         gdextension.MethodForClass `hash:"2240911060"`
+	get_reference_count gdextension.MethodForClass `hash:"3905245786"`
+}
+
 func (o Object) Get(name StringName) Variant {
-	return pointers.New[Variant]([3]uint64(gdextension.Call[gdextension.Variant](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_get, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
+	return pointers.New[Variant]([3]uint64(gdextension.Call[gdextension.Variant](ObjectChecked(o.AsObject()), object_methods.get, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
 		Name gdextension.StringName
 	}{
 		pointers.Get(name),
 	}))))
 }
 func (o Object) Set(name StringName, value Variant) {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_set, 0|gdextension.SizeStringName<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set, 0|gdextension.SizeStringName<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
 		Name  gdextension.StringName
 		Value gdextension.Variant
 	}{
@@ -453,7 +512,7 @@ func (o Object) Set(name StringName, value Variant) {
 	}))
 }
 func (o Object) HasMethod(name StringName) bool {
-	return gdextension.Call[bool](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_has_method, gdextension.SizeBool|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
+	return gdextension.Call[bool](ObjectChecked(o.AsObject()), object_methods.has_method, gdextension.SizeBool|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
 		Name gdextension.StringName
 	}{
 		pointers.Get(name),
@@ -481,33 +540,33 @@ func (o Object) Call(method StringName, args ...Variant) (Variant, error) {
 }
 
 func (o Object) CanTranslateMessages() bool {
-	return gdextension.Call[bool](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_can_translate_messages, gdextension.SizeBool, nil)
+	return gdextension.Call[bool](ObjectChecked(o.AsObject()), object_methods.can_translate_messages, gdextension.SizeBool, nil)
 }
 func (o Object) GetScript() Variant {
-	return pointers.New[Variant]([3]uint64(gdextension.Call[gdextension.Variant](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_get_script, gdextension.SizeVariant, nil)))
+	return pointers.New[Variant]([3]uint64(gdextension.Call[gdextension.Variant](ObjectChecked(o.AsObject()), object_methods.get_script, gdextension.SizeVariant, nil)))
 }
 func (o Object) NotifyPropertyListChanged() {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_notify_property_list_changed, 0, nil)
+	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.notify_property_list_changed, 0, nil)
 }
 func (o Object) SetBlockSignals(blocking bool) {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_set_block_signals, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set_block_signals, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
 		Blocking bool
 	}{
 		blocking,
 	}))
 }
 func (o Object) SetScript(script Variant) {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_set_script, 0|gdextension.SizeVariant<<4, unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set_script, 0|gdextension.SizeVariant<<4, unsafe.Pointer(&struct {
 		Script gdextension.Variant
 	}{
 		gdextension.Variant(pointers.Get(script)),
 	}))
 }
 func (o Object) ToString() String {
-	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_to_string, gdextension.SizeString, nil))
+	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), object_methods.to_string, gdextension.SizeString, nil))
 }
 func (o Object) Tr(message StringName, context StringName) String {
-	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_tr, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
+	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), object_methods.tr, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
 		Message gdextension.StringName
 		Context gdextension.StringName
 	}{
@@ -515,7 +574,7 @@ func (o Object) Tr(message StringName, context StringName) String {
 	})))
 }
 func (o Object) TrN(message StringName, plural StringName, n int64, context StringName) String {
-	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_tr_n, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8|gdextension.SizeInt<<12|gdextension.SizeStringName<<16, unsafe.Pointer(&struct {
+	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), object_methods.tr_n, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8|gdextension.SizeInt<<12|gdextension.SizeStringName<<16, unsafe.Pointer(&struct {
 		Message gdextension.StringName
 		Plural  gdextension.StringName
 		N       int64
@@ -525,20 +584,20 @@ func (o Object) TrN(message StringName, plural StringName, n int64, context Stri
 	})))
 }
 func (o Object) SetMessageTranslation(enable bool) {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_set_message_translation, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set_message_translation, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
 		Enable bool
 	}{
 		enable,
 	}))
 }
 func (o Object) IsBlockingSignals() bool {
-	return gdextension.Call[bool](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_is_blocking_signals, gdextension.SizeBool, nil)
+	return gdextension.Call[bool](ObjectChecked(o.AsObject()), object_methods.is_blocking_signals, gdextension.SizeBool, nil)
 }
 func (o Object) GetClass() String {
-	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_get_class, gdextension.SizeString, nil))
+	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), object_methods.get_class, gdextension.SizeString, nil))
 }
 func (o Object) Connect(signal StringName, callable Callable, flags int64) int64 {
-	return gdextension.Call[int64](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_connect, gdextension.SizeInt|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
+	return gdextension.Call[int64](ObjectChecked(o.AsObject()), object_methods.connect, gdextension.SizeInt|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
 		Signal   gdextension.StringName
 		Callable gdextension.Callable
 		Flags    int64
@@ -547,7 +606,7 @@ func (o Object) Connect(signal StringName, callable Callable, flags int64) int64
 	}))
 }
 func (o Object) IsConnected(signal StringName, callable Callable) bool {
-	return gdextension.Call[bool](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_is_connected, gdextension.SizeBool|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8, unsafe.Pointer(&struct {
+	return gdextension.Call[bool](ObjectChecked(o.AsObject()), object_methods.is_connected, gdextension.SizeBool|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8, unsafe.Pointer(&struct {
 		Signal   gdextension.StringName
 		Callable gdextension.Callable
 	}{
@@ -555,7 +614,7 @@ func (o Object) IsConnected(signal StringName, callable Callable) bool {
 	}))
 }
 func (o Object) Disconnect(signal StringName, callable Callable) {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_disconnect, 0|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8, unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.disconnect, 0|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8, unsafe.Pointer(&struct {
 		Signal   gdextension.StringName
 		Callable gdextension.Callable
 	}{
@@ -563,10 +622,10 @@ func (o Object) Disconnect(signal StringName, callable Callable) {
 	}))
 }
 func (o Object) IsQueuedForDeletion() bool {
-	return gdextension.Call[bool](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_is_queued_for_deletion, gdextension.SizeBool, nil)
+	return gdextension.Call[bool](ObjectChecked(o.AsObject()), object_methods.is_queued_for_deletion, gdextension.SizeBool, nil)
 }
 func (o Object) Notification(what Int, reversed bool) {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), Global.Methods.Object.Bind_notification, 0|gdextension.SizeInt<<4|gdextension.SizeBool<<8, unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.notification, 0|gdextension.SizeInt<<4|gdextension.SizeBool<<8, unsafe.Pointer(&struct {
 		What     int64
 		Reversed bool
 	}{
@@ -575,8 +634,8 @@ func (o Object) Notification(what Int, reversed bool) {
 }
 
 func (rc RefCounted) Reference() {
-	gdextension.Call[struct{}](ObjectChecked(rc.AsObject()), Global.Methods.RefCounted.Bind_reference, 0, nil)
+	gdextension.Call[struct{}](ObjectChecked(rc.AsObject()), refcounted_methods.reference, 0, nil)
 }
 func (rc RefCounted) Unreference() bool {
-	return gdextension.Call[bool](ObjectChecked(rc.AsObject()), Global.Methods.RefCounted.Bind_unreference, gdextension.SizeBool, nil)
+	return gdextension.Call[bool](ObjectChecked(rc.AsObject()), refcounted_methods.unreference, gdextension.SizeBool, nil)
 }

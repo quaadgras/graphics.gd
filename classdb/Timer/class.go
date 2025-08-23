@@ -81,6 +81,37 @@ func _on_timer_timeout():
 */
 type Instance [1]gdclass.Timer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_wait_time              gdextension.MethodForClass `hash:"373806689"`
+	get_wait_time              gdextension.MethodForClass `hash:"1740695150"`
+	set_one_shot               gdextension.MethodForClass `hash:"2586408642"`
+	is_one_shot                gdextension.MethodForClass `hash:"36873697"`
+	set_autostart              gdextension.MethodForClass `hash:"2586408642"`
+	has_autostart              gdextension.MethodForClass `hash:"36873697"`
+	start                      gdextension.MethodForClass `hash:"1392008558"`
+	stop                       gdextension.MethodForClass `hash:"3218959716"`
+	set_paused                 gdextension.MethodForClass `hash:"2586408642"`
+	is_paused                  gdextension.MethodForClass `hash:"36873697"`
+	set_ignore_time_scale      gdextension.MethodForClass `hash:"2586408642"`
+	is_ignoring_time_scale     gdextension.MethodForClass `hash:"2240911060"`
+	is_stopped                 gdextension.MethodForClass `hash:"36873697"`
+	get_time_left              gdextension.MethodForClass `hash:"1740695150"`
+	set_timer_process_callback gdextension.MethodForClass `hash:"3469495063"`
+	get_timer_process_callback gdextension.MethodForClass `hash:"2672570227"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Timer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Timer
@@ -128,6 +159,20 @@ type Advanced = class
 type class [1]gdclass.Timer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Timer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Timer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -137,7 +182,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Timer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Timer)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -197,36 +242,36 @@ func (self Instance) TimeLeft() Float.X {
 
 //go:nosplit
 func (self class) SetWaitTime(time_sec float64) { //gd:Timer.set_wait_time
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_set_wait_time), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time_sec float64 }{time_sec}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wait_time, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time_sec float64 }{time_sec}))
 }
 
 //go:nosplit
 func (self class) GetWaitTime() float64 { //gd:Timer.get_wait_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_get_wait_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wait_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOneShot(enable bool) { //gd:Timer.set_one_shot
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_set_one_shot), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsOneShot() bool { //gd:Timer.is_one_shot
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_is_one_shot), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_one_shot, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutostart(enable bool) { //gd:Timer.set_autostart
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_set_autostart), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autostart, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) HasAutostart() bool { //gd:Timer.has_autostart
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_has_autostart), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_autostart, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -237,7 +282,7 @@ Starts the timer, or resets the timer if it was started already. Fails if the ti
 */
 //go:nosplit
 func (self class) Start(time_sec float64) { //gd:Timer.start
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_start), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time_sec float64 }{time_sec}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time_sec float64 }{time_sec}))
 }
 
 /*
@@ -245,29 +290,29 @@ Stops the timer.
 */
 //go:nosplit
 func (self class) Stop() { //gd:Timer.stop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_stop), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetPaused(paused bool) { //gd:Timer.set_paused
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_set_paused), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ paused bool }{paused}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_paused, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ paused bool }{paused}))
 }
 
 //go:nosplit
 func (self class) IsPaused() bool { //gd:Timer.is_paused
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_is_paused), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_paused, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgnoreTimeScale(ignore bool) { //gd:Timer.set_ignore_time_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_set_ignore_time_scale), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ ignore bool }{ignore}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_time_scale, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ ignore bool }{ignore}))
 }
 
 //go:nosplit
 func (self class) IsIgnoringTimeScale() bool { //gd:Timer.is_ignoring_time_scale
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_is_ignoring_time_scale), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_time_scale, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -277,26 +322,26 @@ Returns [code]true[/code] if the timer is stopped or has not started.
 */
 //go:nosplit
 func (self class) IsStopped() bool { //gd:Timer.is_stopped
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_is_stopped), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stopped, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetTimeLeft() float64 { //gd:Timer.get_time_left
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_get_time_left), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_left, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTimerProcessCallback(callback TimerProcessCallback) { //gd:Timer.set_timer_process_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_set_timer_process_callback), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ callback TimerProcessCallback }{callback}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_timer_process_callback, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ callback TimerProcessCallback }{callback}))
 }
 
 //go:nosplit
 func (self class) GetTimerProcessCallback() TimerProcessCallback { //gd:Timer.get_timer_process_callback
-	var r_ret = gdextension.Call[TimerProcessCallback](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Timer.Bind_get_timer_process_callback), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TimerProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_timer_process_callback, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -325,7 +370,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Timer", func(ptr gd.Object) any { return [1]gdclass.Timer{*(*gdclass.Timer)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Timer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type TimerProcessCallback int //gd:Timer.TimerProcessCallback

@@ -72,6 +72,25 @@ As face trackers are turned on they are registered with the [XRServer].
 */
 type Instance [1]gdclass.XRFaceTracker
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_blend_shape  gdextension.MethodForClass `hash:"330010046"`
+	set_blend_shape  gdextension.MethodForClass `hash:"2352588791"`
+	get_blend_shapes gdextension.MethodForClass `hash:"675695659"`
+	set_blend_shapes gdextension.MethodForClass `hash:"2899603908"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("XRFaceTracker")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -101,6 +120,20 @@ type Advanced = class
 type class [1]gdclass.XRFaceTracker
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRFaceTracker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRFaceTracker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -110,7 +143,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("XRFaceTracker"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.XRFaceTracker)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -130,7 +163,7 @@ Returns the requested face blend shape weight.
 */
 //go:nosplit
 func (self class) GetBlendShape(blend_shape BlendShapeEntry) float64 { //gd:XRFaceTracker.get_blend_shape
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRFaceTracker.Bind_get_blend_shape), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ blend_shape BlendShapeEntry }{blend_shape}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ blend_shape BlendShapeEntry }{blend_shape}))
 	var ret = r_ret
 	return ret
 }
@@ -140,7 +173,7 @@ Sets a face blend shape weight.
 */
 //go:nosplit
 func (self class) SetBlendShape(blend_shape BlendShapeEntry, weight float64) { //gd:XRFaceTracker.set_blend_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRFaceTracker.Bind_set_blend_shape), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		blend_shape BlendShapeEntry
 		weight      float64
 	}{blend_shape, weight}))
@@ -148,14 +181,14 @@ func (self class) SetBlendShape(blend_shape BlendShapeEntry, weight float64) { /
 
 //go:nosplit
 func (self class) GetBlendShapes() Packed.Array[float32] { //gd:XRFaceTracker.get_blend_shapes
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRFaceTracker.Bind_get_blend_shapes), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_blend_shapes, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlendShapes(weights Packed.Array[float32]) { //gd:XRFaceTracker.set_blend_shapes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRFaceTracker.Bind_set_blend_shapes), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_shapes, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		weights gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights))}))
 }
@@ -191,9 +224,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRFaceTracker", func(ptr gd.Object) any {
-		return [1]gdclass.XRFaceTracker{*(*gdclass.XRFaceTracker)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("XRFaceTracker", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type BlendShapeEntry int //gd:XRFaceTracker.BlendShapeEntry

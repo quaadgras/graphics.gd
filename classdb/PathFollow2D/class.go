@@ -74,6 +74,35 @@ It is useful for making other nodes follow a path, without coding the movement p
 */
 type Instance [1]gdclass.PathFollow2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_progress            gdextension.MethodForClass `hash:"373806689"`
+	get_progress            gdextension.MethodForClass `hash:"1740695150"`
+	set_h_offset            gdextension.MethodForClass `hash:"373806689"`
+	get_h_offset            gdextension.MethodForClass `hash:"1740695150"`
+	set_v_offset            gdextension.MethodForClass `hash:"373806689"`
+	get_v_offset            gdextension.MethodForClass `hash:"1740695150"`
+	set_progress_ratio      gdextension.MethodForClass `hash:"373806689"`
+	get_progress_ratio      gdextension.MethodForClass `hash:"1740695150"`
+	set_rotates             gdextension.MethodForClass `hash:"2586408642"`
+	is_rotating             gdextension.MethodForClass `hash:"36873697"`
+	set_cubic_interpolation gdextension.MethodForClass `hash:"2586408642"`
+	get_cubic_interpolation gdextension.MethodForClass `hash:"36873697"`
+	set_loop                gdextension.MethodForClass `hash:"2586408642"`
+	has_loop                gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PathFollow2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +118,20 @@ type Advanced = class
 type class [1]gdclass.PathFollow2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PathFollow2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PathFollow2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +141,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PathFollow2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.PathFollow2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -162,84 +205,84 @@ func (self Instance) SetLoop(value bool) {
 
 //go:nosplit
 func (self class) SetProgress(progress float64) { //gd:PathFollow2D.set_progress
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_set_progress), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ progress float64 }{progress}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ progress float64 }{progress}))
 }
 
 //go:nosplit
 func (self class) GetProgress() float64 { //gd:PathFollow2D.get_progress
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_get_progress), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHOffset(h_offset float64) { //gd:PathFollow2D.set_h_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_set_h_offset), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ h_offset float64 }{h_offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_offset, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ h_offset float64 }{h_offset}))
 }
 
 //go:nosplit
 func (self class) GetHOffset() float64 { //gd:PathFollow2D.get_h_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_get_h_offset), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_h_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVOffset(v_offset float64) { //gd:PathFollow2D.set_v_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_set_v_offset), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ v_offset float64 }{v_offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_offset, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ v_offset float64 }{v_offset}))
 }
 
 //go:nosplit
 func (self class) GetVOffset() float64 { //gd:PathFollow2D.get_v_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_get_v_offset), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProgressRatio(ratio float64) { //gd:PathFollow2D.set_progress_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_set_progress_ratio), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
 }
 
 //go:nosplit
 func (self class) GetProgressRatio() float64 { //gd:PathFollow2D.get_progress_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_get_progress_ratio), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRotates(enabled bool) { //gd:PathFollow2D.set_rotates
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_set_rotates), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotates, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsRotating() bool { //gd:PathFollow2D.is_rotating
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_is_rotating), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rotating, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCubicInterpolation(enabled bool) { //gd:PathFollow2D.set_cubic_interpolation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_set_cubic_interpolation), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cubic_interpolation, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetCubicInterpolation() bool { //gd:PathFollow2D.get_cubic_interpolation
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_get_cubic_interpolation), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_cubic_interpolation, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoop(loop bool) { //gd:PathFollow2D.set_loop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_set_loop), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ loop bool }{loop}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ loop bool }{loop}))
 }
 
 //go:nosplit
 func (self class) HasLoop() bool { //gd:PathFollow2D.has_loop
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PathFollow2D.Bind_has_loop), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -274,7 +317,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PathFollow2D", func(ptr gd.Object) any {
-		return [1]gdclass.PathFollow2D{*(*gdclass.PathFollow2D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("PathFollow2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

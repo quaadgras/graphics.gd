@@ -176,7 +176,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 			fmt.Fprintf(w, "gdextension.Variant(pointers.Get(gd.NewVariant(%s)))", fixReserved(arg.Name))
 		}
 		fmt.Fprint(w, "}\n")
-		fmt.Fprintf(w, "\tret, err := gdextension.MethodForClass(gd.Global.Methods.%v.Bind_%v).Call%s(%s fixed[:]...)\n", class.Name, method.Name, static, self)
+		fmt.Fprintf(w, "\tret, err := methods.%v.Call%s(%s fixed[:]...)\n", method.Name, static, self)
 		fmt.Fprintf(w, "\tif err != nil {\n")
 		fmt.Fprintf(w, "\t\tpanic(err)\n")
 		fmt.Fprintf(w, "\t}\n")
@@ -193,7 +193,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 	} else {
 		callResult = "struct{}"
 	}
-	fmt.Fprintf(w, "gdextension.Call%s[%s](%s gdextension.MethodForClass(gd.Global.Methods.%v.Bind_%v), %v, unsafe.Pointer(&struct{", static, callResult, self, class.Name, method.Name, shapeOf(class, method))
+	fmt.Fprintf(w, "gdextension.Call%s[%s](%s methods.%v, %v, unsafe.Pointer(&struct{", static, callResult, self, method.Name, shapeOf(class, method))
 	for i, arg := range method.Arguments {
 		if i > 0 {
 			fmt.Fprint(w, "; ")

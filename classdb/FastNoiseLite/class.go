@@ -74,6 +74,63 @@ Most generated noise values are in the range of [code][-1, 1][/code], but not al
 */
 type Instance [1]gdclass.FastNoiseLite
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_noise_type                     gdextension.MethodForClass `hash:"2624461392"`
+	get_noise_type                     gdextension.MethodForClass `hash:"1458108610"`
+	set_seed                           gdextension.MethodForClass `hash:"1286410249"`
+	get_seed                           gdextension.MethodForClass `hash:"3905245786"`
+	set_frequency                      gdextension.MethodForClass `hash:"373806689"`
+	get_frequency                      gdextension.MethodForClass `hash:"1740695150"`
+	set_offset                         gdextension.MethodForClass `hash:"3460891852"`
+	get_offset                         gdextension.MethodForClass `hash:"3360562783"`
+	set_fractal_type                   gdextension.MethodForClass `hash:"4132731174"`
+	get_fractal_type                   gdextension.MethodForClass `hash:"1036889279"`
+	set_fractal_octaves                gdextension.MethodForClass `hash:"1286410249"`
+	get_fractal_octaves                gdextension.MethodForClass `hash:"3905245786"`
+	set_fractal_lacunarity             gdextension.MethodForClass `hash:"373806689"`
+	get_fractal_lacunarity             gdextension.MethodForClass `hash:"1740695150"`
+	set_fractal_gain                   gdextension.MethodForClass `hash:"373806689"`
+	get_fractal_gain                   gdextension.MethodForClass `hash:"1740695150"`
+	set_fractal_weighted_strength      gdextension.MethodForClass `hash:"373806689"`
+	get_fractal_weighted_strength      gdextension.MethodForClass `hash:"1740695150"`
+	set_fractal_ping_pong_strength     gdextension.MethodForClass `hash:"373806689"`
+	get_fractal_ping_pong_strength     gdextension.MethodForClass `hash:"1740695150"`
+	set_cellular_distance_function     gdextension.MethodForClass `hash:"1006013267"`
+	get_cellular_distance_function     gdextension.MethodForClass `hash:"2021274088"`
+	set_cellular_jitter                gdextension.MethodForClass `hash:"373806689"`
+	get_cellular_jitter                gdextension.MethodForClass `hash:"1740695150"`
+	set_cellular_return_type           gdextension.MethodForClass `hash:"2654169698"`
+	get_cellular_return_type           gdextension.MethodForClass `hash:"3699796343"`
+	set_domain_warp_enabled            gdextension.MethodForClass `hash:"2586408642"`
+	is_domain_warp_enabled             gdextension.MethodForClass `hash:"36873697"`
+	set_domain_warp_type               gdextension.MethodForClass `hash:"3629692980"`
+	get_domain_warp_type               gdextension.MethodForClass `hash:"2980162020"`
+	set_domain_warp_amplitude          gdextension.MethodForClass `hash:"373806689"`
+	get_domain_warp_amplitude          gdextension.MethodForClass `hash:"1740695150"`
+	set_domain_warp_frequency          gdextension.MethodForClass `hash:"373806689"`
+	get_domain_warp_frequency          gdextension.MethodForClass `hash:"1740695150"`
+	set_domain_warp_fractal_type       gdextension.MethodForClass `hash:"3999408287"`
+	get_domain_warp_fractal_type       gdextension.MethodForClass `hash:"407716934"`
+	set_domain_warp_fractal_octaves    gdextension.MethodForClass `hash:"1286410249"`
+	get_domain_warp_fractal_octaves    gdextension.MethodForClass `hash:"3905245786"`
+	set_domain_warp_fractal_lacunarity gdextension.MethodForClass `hash:"373806689"`
+	get_domain_warp_fractal_lacunarity gdextension.MethodForClass `hash:"1740695150"`
+	set_domain_warp_fractal_gain       gdextension.MethodForClass `hash:"373806689"`
+	get_domain_warp_fractal_gain       gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("FastNoiseLite")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +146,20 @@ type Advanced = class
 type class [1]gdclass.FastNoiseLite
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.FastNoiseLite)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.FastNoiseLite)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +169,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("FastNoiseLite"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.FastNoiseLite)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -275,252 +346,252 @@ func (self Instance) SetDomainWarpFractalGain(value Float.X) {
 
 //go:nosplit
 func (self class) SetNoiseType(atype NoiseType) { //gd:FastNoiseLite.set_noise_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_noise_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype NoiseType }{atype}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_noise_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype NoiseType }{atype}))
 }
 
 //go:nosplit
 func (self class) GetNoiseType() NoiseType { //gd:FastNoiseLite.get_noise_type
-	var r_ret = gdextension.Call[NoiseType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_noise_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[NoiseType](gd.ObjectChecked(self.AsObject()), methods.get_noise_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSeed(seed int64) { //gd:FastNoiseLite.set_seed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_seed), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ seed int64 }{seed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seed, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ seed int64 }{seed}))
 }
 
 //go:nosplit
 func (self class) GetSeed() int64 { //gd:FastNoiseLite.get_seed
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_seed), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_seed, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrequency(freq float64) { //gd:FastNoiseLite.set_frequency
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_frequency), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ freq float64 }{freq}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frequency, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ freq float64 }{freq}))
 }
 
 //go:nosplit
 func (self class) GetFrequency() float64 { //gd:FastNoiseLite.get_frequency
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_frequency), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frequency, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffset(offset Vector3.XYZ) { //gd:FastNoiseLite.set_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_offset), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ offset Vector3.XYZ }{offset}))
 }
 
 //go:nosplit
 func (self class) GetOffset() Vector3.XYZ { //gd:FastNoiseLite.get_offset
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_offset), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFractalType(atype FractalType) { //gd:FastNoiseLite.set_fractal_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_fractal_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype FractalType }{atype}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractal_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype FractalType }{atype}))
 }
 
 //go:nosplit
 func (self class) GetFractalType() FractalType { //gd:FastNoiseLite.get_fractal_type
-	var r_ret = gdextension.Call[FractalType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[FractalType](gd.ObjectChecked(self.AsObject()), methods.get_fractal_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFractalOctaves(octave_count int64) { //gd:FastNoiseLite.set_fractal_octaves
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_fractal_octaves), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ octave_count int64 }{octave_count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractal_octaves, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ octave_count int64 }{octave_count}))
 }
 
 //go:nosplit
 func (self class) GetFractalOctaves() int64 { //gd:FastNoiseLite.get_fractal_octaves
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_octaves), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_octaves, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFractalLacunarity(lacunarity float64) { //gd:FastNoiseLite.set_fractal_lacunarity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_fractal_lacunarity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ lacunarity float64 }{lacunarity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractal_lacunarity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ lacunarity float64 }{lacunarity}))
 }
 
 //go:nosplit
 func (self class) GetFractalLacunarity() float64 { //gd:FastNoiseLite.get_fractal_lacunarity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_lacunarity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_lacunarity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFractalGain(gain float64) { //gd:FastNoiseLite.set_fractal_gain
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_fractal_gain), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gain float64 }{gain}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractal_gain, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gain float64 }{gain}))
 }
 
 //go:nosplit
 func (self class) GetFractalGain() float64 { //gd:FastNoiseLite.get_fractal_gain
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_gain), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_gain, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFractalWeightedStrength(weighted_strength float64) { //gd:FastNoiseLite.set_fractal_weighted_strength
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_fractal_weighted_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ weighted_strength float64 }{weighted_strength}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractal_weighted_strength, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ weighted_strength float64 }{weighted_strength}))
 }
 
 //go:nosplit
 func (self class) GetFractalWeightedStrength() float64 { //gd:FastNoiseLite.get_fractal_weighted_strength
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_weighted_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_weighted_strength, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFractalPingPongStrength(ping_pong_strength float64) { //gd:FastNoiseLite.set_fractal_ping_pong_strength
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_fractal_ping_pong_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ping_pong_strength float64 }{ping_pong_strength}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractal_ping_pong_strength, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ping_pong_strength float64 }{ping_pong_strength}))
 }
 
 //go:nosplit
 func (self class) GetFractalPingPongStrength() float64 { //gd:FastNoiseLite.get_fractal_ping_pong_strength
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_fractal_ping_pong_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fractal_ping_pong_strength, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCellularDistanceFunction(fn CellularDistanceFunction) { //gd:FastNoiseLite.set_cellular_distance_function
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_cellular_distance_function), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn CellularDistanceFunction }{fn}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cellular_distance_function, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn CellularDistanceFunction }{fn}))
 }
 
 //go:nosplit
 func (self class) GetCellularDistanceFunction() CellularDistanceFunction { //gd:FastNoiseLite.get_cellular_distance_function
-	var r_ret = gdextension.Call[CellularDistanceFunction](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_cellular_distance_function), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[CellularDistanceFunction](gd.ObjectChecked(self.AsObject()), methods.get_cellular_distance_function, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCellularJitter(jitter float64) { //gd:FastNoiseLite.set_cellular_jitter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_cellular_jitter), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ jitter float64 }{jitter}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cellular_jitter, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ jitter float64 }{jitter}))
 }
 
 //go:nosplit
 func (self class) GetCellularJitter() float64 { //gd:FastNoiseLite.get_cellular_jitter
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_cellular_jitter), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_cellular_jitter, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCellularReturnType(ret CellularReturnType) { //gd:FastNoiseLite.set_cellular_return_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_cellular_return_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ret CellularReturnType }{ret}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cellular_return_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ret CellularReturnType }{ret}))
 }
 
 //go:nosplit
 func (self class) GetCellularReturnType() CellularReturnType { //gd:FastNoiseLite.get_cellular_return_type
-	var r_ret = gdextension.Call[CellularReturnType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_cellular_return_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[CellularReturnType](gd.ObjectChecked(self.AsObject()), methods.get_cellular_return_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpEnabled(domain_warp_enabled bool) { //gd:FastNoiseLite.set_domain_warp_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ domain_warp_enabled bool }{domain_warp_enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ domain_warp_enabled bool }{domain_warp_enabled}))
 }
 
 //go:nosplit
 func (self class) IsDomainWarpEnabled() bool { //gd:FastNoiseLite.is_domain_warp_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_is_domain_warp_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_domain_warp_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpType(domain_warp_type DomainWarpType) { //gd:FastNoiseLite.set_domain_warp_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ domain_warp_type DomainWarpType }{domain_warp_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ domain_warp_type DomainWarpType }{domain_warp_type}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpType() DomainWarpType { //gd:FastNoiseLite.get_domain_warp_type
-	var r_ret = gdextension.Call[DomainWarpType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DomainWarpType](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpAmplitude(domain_warp_amplitude float64) { //gd:FastNoiseLite.set_domain_warp_amplitude
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_amplitude), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ domain_warp_amplitude float64 }{domain_warp_amplitude}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_amplitude, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ domain_warp_amplitude float64 }{domain_warp_amplitude}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpAmplitude() float64 { //gd:FastNoiseLite.get_domain_warp_amplitude
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_amplitude), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_amplitude, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpFrequency(domain_warp_frequency float64) { //gd:FastNoiseLite.set_domain_warp_frequency
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_frequency), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ domain_warp_frequency float64 }{domain_warp_frequency}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_frequency, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ domain_warp_frequency float64 }{domain_warp_frequency}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpFrequency() float64 { //gd:FastNoiseLite.get_domain_warp_frequency
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_frequency), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_frequency, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpFractalType(domain_warp_fractal_type DomainWarpFractalType) { //gd:FastNoiseLite.set_domain_warp_fractal_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_fractal_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ domain_warp_fractal_type DomainWarpFractalType }{domain_warp_fractal_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_fractal_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ domain_warp_fractal_type DomainWarpFractalType }{domain_warp_fractal_type}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpFractalType() DomainWarpFractalType { //gd:FastNoiseLite.get_domain_warp_fractal_type
-	var r_ret = gdextension.Call[DomainWarpFractalType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DomainWarpFractalType](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_fractal_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpFractalOctaves(domain_warp_octave_count int64) { //gd:FastNoiseLite.set_domain_warp_fractal_octaves
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_fractal_octaves), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ domain_warp_octave_count int64 }{domain_warp_octave_count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_fractal_octaves, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ domain_warp_octave_count int64 }{domain_warp_octave_count}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpFractalOctaves() int64 { //gd:FastNoiseLite.get_domain_warp_fractal_octaves
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_octaves), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_fractal_octaves, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpFractalLacunarity(domain_warp_lacunarity float64) { //gd:FastNoiseLite.set_domain_warp_fractal_lacunarity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_fractal_lacunarity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ domain_warp_lacunarity float64 }{domain_warp_lacunarity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_fractal_lacunarity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ domain_warp_lacunarity float64 }{domain_warp_lacunarity}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpFractalLacunarity() float64 { //gd:FastNoiseLite.get_domain_warp_fractal_lacunarity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_lacunarity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_fractal_lacunarity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDomainWarpFractalGain(domain_warp_gain float64) { //gd:FastNoiseLite.set_domain_warp_fractal_gain
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_set_domain_warp_fractal_gain), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ domain_warp_gain float64 }{domain_warp_gain}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_domain_warp_fractal_gain, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ domain_warp_gain float64 }{domain_warp_gain}))
 }
 
 //go:nosplit
 func (self class) GetDomainWarpFractalGain() float64 { //gd:FastNoiseLite.get_domain_warp_fractal_gain
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.FastNoiseLite.Bind_get_domain_warp_fractal_gain), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_warp_fractal_gain, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -559,9 +630,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("FastNoiseLite", func(ptr gd.Object) any {
-		return [1]gdclass.FastNoiseLite{*(*gdclass.FastNoiseLite)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("FastNoiseLite", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type NoiseType int //gd:FastNoiseLite.NoiseType

@@ -74,6 +74,29 @@ A physics joint that connects two 2D physics bodies with a spring-like force. Th
 */
 type Instance [1]gdclass.DampedSpringJoint2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_length      gdextension.MethodForClass `hash:"373806689"`
+	get_length      gdextension.MethodForClass `hash:"1740695150"`
+	set_rest_length gdextension.MethodForClass `hash:"373806689"`
+	get_rest_length gdextension.MethodForClass `hash:"1740695150"`
+	set_stiffness   gdextension.MethodForClass `hash:"373806689"`
+	get_stiffness   gdextension.MethodForClass `hash:"1740695150"`
+	set_damping     gdextension.MethodForClass `hash:"373806689"`
+	get_damping     gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("DampedSpringJoint2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +112,20 @@ type Advanced = class
 type class [1]gdclass.DampedSpringJoint2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.DampedSpringJoint2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.DampedSpringJoint2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +135,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("DampedSpringJoint2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.DampedSpringJoint2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -138,48 +175,48 @@ func (self Instance) SetDamping(value Float.X) {
 
 //go:nosplit
 func (self class) SetLength(length float64) { //gd:DampedSpringJoint2D.set_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_set_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetLength() float64 { //gd:DampedSpringJoint2D.get_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRestLength(rest_length float64) { //gd:DampedSpringJoint2D.set_rest_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_set_rest_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ rest_length float64 }{rest_length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rest_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ rest_length float64 }{rest_length}))
 }
 
 //go:nosplit
 func (self class) GetRestLength() float64 { //gd:DampedSpringJoint2D.get_rest_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_get_rest_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rest_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStiffness(stiffness float64) { //gd:DampedSpringJoint2D.set_stiffness
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_set_stiffness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ stiffness float64 }{stiffness}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stiffness, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ stiffness float64 }{stiffness}))
 }
 
 //go:nosplit
 func (self class) GetStiffness() float64 { //gd:DampedSpringJoint2D.get_stiffness
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_get_stiffness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stiffness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDamping(damping float64) { //gd:DampedSpringJoint2D.set_damping
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_set_damping), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ damping float64 }{damping}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ damping float64 }{damping}))
 }
 
 //go:nosplit
 func (self class) GetDamping() float64 { //gd:DampedSpringJoint2D.get_damping
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DampedSpringJoint2D.Bind_get_damping), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -221,7 +258,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("DampedSpringJoint2D", func(ptr gd.Object) any {
-		return [1]gdclass.DampedSpringJoint2D{*(*gdclass.DampedSpringJoint2D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("DampedSpringJoint2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

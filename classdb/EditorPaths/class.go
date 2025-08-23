@@ -72,6 +72,27 @@ This editor-only singleton returns OS-specific paths to various data folders and
 */
 type Instance [1]gdclass.EditorPaths
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_data_dir             gdextension.MethodForClass `hash:"201670096"`
+	get_config_dir           gdextension.MethodForClass `hash:"201670096"`
+	get_cache_dir            gdextension.MethodForClass `hash:"201670096"`
+	is_self_contained        gdextension.MethodForClass `hash:"36873697"`
+	get_self_contained_file  gdextension.MethodForClass `hash:"201670096"`
+	get_project_settings_dir gdextension.MethodForClass `hash:"201670096"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorPaths")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -151,6 +172,20 @@ type Advanced = class
 type class [1]gdclass.EditorPaths
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorPaths)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorPaths)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -160,7 +195,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorPaths"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorPaths)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -177,7 +212,7 @@ Returns the absolute path to the user's data folder. This folder should be used 
 */
 //go:nosplit
 func (self class) GetDataDir() String.Readable { //gd:EditorPaths.get_data_dir
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPaths.Bind_get_data_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_data_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -193,7 +228,7 @@ Returns the absolute path to the user's configuration folder. This folder should
 */
 //go:nosplit
 func (self class) GetConfigDir() String.Readable { //gd:EditorPaths.get_config_dir
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPaths.Bind_get_config_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_config_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -209,7 +244,7 @@ Returns the absolute path to the user's cache folder. This folder should be used
 */
 //go:nosplit
 func (self class) GetCacheDir() String.Readable { //gd:EditorPaths.get_cache_dir
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPaths.Bind_get_cache_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_cache_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -223,7 +258,7 @@ Self-contained mode can be enabled by creating a file named [code]._sc_[/code] o
 */
 //go:nosplit
 func (self class) IsSelfContained() bool { //gd:EditorPaths.is_self_contained
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPaths.Bind_is_self_contained), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_self_contained, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -233,7 +268,7 @@ Returns the absolute path to the self-contained file that makes the current Godo
 */
 //go:nosplit
 func (self class) GetSelfContainedFile() String.Readable { //gd:EditorPaths.get_self_contained_file
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPaths.Bind_get_self_contained_file), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_self_contained_file, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -243,7 +278,7 @@ Returns the project-specific editor settings path. Projects all have a unique su
 */
 //go:nosplit
 func (self class) GetProjectSettingsDir() String.Readable { //gd:EditorPaths.get_project_settings_dir
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorPaths.Bind_get_project_settings_dir), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_project_settings_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -265,5 +300,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorPaths", func(ptr gd.Object) any { return [1]gdclass.EditorPaths{*(*gdclass.EditorPaths)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("EditorPaths", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

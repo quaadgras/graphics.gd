@@ -72,6 +72,39 @@ Sprite frame library for an [AnimatedSprite2D] or [AnimatedSprite3D] node. Conta
 */
 type Instance [1]gdclass.SpriteFrames
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	add_animation       gdextension.MethodForClass `hash:"3304788590"`
+	has_animation       gdextension.MethodForClass `hash:"2619796661"`
+	duplicate_animation gdextension.MethodForClass `hash:"3740211285"`
+	remove_animation    gdextension.MethodForClass `hash:"3304788590"`
+	rename_animation    gdextension.MethodForClass `hash:"3740211285"`
+	get_animation_names gdextension.MethodForClass `hash:"1139954409"`
+	set_animation_speed gdextension.MethodForClass `hash:"4135858297"`
+	get_animation_speed gdextension.MethodForClass `hash:"2349060816"`
+	set_animation_loop  gdextension.MethodForClass `hash:"2524380260"`
+	get_animation_loop  gdextension.MethodForClass `hash:"2619796661"`
+	add_frame           gdextension.MethodForClass `hash:"1351332740"`
+	set_frame           gdextension.MethodForClass `hash:"56804795"`
+	remove_frame        gdextension.MethodForClass `hash:"2415702435"`
+	get_frame_count     gdextension.MethodForClass `hash:"2458036349"`
+	get_frame_texture   gdextension.MethodForClass `hash:"2900517879"`
+	get_frame_duration  gdextension.MethodForClass `hash:"1129309260"`
+	clear               gdextension.MethodForClass `hash:"3304788590"`
+	clear_all           gdextension.MethodForClass `hash:"3218959716"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("SpriteFrames")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.SpriteFrames
@@ -233,6 +266,20 @@ type Advanced = class
 type class [1]gdclass.SpriteFrames
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SpriteFrames)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SpriteFrames)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -242,7 +289,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SpriteFrames"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SpriteFrames)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -254,7 +301,7 @@ Adds a new [param anim] animation to the library.
 */
 //go:nosplit
 func (self class) AddAnimation(anim String.Name) { //gd:SpriteFrames.add_animation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_add_animation), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_animation, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
 }
 
 /*
@@ -262,7 +309,7 @@ Returns [code]true[/code] if the [param anim] animation exists.
 */
 //go:nosplit
 func (self class) HasAnimation(anim String.Name) bool { //gd:SpriteFrames.has_animation
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_has_animation), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_animation, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
 	var ret = r_ret
 	return ret
 }
@@ -272,7 +319,7 @@ Duplicates the animation [param anim_from] to a new animation named [param anim_
 */
 //go:nosplit
 func (self class) DuplicateAnimation(anim_from String.Name, anim_to String.Name) { //gd:SpriteFrames.duplicate_animation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_duplicate_animation), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.duplicate_animation, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		anim_from gdextension.StringName
 		anim_to   gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(anim_from)), pointers.Get(gd.InternalStringName(anim_to))}))
@@ -283,7 +330,7 @@ Removes the [param anim] animation.
 */
 //go:nosplit
 func (self class) RemoveAnimation(anim String.Name) { //gd:SpriteFrames.remove_animation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_remove_animation), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_animation, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
 }
 
 /*
@@ -291,7 +338,7 @@ Changes the [param anim] animation's name to [param newname].
 */
 //go:nosplit
 func (self class) RenameAnimation(anim String.Name, newname String.Name) { //gd:SpriteFrames.rename_animation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_rename_animation), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_animation, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		anim    gdextension.StringName
 		newname gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(anim)), pointers.Get(gd.InternalStringName(newname))}))
@@ -302,7 +349,7 @@ Returns an array containing the names associated to each animation. Values are p
 */
 //go:nosplit
 func (self class) GetAnimationNames() Packed.Strings { //gd:SpriteFrames.get_animation_names
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_get_animation_names), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_animation_names, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -312,7 +359,7 @@ Sets the speed for the [param anim] animation in frames per second.
 */
 //go:nosplit
 func (self class) SetAnimationSpeed(anim String.Name, fps float64) { //gd:SpriteFrames.set_animation_speed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_set_animation_speed), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animation_speed, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		anim gdextension.StringName
 		fps  float64
 	}{pointers.Get(gd.InternalStringName(anim)), fps}))
@@ -323,7 +370,7 @@ Returns the speed in frames per second for the [param anim] animation.
 */
 //go:nosplit
 func (self class) GetAnimationSpeed(anim String.Name) float64 { //gd:SpriteFrames.get_animation_speed
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_get_animation_speed), gdextension.SizeFloat|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_animation_speed, gdextension.SizeFloat|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
 	var ret = r_ret
 	return ret
 }
@@ -333,7 +380,7 @@ If [param loop] is [code]true[/code], the [param anim] animation will loop when 
 */
 //go:nosplit
 func (self class) SetAnimationLoop(anim String.Name, loop bool) { //gd:SpriteFrames.set_animation_loop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_set_animation_loop), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animation_loop, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		anim gdextension.StringName
 		loop bool
 	}{pointers.Get(gd.InternalStringName(anim)), loop}))
@@ -344,7 +391,7 @@ Returns [code]true[/code] if the given animation is configured to loop when it f
 */
 //go:nosplit
 func (self class) GetAnimationLoop(anim String.Name) bool { //gd:SpriteFrames.get_animation_loop
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_get_animation_loop), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_animation_loop, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
 	var ret = r_ret
 	return ret
 }
@@ -354,7 +401,7 @@ Adds a frame to the [param anim] animation. If [param at_position] is [code]-1[/
 */
 //go:nosplit
 func (self class) AddFrame(anim String.Name, texture [1]gdclass.Texture2D, duration float64, at_position int64) { //gd:SpriteFrames.add_frame
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_add_frame), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_frame, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
 		anim        gdextension.StringName
 		texture     gdextension.Object
 		duration    float64
@@ -367,7 +414,7 @@ Sets the [param texture] and the [param duration] of the frame [param idx] in th
 */
 //go:nosplit
 func (self class) SetFrame(anim String.Name, idx int64, texture [1]gdclass.Texture2D, duration float64) { //gd:SpriteFrames.set_frame
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_set_frame), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
 		anim     gdextension.StringName
 		idx      int64
 		texture  gdextension.Object
@@ -380,7 +427,7 @@ Removes the [param anim] animation's frame [param idx].
 */
 //go:nosplit
 func (self class) RemoveFrame(anim String.Name, idx int64) { //gd:SpriteFrames.remove_frame
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_remove_frame), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_frame, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		anim gdextension.StringName
 		idx  int64
 	}{pointers.Get(gd.InternalStringName(anim)), idx}))
@@ -391,7 +438,7 @@ Returns the number of frames for the [param anim] animation.
 */
 //go:nosplit
 func (self class) GetFrameCount(anim String.Name) int64 { //gd:SpriteFrames.get_frame_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_get_frame_count), gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame_count, gdextension.SizeInt|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
 	var ret = r_ret
 	return ret
 }
@@ -401,7 +448,7 @@ Returns the texture of the frame [param idx] in the [param anim] animation.
 */
 //go:nosplit
 func (self class) GetFrameTexture(anim String.Name, idx int64) [1]gdclass.Texture2D { //gd:SpriteFrames.get_frame_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_get_frame_texture), gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_frame_texture, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		anim gdextension.StringName
 		idx  int64
 	}{pointers.Get(gd.InternalStringName(anim)), idx}))
@@ -418,7 +465,7 @@ In this example, [code]playing_speed[/code] refers to either [method AnimatedSpr
 */
 //go:nosplit
 func (self class) GetFrameDuration(anim String.Name, idx int64) float64 { //gd:SpriteFrames.get_frame_duration
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_get_frame_duration), gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frame_duration, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		anim gdextension.StringName
 		idx  int64
 	}{pointers.Get(gd.InternalStringName(anim)), idx}))
@@ -431,7 +478,7 @@ Removes all frames from the [param anim] animation.
 */
 //go:nosplit
 func (self class) Clear(anim String.Name) { //gd:SpriteFrames.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_clear), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ anim gdextension.StringName }{pointers.Get(gd.InternalStringName(anim))}))
 }
 
 /*
@@ -439,7 +486,7 @@ Removes all animations. An empty [code]default[/code] animation will be created.
 */
 //go:nosplit
 func (self class) ClearAll() { //gd:SpriteFrames.clear_all
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpriteFrames.Bind_clear_all), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_all, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsSpriteFrames() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsSpriteFrames() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -473,7 +520,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SpriteFrames", func(ptr gd.Object) any {
-		return [1]gdclass.SpriteFrames{*(*gdclass.SpriteFrames)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("SpriteFrames", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

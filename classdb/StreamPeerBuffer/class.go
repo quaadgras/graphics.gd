@@ -72,6 +72,29 @@ A [StreamPeerBuffer] object keeps an internal cursor which is the offset in byte
 */
 type Instance [1]gdclass.StreamPeerBuffer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	seek           gdextension.MethodForClass `hash:"1286410249"`
+	get_size       gdextension.MethodForClass `hash:"3905245786"`
+	get_position   gdextension.MethodForClass `hash:"3905245786"`
+	resize         gdextension.MethodForClass `hash:"1286410249"`
+	set_data_array gdextension.MethodForClass `hash:"2971499966"`
+	get_data_array gdextension.MethodForClass `hash:"2362200018"`
+	clear          gdextension.MethodForClass `hash:"3218959716"`
+	duplicate      gdextension.MethodForClass `hash:"2474064677"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("StreamPeerBuffer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -129,6 +152,20 @@ type Advanced = class
 type class [1]gdclass.StreamPeerBuffer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.StreamPeerBuffer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.StreamPeerBuffer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -138,7 +175,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("StreamPeerBuffer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.StreamPeerBuffer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -158,7 +195,7 @@ Moves the cursor to the specified position. [param position] must be a valid ind
 */
 //go:nosplit
 func (self class) SeekTo(position int64) { //gd:StreamPeerBuffer.seek
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerBuffer.Bind_seek), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ position int64 }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ position int64 }{position}))
 }
 
 /*
@@ -166,7 +203,7 @@ Returns the size of [member data_array].
 */
 //go:nosplit
 func (self class) GetSize() int64 { //gd:StreamPeerBuffer.get_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerBuffer.Bind_get_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -176,7 +213,7 @@ Returns the current cursor position.
 */
 //go:nosplit
 func (self class) GetPosition() int64 { //gd:StreamPeerBuffer.get_position
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerBuffer.Bind_get_position), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -186,17 +223,17 @@ Resizes the [member data_array]. This [i]doesn't[/i] update the cursor.
 */
 //go:nosplit
 func (self class) Resize(size int64) { //gd:StreamPeerBuffer.resize
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerBuffer.Bind_resize), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resize, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 }
 
 //go:nosplit
 func (self class) SetDataArray(data Packed.Bytes) { //gd:StreamPeerBuffer.set_data_array
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerBuffer.Bind_set_data_array), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data_array, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 }
 
 //go:nosplit
 func (self class) GetDataArray() Packed.Bytes { //gd:StreamPeerBuffer.get_data_array
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerBuffer.Bind_get_data_array), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data_array, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -206,7 +243,7 @@ Clears the [member data_array] and resets the cursor.
 */
 //go:nosplit
 func (self class) Clear() { //gd:StreamPeerBuffer.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerBuffer.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -214,7 +251,7 @@ Returns a new [StreamPeerBuffer] with the same [member data_array] content.
 */
 //go:nosplit
 func (self class) Duplicate() [1]gdclass.StreamPeerBuffer { //gd:StreamPeerBuffer.duplicate
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerBuffer.Bind_duplicate), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.duplicate, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.StreamPeerBuffer{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeerBuffer](r_ret)}
 	return ret
 }
@@ -250,7 +287,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("StreamPeerBuffer", func(ptr gd.Object) any {
-		return [1]gdclass.StreamPeerBuffer{*(*gdclass.StreamPeerBuffer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("StreamPeerBuffer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

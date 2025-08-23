@@ -74,6 +74,27 @@ A directional light is a type of [Light3D] node that models an infinite number o
 */
 type Instance [1]gdclass.DirectionalLight3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_shadow_mode         gdextension.MethodForClass `hash:"1261211726"`
+	get_shadow_mode         gdextension.MethodForClass `hash:"2765228544"`
+	set_blend_splits        gdextension.MethodForClass `hash:"2586408642"`
+	is_blend_splits_enabled gdextension.MethodForClass `hash:"36873697"`
+	set_sky_mode            gdextension.MethodForClass `hash:"2691194817"`
+	get_sky_mode            gdextension.MethodForClass `hash:"3819982774"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("DirectionalLight3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +110,20 @@ type Advanced = class
 type class [1]gdclass.DirectionalLight3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.DirectionalLight3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.DirectionalLight3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +133,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("DirectionalLight3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.DirectionalLight3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -130,36 +165,36 @@ func (self Instance) SetSkyMode(value SkyMode) {
 
 //go:nosplit
 func (self class) SetShadowMode(mode ShadowMode) { //gd:DirectionalLight3D.set_shadow_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_set_shadow_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ShadowMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ShadowMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetShadowMode() ShadowMode { //gd:DirectionalLight3D.get_shadow_mode
-	var r_ret = gdextension.Call[ShadowMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_get_shadow_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ShadowMode](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlendSplits(enabled bool) { //gd:DirectionalLight3D.set_blend_splits
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_set_blend_splits), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_splits, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsBlendSplitsEnabled() bool { //gd:DirectionalLight3D.is_blend_splits_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_is_blend_splits_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_blend_splits_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkyMode(mode SkyMode) { //gd:DirectionalLight3D.set_sky_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_set_sky_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode SkyMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode SkyMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetSkyMode() SkyMode { //gd:DirectionalLight3D.get_sky_mode
-	var r_ret = gdextension.Call[SkyMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.DirectionalLight3D.Bind_get_sky_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[SkyMode](gd.ObjectChecked(self.AsObject()), methods.get_sky_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -201,9 +236,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("DirectionalLight3D", func(ptr gd.Object) any {
-		return [1]gdclass.DirectionalLight3D{*(*gdclass.DirectionalLight3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("DirectionalLight3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type ShadowMode int //gd:DirectionalLight3D.ShadowMode

@@ -72,6 +72,27 @@ A TCP server. Listens to connections on a port and returns a [StreamPeerTCP] whe
 */
 type Instance [1]gdclass.TCPServer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	listen                  gdextension.MethodForClass `hash:"3167955072"`
+	is_connection_available gdextension.MethodForClass `hash:"36873697"`
+	is_listening            gdextension.MethodForClass `hash:"36873697"`
+	get_local_port          gdextension.MethodForClass `hash:"3905245786"`
+	take_connection         gdextension.MethodForClass `hash:"30545006"`
+	stop                    gdextension.MethodForClass `hash:"3218959716"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("TCPServer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.TCPServer
@@ -144,6 +165,20 @@ type Advanced = class
 type class [1]gdclass.TCPServer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TCPServer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TCPServer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -153,7 +188,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TCPServer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.TCPServer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -168,7 +203,7 @@ If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[
 */
 //go:nosplit
 func (self class) Listen(port int64, bind_address String.Readable) Error.Code { //gd:TCPServer.listen
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TCPServer.Bind_listen), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.listen, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		port         int64
 		bind_address gdextension.String
 	}{port, pointers.Get(gd.InternalString(bind_address))}))
@@ -181,7 +216,7 @@ Returns [code]true[/code] if a connection is available for taking.
 */
 //go:nosplit
 func (self class) IsConnectionAvailable() bool { //gd:TCPServer.is_connection_available
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TCPServer.Bind_is_connection_available), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_connection_available, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -191,7 +226,7 @@ Returns [code]true[/code] if the server is currently listening for connections.
 */
 //go:nosplit
 func (self class) IsListening() bool { //gd:TCPServer.is_listening
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TCPServer.Bind_is_listening), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_listening, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -201,7 +236,7 @@ Returns the local port this server is listening to.
 */
 //go:nosplit
 func (self class) GetLocalPort() int64 { //gd:TCPServer.get_local_port
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TCPServer.Bind_get_local_port), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -211,7 +246,7 @@ If a connection is available, returns a StreamPeerTCP with the connection.
 */
 //go:nosplit
 func (self class) TakeConnection() [1]gdclass.StreamPeerTCP { //gd:TCPServer.take_connection
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TCPServer.Bind_take_connection), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.StreamPeerTCP{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeerTCP](r_ret)}
 	return ret
 }
@@ -221,7 +256,7 @@ Stops listening.
 */
 //go:nosplit
 func (self class) Stop() { //gd:TCPServer.stop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TCPServer.Bind_stop), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsTCPServer() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsTCPServer() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -248,5 +283,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TCPServer", func(ptr gd.Object) any { return [1]gdclass.TCPServer{*(*gdclass.TCPServer)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("TCPServer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

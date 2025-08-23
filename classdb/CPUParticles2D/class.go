@@ -79,6 +79,94 @@ See also [GPUParticles2D], which provides the same functionality with hardware a
 */
 type Instance [1]gdclass.CPUParticles2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_emitting               gdextension.MethodForClass `hash:"2586408642"`
+	set_amount                 gdextension.MethodForClass `hash:"1286410249"`
+	set_lifetime               gdextension.MethodForClass `hash:"373806689"`
+	set_one_shot               gdextension.MethodForClass `hash:"2586408642"`
+	set_pre_process_time       gdextension.MethodForClass `hash:"373806689"`
+	set_explosiveness_ratio    gdextension.MethodForClass `hash:"373806689"`
+	set_randomness_ratio       gdextension.MethodForClass `hash:"373806689"`
+	set_lifetime_randomness    gdextension.MethodForClass `hash:"373806689"`
+	set_use_local_coordinates  gdextension.MethodForClass `hash:"2586408642"`
+	set_fixed_fps              gdextension.MethodForClass `hash:"1286410249"`
+	set_fractional_delta       gdextension.MethodForClass `hash:"2586408642"`
+	set_speed_scale            gdextension.MethodForClass `hash:"373806689"`
+	request_particles_process  gdextension.MethodForClass `hash:"373806689"`
+	is_emitting                gdextension.MethodForClass `hash:"36873697"`
+	get_amount                 gdextension.MethodForClass `hash:"3905245786"`
+	get_lifetime               gdextension.MethodForClass `hash:"1740695150"`
+	get_one_shot               gdextension.MethodForClass `hash:"36873697"`
+	get_pre_process_time       gdextension.MethodForClass `hash:"1740695150"`
+	get_explosiveness_ratio    gdextension.MethodForClass `hash:"1740695150"`
+	get_randomness_ratio       gdextension.MethodForClass `hash:"1740695150"`
+	get_lifetime_randomness    gdextension.MethodForClass `hash:"1740695150"`
+	get_use_local_coordinates  gdextension.MethodForClass `hash:"36873697"`
+	get_fixed_fps              gdextension.MethodForClass `hash:"3905245786"`
+	get_fractional_delta       gdextension.MethodForClass `hash:"36873697"`
+	get_speed_scale            gdextension.MethodForClass `hash:"1740695150"`
+	set_use_fixed_seed         gdextension.MethodForClass `hash:"2586408642"`
+	get_use_fixed_seed         gdextension.MethodForClass `hash:"36873697"`
+	set_seed                   gdextension.MethodForClass `hash:"1286410249"`
+	get_seed                   gdextension.MethodForClass `hash:"3905245786"`
+	set_draw_order             gdextension.MethodForClass `hash:"4183193490"`
+	get_draw_order             gdextension.MethodForClass `hash:"1668655735"`
+	set_texture                gdextension.MethodForClass `hash:"4051416890"`
+	get_texture                gdextension.MethodForClass `hash:"3635182373"`
+	restart                    gdextension.MethodForClass `hash:"107499316"`
+	set_direction              gdextension.MethodForClass `hash:"743155724"`
+	get_direction              gdextension.MethodForClass `hash:"3341600327"`
+	set_spread                 gdextension.MethodForClass `hash:"373806689"`
+	get_spread                 gdextension.MethodForClass `hash:"1740695150"`
+	set_param_min              gdextension.MethodForClass `hash:"3320615296"`
+	get_param_min              gdextension.MethodForClass `hash:"2038050600"`
+	set_param_max              gdextension.MethodForClass `hash:"3320615296"`
+	get_param_max              gdextension.MethodForClass `hash:"2038050600"`
+	set_param_curve            gdextension.MethodForClass `hash:"2959350143"`
+	get_param_curve            gdextension.MethodForClass `hash:"2603158474"`
+	set_color                  gdextension.MethodForClass `hash:"2920490490"`
+	get_color                  gdextension.MethodForClass `hash:"3444240500"`
+	set_color_ramp             gdextension.MethodForClass `hash:"2756054477"`
+	get_color_ramp             gdextension.MethodForClass `hash:"132272999"`
+	set_color_initial_ramp     gdextension.MethodForClass `hash:"2756054477"`
+	get_color_initial_ramp     gdextension.MethodForClass `hash:"132272999"`
+	set_particle_flag          gdextension.MethodForClass `hash:"4178137949"`
+	get_particle_flag          gdextension.MethodForClass `hash:"2829976507"`
+	set_emission_shape         gdextension.MethodForClass `hash:"393763892"`
+	get_emission_shape         gdextension.MethodForClass `hash:"1740246024"`
+	set_emission_sphere_radius gdextension.MethodForClass `hash:"373806689"`
+	get_emission_sphere_radius gdextension.MethodForClass `hash:"1740695150"`
+	set_emission_rect_extents  gdextension.MethodForClass `hash:"743155724"`
+	get_emission_rect_extents  gdextension.MethodForClass `hash:"3341600327"`
+	set_emission_points        gdextension.MethodForClass `hash:"1509147220"`
+	get_emission_points        gdextension.MethodForClass `hash:"2961356807"`
+	set_emission_normals       gdextension.MethodForClass `hash:"1509147220"`
+	get_emission_normals       gdextension.MethodForClass `hash:"2961356807"`
+	set_emission_colors        gdextension.MethodForClass `hash:"3546319833"`
+	get_emission_colors        gdextension.MethodForClass `hash:"1392750486"`
+	get_gravity                gdextension.MethodForClass `hash:"3341600327"`
+	set_gravity                gdextension.MethodForClass `hash:"743155724"`
+	get_split_scale            gdextension.MethodForClass `hash:"2240911060"`
+	set_split_scale            gdextension.MethodForClass `hash:"2586408642"`
+	get_scale_curve_x          gdextension.MethodForClass `hash:"2460114913"`
+	set_scale_curve_x          gdextension.MethodForClass `hash:"270443179"`
+	get_scale_curve_y          gdextension.MethodForClass `hash:"2460114913"`
+	set_scale_curve_y          gdextension.MethodForClass `hash:"270443179"`
+	convert_from_particles     gdextension.MethodForClass `hash:"1078189570"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("CPUParticles2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.CPUParticles2D
@@ -127,6 +215,20 @@ type Advanced = class
 type class [1]gdclass.CPUParticles2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CPUParticles2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CPUParticles2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -136,7 +238,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CPUParticles2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.CPUParticles2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -680,62 +782,62 @@ func (self Instance) SetAnimOffsetCurve(value Curve.Instance) {
 
 //go:nosplit
 func (self class) SetEmitting(emitting bool) { //gd:CPUParticles2D.set_emitting
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_emitting), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ emitting bool }{emitting}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emitting, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ emitting bool }{emitting}))
 }
 
 //go:nosplit
 func (self class) SetAmount(amount int64) { //gd:CPUParticles2D.set_amount
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_amount), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_amount, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 }
 
 //go:nosplit
 func (self class) SetLifetime(secs float64) { //gd:CPUParticles2D.set_lifetime
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_lifetime), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ secs float64 }{secs}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lifetime, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ secs float64 }{secs}))
 }
 
 //go:nosplit
 func (self class) SetOneShot(enable bool) { //gd:CPUParticles2D.set_one_shot
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_one_shot), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) SetPreProcessTime(secs float64) { //gd:CPUParticles2D.set_pre_process_time
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_pre_process_time), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ secs float64 }{secs}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_process_time, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ secs float64 }{secs}))
 }
 
 //go:nosplit
 func (self class) SetExplosivenessRatio(ratio float64) { //gd:CPUParticles2D.set_explosiveness_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_explosiveness_ratio), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_explosiveness_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
 }
 
 //go:nosplit
 func (self class) SetRandomnessRatio(ratio float64) { //gd:CPUParticles2D.set_randomness_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_randomness_ratio), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_randomness_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
 }
 
 //go:nosplit
 func (self class) SetLifetimeRandomness(random float64) { //gd:CPUParticles2D.set_lifetime_randomness
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_lifetime_randomness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ random float64 }{random}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lifetime_randomness, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ random float64 }{random}))
 }
 
 //go:nosplit
 func (self class) SetUseLocalCoordinates(enable bool) { //gd:CPUParticles2D.set_use_local_coordinates
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_use_local_coordinates), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_local_coordinates, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) SetFixedFps(fps int64) { //gd:CPUParticles2D.set_fixed_fps
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_fixed_fps), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fps int64 }{fps}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fixed_fps, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fps int64 }{fps}))
 }
 
 //go:nosplit
 func (self class) SetFractionalDelta(enable bool) { //gd:CPUParticles2D.set_fractional_delta
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_fractional_delta), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractional_delta, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) SetSpeedScale(scale float64) { //gd:CPUParticles2D.set_speed_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_speed_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
 }
 
 /*
@@ -744,137 +846,137 @@ Useful for particle playback, if used in combination with [member use_fixed_seed
 */
 //go:nosplit
 func (self class) RequestParticlesProcess(process_time float64) { //gd:CPUParticles2D.request_particles_process
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_request_particles_process), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ process_time float64 }{process_time}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_particles_process, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ process_time float64 }{process_time}))
 }
 
 //go:nosplit
 func (self class) IsEmitting() bool { //gd:CPUParticles2D.is_emitting
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_is_emitting), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emitting, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetAmount() int64 { //gd:CPUParticles2D.get_amount
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_amount), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_amount, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetLifetime() float64 { //gd:CPUParticles2D.get_lifetime
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_lifetime), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lifetime, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetOneShot() bool { //gd:CPUParticles2D.get_one_shot
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_one_shot), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_one_shot, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetPreProcessTime() float64 { //gd:CPUParticles2D.get_pre_process_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_pre_process_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_process_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetExplosivenessRatio() float64 { //gd:CPUParticles2D.get_explosiveness_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_explosiveness_ratio), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_explosiveness_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetRandomnessRatio() float64 { //gd:CPUParticles2D.get_randomness_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_randomness_ratio), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_randomness_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetLifetimeRandomness() float64 { //gd:CPUParticles2D.get_lifetime_randomness
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_lifetime_randomness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lifetime_randomness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetUseLocalCoordinates() bool { //gd:CPUParticles2D.get_use_local_coordinates
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_use_local_coordinates), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_local_coordinates, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetFixedFps() int64 { //gd:CPUParticles2D.get_fixed_fps
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_fixed_fps), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fixed_fps, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetFractionalDelta() bool { //gd:CPUParticles2D.get_fractional_delta
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_fractional_delta), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_fractional_delta, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetSpeedScale() float64 { //gd:CPUParticles2D.get_speed_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_speed_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseFixedSeed(use_fixed_seed bool) { //gd:CPUParticles2D.set_use_fixed_seed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_use_fixed_seed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_fixed_seed bool }{use_fixed_seed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_fixed_seed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_fixed_seed bool }{use_fixed_seed}))
 }
 
 //go:nosplit
 func (self class) GetUseFixedSeed() bool { //gd:CPUParticles2D.get_use_fixed_seed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_use_fixed_seed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_fixed_seed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSeed(seed int64) { //gd:CPUParticles2D.set_seed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_seed), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ seed int64 }{seed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seed, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ seed int64 }{seed}))
 }
 
 //go:nosplit
 func (self class) GetSeed() int64 { //gd:CPUParticles2D.get_seed
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_seed), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_seed, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawOrder(order DrawOrder) { //gd:CPUParticles2D.set_draw_order
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_draw_order), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ order DrawOrder }{order}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_order, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ order DrawOrder }{order}))
 }
 
 //go:nosplit
 func (self class) GetDrawOrder() DrawOrder { //gd:CPUParticles2D.get_draw_order
-	var r_ret = gdextension.Call[DrawOrder](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_draw_order), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DrawOrder](gd.ObjectChecked(self.AsObject()), methods.get_draw_order, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:CPUParticles2D.set_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:CPUParticles2D.get_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -885,29 +987,29 @@ If [param keep_seed] is [code]true[/code], the current random seed will be prese
 */
 //go:nosplit
 func (self class) Restart(keep_seed bool) { //gd:CPUParticles2D.restart
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_restart), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep_seed bool }{keep_seed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.restart, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep_seed bool }{keep_seed}))
 }
 
 //go:nosplit
 func (self class) SetDirection(direction Vector2.XY) { //gd:CPUParticles2D.set_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_direction), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ direction Vector2.XY }{direction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_direction, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ direction Vector2.XY }{direction}))
 }
 
 //go:nosplit
 func (self class) GetDirection() Vector2.XY { //gd:CPUParticles2D.get_direction
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_direction), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_direction, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpread(spread float64) { //gd:CPUParticles2D.set_spread
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_spread), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ spread float64 }{spread}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spread, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ spread float64 }{spread}))
 }
 
 //go:nosplit
 func (self class) GetSpread() float64 { //gd:CPUParticles2D.get_spread
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_spread), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_spread, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -917,7 +1019,7 @@ Sets the minimum value for the given parameter.
 */
 //go:nosplit
 func (self class) SetParamMin(param Parameter, value float64) { //gd:CPUParticles2D.set_param_min
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_param_min), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_min, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		param Parameter
 		value float64
 	}{param, value}))
@@ -928,7 +1030,7 @@ Returns the minimum value range for the given parameter.
 */
 //go:nosplit
 func (self class) GetParamMin(param Parameter) float64 { //gd:CPUParticles2D.get_param_min
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_param_min), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Parameter }{param}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_min, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Parameter }{param}))
 	var ret = r_ret
 	return ret
 }
@@ -938,7 +1040,7 @@ Sets the maximum value for the given parameter.
 */
 //go:nosplit
 func (self class) SetParamMax(param Parameter, value float64) { //gd:CPUParticles2D.set_param_max
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_param_max), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_max, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		param Parameter
 		value float64
 	}{param, value}))
@@ -949,7 +1051,7 @@ Returns the maximum value range for the given parameter.
 */
 //go:nosplit
 func (self class) GetParamMax(param Parameter) float64 { //gd:CPUParticles2D.get_param_max
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_param_max), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Parameter }{param}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_max, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Parameter }{param}))
 	var ret = r_ret
 	return ret
 }
@@ -959,7 +1061,7 @@ Sets the [Curve] of the parameter specified by [enum Parameter]. Should be a uni
 */
 //go:nosplit
 func (self class) SetParamCurve(param Parameter, curve [1]gdclass.Curve) { //gd:CPUParticles2D.set_param_curve
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_param_curve), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		param Parameter
 		curve gdextension.Object
 	}{param, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
@@ -970,43 +1072,43 @@ Returns the [Curve] of the parameter specified by [enum Parameter].
 */
 //go:nosplit
 func (self class) GetParamCurve(param Parameter) [1]gdclass.Curve { //gd:CPUParticles2D.get_param_curve
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_param_curve), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Parameter }{param}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_param_curve, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Parameter }{param}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColor(color Color.RGBA) { //gd:CPUParticles2D.set_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetColor() Color.RGBA { //gd:CPUParticles2D.get_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColorRamp(ramp [1]gdclass.Gradient) { //gd:CPUParticles2D.set_color_ramp
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_color_ramp), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(ramp[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(ramp[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:CPUParticles2D.get_color_ramp
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_color_ramp), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColorInitialRamp(ramp [1]gdclass.Gradient) { //gd:CPUParticles2D.set_color_initial_ramp
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_color_initial_ramp), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(ramp[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_initial_ramp, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(ramp[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetColorInitialRamp() [1]gdclass.Gradient { //gd:CPUParticles2D.get_color_initial_ramp
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_color_initial_ramp), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_initial_ramp, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
 	return ret
 }
@@ -1016,7 +1118,7 @@ Enables or disables the given flag (see [enum ParticleFlags] for options).
 */
 //go:nosplit
 func (self class) SetParticleFlag(particle_flag ParticleFlags, enable bool) { //gd:CPUParticles2D.set_particle_flag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_particle_flag), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particle_flag, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		particle_flag ParticleFlags
 		enable        bool
 	}{particle_flag, enable}))
@@ -1027,135 +1129,135 @@ Returns the enabled state of the given particle flag (see [enum ParticleFlags] f
 */
 //go:nosplit
 func (self class) GetParticleFlag(particle_flag ParticleFlags) bool { //gd:CPUParticles2D.get_particle_flag
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_particle_flag), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ particle_flag ParticleFlags }{particle_flag}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particle_flag, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ particle_flag ParticleFlags }{particle_flag}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionShape(shape EmissionShape) { //gd:CPUParticles2D.set_emission_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_emission_shape), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shape EmissionShape }{shape}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_shape, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shape EmissionShape }{shape}))
 }
 
 //go:nosplit
 func (self class) GetEmissionShape() EmissionShape { //gd:CPUParticles2D.get_emission_shape
-	var r_ret = gdextension.Call[EmissionShape](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_emission_shape), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[EmissionShape](gd.ObjectChecked(self.AsObject()), methods.get_emission_shape, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionSphereRadius(radius float64) { //gd:CPUParticles2D.set_emission_sphere_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_emission_sphere_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_sphere_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetEmissionSphereRadius() float64 { //gd:CPUParticles2D.get_emission_sphere_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_emission_sphere_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_sphere_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionRectExtents(extents Vector2.XY) { //gd:CPUParticles2D.set_emission_rect_extents
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_emission_rect_extents), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ extents Vector2.XY }{extents}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_rect_extents, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ extents Vector2.XY }{extents}))
 }
 
 //go:nosplit
 func (self class) GetEmissionRectExtents() Vector2.XY { //gd:CPUParticles2D.get_emission_rect_extents
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_emission_rect_extents), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_emission_rect_extents, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionPoints(array Packed.Array[Vector2.XY]) { //gd:CPUParticles2D.set_emission_points
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_emission_points), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_points, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		array gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](array))}))
 }
 
 //go:nosplit
 func (self class) GetEmissionPoints() Packed.Array[Vector2.XY] { //gd:CPUParticles2D.get_emission_points
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_emission_points), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_emission_points, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionNormals(array Packed.Array[Vector2.XY]) { //gd:CPUParticles2D.set_emission_normals
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_emission_normals), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_normals, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		array gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](array))}))
 }
 
 //go:nosplit
 func (self class) GetEmissionNormals() Packed.Array[Vector2.XY] { //gd:CPUParticles2D.get_emission_normals
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_emission_normals), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_emission_normals, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionColors(array Packed.Array[Color.RGBA]) { //gd:CPUParticles2D.set_emission_colors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_emission_colors), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_colors, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		array gdextension.PackedArray[Color.RGBA]
 	}{pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](array))}))
 }
 
 //go:nosplit
 func (self class) GetEmissionColors() Packed.Array[Color.RGBA] { //gd:CPUParticles2D.get_emission_colors
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_emission_colors), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_emission_colors, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetGravity() Vector2.XY { //gd:CPUParticles2D.get_gravity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_gravity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGravity(accel_vec Vector2.XY) { //gd:CPUParticles2D.set_gravity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_gravity), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ accel_vec Vector2.XY }{accel_vec}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ accel_vec Vector2.XY }{accel_vec}))
 }
 
 //go:nosplit
 func (self class) GetSplitScale() bool { //gd:CPUParticles2D.get_split_scale
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_split_scale), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_split_scale, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSplitScale(split_scale bool) { //gd:CPUParticles2D.set_split_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_split_scale), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ split_scale bool }{split_scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_split_scale, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ split_scale bool }{split_scale}))
 }
 
 //go:nosplit
 func (self class) GetScaleCurveX() [1]gdclass.Curve { //gd:CPUParticles2D.get_scale_curve_x
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_scale_curve_x), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scale_curve_x, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScaleCurveX(scale_curve [1]gdclass.Curve) { //gd:CPUParticles2D.set_scale_curve_x
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_scale_curve_x), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(scale_curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_x, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(scale_curve[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetScaleCurveY() [1]gdclass.Curve { //gd:CPUParticles2D.get_scale_curve_y
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_get_scale_curve_y), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scale_curve_y, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScaleCurveY(scale_curve [1]gdclass.Curve) { //gd:CPUParticles2D.set_scale_curve_y
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_set_scale_curve_y), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(scale_curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_y, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(scale_curve[0].AsObject()))}))
 }
 
 /*
@@ -1163,7 +1265,7 @@ Sets this node's properties to match a given [GPUParticles2D] node with an assig
 */
 //go:nosplit
 func (self class) ConvertFromParticles(particles [1]gdclass.Node) { //gd:CPUParticles2D.convert_from_particles
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CPUParticles2D.Bind_convert_from_particles), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ particles gdextension.Object }{gdextension.Object(gd.ObjectChecked(particles[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.convert_from_particles, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ particles gdextension.Object }{gdextension.Object(gd.ObjectChecked(particles[0].AsObject()))}))
 }
 func (self Instance) OnFinished(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), 0)
@@ -1200,9 +1302,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CPUParticles2D", func(ptr gd.Object) any {
-		return [1]gdclass.CPUParticles2D{*(*gdclass.CPUParticles2D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("CPUParticles2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type DrawOrder int //gd:CPUParticles2D.DrawOrder

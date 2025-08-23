@@ -83,6 +83,26 @@ To use [EditorNode3DGizmoPlugin], register it using the [method EditorPlugin.add
 */
 type Instance [1]gdclass.EditorNode3DGizmoPlugin
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	create_material        gdextension.MethodForClass `hash:"3486012546"`
+	create_icon_material   gdextension.MethodForClass `hash:"3804976916"`
+	create_handle_material gdextension.MethodForClass `hash:"2486475223"`
+	add_material           gdextension.MethodForClass `hash:"1374068695"`
+	get_material           gdextension.MethodForClass `hash:"974464017"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorNode3DGizmoPlugin")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.EditorNode3DGizmoPlugin
@@ -566,6 +586,20 @@ type Advanced = class
 type class [1]gdclass.EditorNode3DGizmoPlugin
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorNode3DGizmoPlugin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorNode3DGizmoPlugin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -575,7 +609,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorNode3DGizmoPlugin"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorNode3DGizmoPlugin)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -888,7 +922,7 @@ Creates an unshaded material with its variants (selected and/or editable) and ad
 */
 //go:nosplit
 func (self class) CreateMaterial(name String.Readable, color Color.RGBA, billboard bool, on_top bool, use_vertex_color bool) { //gd:EditorNode3DGizmoPlugin.create_material
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_material), 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_material, 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		name             gdextension.String
 		color            Color.RGBA
 		billboard        bool
@@ -902,7 +936,7 @@ Creates an icon material with its variants (selected and/or editable) and adds t
 */
 //go:nosplit
 func (self class) CreateIconMaterial(name String.Readable, texture [1]gdclass.Texture2D, on_top bool, color Color.RGBA) { //gd:EditorNode3DGizmoPlugin.create_icon_material
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_icon_material), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_icon_material, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16), unsafe.Pointer(&struct {
 		name    gdextension.String
 		texture gdextension.Object
 		on_top  bool
@@ -916,7 +950,7 @@ You can optionally provide a texture to use instead of the default icon.
 */
 //go:nosplit
 func (self class) CreateHandleMaterial(name String.Readable, billboard bool, texture [1]gdclass.Texture2D) { //gd:EditorNode3DGizmoPlugin.create_handle_material
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_create_handle_material), 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_handle_material, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		name      gdextension.String
 		billboard bool
 		texture   gdextension.Object
@@ -928,7 +962,7 @@ Adds a new material to the internal material list for the plugin. It can then be
 */
 //go:nosplit
 func (self class) AddMaterial(name String.Readable, material [1]gdclass.StandardMaterial3D) { //gd:EditorNode3DGizmoPlugin.add_material
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_add_material), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_material, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name     gdextension.String
 		material gdextension.Object
 	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
@@ -939,7 +973,7 @@ Gets material from the internal list of materials. If an [EditorNode3DGizmo] is 
 */
 //go:nosplit
 func (self class) GetMaterial(name String.Readable, gizmo [1]gdclass.EditorNode3DGizmo) [1]gdclass.StandardMaterial3D { //gd:EditorNode3DGizmoPlugin.get_material
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorNode3DGizmoPlugin.Bind_get_material), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name  gdextension.String
 		gizmo gdextension.Object
 	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gizmo[0].AsObject()))}))
@@ -1054,7 +1088,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorNode3DGizmoPlugin", func(ptr gd.Object) any {
-		return [1]gdclass.EditorNode3DGizmoPlugin{*(*gdclass.EditorNode3DGizmoPlugin)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorNode3DGizmoPlugin", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

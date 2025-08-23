@@ -76,6 +76,29 @@ Abstract base class for all 2D shapes, intended for use in physics.
 */
 type Instance [1]gdclass.Shape2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_custom_solver_bias               gdextension.MethodForClass `hash:"373806689"`
+	get_custom_solver_bias               gdextension.MethodForClass `hash:"1740695150"`
+	collide                              gdextension.MethodForClass `hash:"3709843132"`
+	collide_with_motion                  gdextension.MethodForClass `hash:"2869556801"`
+	collide_and_get_contacts             gdextension.MethodForClass `hash:"3056932662"`
+	collide_with_motion_and_get_contacts gdextension.MethodForClass `hash:"3620351573"`
+	draw                                 gdextension.MethodForClass `hash:"2948539648"`
+	get_rect                             gdextension.MethodForClass `hash:"1639390495"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Shape2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -141,6 +164,20 @@ type Advanced = class
 type class [1]gdclass.Shape2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Shape2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Shape2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -150,7 +187,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Shape2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Shape2D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -167,12 +204,12 @@ func (self Instance) SetCustomSolverBias(value Float.X) {
 
 //go:nosplit
 func (self class) SetCustomSolverBias(bias float64) { //gd:Shape2D.set_custom_solver_bias
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shape2D.Bind_set_custom_solver_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_solver_bias, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bias float64 }{bias}))
 }
 
 //go:nosplit
 func (self class) GetCustomSolverBias() float64 { //gd:Shape2D.get_custom_solver_bias
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shape2D.Bind_get_custom_solver_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_solver_bias, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -183,7 +220,7 @@ This method needs the transformation matrix for this shape ([param local_xform])
 */
 //go:nosplit
 func (self class) Collide(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) bool { //gd:Shape2D.collide
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shape2D.Bind_collide), gdextension.SizeBool|(gdextension.SizeTransform2D<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform2D<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.collide, gdextension.SizeBool|(gdextension.SizeTransform2D<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform2D<<12), unsafe.Pointer(&struct {
 		local_xform Transform2D.OriginXY
 		with_shape  gdextension.Object
 		shape_xform Transform2D.OriginXY
@@ -198,7 +235,7 @@ This method needs the transformation matrix for this shape ([param local_xform])
 */
 //go:nosplit
 func (self class) CollideWithMotion(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) bool { //gd:Shape2D.collide_with_motion
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shape2D.Bind_collide_with_motion), gdextension.SizeBool|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeVector2<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.collide_with_motion, gdextension.SizeBool|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeVector2<<20), unsafe.Pointer(&struct {
 		local_xform  Transform2D.OriginXY
 		local_motion Vector2.XY
 		with_shape   gdextension.Object
@@ -217,7 +254,7 @@ This method needs the transformation matrix for this shape ([param local_xform])
 */
 //go:nosplit
 func (self class) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY) Packed.Array[Vector2.XY] { //gd:Shape2D.collide_and_get_contacts
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shape2D.Bind_collide_and_get_contacts), gdextension.SizePackedArray|(gdextension.SizeTransform2D<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform2D<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.collide_and_get_contacts, gdextension.SizePackedArray|(gdextension.SizeTransform2D<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeTransform2D<<12), unsafe.Pointer(&struct {
 		local_xform Transform2D.OriginXY
 		with_shape  gdextension.Object
 		shape_xform Transform2D.OriginXY
@@ -234,7 +271,7 @@ This method needs the transformation matrix for this shape ([param local_xform])
 */
 //go:nosplit
 func (self class) CollideWithMotionAndGetContacts(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape [1]gdclass.Shape2D, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) Packed.Array[Vector2.XY] { //gd:Shape2D.collide_with_motion_and_get_contacts
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shape2D.Bind_collide_with_motion_and_get_contacts), gdextension.SizePackedArray|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeVector2<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.collide_with_motion_and_get_contacts, gdextension.SizePackedArray|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeTransform2D<<16)|(gdextension.SizeVector2<<20), unsafe.Pointer(&struct {
 		local_xform  Transform2D.OriginXY
 		local_motion Vector2.XY
 		with_shape   gdextension.Object
@@ -250,7 +287,7 @@ Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled wi
 */
 //go:nosplit
 func (self class) Draw(canvas_item RID.Any, color Color.RGBA) { //gd:Shape2D.draw
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shape2D.Bind_draw), 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		canvas_item RID.Any
 		color       Color.RGBA
 	}{canvas_item, color}))
@@ -261,7 +298,7 @@ Returns a [Rect2] representing the shapes boundary.
 */
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:Shape2D.get_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shape2D.Bind_get_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -297,5 +334,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Shape2D", func(ptr gd.Object) any { return [1]gdclass.Shape2D{*(*gdclass.Shape2D)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Shape2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

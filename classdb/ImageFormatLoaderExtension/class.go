@@ -76,6 +76,23 @@ Be sure to respect the documented return types and values. You should create an 
 */
 type Instance [1]gdclass.ImageFormatLoaderExtension
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	add_format_loader    gdextension.MethodForClass `hash:"3218959716"`
+	remove_format_loader gdextension.MethodForClass `hash:"3218959716"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ImageFormatLoaderExtension")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -161,6 +178,20 @@ type Advanced = class
 type class [1]gdclass.ImageFormatLoaderExtension
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ImageFormatLoaderExtension)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ImageFormatLoaderExtension)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -170,7 +201,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ImageFormatLoaderExtension"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ImageFormatLoaderExtension)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -222,7 +253,7 @@ Add this format loader to the engine, allowing it to recognize the file extensio
 */
 //go:nosplit
 func (self class) AddFormatLoader() { //gd:ImageFormatLoaderExtension.add_format_loader
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageFormatLoaderExtension.Bind_add_format_loader), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_format_loader, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -230,7 +261,7 @@ Remove this format loader from the engine.
 */
 //go:nosplit
 func (self class) RemoveFormatLoader() { //gd:ImageFormatLoaderExtension.remove_format_loader
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageFormatLoaderExtension.Bind_remove_format_loader), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_format_loader, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsImageFormatLoaderExtension() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))
@@ -280,7 +311,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ImageFormatLoaderExtension", func(ptr gd.Object) any {
-		return [1]gdclass.ImageFormatLoaderExtension{*(*gdclass.ImageFormatLoaderExtension)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ImageFormatLoaderExtension", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

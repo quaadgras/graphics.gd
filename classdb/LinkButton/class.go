@@ -76,6 +76,35 @@ See also [BaseButton] which contains common properties and methods associated wi
 */
 type Instance [1]gdclass.LinkButton
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_text                                  gdextension.MethodForClass `hash:"83702148"`
+	get_text                                  gdextension.MethodForClass `hash:"201670096"`
+	set_text_direction                        gdextension.MethodForClass `hash:"119160795"`
+	get_text_direction                        gdextension.MethodForClass `hash:"797257663"`
+	set_language                              gdextension.MethodForClass `hash:"83702148"`
+	get_language                              gdextension.MethodForClass `hash:"201670096"`
+	set_uri                                   gdextension.MethodForClass `hash:"83702148"`
+	get_uri                                   gdextension.MethodForClass `hash:"201670096"`
+	set_underline_mode                        gdextension.MethodForClass `hash:"4032947085"`
+	get_underline_mode                        gdextension.MethodForClass `hash:"568343738"`
+	set_structured_text_bidi_override         gdextension.MethodForClass `hash:"55961453"`
+	get_structured_text_bidi_override         gdextension.MethodForClass `hash:"3385126229"`
+	set_structured_text_bidi_override_options gdextension.MethodForClass `hash:"381264803"`
+	get_structured_text_bidi_override_options gdextension.MethodForClass `hash:"3995934104"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("LinkButton")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -91,6 +120,20 @@ type Advanced = class
 type class [1]gdclass.LinkButton
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.LinkButton)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.LinkButton)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -100,7 +143,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("LinkButton"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.LinkButton)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -164,86 +207,86 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 
 //go:nosplit
 func (self class) SetText(text String.Readable) { //gd:LinkButton.set_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_set_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
 }
 
 //go:nosplit
 func (self class) GetText() String.Readable { //gd:LinkButton.get_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_get_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextDirection(direction Control.TextDirection) { //gd:LinkButton.set_text_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_set_text_direction), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Control.TextDirection }{direction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_direction, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Control.TextDirection }{direction}))
 }
 
 //go:nosplit
 func (self class) GetTextDirection() Control.TextDirection { //gd:LinkButton.get_text_direction
-	var r_ret = gdextension.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_get_text_direction), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:LinkButton.set_language
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_set_language), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:LinkButton.get_language
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_get_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUri(uri String.Readable) { //gd:LinkButton.set_uri
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_set_uri), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ uri gdextension.String }{pointers.Get(gd.InternalString(uri))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uri, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ uri gdextension.String }{pointers.Get(gd.InternalString(uri))}))
 }
 
 //go:nosplit
 func (self class) GetUri() String.Readable { //gd:LinkButton.get_uri
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_get_uri), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_uri, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUnderlineMode(underline_mode UnderlineMode) { //gd:LinkButton.set_underline_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_set_underline_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ underline_mode UnderlineMode }{underline_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_underline_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ underline_mode UnderlineMode }{underline_mode}))
 }
 
 //go:nosplit
 func (self class) GetUnderlineMode() UnderlineMode { //gd:LinkButton.get_underline_mode
-	var r_ret = gdextension.Call[UnderlineMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_get_underline_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[UnderlineMode](gd.ObjectChecked(self.AsObject()), methods.get_underline_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:LinkButton.set_structured_text_bidi_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_set_structured_text_bidi_override), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		parser TextServer.StructuredTextParser
 	}{parser}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:LinkButton.get_structured_text_bidi_override
-	var r_ret = gdextension.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_get_structured_text_bidi_override), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:LinkButton.set_structured_text_bidi_override_options
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_set_structured_text_bidi_override_options), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:LinkButton.get_structured_text_bidi_override_options
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.LinkButton.Bind_get_structured_text_bidi_override_options), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -287,7 +330,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("LinkButton", func(ptr gd.Object) any { return [1]gdclass.LinkButton{*(*gdclass.LinkButton)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("LinkButton", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type UnderlineMode int //gd:LinkButton.UnderlineMode

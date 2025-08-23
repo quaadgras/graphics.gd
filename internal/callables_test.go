@@ -3,7 +3,6 @@ package gd_test
 import (
 	"testing"
 
-	"graphics.gd/classdb"
 	"graphics.gd/classdb/GDScript"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/internal/pointers"
@@ -39,7 +38,7 @@ func TestCallables(t *testing.T) {
 	runner.ClassName()
 	pointers.Cycle()
 
-	var node Node.Instance = Object.Call(runner, "get_node").(classdb.Node)
+	var node = Object.Call(runner, "get_node").(Node.Instance)
 	if node.Name() != "TestNode" {
 		t.Fatalf("Expected 'TestNode', got '%s'", node.Name())
 	}

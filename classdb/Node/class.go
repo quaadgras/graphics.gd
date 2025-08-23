@@ -87,6 +87,138 @@ Finally, when a node is freed with [method Object.free] or [method queue_free], 
 */
 type Instance [1]gdclass.Node
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	print_orphan_nodes                  gdextension.MethodForClass `hash:"3218959716"`
+	add_sibling                         gdextension.MethodForClass `hash:"2570952461"`
+	set_name                            gdextension.MethodForClass `hash:"83702148"`
+	get_name                            gdextension.MethodForClass `hash:"2002593661"`
+	add_child                           gdextension.MethodForClass `hash:"3863233950"`
+	remove_child                        gdextension.MethodForClass `hash:"1078189570"`
+	reparent                            gdextension.MethodForClass `hash:"3685795103"`
+	get_child_count                     gdextension.MethodForClass `hash:"894402480"`
+	get_children                        gdextension.MethodForClass `hash:"873284517"`
+	get_child                           gdextension.MethodForClass `hash:"541253412"`
+	has_node                            gdextension.MethodForClass `hash:"861721659"`
+	get_node                            gdextension.MethodForClass `hash:"2734337346"`
+	get_node_or_null                    gdextension.MethodForClass `hash:"2734337346"`
+	get_parent                          gdextension.MethodForClass `hash:"3160264692"`
+	find_child                          gdextension.MethodForClass `hash:"2008217037"`
+	find_children                       gdextension.MethodForClass `hash:"2560337219"`
+	find_parent                         gdextension.MethodForClass `hash:"1140089439"`
+	has_node_and_resource               gdextension.MethodForClass `hash:"861721659"`
+	get_node_and_resource               gdextension.MethodForClass `hash:"502563882"`
+	is_inside_tree                      gdextension.MethodForClass `hash:"36873697"`
+	is_part_of_edited_scene             gdextension.MethodForClass `hash:"36873697"`
+	is_ancestor_of                      gdextension.MethodForClass `hash:"3093956946"`
+	is_greater_than                     gdextension.MethodForClass `hash:"3093956946"`
+	get_path                            gdextension.MethodForClass `hash:"4075236667"`
+	get_path_to                         gdextension.MethodForClass `hash:"498846349"`
+	add_to_group                        gdextension.MethodForClass `hash:"3683006648"`
+	remove_from_group                   gdextension.MethodForClass `hash:"3304788590"`
+	is_in_group                         gdextension.MethodForClass `hash:"2619796661"`
+	move_child                          gdextension.MethodForClass `hash:"3315886247"`
+	get_groups                          gdextension.MethodForClass `hash:"3995934104"`
+	set_owner                           gdextension.MethodForClass `hash:"1078189570"`
+	get_owner                           gdextension.MethodForClass `hash:"3160264692"`
+	get_index                           gdextension.MethodForClass `hash:"894402480"`
+	print_tree                          gdextension.MethodForClass `hash:"3218959716"`
+	print_tree_pretty                   gdextension.MethodForClass `hash:"3218959716"`
+	get_tree_string                     gdextension.MethodForClass `hash:"2841200299"`
+	get_tree_string_pretty              gdextension.MethodForClass `hash:"2841200299"`
+	set_scene_file_path                 gdextension.MethodForClass `hash:"83702148"`
+	get_scene_file_path                 gdextension.MethodForClass `hash:"201670096"`
+	propagate_notification              gdextension.MethodForClass `hash:"1286410249"`
+	propagate_call                      gdextension.MethodForClass `hash:"1871007965"`
+	set_physics_process                 gdextension.MethodForClass `hash:"2586408642"`
+	get_physics_process_delta_time      gdextension.MethodForClass `hash:"1740695150"`
+	is_physics_processing               gdextension.MethodForClass `hash:"36873697"`
+	get_process_delta_time              gdextension.MethodForClass `hash:"1740695150"`
+	set_process                         gdextension.MethodForClass `hash:"2586408642"`
+	set_process_priority                gdextension.MethodForClass `hash:"1286410249"`
+	get_process_priority                gdextension.MethodForClass `hash:"3905245786"`
+	set_physics_process_priority        gdextension.MethodForClass `hash:"1286410249"`
+	get_physics_process_priority        gdextension.MethodForClass `hash:"3905245786"`
+	is_processing                       gdextension.MethodForClass `hash:"36873697"`
+	set_process_input                   gdextension.MethodForClass `hash:"2586408642"`
+	is_processing_input                 gdextension.MethodForClass `hash:"36873697"`
+	set_process_shortcut_input          gdextension.MethodForClass `hash:"2586408642"`
+	is_processing_shortcut_input        gdextension.MethodForClass `hash:"36873697"`
+	set_process_unhandled_input         gdextension.MethodForClass `hash:"2586408642"`
+	is_processing_unhandled_input       gdextension.MethodForClass `hash:"36873697"`
+	set_process_unhandled_key_input     gdextension.MethodForClass `hash:"2586408642"`
+	is_processing_unhandled_key_input   gdextension.MethodForClass `hash:"36873697"`
+	set_process_mode                    gdextension.MethodForClass `hash:"1841290486"`
+	get_process_mode                    gdextension.MethodForClass `hash:"739966102"`
+	can_process                         gdextension.MethodForClass `hash:"36873697"`
+	set_process_thread_group            gdextension.MethodForClass `hash:"2275442745"`
+	get_process_thread_group            gdextension.MethodForClass `hash:"1866404740"`
+	set_process_thread_messages         gdextension.MethodForClass `hash:"1357280998"`
+	get_process_thread_messages         gdextension.MethodForClass `hash:"4228993612"`
+	set_process_thread_group_order      gdextension.MethodForClass `hash:"1286410249"`
+	get_process_thread_group_order      gdextension.MethodForClass `hash:"3905245786"`
+	set_display_folded                  gdextension.MethodForClass `hash:"2586408642"`
+	is_displayed_folded                 gdextension.MethodForClass `hash:"36873697"`
+	set_process_internal                gdextension.MethodForClass `hash:"2586408642"`
+	is_processing_internal              gdextension.MethodForClass `hash:"36873697"`
+	set_physics_process_internal        gdextension.MethodForClass `hash:"2586408642"`
+	is_physics_processing_internal      gdextension.MethodForClass `hash:"36873697"`
+	set_physics_interpolation_mode      gdextension.MethodForClass `hash:"3202404928"`
+	get_physics_interpolation_mode      gdextension.MethodForClass `hash:"2920385216"`
+	is_physics_interpolated             gdextension.MethodForClass `hash:"36873697"`
+	is_physics_interpolated_and_enabled gdextension.MethodForClass `hash:"36873697"`
+	reset_physics_interpolation         gdextension.MethodForClass `hash:"3218959716"`
+	set_auto_translate_mode             gdextension.MethodForClass `hash:"776149714"`
+	get_auto_translate_mode             gdextension.MethodForClass `hash:"2498906432"`
+	set_translation_domain_inherited    gdextension.MethodForClass `hash:"3218959716"`
+	get_window                          gdextension.MethodForClass `hash:"1757182445"`
+	get_last_exclusive_window           gdextension.MethodForClass `hash:"1757182445"`
+	get_tree                            gdextension.MethodForClass `hash:"2958820483"`
+	create_tween                        gdextension.MethodForClass `hash:"3426978995"`
+	duplicate                           gdextension.MethodForClass `hash:"3511555459"`
+	replace_by                          gdextension.MethodForClass `hash:"2570952461"`
+	set_scene_instance_load_placeholder gdextension.MethodForClass `hash:"2586408642"`
+	get_scene_instance_load_placeholder gdextension.MethodForClass `hash:"36873697"`
+	set_editable_instance               gdextension.MethodForClass `hash:"2731852923"`
+	is_editable_instance                gdextension.MethodForClass `hash:"3093956946"`
+	get_viewport                        gdextension.MethodForClass `hash:"3596683776"`
+	queue_free                          gdextension.MethodForClass `hash:"3218959716"`
+	request_ready                       gdextension.MethodForClass `hash:"3218959716"`
+	is_node_ready                       gdextension.MethodForClass `hash:"36873697"`
+	set_multiplayer_authority           gdextension.MethodForClass `hash:"972357352"`
+	get_multiplayer_authority           gdextension.MethodForClass `hash:"3905245786"`
+	is_multiplayer_authority            gdextension.MethodForClass `hash:"36873697"`
+	get_multiplayer                     gdextension.MethodForClass `hash:"406750475"`
+	rpc_config                          gdextension.MethodForClass `hash:"3776071444"`
+	get_rpc_config                      gdextension.MethodForClass `hash:"1214101251"`
+	set_editor_description              gdextension.MethodForClass `hash:"83702148"`
+	get_editor_description              gdextension.MethodForClass `hash:"201670096"`
+	set_unique_name_in_owner            gdextension.MethodForClass `hash:"2586408642"`
+	is_unique_name_in_owner             gdextension.MethodForClass `hash:"36873697"`
+	atr                                 gdextension.MethodForClass `hash:"3344478075"`
+	atr_n                               gdextension.MethodForClass `hash:"259354841"`
+	rpc                                 gdextension.MethodForClass `hash:"4047867050"`
+	rpc_id                              gdextension.MethodForClass `hash:"361499283"`
+	update_configuration_warnings       gdextension.MethodForClass `hash:"3218959716"`
+	call_deferred_thread_group          gdextension.MethodForClass `hash:"3400424181"`
+	set_deferred_thread_group           gdextension.MethodForClass `hash:"3776071444"`
+	notify_deferred_thread_group        gdextension.MethodForClass `hash:"1286410249"`
+	call_thread_safe                    gdextension.MethodForClass `hash:"3400424181"`
+	set_thread_safe                     gdextension.MethodForClass `hash:"3776071444"`
+	notify_thread_safe                  gdextension.MethodForClass `hash:"1286410249"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Node")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Node
@@ -1436,6 +1568,20 @@ type Advanced = class
 type class [1]gdclass.Node
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Node)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Node)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -1445,7 +1591,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Node"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Node)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -1734,7 +1880,7 @@ Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
 */
 //go:nosplit
 func (self class) PrintOrphanNodes() { //gd:Node.print_orphan_nodes
-	gdextension.CallStatic[struct{}](gdextension.MethodForClass(gd.Global.Methods.Node.Bind_print_orphan_nodes), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.CallStatic[struct{}](methods.print_orphan_nodes, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1745,7 +1891,7 @@ Use [method add_child] instead of this method if you don't need the child node t
 */
 //go:nosplit
 func (self class) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) { //gd:Node.add_sibling
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_add_sibling), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_sibling, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		sibling             gdextension.Object
 		force_readable_name bool
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(sibling[0].AsObject()[0])), force_readable_name}))
@@ -1753,12 +1899,12 @@ func (self class) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) 
 
 //go:nosplit
 func (self class) SetName(name String.Readable) { //gd:Node.set_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_name), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 //go:nosplit
 func (self class) GetName() String.Name { //gd:Node.get_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -1789,7 +1935,7 @@ If you need the child node to be added below a specific node in the list of chil
 */
 //go:nosplit
 func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, internal_ InternalMode) { //gd:Node.add_child
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_add_child), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_child, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		node                gdextension.Object
 		force_readable_name bool
 		internal_           InternalMode
@@ -1802,7 +1948,7 @@ Removes a child [param node]. The [param node], along with its children, are [b]
 */
 //go:nosplit
 func (self class) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_remove_child), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_child, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 
 /*
@@ -1811,7 +1957,7 @@ If [param keep_global_transform] is [code]true[/code], the node's global transfo
 */
 //go:nosplit
 func (self class) Reparent(new_parent [1]gdclass.Node, keep_global_transform bool) { //gd:Node.reparent
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_reparent), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reparent, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		new_parent            gdextension.Object
 		keep_global_transform bool
 	}{gdextension.Object(gd.ObjectChecked(new_parent[0].AsObject())), keep_global_transform}))
@@ -1823,7 +1969,7 @@ If [param include_internal] is [code]false[/code], internal children are not cou
 */
 //go:nosplit
 func (self class) GetChildCount(include_internal bool) int64 { //gd:Node.get_child_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_child_count), gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ include_internal bool }{include_internal}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_child_count, gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ include_internal bool }{include_internal}))
 	var ret = r_ret
 	return ret
 }
@@ -1834,7 +1980,7 @@ If [param include_internal] is [code]false[/code], excludes internal children fr
 */
 //go:nosplit
 func (self class) GetChildren(include_internal bool) Array.Contains[[1]gdclass.Node] { //gd:Node.get_children
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_children), gdextension.SizeArray|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ include_internal bool }{include_internal}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_children, gdextension.SizeArray|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ include_internal bool }{include_internal}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1855,7 +2001,7 @@ var c = get_child(-1).name # c is "Last"
 */
 //go:nosplit
 func (self class) GetChild(idx int64, include_internal bool) [1]gdclass.Node { //gd:Node.get_child
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_child), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_child, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		idx              int64
 		include_internal bool
 	}{idx, include_internal}))
@@ -1868,7 +2014,7 @@ Returns [code]true[/code] if the [param path] points to a valid node. See also [
 */
 //go:nosplit
 func (self class) HasNode(path Path.ToNode) bool { //gd:Node.has_node
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_has_node), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_node, gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -1907,7 +2053,7 @@ GetNode("/root/MyGame");
 */
 //go:nosplit
 func (self class) GetNode(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_node), gdextension.SizeObject|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node, gdextension.SizeObject|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -1917,7 +2063,7 @@ Fetches a node by [NodePath]. Similar to [method get_node], but does not generat
 */
 //go:nosplit
 func (self class) GetNodeOrNull(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node_or_null
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_node_or_null), gdextension.SizeObject|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node_or_null, gdextension.SizeObject|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -1927,7 +2073,7 @@ Returns this node's parent node, or [code]null[/code] if the node doesn't have a
 */
 //go:nosplit
 func (self class) GetParent() [1]gdclass.Node { //gd:Node.get_parent
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_parent), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -1941,7 +2087,7 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 */
 //go:nosplit
 func (self class) FindChild(pattern String.Readable, recursive bool, owned bool) [1]gdclass.Node { //gd:Node.find_child
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_find_child), gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_child, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		pattern   gdextension.String
 		recursive bool
 		owned     bool
@@ -1960,7 +2106,7 @@ If [param owned] is [code]true[/code], only descendants with a valid [member own
 */
 //go:nosplit
 func (self class) FindChildren(pattern String.Readable, atype String.Readable, recursive bool, owned bool) Array.Contains[[1]gdclass.Node] { //gd:Node.find_children
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_find_children), gdextension.SizeArray|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.find_children, gdextension.SizeArray|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		pattern   gdextension.String
 		atype     gdextension.String
 		recursive bool
@@ -1976,7 +2122,7 @@ Finds the first ancestor of this node whose [member name] matches [param pattern
 */
 //go:nosplit
 func (self class) FindParent(pattern String.Readable) [1]gdclass.Node { //gd:Node.find_parent
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_find_parent), gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ pattern gdextension.String }{pointers.Get(gd.InternalString(pattern))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_parent, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ pattern gdextension.String }{pointers.Get(gd.InternalString(pattern))}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -1986,7 +2132,7 @@ Returns [code]true[/code] if [param path] points to a valid node and its subname
 */
 //go:nosplit
 func (self class) HasNodeAndResource(path Path.ToNode) bool { //gd:Node.has_node_and_resource
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_has_node_and_resource), gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_node_and_resource, gdextension.SizeBool|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = r_ret
 	return ret
 }
@@ -2034,7 +2180,7 @@ GD.Print(c[2]);             // Prints ^":region"
 */
 //go:nosplit
 func (self class) GetNodeAndResource(path Path.ToNode) Array.Any { //gd:Node.get_node_and_resource
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_node_and_resource), gdextension.SizeArray|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_and_resource, gdextension.SizeArray|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -2044,7 +2190,7 @@ Returns [code]true[/code] if this node is currently inside a [SceneTree]. See al
 */
 //go:nosplit
 func (self class) IsInsideTree() bool { //gd:Node.is_inside_tree
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_inside_tree), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_inside_tree, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2054,7 +2200,7 @@ Returns [code]true[/code] if the node is part of the scene currently opened in t
 */
 //go:nosplit
 func (self class) IsPartOfEditedScene() bool { //gd:Node.is_part_of_edited_scene
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_part_of_edited_scene), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_part_of_edited_scene, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2064,7 +2210,7 @@ Returns [code]true[/code] if the given [param node] is a direct or indirect chil
 */
 //go:nosplit
 func (self class) IsAncestorOf(node [1]gdclass.Node) bool { //gd:Node.is_ancestor_of
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_ancestor_of), gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ancestor_of, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -2074,7 +2220,7 @@ Returns [code]true[/code] if the given [param node] occurs later in the scene hi
 */
 //go:nosplit
 func (self class) IsGreaterThan(node [1]gdclass.Node) bool { //gd:Node.is_greater_than
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_greater_than), gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_greater_than, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -2084,7 +2230,7 @@ Returns the node's absolute path, relative to the [member SceneTree.root]. If th
 */
 //go:nosplit
 func (self class) GetPath() Path.ToNode { //gd:Node.get_path
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -2096,7 +2242,7 @@ If [param use_unique_path] is [code]true[/code], returns the shortest path accou
 */
 //go:nosplit
 func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) Path.ToNode { //gd:Node.get_path_to
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_path_to), gdextension.SizeNodePath|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_path_to, gdextension.SizeNodePath|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		node            gdextension.Object
 		use_unique_path bool
 	}{gdextension.Object(gd.ObjectChecked(node[0].AsObject())), use_unique_path}))
@@ -2112,7 +2258,7 @@ If [param persistent] is [code]true[/code], the group will be stored when saved 
 */
 //go:nosplit
 func (self class) AddToGroup(group String.Name, persistent bool) { //gd:Node.add_to_group
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_add_to_group), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_to_group, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		group      gdextension.StringName
 		persistent bool
 	}{pointers.Get(gd.InternalStringName(group)), persistent}))
@@ -2123,7 +2269,7 @@ Removes the node from the given [param group]. Does nothing if the node is not i
 */
 //go:nosplit
 func (self class) RemoveFromGroup(group String.Name) { //gd:Node.remove_from_group
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_remove_from_group), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_from_group, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))}))
 }
 
 /*
@@ -2131,7 +2277,7 @@ Returns [code]true[/code] if this node has been added to the given [param group]
 */
 //go:nosplit
 func (self class) IsInGroup(group String.Name) bool { //gd:Node.is_in_group
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_in_group), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_in_group, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ group gdextension.StringName }{pointers.Get(gd.InternalStringName(group))}))
 	var ret = r_ret
 	return ret
 }
@@ -2142,7 +2288,7 @@ Moves [param child_node] to the given index. A node's index is the order among i
 */
 //go:nosplit
 func (self class) MoveChild(child_node [1]gdclass.Node, to_index int64) { //gd:Node.move_child
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_move_child), 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_child, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		child_node gdextension.Object
 		to_index   int64
 	}{gdextension.Object(gd.ObjectChecked(child_node[0].AsObject())), to_index}))
@@ -2173,19 +2319,19 @@ foreach (string group in GetGroups())
 */
 //go:nosplit
 func (self class) GetGroups() Array.Contains[String.Name] { //gd:Node.get_groups
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_groups), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_groups, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOwner(owner [1]gdclass.Node) { //gd:Node.set_owner
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_owner), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ owner gdextension.Object }{gdextension.Object(gd.ObjectChecked(owner[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_owner, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ owner gdextension.Object }{gdextension.Object(gd.ObjectChecked(owner[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetOwner() [1]gdclass.Node { //gd:Node.get_owner
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_owner), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_owner, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -2196,7 +2342,7 @@ If [param include_internal] is [code]false[/code], returns the index ignoring in
 */
 //go:nosplit
 func (self class) GetIndex(include_internal bool) int64 { //gd:Node.get_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_index), gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ include_internal bool }{include_internal}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_index, gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ include_internal bool }{include_internal}))
 	var ret = r_ret
 	return ret
 }
@@ -2215,7 +2361,7 @@ SplashScreen/Camera2D
 */
 //go:nosplit
 func (self class) PrintTree() { //gd:Node.print_tree
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_print_tree), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.print_tree, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2232,7 +2378,7 @@ May print, for example:
 */
 //go:nosplit
 func (self class) PrintTreePretty() { //gd:Node.print_tree_pretty
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_print_tree_pretty), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.print_tree_pretty, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2249,7 +2395,7 @@ TheGame/SplashScreen/Camera2D
 */
 //go:nosplit
 func (self class) GetTreeString() String.Readable { //gd:Node.get_tree_string
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_tree_string), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tree_string, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2268,19 +2414,19 @@ May print, for example:
 */
 //go:nosplit
 func (self class) GetTreeStringPretty() String.Readable { //gd:Node.get_tree_string_pretty
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_tree_string_pretty), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tree_string_pretty, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSceneFilePath(scene_file_path String.Readable) { //gd:Node.set_scene_file_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_scene_file_path), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ scene_file_path gdextension.String }{pointers.Get(gd.InternalString(scene_file_path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_file_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ scene_file_path gdextension.String }{pointers.Get(gd.InternalString(scene_file_path))}))
 }
 
 //go:nosplit
 func (self class) GetSceneFilePath() String.Readable { //gd:Node.get_scene_file_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_scene_file_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_scene_file_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2290,7 +2436,7 @@ Calls [method Object.notification] with [param what] on this node and all of its
 */
 //go:nosplit
 func (self class) PropagateNotification(what int64) { //gd:Node.propagate_notification
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_propagate_notification), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ what int64 }{what}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.propagate_notification, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ what int64 }{what}))
 }
 
 /*
@@ -2299,7 +2445,7 @@ If [param parent_first] is [code]true[/code], the method is called on this node 
 */
 //go:nosplit
 func (self class) PropagateCall(method String.Name, args Array.Any, parent_first bool) { //gd:Node.propagate_call
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_propagate_call), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.propagate_call, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		method       gdextension.StringName
 		args         gdextension.Array
 		parent_first bool
@@ -2312,7 +2458,7 @@ If set to [code]true[/code], enables physics (fixed framerate) processing. When 
 */
 //go:nosplit
 func (self class) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_physics_process), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_process, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 /*
@@ -2321,7 +2467,7 @@ Returns the time elapsed (in seconds) since the last physics callback. This valu
 */
 //go:nosplit
 func (self class) GetPhysicsProcessDeltaTime() float64 { //gd:Node.get_physics_process_delta_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_physics_process_delta_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_physics_process_delta_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2331,7 +2477,7 @@ Returns [code]true[/code] if physics processing is enabled (see [method set_phys
 */
 //go:nosplit
 func (self class) IsPhysicsProcessing() bool { //gd:Node.is_physics_processing
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_physics_processing), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_processing, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2342,7 +2488,7 @@ Returns the time elapsed (in seconds) since the last process callback. This valu
 */
 //go:nosplit
 func (self class) GetProcessDeltaTime() float64 { //gd:Node.get_process_delta_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_process_delta_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_process_delta_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2354,29 +2500,29 @@ If set to [code]true[/code], enables processing. When a node is being processed,
 */
 //go:nosplit
 func (self class) SetProcess(enable bool) { //gd:Node.set_process
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_process), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) SetProcessPriority(priority int64) { //gd:Node.set_process_priority
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_process_priority), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_priority, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
 }
 
 //go:nosplit
 func (self class) GetProcessPriority() int64 { //gd:Node.get_process_priority
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_process_priority), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_priority, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicsProcessPriority(priority int64) { //gd:Node.set_physics_process_priority
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_physics_process_priority), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_process_priority, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
 }
 
 //go:nosplit
 func (self class) GetPhysicsProcessPriority() int64 { //gd:Node.get_physics_process_priority
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_physics_process_priority), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_process_priority, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2386,7 +2532,7 @@ Returns [code]true[/code] if processing is enabled (see [method set_process]).
 */
 //go:nosplit
 func (self class) IsProcessing() bool { //gd:Node.is_processing
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_processing), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2397,7 +2543,7 @@ If set to [code]true[/code], enables input processing.
 */
 //go:nosplit
 func (self class) SetProcessInput(enable bool) { //gd:Node.set_process_input
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_process_input), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_input, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 /*
@@ -2405,7 +2551,7 @@ Returns [code]true[/code] if the node is processing input (see [method set_proce
 */
 //go:nosplit
 func (self class) IsProcessingInput() bool { //gd:Node.is_processing_input
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_processing_input), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_input, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2416,7 +2562,7 @@ If set to [code]true[/code], enables shortcut processing for this node.
 */
 //go:nosplit
 func (self class) SetProcessShortcutInput(enable bool) { //gd:Node.set_process_shortcut_input
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_process_shortcut_input), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_shortcut_input, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 /*
@@ -2424,7 +2570,7 @@ Returns [code]true[/code] if the node is processing shortcuts (see [method set_p
 */
 //go:nosplit
 func (self class) IsProcessingShortcutInput() bool { //gd:Node.is_processing_shortcut_input
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_processing_shortcut_input), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_shortcut_input, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2435,7 +2581,7 @@ If set to [code]true[/code], enables unhandled input processing. It enables the 
 */
 //go:nosplit
 func (self class) SetProcessUnhandledInput(enable bool) { //gd:Node.set_process_unhandled_input
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_process_unhandled_input), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_unhandled_input, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 /*
@@ -2443,7 +2589,7 @@ Returns [code]true[/code] if the node is processing unhandled input (see [method
 */
 //go:nosplit
 func (self class) IsProcessingUnhandledInput() bool { //gd:Node.is_processing_unhandled_input
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_processing_unhandled_input), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_unhandled_input, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2454,7 +2600,7 @@ If set to [code]true[/code], enables unhandled key input processing.
 */
 //go:nosplit
 func (self class) SetProcessUnhandledKeyInput(enable bool) { //gd:Node.set_process_unhandled_key_input
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_process_unhandled_key_input), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_unhandled_key_input, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 /*
@@ -2462,19 +2608,19 @@ Returns [code]true[/code] if the node is processing unhandled key input (see [me
 */
 //go:nosplit
 func (self class) IsProcessingUnhandledKeyInput() bool { //gd:Node.is_processing_unhandled_key_input
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_processing_unhandled_key_input), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_unhandled_key_input, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProcessMode(mode ProcessMode) { //gd:Node.set_process_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_process_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ProcessMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ProcessMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetProcessMode() ProcessMode { //gd:Node.get_process_mode
-	var r_ret = gdextension.Call[ProcessMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_process_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ProcessMode](gd.ObjectChecked(self.AsObject()), methods.get_process_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2490,43 +2636,43 @@ If the node is not inside the tree, returns [code]false[/code] no matter the val
 */
 //go:nosplit
 func (self class) CanProcess() bool { //gd:Node.can_process
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_can_process), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_process, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProcessThreadGroup(mode ProcessThreadGroup) { //gd:Node.set_process_thread_group
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_process_thread_group), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ProcessThreadGroup }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_thread_group, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ProcessThreadGroup }{mode}))
 }
 
 //go:nosplit
 func (self class) GetProcessThreadGroup() ProcessThreadGroup { //gd:Node.get_process_thread_group
-	var r_ret = gdextension.Call[ProcessThreadGroup](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_process_thread_group), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ProcessThreadGroup](gd.ObjectChecked(self.AsObject()), methods.get_process_thread_group, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProcessThreadMessages(flags ProcessThreadMessages) { //gd:Node.set_process_thread_messages
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_process_thread_messages), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags ProcessThreadMessages }{flags}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_thread_messages, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags ProcessThreadMessages }{flags}))
 }
 
 //go:nosplit
 func (self class) GetProcessThreadMessages() ProcessThreadMessages { //gd:Node.get_process_thread_messages
-	var r_ret = gdextension.Call[ProcessThreadMessages](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_process_thread_messages), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ProcessThreadMessages](gd.ObjectChecked(self.AsObject()), methods.get_process_thread_messages, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProcessThreadGroupOrder(order int64) { //gd:Node.set_process_thread_group_order
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_process_thread_group_order), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ order int64 }{order}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_thread_group_order, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ order int64 }{order}))
 }
 
 //go:nosplit
 func (self class) GetProcessThreadGroupOrder() int64 { //gd:Node.get_process_thread_group_order
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_process_thread_group_order), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_thread_group_order, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2536,7 +2682,7 @@ If set to [code]true[/code], the node appears folded in the Scene dock. As a res
 */
 //go:nosplit
 func (self class) SetDisplayFolded(fold bool) { //gd:Node.set_display_folded
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_display_folded), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ fold bool }{fold}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_folded, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ fold bool }{fold}))
 }
 
 /*
@@ -2544,7 +2690,7 @@ Returns [code]true[/code] if the node is folded (collapsed) in the Scene dock. T
 */
 //go:nosplit
 func (self class) IsDisplayedFolded() bool { //gd:Node.is_displayed_folded
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_displayed_folded), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_displayed_folded, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2555,7 +2701,7 @@ If set to [code]true[/code], enables internal processing for this node. Internal
 */
 //go:nosplit
 func (self class) SetProcessInternal(enable bool) { //gd:Node.set_process_internal
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_process_internal), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_internal, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 /*
@@ -2563,7 +2709,7 @@ Returns [code]true[/code] if internal processing is enabled (see [method set_pro
 */
 //go:nosplit
 func (self class) IsProcessingInternal() bool { //gd:Node.is_processing_internal
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_processing_internal), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_processing_internal, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2574,7 +2720,7 @@ If set to [code]true[/code], enables internal physics for this node. Internal ph
 */
 //go:nosplit
 func (self class) SetPhysicsProcessInternal(enable bool) { //gd:Node.set_physics_process_internal
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_physics_process_internal), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_process_internal, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 /*
@@ -2582,19 +2728,19 @@ Returns [code]true[/code] if internal physics processing is enabled (see [method
 */
 //go:nosplit
 func (self class) IsPhysicsProcessingInternal() bool { //gd:Node.is_physics_processing_internal
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_physics_processing_internal), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_processing_internal, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicsInterpolationMode(mode PhysicsInterpolationMode) { //gd:Node.set_physics_interpolation_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_physics_interpolation_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode PhysicsInterpolationMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_interpolation_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode PhysicsInterpolationMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetPhysicsInterpolationMode() PhysicsInterpolationMode { //gd:Node.get_physics_interpolation_mode
-	var r_ret = gdextension.Call[PhysicsInterpolationMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_physics_interpolation_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PhysicsInterpolationMode](gd.ObjectChecked(self.AsObject()), methods.get_physics_interpolation_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2605,7 +2751,7 @@ Returns [code]true[/code] if physics interpolation is enabled for this node (see
 */
 //go:nosplit
 func (self class) IsPhysicsInterpolated() bool { //gd:Node.is_physics_interpolated
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_physics_interpolated), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_interpolated, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2617,7 +2763,7 @@ See [member SceneTree.physics_interpolation] and [member ProjectSettings.physics
 */
 //go:nosplit
 func (self class) IsPhysicsInterpolatedAndEnabled() bool { //gd:Node.is_physics_interpolated_and_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_physics_interpolated_and_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physics_interpolated_and_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2630,17 +2776,17 @@ The notification [constant NOTIFICATION_RESET_PHYSICS_INTERPOLATION] will be rec
 */
 //go:nosplit
 func (self class) ResetPhysicsInterpolation() { //gd:Node.reset_physics_interpolation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_reset_physics_interpolation), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_physics_interpolation, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetAutoTranslateMode(mode AutoTranslateMode) { //gd:Node.set_auto_translate_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_auto_translate_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AutoTranslateMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_translate_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AutoTranslateMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetAutoTranslateMode() AutoTranslateMode { //gd:Node.get_auto_translate_mode
-	var r_ret = gdextension.Call[AutoTranslateMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_auto_translate_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_auto_translate_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2651,7 +2797,7 @@ This is the default behavior for all nodes. Calling [method Object.set_translati
 */
 //go:nosplit
 func (self class) SetTranslationDomainInherited() { //gd:Node.set_translation_domain_inherited
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_translation_domain_inherited), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_translation_domain_inherited, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2659,7 +2805,7 @@ Returns the [Window] that contains this node. If the node is in the main window,
 */
 //go:nosplit
 func (self class) GetWindow() [1]gdclass.Window { //gd:Node.get_window
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_window), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_window, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret)}
 	return ret
 }
@@ -2669,7 +2815,7 @@ Returns the [Window] that contains this node, or the last exclusive child in a c
 */
 //go:nosplit
 func (self class) GetLastExclusiveWindow() [1]gdclass.Window { //gd:Node.get_last_exclusive_window
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_last_exclusive_window), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_last_exclusive_window, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret)}
 	return ret
 }
@@ -2679,7 +2825,7 @@ Returns the [SceneTree] that contains this node. If this node is not inside the 
 */
 //go:nosplit
 func (self class) GetTree() [1]gdclass.SceneTree { //gd:Node.get_tree
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_tree), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tree, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SceneTree{gd.PointerMustAssertInstanceID[gdclass.SceneTree](r_ret)}
 	return ret
 }
@@ -2700,7 +2846,7 @@ The Tween will start automatically on the next process frame or physics frame (d
 */
 //go:nosplit
 func (self class) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_create_tween), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_tween, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Tween{gd.PointerWithOwnershipTransferredToGo[gdclass.Tween](r_ret)}
 	return ret
 }
@@ -2711,7 +2857,7 @@ Duplicates the node, returning a new node with all of its properties, signals, g
 */
 //go:nosplit
 func (self class) Duplicate(flags int64) [1]gdclass.Node { //gd:Node.duplicate
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_duplicate), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags int64 }{flags}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.duplicate, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags int64 }{flags}))
 	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret)}
 	return ret
 }
@@ -2723,7 +2869,7 @@ If [param keep_groups] is [code]true[/code], the [param node] is added to the sa
 */
 //go:nosplit
 func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) { //gd:Node.replace_by
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_replace_by), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.replace_by, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		node        gdextension.Object
 		keep_groups bool
 	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0])), keep_groups}))
@@ -2734,7 +2880,7 @@ If set to [code]true[/code], the node becomes a [InstancePlaceholder] when packe
 */
 //go:nosplit
 func (self class) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:Node.set_scene_instance_load_placeholder
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_scene_instance_load_placeholder), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ load_placeholder bool }{load_placeholder}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_instance_load_placeholder, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ load_placeholder bool }{load_placeholder}))
 }
 
 /*
@@ -2742,7 +2888,7 @@ Returns [code]true[/code] if this node is an instance load placeholder. See [Ins
 */
 //go:nosplit
 func (self class) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scene_instance_load_placeholder
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_scene_instance_load_placeholder), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_scene_instance_load_placeholder, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2752,7 +2898,7 @@ Set to [code]true[/code] to allow all nodes owned by [param node] to be availabl
 */
 //go:nosplit
 func (self class) SetEditableInstance(node [1]gdclass.Node, is_editable bool) { //gd:Node.set_editable_instance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_editable_instance), 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable_instance, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		node        gdextension.Object
 		is_editable bool
 	}{gdextension.Object(gd.ObjectChecked(node[0].AsObject())), is_editable}))
@@ -2763,7 +2909,7 @@ Returns [code]true[/code] if [param node] has editable children enabled relative
 */
 //go:nosplit
 func (self class) IsEditableInstance(node [1]gdclass.Node) bool { //gd:Node.is_editable_instance
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_editable_instance), gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable_instance, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -2773,7 +2919,7 @@ Returns the node's closest [Viewport] ancestor, if the node is inside the tree. 
 */
 //go:nosplit
 func (self class) GetViewport() [1]gdclass.Viewport { //gd:Node.get_viewport
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_viewport), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_viewport, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Viewport{gd.PointerMustAssertInstanceID[gdclass.Viewport](r_ret)}
 	return ret
 }
@@ -2785,7 +2931,7 @@ Unlike with [method Object.free], the node is not deleted instantly, and it can 
 */
 //go:nosplit
 func (self class) QueueFree() { //gd:Node.queue_free
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_queue_free), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_free, 0, unsafe.Pointer(&struct{}{}))
 	pointers.End(self.AsObject()[0])
 }
 
@@ -2795,7 +2941,7 @@ Requests [method _ready] to be called again the next time the node enters the tr
 */
 //go:nosplit
 func (self class) RequestReady() { //gd:Node.request_ready
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_request_ready), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_ready, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2804,7 +2950,7 @@ Returns [code]true[/code] if the node is ready, i.e. it's inside scene tree and 
 */
 //go:nosplit
 func (self class) IsNodeReady() bool { //gd:Node.is_node_ready
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_node_ready), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_node_ready, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2816,7 +2962,7 @@ If [param recursive] is [code]true[/code], the given peer is recursively set as 
 */
 //go:nosplit
 func (self class) SetMultiplayerAuthority(id int64, recursive bool) { //gd:Node.set_multiplayer_authority
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_multiplayer_authority), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer_authority, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		id        int64
 		recursive bool
 	}{id, recursive}))
@@ -2827,7 +2973,7 @@ Returns the peer ID of the multiplayer authority for this node. See [method set_
 */
 //go:nosplit
 func (self class) GetMultiplayerAuthority() int64 { //gd:Node.get_multiplayer_authority
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_multiplayer_authority), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_multiplayer_authority, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2837,14 +2983,14 @@ Returns [code]true[/code] if the local system is the multiplayer authority of th
 */
 //go:nosplit
 func (self class) IsMultiplayerAuthority() bool { //gd:Node.is_multiplayer_authority
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_multiplayer_authority), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_multiplayer_authority, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetMultiplayer() [1]gdclass.MultiplayerAPI { //gd:Node.get_multiplayer
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_multiplayer), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_multiplayer, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerAPI](r_ret)}
 	return ret
 }
@@ -2859,7 +3005,7 @@ Changes the RPC configuration for the given [param method]. [param config] shoul
 */
 //go:nosplit
 func (self class) RpcConfig(method String.Name, config variant.Any) { //gd:Node.rpc_config
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_rpc_config), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rpc_config, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		method gdextension.StringName
 		config gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(method)), gdextension.Variant(pointers.Get(gd.InternalVariant(config)))}))
@@ -2870,31 +3016,31 @@ Returns a [Dictionary] mapping method names to their RPC configuration defined f
 */
 //go:nosplit
 func (self class) GetRpcConfig() variant.Any { //gd:Node.get_rpc_config
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_rpc_config), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_rpc_config, gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditorDescription(editor_description String.Readable) { //gd:Node.set_editor_description
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_editor_description), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ editor_description gdextension.String }{pointers.Get(gd.InternalString(editor_description))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_description, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ editor_description gdextension.String }{pointers.Get(gd.InternalString(editor_description))}))
 }
 
 //go:nosplit
 func (self class) GetEditorDescription() String.Readable { //gd:Node.get_editor_description
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_get_editor_description), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_editor_description, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUniqueNameInOwner(enable bool) { //gd:Node.set_unique_name_in_owner
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_unique_name_in_owner), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unique_name_in_owner, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUniqueNameInOwner() bool { //gd:Node.is_unique_name_in_owner
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_is_unique_name_in_owner), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_unique_name_in_owner, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -2907,7 +3053,7 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_game
 */
 //go:nosplit
 func (self class) Atr(message String.Readable, context String.Name) String.Readable { //gd:Node.atr
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_atr), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.atr, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		message gdextension.String
 		context gdextension.StringName
 	}{pointers.Get(gd.InternalString(message)), pointers.Get(gd.InternalStringName(context))}))
@@ -2925,7 +3071,7 @@ For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gett
 */
 //go:nosplit
 func (self class) AtrN(message String.Readable, plural_message String.Name, n int64, context String.Name) String.Readable { //gd:Node.atr_n
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_atr_n), gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.atr_n, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), unsafe.Pointer(&struct {
 		message        gdextension.String
 		plural_message gdextension.StringName
 		n              int64
@@ -2943,7 +3089,7 @@ May return [constant OK] if the call is successful, [constant ERR_INVALID_PARAME
 //go:nosplit
 func (self class) Rpc(method String.Name, args ...gd.Variant) Error.Code { //gd:Node.rpc
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := gdextension.MethodForClass(gd.Global.Methods.Node.Bind_rpc).Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	ret, err := methods.rpc.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
 	if err != nil {
 		panic(err)
 	}
@@ -2957,7 +3103,7 @@ May return [constant OK] if the call is successful, [constant ERR_INVALID_PARAME
 //go:nosplit
 func (self class) RpcId(peer_id int64, method String.Name, args ...gd.Variant) Error.Code { //gd:Node.rpc_id
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(peer_id))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := gdextension.MethodForClass(gd.Global.Methods.Node.Bind_rpc_id).Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	ret, err := methods.rpc_id.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
 	if err != nil {
 		panic(err)
 	}
@@ -2969,7 +3115,7 @@ Refreshes the warnings displayed for this node in the Scene dock. Use [method _g
 */
 //go:nosplit
 func (self class) UpdateConfigurationWarnings() { //gd:Node.update_configuration_warnings
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_update_configuration_warnings), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_configuration_warnings, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -2978,7 +3124,7 @@ This function is similar to [method Object.call_deferred] except that the call w
 //go:nosplit
 func (self class) CallDeferredThreadGroup(method String.Name, args ...gd.Variant) variant.Any { //gd:Node.call_deferred_thread_group
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := gdextension.MethodForClass(gd.Global.Methods.Node.Bind_call_deferred_thread_group).Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	ret, err := methods.call_deferred_thread_group.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
 	if err != nil {
 		panic(err)
 	}
@@ -2990,7 +3136,7 @@ Similar to [method call_deferred_thread_group], but for setting properties.
 */
 //go:nosplit
 func (self class) SetDeferredThreadGroup(property String.Name, value variant.Any) { //gd:Node.set_deferred_thread_group
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_deferred_thread_group), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deferred_thread_group, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		property gdextension.StringName
 		value    gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
@@ -3001,7 +3147,7 @@ Similar to [method call_deferred_thread_group], but for notifications.
 */
 //go:nosplit
 func (self class) NotifyDeferredThreadGroup(what int64) { //gd:Node.notify_deferred_thread_group
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_notify_deferred_thread_group), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ what int64 }{what}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_deferred_thread_group, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ what int64 }{what}))
 }
 
 /*
@@ -3010,7 +3156,7 @@ This function ensures that the calling of this function will succeed, no matter 
 //go:nosplit
 func (self class) CallThreadSafe(method String.Name, args ...gd.Variant) variant.Any { //gd:Node.call_thread_safe
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := gdextension.MethodForClass(gd.Global.Methods.Node.Bind_call_thread_safe).Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	ret, err := methods.call_thread_safe.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
 	if err != nil {
 		panic(err)
 	}
@@ -3022,7 +3168,7 @@ Similar to [method call_thread_safe], but for setting properties.
 */
 //go:nosplit
 func (self class) SetThreadSafe(property String.Name, value variant.Any) { //gd:Node.set_thread_safe
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_set_thread_safe), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_thread_safe, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		property gdextension.StringName
 		value    gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
@@ -3033,7 +3179,7 @@ Similar to [method call_thread_safe], but for notifications.
 */
 //go:nosplit
 func (self class) NotifyThreadSafe(what int64) { //gd:Node.notify_thread_safe
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Node.Bind_notify_thread_safe), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ what int64 }{what}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_thread_safe, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ what int64 }{what}))
 }
 func (self Instance) OnReady(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("ready"), gd.NewCallable(cb), 0)
@@ -3137,7 +3283,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Node", func(ptr gd.Object) any { return [1]gdclass.Node{*(*gdclass.Node)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Node", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type ProcessMode int //gd:Node.ProcessMode

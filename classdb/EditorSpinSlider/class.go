@@ -75,6 +75,33 @@ If the [member Range.step] value is [code]1[/code], the [EditorSpinSlider] will 
 */
 type Instance [1]gdclass.EditorSpinSlider
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_label           gdextension.MethodForClass `hash:"83702148"`
+	get_label           gdextension.MethodForClass `hash:"201670096"`
+	set_suffix          gdextension.MethodForClass `hash:"83702148"`
+	get_suffix          gdextension.MethodForClass `hash:"201670096"`
+	set_read_only       gdextension.MethodForClass `hash:"2586408642"`
+	is_read_only        gdextension.MethodForClass `hash:"36873697"`
+	set_flat            gdextension.MethodForClass `hash:"2586408642"`
+	is_flat             gdextension.MethodForClass `hash:"36873697"`
+	set_hide_slider     gdextension.MethodForClass `hash:"2586408642"`
+	is_hiding_slider    gdextension.MethodForClass `hash:"36873697"`
+	set_editing_integer gdextension.MethodForClass `hash:"2586408642"`
+	is_editing_integer  gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorSpinSlider")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -90,6 +117,20 @@ type Advanced = class
 type class [1]gdclass.EditorSpinSlider
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorSpinSlider)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorSpinSlider)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -99,7 +140,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorSpinSlider"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorSpinSlider)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -155,72 +196,72 @@ func (self Instance) SetEditingInteger(value bool) {
 
 //go:nosplit
 func (self class) SetLabel(label String.Readable) { //gd:EditorSpinSlider.set_label
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSpinSlider.Bind_set_label), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ label gdextension.String }{pointers.Get(gd.InternalString(label))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ label gdextension.String }{pointers.Get(gd.InternalString(label))}))
 }
 
 //go:nosplit
 func (self class) GetLabel() String.Readable { //gd:EditorSpinSlider.get_label
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSpinSlider.Bind_get_label), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSuffix(suffix String.Readable) { //gd:EditorSpinSlider.set_suffix
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSpinSlider.Bind_set_suffix), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suffix, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))}))
 }
 
 //go:nosplit
 func (self class) GetSuffix() String.Readable { //gd:EditorSpinSlider.get_suffix
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSpinSlider.Bind_get_suffix), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetReadOnly(read_only bool) { //gd:EditorSpinSlider.set_read_only
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSpinSlider.Bind_set_read_only), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ read_only bool }{read_only}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_read_only, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ read_only bool }{read_only}))
 }
 
 //go:nosplit
 func (self class) IsReadOnly() bool { //gd:EditorSpinSlider.is_read_only
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSpinSlider.Bind_is_read_only), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_read_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlat(flat bool) { //gd:EditorSpinSlider.set_flat
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSpinSlider.Bind_set_flat), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flat bool }{flat}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flat, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ flat bool }{flat}))
 }
 
 //go:nosplit
 func (self class) IsFlat() bool { //gd:EditorSpinSlider.is_flat
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSpinSlider.Bind_is_flat), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flat, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHideSlider(hide_slider bool) { //gd:EditorSpinSlider.set_hide_slider
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSpinSlider.Bind_set_hide_slider), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ hide_slider bool }{hide_slider}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hide_slider, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ hide_slider bool }{hide_slider}))
 }
 
 //go:nosplit
 func (self class) IsHidingSlider() bool { //gd:EditorSpinSlider.is_hiding_slider
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSpinSlider.Bind_is_hiding_slider), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hiding_slider, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditingInteger(editing_integer bool) { //gd:EditorSpinSlider.set_editing_integer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSpinSlider.Bind_set_editing_integer), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ editing_integer bool }{editing_integer}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editing_integer, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ editing_integer bool }{editing_integer}))
 }
 
 //go:nosplit
 func (self class) IsEditingInteger() bool { //gd:EditorSpinSlider.is_editing_integer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorSpinSlider.Bind_is_editing_integer), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_integer, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -280,7 +321,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorSpinSlider", func(ptr gd.Object) any {
-		return [1]gdclass.EditorSpinSlider{*(*gdclass.EditorSpinSlider)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorSpinSlider", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

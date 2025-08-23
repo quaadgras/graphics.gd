@@ -72,6 +72,33 @@ type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 */
 type Instance [1]gdclass.CanvasItemMaterial
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_blend_mode              gdextension.MethodForClass `hash:"1786054936"`
+	get_blend_mode              gdextension.MethodForClass `hash:"3318684035"`
+	set_light_mode              gdextension.MethodForClass `hash:"628074070"`
+	get_light_mode              gdextension.MethodForClass `hash:"3863292382"`
+	set_particles_animation     gdextension.MethodForClass `hash:"2586408642"`
+	get_particles_animation     gdextension.MethodForClass `hash:"36873697"`
+	set_particles_anim_h_frames gdextension.MethodForClass `hash:"1286410249"`
+	get_particles_anim_h_frames gdextension.MethodForClass `hash:"3905245786"`
+	set_particles_anim_v_frames gdextension.MethodForClass `hash:"1286410249"`
+	get_particles_anim_v_frames gdextension.MethodForClass `hash:"3905245786"`
+	set_particles_anim_loop     gdextension.MethodForClass `hash:"2586408642"`
+	get_particles_anim_loop     gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("CanvasItemMaterial")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -87,6 +114,20 @@ type Advanced = class
 type class [1]gdclass.CanvasItemMaterial
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CanvasItemMaterial)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CanvasItemMaterial)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -96,7 +137,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CanvasItemMaterial"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.CanvasItemMaterial)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -153,72 +194,72 @@ func (self Instance) SetParticlesAnimLoop(value bool) {
 
 //go:nosplit
 func (self class) SetBlendMode(blend_mode BlendMode) { //gd:CanvasItemMaterial.set_blend_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasItemMaterial.Bind_set_blend_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ blend_mode BlendMode }{blend_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ blend_mode BlendMode }{blend_mode}))
 }
 
 //go:nosplit
 func (self class) GetBlendMode() BlendMode { //gd:CanvasItemMaterial.get_blend_mode
-	var r_ret = gdextension.Call[BlendMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasItemMaterial.Bind_get_blend_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLightMode(light_mode LightMode) { //gd:CanvasItemMaterial.set_light_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasItemMaterial.Bind_set_light_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ light_mode LightMode }{light_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ light_mode LightMode }{light_mode}))
 }
 
 //go:nosplit
 func (self class) GetLightMode() LightMode { //gd:CanvasItemMaterial.get_light_mode
-	var r_ret = gdextension.Call[LightMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasItemMaterial.Bind_get_light_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[LightMode](gd.ObjectChecked(self.AsObject()), methods.get_light_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimation(particles_anim bool) { //gd:CanvasItemMaterial.set_particles_animation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasItemMaterial.Bind_set_particles_animation), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ particles_anim bool }{particles_anim}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_animation, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ particles_anim bool }{particles_anim}))
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimation() bool { //gd:CanvasItemMaterial.get_particles_animation
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_animation), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_animation, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimHFrames(frames int64) { //gd:CanvasItemMaterial.set_particles_anim_h_frames
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasItemMaterial.Bind_set_particles_anim_h_frames), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_h_frames, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimHFrames() int64 { //gd:CanvasItemMaterial.get_particles_anim_h_frames
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_h_frames), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_h_frames, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimVFrames(frames int64) { //gd:CanvasItemMaterial.set_particles_anim_v_frames
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasItemMaterial.Bind_set_particles_anim_v_frames), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_v_frames, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimVFrames() int64 { //gd:CanvasItemMaterial.get_particles_anim_v_frames
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_v_frames), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_v_frames, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimLoop(loop bool) { //gd:CanvasItemMaterial.set_particles_anim_loop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasItemMaterial.Bind_set_particles_anim_loop), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ loop bool }{loop}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_loop, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ loop bool }{loop}))
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimLoop() bool { //gd:CanvasItemMaterial.get_particles_anim_loop
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CanvasItemMaterial.Bind_get_particles_anim_loop), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_loop, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -261,9 +302,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CanvasItemMaterial", func(ptr gd.Object) any {
-		return [1]gdclass.CanvasItemMaterial{*(*gdclass.CanvasItemMaterial)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("CanvasItemMaterial", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type BlendMode int //gd:CanvasItemMaterial.BlendMode

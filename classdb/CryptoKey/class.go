@@ -72,6 +72,26 @@ They can be used to generate a self-signed [X509Certificate] via [method Crypto.
 */
 type Instance [1]gdclass.CryptoKey
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	save             gdextension.MethodForClass `hash:"885841341"`
+	load             gdextension.MethodForClass `hash:"885841341"`
+	is_public_only   gdextension.MethodForClass `hash:"36873697"`
+	save_to_string   gdextension.MethodForClass `hash:"32795936"`
+	load_from_string gdextension.MethodForClass `hash:"885841341"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("CryptoKey")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.CryptoKey
@@ -156,6 +176,20 @@ type Advanced = class
 type class [1]gdclass.CryptoKey
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CryptoKey)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CryptoKey)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -165,7 +199,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CryptoKey"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.CryptoKey)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -178,7 +212,7 @@ Saves a key to the given [param path]. If [param public_only] is [code]true[/cod
 */
 //go:nosplit
 func (self class) Save(path String.Readable, public_only bool) Error.Code { //gd:CryptoKey.save
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_save), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path        gdextension.String
 		public_only bool
 	}{pointers.Get(gd.InternalString(path)), public_only}))
@@ -192,7 +226,7 @@ Loads a key from [param path]. If [param public_only] is [code]true[/code], only
 */
 //go:nosplit
 func (self class) Load(path String.Readable, public_only bool) Error.Code { //gd:CryptoKey.load
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_load), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path        gdextension.String
 		public_only bool
 	}{pointers.Get(gd.InternalString(path)), public_only}))
@@ -205,7 +239,7 @@ Returns [code]true[/code] if this CryptoKey only has the public part, and not th
 */
 //go:nosplit
 func (self class) IsPublicOnly() bool { //gd:CryptoKey.is_public_only
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_is_public_only), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_public_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -215,7 +249,7 @@ Returns a string containing the key in PEM format. If [param public_only] is [co
 */
 //go:nosplit
 func (self class) SaveToString(public_only bool) String.Readable { //gd:CryptoKey.save_to_string
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_save_to_string), gdextension.SizeString|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ public_only bool }{public_only}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.save_to_string, gdextension.SizeString|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ public_only bool }{public_only}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -225,7 +259,7 @@ Loads a key from the given [param string_key]. If [param public_only] is [code]t
 */
 //go:nosplit
 func (self class) LoadFromString(string_key String.Readable, public_only bool) Error.Code { //gd:CryptoKey.load_from_string
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CryptoKey.Bind_load_from_string), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_from_string, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		string_key  gdextension.String
 		public_only bool
 	}{pointers.Get(gd.InternalString(string_key)), public_only}))
@@ -264,5 +298,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CryptoKey", func(ptr gd.Object) any { return [1]gdclass.CryptoKey{*(*gdclass.CryptoKey)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("CryptoKey", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

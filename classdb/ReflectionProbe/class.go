@@ -79,6 +79,51 @@ The [ReflectionProbe] is used to create high-quality reflections at a low perfor
 */
 type Instance [1]gdclass.ReflectionProbe
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_intensity             gdextension.MethodForClass `hash:"373806689"`
+	get_intensity             gdextension.MethodForClass `hash:"1740695150"`
+	set_blend_distance        gdextension.MethodForClass `hash:"373806689"`
+	get_blend_distance        gdextension.MethodForClass `hash:"1740695150"`
+	set_ambient_mode          gdextension.MethodForClass `hash:"1748981278"`
+	get_ambient_mode          gdextension.MethodForClass `hash:"1014607621"`
+	set_ambient_color         gdextension.MethodForClass `hash:"2920490490"`
+	get_ambient_color         gdextension.MethodForClass `hash:"3444240500"`
+	set_ambient_color_energy  gdextension.MethodForClass `hash:"373806689"`
+	get_ambient_color_energy  gdextension.MethodForClass `hash:"1740695150"`
+	set_max_distance          gdextension.MethodForClass `hash:"373806689"`
+	get_max_distance          gdextension.MethodForClass `hash:"1740695150"`
+	set_mesh_lod_threshold    gdextension.MethodForClass `hash:"373806689"`
+	get_mesh_lod_threshold    gdextension.MethodForClass `hash:"1740695150"`
+	set_size                  gdextension.MethodForClass `hash:"3460891852"`
+	get_size                  gdextension.MethodForClass `hash:"3360562783"`
+	set_origin_offset         gdextension.MethodForClass `hash:"3460891852"`
+	get_origin_offset         gdextension.MethodForClass `hash:"3360562783"`
+	set_as_interior           gdextension.MethodForClass `hash:"2586408642"`
+	is_set_as_interior        gdextension.MethodForClass `hash:"36873697"`
+	set_enable_box_projection gdextension.MethodForClass `hash:"2586408642"`
+	is_box_projection_enabled gdextension.MethodForClass `hash:"36873697"`
+	set_enable_shadows        gdextension.MethodForClass `hash:"2586408642"`
+	are_shadows_enabled       gdextension.MethodForClass `hash:"36873697"`
+	set_cull_mask             gdextension.MethodForClass `hash:"1286410249"`
+	get_cull_mask             gdextension.MethodForClass `hash:"3905245786"`
+	set_reflection_mask       gdextension.MethodForClass `hash:"1286410249"`
+	get_reflection_mask       gdextension.MethodForClass `hash:"3905245786"`
+	set_update_mode           gdextension.MethodForClass `hash:"4090221187"`
+	get_update_mode           gdextension.MethodForClass `hash:"2367550552"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ReflectionProbe")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -94,6 +139,20 @@ type Advanced = class
 type class [1]gdclass.ReflectionProbe
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ReflectionProbe)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ReflectionProbe)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -103,7 +162,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ReflectionProbe"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ReflectionProbe)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -231,180 +290,180 @@ func (self Instance) SetAmbientColorEnergy(value Float.X) {
 
 //go:nosplit
 func (self class) SetIntensity(intensity float64) { //gd:ReflectionProbe.set_intensity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_intensity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ intensity float64 }{intensity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_intensity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ intensity float64 }{intensity}))
 }
 
 //go:nosplit
 func (self class) GetIntensity() float64 { //gd:ReflectionProbe.get_intensity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_get_intensity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_intensity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlendDistance(blend_distance float64) { //gd:ReflectionProbe.set_blend_distance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_blend_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ blend_distance float64 }{blend_distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ blend_distance float64 }{blend_distance}))
 }
 
 //go:nosplit
 func (self class) GetBlendDistance() float64 { //gd:ReflectionProbe.get_blend_distance
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_get_blend_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_blend_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAmbientMode(ambient AmbientMode) { //gd:ReflectionProbe.set_ambient_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_ambient_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ambient AmbientMode }{ambient}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ambient_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ambient AmbientMode }{ambient}))
 }
 
 //go:nosplit
 func (self class) GetAmbientMode() AmbientMode { //gd:ReflectionProbe.get_ambient_mode
-	var r_ret = gdextension.Call[AmbientMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_get_ambient_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AmbientMode](gd.ObjectChecked(self.AsObject()), methods.get_ambient_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAmbientColor(ambient Color.RGBA) { //gd:ReflectionProbe.set_ambient_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_ambient_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ ambient Color.RGBA }{ambient}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ambient_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ ambient Color.RGBA }{ambient}))
 }
 
 //go:nosplit
 func (self class) GetAmbientColor() Color.RGBA { //gd:ReflectionProbe.get_ambient_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_get_ambient_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_ambient_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAmbientColorEnergy(ambient_energy float64) { //gd:ReflectionProbe.set_ambient_color_energy
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_ambient_color_energy), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ambient_energy float64 }{ambient_energy}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ambient_color_energy, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ambient_energy float64 }{ambient_energy}))
 }
 
 //go:nosplit
 func (self class) GetAmbientColorEnergy() float64 { //gd:ReflectionProbe.get_ambient_color_energy
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_get_ambient_color_energy), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ambient_color_energy, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxDistance(max_distance float64) { //gd:ReflectionProbe.set_max_distance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_max_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ max_distance float64 }{max_distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ max_distance float64 }{max_distance}))
 }
 
 //go:nosplit
 func (self class) GetMaxDistance() float64 { //gd:ReflectionProbe.get_max_distance
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_get_max_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMeshLodThreshold(ratio float64) { //gd:ReflectionProbe.set_mesh_lod_threshold
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_mesh_lod_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_lod_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
 }
 
 //go:nosplit
 func (self class) GetMeshLodThreshold() float64 { //gd:ReflectionProbe.get_mesh_lod_threshold
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_get_mesh_lod_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mesh_lod_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:ReflectionProbe.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_size), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:ReflectionProbe.get_size
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOriginOffset(origin_offset Vector3.XYZ) { //gd:ReflectionProbe.set_origin_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_origin_offset), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ origin_offset Vector3.XYZ }{origin_offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_origin_offset, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ origin_offset Vector3.XYZ }{origin_offset}))
 }
 
 //go:nosplit
 func (self class) GetOriginOffset() Vector3.XYZ { //gd:ReflectionProbe.get_origin_offset
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_get_origin_offset), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_origin_offset, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAsInterior(enable bool) { //gd:ReflectionProbe.set_as_interior
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_as_interior), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_interior, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSetAsInterior() bool { //gd:ReflectionProbe.is_set_as_interior
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_is_set_as_interior), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_set_as_interior, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableBoxProjection(enable bool) { //gd:ReflectionProbe.set_enable_box_projection
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_enable_box_projection), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_box_projection, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsBoxProjectionEnabled() bool { //gd:ReflectionProbe.is_box_projection_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_is_box_projection_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_box_projection_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableShadows(enable bool) { //gd:ReflectionProbe.set_enable_shadows
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_enable_shadows), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_shadows, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) AreShadowsEnabled() bool { //gd:ReflectionProbe.are_shadows_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_are_shadows_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_shadows_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCullMask(layers int64) { //gd:ReflectionProbe.set_cull_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_cull_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layers int64 }{layers}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layers int64 }{layers}))
 }
 
 //go:nosplit
 func (self class) GetCullMask() int64 { //gd:ReflectionProbe.get_cull_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_get_cull_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetReflectionMask(layers int64) { //gd:ReflectionProbe.set_reflection_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_reflection_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layers int64 }{layers}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reflection_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layers int64 }{layers}))
 }
 
 //go:nosplit
 func (self class) GetReflectionMask() int64 { //gd:ReflectionProbe.get_reflection_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_get_reflection_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_reflection_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpdateMode(mode UpdateMode) { //gd:ReflectionProbe.set_update_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_set_update_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode UpdateMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode UpdateMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetUpdateMode() UpdateMode { //gd:ReflectionProbe.get_update_mode
-	var r_ret = gdextension.Call[UpdateMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ReflectionProbe.Bind_get_update_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[UpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_update_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -441,9 +500,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ReflectionProbe", func(ptr gd.Object) any {
-		return [1]gdclass.ReflectionProbe{*(*gdclass.ReflectionProbe)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ReflectionProbe", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type UpdateMode int //gd:ReflectionProbe.UpdateMode

@@ -77,6 +77,51 @@ You can create [FontVariation] of the system font for precise control over its f
 */
 type Instance [1]gdclass.SystemFont
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_antialiasing                       gdextension.MethodForClass `hash:"1669900"`
+	get_antialiasing                       gdextension.MethodForClass `hash:"4262718649"`
+	set_disable_embedded_bitmaps           gdextension.MethodForClass `hash:"2586408642"`
+	get_disable_embedded_bitmaps           gdextension.MethodForClass `hash:"36873697"`
+	set_generate_mipmaps                   gdextension.MethodForClass `hash:"2586408642"`
+	get_generate_mipmaps                   gdextension.MethodForClass `hash:"36873697"`
+	set_allow_system_fallback              gdextension.MethodForClass `hash:"2586408642"`
+	is_allow_system_fallback               gdextension.MethodForClass `hash:"36873697"`
+	set_force_autohinter                   gdextension.MethodForClass `hash:"2586408642"`
+	is_force_autohinter                    gdextension.MethodForClass `hash:"36873697"`
+	set_hinting                            gdextension.MethodForClass `hash:"1827459492"`
+	get_hinting                            gdextension.MethodForClass `hash:"3683214614"`
+	set_subpixel_positioning               gdextension.MethodForClass `hash:"4225742182"`
+	get_subpixel_positioning               gdextension.MethodForClass `hash:"1069238588"`
+	set_keep_rounding_remainders           gdextension.MethodForClass `hash:"2586408642"`
+	get_keep_rounding_remainders           gdextension.MethodForClass `hash:"36873697"`
+	set_multichannel_signed_distance_field gdextension.MethodForClass `hash:"2586408642"`
+	is_multichannel_signed_distance_field  gdextension.MethodForClass `hash:"36873697"`
+	set_msdf_pixel_range                   gdextension.MethodForClass `hash:"1286410249"`
+	get_msdf_pixel_range                   gdextension.MethodForClass `hash:"3905245786"`
+	set_msdf_size                          gdextension.MethodForClass `hash:"1286410249"`
+	get_msdf_size                          gdextension.MethodForClass `hash:"3905245786"`
+	set_oversampling                       gdextension.MethodForClass `hash:"373806689"`
+	get_oversampling                       gdextension.MethodForClass `hash:"1740695150"`
+	get_font_names                         gdextension.MethodForClass `hash:"1139954409"`
+	set_font_names                         gdextension.MethodForClass `hash:"4015028928"`
+	get_font_italic                        gdextension.MethodForClass `hash:"36873697"`
+	set_font_italic                        gdextension.MethodForClass `hash:"2586408642"`
+	set_font_weight                        gdextension.MethodForClass `hash:"1286410249"`
+	set_font_stretch                       gdextension.MethodForClass `hash:"1286410249"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("SystemFont")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -92,6 +137,20 @@ type Advanced = class
 type class [1]gdclass.SystemFont
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SystemFont)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SystemFont)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -101,7 +160,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SystemFont"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SystemFont)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -230,184 +289,184 @@ func (self Instance) SetOversampling(value Float.X) {
 
 //go:nosplit
 func (self class) SetAntialiasing(antialiasing TextServer.FontAntialiasing) { //gd:SystemFont.set_antialiasing
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_antialiasing), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ antialiasing TextServer.FontAntialiasing }{antialiasing}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_antialiasing, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ antialiasing TextServer.FontAntialiasing }{antialiasing}))
 }
 
 //go:nosplit
 func (self class) GetAntialiasing() TextServer.FontAntialiasing { //gd:SystemFont.get_antialiasing
-	var r_ret = gdextension.Call[TextServer.FontAntialiasing](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_get_antialiasing), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.FontAntialiasing](gd.ObjectChecked(self.AsObject()), methods.get_antialiasing, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisableEmbeddedBitmaps(disable_embedded_bitmaps bool) { //gd:SystemFont.set_disable_embedded_bitmaps
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_disable_embedded_bitmaps), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disable_embedded_bitmaps bool }{disable_embedded_bitmaps}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_embedded_bitmaps, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disable_embedded_bitmaps bool }{disable_embedded_bitmaps}))
 }
 
 //go:nosplit
 func (self class) GetDisableEmbeddedBitmaps() bool { //gd:SystemFont.get_disable_embedded_bitmaps
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_get_disable_embedded_bitmaps), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_disable_embedded_bitmaps, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGenerateMipmaps(generate_mipmaps bool) { //gd:SystemFont.set_generate_mipmaps
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_generate_mipmaps), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ generate_mipmaps bool }{generate_mipmaps}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_generate_mipmaps, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ generate_mipmaps bool }{generate_mipmaps}))
 }
 
 //go:nosplit
 func (self class) GetGenerateMipmaps() bool { //gd:SystemFont.get_generate_mipmaps
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_get_generate_mipmaps), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_generate_mipmaps, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowSystemFallback(allow_system_fallback bool) { //gd:SystemFont.set_allow_system_fallback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_allow_system_fallback), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow_system_fallback bool }{allow_system_fallback}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_system_fallback, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow_system_fallback bool }{allow_system_fallback}))
 }
 
 //go:nosplit
 func (self class) IsAllowSystemFallback() bool { //gd:SystemFont.is_allow_system_fallback
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_is_allow_system_fallback), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_system_fallback, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetForceAutohinter(force_autohinter bool) { //gd:SystemFont.set_force_autohinter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_force_autohinter), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ force_autohinter bool }{force_autohinter}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_force_autohinter, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ force_autohinter bool }{force_autohinter}))
 }
 
 //go:nosplit
 func (self class) IsForceAutohinter() bool { //gd:SystemFont.is_force_autohinter
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_is_force_autohinter), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_force_autohinter, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHinting(hinting TextServer.Hinting) { //gd:SystemFont.set_hinting
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_hinting), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hinting TextServer.Hinting }{hinting}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hinting, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ hinting TextServer.Hinting }{hinting}))
 }
 
 //go:nosplit
 func (self class) GetHinting() TextServer.Hinting { //gd:SystemFont.get_hinting
-	var r_ret = gdextension.Call[TextServer.Hinting](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_get_hinting), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.Hinting](gd.ObjectChecked(self.AsObject()), methods.get_hinting, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubpixelPositioning(subpixel_positioning TextServer.SubpixelPositioning) { //gd:SystemFont.set_subpixel_positioning
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_subpixel_positioning), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subpixel_positioning, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		subpixel_positioning TextServer.SubpixelPositioning
 	}{subpixel_positioning}))
 }
 
 //go:nosplit
 func (self class) GetSubpixelPositioning() TextServer.SubpixelPositioning { //gd:SystemFont.get_subpixel_positioning
-	var r_ret = gdextension.Call[TextServer.SubpixelPositioning](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_get_subpixel_positioning), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.SubpixelPositioning](gd.ObjectChecked(self.AsObject()), methods.get_subpixel_positioning, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeepRoundingRemainders(keep_rounding_remainders bool) { //gd:SystemFont.set_keep_rounding_remainders
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_keep_rounding_remainders), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep_rounding_remainders bool }{keep_rounding_remainders}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_rounding_remainders, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep_rounding_remainders bool }{keep_rounding_remainders}))
 }
 
 //go:nosplit
 func (self class) GetKeepRoundingRemainders() bool { //gd:SystemFont.get_keep_rounding_remainders
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_get_keep_rounding_remainders), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_keep_rounding_remainders, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMultichannelSignedDistanceField(msdf bool) { //gd:SystemFont.set_multichannel_signed_distance_field
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_multichannel_signed_distance_field), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ msdf bool }{msdf}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multichannel_signed_distance_field, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ msdf bool }{msdf}))
 }
 
 //go:nosplit
 func (self class) IsMultichannelSignedDistanceField() bool { //gd:SystemFont.is_multichannel_signed_distance_field
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_is_multichannel_signed_distance_field), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_multichannel_signed_distance_field, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMsdfPixelRange(msdf_pixel_range int64) { //gd:SystemFont.set_msdf_pixel_range
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_msdf_pixel_range), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msdf_pixel_range int64 }{msdf_pixel_range}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_msdf_pixel_range, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msdf_pixel_range int64 }{msdf_pixel_range}))
 }
 
 //go:nosplit
 func (self class) GetMsdfPixelRange() int64 { //gd:SystemFont.get_msdf_pixel_range
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_get_msdf_pixel_range), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_msdf_pixel_range, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMsdfSize(msdf_size int64) { //gd:SystemFont.set_msdf_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_msdf_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msdf_size int64 }{msdf_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_msdf_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msdf_size int64 }{msdf_size}))
 }
 
 //go:nosplit
 func (self class) GetMsdfSize() int64 { //gd:SystemFont.get_msdf_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_get_msdf_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_msdf_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOversampling(oversampling float64) { //gd:SystemFont.set_oversampling
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_oversampling), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ oversampling float64 }{oversampling}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_oversampling, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ oversampling float64 }{oversampling}))
 }
 
 //go:nosplit
 func (self class) GetOversampling() float64 { //gd:SystemFont.get_oversampling
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_get_oversampling), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_oversampling, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetFontNames() Packed.Strings { //gd:SystemFont.get_font_names
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_get_font_names), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_font_names, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFontNames(names Packed.Strings) { //gd:SystemFont.set_font_names
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_font_names), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font_names, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		names gdextension.PackedArray[gdextension.String]
 	}{pointers.Get(gd.InternalPackedStrings(names))}))
 }
 
 //go:nosplit
 func (self class) GetFontItalic() bool { //gd:SystemFont.get_font_italic
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_get_font_italic), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_font_italic, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFontItalic(italic bool) { //gd:SystemFont.set_font_italic
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_font_italic), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ italic bool }{italic}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font_italic, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ italic bool }{italic}))
 }
 
 //go:nosplit
 func (self class) SetFontWeight(weight int64) { //gd:SystemFont.set_font_weight
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_font_weight), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ weight int64 }{weight}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font_weight, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ weight int64 }{weight}))
 }
 
 //go:nosplit
 func (self class) SetFontStretch(stretch int64) { //gd:SystemFont.set_font_stretch
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SystemFont.Bind_set_font_stretch), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stretch int64 }{stretch}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_font_stretch, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stretch int64 }{stretch}))
 }
 func (self class) AsSystemFont() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsSystemFont() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -444,5 +503,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SystemFont", func(ptr gd.Object) any { return [1]gdclass.SystemFont{*(*gdclass.SystemFont)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("SystemFont", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

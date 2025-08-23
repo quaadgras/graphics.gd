@@ -73,6 +73,27 @@ This class is meant to be used with [AudioStreamGenerator] to play back the gene
 */
 type Instance [1]gdclass.AudioStreamGeneratorPlayback
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	push_frame           gdextension.MethodForClass `hash:"3975407249"`
+	can_push_buffer      gdextension.MethodForClass `hash:"1116898809"`
+	push_buffer          gdextension.MethodForClass `hash:"1361156557"`
+	get_frames_available gdextension.MethodForClass `hash:"3905245786"`
+	get_skips            gdextension.MethodForClass `hash:"3905245786"`
+	clear_buffer         gdextension.MethodForClass `hash:"3218959716"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioStreamGeneratorPlayback")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -130,6 +151,20 @@ type Advanced = class
 type class [1]gdclass.AudioStreamGeneratorPlayback
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioStreamGeneratorPlayback)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioStreamGeneratorPlayback)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -139,7 +174,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioStreamGeneratorPlayback"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioStreamGeneratorPlayback)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -151,7 +186,7 @@ Pushes a single audio data frame to the buffer. This is usually less efficient t
 */
 //go:nosplit
 func (self class) PushFrame(frame_ Vector2.XY) bool { //gd:AudioStreamGeneratorPlayback.push_frame
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_push_frame), gdextension.SizeBool|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ frame_ Vector2.XY }{frame_}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_frame, gdextension.SizeBool|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ frame_ Vector2.XY }{frame_}))
 	var ret = r_ret
 	return ret
 }
@@ -161,7 +196,7 @@ Returns [code]true[/code] if a buffer of the size [param amount] can be pushed t
 */
 //go:nosplit
 func (self class) CanPushBuffer(amount int64) bool { //gd:AudioStreamGeneratorPlayback.can_push_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_can_push_buffer), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_push_buffer, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 	var ret = r_ret
 	return ret
 }
@@ -171,7 +206,7 @@ Pushes several audio data frames to the buffer. This is usually more efficient t
 */
 //go:nosplit
 func (self class) PushBuffer(frames Packed.Array[Vector2.XY]) bool { //gd:AudioStreamGeneratorPlayback.push_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_push_buffer), gdextension.SizeBool|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_buffer, gdextension.SizeBool|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		frames gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](frames))}))
 	var ret = r_ret
@@ -183,7 +218,7 @@ Returns the number of frames that can be pushed to the audio sample data buffer 
 */
 //go:nosplit
 func (self class) GetFramesAvailable() int64 { //gd:AudioStreamGeneratorPlayback.get_frames_available
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_get_frames_available), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames_available, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -193,7 +228,7 @@ Returns the number of times the playback skipped due to a buffer underrun in the
 */
 //go:nosplit
 func (self class) GetSkips() int64 { //gd:AudioStreamGeneratorPlayback.get_skips
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_get_skips), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skips, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -203,7 +238,7 @@ Clears the audio sample data buffer.
 */
 //go:nosplit
 func (self class) ClearBuffer() { //gd:AudioStreamGeneratorPlayback.clear_buffer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamGeneratorPlayback.Bind_clear_buffer), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_buffer, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsAudioStreamGeneratorPlayback() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))
@@ -254,7 +289,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioStreamGeneratorPlayback", func(ptr gd.Object) any {
-		return [1]gdclass.AudioStreamGeneratorPlayback{*(*gdclass.AudioStreamGeneratorPlayback)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioStreamGeneratorPlayback", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

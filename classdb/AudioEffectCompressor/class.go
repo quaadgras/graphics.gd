@@ -77,6 +77,35 @@ Compressor has many uses in the mix:
 */
 type Instance [1]gdclass.AudioEffectCompressor
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_threshold  gdextension.MethodForClass `hash:"373806689"`
+	get_threshold  gdextension.MethodForClass `hash:"1740695150"`
+	set_ratio      gdextension.MethodForClass `hash:"373806689"`
+	get_ratio      gdextension.MethodForClass `hash:"1740695150"`
+	set_gain       gdextension.MethodForClass `hash:"373806689"`
+	get_gain       gdextension.MethodForClass `hash:"1740695150"`
+	set_attack_us  gdextension.MethodForClass `hash:"373806689"`
+	get_attack_us  gdextension.MethodForClass `hash:"1740695150"`
+	set_release_ms gdextension.MethodForClass `hash:"373806689"`
+	get_release_ms gdextension.MethodForClass `hash:"1740695150"`
+	set_mix        gdextension.MethodForClass `hash:"373806689"`
+	get_mix        gdextension.MethodForClass `hash:"1740695150"`
+	set_sidechain  gdextension.MethodForClass `hash:"3304788590"`
+	get_sidechain  gdextension.MethodForClass `hash:"2002593661"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioEffectCompressor")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -92,6 +121,20 @@ type Advanced = class
 type class [1]gdclass.AudioEffectCompressor
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectCompressor)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectCompressor)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -101,7 +144,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioEffectCompressor"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioEffectCompressor)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -166,84 +209,84 @@ func (self Instance) SetSidechain(value string) {
 
 //go:nosplit
 func (self class) SetThreshold(threshold float64) { //gd:AudioEffectCompressor.set_threshold
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_set_threshold), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_threshold, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ threshold float64 }{threshold}))
 }
 
 //go:nosplit
 func (self class) GetThreshold() float64 { //gd:AudioEffectCompressor.get_threshold
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_get_threshold), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_threshold, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRatio(ratio float64) { //gd:AudioEffectCompressor.set_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_set_ratio), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
 }
 
 //go:nosplit
 func (self class) GetRatio() float64 { //gd:AudioEffectCompressor.get_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_get_ratio), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGain(gain float64) { //gd:AudioEffectCompressor.set_gain
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_set_gain), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gain float64 }{gain}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gain, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gain float64 }{gain}))
 }
 
 //go:nosplit
 func (self class) GetGain() float64 { //gd:AudioEffectCompressor.get_gain
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_get_gain), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gain, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAttackUs(attack_us float64) { //gd:AudioEffectCompressor.set_attack_us
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_set_attack_us), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ attack_us float64 }{attack_us}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attack_us, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ attack_us float64 }{attack_us}))
 }
 
 //go:nosplit
 func (self class) GetAttackUs() float64 { //gd:AudioEffectCompressor.get_attack_us
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_get_attack_us), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_attack_us, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetReleaseMs(release_ms float64) { //gd:AudioEffectCompressor.set_release_ms
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_set_release_ms), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ release_ms float64 }{release_ms}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_release_ms, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ release_ms float64 }{release_ms}))
 }
 
 //go:nosplit
 func (self class) GetReleaseMs() float64 { //gd:AudioEffectCompressor.get_release_ms
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_get_release_ms), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_release_ms, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMix(mix float64) { //gd:AudioEffectCompressor.set_mix
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_set_mix), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mix float64 }{mix}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mix float64 }{mix}))
 }
 
 //go:nosplit
 func (self class) GetMix() float64 { //gd:AudioEffectCompressor.get_mix
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_get_mix), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mix, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSidechain(sidechain String.Name) { //gd:AudioEffectCompressor.set_sidechain
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_set_sidechain), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ sidechain gdextension.StringName }{pointers.Get(gd.InternalStringName(sidechain))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sidechain, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ sidechain gdextension.StringName }{pointers.Get(gd.InternalStringName(sidechain))}))
 }
 
 //go:nosplit
 func (self class) GetSidechain() String.Name { //gd:AudioEffectCompressor.get_sidechain
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCompressor.Bind_get_sidechain), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_sidechain, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -288,7 +331,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioEffectCompressor", func(ptr gd.Object) any {
-		return [1]gdclass.AudioEffectCompressor{*(*gdclass.AudioEffectCompressor)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioEffectCompressor", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

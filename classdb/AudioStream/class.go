@@ -75,6 +75,27 @@ Base class for audio streams. Audio streams are used for sound effects and music
 */
 type Instance [1]gdclass.AudioStream
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_length           gdextension.MethodForClass `hash:"1740695150"`
+	is_monophonic        gdextension.MethodForClass `hash:"36873697"`
+	instantiate_playback gdextension.MethodForClass `hash:"210135309"`
+	can_be_sampled       gdextension.MethodForClass `hash:"36873697"`
+	generate_sample      gdextension.MethodForClass `hash:"2646048999"`
+	is_meta_stream       gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioStream")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -285,6 +306,20 @@ type Advanced = class
 type class [1]gdclass.AudioStream
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioStream)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioStream)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -294,7 +329,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioStream"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioStream)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -422,7 +457,7 @@ Returns the length of the audio stream in seconds.
 */
 //go:nosplit
 func (self class) GetLength() float64 { //gd:AudioStream.get_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -432,7 +467,7 @@ Returns [code]true[/code] if this audio stream only supports one channel ([i]mon
 */
 //go:nosplit
 func (self class) IsMonophonic() bool { //gd:AudioStream.is_monophonic
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_is_monophonic), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monophonic, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -442,7 +477,7 @@ Returns a newly created [AudioStreamPlayback] intended to play this audio stream
 */
 //go:nosplit
 func (self class) InstantiatePlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStream.instantiate_playback
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_instantiate_playback), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.instantiate_playback, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamPlayback](r_ret)}
 	return ret
 }
@@ -452,7 +487,7 @@ Returns if the current [AudioStream] can be used as a sample. Only static stream
 */
 //go:nosplit
 func (self class) CanBeSampled() bool { //gd:AudioStream.can_be_sampled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_can_be_sampled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_be_sampled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -462,7 +497,7 @@ Generates an [AudioSample] based on the current stream.
 */
 //go:nosplit
 func (self class) GenerateSample() [1]gdclass.AudioSample { //gd:AudioStream.generate_sample
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_generate_sample), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_sample, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.AudioSample{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioSample](r_ret)}
 	return ret
 }
@@ -472,7 +507,7 @@ Returns [code]true[/code] if the stream is a collection of other streams, [code]
 */
 //go:nosplit
 func (self class) IsMetaStream() bool { //gd:AudioStream.is_meta_stream
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStream.Bind_is_meta_stream), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_meta_stream, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -548,5 +583,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioStream", func(ptr gd.Object) any { return [1]gdclass.AudioStream{*(*gdclass.AudioStream)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("AudioStream", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

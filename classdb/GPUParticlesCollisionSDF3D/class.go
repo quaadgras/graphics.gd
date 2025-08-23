@@ -81,6 +81,33 @@ Signed distance fields (SDF) allow for efficiently representing approximate coll
 */
 type Instance [1]gdclass.GPUParticlesCollisionSDF3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_size            gdextension.MethodForClass `hash:"3460891852"`
+	get_size            gdextension.MethodForClass `hash:"3360562783"`
+	set_resolution      gdextension.MethodForClass `hash:"1155629297"`
+	get_resolution      gdextension.MethodForClass `hash:"2919555867"`
+	set_texture         gdextension.MethodForClass `hash:"1188404210"`
+	get_texture         gdextension.MethodForClass `hash:"373985333"`
+	set_thickness       gdextension.MethodForClass `hash:"373806689"`
+	get_thickness       gdextension.MethodForClass `hash:"1740695150"`
+	set_bake_mask       gdextension.MethodForClass `hash:"1286410249"`
+	get_bake_mask       gdextension.MethodForClass `hash:"3905245786"`
+	set_bake_mask_value gdextension.MethodForClass `hash:"300928843"`
+	get_bake_mask_value gdextension.MethodForClass `hash:"1116898809"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("GPUParticlesCollisionSDF3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -110,6 +137,20 @@ type Advanced = class
 type class [1]gdclass.GPUParticlesCollisionSDF3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GPUParticlesCollisionSDF3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GPUParticlesCollisionSDF3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -119,7 +160,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("GPUParticlesCollisionSDF3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GPUParticlesCollisionSDF3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -167,60 +208,60 @@ func (self Instance) SetTexture(value Texture3D.Instance) {
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:GPUParticlesCollisionSDF3D.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_size), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesCollisionSDF3D.get_size
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_size), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetResolution(resolution Resolution) { //gd:GPUParticlesCollisionSDF3D.set_resolution
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_resolution), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ resolution Resolution }{resolution}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resolution, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ resolution Resolution }{resolution}))
 }
 
 //go:nosplit
 func (self class) GetResolution() Resolution { //gd:GPUParticlesCollisionSDF3D.get_resolution
-	var r_ret = gdextension.Call[Resolution](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_resolution), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Resolution](gd.ObjectChecked(self.AsObject()), methods.get_resolution, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture3D) { //gd:GPUParticlesCollisionSDF3D.set_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture3D { //gd:GPUParticlesCollisionSDF3D.get_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture3D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetThickness(thickness float64) { //gd:GPUParticlesCollisionSDF3D.set_thickness
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_thickness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ thickness float64 }{thickness}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_thickness, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ thickness float64 }{thickness}))
 }
 
 //go:nosplit
 func (self class) GetThickness() float64 { //gd:GPUParticlesCollisionSDF3D.get_thickness
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_thickness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_thickness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBakeMask(mask int64) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_bake_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
 }
 
 //go:nosplit
 func (self class) GetBakeMask() int64 { //gd:GPUParticlesCollisionSDF3D.get_bake_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_bake_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -230,7 +271,7 @@ Based on [param value], enables or disables the specified layer in the [member b
 */
 //go:nosplit
 func (self class) SetBakeMaskValue(layer_number int64, value bool) { //gd:GPUParticlesCollisionSDF3D.set_bake_mask_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_set_bake_mask_value), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value}))
@@ -241,7 +282,7 @@ Returns whether or not the specified layer of the [member bake_mask] is enabled,
 */
 //go:nosplit
 func (self class) GetBakeMaskValue(layer_number int64) bool { //gd:GPUParticlesCollisionSDF3D.get_bake_mask_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GPUParticlesCollisionSDF3D.Bind_get_bake_mask_value), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
 	var ret = r_ret
 	return ret
 }
@@ -293,9 +334,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GPUParticlesCollisionSDF3D", func(ptr gd.Object) any {
-		return [1]gdclass.GPUParticlesCollisionSDF3D{*(*gdclass.GPUParticlesCollisionSDF3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("GPUParticlesCollisionSDF3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Resolution int //gd:GPUParticlesCollisionSDF3D.Resolution

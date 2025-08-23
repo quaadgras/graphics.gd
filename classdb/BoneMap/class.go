@@ -73,6 +73,26 @@ By assigning the actual [Skeleton3D] bone name as the key value, it maps the [Sk
 */
 type Instance [1]gdclass.BoneMap
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_profile            gdextension.MethodForClass `hash:"4291782652"`
+	set_profile            gdextension.MethodForClass `hash:"3870374136"`
+	get_skeleton_bone_name gdextension.MethodForClass `hash:"1965194235"`
+	set_skeleton_bone_name gdextension.MethodForClass `hash:"3740211285"`
+	find_profile_bone_name gdextension.MethodForClass `hash:"1965194235"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("BoneMap")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -112,6 +132,20 @@ type Advanced = class
 type class [1]gdclass.BoneMap
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.BoneMap)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.BoneMap)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -121,7 +155,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("BoneMap"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.BoneMap)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -138,14 +172,14 @@ func (self Instance) SetProfile(value SkeletonProfile.Instance) {
 
 //go:nosplit
 func (self class) GetProfile() [1]gdclass.SkeletonProfile { //gd:BoneMap.get_profile
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BoneMap.Bind_get_profile), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_profile, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SkeletonProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonProfile](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProfile(profile [1]gdclass.SkeletonProfile) { //gd:BoneMap.set_profile
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BoneMap.Bind_set_profile), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(profile[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_profile, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(profile[0].AsObject()))}))
 }
 
 /*
@@ -154,7 +188,7 @@ In the retargeting process, the returned bone name is the bone name of the sourc
 */
 //go:nosplit
 func (self class) GetSkeletonBoneName(profile_bone_name String.Name) String.Name { //gd:BoneMap.get_skeleton_bone_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BoneMap.Bind_get_skeleton_bone_name), gdextension.SizeStringName|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ profile_bone_name gdextension.StringName }{pointers.Get(gd.InternalStringName(profile_bone_name))}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_bone_name, gdextension.SizeStringName|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ profile_bone_name gdextension.StringName }{pointers.Get(gd.InternalStringName(profile_bone_name))}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -165,7 +199,7 @@ In the retargeting process, the setting bone name is the bone name of the source
 */
 //go:nosplit
 func (self class) SetSkeletonBoneName(profile_bone_name String.Name, skeleton_bone_name String.Name) { //gd:BoneMap.set_skeleton_bone_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BoneMap.Bind_set_skeleton_bone_name), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton_bone_name, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		profile_bone_name  gdextension.StringName
 		skeleton_bone_name gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(profile_bone_name)), pointers.Get(gd.InternalStringName(skeleton_bone_name))}))
@@ -177,7 +211,7 @@ In the retargeting process, the returned bone name is the bone name of the targe
 */
 //go:nosplit
 func (self class) FindProfileBoneName(skeleton_bone_name String.Name) String.Name { //gd:BoneMap.find_profile_bone_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BoneMap.Bind_find_profile_bone_name), gdextension.SizeStringName|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ skeleton_bone_name gdextension.StringName }{pointers.Get(gd.InternalStringName(skeleton_bone_name))}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_profile_bone_name, gdextension.SizeStringName|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ skeleton_bone_name gdextension.StringName }{pointers.Get(gd.InternalStringName(skeleton_bone_name))}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -221,5 +255,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("BoneMap", func(ptr gd.Object) any { return [1]gdclass.BoneMap{*(*gdclass.BoneMap)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("BoneMap", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

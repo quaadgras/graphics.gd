@@ -73,6 +73,27 @@ A stream peer that handles TLS connections. This object can be used to connect t
 */
 type Instance [1]gdclass.StreamPeerTLS
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	poll                   gdextension.MethodForClass `hash:"3218959716"`
+	accept_stream          gdextension.MethodForClass `hash:"4292689651"`
+	connect_to_stream      gdextension.MethodForClass `hash:"57169517"`
+	get_status             gdextension.MethodForClass `hash:"1128380576"`
+	get_stream             gdextension.MethodForClass `hash:"2741655269"`
+	disconnect_from_stream gdextension.MethodForClass `hash:"3218959716"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("StreamPeerTLS")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.StreamPeerTLS
@@ -139,6 +160,20 @@ type Advanced = class
 type class [1]gdclass.StreamPeerTLS
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.StreamPeerTLS)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.StreamPeerTLS)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -148,7 +183,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("StreamPeerTLS"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.StreamPeerTLS)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -160,7 +195,7 @@ Poll the connection to check for incoming bytes. Call this right before [method 
 */
 //go:nosplit
 func (self class) Poll() { //gd:StreamPeerTLS.poll
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTLS.Bind_poll), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.poll, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -168,7 +203,7 @@ Accepts a peer connection as a server using the given [param server_options]. Se
 */
 //go:nosplit
 func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]gdclass.TLSOptions) Error.Code { //gd:StreamPeerTLS.accept_stream
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTLS.Bind_accept_stream), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accept_stream, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		stream         gdextension.Object
 		server_options gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(stream[0].AsObject())), gdextension.Object(gd.ObjectChecked(server_options[0].AsObject()))}))
@@ -181,7 +216,7 @@ Connects to a peer using an underlying [StreamPeer] [param stream] and verifying
 */
 //go:nosplit
 func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name String.Readable, client_options [1]gdclass.TLSOptions) Error.Code { //gd:StreamPeerTLS.connect_to_stream
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTLS.Bind_connect_to_stream), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_stream, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		stream         gdextension.Object
 		common_name    gdextension.String
 		client_options gdextension.Object
@@ -195,7 +230,7 @@ Returns the status of the connection. See [enum Status] for values.
 */
 //go:nosplit
 func (self class) GetStatus() Status { //gd:StreamPeerTLS.get_status
-	var r_ret = gdextension.Call[Status](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTLS.Bind_get_status), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Status](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -205,7 +240,7 @@ Returns the underlying [StreamPeer] connection, used in [method accept_stream] o
 */
 //go:nosplit
 func (self class) GetStream() [1]gdclass.StreamPeer { //gd:StreamPeerTLS.get_stream
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTLS.Bind_get_stream), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.StreamPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeer](r_ret)}
 	return ret
 }
@@ -215,7 +250,7 @@ Disconnects from host.
 */
 //go:nosplit
 func (self class) DisconnectFromStream() { //gd:StreamPeerTLS.disconnect_from_stream
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTLS.Bind_disconnect_from_stream), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_from_stream, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsStreamPeerTLS() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsStreamPeerTLS() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -249,9 +284,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("StreamPeerTLS", func(ptr gd.Object) any {
-		return [1]gdclass.StreamPeerTLS{*(*gdclass.StreamPeerTLS)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("StreamPeerTLS", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Status int //gd:StreamPeerTLS.Status

@@ -151,31 +151,6 @@ func linkCGO(API *gd.API) {
 		)
 		frame.Free()
 	}
-	object_cast_to := dlsymGD("object_cast_to")
-	API.Object.CastTo = func(o [1]gd.Object, ct gd.ClassTag) [1]gd.Object {
-		var self = pointers.Get(o[0])
-		if self[0] == 0 {
-			return [1]gd.Object{}
-		}
-		var ret = C.object_cast_to(
-			C.uintptr_t(uintptr(object_cast_to)),
-			C.uintptr_t(self[0]),
-			C.uintptr_t(ct),
-		)
-		if ret == 0 {
-			return [1]gd.Object{}
-		}
-		return o // Let?
-	}
-	classdb_get_class_tag := dlsymGD("classdb_get_class_tag")
-	API.ClassDB.GetClassTag = func(name gd.StringName) gd.ClassTag {
-		var frame = callframe.New()
-		defer frame.Free()
-		return gd.ClassTag(C.classdb_get_class_tag(
-			C.uintptr_t(uintptr(classdb_get_class_tag)),
-			C.uintptr_t(callframe.Arg(frame, pointers.Get(name)).Uintptr()),
-		))
-	}
 	get_library_path := dlsymGD("get_library_path")
 	API.GetLibraryPath = func(et gd.ExtensionToken) gd.String {
 		var frame = callframe.New()

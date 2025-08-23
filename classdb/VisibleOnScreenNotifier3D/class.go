@@ -76,6 +76,23 @@ If you want a node to be enabled automatically when this region is visible on sc
 */
 type Instance [1]gdclass.VisibleOnScreenNotifier3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_aabb     gdextension.MethodForClass `hash:"259215842"`
+	is_on_screen gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VisibleOnScreenNotifier3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -99,6 +116,20 @@ type Advanced = class
 type class [1]gdclass.VisibleOnScreenNotifier3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisibleOnScreenNotifier3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisibleOnScreenNotifier3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -108,7 +139,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisibleOnScreenNotifier3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisibleOnScreenNotifier3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -120,7 +151,7 @@ func (self Instance) SetAabb(value AABB.PositionSize) {
 
 //go:nosplit
 func (self class) SetAabb(rect AABB.PositionSize) { //gd:VisibleOnScreenNotifier3D.set_aabb
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenNotifier3D.Bind_set_aabb), 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ rect AABB.PositionSize }{rect}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aabb, 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ rect AABB.PositionSize }{rect}))
 }
 
 /*
@@ -129,7 +160,7 @@ Returns [code]true[/code] if the bounding box is on the screen.
 */
 //go:nosplit
 func (self class) IsOnScreen() bool { //gd:VisibleOnScreenNotifier3D.is_on_screen
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisibleOnScreenNotifier3D.Bind_is_on_screen), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_screen, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -180,7 +211,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisibleOnScreenNotifier3D", func(ptr gd.Object) any {
-		return [1]gdclass.VisibleOnScreenNotifier3D{*(*gdclass.VisibleOnScreenNotifier3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VisibleOnScreenNotifier3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

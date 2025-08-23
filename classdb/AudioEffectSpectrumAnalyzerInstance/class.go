@@ -73,6 +73,22 @@ An instance of this class can be obtained with [method AudioServer.get_bus_effec
 */
 type Instance [1]gdclass.AudioEffectSpectrumAnalyzerInstance
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_magnitude_for_frequency_range gdextension.MethodForClass `hash:"797993915"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioEffectSpectrumAnalyzerInstance")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.AudioEffectSpectrumAnalyzerInstance
@@ -106,6 +122,20 @@ type Advanced = class
 type class [1]gdclass.AudioEffectSpectrumAnalyzerInstance
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectSpectrumAnalyzerInstance)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectSpectrumAnalyzerInstance)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -115,7 +145,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioEffectSpectrumAnalyzerInstance"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioEffectSpectrumAnalyzerInstance)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -128,7 +158,7 @@ Returns the magnitude of the frequencies from [param from_hz] to [param to_hz] i
 */
 //go:nosplit
 func (self class) GetMagnitudeForFrequencyRange(from_hz float64, to_hz float64, mode MagnitudeMode) Vector2.XY { //gd:AudioEffectSpectrumAnalyzerInstance.get_magnitude_for_frequency_range
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectSpectrumAnalyzerInstance.Bind_get_magnitude_for_frequency_range), gdextension.SizeVector2|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_magnitude_for_frequency_range, gdextension.SizeVector2|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		from_hz float64
 		to_hz   float64
 		mode    MagnitudeMode
@@ -176,9 +206,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioEffectSpectrumAnalyzerInstance", func(ptr gd.Object) any {
-		return [1]gdclass.AudioEffectSpectrumAnalyzerInstance{*(*gdclass.AudioEffectSpectrumAnalyzerInstance)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioEffectSpectrumAnalyzerInstance", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type MagnitudeMode int //gd:AudioEffectSpectrumAnalyzerInstance.MagnitudeMode

@@ -78,6 +78,49 @@ A widget that provides an interface for selecting or modifying a color. It can o
 */
 type Instance [1]gdclass.ColorPicker
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_pick_color       gdextension.MethodForClass `hash:"2920490490"`
+	get_pick_color       gdextension.MethodForClass `hash:"3444240500"`
+	set_deferred_mode    gdextension.MethodForClass `hash:"2586408642"`
+	is_deferred_mode     gdextension.MethodForClass `hash:"36873697"`
+	set_color_mode       gdextension.MethodForClass `hash:"1579114136"`
+	get_color_mode       gdextension.MethodForClass `hash:"392907674"`
+	set_edit_alpha       gdextension.MethodForClass `hash:"2586408642"`
+	is_editing_alpha     gdextension.MethodForClass `hash:"36873697"`
+	set_can_add_swatches gdextension.MethodForClass `hash:"2586408642"`
+	are_swatches_enabled gdextension.MethodForClass `hash:"36873697"`
+	set_presets_visible  gdextension.MethodForClass `hash:"2586408642"`
+	are_presets_visible  gdextension.MethodForClass `hash:"36873697"`
+	set_modes_visible    gdextension.MethodForClass `hash:"2586408642"`
+	are_modes_visible    gdextension.MethodForClass `hash:"36873697"`
+	set_sampler_visible  gdextension.MethodForClass `hash:"2586408642"`
+	is_sampler_visible   gdextension.MethodForClass `hash:"36873697"`
+	set_sliders_visible  gdextension.MethodForClass `hash:"2586408642"`
+	are_sliders_visible  gdextension.MethodForClass `hash:"36873697"`
+	set_hex_visible      gdextension.MethodForClass `hash:"2586408642"`
+	is_hex_visible       gdextension.MethodForClass `hash:"36873697"`
+	add_preset           gdextension.MethodForClass `hash:"2920490490"`
+	erase_preset         gdextension.MethodForClass `hash:"2920490490"`
+	get_presets          gdextension.MethodForClass `hash:"1392750486"`
+	add_recent_preset    gdextension.MethodForClass `hash:"2920490490"`
+	erase_recent_preset  gdextension.MethodForClass `hash:"2920490490"`
+	get_recent_presets   gdextension.MethodForClass `hash:"1392750486"`
+	set_picker_shape     gdextension.MethodForClass `hash:"3981373861"`
+	get_picker_shape     gdextension.MethodForClass `hash:"1143229889"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ColorPicker")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -137,6 +180,20 @@ type Advanced = class
 type class [1]gdclass.ColorPicker
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ColorPicker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ColorPicker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -146,7 +203,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ColorPicker"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ColorPicker)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -242,120 +299,120 @@ func (self Instance) SetPresetsVisible(value bool) {
 
 //go:nosplit
 func (self class) SetPickColor(color Color.RGBA) { //gd:ColorPicker.set_pick_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_set_pick_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pick_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetPickColor() Color.RGBA { //gd:ColorPicker.get_pick_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_get_pick_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_pick_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeferredMode(mode bool) { //gd:ColorPicker.set_deferred_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_set_deferred_mode), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ mode bool }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deferred_mode, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ mode bool }{mode}))
 }
 
 //go:nosplit
 func (self class) IsDeferredMode() bool { //gd:ColorPicker.is_deferred_mode
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_is_deferred_mode), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deferred_mode, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColorMode(color_mode ColorModeType) { //gd:ColorPicker.set_color_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_set_color_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ color_mode ColorModeType }{color_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ color_mode ColorModeType }{color_mode}))
 }
 
 //go:nosplit
 func (self class) GetColorMode() ColorModeType { //gd:ColorPicker.get_color_mode
-	var r_ret = gdextension.Call[ColorModeType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_get_color_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ColorModeType](gd.ObjectChecked(self.AsObject()), methods.get_color_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditAlpha(show bool) { //gd:ColorPicker.set_edit_alpha
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_set_edit_alpha), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ show bool }{show}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edit_alpha, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ show bool }{show}))
 }
 
 //go:nosplit
 func (self class) IsEditingAlpha() bool { //gd:ColorPicker.is_editing_alpha
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_is_editing_alpha), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_alpha, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCanAddSwatches(enabled bool) { //gd:ColorPicker.set_can_add_swatches
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_set_can_add_swatches), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_can_add_swatches, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) AreSwatchesEnabled() bool { //gd:ColorPicker.are_swatches_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_are_swatches_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_swatches_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPresetsVisible(visible bool) { //gd:ColorPicker.set_presets_visible
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_set_presets_visible), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_presets_visible, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
 }
 
 //go:nosplit
 func (self class) ArePresetsVisible() bool { //gd:ColorPicker.are_presets_visible
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_are_presets_visible), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_presets_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetModesVisible(visible bool) { //gd:ColorPicker.set_modes_visible
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_set_modes_visible), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modes_visible, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
 }
 
 //go:nosplit
 func (self class) AreModesVisible() bool { //gd:ColorPicker.are_modes_visible
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_are_modes_visible), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_modes_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSamplerVisible(visible bool) { //gd:ColorPicker.set_sampler_visible
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_set_sampler_visible), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sampler_visible, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
 }
 
 //go:nosplit
 func (self class) IsSamplerVisible() bool { //gd:ColorPicker.is_sampler_visible
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_is_sampler_visible), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sampler_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSlidersVisible(visible bool) { //gd:ColorPicker.set_sliders_visible
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_set_sliders_visible), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sliders_visible, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
 }
 
 //go:nosplit
 func (self class) AreSlidersVisible() bool { //gd:ColorPicker.are_sliders_visible
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_are_sliders_visible), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_sliders_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHexVisible(visible bool) { //gd:ColorPicker.set_hex_visible
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_set_hex_visible), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hex_visible, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
 }
 
 //go:nosplit
 func (self class) IsHexVisible() bool { //gd:ColorPicker.is_hex_visible
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_is_hex_visible), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hex_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -366,7 +423,7 @@ Adds the given color to a list of color presets. The presets are displayed in th
 */
 //go:nosplit
 func (self class) AddPreset(color Color.RGBA) { //gd:ColorPicker.add_preset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_add_preset), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preset, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 /*
@@ -374,7 +431,7 @@ Removes the given color from the list of color presets of this color picker.
 */
 //go:nosplit
 func (self class) ErasePreset(color Color.RGBA) { //gd:ColorPicker.erase_preset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_erase_preset), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_preset, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 /*
@@ -382,7 +439,7 @@ Returns the list of colors in the presets of the color picker.
 */
 //go:nosplit
 func (self class) GetPresets() Packed.Array[Color.RGBA] { //gd:ColorPicker.get_presets
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_get_presets), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_presets, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -393,7 +450,7 @@ Adds the given color to a list of color recent presets so that it can be picked 
 */
 //go:nosplit
 func (self class) AddRecentPreset(color Color.RGBA) { //gd:ColorPicker.add_recent_preset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_add_recent_preset), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_recent_preset, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 /*
@@ -401,7 +458,7 @@ Removes the given color from the list of color recent presets of this color pick
 */
 //go:nosplit
 func (self class) EraseRecentPreset(color Color.RGBA) { //gd:ColorPicker.erase_recent_preset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_erase_recent_preset), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_recent_preset, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 /*
@@ -409,19 +466,19 @@ Returns the list of colors in the recent presets of the color picker.
 */
 //go:nosplit
 func (self class) GetRecentPresets() Packed.Array[Color.RGBA] { //gd:ColorPicker.get_recent_presets
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_get_recent_presets), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_recent_presets, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPickerShape(shape PickerShapeType) { //gd:ColorPicker.set_picker_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_set_picker_shape), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shape PickerShapeType }{shape}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_picker_shape, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shape PickerShapeType }{shape}))
 }
 
 //go:nosplit
 func (self class) GetPickerShape() PickerShapeType { //gd:ColorPicker.get_picker_shape
-	var r_ret = gdextension.Call[PickerShapeType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ColorPicker.Bind_get_picker_shape), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PickerShapeType](gd.ObjectChecked(self.AsObject()), methods.get_picker_shape, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -495,7 +552,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ColorPicker", func(ptr gd.Object) any { return [1]gdclass.ColorPicker{*(*gdclass.ColorPicker)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("ColorPicker", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type ColorModeType int //gd:ColorPicker.ColorModeType

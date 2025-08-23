@@ -73,6 +73,53 @@ Please note that many resources and nodes assume they are given [i]unit curves[/
 */
 type Instance [1]gdclass.Curve
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_point_count         gdextension.MethodForClass `hash:"3905245786"`
+	set_point_count         gdextension.MethodForClass `hash:"1286410249"`
+	add_point               gdextension.MethodForClass `hash:"434072736"`
+	remove_point            gdextension.MethodForClass `hash:"1286410249"`
+	clear_points            gdextension.MethodForClass `hash:"3218959716"`
+	get_point_position      gdextension.MethodForClass `hash:"2299179447"`
+	set_point_value         gdextension.MethodForClass `hash:"1602489585"`
+	set_point_offset        gdextension.MethodForClass `hash:"3780573764"`
+	sample                  gdextension.MethodForClass `hash:"3919130443"`
+	sample_baked            gdextension.MethodForClass `hash:"3919130443"`
+	get_point_left_tangent  gdextension.MethodForClass `hash:"2339986948"`
+	get_point_right_tangent gdextension.MethodForClass `hash:"2339986948"`
+	get_point_left_mode     gdextension.MethodForClass `hash:"426950354"`
+	get_point_right_mode    gdextension.MethodForClass `hash:"426950354"`
+	set_point_left_tangent  gdextension.MethodForClass `hash:"1602489585"`
+	set_point_right_tangent gdextension.MethodForClass `hash:"1602489585"`
+	set_point_left_mode     gdextension.MethodForClass `hash:"1217242874"`
+	set_point_right_mode    gdextension.MethodForClass `hash:"1217242874"`
+	get_min_value           gdextension.MethodForClass `hash:"1740695150"`
+	set_min_value           gdextension.MethodForClass `hash:"373806689"`
+	get_max_value           gdextension.MethodForClass `hash:"1740695150"`
+	set_max_value           gdextension.MethodForClass `hash:"373806689"`
+	get_value_range         gdextension.MethodForClass `hash:"1740695150"`
+	get_min_domain          gdextension.MethodForClass `hash:"1740695150"`
+	set_min_domain          gdextension.MethodForClass `hash:"373806689"`
+	get_max_domain          gdextension.MethodForClass `hash:"1740695150"`
+	set_max_domain          gdextension.MethodForClass `hash:"373806689"`
+	get_domain_range        gdextension.MethodForClass `hash:"1740695150"`
+	clean_dupes             gdextension.MethodForClass `hash:"3218959716"`
+	bake                    gdextension.MethodForClass `hash:"3218959716"`
+	get_bake_resolution     gdextension.MethodForClass `hash:"3905245786"`
+	set_bake_resolution     gdextension.MethodForClass `hash:"1286410249"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Curve")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Curve
@@ -237,6 +284,20 @@ type Advanced = class
 type class [1]gdclass.Curve
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Curve)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Curve)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -246,7 +307,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Curve"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Curve)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -303,14 +364,14 @@ func (self Instance) SetPointCount(value int) {
 
 //go:nosplit
 func (self class) GetPointCount() int64 { //gd:Curve.get_point_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_get_point_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPointCount(count int64) { //gd:Curve.set_point_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_set_point_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 /*
@@ -318,7 +379,7 @@ Adds a point to the curve. For each side, if the [code]*_mode[/code] is [constan
 */
 //go:nosplit
 func (self class) AddPoint(position Vector2.XY, left_tangent float64, right_tangent float64, left_mode TangentMode, right_mode TangentMode) int64 { //gd:Curve.add_point
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_add_point), gdextension.SizeInt|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_point, gdextension.SizeInt|(gdextension.SizeVector2<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		position      Vector2.XY
 		left_tangent  float64
 		right_tangent float64
@@ -334,7 +395,7 @@ Removes the point at [param index] from the curve.
 */
 //go:nosplit
 func (self class) RemovePoint(index int64) { //gd:Curve.remove_point
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_remove_point), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_point, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 }
 
 /*
@@ -342,7 +403,7 @@ Removes all points from the curve.
 */
 //go:nosplit
 func (self class) ClearPoints() { //gd:Curve.clear_points
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_clear_points), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_points, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -350,7 +411,7 @@ Returns the curve coordinates for the point at [param index].
 */
 //go:nosplit
 func (self class) GetPointPosition(index int64) Vector2.XY { //gd:Curve.get_point_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_get_point_position), gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_point_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -360,7 +421,7 @@ Assigns the vertical position [param y] to the point at [param index].
 */
 //go:nosplit
 func (self class) SetPointValue(index int64, y float64) { //gd:Curve.set_point_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_set_point_value), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		index int64
 		y     float64
 	}{index, y}))
@@ -371,7 +432,7 @@ Sets the offset from [code]0.5[/code].
 */
 //go:nosplit
 func (self class) SetPointOffset(index int64, offset float64) int64 { //gd:Curve.set_point_offset
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_set_point_offset), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_point_offset, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		index  int64
 		offset float64
 	}{index, offset}))
@@ -384,7 +445,7 @@ Returns the Y value for the point that would exist at the X position [param offs
 */
 //go:nosplit
 func (self class) Sample(offset float64) float64 { //gd:Curve.sample
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_sample), gdextension.SizeFloat|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.sample, gdextension.SizeFloat|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
 	var ret = r_ret
 	return ret
 }
@@ -394,7 +455,7 @@ Returns the Y value for the point that would exist at the X position [param offs
 */
 //go:nosplit
 func (self class) SampleBaked(offset float64) float64 { //gd:Curve.sample_baked
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_sample_baked), gdextension.SizeFloat|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.sample_baked, gdextension.SizeFloat|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
 	var ret = r_ret
 	return ret
 }
@@ -404,7 +465,7 @@ Returns the left tangent angle (in degrees) for the point at [param index].
 */
 //go:nosplit
 func (self class) GetPointLeftTangent(index int64) float64 { //gd:Curve.get_point_left_tangent
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_get_point_left_tangent), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_point_left_tangent, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -414,7 +475,7 @@ Returns the right tangent angle (in degrees) for the point at [param index].
 */
 //go:nosplit
 func (self class) GetPointRightTangent(index int64) float64 { //gd:Curve.get_point_right_tangent
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_get_point_right_tangent), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_point_right_tangent, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -424,7 +485,7 @@ Returns the left [enum TangentMode] for the point at [param index].
 */
 //go:nosplit
 func (self class) GetPointLeftMode(index int64) TangentMode { //gd:Curve.get_point_left_mode
-	var r_ret = gdextension.Call[TangentMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_get_point_left_mode), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[TangentMode](gd.ObjectChecked(self.AsObject()), methods.get_point_left_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -434,7 +495,7 @@ Returns the right [enum TangentMode] for the point at [param index].
 */
 //go:nosplit
 func (self class) GetPointRightMode(index int64) TangentMode { //gd:Curve.get_point_right_mode
-	var r_ret = gdextension.Call[TangentMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_get_point_right_mode), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[TangentMode](gd.ObjectChecked(self.AsObject()), methods.get_point_right_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = r_ret
 	return ret
 }
@@ -444,7 +505,7 @@ Sets the left tangent angle for the point at [param index] to [param tangent].
 */
 //go:nosplit
 func (self class) SetPointLeftTangent(index int64, tangent float64) { //gd:Curve.set_point_left_tangent
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_set_point_left_tangent), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_left_tangent, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		index   int64
 		tangent float64
 	}{index, tangent}))
@@ -455,7 +516,7 @@ Sets the right tangent angle for the point at [param index] to [param tangent].
 */
 //go:nosplit
 func (self class) SetPointRightTangent(index int64, tangent float64) { //gd:Curve.set_point_right_tangent
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_set_point_right_tangent), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_right_tangent, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		index   int64
 		tangent float64
 	}{index, tangent}))
@@ -466,7 +527,7 @@ Sets the left [enum TangentMode] for the point at [param index] to [param mode].
 */
 //go:nosplit
 func (self class) SetPointLeftMode(index int64, mode TangentMode) { //gd:Curve.set_point_left_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_set_point_left_mode), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_left_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		mode  TangentMode
 	}{index, mode}))
@@ -477,7 +538,7 @@ Sets the right [enum TangentMode] for the point at [param index] to [param mode]
 */
 //go:nosplit
 func (self class) SetPointRightMode(index int64, mode TangentMode) { //gd:Curve.set_point_right_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_set_point_right_mode), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_right_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		index int64
 		mode  TangentMode
 	}{index, mode}))
@@ -485,26 +546,26 @@ func (self class) SetPointRightMode(index int64, mode TangentMode) { //gd:Curve.
 
 //go:nosplit
 func (self class) GetMinValue() float64 { //gd:Curve.get_min_value
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_get_min_value), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_value, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinValue(min float64) { //gd:Curve.set_min_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_set_min_value), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ min float64 }{min}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_value, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ min float64 }{min}))
 }
 
 //go:nosplit
 func (self class) GetMaxValue() float64 { //gd:Curve.get_max_value
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_get_max_value), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_value, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxValue(max float64) { //gd:Curve.set_max_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_set_max_value), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ max float64 }{max}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_value, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ max float64 }{max}))
 }
 
 /*
@@ -512,33 +573,33 @@ Returns the difference between [member min_value] and [member max_value].
 */
 //go:nosplit
 func (self class) GetValueRange() float64 { //gd:Curve.get_value_range
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_get_value_range), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_value_range, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetMinDomain() float64 { //gd:Curve.get_min_domain
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_get_min_domain), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_domain, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinDomain(min float64) { //gd:Curve.set_min_domain
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_set_min_domain), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ min float64 }{min}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_domain, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ min float64 }{min}))
 }
 
 //go:nosplit
 func (self class) GetMaxDomain() float64 { //gd:Curve.get_max_domain
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_get_max_domain), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_domain, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxDomain(max float64) { //gd:Curve.set_max_domain
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_set_max_domain), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ max float64 }{max}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_domain, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ max float64 }{max}))
 }
 
 /*
@@ -546,7 +607,7 @@ Returns the difference between [member min_domain] and [member max_domain].
 */
 //go:nosplit
 func (self class) GetDomainRange() float64 { //gd:Curve.get_domain_range
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_get_domain_range), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_domain_range, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -556,7 +617,7 @@ Removes duplicate points, i.e. points that are less than 0.00001 units (engine e
 */
 //go:nosplit
 func (self class) CleanDupes() { //gd:Curve.clean_dupes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_clean_dupes), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clean_dupes, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -564,19 +625,19 @@ Recomputes the baked cache of points for the curve.
 */
 //go:nosplit
 func (self class) Bake() { //gd:Curve.bake
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_bake), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) GetBakeResolution() int64 { //gd:Curve.get_bake_resolution
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_get_bake_resolution), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bake_resolution, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBakeResolution(resolution int64) { //gd:Curve.set_bake_resolution
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Curve.Bind_set_bake_resolution), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ resolution int64 }{resolution}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_resolution, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ resolution int64 }{resolution}))
 }
 func (self Instance) OnRangeChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("range_changed"), gd.NewCallable(cb), 0)
@@ -618,7 +679,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Curve", func(ptr gd.Object) any { return [1]gdclass.Curve{*(*gdclass.Curve)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Curve", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type TangentMode int //gd:Curve.TangentMode

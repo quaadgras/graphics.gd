@@ -72,6 +72,25 @@ The output port of this node needs to be connected to [code]Model View Matrix[/c
 */
 type Instance [1]gdclass.VisualShaderNodeBillboard
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_billboard_type     gdextension.MethodForClass `hash:"1227463289"`
+	get_billboard_type     gdextension.MethodForClass `hash:"3724188517"`
+	set_keep_scale_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_keep_scale_enabled  gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VisualShaderNodeBillboard")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -87,6 +106,20 @@ type Advanced = class
 type class [1]gdclass.VisualShaderNodeBillboard
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeBillboard)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeBillboard)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -96,7 +129,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShaderNodeBillboard"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisualShaderNodeBillboard)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -121,24 +154,24 @@ func (self Instance) SetKeepScale(value bool) {
 
 //go:nosplit
 func (self class) SetBillboardType(billboard_type BillboardType) { //gd:VisualShaderNodeBillboard.set_billboard_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBillboard.Bind_set_billboard_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ billboard_type BillboardType }{billboard_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_billboard_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ billboard_type BillboardType }{billboard_type}))
 }
 
 //go:nosplit
 func (self class) GetBillboardType() BillboardType { //gd:VisualShaderNodeBillboard.get_billboard_type
-	var r_ret = gdextension.Call[BillboardType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBillboard.Bind_get_billboard_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BillboardType](gd.ObjectChecked(self.AsObject()), methods.get_billboard_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeepScaleEnabled(enabled bool) { //gd:VisualShaderNodeBillboard.set_keep_scale_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBillboard.Bind_set_keep_scale_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_scale_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsKeepScaleEnabled() bool { //gd:VisualShaderNodeBillboard.is_keep_scale_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeBillboard.Bind_is_keep_scale_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keep_scale_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -189,9 +222,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisualShaderNodeBillboard", func(ptr gd.Object) any {
-		return [1]gdclass.VisualShaderNodeBillboard{*(*gdclass.VisualShaderNodeBillboard)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VisualShaderNodeBillboard", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type BillboardType int //gd:VisualShaderNodeBillboard.BillboardType

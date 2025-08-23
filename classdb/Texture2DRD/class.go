@@ -73,6 +73,23 @@ This texture class allows you to use a 2D texture created directly on the [Rende
 */
 type Instance [1]gdclass.Texture2DRD
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_texture_rd_rid gdextension.MethodForClass `hash:"2722037293"`
+	get_texture_rd_rid gdextension.MethodForClass `hash:"2944877500"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Texture2DRD")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +105,20 @@ type Advanced = class
 type class [1]gdclass.Texture2DRD
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Texture2DRD)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Texture2DRD)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +128,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Texture2DRD"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Texture2DRD)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -114,12 +145,12 @@ func (self Instance) SetTextureRdRid(value RID.Any) {
 
 //go:nosplit
 func (self class) SetTextureRdRid(texture_rd_rid RID.Any) { //gd:Texture2DRD.set_texture_rd_rid
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Texture2DRD.Bind_set_texture_rd_rid), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture_rd_rid RID.Any }{texture_rd_rid}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_rd_rid, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture_rd_rid RID.Any }{texture_rd_rid}))
 }
 
 //go:nosplit
 func (self class) GetTextureRdRid() RID.Any { //gd:Texture2DRD.get_texture_rd_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Texture2DRD.Bind_get_texture_rd_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture_rd_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -167,5 +198,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Texture2DRD", func(ptr gd.Object) any { return [1]gdclass.Texture2DRD{*(*gdclass.Texture2DRD)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Texture2DRD", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

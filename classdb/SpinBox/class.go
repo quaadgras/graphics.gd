@@ -97,6 +97,37 @@ See [Range] class for more options over the [SpinBox].
 */
 type Instance [1]gdclass.SpinBox
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_horizontal_alignment   gdextension.MethodForClass `hash:"2312603777"`
+	get_horizontal_alignment   gdextension.MethodForClass `hash:"341400642"`
+	set_suffix                 gdextension.MethodForClass `hash:"83702148"`
+	get_suffix                 gdextension.MethodForClass `hash:"201670096"`
+	set_prefix                 gdextension.MethodForClass `hash:"83702148"`
+	get_prefix                 gdextension.MethodForClass `hash:"201670096"`
+	set_editable               gdextension.MethodForClass `hash:"2586408642"`
+	set_custom_arrow_step      gdextension.MethodForClass `hash:"373806689"`
+	get_custom_arrow_step      gdextension.MethodForClass `hash:"1740695150"`
+	is_editable                gdextension.MethodForClass `hash:"36873697"`
+	set_update_on_text_changed gdextension.MethodForClass `hash:"2586408642"`
+	get_update_on_text_changed gdextension.MethodForClass `hash:"36873697"`
+	set_select_all_on_focus    gdextension.MethodForClass `hash:"2586408642"`
+	is_select_all_on_focus     gdextension.MethodForClass `hash:"36873697"`
+	apply                      gdextension.MethodForClass `hash:"3218959716"`
+	get_line_edit              gdextension.MethodForClass `hash:"4071694264"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("SpinBox")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -127,6 +158,20 @@ type Advanced = class
 type class [1]gdclass.SpinBox
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SpinBox)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SpinBox)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -136,7 +181,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SpinBox"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SpinBox)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -200,84 +245,84 @@ func (self Instance) SetSelectAllOnFocus(value bool) {
 
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:SpinBox.set_horizontal_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_horizontal_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:SpinBox.get_horizontal_alignment
-	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_get_horizontal_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSuffix(suffix String.Readable) { //gd:SpinBox.set_suffix
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_suffix), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suffix, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))}))
 }
 
 //go:nosplit
 func (self class) GetSuffix() String.Readable { //gd:SpinBox.get_suffix
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_get_suffix), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrefix(prefix String.Readable) { //gd:SpinBox.set_prefix
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_prefix), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ prefix gdextension.String }{pointers.Get(gd.InternalString(prefix))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_prefix, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ prefix gdextension.String }{pointers.Get(gd.InternalString(prefix))}))
 }
 
 //go:nosplit
 func (self class) GetPrefix() String.Readable { //gd:SpinBox.get_prefix
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_get_prefix), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_prefix, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditable(enabled bool) { //gd:SpinBox.set_editable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_editable), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) SetCustomArrowStep(arrow_step float64) { //gd:SpinBox.set_custom_arrow_step
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_custom_arrow_step), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ arrow_step float64 }{arrow_step}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_arrow_step, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ arrow_step float64 }{arrow_step}))
 }
 
 //go:nosplit
 func (self class) GetCustomArrowStep() float64 { //gd:SpinBox.get_custom_arrow_step
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_get_custom_arrow_step), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_arrow_step, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) IsEditable() bool { //gd:SpinBox.is_editable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_is_editable), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpdateOnTextChanged(enabled bool) { //gd:SpinBox.set_update_on_text_changed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_update_on_text_changed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_on_text_changed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetUpdateOnTextChanged() bool { //gd:SpinBox.get_update_on_text_changed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_get_update_on_text_changed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_on_text_changed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectAllOnFocus(enabled bool) { //gd:SpinBox.set_select_all_on_focus
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_set_select_all_on_focus), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_select_all_on_focus, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSelectAllOnFocus() bool { //gd:SpinBox.is_select_all_on_focus
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_is_select_all_on_focus), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_select_all_on_focus, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -287,7 +332,7 @@ Applies the current value of this [SpinBox].
 */
 //go:nosplit
 func (self class) Apply() { //gd:SpinBox.apply
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_apply), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -296,7 +341,7 @@ Returns the [LineEdit] instance from this [SpinBox]. You can use it to access pr
 */
 //go:nosplit
 func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:SpinBox.get_line_edit
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SpinBox.Bind_get_line_edit), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_line_edit, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.LineEdit{gd.PointerLifetimeBoundTo[gdclass.LineEdit](self.AsObject(), r_ret)}
 	return ret
 }
@@ -336,5 +381,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SpinBox", func(ptr gd.Object) any { return [1]gdclass.SpinBox{*(*gdclass.SpinBox)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("SpinBox", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

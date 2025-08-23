@@ -74,6 +74,26 @@ This node is used to generate previews for resources or files.
 */
 type Instance [1]gdclass.EditorResourcePreview
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	queue_resource_preview        gdextension.MethodForClass `hash:"233177534"`
+	queue_edited_resource_preview gdextension.MethodForClass `hash:"1608376650"`
+	add_preview_generator         gdextension.MethodForClass `hash:"332288124"`
+	remove_preview_generator      gdextension.MethodForClass `hash:"332288124"`
+	check_for_invalidation        gdextension.MethodForClass `hash:"83702148"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorResourcePreview")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -126,6 +146,20 @@ type Advanced = class
 type class [1]gdclass.EditorResourcePreview
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorResourcePreview)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorResourcePreview)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -135,7 +169,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorResourcePreview"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorResourcePreview)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -147,7 +181,7 @@ Queue a resource file located at [param path] for preview. Once the preview is r
 */
 //go:nosplit
 func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_resource_preview
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePreview.Bind_queue_resource_preview), 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_resource_preview, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
 		path          gdextension.String
 		receiver      gdextension.Object
 		receiver_func gdextension.StringName
@@ -161,7 +195,7 @@ Queue the [param resource] being edited for preview. Once the preview is ready, 
 */
 //go:nosplit
 func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver [1]gd.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_edited_resource_preview
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePreview.Bind_queue_edited_resource_preview), 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_edited_resource_preview, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
 		resource      gdextension.Object
 		receiver      gdextension.Object
 		receiver_func gdextension.StringName
@@ -174,7 +208,7 @@ Create an own, custom preview generator.
 */
 //go:nosplit
 func (self class) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.add_preview_generator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePreview.Bind_add_preview_generator), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preview_generator, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))}))
 }
 
 /*
@@ -182,7 +216,7 @@ Removes a custom preview generator.
 */
 //go:nosplit
 func (self class) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.remove_preview_generator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePreview.Bind_remove_preview_generator), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_preview_generator, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))}))
 }
 
 /*
@@ -190,7 +224,7 @@ Check if the resource changed, if so, it will be invalidated and the correspondi
 */
 //go:nosplit
 func (self class) CheckForInvalidation(path String.Readable) { //gd:EditorResourcePreview.check_for_invalidation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorResourcePreview.Bind_check_for_invalidation), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.check_for_invalidation, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 }
 func (self Instance) OnPreviewInvalidated(cb func(path string)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("preview_invalidated"), gd.NewCallable(cb), 0)
@@ -219,7 +253,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorResourcePreview", func(ptr gd.Object) any {
-		return [1]gdclass.EditorResourcePreview{*(*gdclass.EditorResourcePreview)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorResourcePreview", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -78,6 +78,29 @@ type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 */
 type Instance [1]gdclass.PhysicsBody3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	move_and_collide                gdextension.MethodForClass `hash:"3208792678"`
+	test_move                       gdextension.MethodForClass `hash:"2481691619"`
+	get_gravity                     gdextension.MethodForClass `hash:"3360562783"`
+	set_axis_lock                   gdextension.MethodForClass `hash:"1787895195"`
+	get_axis_lock                   gdextension.MethodForClass `hash:"2264617709"`
+	get_collision_exceptions        gdextension.MethodForClass `hash:"2915620761"`
+	add_collision_exception_with    gdextension.MethodForClass `hash:"1078189570"`
+	remove_collision_exception_with gdextension.MethodForClass `hash:"1078189570"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PhysicsBody3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.PhysicsBody3D
@@ -171,6 +194,20 @@ type Advanced = class
 type class [1]gdclass.PhysicsBody3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PhysicsBody3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PhysicsBody3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -180,7 +217,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PhysicsBody3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.PhysicsBody3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -244,7 +281,7 @@ If [param recovery_as_collision] is [code]true[/code], any depenetration from th
 */
 //go:nosplit
 func (self class) MoveAndCollide(motion Vector3.XYZ, test_only bool, safe_margin float64, recovery_as_collision bool, max_collisions int64) [1]gdclass.KinematicCollision3D { //gd:PhysicsBody3D.move_and_collide
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody3D.Bind_move_and_collide), gdextension.SizeObject|(gdextension.SizeVector3<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.move_and_collide, gdextension.SizeObject|(gdextension.SizeVector3<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		motion                Vector3.XYZ
 		test_only             bool
 		safe_margin           float64
@@ -265,7 +302,7 @@ If [param recovery_as_collision] is [code]true[/code], any depenetration from th
 */
 //go:nosplit
 func (self class) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ, collision [1]gdclass.KinematicCollision3D, safe_margin float64, recovery_as_collision bool, max_collisions int64) bool { //gd:PhysicsBody3D.test_move
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody3D.Bind_test_move), gdextension.SizeBool|(gdextension.SizeTransform3D<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.test_move, gdextension.SizeBool|(gdextension.SizeTransform3D<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
 		from                  Transform3D.BasisOrigin
 		motion                Vector3.XYZ
 		collision             gdextension.Object
@@ -282,7 +319,7 @@ Returns the gravity vector computed from all sources that can affect the body, i
 */
 //go:nosplit
 func (self class) GetGravity() Vector3.XYZ { //gd:PhysicsBody3D.get_gravity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody3D.Bind_get_gravity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -292,7 +329,7 @@ Locks or unlocks the specified linear or rotational [param axis] depending on th
 */
 //go:nosplit
 func (self class) SetAxisLock(axis PhysicsServer3D.BodyAxis, lock bool) { //gd:PhysicsBody3D.set_axis_lock
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody3D.Bind_set_axis_lock), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_lock, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		axis PhysicsServer3D.BodyAxis
 		lock bool
 	}{axis, lock}))
@@ -303,7 +340,7 @@ Returns [code]true[/code] if the specified linear or rotational [param axis] is 
 */
 //go:nosplit
 func (self class) GetAxisLock(axis PhysicsServer3D.BodyAxis) bool { //gd:PhysicsBody3D.get_axis_lock
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody3D.Bind_get_axis_lock), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ axis PhysicsServer3D.BodyAxis }{axis}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_axis_lock, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ axis PhysicsServer3D.BodyAxis }{axis}))
 	var ret = r_ret
 	return ret
 }
@@ -313,7 +350,7 @@ Returns an array of nodes that were added as collision exceptions for this body.
 */
 //go:nosplit
 func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody3D] { //gd:PhysicsBody3D.get_collision_exceptions
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody3D.Bind_get_collision_exceptions), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_collision_exceptions, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.PhysicsBody3D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -323,7 +360,7 @@ Adds a body to the list of bodies that this body can't collide with.
 */
 //go:nosplit
 func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.add_collision_exception_with
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody3D.Bind_add_collision_exception_with), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
 }
 
 /*
@@ -331,7 +368,7 @@ Removes a body from the list of bodies that this body can't collide with.
 */
 //go:nosplit
 func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:PhysicsBody3D.remove_collision_exception_with
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsBody3D.Bind_remove_collision_exception_with), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
 }
 func (self class) AsPhysicsBody3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsPhysicsBody3D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -366,7 +403,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicsBody3D", func(ptr gd.Object) any {
-		return [1]gdclass.PhysicsBody3D{*(*gdclass.PhysicsBody3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("PhysicsBody3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

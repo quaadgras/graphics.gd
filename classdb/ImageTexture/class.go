@@ -94,6 +94,26 @@ An [ImageTexture] is not meant to be operated from within the editor interface d
 */
 type Instance [1]gdclass.ImageTexture
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	create_from_image gdextension.MethodForClass `hash:"2775144163"`
+	get_format        gdextension.MethodForClass `hash:"3847873762"`
+	set_image         gdextension.MethodForClass `hash:"532598488"`
+	update            gdextension.MethodForClass `hash:"532598488"`
+	set_size_override gdextension.MethodForClass `hash:"1130785943"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ImageTexture")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -148,6 +168,20 @@ type Advanced = class
 type class [1]gdclass.ImageTexture
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ImageTexture)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ImageTexture)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -157,7 +191,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ImageTexture"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ImageTexture)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -169,7 +203,7 @@ Creates a new [ImageTexture] and initializes it by allocating and setting the da
 */
 //go:nosplit
 func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture { //gd:ImageTexture.create_from_image
-	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.ImageTexture.Bind_create_from_image), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.create_from_image, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 	var ret = [1]gdclass.ImageTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.ImageTexture](r_ret)}
 	return ret
 }
@@ -179,7 +213,7 @@ Returns the format of the texture, one of [enum Image.Format].
 */
 //go:nosplit
 func (self class) GetFormat() Image.Format { //gd:ImageTexture.get_format
-	var r_ret = gdextension.Call[Image.Format](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTexture.Bind_get_format), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -190,7 +224,7 @@ If you want to update the image, but don't need to change its parameters (format
 */
 //go:nosplit
 func (self class) SetImage(image [1]gdclass.Image) { //gd:ImageTexture.set_image
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTexture.Bind_set_image), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_image, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 }
 
 /*
@@ -200,7 +234,7 @@ Use this method over [method set_image] if you need to update the texture freque
 */
 //go:nosplit
 func (self class) Update(image [1]gdclass.Image) { //gd:ImageTexture.update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTexture.Bind_update), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 }
 
 /*
@@ -208,7 +242,7 @@ Resizes the texture to the specified dimensions.
 */
 //go:nosplit
 func (self class) SetSizeOverride(size Vector2i.XY) { //gd:ImageTexture.set_size_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTexture.Bind_set_size_override), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_override, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
 }
 func (self class) AsImageTexture() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsImageTexture() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -254,7 +288,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ImageTexture", func(ptr gd.Object) any {
-		return [1]gdclass.ImageTexture{*(*gdclass.ImageTexture)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ImageTexture", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

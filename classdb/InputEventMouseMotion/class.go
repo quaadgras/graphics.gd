@@ -78,6 +78,35 @@ Stores information about a mouse or a pen motion. This includes relative positio
 */
 type Instance [1]gdclass.InputEventMouseMotion
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_tilt            gdextension.MethodForClass `hash:"743155724"`
+	get_tilt            gdextension.MethodForClass `hash:"3341600327"`
+	set_pressure        gdextension.MethodForClass `hash:"373806689"`
+	get_pressure        gdextension.MethodForClass `hash:"1740695150"`
+	set_pen_inverted    gdextension.MethodForClass `hash:"2586408642"`
+	get_pen_inverted    gdextension.MethodForClass `hash:"36873697"`
+	set_relative        gdextension.MethodForClass `hash:"743155724"`
+	get_relative        gdextension.MethodForClass `hash:"3341600327"`
+	set_screen_relative gdextension.MethodForClass `hash:"743155724"`
+	get_screen_relative gdextension.MethodForClass `hash:"3341600327"`
+	set_velocity        gdextension.MethodForClass `hash:"743155724"`
+	get_velocity        gdextension.MethodForClass `hash:"3341600327"`
+	set_screen_velocity gdextension.MethodForClass `hash:"743155724"`
+	get_screen_velocity gdextension.MethodForClass `hash:"3341600327"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("InputEventMouseMotion")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -93,6 +122,20 @@ type Advanced = class
 type class [1]gdclass.InputEventMouseMotion
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventMouseMotion)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventMouseMotion)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -102,7 +145,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("InputEventMouseMotion"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.InputEventMouseMotion)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -167,84 +210,84 @@ func (self Instance) SetScreenVelocity(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetTilt(tilt Vector2.XY) { //gd:InputEventMouseMotion.set_tilt
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_set_tilt), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ tilt Vector2.XY }{tilt}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tilt, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ tilt Vector2.XY }{tilt}))
 }
 
 //go:nosplit
 func (self class) GetTilt() Vector2.XY { //gd:InputEventMouseMotion.get_tilt
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_get_tilt), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_tilt, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressure(pressure float64) { //gd:InputEventMouseMotion.set_pressure
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_set_pressure), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pressure float64 }{pressure}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pressure float64 }{pressure}))
 }
 
 //go:nosplit
 func (self class) GetPressure() float64 { //gd:InputEventMouseMotion.get_pressure
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_get_pressure), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPenInverted(pen_inverted bool) { //gd:InputEventMouseMotion.set_pen_inverted
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_set_pen_inverted), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pen_inverted bool }{pen_inverted}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pen_inverted, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pen_inverted bool }{pen_inverted}))
 }
 
 //go:nosplit
 func (self class) GetPenInverted() bool { //gd:InputEventMouseMotion.get_pen_inverted
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_get_pen_inverted), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_pen_inverted, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRelative(relative Vector2.XY) { //gd:InputEventMouseMotion.set_relative
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_set_relative), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ relative Vector2.XY }{relative}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_relative, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ relative Vector2.XY }{relative}))
 }
 
 //go:nosplit
 func (self class) GetRelative() Vector2.XY { //gd:InputEventMouseMotion.get_relative
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_get_relative), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_relative, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScreenRelative(relative Vector2.XY) { //gd:InputEventMouseMotion.set_screen_relative
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_set_screen_relative), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ relative Vector2.XY }{relative}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_relative, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ relative Vector2.XY }{relative}))
 }
 
 //go:nosplit
 func (self class) GetScreenRelative() Vector2.XY { //gd:InputEventMouseMotion.get_screen_relative
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_get_screen_relative), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_relative, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVelocity(velocity Vector2.XY) { //gd:InputEventMouseMotion.set_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_set_velocity), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetVelocity() Vector2.XY { //gd:InputEventMouseMotion.get_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_get_velocity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScreenVelocity(velocity Vector2.XY) { //gd:InputEventMouseMotion.set_screen_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_set_screen_velocity), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_velocity, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetScreenVelocity() Vector2.XY { //gd:InputEventMouseMotion.get_screen_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventMouseMotion.Bind_get_screen_velocity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -316,7 +359,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("InputEventMouseMotion", func(ptr gd.Object) any {
-		return [1]gdclass.InputEventMouseMotion{*(*gdclass.InputEventMouseMotion)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("InputEventMouseMotion", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

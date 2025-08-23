@@ -104,14 +104,88 @@ EditorSettings settings = EditorInterface.Singleton.GetEditorSettings();
 */
 type Instance [1]gdclass.EditorInterface
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	restart_editor                   gdextension.MethodForClass `hash:"3216645846"`
+	get_command_palette              gdextension.MethodForClass `hash:"2471163807"`
+	get_resource_filesystem          gdextension.MethodForClass `hash:"780151678"`
+	get_editor_paths                 gdextension.MethodForClass `hash:"1595760068"`
+	get_resource_previewer           gdextension.MethodForClass `hash:"943486957"`
+	get_selection                    gdextension.MethodForClass `hash:"2690272531"`
+	get_editor_settings              gdextension.MethodForClass `hash:"4086932459"`
+	get_editor_toaster               gdextension.MethodForClass `hash:"3612675797"`
+	get_editor_undo_redo             gdextension.MethodForClass `hash:"3819628421"`
+	make_mesh_previews               gdextension.MethodForClass `hash:"878078554"`
+	set_plugin_enabled               gdextension.MethodForClass `hash:"2678287736"`
+	is_plugin_enabled                gdextension.MethodForClass `hash:"3927539163"`
+	get_editor_theme                 gdextension.MethodForClass `hash:"3846893731"`
+	get_base_control                 gdextension.MethodForClass `hash:"2783021301"`
+	get_editor_main_screen           gdextension.MethodForClass `hash:"1706218421"`
+	get_script_editor                gdextension.MethodForClass `hash:"90868003"`
+	get_editor_viewport_2d           gdextension.MethodForClass `hash:"3750751911"`
+	get_editor_viewport_3d           gdextension.MethodForClass `hash:"1970834490"`
+	set_main_screen_editor           gdextension.MethodForClass `hash:"83702148"`
+	set_distraction_free_mode        gdextension.MethodForClass `hash:"2586408642"`
+	is_distraction_free_mode_enabled gdextension.MethodForClass `hash:"36873697"`
+	is_multi_window_enabled          gdextension.MethodForClass `hash:"36873697"`
+	get_editor_scale                 gdextension.MethodForClass `hash:"1740695150"`
+	popup_dialog                     gdextension.MethodForClass `hash:"2015770942"`
+	popup_dialog_centered            gdextension.MethodForClass `hash:"346557367"`
+	popup_dialog_centered_ratio      gdextension.MethodForClass `hash:"2093669136"`
+	popup_dialog_centered_clamped    gdextension.MethodForClass `hash:"3763385571"`
+	get_current_feature_profile      gdextension.MethodForClass `hash:"201670096"`
+	set_current_feature_profile      gdextension.MethodForClass `hash:"83702148"`
+	popup_node_selector              gdextension.MethodForClass `hash:"2444591477"`
+	popup_property_selector          gdextension.MethodForClass `hash:"2955609011"`
+	popup_method_selector            gdextension.MethodForClass `hash:"3585505226"`
+	popup_quick_open                 gdextension.MethodForClass `hash:"2271411043"`
+	popup_create_dialog              gdextension.MethodForClass `hash:"495277124"`
+	get_file_system_dock             gdextension.MethodForClass `hash:"3751012327"`
+	select_file                      gdextension.MethodForClass `hash:"83702148"`
+	get_selected_paths               gdextension.MethodForClass `hash:"1139954409"`
+	get_current_path                 gdextension.MethodForClass `hash:"201670096"`
+	get_current_directory            gdextension.MethodForClass `hash:"201670096"`
+	get_inspector                    gdextension.MethodForClass `hash:"3517113938"`
+	inspect_object                   gdextension.MethodForClass `hash:"127962172"`
+	edit_resource                    gdextension.MethodForClass `hash:"968641751"`
+	edit_node                        gdextension.MethodForClass `hash:"1078189570"`
+	edit_script                      gdextension.MethodForClass `hash:"219829402"`
+	open_scene_from_path             gdextension.MethodForClass `hash:"1168363258"`
+	reload_scene_from_path           gdextension.MethodForClass `hash:"83702148"`
+	get_open_scenes                  gdextension.MethodForClass `hash:"1139954409"`
+	get_edited_scene_root            gdextension.MethodForClass `hash:"3160264692"`
+	save_scene                       gdextension.MethodForClass `hash:"166280745"`
+	save_scene_as                    gdextension.MethodForClass `hash:"3647332257"`
+	save_all_scenes                  gdextension.MethodForClass `hash:"3218959716"`
+	mark_scene_as_unsaved            gdextension.MethodForClass `hash:"3218959716"`
+	play_main_scene                  gdextension.MethodForClass `hash:"3218959716"`
+	play_current_scene               gdextension.MethodForClass `hash:"3218959716"`
+	play_custom_scene                gdextension.MethodForClass `hash:"83702148"`
+	stop_playing_scene               gdextension.MethodForClass `hash:"3218959716"`
+	is_playing_scene                 gdextension.MethodForClass `hash:"36873697"`
+	get_playing_scene                gdextension.MethodForClass `hash:"201670096"`
+	set_movie_maker_enabled          gdextension.MethodForClass `hash:"2586408642"`
+	is_movie_maker_enabled           gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorInterface")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 var self [1]gdclass.EditorInterface
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.EditorInterface)))})
-	self = *(*[1]gdclass.EditorInterface)(unsafe.Pointer(&obj))
+	self[0] = pointers.Raw[gdclass.EditorInterface]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
 }
 
 /*
@@ -782,6 +856,20 @@ func Advanced() class { once.Do(singleton); return self }
 type class [1]gdclass.EditorInterface
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorInterface)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorInterface)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -816,7 +904,7 @@ Restarts the editor. This closes the editor and then opens the same project. If 
 */
 //go:nosplit
 func (self class) RestartEditor(save bool) { //gd:EditorInterface.restart_editor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_restart_editor), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ save bool }{save}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.restart_editor, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ save bool }{save}))
 }
 
 /*
@@ -825,7 +913,7 @@ Returns the editor's [EditorCommandPalette] instance.
 */
 //go:nosplit
 func (self class) GetCommandPalette() [1]gdclass.EditorCommandPalette { //gd:EditorInterface.get_command_palette
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_command_palette), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_command_palette, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorCommandPalette{gd.PointerLifetimeBoundTo[gdclass.EditorCommandPalette](self.AsObject(), r_ret)}
 	return ret
 }
@@ -835,7 +923,7 @@ Returns the editor's [EditorFileSystem] instance.
 */
 //go:nosplit
 func (self class) GetResourceFilesystem() [1]gdclass.EditorFileSystem { //gd:EditorInterface.get_resource_filesystem
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_resource_filesystem), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_resource_filesystem, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorFileSystem{gd.PointerLifetimeBoundTo[gdclass.EditorFileSystem](self.AsObject(), r_ret)}
 	return ret
 }
@@ -845,7 +933,7 @@ Returns the [EditorPaths] singleton.
 */
 //go:nosplit
 func (self class) GetEditorPaths() [1]gdclass.EditorPaths { //gd:EditorInterface.get_editor_paths
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_editor_paths), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_paths, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorPaths{gd.PointerLifetimeBoundTo[gdclass.EditorPaths](self.AsObject(), r_ret)}
 	return ret
 }
@@ -855,7 +943,7 @@ Returns the editor's [EditorResourcePreview] instance.
 */
 //go:nosplit
 func (self class) GetResourcePreviewer() [1]gdclass.EditorResourcePreview { //gd:EditorInterface.get_resource_previewer
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_resource_previewer), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_resource_previewer, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorResourcePreview{gd.PointerLifetimeBoundTo[gdclass.EditorResourcePreview](self.AsObject(), r_ret)}
 	return ret
 }
@@ -865,7 +953,7 @@ Returns the editor's [EditorSelection] instance.
 */
 //go:nosplit
 func (self class) GetSelection() [1]gdclass.EditorSelection { //gd:EditorInterface.get_selection
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_selection), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_selection, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorSelection{gd.PointerLifetimeBoundTo[gdclass.EditorSelection](self.AsObject(), r_ret)}
 	return ret
 }
@@ -875,7 +963,7 @@ Returns the editor's [EditorSettings] instance.
 */
 //go:nosplit
 func (self class) GetEditorSettings() [1]gdclass.EditorSettings { //gd:EditorInterface.get_editor_settings
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_editor_settings), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_settings, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorSettings{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorSettings](r_ret)}
 	return ret
 }
@@ -885,7 +973,7 @@ Returns the editor's [EditorToaster].
 */
 //go:nosplit
 func (self class) GetEditorToaster() [1]gdclass.EditorToaster { //gd:EditorInterface.get_editor_toaster
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_editor_toaster), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_toaster, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorToaster{gd.PointerLifetimeBoundTo[gdclass.EditorToaster](self.AsObject(), r_ret)}
 	return ret
 }
@@ -895,7 +983,7 @@ Returns the editor's [EditorUndoRedoManager].
 */
 //go:nosplit
 func (self class) GetEditorUndoRedo() [1]gdclass.EditorUndoRedoManager { //gd:EditorInterface.get_editor_undo_redo
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_editor_undo_redo), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_undo_redo, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorUndoRedoManager{gd.PointerLifetimeBoundTo[gdclass.EditorUndoRedoManager](self.AsObject(), r_ret)}
 	return ret
 }
@@ -905,7 +993,7 @@ Returns mesh previews rendered at the given size as an [Array] of [Texture2D]s.
 */
 //go:nosplit
 func (self class) MakeMeshPreviews(meshes Array.Contains[[1]gdclass.Mesh], preview_size int64) Array.Contains[[1]gdclass.Texture2D] { //gd:EditorInterface.make_mesh_previews
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_make_mesh_previews), gdextension.SizeArray|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.make_mesh_previews, gdextension.SizeArray|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		meshes       gdextension.Array
 		preview_size int64
 	}{pointers.Get(gd.InternalArray(meshes)), preview_size}))
@@ -918,7 +1006,7 @@ Sets the enabled status of a plugin. The plugin name is the same as its director
 */
 //go:nosplit
 func (self class) SetPluginEnabled(plugin String.Readable, enabled bool) { //gd:EditorInterface.set_plugin_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_set_plugin_enabled), 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plugin_enabled, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		plugin  gdextension.String
 		enabled bool
 	}{pointers.Get(gd.InternalString(plugin)), enabled}))
@@ -929,7 +1017,7 @@ Returns [code]true[/code] if the specified [param plugin] is enabled. The plugin
 */
 //go:nosplit
 func (self class) IsPluginEnabled(plugin String.Readable) bool { //gd:EditorInterface.is_plugin_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_is_plugin_enabled), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ plugin gdextension.String }{pointers.Get(gd.InternalString(plugin))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_plugin_enabled, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ plugin gdextension.String }{pointers.Get(gd.InternalString(plugin))}))
 	var ret = r_ret
 	return ret
 }
@@ -940,7 +1028,7 @@ Returns the editor's [Theme].
 */
 //go:nosplit
 func (self class) GetEditorTheme() [1]gdclass.Theme { //gd:EditorInterface.get_editor_theme
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_editor_theme), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_theme, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret)}
 	return ret
 }
@@ -951,7 +1039,7 @@ Returns the main container of Godot editor's window. For example, you can use it
 */
 //go:nosplit
 func (self class) GetBaseControl() [1]gdclass.Control { //gd:EditorInterface.get_base_control
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_base_control), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_control, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret)}
 	return ret
 }
@@ -963,7 +1051,7 @@ Returns the editor control responsible for main screen plugins and tools. Use it
 */
 //go:nosplit
 func (self class) GetEditorMainScreen() [1]gdclass.VBoxContainer { //gd:EditorInterface.get_editor_main_screen
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_editor_main_screen), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_main_screen, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.VBoxContainer{gd.PointerLifetimeBoundTo[gdclass.VBoxContainer](self.AsObject(), r_ret)}
 	return ret
 }
@@ -974,7 +1062,7 @@ Returns the editor's [ScriptEditor] instance.
 */
 //go:nosplit
 func (self class) GetScriptEditor() [1]gdclass.ScriptEditor { //gd:EditorInterface.get_script_editor
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_script_editor), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_editor, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.ScriptEditor{gd.PointerLifetimeBoundTo[gdclass.ScriptEditor](self.AsObject(), r_ret)}
 	return ret
 }
@@ -984,7 +1072,7 @@ Returns the 2D editor [SubViewport]. It does not have a camera. Instead, the vie
 */
 //go:nosplit
 func (self class) GetEditorViewport2d() [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_2d
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_editor_viewport_2d), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_viewport_2d, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SubViewport{gd.PointerLifetimeBoundTo[gdclass.SubViewport](self.AsObject(), r_ret)}
 	return ret
 }
@@ -994,7 +1082,7 @@ Returns the specified 3D editor [SubViewport], from [code]0[/code] to [code]3[/c
 */
 //go:nosplit
 func (self class) GetEditorViewport3d(idx int64) [1]gdclass.SubViewport { //gd:EditorInterface.get_editor_viewport_3d
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_editor_viewport_3d), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_viewport_3d, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = [1]gdclass.SubViewport{gd.PointerLifetimeBoundTo[gdclass.SubViewport](self.AsObject(), r_ret)}
 	return ret
 }
@@ -1004,17 +1092,17 @@ Sets the editor's current main screen to the one specified in [param name]. [par
 */
 //go:nosplit
 func (self class) SetMainScreenEditor(name String.Readable) { //gd:EditorInterface.set_main_screen_editor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_set_main_screen_editor), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_main_screen_editor, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 //go:nosplit
 func (self class) SetDistractionFreeMode(enter bool) { //gd:EditorInterface.set_distraction_free_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_set_distraction_free_mode), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enter bool }{enter}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distraction_free_mode, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enter bool }{enter}))
 }
 
 //go:nosplit
 func (self class) IsDistractionFreeModeEnabled() bool { //gd:EditorInterface.is_distraction_free_mode_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_is_distraction_free_mode_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_distraction_free_mode_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1027,7 +1115,7 @@ Returns [code]true[/code] if multiple window support is enabled in the editor. M
 */
 //go:nosplit
 func (self class) IsMultiWindowEnabled() bool { //gd:EditorInterface.is_multi_window_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_is_multi_window_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_multi_window_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1038,7 +1126,7 @@ Returns the actual scale of the editor UI ([code]1.0[/code] being 100% scale). T
 */
 //go:nosplit
 func (self class) GetEditorScale() float64 { //gd:EditorInterface.get_editor_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_editor_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_editor_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1049,7 +1137,7 @@ See also [method Window.set_unparent_when_invisible].
 */
 //go:nosplit
 func (self class) PopupDialog(dialog [1]gdclass.Window, rect Rect2i.PositionSize) { //gd:EditorInterface.popup_dialog
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_popup_dialog), 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_dialog, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2i<<8), unsafe.Pointer(&struct {
 		dialog gdextension.Object
 		rect   Rect2i.PositionSize
 	}{gdextension.Object(gd.ObjectChecked(dialog[0].AsObject())), rect}))
@@ -1061,7 +1149,7 @@ See also [method Window.set_unparent_when_invisible].
 */
 //go:nosplit
 func (self class) PopupDialogCentered(dialog [1]gdclass.Window, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_popup_dialog_centered), 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_dialog_centered, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
 		dialog  gdextension.Object
 		minsize Vector2i.XY
 	}{gdextension.Object(gd.ObjectChecked(dialog[0].AsObject())), minsize}))
@@ -1073,7 +1161,7 @@ See also [method Window.set_unparent_when_invisible].
 */
 //go:nosplit
 func (self class) PopupDialogCenteredRatio(dialog [1]gdclass.Window, ratio float64) { //gd:EditorInterface.popup_dialog_centered_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_popup_dialog_centered_ratio), 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_dialog_centered_ratio, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		dialog gdextension.Object
 		ratio  float64
 	}{gdextension.Object(gd.ObjectChecked(dialog[0].AsObject())), ratio}))
@@ -1085,7 +1173,7 @@ See also [method Window.set_unparent_when_invisible].
 */
 //go:nosplit
 func (self class) PopupDialogCenteredClamped(dialog [1]gdclass.Window, minsize Vector2i.XY, fallback_ratio float64) { //gd:EditorInterface.popup_dialog_centered_clamped
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_popup_dialog_centered_clamped), 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_dialog_centered_clamped, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2i<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		dialog         gdextension.Object
 		minsize        Vector2i.XY
 		fallback_ratio float64
@@ -1099,7 +1187,7 @@ In order to get a reference to the [EditorFeatureProfile], you must load the fea
 */
 //go:nosplit
 func (self class) GetCurrentFeatureProfile() String.Readable { //gd:EditorInterface.get_current_feature_profile
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_current_feature_profile), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_feature_profile, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1111,7 +1199,7 @@ A feature profile can be created programmatically using the [EditorFeatureProfil
 */
 //go:nosplit
 func (self class) SetCurrentFeatureProfile(profile_name String.Readable) { //gd:EditorInterface.set_current_feature_profile
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_set_current_feature_profile), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ profile_name gdextension.String }{pointers.Get(gd.InternalString(profile_name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_feature_profile, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ profile_name gdextension.String }{pointers.Get(gd.InternalString(profile_name))}))
 }
 
 /*
@@ -1131,7 +1219,7 @@ func _on_node_selected(node_path):
 */
 //go:nosplit
 func (self class) PopupNodeSelector(callback Callable.Function, valid_types Array.Contains[String.Name], current_value [1]gdclass.Node) { //gd:EditorInterface.popup_node_selector
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_popup_node_selector), 0|(gdextension.SizeCallable<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_node_selector, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		callback      gdextension.Callable
 		valid_types   gdextension.Array
 		current_value gdextension.Object
@@ -1154,7 +1242,7 @@ func _on_property_selected(property_path):
 */
 //go:nosplit
 func (self class) PopupPropertySelector(obj [1]gd.Object, callback Callable.Function, type_filter Packed.Array[int32], current_value String.Readable) { //gd:EditorInterface.popup_property_selector
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_popup_property_selector), 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_property_selector, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
 		obj           gdextension.Object
 		callback      gdextension.Callable
 		type_filter   gdextension.PackedArray[int32]
@@ -1167,7 +1255,7 @@ Pops up an editor dialog for selecting a method from [param object]. The [param 
 */
 //go:nosplit
 func (self class) PopupMethodSelector(obj [1]gd.Object, callback Callable.Function, current_value String.Readable) { //gd:EditorInterface.popup_method_selector
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_popup_method_selector), 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_method_selector, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		obj           gdextension.Object
 		callback      gdextension.Callable
 		current_value gdextension.String
@@ -1179,7 +1267,7 @@ Pops up an editor dialog for quick selecting a resource file. The [param callbac
 */
 //go:nosplit
 func (self class) PopupQuickOpen(callback Callable.Function, base_types Array.Contains[String.Name]) { //gd:EditorInterface.popup_quick_open
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_popup_quick_open), 0|(gdextension.SizeCallable<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_quick_open, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		callback   gdextension.Callable
 		base_types gdextension.Array
 	}{pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalArray(base_types))}))
@@ -1196,7 +1284,7 @@ The [param type_blocklist] contains a list of type names, and the types in the b
 */
 //go:nosplit
 func (self class) PopupCreateDialog(callback Callable.Function, base_type String.Name, current_type String.Readable, dialog_title String.Readable, type_blocklist Array.Contains[String.Name]) { //gd:EditorInterface.popup_create_dialog
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_popup_create_dialog), 0|(gdextension.SizeCallable<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeArray<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_create_dialog, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeArray<<20), unsafe.Pointer(&struct {
 		callback       gdextension.Callable
 		base_type      gdextension.StringName
 		current_type   gdextension.String
@@ -1211,7 +1299,7 @@ Returns the editor's [FileSystemDock] instance.
 */
 //go:nosplit
 func (self class) GetFileSystemDock() [1]gdclass.FileSystemDock { //gd:EditorInterface.get_file_system_dock
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_file_system_dock), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_file_system_dock, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.FileSystemDock{gd.PointerLifetimeBoundTo[gdclass.FileSystemDock](self.AsObject(), r_ret)}
 	return ret
 }
@@ -1221,7 +1309,7 @@ Selects the file, with the path provided by [param file], in the FileSystem dock
 */
 //go:nosplit
 func (self class) SelectFile(file String.Readable) { //gd:EditorInterface.select_file
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_select_file), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_file, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))}))
 }
 
 /*
@@ -1229,7 +1317,7 @@ Returns an array containing the paths of the currently selected files (and direc
 */
 //go:nosplit
 func (self class) GetSelectedPaths() Packed.Strings { //gd:EditorInterface.get_selected_paths
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_selected_paths), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_selected_paths, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1239,7 +1327,7 @@ Returns the current path being viewed in the [FileSystemDock].
 */
 //go:nosplit
 func (self class) GetCurrentPath() String.Readable { //gd:EditorInterface.get_current_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_current_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1249,7 +1337,7 @@ Returns the current directory being viewed in the [FileSystemDock]. If a file is
 */
 //go:nosplit
 func (self class) GetCurrentDirectory() String.Readable { //gd:EditorInterface.get_current_directory
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_current_directory), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_directory, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1260,7 +1348,7 @@ Returns the editor's [EditorInspector] instance.
 */
 //go:nosplit
 func (self class) GetInspector() [1]gdclass.EditorInspector { //gd:EditorInterface.get_inspector
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_inspector), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_inspector, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorInspector{gd.PointerLifetimeBoundTo[gdclass.EditorInspector](self.AsObject(), r_ret)}
 	return ret
 }
@@ -1270,7 +1358,7 @@ Shows the given property on the given [param object] in the editor's Inspector d
 */
 //go:nosplit
 func (self class) InspectObject(obj [1]gd.Object, for_property String.Readable, inspector_only bool) { //gd:EditorInterface.inspect_object
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_inspect_object), 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.inspect_object, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		obj            gdextension.Object
 		for_property   gdextension.String
 		inspector_only bool
@@ -1282,7 +1370,7 @@ Edits the given [Resource]. If the resource is a [Script] you can also edit it w
 */
 //go:nosplit
 func (self class) EditResource(resource [1]gdclass.Resource) { //gd:EditorInterface.edit_resource
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_edit_resource), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit_resource, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
 }
 
 /*
@@ -1290,7 +1378,7 @@ Edits the given [Node]. The node will be also selected if it's inside the scene 
 */
 //go:nosplit
 func (self class) EditNode(node [1]gdclass.Node) { //gd:EditorInterface.edit_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_edit_node), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit_node, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
 
 /*
@@ -1298,7 +1386,7 @@ Edits the given [Script]. The line and column on which to open the script can al
 */
 //go:nosplit
 func (self class) EditScript(script [1]gdclass.Script, line int64, column int64, grab_focus bool) { //gd:EditorInterface.edit_script
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_edit_script), 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit_script, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		script     gdextension.Object
 		line       int64
 		column     int64
@@ -1311,7 +1399,7 @@ Opens the scene at the given path. If [param set_inherited] is [code]true[/code]
 */
 //go:nosplit
 func (self class) OpenSceneFromPath(scene_filepath String.Readable, set_inherited bool) { //gd:EditorInterface.open_scene_from_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_open_scene_from_path), 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.open_scene_from_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		scene_filepath gdextension.String
 		set_inherited  bool
 	}{pointers.Get(gd.InternalString(scene_filepath)), set_inherited}))
@@ -1322,7 +1410,7 @@ Reloads the scene at the given path.
 */
 //go:nosplit
 func (self class) ReloadSceneFromPath(scene_filepath String.Readable) { //gd:EditorInterface.reload_scene_from_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_reload_scene_from_path), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ scene_filepath gdextension.String }{pointers.Get(gd.InternalString(scene_filepath))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reload_scene_from_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ scene_filepath gdextension.String }{pointers.Get(gd.InternalString(scene_filepath))}))
 }
 
 /*
@@ -1330,7 +1418,7 @@ Returns an [Array] with the file paths of the currently opened scenes.
 */
 //go:nosplit
 func (self class) GetOpenScenes() Packed.Strings { //gd:EditorInterface.get_open_scenes
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_open_scenes), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_open_scenes, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1340,7 +1428,7 @@ Returns the edited (current) scene's root [Node].
 */
 //go:nosplit
 func (self class) GetEditedSceneRoot() [1]gdclass.Node { //gd:EditorInterface.get_edited_scene_root
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_edited_scene_root), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_scene_root, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -1350,7 +1438,7 @@ Saves the currently active scene. Returns either [constant OK] or [constant ERR_
 */
 //go:nosplit
 func (self class) SaveScene() Error.Code { //gd:EditorInterface.save_scene
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_save_scene), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_scene, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1360,7 +1448,7 @@ Saves the currently active scene as a file at [param path].
 */
 //go:nosplit
 func (self class) SaveSceneAs(path String.Readable, with_preview bool) { //gd:EditorInterface.save_scene_as
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_save_scene_as), 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.save_scene_as, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		path         gdextension.String
 		with_preview bool
 	}{pointers.Get(gd.InternalString(path)), with_preview}))
@@ -1371,7 +1459,7 @@ Saves all opened scenes in the editor.
 */
 //go:nosplit
 func (self class) SaveAllScenes() { //gd:EditorInterface.save_all_scenes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_save_all_scenes), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.save_all_scenes, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1379,7 +1467,7 @@ Marks the current scene tab as unsaved.
 */
 //go:nosplit
 func (self class) MarkSceneAsUnsaved() { //gd:EditorInterface.mark_scene_as_unsaved
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_mark_scene_as_unsaved), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mark_scene_as_unsaved, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1387,7 +1475,7 @@ Plays the main scene.
 */
 //go:nosplit
 func (self class) PlayMainScene() { //gd:EditorInterface.play_main_scene
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_play_main_scene), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_main_scene, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1395,7 +1483,7 @@ Plays the currently active scene.
 */
 //go:nosplit
 func (self class) PlayCurrentScene() { //gd:EditorInterface.play_current_scene
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_play_current_scene), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_current_scene, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1403,7 +1491,7 @@ Plays the scene specified by its filepath.
 */
 //go:nosplit
 func (self class) PlayCustomScene(scene_filepath String.Readable) { //gd:EditorInterface.play_custom_scene
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_play_custom_scene), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ scene_filepath gdextension.String }{pointers.Get(gd.InternalString(scene_filepath))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_custom_scene, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ scene_filepath gdextension.String }{pointers.Get(gd.InternalString(scene_filepath))}))
 }
 
 /*
@@ -1411,7 +1499,7 @@ Stops the scene that is currently playing.
 */
 //go:nosplit
 func (self class) StopPlayingScene() { //gd:EditorInterface.stop_playing_scene
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_stop_playing_scene), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_playing_scene, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -1419,7 +1507,7 @@ Returns [code]true[/code] if a scene is currently being played, [code]false[/cod
 */
 //go:nosplit
 func (self class) IsPlayingScene() bool { //gd:EditorInterface.is_playing_scene
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_is_playing_scene), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing_scene, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1429,19 +1517,19 @@ Returns the name of the scene that is being played. If no scene is currently bei
 */
 //go:nosplit
 func (self class) GetPlayingScene() String.Readable { //gd:EditorInterface.get_playing_scene
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_get_playing_scene), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_playing_scene, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMovieMakerEnabled(enabled bool) { //gd:EditorInterface.set_movie_maker_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_set_movie_maker_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_movie_maker_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsMovieMakerEnabled() bool { //gd:EditorInterface.is_movie_maker_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInterface.Bind_is_movie_maker_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_movie_maker_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1459,7 +1547,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorInterface", func(ptr gd.Object) any {
-		return [1]gdclass.EditorInterface{*(*gdclass.EditorInterface)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorInterface", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

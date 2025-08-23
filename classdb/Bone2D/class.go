@@ -77,6 +77,32 @@ If in the editor, you can set the rest pose of an entire skeleton using a menu o
 */
 type Instance [1]gdclass.Bone2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_rest                           gdextension.MethodForClass `hash:"2761652528"`
+	get_rest                           gdextension.MethodForClass `hash:"3814499831"`
+	apply_rest                         gdextension.MethodForClass `hash:"3218959716"`
+	get_skeleton_rest                  gdextension.MethodForClass `hash:"3814499831"`
+	get_index_in_skeleton              gdextension.MethodForClass `hash:"3905245786"`
+	set_autocalculate_length_and_angle gdextension.MethodForClass `hash:"2586408642"`
+	get_autocalculate_length_and_angle gdextension.MethodForClass `hash:"36873697"`
+	set_length                         gdextension.MethodForClass `hash:"373806689"`
+	get_length                         gdextension.MethodForClass `hash:"1740695150"`
+	set_bone_angle                     gdextension.MethodForClass `hash:"373806689"`
+	get_bone_angle                     gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Bone2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -157,6 +183,20 @@ type Advanced = class
 type class [1]gdclass.Bone2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Bone2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Bone2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -166,7 +206,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Bone2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Bone2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -182,12 +222,12 @@ func (self Instance) SetRest(value Transform2D.OriginXY) {
 
 //go:nosplit
 func (self class) SetRest(rest Transform2D.OriginXY) { //gd:Bone2D.set_rest
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Bone2D.Bind_set_rest), 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ rest Transform2D.OriginXY }{rest}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rest, 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ rest Transform2D.OriginXY }{rest}))
 }
 
 //go:nosplit
 func (self class) GetRest() Transform2D.OriginXY { //gd:Bone2D.get_rest
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Bone2D.Bind_get_rest), gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_rest, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -197,7 +237,7 @@ Resets the bone to the rest pose. This is equivalent to setting [member Node2D.t
 */
 //go:nosplit
 func (self class) ApplyRest() { //gd:Bone2D.apply_rest
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Bone2D.Bind_apply_rest), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_rest, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -205,7 +245,7 @@ Returns the node's [member rest] [Transform2D] if it doesn't have a parent, or i
 */
 //go:nosplit
 func (self class) GetSkeletonRest() Transform2D.OriginXY { //gd:Bone2D.get_skeleton_rest
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Bone2D.Bind_get_skeleton_rest), gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_rest, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -215,7 +255,7 @@ Returns the node's index as part of the entire skeleton. See [Skeleton2D].
 */
 //go:nosplit
 func (self class) GetIndexInSkeleton() int64 { //gd:Bone2D.get_index_in_skeleton
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Bone2D.Bind_get_index_in_skeleton), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_index_in_skeleton, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -225,7 +265,7 @@ When set to [code]true[/code], the [Bone2D] node will attempt to automatically c
 */
 //go:nosplit
 func (self class) SetAutocalculateLengthAndAngle(auto_calculate bool) { //gd:Bone2D.set_autocalculate_length_and_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Bone2D.Bind_set_autocalculate_length_and_angle), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ auto_calculate bool }{auto_calculate}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autocalculate_length_and_angle, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ auto_calculate bool }{auto_calculate}))
 }
 
 /*
@@ -233,7 +273,7 @@ Returns whether this [Bone2D] is going to autocalculate its length and bone angl
 */
 //go:nosplit
 func (self class) GetAutocalculateLengthAndAngle() bool { //gd:Bone2D.get_autocalculate_length_and_angle
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Bone2D.Bind_get_autocalculate_length_and_angle), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_autocalculate_length_and_angle, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -243,7 +283,7 @@ Sets the length of the bone in the [Bone2D].
 */
 //go:nosplit
 func (self class) SetLength(length float64) { //gd:Bone2D.set_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Bone2D.Bind_set_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
 }
 
 /*
@@ -251,7 +291,7 @@ Returns the length of the bone in the [Bone2D] node.
 */
 //go:nosplit
 func (self class) GetLength() float64 { //gd:Bone2D.get_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Bone2D.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -262,7 +302,7 @@ Sets the bone angle for the [Bone2D]. This is typically set to the rotation from
 */
 //go:nosplit
 func (self class) SetBoneAngle(angle float64) { //gd:Bone2D.set_bone_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Bone2D.Bind_set_bone_angle), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angle float64 }{angle}))
 }
 
 /*
@@ -271,7 +311,7 @@ Returns the angle of the bone in the [Bone2D].
 */
 //go:nosplit
 func (self class) GetBoneAngle() float64 { //gd:Bone2D.get_bone_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Bone2D.Bind_get_bone_angle), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bone_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -306,5 +346,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Bone2D", func(ptr gd.Object) any { return [1]gdclass.Bone2D{*(*gdclass.Bone2D)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Bone2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

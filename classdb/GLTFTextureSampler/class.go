@@ -71,6 +71,29 @@ Represents a texture sampler as defined by the base glTF spec. Texture samplers 
 */
 type Instance [1]gdclass.GLTFTextureSampler
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_mag_filter gdextension.MethodForClass `hash:"3905245786"`
+	set_mag_filter gdextension.MethodForClass `hash:"1286410249"`
+	get_min_filter gdextension.MethodForClass `hash:"3905245786"`
+	set_min_filter gdextension.MethodForClass `hash:"1286410249"`
+	get_wrap_s     gdextension.MethodForClass `hash:"3905245786"`
+	set_wrap_s     gdextension.MethodForClass `hash:"1286410249"`
+	get_wrap_t     gdextension.MethodForClass `hash:"3905245786"`
+	set_wrap_t     gdextension.MethodForClass `hash:"1286410249"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("GLTFTextureSampler")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -86,6 +109,20 @@ type Advanced = class
 type class [1]gdclass.GLTFTextureSampler
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GLTFTextureSampler)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GLTFTextureSampler)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -95,7 +132,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("GLTFTextureSampler"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GLTFTextureSampler)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -136,50 +173,50 @@ func (self Instance) SetWrapT(value int) {
 
 //go:nosplit
 func (self class) GetMagFilter() int64 { //gd:GLTFTextureSampler.get_mag_filter
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFTextureSampler.Bind_get_mag_filter), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mag_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMagFilter(filter_mode int64) { //gd:GLTFTextureSampler.set_mag_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFTextureSampler.Bind_set_mag_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter_mode int64 }{filter_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mag_filter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter_mode int64 }{filter_mode}))
 }
 
 //go:nosplit
 func (self class) GetMinFilter() int64 { //gd:GLTFTextureSampler.get_min_filter
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFTextureSampler.Bind_get_min_filter), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_min_filter, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinFilter(filter_mode int64) { //gd:GLTFTextureSampler.set_min_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFTextureSampler.Bind_set_min_filter), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter_mode int64 }{filter_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_filter, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ filter_mode int64 }{filter_mode}))
 }
 
 //go:nosplit
 func (self class) GetWrapS() int64 { //gd:GLTFTextureSampler.get_wrap_s
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFTextureSampler.Bind_get_wrap_s), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_wrap_s, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWrapS(wrap_mode int64) { //gd:GLTFTextureSampler.set_wrap_s
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFTextureSampler.Bind_set_wrap_s), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ wrap_mode int64 }{wrap_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wrap_s, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ wrap_mode int64 }{wrap_mode}))
 }
 
 //go:nosplit
 func (self class) GetWrapT() int64 { //gd:GLTFTextureSampler.get_wrap_t
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFTextureSampler.Bind_get_wrap_t), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_wrap_t, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWrapT(wrap_mode int64) { //gd:GLTFTextureSampler.set_wrap_t
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFTextureSampler.Bind_set_wrap_t), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ wrap_mode int64 }{wrap_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wrap_t, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ wrap_mode int64 }{wrap_mode}))
 }
 func (self class) AsGLTFTextureSampler() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGLTFTextureSampler() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -213,7 +250,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFTextureSampler", func(ptr gd.Object) any {
-		return [1]gdclass.GLTFTextureSampler{*(*gdclass.GLTFTextureSampler)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("GLTFTextureSampler", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -109,14 +109,94 @@ func _exit_tree():
 */
 type Instance [1]gdclass.NativeMenu
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	has_feature                  gdextension.MethodForClass `hash:"1708975490"`
+	has_system_menu              gdextension.MethodForClass `hash:"718213027"`
+	get_system_menu              gdextension.MethodForClass `hash:"469707506"`
+	get_system_menu_name         gdextension.MethodForClass `hash:"1281499290"`
+	create_menu                  gdextension.MethodForClass `hash:"529393457"`
+	has_menu                     gdextension.MethodForClass `hash:"4155700596"`
+	free_menu                    gdextension.MethodForClass `hash:"2722037293"`
+	get_size                     gdextension.MethodForClass `hash:"2440833711"`
+	popup                        gdextension.MethodForClass `hash:"2450610377"`
+	set_interface_direction      gdextension.MethodForClass `hash:"1265174801"`
+	set_popup_open_callback      gdextension.MethodForClass `hash:"3379118538"`
+	get_popup_open_callback      gdextension.MethodForClass `hash:"3170603026"`
+	set_popup_close_callback     gdextension.MethodForClass `hash:"3379118538"`
+	get_popup_close_callback     gdextension.MethodForClass `hash:"3170603026"`
+	set_minimum_width            gdextension.MethodForClass `hash:"1794382983"`
+	get_minimum_width            gdextension.MethodForClass `hash:"866169185"`
+	is_opened                    gdextension.MethodForClass `hash:"4155700596"`
+	add_submenu_item             gdextension.MethodForClass `hash:"1002030223"`
+	add_item                     gdextension.MethodForClass `hash:"980552939"`
+	add_check_item               gdextension.MethodForClass `hash:"980552939"`
+	add_icon_item                gdextension.MethodForClass `hash:"1372188274"`
+	add_icon_check_item          gdextension.MethodForClass `hash:"1372188274"`
+	add_radio_check_item         gdextension.MethodForClass `hash:"980552939"`
+	add_icon_radio_check_item    gdextension.MethodForClass `hash:"1372188274"`
+	add_multistate_item          gdextension.MethodForClass `hash:"2674635658"`
+	add_separator                gdextension.MethodForClass `hash:"448810126"`
+	find_item_index_with_text    gdextension.MethodForClass `hash:"1362438794"`
+	find_item_index_with_tag     gdextension.MethodForClass `hash:"1260085030"`
+	find_item_index_with_submenu gdextension.MethodForClass `hash:"893635918"`
+	is_item_checked              gdextension.MethodForClass `hash:"3120086654"`
+	is_item_checkable            gdextension.MethodForClass `hash:"3120086654"`
+	is_item_radio_checkable      gdextension.MethodForClass `hash:"3120086654"`
+	get_item_callback            gdextension.MethodForClass `hash:"1639989698"`
+	get_item_key_callback        gdextension.MethodForClass `hash:"1639989698"`
+	get_item_tag                 gdextension.MethodForClass `hash:"4069510997"`
+	get_item_text                gdextension.MethodForClass `hash:"1464764419"`
+	get_item_submenu             gdextension.MethodForClass `hash:"1066463050"`
+	get_item_accelerator         gdextension.MethodForClass `hash:"316800700"`
+	is_item_disabled             gdextension.MethodForClass `hash:"3120086654"`
+	is_item_hidden               gdextension.MethodForClass `hash:"3120086654"`
+	get_item_tooltip             gdextension.MethodForClass `hash:"1464764419"`
+	get_item_state               gdextension.MethodForClass `hash:"1120910005"`
+	get_item_max_states          gdextension.MethodForClass `hash:"1120910005"`
+	get_item_icon                gdextension.MethodForClass `hash:"3391850701"`
+	get_item_indentation_level   gdextension.MethodForClass `hash:"1120910005"`
+	set_item_checked             gdextension.MethodForClass `hash:"2658558584"`
+	set_item_checkable           gdextension.MethodForClass `hash:"2658558584"`
+	set_item_radio_checkable     gdextension.MethodForClass `hash:"2658558584"`
+	set_item_callback            gdextension.MethodForClass `hash:"2779810226"`
+	set_item_hover_callbacks     gdextension.MethodForClass `hash:"2779810226"`
+	set_item_key_callback        gdextension.MethodForClass `hash:"2779810226"`
+	set_item_tag                 gdextension.MethodForClass `hash:"2706844827"`
+	set_item_text                gdextension.MethodForClass `hash:"4153150897"`
+	set_item_submenu             gdextension.MethodForClass `hash:"2310537182"`
+	set_item_accelerator         gdextension.MethodForClass `hash:"786300043"`
+	set_item_disabled            gdextension.MethodForClass `hash:"2658558584"`
+	set_item_hidden              gdextension.MethodForClass `hash:"2658558584"`
+	set_item_tooltip             gdextension.MethodForClass `hash:"4153150897"`
+	set_item_state               gdextension.MethodForClass `hash:"4288446313"`
+	set_item_max_states          gdextension.MethodForClass `hash:"4288446313"`
+	set_item_icon                gdextension.MethodForClass `hash:"1388763257"`
+	set_item_indentation_level   gdextension.MethodForClass `hash:"4288446313"`
+	get_item_count               gdextension.MethodForClass `hash:"2198884583"`
+	is_system_menu               gdextension.MethodForClass `hash:"4155700596"`
+	remove_item                  gdextension.MethodForClass `hash:"3411492887"`
+	clear                        gdextension.MethodForClass `hash:"2722037293"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("NativeMenu")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 var self [1]gdclass.NativeMenu
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.NativeMenu)))})
-	self = *(*[1]gdclass.NativeMenu)(unsafe.Pointer(&obj))
+	self[0] = pointers.Raw[gdclass.NativeMenu]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
 }
 
 /*
@@ -878,6 +958,20 @@ func Advanced() class { once.Do(singleton); return self }
 type class [1]gdclass.NativeMenu
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.NativeMenu)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.NativeMenu)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -893,7 +987,7 @@ Returns [code]true[/code] if the specified [param feature] is supported by the c
 */
 //go:nosplit
 func (self class) HasFeature(feature Feature) bool { //gd:NativeMenu.has_feature
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_has_feature), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ feature Feature }{feature}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ feature Feature }{feature}))
 	var ret = r_ret
 	return ret
 }
@@ -904,7 +998,7 @@ Returns [code]true[/code] if a special system menu is supported.
 */
 //go:nosplit
 func (self class) HasSystemMenu(menu_id SystemMenus) bool { //gd:NativeMenu.has_system_menu
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_has_system_menu), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu_id SystemMenus }{menu_id}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_system_menu, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu_id SystemMenus }{menu_id}))
 	var ret = r_ret
 	return ret
 }
@@ -915,7 +1009,7 @@ Returns RID of a special system menu.
 */
 //go:nosplit
 func (self class) GetSystemMenu(menu_id SystemMenus) RID.Any { //gd:NativeMenu.get_system_menu
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_system_menu), gdextension.SizeRID|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu_id SystemMenus }{menu_id}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_system_menu, gdextension.SizeRID|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu_id SystemMenus }{menu_id}))
 	var ret = r_ret
 	return ret
 }
@@ -926,7 +1020,7 @@ Returns readable name of a special system menu.
 */
 //go:nosplit
 func (self class) GetSystemMenuName(menu_id SystemMenus) String.Readable { //gd:NativeMenu.get_system_menu_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_system_menu_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu_id SystemMenus }{menu_id}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_system_menu_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu_id SystemMenus }{menu_id}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -937,7 +1031,7 @@ Creates a new global menu object.
 */
 //go:nosplit
 func (self class) CreateMenu() RID.Any { //gd:NativeMenu.create_menu
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_create_menu), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.create_menu, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -948,7 +1042,7 @@ Returns [code]true[/code] if [param rid] is valid global menu.
 */
 //go:nosplit
 func (self class) HasMenu(rid RID.Any) bool { //gd:NativeMenu.has_menu
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_has_menu), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 	var ret = r_ret
 	return ret
 }
@@ -959,7 +1053,7 @@ Frees a global menu object created by this [NativeMenu].
 */
 //go:nosplit
 func (self class) FreeMenu(rid RID.Any) { //gd:NativeMenu.free_menu
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_free_menu), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_menu, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 }
 
 /*
@@ -968,7 +1062,7 @@ Returns global menu size.
 */
 //go:nosplit
 func (self class) GetSize(rid RID.Any) Vector2.XY { //gd:NativeMenu.get_size
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_size), gdextension.SizeVector2|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 	var ret = r_ret
 	return ret
 }
@@ -979,7 +1073,7 @@ Shows the global menu at [param position] in the screen coordinates.
 */
 //go:nosplit
 func (self class) Popup(rid RID.Any, position Vector2i.XY) { //gd:NativeMenu.popup
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_popup), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
 		rid      RID.Any
 		position Vector2i.XY
 	}{rid, position}))
@@ -991,7 +1085,7 @@ Sets the menu text layout direction from right-to-left if [param is_rtl] is [cod
 */
 //go:nosplit
 func (self class) SetInterfaceDirection(rid RID.Any, is_rtl bool) { //gd:NativeMenu.set_interface_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_interface_direction), 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interface_direction, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		rid    RID.Any
 		is_rtl bool
 	}{rid, is_rtl}))
@@ -1003,7 +1097,7 @@ Registers callable to emit after the menu is closed.
 */
 //go:nosplit
 func (self class) SetPopupOpenCallback(rid RID.Any, callback Callable.Function) { //gd:NativeMenu.set_popup_open_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_popup_open_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup_open_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		rid      RID.Any
 		callback gdextension.Callable
 	}{rid, pointers.Get(gd.InternalCallable(callback))}))
@@ -1015,7 +1109,7 @@ b]Note:[/b] This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetPopupOpenCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_open_callback
-	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_popup_open_callback), gdextension.SizeCallable|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_popup_open_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
@@ -1027,7 +1121,7 @@ Registers callable to emit when the menu is about to show.
 */
 //go:nosplit
 func (self class) SetPopupCloseCallback(rid RID.Any, callback Callable.Function) { //gd:NativeMenu.set_popup_close_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_popup_close_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup_close_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
 		rid      RID.Any
 		callback gdextension.Callable
 	}{rid, pointers.Get(gd.InternalCallable(callback))}))
@@ -1039,7 +1133,7 @@ Returns global menu close callback.
 */
 //go:nosplit
 func (self class) GetPopupCloseCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_close_callback
-	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_popup_close_callback), gdextension.SizeCallable|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_popup_close_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
@@ -1050,7 +1144,7 @@ Sets the minimum width of the global menu.
 */
 //go:nosplit
 func (self class) SetMinimumWidth(rid RID.Any, width float64) { //gd:NativeMenu.set_minimum_width
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_minimum_width), 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_minimum_width, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		rid   RID.Any
 		width float64
 	}{rid, width}))
@@ -1062,7 +1156,7 @@ Returns global menu minimum width.
 */
 //go:nosplit
 func (self class) GetMinimumWidth(rid RID.Any) float64 { //gd:NativeMenu.get_minimum_width
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_minimum_width), gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_minimum_width, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 	var ret = r_ret
 	return ret
 }
@@ -1073,7 +1167,7 @@ Returns [code]true[/code] if the menu is currently opened.
 */
 //go:nosplit
 func (self class) IsOpened(rid RID.Any) bool { //gd:NativeMenu.is_opened
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_is_opened), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_opened, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 	var ret = r_ret
 	return ret
 }
@@ -1085,7 +1179,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 */
 //go:nosplit
 func (self class) AddSubmenuItem(rid RID.Any, label String.Readable, submenu_rid RID.Any, tag variant.Any, index int64) int64 { //gd:NativeMenu.add_submenu_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_add_submenu_item), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeVariant<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_submenu_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeVariant<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		rid         RID.Any
 		label       gdextension.String
 		submenu_rid RID.Any
@@ -1106,7 +1200,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 //go:nosplit
 func (self class) AddItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_add_item), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
 		rid          RID.Any
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -1129,7 +1223,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 //go:nosplit
 func (self class) AddCheckItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_check_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_add_check_item), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
 		rid          RID.Any
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -1152,7 +1246,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 //go:nosplit
 func (self class) AddIconItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_add_icon_item), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), unsafe.Pointer(&struct {
 		rid          RID.Any
 		icon         gdextension.Object
 		label        gdextension.String
@@ -1176,7 +1270,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 //go:nosplit
 func (self class) AddIconCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_check_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_add_icon_check_item), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), unsafe.Pointer(&struct {
 		rid          RID.Any
 		icon         gdextension.Object
 		label        gdextension.String
@@ -1201,7 +1295,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 //go:nosplit
 func (self class) AddRadioCheckItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_radio_check_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_add_radio_check_item), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
 		rid          RID.Any
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -1225,7 +1319,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 //go:nosplit
 func (self class) AddIconRadioCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_radio_check_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_add_icon_radio_check_item), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), unsafe.Pointer(&struct {
 		rid          RID.Any
 		icon         gdextension.Object
 		label        gdextension.String
@@ -1251,7 +1345,7 @@ An [param accelerator] can optionally be defined, which is a keyboard shortcut t
 */
 //go:nosplit
 func (self class) AddMultistateItem(rid RID.Any, label String.Readable, max_states int64, default_state int64, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_multistate_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_add_multistate_item), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeCallable<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_multistate_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeCallable<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), unsafe.Pointer(&struct {
 		rid           RID.Any
 		label         gdextension.String
 		max_states    int64
@@ -1273,7 +1367,7 @@ Returns index of the inserted item, it's not guaranteed to be the same as [param
 */
 //go:nosplit
 func (self class) AddSeparator(rid RID.Any, index int64) int64 { //gd:NativeMenu.add_separator
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_add_separator), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_separator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid   RID.Any
 		index int64
 	}{rid, index}))
@@ -1287,7 +1381,7 @@ Returns the index of the item with the specified [param text]. Indices are autom
 */
 //go:nosplit
 func (self class) FindItemIndexWithText(rid RID.Any, text String.Readable) int64 { //gd:NativeMenu.find_item_index_with_text
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_find_item_index_with_text), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_text, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		rid  RID.Any
 		text gdextension.String
 	}{rid, pointers.Get(gd.InternalString(text))}))
@@ -1301,7 +1395,7 @@ Returns the index of the item with the specified [param tag]. Indices are automa
 */
 //go:nosplit
 func (self class) FindItemIndexWithTag(rid RID.Any, tag variant.Any) int64 { //gd:NativeMenu.find_item_index_with_tag
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_find_item_index_with_tag), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_tag, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		tag gdextension.Variant
 	}{rid, gdextension.Variant(pointers.Get(gd.InternalVariant(tag)))}))
@@ -1315,7 +1409,7 @@ Returns the index of the item with the submenu specified by [param submenu_rid].
 */
 //go:nosplit
 func (self class) FindItemIndexWithSubmenu(rid RID.Any, submenu_rid RID.Any) int64 { //gd:NativeMenu.find_item_index_with_submenu
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_find_item_index_with_submenu), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_submenu, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
 		rid         RID.Any
 		submenu_rid RID.Any
 	}{rid, submenu_rid}))
@@ -1329,7 +1423,7 @@ Returns [code]true[/code] if the item at index [param idx] is checked.
 */
 //go:nosplit
 func (self class) IsItemChecked(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_checked
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_is_item_checked), gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checked, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1343,7 +1437,7 @@ Returns [code]true[/code] if the item at index [param idx] is checkable in some 
 */
 //go:nosplit
 func (self class) IsItemCheckable(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_checkable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_is_item_checkable), gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1358,7 +1452,7 @@ Returns [code]true[/code] if the item at index [param idx] has radio button-styl
 */
 //go:nosplit
 func (self class) IsItemRadioCheckable(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_radio_checkable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_is_item_radio_checkable), gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_radio_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1372,7 +1466,7 @@ Returns the callback of the item at index [param idx].
 */
 //go:nosplit
 func (self class) GetItemCallback(rid RID.Any, idx int64) Callable.Function { //gd:NativeMenu.get_item_callback
-	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_callback), gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_item_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1386,7 +1480,7 @@ Returns the callback of the item accelerator at index [param idx].
 */
 //go:nosplit
 func (self class) GetItemKeyCallback(rid RID.Any, idx int64) Callable.Function { //gd:NativeMenu.get_item_key_callback
-	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_key_callback), gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_item_key_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1400,7 +1494,7 @@ Returns the metadata of the specified item, which might be of any type. You can 
 */
 //go:nosplit
 func (self class) GetItemTag(rid RID.Any, idx int64) variant.Any { //gd:NativeMenu.get_item_tag
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_tag), gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_item_tag, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1414,7 +1508,7 @@ Returns the text of the item at index [param idx].
 */
 //go:nosplit
 func (self class) GetItemText(rid RID.Any, idx int64) String.Readable { //gd:NativeMenu.get_item_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_text), gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_text, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1428,7 +1522,7 @@ Returns the submenu ID of the item at index [param idx]. See [method add_submenu
 */
 //go:nosplit
 func (self class) GetItemSubmenu(rid RID.Any, idx int64) RID.Any { //gd:NativeMenu.get_item_submenu
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_submenu), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_item_submenu, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1442,7 +1536,7 @@ Returns the accelerator of the item at index [param idx]. Accelerators are speci
 */
 //go:nosplit
 func (self class) GetItemAccelerator(rid RID.Any, idx int64) Input.Key { //gd:NativeMenu.get_item_accelerator
-	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_accelerator), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.get_item_accelerator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1457,7 +1551,7 @@ See [method set_item_disabled] for more info on how to disable an item.
 */
 //go:nosplit
 func (self class) IsItemDisabled(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_is_item_disabled), gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_disabled, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1472,7 +1566,7 @@ See [method set_item_hidden] for more info on how to hide an item.
 */
 //go:nosplit
 func (self class) IsItemHidden(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_hidden
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_is_item_hidden), gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_hidden, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1486,7 +1580,7 @@ Returns the tooltip associated with the specified index [param idx].
 */
 //go:nosplit
 func (self class) GetItemTooltip(rid RID.Any, idx int64) String.Readable { //gd:NativeMenu.get_item_tooltip
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_tooltip), gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_tooltip, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1500,7 +1594,7 @@ Returns the state of a multistate item. See [method add_multistate_item] for det
 */
 //go:nosplit
 func (self class) GetItemState(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_state
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_state), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_state, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1514,7 +1608,7 @@ Returns number of states of a multistate item. See [method add_multistate_item] 
 */
 //go:nosplit
 func (self class) GetItemMaxStates(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_max_states
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_max_states), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_max_states, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1528,7 +1622,7 @@ Returns the icon of the item at index [param idx].
 */
 //go:nosplit
 func (self class) GetItemIcon(rid RID.Any, idx int64) [1]gdclass.Texture2D { //gd:NativeMenu.get_item_icon
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_icon), gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1542,7 +1636,7 @@ Returns the horizontal offset of the item at the given [param idx].
 */
 //go:nosplit
 func (self class) GetItemIndentationLevel(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_indentation_level
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_indentation_level), gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_indentation_level, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1556,7 +1650,7 @@ Sets the checkstate status of the item at index [param idx].
 */
 //go:nosplit
 func (self class) SetItemChecked(rid RID.Any, idx int64, checked bool) { //gd:NativeMenu.set_item_checked
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_checked), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_checked, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		rid     RID.Any
 		idx     int64
 		checked bool
@@ -1569,7 +1663,7 @@ Sets whether the item at index [param idx] has a checkbox. If [code]false[/code]
 */
 //go:nosplit
 func (self class) SetItemCheckable(rid RID.Any, idx int64, checkable bool) { //gd:NativeMenu.set_item_checkable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_checkable), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		rid       RID.Any
 		idx       int64
 		checkable bool
@@ -1583,7 +1677,7 @@ Sets the type of the item at the specified index [param idx] to radio button. If
 */
 //go:nosplit
 func (self class) SetItemRadioCheckable(rid RID.Any, idx int64, checkable bool) { //gd:NativeMenu.set_item_radio_checkable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_radio_checkable), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_radio_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		rid       RID.Any
 		idx       int64
 		checkable bool
@@ -1597,7 +1691,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when an 
 */
 //go:nosplit
 func (self class) SetItemCallback(rid RID.Any, idx int64, callback Callable.Function) { //gd:NativeMenu.set_item_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
 		rid      RID.Any
 		idx      int64
 		callback gdextension.Callable
@@ -1611,7 +1705,7 @@ Sets the callback of the item at index [param idx]. The callback is emitted when
 */
 //go:nosplit
 func (self class) SetItemHoverCallbacks(rid RID.Any, idx int64, callback Callable.Function) { //gd:NativeMenu.set_item_hover_callbacks
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_hover_callbacks), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_hover_callbacks, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
 		rid      RID.Any
 		idx      int64
 		callback gdextension.Callable
@@ -1625,7 +1719,7 @@ Sets the callback of the item at index [param idx]. Callback is emitted when its
 */
 //go:nosplit
 func (self class) SetItemKeyCallback(rid RID.Any, idx int64, key_callback Callable.Function) { //gd:NativeMenu.set_item_key_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_key_callback), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_key_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), unsafe.Pointer(&struct {
 		rid          RID.Any
 		idx          int64
 		key_callback gdextension.Callable
@@ -1638,7 +1732,7 @@ Sets the metadata of an item, which may be of any type. You can later get it wit
 */
 //go:nosplit
 func (self class) SetItemTag(rid RID.Any, idx int64, tag variant.Any) { //gd:NativeMenu.set_item_tag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_tag), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 		tag gdextension.Variant
@@ -1651,7 +1745,7 @@ Sets the text of the item at index [param idx].
 */
 //go:nosplit
 func (self class) SetItemText(rid RID.Any, idx int64, text String.Readable) { //gd:NativeMenu.set_item_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_text), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_text, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		rid  RID.Any
 		idx  int64
 		text gdextension.String
@@ -1664,7 +1758,7 @@ Sets the submenu RID of the item at index [param idx]. The submenu is a global m
 */
 //go:nosplit
 func (self class) SetItemSubmenu(rid RID.Any, idx int64, submenu_rid RID.Any) { //gd:NativeMenu.set_item_submenu
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_submenu), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_submenu, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
 		rid         RID.Any
 		idx         int64
 		submenu_rid RID.Any
@@ -1677,7 +1771,7 @@ Sets the accelerator of the item at index [param idx]. [param keycode] can be a 
 */
 //go:nosplit
 func (self class) SetItemAccelerator(rid RID.Any, idx int64, keycode Input.Key) { //gd:NativeMenu.set_item_accelerator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_accelerator), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_accelerator, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		rid     RID.Any
 		idx     int64
 		keycode Input.Key
@@ -1690,7 +1784,7 @@ Enables/disables the item at index [param idx]. When it is disabled, it can't be
 */
 //go:nosplit
 func (self class) SetItemDisabled(rid RID.Any, idx int64, disabled bool) { //gd:NativeMenu.set_item_disabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_disabled), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		rid      RID.Any
 		idx      int64
 		disabled bool
@@ -1703,7 +1797,7 @@ Hides/shows the item at index [param idx]. When it is hidden, an item does not a
 */
 //go:nosplit
 func (self class) SetItemHidden(rid RID.Any, idx int64, hidden bool) { //gd:NativeMenu.set_item_hidden
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_hidden), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_hidden, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		rid    RID.Any
 		idx    int64
 		hidden bool
@@ -1716,7 +1810,7 @@ Sets the [String] tooltip of the item at the specified index [param idx].
 */
 //go:nosplit
 func (self class) SetItemTooltip(rid RID.Any, idx int64, tooltip String.Readable) { //gd:NativeMenu.set_item_tooltip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_tooltip), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tooltip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		rid     RID.Any
 		idx     int64
 		tooltip gdextension.String
@@ -1729,7 +1823,7 @@ Sets the state of a multistate item. See [method add_multistate_item] for detail
 */
 //go:nosplit
 func (self class) SetItemState(rid RID.Any, idx int64, state int64) { //gd:NativeMenu.set_item_state
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_state), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		rid   RID.Any
 		idx   int64
 		state int64
@@ -1742,7 +1836,7 @@ Sets number of state of a multistate item. See [method add_multistate_item] for 
 */
 //go:nosplit
 func (self class) SetItemMaxStates(rid RID.Any, idx int64, max_states int64) { //gd:NativeMenu.set_item_max_states
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_max_states), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_max_states, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		rid        RID.Any
 		idx        int64
 		max_states int64
@@ -1756,7 +1850,7 @@ Replaces the [Texture2D] icon of the specified [param idx].
 */
 //go:nosplit
 func (self class) SetItemIcon(rid RID.Any, idx int64, icon [1]gdclass.Texture2D) { //gd:NativeMenu.set_item_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_icon), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		rid  RID.Any
 		idx  int64
 		icon gdextension.Object
@@ -1769,7 +1863,7 @@ Sets the horizontal offset of the item at the given [param idx].
 */
 //go:nosplit
 func (self class) SetItemIndentationLevel(rid RID.Any, idx int64, level int64) { //gd:NativeMenu.set_item_indentation_level
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_set_item_indentation_level), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_indentation_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		rid   RID.Any
 		idx   int64
 		level int64
@@ -1782,7 +1876,7 @@ Returns number of items in the global menu [param rid].
 */
 //go:nosplit
 func (self class) GetItemCount(rid RID.Any) int64 { //gd:NativeMenu.get_item_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_get_item_count), gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_count, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 	var ret = r_ret
 	return ret
 }
@@ -1793,7 +1887,7 @@ Return [code]true[/code] is global menu is a special system menu.
 */
 //go:nosplit
 func (self class) IsSystemMenu(rid RID.Any) bool { //gd:NativeMenu.is_system_menu
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_is_system_menu), gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_system_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 	var ret = r_ret
 	return ret
 }
@@ -1805,7 +1899,7 @@ Removes the item at index [param idx] from the global menu [param rid].
 */
 //go:nosplit
 func (self class) RemoveItem(rid RID.Any, idx int64) { //gd:NativeMenu.remove_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_remove_item), 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_item, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx}))
@@ -1817,7 +1911,7 @@ Removes all items from the global menu [param rid].
 */
 //go:nosplit
 func (self class) Clear(rid RID.Any) { //gd:NativeMenu.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NativeMenu.Bind_clear), 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
@@ -1833,7 +1927,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("NativeMenu", func(ptr gd.Object) any { return [1]gdclass.NativeMenu{*(*gdclass.NativeMenu)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("NativeMenu", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Feature int //gd:NativeMenu.Feature

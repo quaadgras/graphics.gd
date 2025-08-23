@@ -84,14 +84,30 @@ print(datetime.format(formatter))
 */
 type Instance [1]gdclass.JavaClassWrapper
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	wrap          gdextension.MethodForClass `hash:"1124367868"`
+	get_exception gdextension.MethodForClass `hash:"3277089691"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("JavaClassWrapper")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 var self [1]gdclass.JavaClassWrapper
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.JavaClassWrapper)))})
-	self = *(*[1]gdclass.JavaClassWrapper)(unsafe.Pointer(&obj))
+	self[0] = pointers.Raw[gdclass.JavaClassWrapper]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
 }
 
 /*
@@ -118,6 +134,20 @@ func Advanced() class { once.Do(singleton); return self }
 type class [1]gdclass.JavaClassWrapper
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.JavaClassWrapper)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.JavaClassWrapper)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -133,7 +163,7 @@ Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type tha
 */
 //go:nosplit
 func (self class) Wrap(name String.Readable) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JavaClassWrapper.Bind_wrap), gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.wrap, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = [1]gdclass.JavaClass{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaClass](r_ret)}
 	return ret
 }
@@ -144,7 +174,7 @@ Returns the Java exception from the last call into a Java class. If there was no
 */
 //go:nosplit
 func (self class) GetException() [1]gdclass.JavaObject { //gd:JavaClassWrapper.get_exception
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.JavaClassWrapper.Bind_get_exception), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_exception, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.JavaObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaObject](r_ret)}
 	return ret
 }
@@ -162,7 +192,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("JavaClassWrapper", func(ptr gd.Object) any {
-		return [1]gdclass.JavaClassWrapper{*(*gdclass.JavaClassWrapper)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("JavaClassWrapper", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

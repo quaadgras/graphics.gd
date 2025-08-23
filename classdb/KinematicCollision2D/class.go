@@ -72,6 +72,34 @@ The collision data includes the colliding object, the remaining motion, and the 
 */
 type Instance [1]gdclass.KinematicCollision2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_position             gdextension.MethodForClass `hash:"3341600327"`
+	get_normal               gdextension.MethodForClass `hash:"3341600327"`
+	get_travel               gdextension.MethodForClass `hash:"3341600327"`
+	get_remainder            gdextension.MethodForClass `hash:"3341600327"`
+	get_angle                gdextension.MethodForClass `hash:"2841063350"`
+	get_depth                gdextension.MethodForClass `hash:"1740695150"`
+	get_local_shape          gdextension.MethodForClass `hash:"1981248198"`
+	get_collider             gdextension.MethodForClass `hash:"1981248198"`
+	get_collider_id          gdextension.MethodForClass `hash:"3905245786"`
+	get_collider_rid         gdextension.MethodForClass `hash:"2944877500"`
+	get_collider_shape       gdextension.MethodForClass `hash:"1981248198"`
+	get_collider_shape_index gdextension.MethodForClass `hash:"3905245786"`
+	get_collider_velocity    gdextension.MethodForClass `hash:"3341600327"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("KinematicCollision2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.KinematicCollision2D
@@ -187,6 +215,20 @@ type Advanced = class
 type class [1]gdclass.KinematicCollision2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.KinematicCollision2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.KinematicCollision2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -196,7 +238,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("KinematicCollision2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.KinematicCollision2D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -208,7 +250,7 @@ Returns the point of collision in global coordinates.
 */
 //go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:KinematicCollision2D.get_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision2D.Bind_get_position), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -218,7 +260,7 @@ Returns the colliding body's shape's normal at the point of collision.
 */
 //go:nosplit
 func (self class) GetNormal() Vector2.XY { //gd:KinematicCollision2D.get_normal
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision2D.Bind_get_normal), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_normal, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -228,7 +270,7 @@ Returns the moving object's travel before collision.
 */
 //go:nosplit
 func (self class) GetTravel() Vector2.XY { //gd:KinematicCollision2D.get_travel
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision2D.Bind_get_travel), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_travel, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -238,7 +280,7 @@ Returns the moving object's remaining movement vector.
 */
 //go:nosplit
 func (self class) GetRemainder() Vector2.XY { //gd:KinematicCollision2D.get_remainder
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision2D.Bind_get_remainder), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_remainder, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -248,7 +290,7 @@ Returns the collision angle according to [param up_direction], which is [constan
 */
 //go:nosplit
 func (self class) GetAngle(up_direction Vector2.XY) float64 { //gd:KinematicCollision2D.get_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision2D.Bind_get_angle), gdextension.SizeFloat|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ up_direction Vector2.XY }{up_direction}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angle, gdextension.SizeFloat|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ up_direction Vector2.XY }{up_direction}))
 	var ret = r_ret
 	return ret
 }
@@ -258,7 +300,7 @@ Returns the colliding body's length of overlap along the collision normal.
 */
 //go:nosplit
 func (self class) GetDepth() float64 { //gd:KinematicCollision2D.get_depth
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision2D.Bind_get_depth), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -268,7 +310,7 @@ Returns the moving object's colliding shape.
 */
 //go:nosplit
 func (self class) GetLocalShape() [1]gd.Object { //gd:KinematicCollision2D.get_local_shape
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision2D.Bind_get_local_shape), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_local_shape, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -278,7 +320,7 @@ Returns the colliding body's attached [Object].
 */
 //go:nosplit
 func (self class) GetCollider() [1]gd.Object { //gd:KinematicCollision2D.get_collider
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision2D.Bind_get_collider), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -288,7 +330,7 @@ Returns the unique instance ID of the colliding body's attached [Object]. See [m
 */
 //go:nosplit
 func (self class) GetColliderId() int64 { //gd:KinematicCollision2D.get_collider_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision2D.Bind_get_collider_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -298,7 +340,7 @@ Returns the colliding body's [RID] used by the [PhysicsServer2D].
 */
 //go:nosplit
 func (self class) GetColliderRid() RID.Any { //gd:KinematicCollision2D.get_collider_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision2D.Bind_get_collider_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_collider_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -308,7 +350,7 @@ Returns the colliding body's shape.
 */
 //go:nosplit
 func (self class) GetColliderShape() [1]gd.Object { //gd:KinematicCollision2D.get_collider_shape
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision2D.Bind_get_collider_shape), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -318,7 +360,7 @@ Returns the colliding body's shape index. See [CollisionObject2D].
 */
 //go:nosplit
 func (self class) GetColliderShapeIndex() int64 { //gd:KinematicCollision2D.get_collider_shape_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision2D.Bind_get_collider_shape_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -328,7 +370,7 @@ Returns the colliding body's velocity.
 */
 //go:nosplit
 func (self class) GetColliderVelocity() Vector2.XY { //gd:KinematicCollision2D.get_collider_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.KinematicCollision2D.Bind_get_collider_velocity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_collider_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -359,7 +401,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("KinematicCollision2D", func(ptr gd.Object) any {
-		return [1]gdclass.KinematicCollision2D{*(*gdclass.KinematicCollision2D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("KinematicCollision2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

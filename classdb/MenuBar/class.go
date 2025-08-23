@@ -74,6 +74,45 @@ A horizontal menu bar that creates a menu for each [PopupMenu] child. New items 
 */
 type Instance [1]gdclass.MenuBar
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_switch_on_hover    gdextension.MethodForClass `hash:"2586408642"`
+	is_switch_on_hover     gdextension.MethodForClass `hash:"2240911060"`
+	set_disable_shortcuts  gdextension.MethodForClass `hash:"2586408642"`
+	set_prefer_global_menu gdextension.MethodForClass `hash:"2586408642"`
+	is_prefer_global_menu  gdextension.MethodForClass `hash:"36873697"`
+	is_native_menu         gdextension.MethodForClass `hash:"36873697"`
+	get_menu_count         gdextension.MethodForClass `hash:"3905245786"`
+	set_text_direction     gdextension.MethodForClass `hash:"119160795"`
+	get_text_direction     gdextension.MethodForClass `hash:"797257663"`
+	set_language           gdextension.MethodForClass `hash:"83702148"`
+	get_language           gdextension.MethodForClass `hash:"201670096"`
+	set_flat               gdextension.MethodForClass `hash:"2586408642"`
+	is_flat                gdextension.MethodForClass `hash:"36873697"`
+	set_start_index        gdextension.MethodForClass `hash:"1286410249"`
+	get_start_index        gdextension.MethodForClass `hash:"3905245786"`
+	set_menu_title         gdextension.MethodForClass `hash:"501894301"`
+	get_menu_title         gdextension.MethodForClass `hash:"844755477"`
+	set_menu_tooltip       gdextension.MethodForClass `hash:"501894301"`
+	get_menu_tooltip       gdextension.MethodForClass `hash:"844755477"`
+	set_menu_disabled      gdextension.MethodForClass `hash:"300928843"`
+	is_menu_disabled       gdextension.MethodForClass `hash:"1116898809"`
+	set_menu_hidden        gdextension.MethodForClass `hash:"300928843"`
+	is_menu_hidden         gdextension.MethodForClass `hash:"1116898809"`
+	get_menu_popup         gdextension.MethodForClass `hash:"2100501353"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("MenuBar")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -173,6 +212,20 @@ type Advanced = class
 type class [1]gdclass.MenuBar
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MenuBar)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MenuBar)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -182,7 +235,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("MenuBar"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.MenuBar)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -238,12 +291,12 @@ func (self Instance) SetLanguage(value string) {
 
 //go:nosplit
 func (self class) SetSwitchOnHover(enable bool) { //gd:MenuBar.set_switch_on_hover
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_switch_on_hover), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_switch_on_hover, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsSwitchOnHover() bool { //gd:MenuBar.is_switch_on_hover
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_is_switch_on_hover), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_switch_on_hover, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -253,17 +306,17 @@ If [code]true[/code], shortcuts are disabled and cannot be used to trigger the b
 */
 //go:nosplit
 func (self class) SetDisableShortcuts(disabled bool) { //gd:MenuBar.set_disable_shortcuts
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_disable_shortcuts), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disabled bool }{disabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_shortcuts, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disabled bool }{disabled}))
 }
 
 //go:nosplit
 func (self class) SetPreferGlobalMenu(enabled bool) { //gd:MenuBar.set_prefer_global_menu
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_prefer_global_menu), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_prefer_global_menu, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsPreferGlobalMenu() bool { //gd:MenuBar.is_prefer_global_menu
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_is_prefer_global_menu), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_prefer_global_menu, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -273,7 +326,7 @@ Returns [code]true[/code], if system global menu is supported and used by this [
 */
 //go:nosplit
 func (self class) IsNativeMenu() bool { //gd:MenuBar.is_native_menu
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_is_native_menu), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_native_menu, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -283,55 +336,55 @@ Returns number of menu items.
 */
 //go:nosplit
 func (self class) GetMenuCount() int64 { //gd:MenuBar.get_menu_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_menu_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_menu_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextDirection(direction Control.TextDirection) { //gd:MenuBar.set_text_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_text_direction), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Control.TextDirection }{direction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_direction, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Control.TextDirection }{direction}))
 }
 
 //go:nosplit
 func (self class) GetTextDirection() Control.TextDirection { //gd:MenuBar.get_text_direction
-	var r_ret = gdextension.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_text_direction), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:MenuBar.set_language
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_language), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:MenuBar.get_language
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlat(enabled bool) { //gd:MenuBar.set_flat
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_flat), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flat, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFlat() bool { //gd:MenuBar.is_flat
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_is_flat), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flat, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStartIndex(enabled int64) { //gd:MenuBar.set_start_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_start_index), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ enabled int64 }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_start_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ enabled int64 }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetStartIndex() int64 { //gd:MenuBar.get_start_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_start_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_start_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -341,7 +394,7 @@ Sets menu item title.
 */
 //go:nosplit
 func (self class) SetMenuTitle(menu int64, title String.Readable) { //gd:MenuBar.set_menu_title
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_menu_title), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_menu_title, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		menu  int64
 		title gdextension.String
 	}{menu, pointers.Get(gd.InternalString(title))}))
@@ -352,7 +405,7 @@ Returns menu item title.
 */
 //go:nosplit
 func (self class) GetMenuTitle(menu int64) String.Readable { //gd:MenuBar.get_menu_title
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_menu_title), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_menu_title, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -362,7 +415,7 @@ Sets menu item tooltip.
 */
 //go:nosplit
 func (self class) SetMenuTooltip(menu int64, tooltip String.Readable) { //gd:MenuBar.set_menu_tooltip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_menu_tooltip), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_menu_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		menu    int64
 		tooltip gdextension.String
 	}{menu, pointers.Get(gd.InternalString(tooltip))}))
@@ -373,7 +426,7 @@ Returns menu item tooltip.
 */
 //go:nosplit
 func (self class) GetMenuTooltip(menu int64) String.Readable { //gd:MenuBar.get_menu_tooltip
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_menu_tooltip), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_menu_tooltip, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -383,7 +436,7 @@ If [code]true[/code], menu item is disabled.
 */
 //go:nosplit
 func (self class) SetMenuDisabled(menu int64, disabled bool) { //gd:MenuBar.set_menu_disabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_menu_disabled), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_menu_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		menu     int64
 		disabled bool
 	}{menu, disabled}))
@@ -394,7 +447,7 @@ Returns [code]true[/code], if menu item is disabled.
 */
 //go:nosplit
 func (self class) IsMenuDisabled(menu int64) bool { //gd:MenuBar.is_menu_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_is_menu_disabled), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_menu_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
 	var ret = r_ret
 	return ret
 }
@@ -404,7 +457,7 @@ If [code]true[/code], menu item is hidden.
 */
 //go:nosplit
 func (self class) SetMenuHidden(menu int64, hidden bool) { //gd:MenuBar.set_menu_hidden
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_set_menu_hidden), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_menu_hidden, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		menu   int64
 		hidden bool
 	}{menu, hidden}))
@@ -415,7 +468,7 @@ Returns [code]true[/code], if menu item is hidden.
 */
 //go:nosplit
 func (self class) IsMenuHidden(menu int64) bool { //gd:MenuBar.is_menu_hidden
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_is_menu_hidden), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_menu_hidden, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
 	var ret = r_ret
 	return ret
 }
@@ -425,7 +478,7 @@ Returns [PopupMenu] associated with menu item.
 */
 //go:nosplit
 func (self class) GetMenuPopup(menu int64) [1]gdclass.PopupMenu { //gd:MenuBar.get_menu_popup
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MenuBar.Bind_get_menu_popup), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_menu_popup, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ menu int64 }{menu}))
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
@@ -462,5 +515,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MenuBar", func(ptr gd.Object) any { return [1]gdclass.MenuBar{*(*gdclass.MenuBar)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("MenuBar", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

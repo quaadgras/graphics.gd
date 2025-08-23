@@ -77,6 +77,33 @@ To help control how the FABRIK joints move, a magnet vector can be passed, which
 */
 type Instance [1]gdclass.SkeletonModification2DFABRIK
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_target_node                      gdextension.MethodForClass `hash:"1348162250"`
+	get_target_node                      gdextension.MethodForClass `hash:"4075236667"`
+	set_fabrik_data_chain_length         gdextension.MethodForClass `hash:"1286410249"`
+	get_fabrik_data_chain_length         gdextension.MethodForClass `hash:"2455072627"`
+	set_fabrik_joint_bone2d_node         gdextension.MethodForClass `hash:"2761262315"`
+	get_fabrik_joint_bone2d_node         gdextension.MethodForClass `hash:"408788394"`
+	set_fabrik_joint_bone_index          gdextension.MethodForClass `hash:"3937882851"`
+	get_fabrik_joint_bone_index          gdextension.MethodForClass `hash:"923996154"`
+	set_fabrik_joint_magnet_position     gdextension.MethodForClass `hash:"163021252"`
+	get_fabrik_joint_magnet_position     gdextension.MethodForClass `hash:"2299179447"`
+	set_fabrik_joint_use_target_rotation gdextension.MethodForClass `hash:"300928843"`
+	get_fabrik_joint_use_target_rotation gdextension.MethodForClass `hash:"1116898809"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("SkeletonModification2DFABRIK")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -149,6 +176,20 @@ type Advanced = class
 type class [1]gdclass.SkeletonModification2DFABRIK
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SkeletonModification2DFABRIK)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SkeletonModification2DFABRIK)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -158,7 +199,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SkeletonModification2DFABRIK"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SkeletonModification2DFABRIK)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -183,24 +224,24 @@ func (self Instance) SetFabrikDataChainLength(value int) {
 
 //go:nosplit
 func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModification2DFABRIK.set_target_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_set_target_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_nodepath))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_node, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_nodepath))}))
 }
 
 //go:nosplit
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DFABRIK.get_target_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_get_target_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFabrikDataChainLength(length int64) { //gd:SkeletonModification2DFABRIK.set_fabrik_data_chain_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_set_fabrik_data_chain_length), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ length int64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fabrik_data_chain_length, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ length int64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetFabrikDataChainLength() int64 { //gd:SkeletonModification2DFABRIK.get_fabrik_data_chain_length
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_get_fabrik_data_chain_length), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fabrik_data_chain_length, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -210,7 +251,7 @@ Sets the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetFabrikJointBone2dNode(joint_idx int64, bone2d_nodepath Path.ToNode) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone2d_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_set_fabrik_joint_bone2d_node), 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fabrik_joint_bone2d_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
 		joint_idx       int64
 		bone2d_nodepath gdextension.NodePath
 	}{joint_idx, pointers.Get(gd.InternalNodePath(bone2d_nodepath))}))
@@ -221,7 +262,7 @@ Returns the [Bone2D] node assigned to the FABRIK joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) GetFabrikJointBone2dNode(joint_idx int64) Path.ToNode { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone2d_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_get_fabrik_joint_bone2d_node), gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_fabrik_joint_bone2d_node, gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -231,7 +272,7 @@ Sets the bone index, [param bone_idx], of the FABRIK joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetFabrikJointBoneIndex(joint_idx int64, bone_idx int64) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_bone_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_set_fabrik_joint_bone_index), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fabrik_joint_bone_index, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		joint_idx int64
 		bone_idx  int64
 	}{joint_idx, bone_idx}))
@@ -242,7 +283,7 @@ Returns the index of the [Bone2D] node assigned to the FABRIK joint at [param jo
 */
 //go:nosplit
 func (self class) GetFabrikJointBoneIndex(joint_idx int64) int64 { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_bone_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_get_fabrik_joint_bone_index), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fabrik_joint_bone_index, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -252,7 +293,7 @@ Sets the magnet position vector for the joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetFabrikJointMagnetPosition(joint_idx int64, magnet_position Vector2.XY) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_magnet_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_set_fabrik_joint_magnet_position), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fabrik_joint_magnet_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		joint_idx       int64
 		magnet_position Vector2.XY
 	}{joint_idx, magnet_position}))
@@ -263,7 +304,7 @@ Returns the magnet position vector for the joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) GetFabrikJointMagnetPosition(joint_idx int64) Vector2.XY { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_magnet_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_get_fabrik_joint_magnet_position), gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_fabrik_joint_magnet_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -274,7 +315,7 @@ Sets whether the joint at [param joint_idx] will use the target node's rotation 
 */
 //go:nosplit
 func (self class) SetFabrikJointUseTargetRotation(joint_idx int64, use_target_rotation bool) { //gd:SkeletonModification2DFABRIK.set_fabrik_joint_use_target_rotation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_set_fabrik_joint_use_target_rotation), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fabrik_joint_use_target_rotation, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		joint_idx           int64
 		use_target_rotation bool
 	}{joint_idx, use_target_rotation}))
@@ -285,7 +326,7 @@ Returns whether the joint is using the target's rotation rather than allowing FA
 */
 //go:nosplit
 func (self class) GetFabrikJointUseTargetRotation(joint_idx int64) bool { //gd:SkeletonModification2DFABRIK.get_fabrik_joint_use_target_rotation
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DFABRIK.Bind_get_fabrik_joint_use_target_rotation), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_fabrik_joint_use_target_rotation, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -336,7 +377,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SkeletonModification2DFABRIK", func(ptr gd.Object) any {
-		return [1]gdclass.SkeletonModification2DFABRIK{*(*gdclass.SkeletonModification2DFABRIK)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("SkeletonModification2DFABRIK", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

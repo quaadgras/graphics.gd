@@ -76,6 +76,57 @@ Abstraction over [TextServer] for handling a single line of text.
 */
 type Instance [1]gdclass.TextLine
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	clear                        gdextension.MethodForClass `hash:"3218959716"`
+	set_direction                gdextension.MethodForClass `hash:"1418190634"`
+	get_direction                gdextension.MethodForClass `hash:"2516697328"`
+	set_orientation              gdextension.MethodForClass `hash:"42823726"`
+	get_orientation              gdextension.MethodForClass `hash:"175768116"`
+	set_preserve_invalid         gdextension.MethodForClass `hash:"2586408642"`
+	get_preserve_invalid         gdextension.MethodForClass `hash:"36873697"`
+	set_preserve_control         gdextension.MethodForClass `hash:"2586408642"`
+	get_preserve_control         gdextension.MethodForClass `hash:"36873697"`
+	set_bidi_override            gdextension.MethodForClass `hash:"381264803"`
+	add_string                   gdextension.MethodForClass `hash:"621426851"`
+	add_object                   gdextension.MethodForClass `hash:"1316529304"`
+	resize_object                gdextension.MethodForClass `hash:"2095776372"`
+	set_width                    gdextension.MethodForClass `hash:"373806689"`
+	get_width                    gdextension.MethodForClass `hash:"1740695150"`
+	set_horizontal_alignment     gdextension.MethodForClass `hash:"2312603777"`
+	get_horizontal_alignment     gdextension.MethodForClass `hash:"341400642"`
+	tab_align                    gdextension.MethodForClass `hash:"2899603908"`
+	set_flags                    gdextension.MethodForClass `hash:"2877345813"`
+	get_flags                    gdextension.MethodForClass `hash:"1583363614"`
+	set_text_overrun_behavior    gdextension.MethodForClass `hash:"1008890932"`
+	get_text_overrun_behavior    gdextension.MethodForClass `hash:"3779142101"`
+	set_ellipsis_char            gdextension.MethodForClass `hash:"83702148"`
+	get_ellipsis_char            gdextension.MethodForClass `hash:"201670096"`
+	get_objects                  gdextension.MethodForClass `hash:"3995934104"`
+	get_object_rect              gdextension.MethodForClass `hash:"1742700391"`
+	get_size                     gdextension.MethodForClass `hash:"3341600327"`
+	get_rid                      gdextension.MethodForClass `hash:"2944877500"`
+	get_line_ascent              gdextension.MethodForClass `hash:"1740695150"`
+	get_line_descent             gdextension.MethodForClass `hash:"1740695150"`
+	get_line_width               gdextension.MethodForClass `hash:"1740695150"`
+	get_line_underline_position  gdextension.MethodForClass `hash:"1740695150"`
+	get_line_underline_thickness gdextension.MethodForClass `hash:"1740695150"`
+	draw                         gdextension.MethodForClass `hash:"856975658"`
+	draw_outline                 gdextension.MethodForClass `hash:"1343401456"`
+	hit_test                     gdextension.MethodForClass `hash:"2401831903"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("TextLine")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.TextLine
@@ -255,6 +306,20 @@ type Advanced = class
 type class [1]gdclass.TextLine
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TextLine)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TextLine)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -264,7 +329,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TextLine"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.TextLine)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -348,53 +413,53 @@ Clears text line (removes text and inline objects).
 */
 //go:nosplit
 func (self class) Clear() { //gd:TextLine.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_clear), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetDirection(direction TextServer.Direction) { //gd:TextLine.set_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_direction), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction TextServer.Direction }{direction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_direction, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction TextServer.Direction }{direction}))
 }
 
 //go:nosplit
 func (self class) GetDirection() TextServer.Direction { //gd:TextLine.get_direction
-	var r_ret = gdextension.Call[TextServer.Direction](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_direction), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.Direction](gd.ObjectChecked(self.AsObject()), methods.get_direction, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOrientation(orientation TextServer.Orientation) { //gd:TextLine.set_orientation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_orientation), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ orientation TextServer.Orientation }{orientation}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_orientation, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ orientation TextServer.Orientation }{orientation}))
 }
 
 //go:nosplit
 func (self class) GetOrientation() TextServer.Orientation { //gd:TextLine.get_orientation
-	var r_ret = gdextension.Call[TextServer.Orientation](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_orientation), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.Orientation](gd.ObjectChecked(self.AsObject()), methods.get_orientation, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPreserveInvalid(enabled bool) { //gd:TextLine.set_preserve_invalid
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_preserve_invalid), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_preserve_invalid, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetPreserveInvalid() bool { //gd:TextLine.get_preserve_invalid
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_preserve_invalid), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_preserve_invalid, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPreserveControl(enabled bool) { //gd:TextLine.set_preserve_control
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_preserve_control), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_preserve_control, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) GetPreserveControl() bool { //gd:TextLine.get_preserve_control
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_preserve_control), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_preserve_control, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -405,7 +470,7 @@ Override ranges should cover full source text without overlaps. BiDi algorithm w
 */
 //go:nosplit
 func (self class) SetBidiOverride(override Array.Any) { //gd:TextLine.set_bidi_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_bidi_override), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ override gdextension.Array }{pointers.Get(gd.InternalArray(override))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bidi_override, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ override gdextension.Array }{pointers.Get(gd.InternalArray(override))}))
 }
 
 /*
@@ -413,7 +478,7 @@ Adds text span and font to draw it.
 */
 //go:nosplit
 func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_size int64, language String.Readable, meta variant.Any) bool { //gd:TextLine.add_string
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_add_string), gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16)|(gdextension.SizeVariant<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.add_string, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16)|(gdextension.SizeVariant<<20), unsafe.Pointer(&struct {
 		text      gdextension.String
 		font      gdextension.Object
 		font_size int64
@@ -429,7 +494,7 @@ Adds inline object to the text buffer, [param key] must be unique. In the text, 
 */
 //go:nosplit
 func (self class) AddObject(key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, length int64, baseline float64) bool { //gd:TextLine.add_object
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_add_object), gdextension.SizeBool|(gdextension.SizeVariant<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.add_object, gdextension.SizeBool|(gdextension.SizeVariant<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20), unsafe.Pointer(&struct {
 		key          gdextension.Variant
 		size         Vector2.XY
 		inline_align GUI.InlineAlignment
@@ -445,7 +510,7 @@ Sets new size and alignment of embedded object.
 */
 //go:nosplit
 func (self class) ResizeObject(key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline float64) bool { //gd:TextLine.resize_object
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_resize_object), gdextension.SizeBool|(gdextension.SizeVariant<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.resize_object, gdextension.SizeBool|(gdextension.SizeVariant<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
 		key          gdextension.Variant
 		size         Vector2.XY
 		inline_align GUI.InlineAlignment
@@ -457,24 +522,24 @@ func (self class) ResizeObject(key variant.Any, size Vector2.XY, inline_align GU
 
 //go:nosplit
 func (self class) SetWidth(width float64) { //gd:TextLine.set_width
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_width), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ width float64 }{width}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ width float64 }{width}))
 }
 
 //go:nosplit
 func (self class) GetWidth() float64 { //gd:TextLine.get_width
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_width), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:TextLine.set_horizontal_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_horizontal_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:TextLine.get_horizontal_alignment
-	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_horizontal_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -484,43 +549,43 @@ Aligns text to the given tab-stops.
 */
 //go:nosplit
 func (self class) TabAlign(tab_stops Packed.Array[float32]) { //gd:TextLine.tab_align
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_tab_align), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tab_align, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		tab_stops gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))}))
 }
 
 //go:nosplit
 func (self class) SetFlags(flags TextServer.JustificationFlag) { //gd:TextLine.set_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags TextServer.JustificationFlag }{flags}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags TextServer.JustificationFlag }{flags}))
 }
 
 //go:nosplit
 func (self class) GetFlags() TextServer.JustificationFlag { //gd:TextLine.get_flags
-	var r_ret = gdextension.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), methods.get_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:TextLine.set_text_overrun_behavior
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_text_overrun_behavior), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior}))
 }
 
 //go:nosplit
 func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:TextLine.get_text_overrun_behavior
-	var r_ret = gdextension.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_text_overrun_behavior), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEllipsisChar(char String.Readable) { //gd:TextLine.set_ellipsis_char
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_set_ellipsis_char), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ char gdextension.String }{pointers.Get(gd.InternalString(char))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ellipsis_char, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ char gdextension.String }{pointers.Get(gd.InternalString(char))}))
 }
 
 //go:nosplit
 func (self class) GetEllipsisChar() String.Readable { //gd:TextLine.get_ellipsis_char
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_ellipsis_char), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ellipsis_char, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -530,7 +595,7 @@ Returns array of inline objects.
 */
 //go:nosplit
 func (self class) GetObjects() Array.Any { //gd:TextLine.get_objects
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_objects), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_objects, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -540,7 +605,7 @@ Returns bounding rectangle of the inline object.
 */
 //go:nosplit
 func (self class) GetObjectRect(key variant.Any) Rect2.PositionSize { //gd:TextLine.get_object_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_object_rect), gdextension.SizeRect2|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ key gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(key)))}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_object_rect, gdextension.SizeRect2|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ key gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(key)))}))
 	var ret = r_ret
 	return ret
 }
@@ -550,7 +615,7 @@ Returns size of the bounding box of the text.
 */
 //go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:TextLine.get_size
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_size), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -560,7 +625,7 @@ Returns TextServer buffer RID.
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:TextLine.get_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_rid), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -570,7 +635,7 @@ Returns the text ascent (number of pixels above the baseline for horizontal layo
 */
 //go:nosplit
 func (self class) GetLineAscent() float64 { //gd:TextLine.get_line_ascent
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_line_ascent), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_ascent, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -580,7 +645,7 @@ Returns the text descent (number of pixels below the baseline for horizontal lay
 */
 //go:nosplit
 func (self class) GetLineDescent() float64 { //gd:TextLine.get_line_descent
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_line_descent), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_descent, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -590,7 +655,7 @@ Returns width (for horizontal layout) or height (for vertical) of the text.
 */
 //go:nosplit
 func (self class) GetLineWidth() float64 { //gd:TextLine.get_line_width
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_line_width), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_width, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -600,7 +665,7 @@ Returns pixel offset of the underline below the baseline.
 */
 //go:nosplit
 func (self class) GetLineUnderlinePosition() float64 { //gd:TextLine.get_line_underline_position
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_line_underline_position), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_underline_position, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -610,7 +675,7 @@ Returns thickness of the underline.
 */
 //go:nosplit
 func (self class) GetLineUnderlineThickness() float64 { //gd:TextLine.get_line_underline_thickness
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_get_line_underline_thickness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_underline_thickness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -620,7 +685,7 @@ Draw text into a canvas item at a given position, with [param color]. [param pos
 */
 //go:nosplit
 func (self class) Draw(canvas RID.Any, pos Vector2.XY, color Color.RGBA) { //gd:TextLine.draw
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_draw), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12), unsafe.Pointer(&struct {
 		canvas RID.Any
 		pos    Vector2.XY
 		color  Color.RGBA
@@ -632,7 +697,7 @@ Draw text into a canvas item at a given position, with [param color]. [param pos
 */
 //go:nosplit
 func (self class) DrawOutline(canvas RID.Any, pos Vector2.XY, outline_size int64, color Color.RGBA) { //gd:TextLine.draw_outline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_draw_outline), 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16), unsafe.Pointer(&struct {
 		canvas       RID.Any
 		pos          Vector2.XY
 		outline_size int64
@@ -645,7 +710,7 @@ Returns caret character offset at the specified pixel offset at the baseline. Th
 */
 //go:nosplit
 func (self class) HitTest(coords float64) int64 { //gd:TextLine.hit_test
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextLine.Bind_hit_test), gdextension.SizeInt|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ coords float64 }{coords}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.hit_test, gdextension.SizeInt|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ coords float64 }{coords}))
 	var ret = r_ret
 	return ret
 }
@@ -674,5 +739,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TextLine", func(ptr gd.Object) any { return [1]gdclass.TextLine{*(*gdclass.TextLine)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("TextLine", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

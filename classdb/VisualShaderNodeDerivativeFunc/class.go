@@ -72,6 +72,27 @@ This node is only available in [code]Fragment[/code] and [code]Light[/code] visu
 */
 type Instance [1]gdclass.VisualShaderNodeDerivativeFunc
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_op_type   gdextension.MethodForClass `hash:"377800221"`
+	get_op_type   gdextension.MethodForClass `hash:"3997800514"`
+	set_function  gdextension.MethodForClass `hash:"1944704156"`
+	get_function  gdextension.MethodForClass `hash:"2389093396"`
+	set_precision gdextension.MethodForClass `hash:"797270566"`
+	get_precision gdextension.MethodForClass `hash:"3822547323"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VisualShaderNodeDerivativeFunc")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -87,6 +108,20 @@ type Advanced = class
 type class [1]gdclass.VisualShaderNodeDerivativeFunc
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeDerivativeFunc)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeDerivativeFunc)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -96,7 +131,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShaderNodeDerivativeFunc"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisualShaderNodeDerivativeFunc)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -129,36 +164,36 @@ func (self Instance) SetPrecision(value Precision) {
 
 //go:nosplit
 func (self class) SetOpType(atype OpType) { //gd:VisualShaderNodeDerivativeFunc.set_op_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_op_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype OpType }{atype}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_op_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype OpType }{atype}))
 }
 
 //go:nosplit
 func (self class) GetOpType() OpType { //gd:VisualShaderNodeDerivativeFunc.get_op_type
-	var r_ret = gdextension.Call[OpType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_op_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[OpType](gd.ObjectChecked(self.AsObject()), methods.get_op_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeDerivativeFunc.set_function
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_function), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn Function }{fn}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn Function }{fn}))
 }
 
 //go:nosplit
 func (self class) GetFunction() Function { //gd:VisualShaderNodeDerivativeFunc.get_function
-	var r_ret = gdextension.Call[Function](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_function), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Function](gd.ObjectChecked(self.AsObject()), methods.get_function, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrecision(precision Precision) { //gd:VisualShaderNodeDerivativeFunc.set_precision
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_set_precision), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ precision Precision }{precision}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_precision, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ precision Precision }{precision}))
 }
 
 //go:nosplit
 func (self class) GetPrecision() Precision { //gd:VisualShaderNodeDerivativeFunc.get_precision
-	var r_ret = gdextension.Call[Precision](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeDerivativeFunc.Bind_get_precision), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Precision](gd.ObjectChecked(self.AsObject()), methods.get_precision, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -209,9 +244,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisualShaderNodeDerivativeFunc", func(ptr gd.Object) any {
-		return [1]gdclass.VisualShaderNodeDerivativeFunc{*(*gdclass.VisualShaderNodeDerivativeFunc)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VisualShaderNodeDerivativeFunc", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type OpType int //gd:VisualShaderNodeDerivativeFunc.OpType

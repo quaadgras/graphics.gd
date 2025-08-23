@@ -75,6 +75,23 @@ type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 */
 type Instance [1]gdclass.ImageTexture3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	create gdextension.MethodForClass `hash:"1130379827"`
+	update gdextension.MethodForClass `hash:"381264803"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ImageTexture3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -104,6 +121,20 @@ type Advanced = class
 type class [1]gdclass.ImageTexture3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ImageTexture3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ImageTexture3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -113,7 +144,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ImageTexture3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ImageTexture3D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -125,7 +156,7 @@ Creates the [ImageTexture3D] with specified [param width], [param height], and [
 */
 //go:nosplit
 func (self class) Create(format Image.Format, width int64, height int64, depth int64, use_mipmaps bool, data Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTexture3D.create
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTexture3D.Bind_create), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeArray<<24), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeArray<<24), unsafe.Pointer(&struct {
 		format      Image.Format
 		width       int64
 		height      int64
@@ -142,7 +173,7 @@ Replaces the texture's existing data with the layers specified in [param data]. 
 */
 //go:nosplit
 func (self class) Update(data Array.Contains[[1]gdclass.Image]) { //gd:ImageTexture3D.update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTexture3D.Bind_update), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ data gdextension.Array }{pointers.Get(gd.InternalArray(data))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ data gdextension.Array }{pointers.Get(gd.InternalArray(data))}))
 }
 func (self class) AsImageTexture3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsImageTexture3D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -188,7 +219,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ImageTexture3D", func(ptr gd.Object) any {
-		return [1]gdclass.ImageTexture3D{*(*gdclass.ImageTexture3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ImageTexture3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

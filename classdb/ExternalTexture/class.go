@@ -76,6 +76,24 @@ Requires the [url=https://registry.khronos.org/OpenGL/extensions/OES/OES_EGL_ima
 */
 type Instance [1]gdclass.ExternalTexture
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_size                gdextension.MethodForClass `hash:"743155724"`
+	get_external_texture_id gdextension.MethodForClass `hash:"3905245786"`
+	set_external_buffer_id  gdextension.MethodForClass `hash:"1286410249"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ExternalTexture")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -107,6 +125,20 @@ type Advanced = class
 type class [1]gdclass.ExternalTexture
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ExternalTexture)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ExternalTexture)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -116,7 +148,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ExternalTexture"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ExternalTexture)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -129,7 +161,7 @@ func (self Instance) SetSize(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2.XY) { //gd:ExternalTexture.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ExternalTexture.Bind_set_size), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
 }
 
 /*
@@ -138,7 +170,7 @@ Depending on your use case, you may need to pass this to platform APIs, for exam
 */
 //go:nosplit
 func (self class) GetExternalTextureId() int64 { //gd:ExternalTexture.get_external_texture_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ExternalTexture.Bind_get_external_texture_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_external_texture_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -149,7 +181,7 @@ Depending on your use case, you may need to call this with data received from a 
 */
 //go:nosplit
 func (self class) SetExternalBufferId(external_buffer_id int64) { //gd:ExternalTexture.set_external_buffer_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ExternalTexture.Bind_set_external_buffer_id), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ external_buffer_id int64 }{external_buffer_id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external_buffer_id, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ external_buffer_id int64 }{external_buffer_id}))
 }
 func (self class) AsExternalTexture() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsExternalTexture() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -195,7 +227,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ExternalTexture", func(ptr gd.Object) any {
-		return [1]gdclass.ExternalTexture{*(*gdclass.ExternalTexture)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ExternalTexture", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

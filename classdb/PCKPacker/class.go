@@ -86,6 +86,25 @@ The above [PCKPacker] creates package [code]test.pck[/code], then adds a file na
 */
 type Instance [1]gdclass.PCKPacker
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	pck_start        gdextension.MethodForClass `hash:"508410629"`
+	add_file         gdextension.MethodForClass `hash:"2215643711"`
+	add_file_removal gdextension.MethodForClass `hash:"166001499"`
+	flush            gdextension.MethodForClass `hash:"1633102583"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PCKPacker")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.PCKPacker
@@ -152,6 +171,20 @@ type Advanced = class
 type class [1]gdclass.PCKPacker
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PCKPacker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PCKPacker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -161,7 +194,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PCKPacker"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.PCKPacker)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -173,7 +206,7 @@ Creates a new PCK file at the file path [param pck_path]. The [code].pck[/code] 
 */
 //go:nosplit
 func (self class) PckStart(pck_path String.Readable, alignment int64, key String.Readable, encrypt_directory bool) Error.Code { //gd:PCKPacker.pck_start
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PCKPacker.Bind_pck_start), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pck_start, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		pck_path          gdextension.String
 		alignment         int64
 		key               gdextension.String
@@ -188,7 +221,7 @@ Adds the [param source_path] file to the current PCK package at the [param targe
 */
 //go:nosplit
 func (self class) AddFile(target_path String.Readable, source_path String.Readable, encrypt bool) Error.Code { //gd:PCKPacker.add_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PCKPacker.Bind_add_file), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_file, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		target_path gdextension.String
 		source_path gdextension.String
 		encrypt     bool
@@ -202,7 +235,7 @@ Registers a file removal of the [param target_path] internal path to the PCK. Th
 */
 //go:nosplit
 func (self class) AddFileRemoval(target_path String.Readable) Error.Code { //gd:PCKPacker.add_file_removal
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PCKPacker.Bind_add_file_removal), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ target_path gdextension.String }{pointers.Get(gd.InternalString(target_path))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_file_removal, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ target_path gdextension.String }{pointers.Get(gd.InternalString(target_path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -212,7 +245,7 @@ Writes the files specified using all [method add_file] calls since the last flus
 */
 //go:nosplit
 func (self class) Flush(verbose bool) Error.Code { //gd:PCKPacker.flush
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PCKPacker.Bind_flush), gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ verbose bool }{verbose}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.flush, gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ verbose bool }{verbose}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -241,5 +274,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PCKPacker", func(ptr gd.Object) any { return [1]gdclass.PCKPacker{*(*gdclass.PCKPacker)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("PCKPacker", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

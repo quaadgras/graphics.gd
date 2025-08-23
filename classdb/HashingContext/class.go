@@ -125,6 +125,24 @@ public void HashFile(string path)
 */
 type Instance [1]gdclass.HashingContext
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	start  gdextension.MethodForClass `hash:"3940338335"`
+	update gdextension.MethodForClass `hash:"680677267"`
+	finish gdextension.MethodForClass `hash:"2115431945"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("HashingContext")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -161,6 +179,20 @@ type Advanced = class
 type class [1]gdclass.HashingContext
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.HashingContext)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.HashingContext)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -170,7 +202,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("HashingContext"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.HashingContext)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -182,7 +214,7 @@ Starts a new hash computation of the given [param type] (e.g. [constant HASH_SHA
 */
 //go:nosplit
 func (self class) Start(atype HashType) Error.Code { //gd:HashingContext.start
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HashingContext.Bind_start), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype HashType }{atype}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype HashType }{atype}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -192,7 +224,7 @@ Updates the computation with the given [param chunk] of data.
 */
 //go:nosplit
 func (self class) Update(chunk Packed.Bytes) Error.Code { //gd:HashingContext.update
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HashingContext.Bind_update), gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ chunk gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](chunk)))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ chunk gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](chunk)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -202,7 +234,7 @@ Closes the current context, and return the computed hash.
 */
 //go:nosplit
 func (self class) Finish() Packed.Bytes { //gd:HashingContext.finish
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.HashingContext.Bind_finish), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -231,9 +263,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("HashingContext", func(ptr gd.Object) any {
-		return [1]gdclass.HashingContext{*(*gdclass.HashingContext)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("HashingContext", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type HashType int //gd:HashingContext.HashType

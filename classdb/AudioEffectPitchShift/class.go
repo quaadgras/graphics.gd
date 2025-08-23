@@ -72,6 +72,27 @@ Allows modulation of pitch independently of tempo. All frequencies can be increa
 */
 type Instance [1]gdclass.AudioEffectPitchShift
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_pitch_scale  gdextension.MethodForClass `hash:"373806689"`
+	get_pitch_scale  gdextension.MethodForClass `hash:"1740695150"`
+	set_oversampling gdextension.MethodForClass `hash:"1286410249"`
+	get_oversampling gdextension.MethodForClass `hash:"3905245786"`
+	set_fft_size     gdextension.MethodForClass `hash:"2323518741"`
+	get_fft_size     gdextension.MethodForClass `hash:"2361246789"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioEffectPitchShift")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -87,6 +108,20 @@ type Advanced = class
 type class [1]gdclass.AudioEffectPitchShift
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectPitchShift)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectPitchShift)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -96,7 +131,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioEffectPitchShift"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioEffectPitchShift)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -129,36 +164,36 @@ func (self Instance) SetFftSize(value FFTSize) {
 
 //go:nosplit
 func (self class) SetPitchScale(rate float64) { //gd:AudioEffectPitchShift.set_pitch_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPitchShift.Bind_set_pitch_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ rate float64 }{rate}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pitch_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ rate float64 }{rate}))
 }
 
 //go:nosplit
 func (self class) GetPitchScale() float64 { //gd:AudioEffectPitchShift.get_pitch_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPitchShift.Bind_get_pitch_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pitch_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOversampling(amount int64) { //gd:AudioEffectPitchShift.set_oversampling
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPitchShift.Bind_set_oversampling), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_oversampling, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetOversampling() int64 { //gd:AudioEffectPitchShift.get_oversampling
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPitchShift.Bind_get_oversampling), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_oversampling, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFftSize(size FFTSize) { //gd:AudioEffectPitchShift.set_fft_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPitchShift.Bind_set_fft_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size FFTSize }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fft_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size FFTSize }{size}))
 }
 
 //go:nosplit
 func (self class) GetFftSize() FFTSize { //gd:AudioEffectPitchShift.get_fft_size
-	var r_ret = gdextension.Call[FFTSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectPitchShift.Bind_get_fft_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[FFTSize](gd.ObjectChecked(self.AsObject()), methods.get_fft_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -203,9 +238,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioEffectPitchShift", func(ptr gd.Object) any {
-		return [1]gdclass.AudioEffectPitchShift{*(*gdclass.AudioEffectPitchShift)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioEffectPitchShift", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type FFTSize int //gd:AudioEffectPitchShift.FFTSize

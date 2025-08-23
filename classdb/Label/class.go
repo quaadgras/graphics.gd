@@ -77,6 +77,68 @@ A control for displaying plain text. It gives you control over the horizontal an
 */
 type Instance [1]gdclass.Label
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_horizontal_alignment                  gdextension.MethodForClass `hash:"2312603777"`
+	get_horizontal_alignment                  gdextension.MethodForClass `hash:"341400642"`
+	set_vertical_alignment                    gdextension.MethodForClass `hash:"1796458609"`
+	get_vertical_alignment                    gdextension.MethodForClass `hash:"3274884059"`
+	set_text                                  gdextension.MethodForClass `hash:"83702148"`
+	get_text                                  gdextension.MethodForClass `hash:"201670096"`
+	set_label_settings                        gdextension.MethodForClass `hash:"1030653839"`
+	get_label_settings                        gdextension.MethodForClass `hash:"826676056"`
+	set_text_direction                        gdextension.MethodForClass `hash:"119160795"`
+	get_text_direction                        gdextension.MethodForClass `hash:"797257663"`
+	set_language                              gdextension.MethodForClass `hash:"83702148"`
+	get_language                              gdextension.MethodForClass `hash:"201670096"`
+	set_paragraph_separator                   gdextension.MethodForClass `hash:"83702148"`
+	get_paragraph_separator                   gdextension.MethodForClass `hash:"201670096"`
+	set_autowrap_mode                         gdextension.MethodForClass `hash:"3289138044"`
+	get_autowrap_mode                         gdextension.MethodForClass `hash:"1549071663"`
+	set_justification_flags                   gdextension.MethodForClass `hash:"2877345813"`
+	get_justification_flags                   gdextension.MethodForClass `hash:"1583363614"`
+	set_clip_text                             gdextension.MethodForClass `hash:"2586408642"`
+	is_clipping_text                          gdextension.MethodForClass `hash:"36873697"`
+	set_tab_stops                             gdextension.MethodForClass `hash:"2899603908"`
+	get_tab_stops                             gdextension.MethodForClass `hash:"675695659"`
+	set_text_overrun_behavior                 gdextension.MethodForClass `hash:"1008890932"`
+	get_text_overrun_behavior                 gdextension.MethodForClass `hash:"3779142101"`
+	set_ellipsis_char                         gdextension.MethodForClass `hash:"83702148"`
+	get_ellipsis_char                         gdextension.MethodForClass `hash:"201670096"`
+	set_uppercase                             gdextension.MethodForClass `hash:"2586408642"`
+	is_uppercase                              gdextension.MethodForClass `hash:"36873697"`
+	get_line_height                           gdextension.MethodForClass `hash:"181039630"`
+	get_line_count                            gdextension.MethodForClass `hash:"3905245786"`
+	get_visible_line_count                    gdextension.MethodForClass `hash:"3905245786"`
+	get_total_character_count                 gdextension.MethodForClass `hash:"3905245786"`
+	set_visible_characters                    gdextension.MethodForClass `hash:"1286410249"`
+	get_visible_characters                    gdextension.MethodForClass `hash:"3905245786"`
+	get_visible_characters_behavior           gdextension.MethodForClass `hash:"258789322"`
+	set_visible_characters_behavior           gdextension.MethodForClass `hash:"3383839701"`
+	set_visible_ratio                         gdextension.MethodForClass `hash:"373806689"`
+	get_visible_ratio                         gdextension.MethodForClass `hash:"1740695150"`
+	set_lines_skipped                         gdextension.MethodForClass `hash:"1286410249"`
+	get_lines_skipped                         gdextension.MethodForClass `hash:"3905245786"`
+	set_max_lines_visible                     gdextension.MethodForClass `hash:"1286410249"`
+	get_max_lines_visible                     gdextension.MethodForClass `hash:"3905245786"`
+	set_structured_text_bidi_override         gdextension.MethodForClass `hash:"55961453"`
+	get_structured_text_bidi_override         gdextension.MethodForClass `hash:"3385126229"`
+	set_structured_text_bidi_override_options gdextension.MethodForClass `hash:"381264803"`
+	get_structured_text_bidi_override_options gdextension.MethodForClass `hash:"3995934104"`
+	get_character_bounds                      gdextension.MethodForClass `hash:"3327874267"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Label")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Label
@@ -140,6 +202,20 @@ type Advanced = class
 type class [1]gdclass.Label
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Label)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Label)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -149,7 +225,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Label"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Label)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -325,170 +401,170 @@ func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:Label.set_horizontal_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_horizontal_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.HorizontalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:Label.get_horizontal_alignment
-	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_horizontal_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVerticalAlignment(alignment GUI.VerticalAlignment) { //gd:Label.set_vertical_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_vertical_alignment), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.VerticalAlignment }{alignment}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_alignment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment GUI.VerticalAlignment }{alignment}))
 }
 
 //go:nosplit
 func (self class) GetVerticalAlignment() GUI.VerticalAlignment { //gd:Label.get_vertical_alignment
-	var r_ret = gdextension.Call[GUI.VerticalAlignment](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_vertical_alignment), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[GUI.VerticalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_vertical_alignment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetText(text String.Readable) { //gd:Label.set_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_text), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
 }
 
 //go:nosplit
 func (self class) GetText() String.Readable { //gd:Label.get_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLabelSettings(settings [1]gdclass.LabelSettings) { //gd:Label.set_label_settings
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_label_settings), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ settings gdextension.Object }{gdextension.Object(gd.ObjectChecked(settings[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label_settings, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ settings gdextension.Object }{gdextension.Object(gd.ObjectChecked(settings[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetLabelSettings() [1]gdclass.LabelSettings { //gd:Label.get_label_settings
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_label_settings), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_label_settings, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.LabelSettings{gd.PointerWithOwnershipTransferredToGo[gdclass.LabelSettings](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextDirection(direction Control.TextDirection) { //gd:Label.set_text_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_text_direction), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Control.TextDirection }{direction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_direction, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ direction Control.TextDirection }{direction}))
 }
 
 //go:nosplit
 func (self class) GetTextDirection() Control.TextDirection { //gd:Label.get_text_direction
-	var r_ret = gdextension.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_text_direction), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:Label.set_language
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_language), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:Label.get_language
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_language), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParagraphSeparator(paragraph_separator String.Readable) { //gd:Label.set_paragraph_separator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_paragraph_separator), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ paragraph_separator gdextension.String }{pointers.Get(gd.InternalString(paragraph_separator))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_paragraph_separator, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ paragraph_separator gdextension.String }{pointers.Get(gd.InternalString(paragraph_separator))}))
 }
 
 //go:nosplit
 func (self class) GetParagraphSeparator() String.Readable { //gd:Label.get_paragraph_separator
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_paragraph_separator), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_paragraph_separator, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:Label.set_autowrap_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_autowrap_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode}))
 }
 
 //go:nosplit
 func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:Label.get_autowrap_mode
-	var r_ret = gdextension.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_autowrap_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJustificationFlags(justification_flags TextServer.JustificationFlag) { //gd:Label.set_justification_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_justification_flags), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ justification_flags TextServer.JustificationFlag }{justification_flags}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_justification_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ justification_flags TextServer.JustificationFlag }{justification_flags}))
 }
 
 //go:nosplit
 func (self class) GetJustificationFlags() TextServer.JustificationFlag { //gd:Label.get_justification_flags
-	var r_ret = gdextension.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_justification_flags), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), methods.get_justification_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClipText(enable bool) { //gd:Label.set_clip_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_clip_text), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_text, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsClippingText() bool { //gd:Label.is_clipping_text
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_is_clipping_text), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_clipping_text, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTabStops(tab_stops Packed.Array[float32]) { //gd:Label.set_tab_stops
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_tab_stops), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_stops, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		tab_stops gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))}))
 }
 
 //go:nosplit
 func (self class) GetTabStops() Packed.Array[float32] { //gd:Label.get_tab_stops
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_tab_stops), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_tab_stops, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextOverrunBehavior(overrun_behavior TextServer.OverrunBehavior) { //gd:Label.set_text_overrun_behavior
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_text_overrun_behavior), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_overrun_behavior, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ overrun_behavior TextServer.OverrunBehavior }{overrun_behavior}))
 }
 
 //go:nosplit
 func (self class) GetTextOverrunBehavior() TextServer.OverrunBehavior { //gd:Label.get_text_overrun_behavior
-	var r_ret = gdextension.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_text_overrun_behavior), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.OverrunBehavior](gd.ObjectChecked(self.AsObject()), methods.get_text_overrun_behavior, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEllipsisChar(char String.Readable) { //gd:Label.set_ellipsis_char
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_ellipsis_char), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ char gdextension.String }{pointers.Get(gd.InternalString(char))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ellipsis_char, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ char gdextension.String }{pointers.Get(gd.InternalString(char))}))
 }
 
 //go:nosplit
 func (self class) GetEllipsisChar() String.Readable { //gd:Label.get_ellipsis_char
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_ellipsis_char), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_ellipsis_char, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUppercase(enable bool) { //gd:Label.set_uppercase
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_uppercase), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uppercase, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUppercase() bool { //gd:Label.is_uppercase
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_is_uppercase), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_uppercase, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -500,7 +576,7 @@ If there are no lines, returns font size in pixels.
 */
 //go:nosplit
 func (self class) GetLineHeight(line int64) int64 { //gd:Label.get_line_height
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_line_height), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_height, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
 	var ret = r_ret
 	return ret
 }
@@ -510,7 +586,7 @@ Returns the number of lines of text the Label has.
 */
 //go:nosplit
 func (self class) GetLineCount() int64 { //gd:Label.get_line_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_line_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -520,7 +596,7 @@ Returns the number of lines shown. Useful if the [Label]'s height cannot current
 */
 //go:nosplit
 func (self class) GetVisibleLineCount() int64 { //gd:Label.get_visible_line_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_visible_line_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_line_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -530,95 +606,95 @@ Returns the total number of printable characters in the text (excluding spaces a
 */
 //go:nosplit
 func (self class) GetTotalCharacterCount() int64 { //gd:Label.get_total_character_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_total_character_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_total_character_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibleCharacters(amount int64) { //gd:Label.set_visible_characters
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_visible_characters), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_characters, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetVisibleCharacters() int64 { //gd:Label.get_visible_characters
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_visible_characters), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_characters, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetVisibleCharactersBehavior() TextServer.VisibleCharactersBehavior { //gd:Label.get_visible_characters_behavior
-	var r_ret = gdextension.Call[TextServer.VisibleCharactersBehavior](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_visible_characters_behavior), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.VisibleCharactersBehavior](gd.ObjectChecked(self.AsObject()), methods.get_visible_characters_behavior, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibleCharactersBehavior(behavior TextServer.VisibleCharactersBehavior) { //gd:Label.set_visible_characters_behavior
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_visible_characters_behavior), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_characters_behavior, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		behavior TextServer.VisibleCharactersBehavior
 	}{behavior}))
 }
 
 //go:nosplit
 func (self class) SetVisibleRatio(ratio float64) { //gd:Label.set_visible_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_visible_ratio), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
 }
 
 //go:nosplit
 func (self class) GetVisibleRatio() float64 { //gd:Label.get_visible_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_visible_ratio), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visible_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinesSkipped(lines_skipped int64) { //gd:Label.set_lines_skipped
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_lines_skipped), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ lines_skipped int64 }{lines_skipped}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lines_skipped, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ lines_skipped int64 }{lines_skipped}))
 }
 
 //go:nosplit
 func (self class) GetLinesSkipped() int64 { //gd:Label.get_lines_skipped
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_lines_skipped), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_lines_skipped, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxLinesVisible(lines_visible int64) { //gd:Label.set_max_lines_visible
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_max_lines_visible), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ lines_visible int64 }{lines_visible}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_lines_visible, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ lines_visible int64 }{lines_visible}))
 }
 
 //go:nosplit
 func (self class) GetMaxLinesVisible() int64 { //gd:Label.get_max_lines_visible
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_max_lines_visible), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_lines_visible, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:Label.set_structured_text_bidi_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_structured_text_bidi_override), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct {
 		parser TextServer.StructuredTextParser
 	}{parser}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:Label.get_structured_text_bidi_override
-	var r_ret = gdextension.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_structured_text_bidi_override), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:Label.set_structured_text_bidi_override_options
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_set_structured_text_bidi_override_options), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))}))
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:Label.get_structured_text_bidi_override_options
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_structured_text_bidi_override_options), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -628,7 +704,7 @@ Returns the bounding rectangle of the character at position [param pos] in the l
 */
 //go:nosplit
 func (self class) GetCharacterBounds(pos int64) Rect2.PositionSize { //gd:Label.get_character_bounds
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Label.Bind_get_character_bounds), gdextension.SizeRect2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pos int64 }{pos}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_character_bounds, gdextension.SizeRect2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pos int64 }{pos}))
 	var ret = r_ret
 	return ret
 }
@@ -665,5 +741,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Label", func(ptr gd.Object) any { return [1]gdclass.Label{*(*gdclass.Label)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Label", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

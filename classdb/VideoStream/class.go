@@ -74,6 +74,23 @@ Base resource type for all video streams. Classes that derive from [VideoStream]
 */
 type Instance [1]gdclass.VideoStream
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_file gdextension.MethodForClass `hash:"83702148"`
+	get_file gdextension.MethodForClass `hash:"2841200299"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VideoStream")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -116,6 +133,20 @@ type Advanced = class
 type class [1]gdclass.VideoStream
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VideoStream)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VideoStream)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -125,7 +156,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VideoStream"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VideoStream)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -158,12 +189,12 @@ func (class) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.Vide
 
 //go:nosplit
 func (self class) SetFile(file String.Readable) { //gd:VideoStream.set_file
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStream.Bind_set_file), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_file, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))}))
 }
 
 //go:nosplit
 func (self class) GetFile() String.Readable { //gd:VideoStream.get_file
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStream.Bind_get_file), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -203,5 +234,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VideoStream", func(ptr gd.Object) any { return [1]gdclass.VideoStream{*(*gdclass.VideoStream)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("VideoStream", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

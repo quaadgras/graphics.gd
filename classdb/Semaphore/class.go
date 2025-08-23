@@ -74,6 +74,24 @@ A synchronization semaphore that can be used to synchronize multiple [Thread]s. 
 */
 type Instance [1]gdclass.Semaphore
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	wait     gdextension.MethodForClass `hash:"3218959716"`
+	try_wait gdextension.MethodForClass `hash:"2240911060"`
+	post     gdextension.MethodForClass `hash:"1667783136"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Semaphore")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Semaphore
@@ -119,6 +137,20 @@ type Advanced = class
 type class [1]gdclass.Semaphore
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Semaphore)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Semaphore)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -128,7 +160,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Semaphore"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Semaphore)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -140,7 +172,7 @@ Waits for the [Semaphore], if its value is zero, blocks until non-zero.
 */
 //go:nosplit
 func (self class) Wait() { //gd:Semaphore.wait
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Semaphore.Bind_wait), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.wait, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -148,7 +180,7 @@ Like [method wait], but won't block, so if the value is zero, fails immediately 
 */
 //go:nosplit
 func (self class) TryWait() bool { //gd:Semaphore.try_wait
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Semaphore.Bind_try_wait), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.try_wait, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -158,7 +190,7 @@ Lowers the [Semaphore], allowing one thread in, or more if [param count] is spec
 */
 //go:nosplit
 func (self class) Post(count int64) { //gd:Semaphore.post
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Semaphore.Bind_post), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.post, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 func (self class) AsSemaphore() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsSemaphore() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -185,5 +217,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Semaphore", func(ptr gd.Object) any { return [1]gdclass.Semaphore{*(*gdclass.Semaphore)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Semaphore", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

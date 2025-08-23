@@ -73,14 +73,68 @@ The [Engine] singleton allows you to query and modify the project's run-time par
 */
 type Instance [1]gdclass.Engine
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_physics_ticks_per_second       gdextension.MethodForClass `hash:"1286410249"`
+	get_physics_ticks_per_second       gdextension.MethodForClass `hash:"3905245786"`
+	set_max_physics_steps_per_frame    gdextension.MethodForClass `hash:"1286410249"`
+	get_max_physics_steps_per_frame    gdextension.MethodForClass `hash:"3905245786"`
+	set_physics_jitter_fix             gdextension.MethodForClass `hash:"373806689"`
+	get_physics_jitter_fix             gdextension.MethodForClass `hash:"1740695150"`
+	get_physics_interpolation_fraction gdextension.MethodForClass `hash:"1740695150"`
+	set_max_fps                        gdextension.MethodForClass `hash:"1286410249"`
+	get_max_fps                        gdextension.MethodForClass `hash:"3905245786"`
+	set_time_scale                     gdextension.MethodForClass `hash:"373806689"`
+	get_time_scale                     gdextension.MethodForClass `hash:"191475506"`
+	get_frames_drawn                   gdextension.MethodForClass `hash:"2455072627"`
+	get_frames_per_second              gdextension.MethodForClass `hash:"1740695150"`
+	get_physics_frames                 gdextension.MethodForClass `hash:"3905245786"`
+	get_process_frames                 gdextension.MethodForClass `hash:"3905245786"`
+	get_main_loop                      gdextension.MethodForClass `hash:"1016888095"`
+	get_version_info                   gdextension.MethodForClass `hash:"3102165223"`
+	get_author_info                    gdextension.MethodForClass `hash:"3102165223"`
+	get_copyright_info                 gdextension.MethodForClass `hash:"3995934104"`
+	get_donor_info                     gdextension.MethodForClass `hash:"3102165223"`
+	get_license_info                   gdextension.MethodForClass `hash:"3102165223"`
+	get_license_text                   gdextension.MethodForClass `hash:"201670096"`
+	get_architecture_name              gdextension.MethodForClass `hash:"201670096"`
+	is_in_physics_frame                gdextension.MethodForClass `hash:"36873697"`
+	has_singleton                      gdextension.MethodForClass `hash:"2619796661"`
+	get_singleton                      gdextension.MethodForClass `hash:"1371597918"`
+	register_singleton                 gdextension.MethodForClass `hash:"965313290"`
+	unregister_singleton               gdextension.MethodForClass `hash:"3304788590"`
+	get_singleton_list                 gdextension.MethodForClass `hash:"1139954409"`
+	register_script_language           gdextension.MethodForClass `hash:"1850254898"`
+	unregister_script_language         gdextension.MethodForClass `hash:"1850254898"`
+	get_script_language_count          gdextension.MethodForClass `hash:"2455072627"`
+	get_script_language                gdextension.MethodForClass `hash:"2151255799"`
+	is_editor_hint                     gdextension.MethodForClass `hash:"36873697"`
+	is_embedded_in_editor              gdextension.MethodForClass `hash:"36873697"`
+	get_write_movie_path               gdextension.MethodForClass `hash:"201670096"`
+	set_print_to_stdout                gdextension.MethodForClass `hash:"2586408642"`
+	is_printing_to_stdout              gdextension.MethodForClass `hash:"36873697"`
+	set_print_error_messages           gdextension.MethodForClass `hash:"2586408642"`
+	is_printing_error_messages         gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Engine")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 var self [1]gdclass.Engine
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.Engine)))})
-	self = *(*[1]gdclass.Engine)(unsafe.Pointer(&obj))
+	self[0] = pointers.Raw[gdclass.Engine]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
 }
 
 /*
@@ -452,6 +506,20 @@ func Advanced() class { once.Do(singleton); return self }
 type class [1]gdclass.Engine
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Engine)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Engine)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -533,36 +601,36 @@ func SetPhysicsJitterFix(value Float.X) {
 
 //go:nosplit
 func (self class) SetPhysicsTicksPerSecond(physics_ticks_per_second int64) { //gd:Engine.set_physics_ticks_per_second
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_set_physics_ticks_per_second), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ physics_ticks_per_second int64 }{physics_ticks_per_second}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_ticks_per_second, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ physics_ticks_per_second int64 }{physics_ticks_per_second}))
 }
 
 //go:nosplit
 func (self class) GetPhysicsTicksPerSecond() int64 { //gd:Engine.get_physics_ticks_per_second
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_physics_ticks_per_second), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_ticks_per_second, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxPhysicsStepsPerFrame(max_physics_steps int64) { //gd:Engine.set_max_physics_steps_per_frame
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_set_max_physics_steps_per_frame), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_physics_steps int64 }{max_physics_steps}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_physics_steps_per_frame, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_physics_steps int64 }{max_physics_steps}))
 }
 
 //go:nosplit
 func (self class) GetMaxPhysicsStepsPerFrame() int64 { //gd:Engine.get_max_physics_steps_per_frame
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_max_physics_steps_per_frame), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_physics_steps_per_frame, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicsJitterFix(physics_jitter_fix float64) { //gd:Engine.set_physics_jitter_fix
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_set_physics_jitter_fix), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ physics_jitter_fix float64 }{physics_jitter_fix}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_jitter_fix, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ physics_jitter_fix float64 }{physics_jitter_fix}))
 }
 
 //go:nosplit
 func (self class) GetPhysicsJitterFix() float64 { //gd:Engine.get_physics_jitter_fix
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_physics_jitter_fix), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_physics_jitter_fix, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -572,31 +640,31 @@ Returns the fraction through the current physics tick we are at the time of rend
 */
 //go:nosplit
 func (self class) GetPhysicsInterpolationFraction() float64 { //gd:Engine.get_physics_interpolation_fraction
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_physics_interpolation_fraction), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_physics_interpolation_fraction, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxFps(max_fps int64) { //gd:Engine.set_max_fps
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_set_max_fps), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_fps int64 }{max_fps}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_fps, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_fps int64 }{max_fps}))
 }
 
 //go:nosplit
 func (self class) GetMaxFps() int64 { //gd:Engine.get_max_fps
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_max_fps), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_fps, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTimeScale(time_scale float64) { //gd:Engine.set_time_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_set_time_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time_scale float64 }{time_scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_time_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time_scale float64 }{time_scale}))
 }
 
 //go:nosplit
 func (self class) GetTimeScale() float64 { //gd:Engine.get_time_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_time_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -607,7 +675,7 @@ Returns the total number of frames drawn since the engine started.
 */
 //go:nosplit
 func (self class) GetFramesDrawn() int64 { //gd:Engine.get_frames_drawn
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_frames_drawn), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames_drawn, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -617,7 +685,7 @@ Returns the average frames rendered every second (FPS), also known as the framer
 */
 //go:nosplit
 func (self class) GetFramesPerSecond() float64 { //gd:Engine.get_frames_per_second
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_frames_per_second), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frames_per_second, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -646,7 +714,7 @@ public override void _PhysicsProcess(double delta)
 */
 //go:nosplit
 func (self class) GetPhysicsFrames() int64 { //gd:Engine.get_physics_frames
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_physics_frames), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_frames, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -675,7 +743,7 @@ public override void _Process(double delta)
 */
 //go:nosplit
 func (self class) GetProcessFrames() int64 { //gd:Engine.get_process_frames
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_process_frames), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_frames, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -686,7 +754,7 @@ Returns the instance of the [MainLoop]. This is usually the main [SceneTree] and
 */
 //go:nosplit
 func (self class) GetMainLoop() [1]gdclass.MainLoop { //gd:Engine.get_main_loop
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_main_loop), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_main_loop, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.MainLoop{gd.PointerLifetimeBoundTo[gdclass.MainLoop](self.AsObject(), r_ret)}
 	return ret
 }
@@ -725,7 +793,7 @@ else
 */
 //go:nosplit
 func (self class) GetVersionInfo() Dictionary.Any { //gd:Engine.get_version_info
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_version_info), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_version_info, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -735,7 +803,7 @@ Returns the engine author information as a [Dictionary], where each entry is an 
 */
 //go:nosplit
 func (self class) GetAuthorInfo() Dictionary.Any { //gd:Engine.get_author_info
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_author_info), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_author_info, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -749,7 +817,7 @@ Every [Dictionary] contains a [code]name[/code] identifier, and a [code]parts[/c
 */
 //go:nosplit
 func (self class) GetCopyrightInfo() Array.Contains[Dictionary.Any] { //gd:Engine.get_copyright_info
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_copyright_info), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_copyright_info, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -760,7 +828,7 @@ Returns a [Dictionary] of categorized donor names. Each entry is an [Array] of s
 */
 //go:nosplit
 func (self class) GetDonorInfo() Dictionary.Any { //gd:Engine.get_donor_info
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_donor_info), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_donor_info, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -770,7 +838,7 @@ Returns a [Dictionary] of licenses used by Godot and included third party compon
 */
 //go:nosplit
 func (self class) GetLicenseInfo() Dictionary.Any { //gd:Engine.get_license_info
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_license_info), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_license_info, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -780,7 +848,7 @@ Returns the full Godot license text.
 */
 //go:nosplit
 func (self class) GetLicenseText() String.Readable { //gd:Engine.get_license_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_license_text), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_license_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -792,7 +860,7 @@ To detect whether the current build is 64-bit, or the type of architecture, don'
 */
 //go:nosplit
 func (self class) GetArchitectureName() String.Readable { //gd:Engine.get_architecture_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_architecture_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_architecture_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -814,7 +882,7 @@ func _physics_process(delta):
 */
 //go:nosplit
 func (self class) IsInPhysicsFrame() bool { //gd:Engine.is_in_physics_frame
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_is_in_physics_frame), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_in_physics_frame, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -839,7 +907,7 @@ GD.Print(Engine.HasSingleton("Unknown"));     // Prints False
 */
 //go:nosplit
 func (self class) HasSingleton(name String.Name) bool { //gd:Engine.has_singleton
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_has_singleton), gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_singleton, gdextension.SizeBool|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -850,7 +918,7 @@ Returns the global singleton with the given [param name], or [code]null[/code] i
 */
 //go:nosplit
 func (self class) GetSingleton(name String.Name) [1]gd.Object { //gd:Engine.get_singleton
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_singleton), gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_singleton, gdextension.SizeObject|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -860,7 +928,7 @@ Registers the given [Object] [param instance] as a singleton, available globally
 */
 //go:nosplit
 func (self class) RegisterSingleton(name String.Name, instance [1]gd.Object) { //gd:Engine.register_singleton
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_register_singleton), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_singleton, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		instance gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(instance[0].AsObject()[0]))}))
@@ -871,7 +939,7 @@ Removes the singleton registered under [param name]. The singleton object is [i]
 */
 //go:nosplit
 func (self class) UnregisterSingleton(name String.Name) { //gd:Engine.unregister_singleton
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_unregister_singleton), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_singleton, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -879,7 +947,7 @@ Returns a list of names of all available global singletons. See also [method get
 */
 //go:nosplit
 func (self class) GetSingletonList() Packed.Strings { //gd:Engine.get_singleton_list
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_singleton_list), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_singleton_list, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -893,7 +961,7 @@ Returns:
 */
 //go:nosplit
 func (self class) RegisterScriptLanguage(language [1]gdclass.ScriptLanguage) Error.Code { //gd:Engine.register_script_language
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_register_script_language), gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ language gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(language[0].AsObject()[0]))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.register_script_language, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ language gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(language[0].AsObject()[0]))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -906,7 +974,7 @@ Returns:
 */
 //go:nosplit
 func (self class) UnregisterScriptLanguage(language [1]gdclass.ScriptLanguage) Error.Code { //gd:Engine.unregister_script_language
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_unregister_script_language), gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ language gdextension.Object }{gdextension.Object(gd.ObjectChecked(language[0].AsObject()))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.unregister_script_language, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ language gdextension.Object }{gdextension.Object(gd.ObjectChecked(language[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -916,7 +984,7 @@ Returns the number of available script languages. Use with [method get_script_la
 */
 //go:nosplit
 func (self class) GetScriptLanguageCount() int64 { //gd:Engine.get_script_language_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_script_language_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_script_language_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -926,7 +994,7 @@ Returns an instance of a [ScriptLanguage] with the given [param index].
 */
 //go:nosplit
 func (self class) GetScriptLanguage(index int64) [1]gdclass.ScriptLanguage { //gd:Engine.get_script_language
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_script_language), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_language, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
 	var ret = [1]gdclass.ScriptLanguage{gd.PointerMustAssertInstanceID[gdclass.ScriptLanguage](r_ret)}
 	return ret
 }
@@ -952,7 +1020,7 @@ See [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]Running cod
 */
 //go:nosplit
 func (self class) IsEditorHint() bool { //gd:Engine.is_editor_hint
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_is_editor_hint), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editor_hint, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -962,7 +1030,7 @@ Returns [code]true[/code] if the engine is running embedded in the editor. This 
 */
 //go:nosplit
 func (self class) IsEmbeddedInEditor() bool { //gd:Engine.is_embedded_in_editor
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_is_embedded_in_editor), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_embedded_in_editor, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -972,31 +1040,31 @@ Returns the path to the [MovieWriter]'s output file, or an empty string if the e
 */
 //go:nosplit
 func (self class) GetWriteMoviePath() String.Readable { //gd:Engine.get_write_movie_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_get_write_movie_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_write_movie_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrintToStdout(enabled bool) { //gd:Engine.set_print_to_stdout
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_set_print_to_stdout), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_print_to_stdout, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsPrintingToStdout() bool { //gd:Engine.is_printing_to_stdout
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_is_printing_to_stdout), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_printing_to_stdout, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrintErrorMessages(enabled bool) { //gd:Engine.set_print_error_messages
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_set_print_error_messages), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_print_error_messages, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsPrintingErrorMessages() bool { //gd:Engine.is_printing_error_messages
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Engine.Bind_is_printing_error_messages), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_printing_error_messages, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1014,7 +1082,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Engine", func(ptr gd.Object) any { return [1]gdclass.Engine{*(*gdclass.Engine)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Engine", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type AuthorInfo struct {

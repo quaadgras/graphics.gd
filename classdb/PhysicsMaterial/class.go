@@ -71,6 +71,29 @@ Holds physics-related properties of a surface, namely its roughness and bouncine
 */
 type Instance [1]gdclass.PhysicsMaterial
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_friction  gdextension.MethodForClass `hash:"373806689"`
+	get_friction  gdextension.MethodForClass `hash:"1740695150"`
+	set_rough     gdextension.MethodForClass `hash:"2586408642"`
+	is_rough      gdextension.MethodForClass `hash:"36873697"`
+	set_bounce    gdextension.MethodForClass `hash:"373806689"`
+	get_bounce    gdextension.MethodForClass `hash:"1740695150"`
+	set_absorbent gdextension.MethodForClass `hash:"2586408642"`
+	is_absorbent  gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PhysicsMaterial")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -86,6 +109,20 @@ type Advanced = class
 type class [1]gdclass.PhysicsMaterial
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PhysicsMaterial)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PhysicsMaterial)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -95,7 +132,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PhysicsMaterial"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.PhysicsMaterial)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -136,48 +173,48 @@ func (self Instance) SetAbsorbent(value bool) {
 
 //go:nosplit
 func (self class) SetFriction(friction float64) { //gd:PhysicsMaterial.set_friction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_set_friction), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ friction float64 }{friction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_friction, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ friction float64 }{friction}))
 }
 
 //go:nosplit
 func (self class) GetFriction() float64 { //gd:PhysicsMaterial.get_friction
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_get_friction), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_friction, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRough(rough bool) { //gd:PhysicsMaterial.set_rough
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_set_rough), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ rough bool }{rough}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rough, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ rough bool }{rough}))
 }
 
 //go:nosplit
 func (self class) IsRough() bool { //gd:PhysicsMaterial.is_rough
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_is_rough), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rough, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBounce(bounce float64) { //gd:PhysicsMaterial.set_bounce
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_set_bounce), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bounce float64 }{bounce}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bounce, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ bounce float64 }{bounce}))
 }
 
 //go:nosplit
 func (self class) GetBounce() float64 { //gd:PhysicsMaterial.get_bounce
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_get_bounce), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bounce, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAbsorbent(absorbent bool) { //gd:PhysicsMaterial.set_absorbent
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_set_absorbent), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ absorbent bool }{absorbent}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_absorbent, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ absorbent bool }{absorbent}))
 }
 
 //go:nosplit
 func (self class) IsAbsorbent() bool { //gd:PhysicsMaterial.is_absorbent
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsMaterial.Bind_is_absorbent), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_absorbent, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -213,7 +250,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicsMaterial", func(ptr gd.Object) any {
-		return [1]gdclass.PhysicsMaterial{*(*gdclass.PhysicsMaterial)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("PhysicsMaterial", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

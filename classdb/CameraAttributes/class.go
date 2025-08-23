@@ -74,6 +74,31 @@ This is a pure virtual class that is inherited by [CameraAttributesPhysical] and
 */
 type Instance [1]gdclass.CameraAttributes
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_exposure_multiplier   gdextension.MethodForClass `hash:"373806689"`
+	get_exposure_multiplier   gdextension.MethodForClass `hash:"1740695150"`
+	set_exposure_sensitivity  gdextension.MethodForClass `hash:"373806689"`
+	get_exposure_sensitivity  gdextension.MethodForClass `hash:"1740695150"`
+	set_auto_exposure_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_auto_exposure_enabled  gdextension.MethodForClass `hash:"36873697"`
+	set_auto_exposure_speed   gdextension.MethodForClass `hash:"373806689"`
+	get_auto_exposure_speed   gdextension.MethodForClass `hash:"1740695150"`
+	set_auto_exposure_scale   gdextension.MethodForClass `hash:"373806689"`
+	get_auto_exposure_scale   gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("CameraAttributes")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +114,20 @@ type Advanced = class
 type class [1]gdclass.CameraAttributes
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CameraAttributes)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CameraAttributes)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +137,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CameraAttributes"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.CameraAttributes)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -147,60 +186,60 @@ func (self Instance) SetAutoExposureSpeed(value Float.X) {
 
 //go:nosplit
 func (self class) SetExposureMultiplier(multiplier float64) { //gd:CameraAttributes.set_exposure_multiplier
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributes.Bind_set_exposure_multiplier), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ multiplier float64 }{multiplier}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exposure_multiplier, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ multiplier float64 }{multiplier}))
 }
 
 //go:nosplit
 func (self class) GetExposureMultiplier() float64 { //gd:CameraAttributes.get_exposure_multiplier
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributes.Bind_get_exposure_multiplier), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_exposure_multiplier, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExposureSensitivity(sensitivity float64) { //gd:CameraAttributes.set_exposure_sensitivity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributes.Bind_set_exposure_sensitivity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sensitivity float64 }{sensitivity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exposure_sensitivity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sensitivity float64 }{sensitivity}))
 }
 
 //go:nosplit
 func (self class) GetExposureSensitivity() float64 { //gd:CameraAttributes.get_exposure_sensitivity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributes.Bind_get_exposure_sensitivity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_exposure_sensitivity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureEnabled(enabled bool) { //gd:CameraAttributes.set_auto_exposure_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributes.Bind_set_auto_exposure_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsAutoExposureEnabled() bool { //gd:CameraAttributes.is_auto_exposure_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributes.Bind_is_auto_exposure_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_exposure_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureSpeed(exposure_speed float64) { //gd:CameraAttributes.set_auto_exposure_speed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributes.Bind_set_auto_exposure_speed), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ exposure_speed float64 }{exposure_speed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_speed, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ exposure_speed float64 }{exposure_speed}))
 }
 
 //go:nosplit
 func (self class) GetAutoExposureSpeed() float64 { //gd:CameraAttributes.get_auto_exposure_speed
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributes.Bind_get_auto_exposure_speed), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_speed, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureScale(exposure_grey float64) { //gd:CameraAttributes.set_auto_exposure_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributes.Bind_set_auto_exposure_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ exposure_grey float64 }{exposure_grey}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ exposure_grey float64 }{exposure_grey}))
 }
 
 //go:nosplit
 func (self class) GetAutoExposureScale() float64 { //gd:CameraAttributes.get_auto_exposure_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributes.Bind_get_auto_exposure_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -236,7 +275,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CameraAttributes", func(ptr gd.Object) any {
-		return [1]gdclass.CameraAttributes{*(*gdclass.CameraAttributes)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("CameraAttributes", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

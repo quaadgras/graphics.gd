@@ -75,6 +75,30 @@ Unlike [AudioEffectRecord], this effect only returns the raw audio samples inste
 */
 type Instance [1]gdclass.AudioEffectCapture
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	can_get_buffer           gdextension.MethodForClass `hash:"1116898809"`
+	get_buffer               gdextension.MethodForClass `hash:"2649534757"`
+	clear_buffer             gdextension.MethodForClass `hash:"3218959716"`
+	set_buffer_length        gdextension.MethodForClass `hash:"373806689"`
+	get_buffer_length        gdextension.MethodForClass `hash:"191475506"`
+	get_frames_available     gdextension.MethodForClass `hash:"3905245786"`
+	get_discarded_frames     gdextension.MethodForClass `hash:"3905245786"`
+	get_buffer_length_frames gdextension.MethodForClass `hash:"3905245786"`
+	get_pushed_frames        gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioEffectCapture")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -142,6 +166,20 @@ type Advanced = class
 type class [1]gdclass.AudioEffectCapture
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectCapture)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectCapture)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -151,7 +189,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioEffectCapture"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioEffectCapture)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -171,7 +209,7 @@ Returns [code]true[/code] if at least [param frames] audio frames are available 
 */
 //go:nosplit
 func (self class) CanGetBuffer(frames int64) bool { //gd:AudioEffectCapture.can_get_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCapture.Bind_can_get_buffer), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_get_buffer, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
 	var ret = r_ret
 	return ret
 }
@@ -183,7 +221,7 @@ The samples are signed floating-point PCM between [code]-1[/code] and [code]1[/c
 */
 //go:nosplit
 func (self class) GetBuffer(frames int64) Packed.Array[Vector2.XY] { //gd:AudioEffectCapture.get_buffer
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCapture.Bind_get_buffer), gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_buffer, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -194,17 +232,17 @@ Clears the internal ring buffer.
 */
 //go:nosplit
 func (self class) ClearBuffer() { //gd:AudioEffectCapture.clear_buffer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCapture.Bind_clear_buffer), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_buffer, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetBufferLength(buffer_length_seconds float64) { //gd:AudioEffectCapture.set_buffer_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCapture.Bind_set_buffer_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ buffer_length_seconds float64 }{buffer_length_seconds}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ buffer_length_seconds float64 }{buffer_length_seconds}))
 }
 
 //go:nosplit
 func (self class) GetBufferLength() float64 { //gd:AudioEffectCapture.get_buffer_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCapture.Bind_get_buffer_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_buffer_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -214,7 +252,7 @@ Returns the number of frames available to read using [method get_buffer].
 */
 //go:nosplit
 func (self class) GetFramesAvailable() int64 { //gd:AudioEffectCapture.get_frames_available
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCapture.Bind_get_frames_available), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames_available, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -224,7 +262,7 @@ Returns the number of audio frames discarded from the audio bus due to full buff
 */
 //go:nosplit
 func (self class) GetDiscardedFrames() int64 { //gd:AudioEffectCapture.get_discarded_frames
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCapture.Bind_get_discarded_frames), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_discarded_frames, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -234,7 +272,7 @@ Returns the total size of the internal ring buffer in frames.
 */
 //go:nosplit
 func (self class) GetBufferLengthFrames() int64 { //gd:AudioEffectCapture.get_buffer_length_frames
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCapture.Bind_get_buffer_length_frames), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_buffer_length_frames, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -244,7 +282,7 @@ Returns the number of audio frames inserted from the audio bus.
 */
 //go:nosplit
 func (self class) GetPushedFrames() int64 { //gd:AudioEffectCapture.get_pushed_frames
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectCapture.Bind_get_pushed_frames), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_pushed_frames, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -287,7 +325,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioEffectCapture", func(ptr gd.Object) any {
-		return [1]gdclass.AudioEffectCapture{*(*gdclass.AudioEffectCapture)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioEffectCapture", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -84,6 +84,79 @@ If you need to override the default physics behavior, you can write a custom for
 */
 type Instance [1]gdclass.RigidBody2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_mass                                gdextension.MethodForClass `hash:"373806689"`
+	get_mass                                gdextension.MethodForClass `hash:"1740695150"`
+	get_inertia                             gdextension.MethodForClass `hash:"1740695150"`
+	set_inertia                             gdextension.MethodForClass `hash:"373806689"`
+	set_center_of_mass_mode                 gdextension.MethodForClass `hash:"1757235706"`
+	get_center_of_mass_mode                 gdextension.MethodForClass `hash:"3277132817"`
+	set_center_of_mass                      gdextension.MethodForClass `hash:"743155724"`
+	get_center_of_mass                      gdextension.MethodForClass `hash:"3341600327"`
+	set_physics_material_override           gdextension.MethodForClass `hash:"1784508650"`
+	get_physics_material_override           gdextension.MethodForClass `hash:"2521850424"`
+	set_gravity_scale                       gdextension.MethodForClass `hash:"373806689"`
+	get_gravity_scale                       gdextension.MethodForClass `hash:"1740695150"`
+	set_linear_damp_mode                    gdextension.MethodForClass `hash:"3406533708"`
+	get_linear_damp_mode                    gdextension.MethodForClass `hash:"2970511462"`
+	set_angular_damp_mode                   gdextension.MethodForClass `hash:"3406533708"`
+	get_angular_damp_mode                   gdextension.MethodForClass `hash:"2970511462"`
+	set_linear_damp                         gdextension.MethodForClass `hash:"373806689"`
+	get_linear_damp                         gdextension.MethodForClass `hash:"1740695150"`
+	set_angular_damp                        gdextension.MethodForClass `hash:"373806689"`
+	get_angular_damp                        gdextension.MethodForClass `hash:"1740695150"`
+	set_linear_velocity                     gdextension.MethodForClass `hash:"743155724"`
+	get_linear_velocity                     gdextension.MethodForClass `hash:"3341600327"`
+	set_angular_velocity                    gdextension.MethodForClass `hash:"373806689"`
+	get_angular_velocity                    gdextension.MethodForClass `hash:"1740695150"`
+	set_max_contacts_reported               gdextension.MethodForClass `hash:"1286410249"`
+	get_max_contacts_reported               gdextension.MethodForClass `hash:"3905245786"`
+	get_contact_count                       gdextension.MethodForClass `hash:"3905245786"`
+	set_use_custom_integrator               gdextension.MethodForClass `hash:"2586408642"`
+	is_using_custom_integrator              gdextension.MethodForClass `hash:"2240911060"`
+	set_contact_monitor                     gdextension.MethodForClass `hash:"2586408642"`
+	is_contact_monitor_enabled              gdextension.MethodForClass `hash:"36873697"`
+	set_continuous_collision_detection_mode gdextension.MethodForClass `hash:"1000241384"`
+	get_continuous_collision_detection_mode gdextension.MethodForClass `hash:"815214376"`
+	set_axis_velocity                       gdextension.MethodForClass `hash:"743155724"`
+	apply_central_impulse                   gdextension.MethodForClass `hash:"3862383994"`
+	apply_impulse                           gdextension.MethodForClass `hash:"4288681949"`
+	apply_torque_impulse                    gdextension.MethodForClass `hash:"373806689"`
+	apply_central_force                     gdextension.MethodForClass `hash:"743155724"`
+	apply_force                             gdextension.MethodForClass `hash:"4288681949"`
+	apply_torque                            gdextension.MethodForClass `hash:"373806689"`
+	add_constant_central_force              gdextension.MethodForClass `hash:"743155724"`
+	add_constant_force                      gdextension.MethodForClass `hash:"4288681949"`
+	add_constant_torque                     gdextension.MethodForClass `hash:"373806689"`
+	set_constant_force                      gdextension.MethodForClass `hash:"743155724"`
+	get_constant_force                      gdextension.MethodForClass `hash:"3341600327"`
+	set_constant_torque                     gdextension.MethodForClass `hash:"373806689"`
+	get_constant_torque                     gdextension.MethodForClass `hash:"1740695150"`
+	set_sleeping                            gdextension.MethodForClass `hash:"2586408642"`
+	is_sleeping                             gdextension.MethodForClass `hash:"36873697"`
+	set_can_sleep                           gdextension.MethodForClass `hash:"2586408642"`
+	is_able_to_sleep                        gdextension.MethodForClass `hash:"36873697"`
+	set_lock_rotation_enabled               gdextension.MethodForClass `hash:"2586408642"`
+	is_lock_rotation_enabled                gdextension.MethodForClass `hash:"36873697"`
+	set_freeze_enabled                      gdextension.MethodForClass `hash:"2586408642"`
+	is_freeze_enabled                       gdextension.MethodForClass `hash:"36873697"`
+	set_freeze_mode                         gdextension.MethodForClass `hash:"1705112154"`
+	get_freeze_mode                         gdextension.MethodForClass `hash:"2016872314"`
+	get_colliding_bodies                    gdextension.MethodForClass `hash:"3995934104"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("RigidBody2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.RigidBody2D
@@ -256,6 +329,20 @@ type Advanced = class
 type class [1]gdclass.RigidBody2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RigidBody2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RigidBody2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -265,7 +352,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RigidBody2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RigidBody2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -470,156 +557,156 @@ func (class) _integrate_forces(impl func(ptr unsafe.Pointer, state [1]gdclass.Ph
 
 //go:nosplit
 func (self class) SetMass(mass float64) { //gd:RigidBody2D.set_mass
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_mass), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mass float64 }{mass}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mass, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mass float64 }{mass}))
 }
 
 //go:nosplit
 func (self class) GetMass() float64 { //gd:RigidBody2D.get_mass
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_mass), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetInertia() float64 { //gd:RigidBody2D.get_inertia
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_inertia), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inertia, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInertia(inertia float64) { //gd:RigidBody2D.set_inertia
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_inertia), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ inertia float64 }{inertia}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ inertia float64 }{inertia}))
 }
 
 //go:nosplit
 func (self class) SetCenterOfMassMode(mode CenterOfMassMode) { //gd:RigidBody2D.set_center_of_mass_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_center_of_mass_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode CenterOfMassMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_of_mass_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode CenterOfMassMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetCenterOfMassMode() CenterOfMassMode { //gd:RigidBody2D.get_center_of_mass_mode
-	var r_ret = gdextension.Call[CenterOfMassMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_center_of_mass_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[CenterOfMassMode](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCenterOfMass(center_of_mass Vector2.XY) { //gd:RigidBody2D.set_center_of_mass
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_center_of_mass), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ center_of_mass Vector2.XY }{center_of_mass}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_of_mass, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ center_of_mass Vector2.XY }{center_of_mass}))
 }
 
 //go:nosplit
 func (self class) GetCenterOfMass() Vector2.XY { //gd:RigidBody2D.get_center_of_mass
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_center_of_mass), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclass.PhysicsMaterial) { //gd:RigidBody2D.set_physics_material_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_physics_material_override), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(physics_material_override[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material_override, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(physics_material_override[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial { //gd:RigidBody2D.get_physics_material_override
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_physics_material_override), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material_override, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGravityScale(gravity_scale float64) { //gd:RigidBody2D.set_gravity_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_gravity_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gravity_scale float64 }{gravity_scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gravity_scale float64 }{gravity_scale}))
 }
 
 //go:nosplit
 func (self class) GetGravityScale() float64 { //gd:RigidBody2D.get_gravity_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_gravity_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gravity_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearDampMode(linear_damp_mode DampMode) { //gd:RigidBody2D.set_linear_damp_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_linear_damp_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ linear_damp_mode DampMode }{linear_damp_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ linear_damp_mode DampMode }{linear_damp_mode}))
 }
 
 //go:nosplit
 func (self class) GetLinearDampMode() DampMode { //gd:RigidBody2D.get_linear_damp_mode
-	var r_ret = gdextension.Call[DampMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_linear_damp_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularDampMode(angular_damp_mode DampMode) { //gd:RigidBody2D.set_angular_damp_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_angular_damp_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ angular_damp_mode DampMode }{angular_damp_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ angular_damp_mode DampMode }{angular_damp_mode}))
 }
 
 //go:nosplit
 func (self class) GetAngularDampMode() DampMode { //gd:RigidBody2D.get_angular_damp_mode
-	var r_ret = gdextension.Call[DampMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_angular_damp_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DampMode](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearDamp(linear_damp float64) { //gd:RigidBody2D.set_linear_damp
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_linear_damp), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ linear_damp float64 }{linear_damp}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_damp, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ linear_damp float64 }{linear_damp}))
 }
 
 //go:nosplit
 func (self class) GetLinearDamp() float64 { //gd:RigidBody2D.get_linear_damp
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_linear_damp), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_damp, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularDamp(angular_damp float64) { //gd:RigidBody2D.set_angular_damp
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_angular_damp), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angular_damp float64 }{angular_damp}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_damp, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angular_damp float64 }{angular_damp}))
 }
 
 //go:nosplit
 func (self class) GetAngularDamp() float64 { //gd:RigidBody2D.get_angular_damp
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_angular_damp), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_damp, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearVelocity(linear_velocity Vector2.XY) { //gd:RigidBody2D.set_linear_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_linear_velocity), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ linear_velocity Vector2.XY }{linear_velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ linear_velocity Vector2.XY }{linear_velocity}))
 }
 
 //go:nosplit
 func (self class) GetLinearVelocity() Vector2.XY { //gd:RigidBody2D.get_linear_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_linear_velocity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularVelocity(angular_velocity float64) { //gd:RigidBody2D.set_angular_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_angular_velocity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angular_velocity float64 }{angular_velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angular_velocity float64 }{angular_velocity}))
 }
 
 //go:nosplit
 func (self class) GetAngularVelocity() float64 { //gd:RigidBody2D.get_angular_velocity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_angular_velocity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxContactsReported(amount int64) { //gd:RigidBody2D.set_max_contacts_reported
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_max_contacts_reported), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_contacts_reported, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetMaxContactsReported() int64 { //gd:RigidBody2D.get_max_contacts_reported
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_max_contacts_reported), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_contacts_reported, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -630,43 +717,43 @@ Returns the number of contacts this body has with other bodies. By default, this
 */
 //go:nosplit
 func (self class) GetContactCount() int64 { //gd:RigidBody2D.get_contact_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_contact_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseCustomIntegrator(enable bool) { //gd:RigidBody2D.set_use_custom_integrator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_use_custom_integrator), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_custom_integrator, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingCustomIntegrator() bool { //gd:RigidBody2D.is_using_custom_integrator
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_is_using_custom_integrator), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_integrator, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetContactMonitor(enabled bool) { //gd:RigidBody2D.set_contact_monitor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_contact_monitor), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_contact_monitor, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsContactMonitorEnabled() bool { //gd:RigidBody2D.is_contact_monitor_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_is_contact_monitor_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_contact_monitor_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetContinuousCollisionDetectionMode(mode CCDMode) { //gd:RigidBody2D.set_continuous_collision_detection_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_continuous_collision_detection_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode CCDMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_continuous_collision_detection_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode CCDMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetContinuousCollisionDetectionMode() CCDMode { //gd:RigidBody2D.get_continuous_collision_detection_mode
-	var r_ret = gdextension.Call[CCDMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_continuous_collision_detection_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[CCDMode](gd.ObjectChecked(self.AsObject()), methods.get_continuous_collision_detection_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -676,7 +763,7 @@ Sets the body's velocity on the given axis. The velocity in the given vector axi
 */
 //go:nosplit
 func (self class) SetAxisVelocity(axis_velocity Vector2.XY) { //gd:RigidBody2D.set_axis_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_axis_velocity), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ axis_velocity Vector2.XY }{axis_velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_velocity, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ axis_velocity Vector2.XY }{axis_velocity}))
 }
 
 /*
@@ -686,7 +773,7 @@ This is equivalent to using [method apply_impulse] at the body's center of mass.
 */
 //go:nosplit
 func (self class) ApplyCentralImpulse(impulse Vector2.XY) { //gd:RigidBody2D.apply_central_impulse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_apply_central_impulse), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ impulse Vector2.XY }{impulse}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_impulse, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ impulse Vector2.XY }{impulse}))
 }
 
 /*
@@ -696,7 +783,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) ApplyImpulse(impulse Vector2.XY, position Vector2.XY) { //gd:RigidBody2D.apply_impulse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_apply_impulse), 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_impulse, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		impulse  Vector2.XY
 		position Vector2.XY
 	}{impulse, position}))
@@ -709,7 +796,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) ApplyTorqueImpulse(torque float64) { //gd:RigidBody2D.apply_torque_impulse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_apply_torque_impulse), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ torque float64 }{torque}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_torque_impulse, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ torque float64 }{torque}))
 }
 
 /*
@@ -718,7 +805,7 @@ This is equivalent to using [method apply_force] at the body's center of mass.
 */
 //go:nosplit
 func (self class) ApplyCentralForce(force Vector2.XY) { //gd:RigidBody2D.apply_central_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_apply_central_force), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ force Vector2.XY }{force}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_force, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ force Vector2.XY }{force}))
 }
 
 /*
@@ -727,7 +814,7 @@ Applies a positioned force to the body. A force is time dependent and meant to b
 */
 //go:nosplit
 func (self class) ApplyForce(force Vector2.XY, position Vector2.XY) { //gd:RigidBody2D.apply_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_apply_force), 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_force, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		force    Vector2.XY
 		position Vector2.XY
 	}{force, position}))
@@ -739,7 +826,7 @@ Applies a rotational force without affecting position. A force is time dependent
 */
 //go:nosplit
 func (self class) ApplyTorque(torque float64) { //gd:RigidBody2D.apply_torque
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_apply_torque), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ torque float64 }{torque}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_torque, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ torque float64 }{torque}))
 }
 
 /*
@@ -748,7 +835,7 @@ This is equivalent to using [method add_constant_force] at the body's center of 
 */
 //go:nosplit
 func (self class) AddConstantCentralForce(force Vector2.XY) { //gd:RigidBody2D.add_constant_central_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_add_constant_central_force), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ force Vector2.XY }{force}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_central_force, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ force Vector2.XY }{force}))
 }
 
 /*
@@ -757,7 +844,7 @@ Adds a constant positioned force to the body that keeps being applied over time 
 */
 //go:nosplit
 func (self class) AddConstantForce(force Vector2.XY, position Vector2.XY) { //gd:RigidBody2D.add_constant_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_add_constant_force), 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_force, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		force    Vector2.XY
 		position Vector2.XY
 	}{force, position}))
@@ -768,89 +855,89 @@ Adds a constant rotational force without affecting position that keeps being app
 */
 //go:nosplit
 func (self class) AddConstantTorque(torque float64) { //gd:RigidBody2D.add_constant_torque
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_add_constant_torque), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ torque float64 }{torque}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_torque, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ torque float64 }{torque}))
 }
 
 //go:nosplit
 func (self class) SetConstantForce(force Vector2.XY) { //gd:RigidBody2D.set_constant_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_constant_force), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ force Vector2.XY }{force}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_force, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ force Vector2.XY }{force}))
 }
 
 //go:nosplit
 func (self class) GetConstantForce() Vector2.XY { //gd:RigidBody2D.get_constant_force
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_constant_force), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant_force, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetConstantTorque(torque float64) { //gd:RigidBody2D.set_constant_torque
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_constant_torque), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ torque float64 }{torque}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_torque, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ torque float64 }{torque}))
 }
 
 //go:nosplit
 func (self class) GetConstantTorque() float64 { //gd:RigidBody2D.get_constant_torque
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_constant_torque), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constant_torque, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSleeping(sleeping bool) { //gd:RigidBody2D.set_sleeping
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_sleeping), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ sleeping bool }{sleeping}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sleeping, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ sleeping bool }{sleeping}))
 }
 
 //go:nosplit
 func (self class) IsSleeping() bool { //gd:RigidBody2D.is_sleeping
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_is_sleeping), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sleeping, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCanSleep(able_to_sleep bool) { //gd:RigidBody2D.set_can_sleep
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_can_sleep), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ able_to_sleep bool }{able_to_sleep}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_can_sleep, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ able_to_sleep bool }{able_to_sleep}))
 }
 
 //go:nosplit
 func (self class) IsAbleToSleep() bool { //gd:RigidBody2D.is_able_to_sleep
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_is_able_to_sleep), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_able_to_sleep, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLockRotationEnabled(lock_rotation bool) { //gd:RigidBody2D.set_lock_rotation_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_lock_rotation_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ lock_rotation bool }{lock_rotation}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lock_rotation_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ lock_rotation bool }{lock_rotation}))
 }
 
 //go:nosplit
 func (self class) IsLockRotationEnabled() bool { //gd:RigidBody2D.is_lock_rotation_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_is_lock_rotation_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_lock_rotation_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFreezeEnabled(freeze_mode bool) { //gd:RigidBody2D.set_freeze_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_freeze_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ freeze_mode bool }{freeze_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_freeze_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ freeze_mode bool }{freeze_mode}))
 }
 
 //go:nosplit
 func (self class) IsFreezeEnabled() bool { //gd:RigidBody2D.is_freeze_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_is_freeze_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_freeze_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFreezeMode(freeze_mode FreezeMode) { //gd:RigidBody2D.set_freeze_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_set_freeze_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ freeze_mode FreezeMode }{freeze_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_freeze_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ freeze_mode FreezeMode }{freeze_mode}))
 }
 
 //go:nosplit
 func (self class) GetFreezeMode() FreezeMode { //gd:RigidBody2D.get_freeze_mode
-	var r_ret = gdextension.Call[FreezeMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_freeze_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[FreezeMode](gd.ObjectChecked(self.AsObject()), methods.get_freeze_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -861,7 +948,7 @@ Returns a list of the bodies colliding with this one. Requires [member contact_m
 */
 //go:nosplit
 func (self class) GetCollidingBodies() Array.Contains[[1]gdclass.Node2D] { //gd:RigidBody2D.get_colliding_bodies
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RigidBody2D.Bind_get_colliding_bodies), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_colliding_bodies, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -938,7 +1025,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RigidBody2D", func(ptr gd.Object) any { return [1]gdclass.RigidBody2D{*(*gdclass.RigidBody2D)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("RigidBody2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type FreezeMode int //gd:RigidBody2D.FreezeMode

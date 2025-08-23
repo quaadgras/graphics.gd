@@ -69,6 +69,32 @@ T should be the type that is embedding this [Extension]
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 type Instance [1]gdclass.GLTFSkeleton
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_joints                gdextension.MethodForClass `hash:"969006518"`
+	set_joints                gdextension.MethodForClass `hash:"3614634198"`
+	get_roots                 gdextension.MethodForClass `hash:"969006518"`
+	set_roots                 gdextension.MethodForClass `hash:"3614634198"`
+	get_godot_skeleton        gdextension.MethodForClass `hash:"1814733083"`
+	get_unique_names          gdextension.MethodForClass `hash:"2915620761"`
+	set_unique_names          gdextension.MethodForClass `hash:"381264803"`
+	get_godot_bone_node       gdextension.MethodForClass `hash:"2382534195"`
+	set_godot_bone_node       gdextension.MethodForClass `hash:"4155329257"`
+	get_bone_attachment_count gdextension.MethodForClass `hash:"2455072627"`
+	get_bone_attachment       gdextension.MethodForClass `hash:"945440495"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("GLTFSkeleton")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -94,6 +120,20 @@ type Advanced = class
 type class [1]gdclass.GLTFSkeleton
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GLTFSkeleton)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GLTFSkeleton)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -103,7 +143,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("GLTFSkeleton"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GLTFSkeleton)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -144,49 +184,49 @@ func (self Instance) SetGodotBoneNode(value map[any]any) {
 
 //go:nosplit
 func (self class) GetJoints() Packed.Array[int32] { //gd:GLTFSkeleton.get_joints
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkeleton.Bind_get_joints), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_joints, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJoints(joints Packed.Array[int32]) { //gd:GLTFSkeleton.set_joints
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkeleton.Bind_set_joints), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joints, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		joints gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](joints))}))
 }
 
 //go:nosplit
 func (self class) GetRoots() Packed.Array[int32] { //gd:GLTFSkeleton.get_roots
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkeleton.Bind_get_roots), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_roots, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRoots(roots Packed.Array[int32]) { //gd:GLTFSkeleton.set_roots
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkeleton.Bind_set_roots), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_roots, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		roots gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](roots))}))
 }
 
 //go:nosplit
 func (self class) GetGodotSkeleton() [1]gdclass.Skeleton3D { //gd:GLTFSkeleton.get_godot_skeleton
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkeleton.Bind_get_godot_skeleton), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_godot_skeleton, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Skeleton3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Skeleton3D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetUniqueNames() Array.Contains[String.Readable] { //gd:GLTFSkeleton.get_unique_names
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkeleton.Bind_get_unique_names), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_unique_names, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUniqueNames(unique_names Array.Contains[String.Readable]) { //gd:GLTFSkeleton.set_unique_names
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkeleton.Bind_set_unique_names), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ unique_names gdextension.Array }{pointers.Get(gd.InternalArray(unique_names))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unique_names, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ unique_names gdextension.Array }{pointers.Get(gd.InternalArray(unique_names))}))
 }
 
 /*
@@ -194,7 +234,7 @@ Returns a [Dictionary] that maps skeleton bone indices to the indices of glTF no
 */
 //go:nosplit
 func (self class) GetGodotBoneNode() Dictionary.Any { //gd:GLTFSkeleton.get_godot_bone_node
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkeleton.Bind_get_godot_bone_node), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_godot_bone_node, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -204,19 +244,19 @@ Sets a [Dictionary] that maps skeleton bone indices to the indices of glTF nodes
 */
 //go:nosplit
 func (self class) SetGodotBoneNode(godot_bone_node Dictionary.Any) { //gd:GLTFSkeleton.set_godot_bone_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkeleton.Bind_set_godot_bone_node), 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ godot_bone_node gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(godot_bone_node))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_bone_node, 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ godot_bone_node gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(godot_bone_node))}))
 }
 
 //go:nosplit
 func (self class) GetBoneAttachmentCount() int64 { //gd:GLTFSkeleton.get_bone_attachment_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkeleton.Bind_get_bone_attachment_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_attachment_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetBoneAttachment(idx int64) [1]gdclass.BoneAttachment3D { //gd:GLTFSkeleton.get_bone_attachment
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSkeleton.Bind_get_bone_attachment), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_bone_attachment, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = [1]gdclass.BoneAttachment3D{gd.PointerWithOwnershipTransferredToGo[gdclass.BoneAttachment3D](r_ret)}
 	return ret
 }
@@ -252,7 +292,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFSkeleton", func(ptr gd.Object) any {
-		return [1]gdclass.GLTFSkeleton{*(*gdclass.GLTFSkeleton)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("GLTFSkeleton", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

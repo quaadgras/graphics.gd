@@ -83,6 +83,25 @@ If a property has [constant PROPERTY_USAGE_SUBGROUP] usage, a subgroup will be c
 */
 type Instance [1]gdclass.EditorInspector
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	edit                        gdextension.MethodForClass `hash:"3975164845"`
+	get_selected_path           gdextension.MethodForClass `hash:"201670096"`
+	get_edited_object           gdextension.MethodForClass `hash:"2050059866"`
+	instantiate_property_editor gdextension.MethodForClass `hash:"1429914152"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorInspector")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -136,6 +155,20 @@ type Advanced = class
 type class [1]gdclass.EditorInspector
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorInspector)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorInspector)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -145,7 +178,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorInspector"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorInspector)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -157,7 +190,7 @@ Shows the properties of the given [param object] in this inspector for editing. 
 */
 //go:nosplit
 func (self class) Edit(obj [1]gd.Object) { //gd:EditorInspector.edit
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInspector.Bind_edit), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))}))
 }
 
 /*
@@ -165,7 +198,7 @@ Gets the path of the currently selected property.
 */
 //go:nosplit
 func (self class) GetSelectedPath() String.Readable { //gd:EditorInspector.get_selected_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInspector.Bind_get_selected_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_selected_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -175,7 +208,7 @@ Returns the object currently selected in this inspector.
 */
 //go:nosplit
 func (self class) GetEditedObject() [1]gd.Object { //gd:EditorInspector.get_edited_object
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorInspector.Bind_get_edited_object), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -185,7 +218,7 @@ Creates a property editor that can be used by plugin UI to edit the specified pr
 */
 //go:nosplit
 func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type, path String.Readable, hint ClassDB.PropertyHint, hint_text String.Readable, usage int64, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
-	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.EditorInspector.Bind_instantiate_property_editor), gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.instantiate_property_editor, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), unsafe.Pointer(&struct {
 		obj       gdextension.Object
 		atype     variant.Type
 		path      gdextension.String
@@ -282,7 +315,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorInspector", func(ptr gd.Object) any {
-		return [1]gdclass.EditorInspector{*(*gdclass.EditorInspector)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorInspector", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

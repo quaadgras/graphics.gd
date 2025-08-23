@@ -76,6 +76,27 @@ The [WorldEnvironment] allows the user to specify default lighting parameters (e
 */
 type Instance [1]gdclass.WorldEnvironment
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_environment       gdextension.MethodForClass `hash:"4143518816"`
+	get_environment       gdextension.MethodForClass `hash:"3082064660"`
+	set_camera_attributes gdextension.MethodForClass `hash:"2817810567"`
+	get_camera_attributes gdextension.MethodForClass `hash:"3921283215"`
+	set_compositor        gdextension.MethodForClass `hash:"1586754307"`
+	get_compositor        gdextension.MethodForClass `hash:"3647707413"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("WorldEnvironment")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -91,6 +112,20 @@ type Advanced = class
 type class [1]gdclass.WorldEnvironment
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.WorldEnvironment)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.WorldEnvironment)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -100,7 +135,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("WorldEnvironment"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.WorldEnvironment)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -132,36 +167,36 @@ func (self Instance) SetCompositor(value Compositor.Instance) {
 
 //go:nosplit
 func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:WorldEnvironment.set_environment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorldEnvironment.Bind_set_environment), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetEnvironment() [1]gdclass.Environment { //gd:WorldEnvironment.get_environment
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorldEnvironment.Bind_get_environment), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Environment{gd.PointerWithOwnershipTransferredToGo[gdclass.Environment](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) { //gd:WorldEnvironment.set_camera_attributes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorldEnvironment.Bind_set_camera_attributes), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(camera_attributes[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(camera_attributes[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:WorldEnvironment.get_camera_attributes
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorldEnvironment.Bind_get_camera_attributes), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.CameraAttributes{gd.PointerWithOwnershipTransferredToGo[gdclass.CameraAttributes](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCompositor(compositor [1]gdclass.Compositor) { //gd:WorldEnvironment.set_compositor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorldEnvironment.Bind_set_compositor), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ compositor gdextension.Object }{gdextension.Object(gd.ObjectChecked(compositor[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ compositor gdextension.Object }{gdextension.Object(gd.ObjectChecked(compositor[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetCompositor() [1]gdclass.Compositor { //gd:WorldEnvironment.get_compositor
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WorldEnvironment.Bind_get_compositor), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_compositor, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Compositor{gd.PointerWithOwnershipTransferredToGo[gdclass.Compositor](r_ret)}
 	return ret
 }
@@ -186,7 +221,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("WorldEnvironment", func(ptr gd.Object) any {
-		return [1]gdclass.WorldEnvironment{*(*gdclass.WorldEnvironment)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("WorldEnvironment", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

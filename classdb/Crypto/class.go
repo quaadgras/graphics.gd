@@ -139,6 +139,30 @@ Debug.Assert(data.ToUtf8Buffer() == decrypted);
 */
 type Instance [1]gdclass.Crypto
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	generate_random_bytes            gdextension.MethodForClass `hash:"47165747"`
+	generate_rsa                     gdextension.MethodForClass `hash:"1237515462"`
+	generate_self_signed_certificate gdextension.MethodForClass `hash:"492266173"`
+	sign                             gdextension.MethodForClass `hash:"1673662703"`
+	verify                           gdextension.MethodForClass `hash:"2805902225"`
+	encrypt                          gdextension.MethodForClass `hash:"2361793670"`
+	decrypt                          gdextension.MethodForClass `hash:"2361793670"`
+	hmac_digest                      gdextension.MethodForClass `hash:"2368951203"`
+	constant_time_compare            gdextension.MethodForClass `hash:"1024142237"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Crypto")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Crypto
@@ -264,6 +288,20 @@ type Advanced = class
 type class [1]gdclass.Crypto
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Crypto)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Crypto)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -273,7 +311,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Crypto"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Crypto)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -285,7 +323,7 @@ Generates a [PackedByteArray] of cryptographically secure random bytes with give
 */
 //go:nosplit
 func (self class) GenerateRandomBytes(size int64) Packed.Bytes { //gd:Crypto.generate_random_bytes
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Crypto.Bind_generate_random_bytes), gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_random_bytes, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -295,7 +333,7 @@ Generates an RSA [CryptoKey] that can be used for creating self-signed certifica
 */
 //go:nosplit
 func (self class) GenerateRsa(size int64) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Crypto.Bind_generate_rsa), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_rsa, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ size int64 }{size}))
 	var ret = [1]gdclass.CryptoKey{gd.PointerWithOwnershipTransferredToGo[gdclass.CryptoKey](r_ret)}
 	return ret
 }
@@ -322,7 +360,7 @@ X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.co
 */
 //go:nosplit
 func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer_name String.Readable, not_before String.Readable, not_after String.Readable) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Crypto.Bind_generate_self_signed_certificate), gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_self_signed_certificate, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
 		key         gdextension.Object
 		issuer_name gdextension.String
 		not_before  gdextension.String
@@ -337,7 +375,7 @@ Sign a given [param hash] of type [param hash_type] with the provided private [p
 */
 //go:nosplit
 func (self class) Sign(hash_type HashingContext.HashType, hash Packed.Bytes, key [1]gdclass.CryptoKey) Packed.Bytes { //gd:Crypto.sign
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Crypto.Bind_sign), gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.sign, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
 		hash_type HashingContext.HashType
 		hash      gdextension.PackedArray[byte]
 		key       gdextension.Object
@@ -351,7 +389,7 @@ Verify that a given [param signature] for [param hash] of type [param hash_type]
 */
 //go:nosplit
 func (self class) Verify(hash_type HashingContext.HashType, hash Packed.Bytes, signature Packed.Bytes, key [1]gdclass.CryptoKey) bool { //gd:Crypto.verify
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Crypto.Bind_verify), gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeObject<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.verify, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeObject<<16), unsafe.Pointer(&struct {
 		hash_type HashingContext.HashType
 		hash      gdextension.PackedArray[byte]
 		signature gdextension.PackedArray[byte]
@@ -367,7 +405,7 @@ Encrypt the given [param plaintext] with the provided public [param key].
 */
 //go:nosplit
 func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext Packed.Bytes) Packed.Bytes { //gd:Crypto.encrypt
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Crypto.Bind_encrypt), gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.encrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		key       gdextension.Object
 		plaintext gdextension.PackedArray[byte]
 	}{gdextension.Object(gd.ObjectChecked(key[0].AsObject())), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](plaintext)))}))
@@ -381,7 +419,7 @@ Decrypt the given [param ciphertext] with the provided private [param key].
 */
 //go:nosplit
 func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext Packed.Bytes) Packed.Bytes { //gd:Crypto.decrypt
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Crypto.Bind_decrypt), gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.decrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		key        gdextension.Object
 		ciphertext gdextension.PackedArray[byte]
 	}{gdextension.Object(gd.ObjectChecked(key[0].AsObject())), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ciphertext)))}))
@@ -395,7 +433,7 @@ Currently, only [constant HashingContext.HASH_SHA256] and [constant HashingConte
 */
 //go:nosplit
 func (self class) HmacDigest(hash_type HashingContext.HashType, key Packed.Bytes, msg Packed.Bytes) Packed.Bytes { //gd:Crypto.hmac_digest
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Crypto.Bind_hmac_digest), gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.hmac_digest, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
 		hash_type HashingContext.HashType
 		key       gdextension.PackedArray[byte]
 		msg       gdextension.PackedArray[byte]
@@ -410,7 +448,7 @@ See [url=https://paragonie.com/blog/2015/11/preventing-timing-attacks-on-string-
 */
 //go:nosplit
 func (self class) ConstantTimeCompare(trusted Packed.Bytes, received Packed.Bytes) bool { //gd:Crypto.constant_time_compare
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Crypto.Bind_constant_time_compare), gdextension.SizeBool|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.constant_time_compare, gdextension.SizeBool|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		trusted  gdextension.PackedArray[byte]
 		received gdextension.PackedArray[byte]
 	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](trusted))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](received)))}))
@@ -442,5 +480,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Crypto", func(ptr gd.Object) any { return [1]gdclass.Crypto{*(*gdclass.Crypto)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Crypto", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -75,6 +75,55 @@ This modification is useful for adding additional motion to things like hair, th
 */
 type Instance [1]gdclass.SkeletonModification2DJiggle
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_target_node              gdextension.MethodForClass `hash:"1348162250"`
+	get_target_node              gdextension.MethodForClass `hash:"4075236667"`
+	set_jiggle_data_chain_length gdextension.MethodForClass `hash:"1286410249"`
+	get_jiggle_data_chain_length gdextension.MethodForClass `hash:"2455072627"`
+	set_stiffness                gdextension.MethodForClass `hash:"373806689"`
+	get_stiffness                gdextension.MethodForClass `hash:"1740695150"`
+	set_mass                     gdextension.MethodForClass `hash:"373806689"`
+	get_mass                     gdextension.MethodForClass `hash:"1740695150"`
+	set_damping                  gdextension.MethodForClass `hash:"373806689"`
+	get_damping                  gdextension.MethodForClass `hash:"1740695150"`
+	set_use_gravity              gdextension.MethodForClass `hash:"2586408642"`
+	get_use_gravity              gdextension.MethodForClass `hash:"36873697"`
+	set_gravity                  gdextension.MethodForClass `hash:"743155724"`
+	get_gravity                  gdextension.MethodForClass `hash:"3341600327"`
+	set_use_colliders            gdextension.MethodForClass `hash:"2586408642"`
+	get_use_colliders            gdextension.MethodForClass `hash:"36873697"`
+	set_collision_mask           gdextension.MethodForClass `hash:"1286410249"`
+	get_collision_mask           gdextension.MethodForClass `hash:"3905245786"`
+	set_jiggle_joint_bone2d_node gdextension.MethodForClass `hash:"2761262315"`
+	get_jiggle_joint_bone2d_node gdextension.MethodForClass `hash:"408788394"`
+	set_jiggle_joint_bone_index  gdextension.MethodForClass `hash:"3937882851"`
+	get_jiggle_joint_bone_index  gdextension.MethodForClass `hash:"923996154"`
+	set_jiggle_joint_override    gdextension.MethodForClass `hash:"300928843"`
+	get_jiggle_joint_override    gdextension.MethodForClass `hash:"1116898809"`
+	set_jiggle_joint_stiffness   gdextension.MethodForClass `hash:"1602489585"`
+	get_jiggle_joint_stiffness   gdextension.MethodForClass `hash:"2339986948"`
+	set_jiggle_joint_mass        gdextension.MethodForClass `hash:"1602489585"`
+	get_jiggle_joint_mass        gdextension.MethodForClass `hash:"2339986948"`
+	set_jiggle_joint_damping     gdextension.MethodForClass `hash:"1602489585"`
+	get_jiggle_joint_damping     gdextension.MethodForClass `hash:"2339986948"`
+	set_jiggle_joint_use_gravity gdextension.MethodForClass `hash:"300928843"`
+	get_jiggle_joint_use_gravity gdextension.MethodForClass `hash:"1116898809"`
+	set_jiggle_joint_gravity     gdextension.MethodForClass `hash:"163021252"`
+	get_jiggle_joint_gravity     gdextension.MethodForClass `hash:"2299179447"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("SkeletonModification2DJiggle")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -230,6 +279,20 @@ type Advanced = class
 type class [1]gdclass.SkeletonModification2DJiggle
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SkeletonModification2DJiggle)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SkeletonModification2DJiggle)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -239,7 +302,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SkeletonModification2DJiggle"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SkeletonModification2DJiggle)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -304,84 +367,84 @@ func (self Instance) SetGravity(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModification2DJiggle.set_target_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_target_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_nodepath))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_node, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ target_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_nodepath))}))
 }
 
 //go:nosplit
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DJiggle.get_target_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_target_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJiggleDataChainLength(length int64) { //gd:SkeletonModification2DJiggle.set_jiggle_data_chain_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_jiggle_data_chain_length), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ length int64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_jiggle_data_chain_length, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ length int64 }{length}))
 }
 
 //go:nosplit
 func (self class) GetJiggleDataChainLength() int64 { //gd:SkeletonModification2DJiggle.get_jiggle_data_chain_length
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_data_chain_length), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_jiggle_data_chain_length, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStiffness(stiffness float64) { //gd:SkeletonModification2DJiggle.set_stiffness
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_stiffness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ stiffness float64 }{stiffness}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stiffness, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ stiffness float64 }{stiffness}))
 }
 
 //go:nosplit
 func (self class) GetStiffness() float64 { //gd:SkeletonModification2DJiggle.get_stiffness
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_stiffness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stiffness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMass(mass float64) { //gd:SkeletonModification2DJiggle.set_mass
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_mass), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mass float64 }{mass}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mass, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mass float64 }{mass}))
 }
 
 //go:nosplit
 func (self class) GetMass() float64 { //gd:SkeletonModification2DJiggle.get_mass
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_mass), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDamping(damping float64) { //gd:SkeletonModification2DJiggle.set_damping
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_damping), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ damping float64 }{damping}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ damping float64 }{damping}))
 }
 
 //go:nosplit
 func (self class) GetDamping() float64 { //gd:SkeletonModification2DJiggle.get_damping
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_damping), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseGravity(use_gravity bool) { //gd:SkeletonModification2DJiggle.set_use_gravity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_use_gravity), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_gravity bool }{use_gravity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_gravity, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_gravity bool }{use_gravity}))
 }
 
 //go:nosplit
 func (self class) GetUseGravity() bool { //gd:SkeletonModification2DJiggle.get_use_gravity
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_use_gravity), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_gravity, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGravity(gravity Vector2.XY) { //gd:SkeletonModification2DJiggle.set_gravity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_gravity), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ gravity Vector2.XY }{gravity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ gravity Vector2.XY }{gravity}))
 }
 
 //go:nosplit
 func (self class) GetGravity() Vector2.XY { //gd:SkeletonModification2DJiggle.get_gravity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_gravity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -391,7 +454,7 @@ If [code]true[/code], the Jiggle modifier will take colliders into account, keep
 */
 //go:nosplit
 func (self class) SetUseColliders(use_colliders bool) { //gd:SkeletonModification2DJiggle.set_use_colliders
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_use_colliders), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_colliders bool }{use_colliders}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_colliders, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_colliders bool }{use_colliders}))
 }
 
 /*
@@ -399,7 +462,7 @@ Returns whether the jiggle modifier is taking physics colliders into account whe
 */
 //go:nosplit
 func (self class) GetUseColliders() bool { //gd:SkeletonModification2DJiggle.get_use_colliders
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_use_colliders), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_colliders, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -409,7 +472,7 @@ Sets the collision mask that the Jiggle modifier will use when reacting to colli
 */
 //go:nosplit
 func (self class) SetCollisionMask(collision_mask int64) { //gd:SkeletonModification2DJiggle.set_collision_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_collision_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_mask int64 }{collision_mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_mask int64 }{collision_mask}))
 }
 
 /*
@@ -417,7 +480,7 @@ Returns the collision mask used by the Jiggle modifier when collisions are enabl
 */
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:SkeletonModification2DJiggle.get_collision_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_collision_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -427,7 +490,7 @@ Sets the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetJiggleJointBone2dNode(joint_idx int64, bone2d_node Path.ToNode) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_jiggle_joint_bone2d_node), 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_jiggle_joint_bone2d_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
 		joint_idx   int64
 		bone2d_node gdextension.NodePath
 	}{joint_idx, pointers.Get(gd.InternalNodePath(bone2d_node))}))
@@ -438,7 +501,7 @@ Returns the [Bone2D] node assigned to the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) GetJiggleJointBone2dNode(joint_idx int64) Path.ToNode { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone2d_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_bone2d_node), gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_jiggle_joint_bone2d_node, gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -448,7 +511,7 @@ Sets the bone index, [param bone_idx], of the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetJiggleJointBoneIndex(joint_idx int64, bone_idx int64) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_jiggle_joint_bone_index), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_jiggle_joint_bone_index, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		joint_idx int64
 		bone_idx  int64
 	}{joint_idx, bone_idx}))
@@ -459,7 +522,7 @@ Returns the index of the [Bone2D] node assigned to the Jiggle joint at [param jo
 */
 //go:nosplit
 func (self class) GetJiggleJointBoneIndex(joint_idx int64) int64 { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_bone_index), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_jiggle_joint_bone_index, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -469,7 +532,7 @@ Sets whether the Jiggle joint at [param joint_idx] should override the default J
 */
 //go:nosplit
 func (self class) SetJiggleJointOverride(joint_idx int64, override bool) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_jiggle_joint_override), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_jiggle_joint_override, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		joint_idx int64
 		override  bool
 	}{joint_idx, override}))
@@ -480,7 +543,7 @@ Returns a boolean that indicates whether the joint at [param joint_idx] is overr
 */
 //go:nosplit
 func (self class) GetJiggleJointOverride(joint_idx int64) bool { //gd:SkeletonModification2DJiggle.get_jiggle_joint_override
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_override), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_jiggle_joint_override, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -490,7 +553,7 @@ Sets the of stiffness of the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetJiggleJointStiffness(joint_idx int64, stiffness float64) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_stiffness
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_jiggle_joint_stiffness), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_jiggle_joint_stiffness, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		joint_idx int64
 		stiffness float64
 	}{joint_idx, stiffness}))
@@ -501,7 +564,7 @@ Returns the stiffness of the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) GetJiggleJointStiffness(joint_idx int64) float64 { //gd:SkeletonModification2DJiggle.get_jiggle_joint_stiffness
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_stiffness), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_jiggle_joint_stiffness, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -511,7 +574,7 @@ Sets the of mass of the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetJiggleJointMass(joint_idx int64, mass float64) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_mass
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_jiggle_joint_mass), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_jiggle_joint_mass, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		joint_idx int64
 		mass      float64
 	}{joint_idx, mass}))
@@ -522,7 +585,7 @@ Returns the amount of mass of the jiggle joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) GetJiggleJointMass(joint_idx int64) float64 { //gd:SkeletonModification2DJiggle.get_jiggle_joint_mass
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_mass), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_jiggle_joint_mass, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -532,7 +595,7 @@ Sets the amount of damping of the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetJiggleJointDamping(joint_idx int64, damping float64) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_damping
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_jiggle_joint_damping), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_jiggle_joint_damping, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		joint_idx int64
 		damping   float64
 	}{joint_idx, damping}))
@@ -543,7 +606,7 @@ Returns the amount of damping of the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) GetJiggleJointDamping(joint_idx int64) float64 { //gd:SkeletonModification2DJiggle.get_jiggle_joint_damping
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_damping), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_jiggle_joint_damping, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -553,7 +616,7 @@ Sets whether the Jiggle joint at [param joint_idx] should use gravity.
 */
 //go:nosplit
 func (self class) SetJiggleJointUseGravity(joint_idx int64, use_gravity bool) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_use_gravity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_jiggle_joint_use_gravity), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_jiggle_joint_use_gravity, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		joint_idx   int64
 		use_gravity bool
 	}{joint_idx, use_gravity}))
@@ -564,7 +627,7 @@ Returns a boolean that indicates whether the joint at [param joint_idx] is using
 */
 //go:nosplit
 func (self class) GetJiggleJointUseGravity(joint_idx int64) bool { //gd:SkeletonModification2DJiggle.get_jiggle_joint_use_gravity
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_use_gravity), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_jiggle_joint_use_gravity, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -574,7 +637,7 @@ Sets the gravity vector of the Jiggle joint at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetJiggleJointGravity(joint_idx int64, gravity Vector2.XY) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_gravity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_set_jiggle_joint_gravity), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_jiggle_joint_gravity, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
 		joint_idx int64
 		gravity   Vector2.XY
 	}{joint_idx, gravity}))
@@ -585,7 +648,7 @@ Returns a [Vector2] representing the amount of gravity the Jiggle joint at [para
 */
 //go:nosplit
 func (self class) GetJiggleJointGravity(joint_idx int64) Vector2.XY { //gd:SkeletonModification2DJiggle.get_jiggle_joint_gravity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SkeletonModification2DJiggle.Bind_get_jiggle_joint_gravity), gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_jiggle_joint_gravity, gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -636,7 +699,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SkeletonModification2DJiggle", func(ptr gd.Object) any {
-		return [1]gdclass.SkeletonModification2DJiggle{*(*gdclass.SkeletonModification2DJiggle)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("SkeletonModification2DJiggle", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

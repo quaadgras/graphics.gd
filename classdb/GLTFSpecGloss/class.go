@@ -73,6 +73,31 @@ KHR_materials_pbrSpecularGlossiness is an archived glTF extension. This means th
 */
 type Instance [1]gdclass.GLTFSpecGloss
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_diffuse_img     gdextension.MethodForClass `hash:"564927088"`
+	set_diffuse_img     gdextension.MethodForClass `hash:"532598488"`
+	get_diffuse_factor  gdextension.MethodForClass `hash:"3200896285"`
+	set_diffuse_factor  gdextension.MethodForClass `hash:"2920490490"`
+	get_gloss_factor    gdextension.MethodForClass `hash:"191475506"`
+	set_gloss_factor    gdextension.MethodForClass `hash:"373806689"`
+	get_specular_factor gdextension.MethodForClass `hash:"3200896285"`
+	set_specular_factor gdextension.MethodForClass `hash:"2920490490"`
+	get_spec_gloss_img  gdextension.MethodForClass `hash:"564927088"`
+	set_spec_gloss_img  gdextension.MethodForClass `hash:"532598488"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("GLTFSpecGloss")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +113,20 @@ type Advanced = class
 type class [1]gdclass.GLTFSpecGloss
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GLTFSpecGloss)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GLTFSpecGloss)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +136,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("GLTFSpecGloss"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GLTFSpecGloss)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -146,62 +185,62 @@ func (self Instance) SetSpecGlossImg(value Image.Instance) {
 
 //go:nosplit
 func (self class) GetDiffuseImg() [1]gdclass.Image { //gd:GLTFSpecGloss.get_diffuse_img
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSpecGloss.Bind_get_diffuse_img), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_img, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDiffuseImg(diffuse_img [1]gdclass.Image) { //gd:GLTFSpecGloss.set_diffuse_img
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSpecGloss.Bind_set_diffuse_img), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ diffuse_img gdextension.Object }{gdextension.Object(gd.ObjectChecked(diffuse_img[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_img, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ diffuse_img gdextension.Object }{gdextension.Object(gd.ObjectChecked(diffuse_img[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetDiffuseFactor() Color.RGBA { //gd:GLTFSpecGloss.get_diffuse_factor
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSpecGloss.Bind_get_diffuse_factor), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_diffuse_factor, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDiffuseFactor(diffuse_factor Color.RGBA) { //gd:GLTFSpecGloss.set_diffuse_factor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSpecGloss.Bind_set_diffuse_factor), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ diffuse_factor Color.RGBA }{diffuse_factor}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_diffuse_factor, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ diffuse_factor Color.RGBA }{diffuse_factor}))
 }
 
 //go:nosplit
 func (self class) GetGlossFactor() float64 { //gd:GLTFSpecGloss.get_gloss_factor
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSpecGloss.Bind_get_gloss_factor), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_gloss_factor, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlossFactor(gloss_factor float64) { //gd:GLTFSpecGloss.set_gloss_factor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSpecGloss.Bind_set_gloss_factor), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gloss_factor float64 }{gloss_factor}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gloss_factor, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ gloss_factor float64 }{gloss_factor}))
 }
 
 //go:nosplit
 func (self class) GetSpecularFactor() Color.RGBA { //gd:GLTFSpecGloss.get_specular_factor
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSpecGloss.Bind_get_specular_factor), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_specular_factor, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpecularFactor(specular_factor Color.RGBA) { //gd:GLTFSpecGloss.set_specular_factor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSpecGloss.Bind_set_specular_factor), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ specular_factor Color.RGBA }{specular_factor}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_specular_factor, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ specular_factor Color.RGBA }{specular_factor}))
 }
 
 //go:nosplit
 func (self class) GetSpecGlossImg() [1]gdclass.Image { //gd:GLTFSpecGloss.get_spec_gloss_img
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSpecGloss.Bind_get_spec_gloss_img), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_spec_gloss_img, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpecGlossImg(spec_gloss_img [1]gdclass.Image) { //gd:GLTFSpecGloss.set_spec_gloss_img
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFSpecGloss.Bind_set_spec_gloss_img), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ spec_gloss_img gdextension.Object }{gdextension.Object(gd.ObjectChecked(spec_gloss_img[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spec_gloss_img, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ spec_gloss_img gdextension.Object }{gdextension.Object(gd.ObjectChecked(spec_gloss_img[0].AsObject()))}))
 }
 func (self class) AsGLTFSpecGloss() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGLTFSpecGloss() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -235,7 +274,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFSpecGloss", func(ptr gd.Object) any {
-		return [1]gdclass.GLTFSpecGloss{*(*gdclass.GLTFSpecGloss)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("GLTFSpecGloss", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

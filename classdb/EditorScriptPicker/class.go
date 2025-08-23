@@ -78,6 +78,23 @@ Similar to [EditorResourcePicker] this [Control] node is used in the editor's In
 */
 type Instance [1]gdclass.EditorScriptPicker
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_script_owner gdextension.MethodForClass `hash:"1078189570"`
+	get_script_owner gdextension.MethodForClass `hash:"3160264692"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorScriptPicker")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -93,6 +110,20 @@ type Advanced = class
 type class [1]gdclass.EditorScriptPicker
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorScriptPicker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorScriptPicker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -102,7 +133,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorScriptPicker"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorScriptPicker)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -118,12 +149,12 @@ func (self Instance) SetScriptOwner(value Node.Instance) {
 
 //go:nosplit
 func (self class) SetScriptOwner(owner_node [1]gdclass.Node) { //gd:EditorScriptPicker.set_script_owner
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorScriptPicker.Bind_set_script_owner), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ owner_node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(owner_node[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_script_owner, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ owner_node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(owner_node[0].AsObject()[0]))}))
 }
 
 //go:nosplit
 func (self class) GetScriptOwner() [1]gdclass.Node { //gd:EditorScriptPicker.get_script_owner
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorScriptPicker.Bind_get_script_owner), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_owner, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -194,7 +225,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorScriptPicker", func(ptr gd.Object) any {
-		return [1]gdclass.EditorScriptPicker{*(*gdclass.EditorScriptPicker)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorScriptPicker", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

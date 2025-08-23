@@ -76,6 +76,30 @@ Inheriting noise classes can optionally override this function to provide a more
 */
 type Instance [1]gdclass.Noise
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_noise_1d          gdextension.MethodForClass `hash:"3919130443"`
+	get_noise_2d          gdextension.MethodForClass `hash:"2753205203"`
+	get_noise_2dv         gdextension.MethodForClass `hash:"2276447920"`
+	get_noise_3d          gdextension.MethodForClass `hash:"973811851"`
+	get_noise_3dv         gdextension.MethodForClass `hash:"1109078154"`
+	get_image             gdextension.MethodForClass `hash:"3180683109"`
+	get_seamless_image    gdextension.MethodForClass `hash:"2770743602"`
+	get_image_3d          gdextension.MethodForClass `hash:"3977814329"`
+	get_seamless_image_3d gdextension.MethodForClass `hash:"451006340"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Noise")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Noise
@@ -192,6 +216,20 @@ type Advanced = class
 type class [1]gdclass.Noise
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Noise)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Noise)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -201,7 +239,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Noise"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Noise)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -213,7 +251,7 @@ Returns the 1D noise value at the given (x) coordinate.
 */
 //go:nosplit
 func (self class) GetNoise1d(x float64) float64 { //gd:Noise.get_noise_1d
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Noise.Bind_get_noise_1d), gdextension.SizeFloat|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ x float64 }{x}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_1d, gdextension.SizeFloat|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ x float64 }{x}))
 	var ret = r_ret
 	return ret
 }
@@ -223,7 +261,7 @@ Returns the 2D noise value at the given position.
 */
 //go:nosplit
 func (self class) GetNoise2d(x float64, y float64) float64 { //gd:Noise.get_noise_2d
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Noise.Bind_get_noise_2d), gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_2d, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		x float64
 		y float64
 	}{x, y}))
@@ -236,7 +274,7 @@ Returns the 2D noise value at the given position.
 */
 //go:nosplit
 func (self class) GetNoise2dv(v Vector2.XY) float64 { //gd:Noise.get_noise_2dv
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Noise.Bind_get_noise_2dv), gdextension.SizeFloat|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ v Vector2.XY }{v}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_2dv, gdextension.SizeFloat|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ v Vector2.XY }{v}))
 	var ret = r_ret
 	return ret
 }
@@ -246,7 +284,7 @@ Returns the 3D noise value at the given position.
 */
 //go:nosplit
 func (self class) GetNoise3d(x float64, y float64, z float64) float64 { //gd:Noise.get_noise_3d
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Noise.Bind_get_noise_3d), gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_3d, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		x float64
 		y float64
 		z float64
@@ -260,7 +298,7 @@ Returns the 3D noise value at the given position.
 */
 //go:nosplit
 func (self class) GetNoise3dv(v Vector3.XYZ) float64 { //gd:Noise.get_noise_3dv
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Noise.Bind_get_noise_3dv), gdextension.SizeFloat|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ v Vector3.XYZ }{v}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_noise_3dv, gdextension.SizeFloat|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ v Vector3.XYZ }{v}))
 	var ret = r_ret
 	return ret
 }
@@ -271,7 +309,7 @@ Returns an [Image] containing 2D noise values.
 */
 //go:nosplit
 func (self class) GetImage(width int64, height int64, invert bool, in_3d_space bool, normalize bool) [1]gdclass.Image { //gd:Noise.get_image
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Noise.Bind_get_image), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_image, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		width       int64
 		height      int64
 		invert      bool
@@ -288,7 +326,7 @@ Returns an [Image] containing seamless 2D noise values.
 */
 //go:nosplit
 func (self class) GetSeamlessImage(width int64, height int64, invert bool, in_3d_space bool, skirt float64, normalize bool) [1]gdclass.Image { //gd:Noise.get_seamless_image
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Noise.Bind_get_seamless_image), gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_seamless_image, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
 		width       int64
 		height      int64
 		invert      bool
@@ -306,7 +344,7 @@ Returns an [Array] of [Image]s containing 3D noise values for use with [method I
 */
 //go:nosplit
 func (self class) GetImage3d(width int64, height int64, depth int64, invert bool, normalize bool) Array.Contains[[1]gdclass.Image] { //gd:Noise.get_image_3d
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Noise.Bind_get_image_3d), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_image_3d, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
 		width     int64
 		height    int64
 		depth     int64
@@ -323,7 +361,7 @@ Returns an [Array] of [Image]s containing seamless 3D noise values for use with 
 */
 //go:nosplit
 func (self class) GetSeamlessImage3d(width int64, height int64, depth int64, invert bool, skirt float64, normalize bool) Array.Contains[[1]gdclass.Image] { //gd:Noise.get_seamless_image_3d
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Noise.Bind_get_seamless_image_3d), gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_seamless_image_3d, gdextension.SizeArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
 		width     int64
 		height    int64
 		depth     int64
@@ -366,5 +404,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Noise", func(ptr gd.Object) any { return [1]gdclass.Noise{*(*gdclass.Noise)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Noise", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

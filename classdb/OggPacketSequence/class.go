@@ -71,6 +71,28 @@ A sequence of Ogg packets.
 */
 type Instance [1]gdclass.OggPacketSequence
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_packet_data              gdextension.MethodForClass `hash:"381264803"`
+	get_packet_data              gdextension.MethodForClass `hash:"3995934104"`
+	set_packet_granule_positions gdextension.MethodForClass `hash:"3709968205"`
+	get_packet_granule_positions gdextension.MethodForClass `hash:"235988956"`
+	set_sampling_rate            gdextension.MethodForClass `hash:"373806689"`
+	get_sampling_rate            gdextension.MethodForClass `hash:"1740695150"`
+	get_length                   gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("OggPacketSequence")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -93,6 +115,20 @@ type Advanced = class
 type class [1]gdclass.OggPacketSequence
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OggPacketSequence)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.OggPacketSequence)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -102,7 +138,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("OggPacketSequence"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.OggPacketSequence)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -135,38 +171,38 @@ func (self Instance) SetSamplingRate(value Float.X) {
 
 //go:nosplit
 func (self class) SetPacketData(packet_data Array.Contains[Array.Any]) { //gd:OggPacketSequence.set_packet_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_set_packet_data), 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ packet_data gdextension.Array }{pointers.Get(gd.InternalArray(packet_data))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_packet_data, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ packet_data gdextension.Array }{pointers.Get(gd.InternalArray(packet_data))}))
 }
 
 //go:nosplit
 func (self class) GetPacketData() Array.Contains[Array.Any] { //gd:OggPacketSequence.get_packet_data
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_get_packet_data), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_packet_data, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[Array.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPacketGranulePositions(granule_positions Packed.Array[int64]) { //gd:OggPacketSequence.set_packet_granule_positions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_set_packet_granule_positions), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_packet_granule_positions, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		granule_positions gdextension.PackedArray[int64]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](granule_positions))}))
 }
 
 //go:nosplit
 func (self class) GetPacketGranulePositions() Packed.Array[int64] { //gd:OggPacketSequence.get_packet_granule_positions
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_get_packet_granule_positions), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_packet_granule_positions, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSamplingRate(sampling_rate float64) { //gd:OggPacketSequence.set_sampling_rate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_set_sampling_rate), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sampling_rate float64 }{sampling_rate}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sampling_rate, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sampling_rate float64 }{sampling_rate}))
 }
 
 //go:nosplit
 func (self class) GetSamplingRate() float64 { //gd:OggPacketSequence.get_sampling_rate
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_get_sampling_rate), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sampling_rate, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -176,7 +212,7 @@ The length of this stream, in seconds.
 */
 //go:nosplit
 func (self class) GetLength() float64 { //gd:OggPacketSequence.get_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.OggPacketSequence.Bind_get_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -212,7 +248,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("OggPacketSequence", func(ptr gd.Object) any {
-		return [1]gdclass.OggPacketSequence{*(*gdclass.OggPacketSequence)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("OggPacketSequence", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

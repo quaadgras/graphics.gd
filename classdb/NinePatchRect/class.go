@@ -75,6 +75,33 @@ Also known as 9-slice panels, [NinePatchRect] produces clean panels of any size 
 */
 type Instance [1]gdclass.NinePatchRect
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_texture             gdextension.MethodForClass `hash:"4051416890"`
+	get_texture             gdextension.MethodForClass `hash:"3635182373"`
+	set_patch_margin        gdextension.MethodForClass `hash:"437707142"`
+	get_patch_margin        gdextension.MethodForClass `hash:"1983885014"`
+	set_region_rect         gdextension.MethodForClass `hash:"2046264180"`
+	get_region_rect         gdextension.MethodForClass `hash:"1639390495"`
+	set_draw_center         gdextension.MethodForClass `hash:"2586408642"`
+	is_draw_center_enabled  gdextension.MethodForClass `hash:"36873697"`
+	set_h_axis_stretch_mode gdextension.MethodForClass `hash:"3219608417"`
+	get_h_axis_stretch_mode gdextension.MethodForClass `hash:"3317113799"`
+	set_v_axis_stretch_mode gdextension.MethodForClass `hash:"3219608417"`
+	get_v_axis_stretch_mode gdextension.MethodForClass `hash:"3317113799"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("NinePatchRect")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -90,6 +117,20 @@ type Advanced = class
 type class [1]gdclass.NinePatchRect
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.NinePatchRect)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.NinePatchRect)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -99,7 +140,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("NinePatchRect"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.NinePatchRect)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -179,12 +220,12 @@ func (self Instance) SetAxisStretchVertical(value AxisStretchMode) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:NinePatchRect.set_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_set_texture), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:NinePatchRect.get_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_get_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -194,7 +235,7 @@ Sets the size of the margin on the specified [enum Side] to [param value] pixels
 */
 //go:nosplit
 func (self class) SetPatchMargin(margin Rect2.Side, value int64) { //gd:NinePatchRect.set_patch_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_set_patch_margin), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_patch_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		margin Rect2.Side
 		value  int64
 	}{margin, value}))
@@ -205,55 +246,55 @@ Returns the size of the margin on the specified [enum Side].
 */
 //go:nosplit
 func (self class) GetPatchMargin(margin Rect2.Side) int64 { //gd:NinePatchRect.get_patch_margin
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_get_patch_margin), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_patch_margin, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRegionRect(rect Rect2.PositionSize) { //gd:NinePatchRect.set_region_rect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_set_region_rect), 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_rect, 0|(gdextension.SizeRect2<<4), unsafe.Pointer(&struct{ rect Rect2.PositionSize }{rect}))
 }
 
 //go:nosplit
 func (self class) GetRegionRect() Rect2.PositionSize { //gd:NinePatchRect.get_region_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_get_region_rect), gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawCenter(draw_center bool) { //gd:NinePatchRect.set_draw_center
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_set_draw_center), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_center bool }{draw_center}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_center, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_center bool }{draw_center}))
 }
 
 //go:nosplit
 func (self class) IsDrawCenterEnabled() bool { //gd:NinePatchRect.is_draw_center_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_is_draw_center_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_center_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHAxisStretchMode(mode AxisStretchMode) { //gd:NinePatchRect.set_h_axis_stretch_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_set_h_axis_stretch_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AxisStretchMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_axis_stretch_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AxisStretchMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetHAxisStretchMode() AxisStretchMode { //gd:NinePatchRect.get_h_axis_stretch_mode
-	var r_ret = gdextension.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_get_h_axis_stretch_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_h_axis_stretch_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVAxisStretchMode(mode AxisStretchMode) { //gd:NinePatchRect.set_v_axis_stretch_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_set_v_axis_stretch_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AxisStretchMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_axis_stretch_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AxisStretchMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetVAxisStretchMode() AxisStretchMode { //gd:NinePatchRect.get_v_axis_stretch_mode
-	var r_ret = gdextension.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.NinePatchRect.Bind_get_v_axis_stretch_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_v_axis_stretch_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -294,9 +335,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("NinePatchRect", func(ptr gd.Object) any {
-		return [1]gdclass.NinePatchRect{*(*gdclass.NinePatchRect)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("NinePatchRect", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type AxisStretchMode int //gd:NinePatchRect.AxisStretchMode

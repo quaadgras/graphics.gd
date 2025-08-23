@@ -74,6 +74,23 @@ A constant [Transform3D], which can be used as an input node.
 */
 type Instance [1]gdclass.VisualShaderNodeTransformConstant
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_constant gdextension.MethodForClass `hash:"2952846383"`
+	get_constant gdextension.MethodForClass `hash:"3229777777"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VisualShaderNodeTransformConstant")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +106,20 @@ type Advanced = class
 type class [1]gdclass.VisualShaderNodeTransformConstant
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeTransformConstant)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeTransformConstant)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +129,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShaderNodeTransformConstant"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisualShaderNodeTransformConstant)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -115,12 +146,12 @@ func (self Instance) SetConstant(value Transform3D.BasisOrigin) {
 
 //go:nosplit
 func (self class) SetConstant(constant Transform3D.BasisOrigin) { //gd:VisualShaderNodeTransformConstant.set_constant
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTransformConstant.Bind_set_constant), 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ constant Transform3D.BasisOrigin }{gd.Transposed(constant)}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ constant Transform3D.BasisOrigin }{gd.Transposed(constant)}))
 }
 
 //go:nosplit
 func (self class) GetConstant() Transform3D.BasisOrigin { //gd:VisualShaderNodeTransformConstant.get_constant
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeTransformConstant.Bind_get_constant), gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -180,7 +211,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisualShaderNodeTransformConstant", func(ptr gd.Object) any {
-		return [1]gdclass.VisualShaderNodeTransformConstant{*(*gdclass.VisualShaderNodeTransformConstant)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VisualShaderNodeTransformConstant", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

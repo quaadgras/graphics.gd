@@ -72,6 +72,25 @@ See also [RDShaderFile]. [RDShaderSource] is only meant to be used with the [Ren
 */
 type Instance [1]gdclass.RDShaderSource
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_stage_source gdextension.MethodForClass `hash:"620821314"`
+	get_stage_source gdextension.MethodForClass `hash:"3354920045"`
+	set_language     gdextension.MethodForClass `hash:"3422186742"`
+	get_language     gdextension.MethodForClass `hash:"1063538261"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("RDShaderSource")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -87,6 +106,20 @@ type Advanced = class
 type class [1]gdclass.RDShaderSource
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDShaderSource)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDShaderSource)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -96,7 +129,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RDShaderSource"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RDShaderSource)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -157,7 +190,7 @@ Sets [param source] code for the specified shader [param stage]. Equivalent to s
 */
 //go:nosplit
 func (self class) SetStageSource(stage Rendering.ShaderStage, source String.Readable) { //gd:RDShaderSource.set_stage_source
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderSource.Bind_set_stage_source), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stage_source, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		stage  Rendering.ShaderStage
 		source gdextension.String
 	}{stage, pointers.Get(gd.InternalString(source))}))
@@ -168,19 +201,19 @@ Returns source code for the specified shader [param stage]. Equivalent to gettin
 */
 //go:nosplit
 func (self class) GetStageSource(stage Rendering.ShaderStage) String.Readable { //gd:RDShaderSource.get_stage_source
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderSource.Bind_get_stage_source), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stage Rendering.ShaderStage }{stage}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_stage_source, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stage Rendering.ShaderStage }{stage}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language Rendering.ShaderLanguage) { //gd:RDShaderSource.set_language
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderSource.Bind_set_language), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ language Rendering.ShaderLanguage }{language}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ language Rendering.ShaderLanguage }{language}))
 }
 
 //go:nosplit
 func (self class) GetLanguage() Rendering.ShaderLanguage { //gd:RDShaderSource.get_language
-	var r_ret = gdextension.Call[Rendering.ShaderLanguage](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderSource.Bind_get_language), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.ShaderLanguage](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -209,7 +242,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RDShaderSource", func(ptr gd.Object) any {
-		return [1]gdclass.RDShaderSource{*(*gdclass.RDShaderSource)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("RDShaderSource", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

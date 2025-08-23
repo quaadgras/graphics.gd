@@ -104,6 +104,34 @@ animationTree.Get("parameters/Transition/current_index");
 */
 type Instance [1]gdclass.AnimationNodeTransition
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_input_count              gdextension.MethodForClass `hash:"1286410249"`
+	set_input_as_auto_advance    gdextension.MethodForClass `hash:"300928843"`
+	is_input_set_as_auto_advance gdextension.MethodForClass `hash:"1116898809"`
+	set_input_break_loop_at_end  gdextension.MethodForClass `hash:"300928843"`
+	is_input_loop_broken_at_end  gdextension.MethodForClass `hash:"1116898809"`
+	set_input_reset              gdextension.MethodForClass `hash:"300928843"`
+	is_input_reset               gdextension.MethodForClass `hash:"1116898809"`
+	set_xfade_time               gdextension.MethodForClass `hash:"373806689"`
+	get_xfade_time               gdextension.MethodForClass `hash:"1740695150"`
+	set_xfade_curve              gdextension.MethodForClass `hash:"270443179"`
+	get_xfade_curve              gdextension.MethodForClass `hash:"2460114913"`
+	set_allow_transition_to_self gdextension.MethodForClass `hash:"2586408642"`
+	is_allow_transition_to_self  gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AnimationNodeTransition")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -161,6 +189,20 @@ type Advanced = class
 type class [1]gdclass.AnimationNodeTransition
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AnimationNodeTransition)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AnimationNodeTransition)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -170,7 +212,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AnimationNodeTransition"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AnimationNodeTransition)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -207,7 +249,7 @@ func (self Instance) SetInputCount(value int) {
 
 //go:nosplit
 func (self class) SetInputCount(input_count int64) { //gd:AnimationNodeTransition.set_input_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTransition.Bind_set_input_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input_count int64 }{input_count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input_count int64 }{input_count}))
 }
 
 /*
@@ -215,7 +257,7 @@ Enables or disables auto-advance for the given [param input] index. If enabled, 
 */
 //go:nosplit
 func (self class) SetInputAsAutoAdvance(input int64, enable bool) { //gd:AnimationNodeTransition.set_input_as_auto_advance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTransition.Bind_set_input_as_auto_advance), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_as_auto_advance, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		input  int64
 		enable bool
 	}{input, enable}))
@@ -226,7 +268,7 @@ Returns [code]true[/code] if auto-advance is enabled for the given [param input]
 */
 //go:nosplit
 func (self class) IsInputSetAsAutoAdvance(input int64) bool { //gd:AnimationNodeTransition.is_input_set_as_auto_advance
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTransition.Bind_is_input_set_as_auto_advance), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input int64 }{input}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_input_set_as_auto_advance, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input int64 }{input}))
 	var ret = r_ret
 	return ret
 }
@@ -236,7 +278,7 @@ If [code]true[/code], breaks the loop at the end of the loop cycle for transitio
 */
 //go:nosplit
 func (self class) SetInputBreakLoopAtEnd(input int64, enable bool) { //gd:AnimationNodeTransition.set_input_break_loop_at_end
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTransition.Bind_set_input_break_loop_at_end), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_break_loop_at_end, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		input  int64
 		enable bool
 	}{input, enable}))
@@ -247,7 +289,7 @@ Returns whether the animation breaks the loop at the end of the loop cycle for t
 */
 //go:nosplit
 func (self class) IsInputLoopBrokenAtEnd(input int64) bool { //gd:AnimationNodeTransition.is_input_loop_broken_at_end
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTransition.Bind_is_input_loop_broken_at_end), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input int64 }{input}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_input_loop_broken_at_end, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input int64 }{input}))
 	var ret = r_ret
 	return ret
 }
@@ -257,7 +299,7 @@ If [code]true[/code], the destination animation is restarted when the animation 
 */
 //go:nosplit
 func (self class) SetInputReset(input int64, enable bool) { //gd:AnimationNodeTransition.set_input_reset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTransition.Bind_set_input_reset), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_reset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		input  int64
 		enable bool
 	}{input, enable}))
@@ -268,43 +310,43 @@ Returns whether the animation restarts when the animation transitions from the o
 */
 //go:nosplit
 func (self class) IsInputReset(input int64) bool { //gd:AnimationNodeTransition.is_input_reset
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTransition.Bind_is_input_reset), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input int64 }{input}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_input_reset, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ input int64 }{input}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetXfadeTime(time float64) { //gd:AnimationNodeTransition.set_xfade_time
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTransition.Bind_set_xfade_time), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xfade_time, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ time float64 }{time}))
 }
 
 //go:nosplit
 func (self class) GetXfadeTime() float64 { //gd:AnimationNodeTransition.get_xfade_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTransition.Bind_get_xfade_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_xfade_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetXfadeCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeTransition.set_xfade_curve
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTransition.Bind_set_xfade_curve), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xfade_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetXfadeCurve() [1]gdclass.Curve { //gd:AnimationNodeTransition.get_xfade_curve
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTransition.Bind_get_xfade_curve), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_xfade_curve, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowTransitionToSelf(enable bool) { //gd:AnimationNodeTransition.set_allow_transition_to_self
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTransition.Bind_set_allow_transition_to_self), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_transition_to_self, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsAllowTransitionToSelf() bool { //gd:AnimationNodeTransition.is_allow_transition_to_self
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationNodeTransition.Bind_is_allow_transition_to_self), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_transition_to_self, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -362,7 +404,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AnimationNodeTransition", func(ptr gd.Object) any {
-		return [1]gdclass.AnimationNodeTransition{*(*gdclass.AnimationNodeTransition)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AnimationNodeTransition", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

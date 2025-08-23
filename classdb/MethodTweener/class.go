@@ -74,6 +74,24 @@ The tweener will finish automatically if the callback's target object is freed.
 */
 type Instance [1]gdclass.MethodTweener
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_delay gdextension.MethodForClass `hash:"266477812"`
+	set_trans gdextension.MethodForClass `hash:"3740975367"`
+	set_ease  gdextension.MethodForClass `hash:"315540545"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("MethodTweener")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -159,6 +177,20 @@ type Advanced = class
 type class [1]gdclass.MethodTweener
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MethodTweener)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MethodTweener)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -168,7 +200,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("MethodTweener"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.MethodTweener)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -180,7 +212,7 @@ Sets the time in seconds after which the [MethodTweener] will start interpolatin
 */
 //go:nosplit
 func (self class) SetDelay(delay float64) [1]gdclass.MethodTweener { //gd:MethodTweener.set_delay
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MethodTweener.Bind_set_delay), gdextension.SizeObject|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ delay float64 }{delay}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_delay, gdextension.SizeObject|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ delay float64 }{delay}))
 	var ret = [1]gdclass.MethodTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.MethodTweener](r_ret)}
 	return ret
 }
@@ -190,7 +222,7 @@ Sets the type of used transition from [enum Tween.TransitionType]. If not set, t
 */
 //go:nosplit
 func (self class) SetTrans(trans Tween.TransitionType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_trans
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MethodTweener.Bind_set_trans), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ trans Tween.TransitionType }{trans}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_trans, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ trans Tween.TransitionType }{trans}))
 	var ret = [1]gdclass.MethodTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.MethodTweener](r_ret)}
 	return ret
 }
@@ -200,7 +232,7 @@ Sets the type of used easing from [enum Tween.EaseType]. If not set, the default
 */
 //go:nosplit
 func (self class) SetEase(ease Tween.EaseType) [1]gdclass.MethodTweener { //gd:MethodTweener.set_ease
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MethodTweener.Bind_set_ease), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ease Tween.EaseType }{ease}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ease, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ease Tween.EaseType }{ease}))
 	var ret = [1]gdclass.MethodTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.MethodTweener](r_ret)}
 	return ret
 }
@@ -234,7 +266,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MethodTweener", func(ptr gd.Object) any {
-		return [1]gdclass.MethodTweener{*(*gdclass.MethodTweener)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("MethodTweener", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

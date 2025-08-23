@@ -72,6 +72,30 @@ A stream peer that handles TCP connections. This object can be used to connect t
 */
 type Instance [1]gdclass.StreamPeerTCP
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	bind                 gdextension.MethodForClass `hash:"3167955072"`
+	connect_to_host      gdextension.MethodForClass `hash:"993915709"`
+	poll                 gdextension.MethodForClass `hash:"166280745"`
+	get_status           gdextension.MethodForClass `hash:"859471121"`
+	get_connected_host   gdextension.MethodForClass `hash:"201670096"`
+	get_connected_port   gdextension.MethodForClass `hash:"3905245786"`
+	get_local_port       gdextension.MethodForClass `hash:"3905245786"`
+	disconnect_from_host gdextension.MethodForClass `hash:"3218959716"`
+	set_no_delay         gdextension.MethodForClass `hash:"2586408642"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("StreamPeerTCP")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.StreamPeerTCP
@@ -162,6 +186,20 @@ type Advanced = class
 type class [1]gdclass.StreamPeerTCP
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.StreamPeerTCP)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.StreamPeerTCP)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -171,7 +209,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("StreamPeerTCP"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.StreamPeerTCP)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -184,7 +222,7 @@ This method is generally not needed, and only used to force the subsequent call 
 */
 //go:nosplit
 func (self class) Bind(port int64, host String.Readable) Error.Code { //gd:StreamPeerTCP.bind
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTCP.Bind_bind), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.bind, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		port int64
 		host gdextension.String
 	}{port, pointers.Get(gd.InternalString(host))}))
@@ -197,7 +235,7 @@ Connects to the specified [code]host:port[/code] pair. A hostname will be resolv
 */
 //go:nosplit
 func (self class) ConnectToHost(host String.Readable, port int64) Error.Code { //gd:StreamPeerTCP.connect_to_host
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTCP.Bind_connect_to_host), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		host gdextension.String
 		port int64
 	}{pointers.Get(gd.InternalString(host)), port}))
@@ -210,7 +248,7 @@ Poll the socket, updating its state. See [method get_status].
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:StreamPeerTCP.poll
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTCP.Bind_poll), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -220,7 +258,7 @@ Returns the status of the connection, see [enum Status].
 */
 //go:nosplit
 func (self class) GetStatus() Status { //gd:StreamPeerTCP.get_status
-	var r_ret = gdextension.Call[Status](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTCP.Bind_get_status), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Status](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -230,7 +268,7 @@ Returns the IP of this peer.
 */
 //go:nosplit
 func (self class) GetConnectedHost() String.Readable { //gd:StreamPeerTCP.get_connected_host
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTCP.Bind_get_connected_host), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_connected_host, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -240,7 +278,7 @@ Returns the port of this peer.
 */
 //go:nosplit
 func (self class) GetConnectedPort() int64 { //gd:StreamPeerTCP.get_connected_port
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTCP.Bind_get_connected_port), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_connected_port, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -250,7 +288,7 @@ Returns the local port to which this peer is bound.
 */
 //go:nosplit
 func (self class) GetLocalPort() int64 { //gd:StreamPeerTCP.get_local_port
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTCP.Bind_get_local_port), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -260,7 +298,7 @@ Disconnects from host.
 */
 //go:nosplit
 func (self class) DisconnectFromHost() { //gd:StreamPeerTCP.disconnect_from_host
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTCP.Bind_disconnect_from_host), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_from_host, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -269,7 +307,7 @@ If [param enabled] is [code]true[/code], packets will be sent immediately. If [p
 */
 //go:nosplit
 func (self class) SetNoDelay(enabled bool) { //gd:StreamPeerTCP.set_no_delay
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StreamPeerTCP.Bind_set_no_delay), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_no_delay, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 func (self class) AsStreamPeerTCP() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsStreamPeerTCP() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -303,9 +341,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("StreamPeerTCP", func(ptr gd.Object) any {
-		return [1]gdclass.StreamPeerTCP{*(*gdclass.StreamPeerTCP)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("StreamPeerTCP", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Status int //gd:StreamPeerTCP.Status

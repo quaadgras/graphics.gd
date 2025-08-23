@@ -187,7 +187,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 		if !ok {
 			return false
 		}
-		ref, ok := gd.As[gd.RefCounted](obj.AsObject()[0])
+		ref, ok := Object.As[gd.RefCounted](obj.AsObject()[0])
 		if ok {
 			ref.Reference()
 		}

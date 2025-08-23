@@ -76,6 +76,38 @@ Internally, [MultiplayerSynchronizer] uses [method MultiplayerAPI.object_configu
 */
 type Instance [1]gdclass.MultiplayerSynchronizer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_root_path              gdextension.MethodForClass `hash:"1348162250"`
+	get_root_path              gdextension.MethodForClass `hash:"4075236667"`
+	set_replication_interval   gdextension.MethodForClass `hash:"373806689"`
+	get_replication_interval   gdextension.MethodForClass `hash:"1740695150"`
+	set_delta_interval         gdextension.MethodForClass `hash:"373806689"`
+	get_delta_interval         gdextension.MethodForClass `hash:"1740695150"`
+	set_replication_config     gdextension.MethodForClass `hash:"3889206742"`
+	get_replication_config     gdextension.MethodForClass `hash:"3200254614"`
+	set_visibility_update_mode gdextension.MethodForClass `hash:"3494860300"`
+	get_visibility_update_mode gdextension.MethodForClass `hash:"3352241418"`
+	update_visibility          gdextension.MethodForClass `hash:"1995695955"`
+	set_visibility_public      gdextension.MethodForClass `hash:"2586408642"`
+	is_visibility_public       gdextension.MethodForClass `hash:"36873697"`
+	add_visibility_filter      gdextension.MethodForClass `hash:"1611583062"`
+	remove_visibility_filter   gdextension.MethodForClass `hash:"1611583062"`
+	set_visibility_for         gdextension.MethodForClass `hash:"300928843"`
+	get_visibility_for         gdextension.MethodForClass `hash:"1116898809"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("MultiplayerSynchronizer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.MultiplayerSynchronizer
@@ -136,6 +168,20 @@ type Advanced = class
 type class [1]gdclass.MultiplayerSynchronizer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MultiplayerSynchronizer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MultiplayerSynchronizer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -145,7 +191,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("MultiplayerSynchronizer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.MultiplayerSynchronizer)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -201,60 +247,60 @@ func (self Instance) SetPublicVisibility(value bool) {
 
 //go:nosplit
 func (self class) SetRootPath(path Path.ToNode) { //gd:MultiplayerSynchronizer.set_root_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_root_path), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_path, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 }
 
 //go:nosplit
 func (self class) GetRootPath() Path.ToNode { //gd:MultiplayerSynchronizer.get_root_path
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_root_path), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root_path, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetReplicationInterval(milliseconds float64) { //gd:MultiplayerSynchronizer.set_replication_interval
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_replication_interval), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ milliseconds float64 }{milliseconds}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_replication_interval, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ milliseconds float64 }{milliseconds}))
 }
 
 //go:nosplit
 func (self class) GetReplicationInterval() float64 { //gd:MultiplayerSynchronizer.get_replication_interval
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_replication_interval), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_replication_interval, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeltaInterval(milliseconds float64) { //gd:MultiplayerSynchronizer.set_delta_interval
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_delta_interval), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ milliseconds float64 }{milliseconds}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_delta_interval, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ milliseconds float64 }{milliseconds}))
 }
 
 //go:nosplit
 func (self class) GetDeltaInterval() float64 { //gd:MultiplayerSynchronizer.get_delta_interval
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_delta_interval), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_delta_interval, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetReplicationConfig(config [1]gdclass.SceneReplicationConfig) { //gd:MultiplayerSynchronizer.set_replication_config
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_replication_config), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(config[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_replication_config, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(config[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetReplicationConfig() [1]gdclass.SceneReplicationConfig { //gd:MultiplayerSynchronizer.get_replication_config
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_replication_config), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_replication_config, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SceneReplicationConfig{gd.PointerWithOwnershipTransferredToGo[gdclass.SceneReplicationConfig](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibilityUpdateMode(mode VisibilityUpdateMode) { //gd:MultiplayerSynchronizer.set_visibility_update_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_visibility_update_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode VisibilityUpdateMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_update_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode VisibilityUpdateMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetVisibilityUpdateMode() VisibilityUpdateMode { //gd:MultiplayerSynchronizer.get_visibility_update_mode
-	var r_ret = gdextension.Call[VisibilityUpdateMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_visibility_update_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[VisibilityUpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_update_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -264,17 +310,17 @@ Updates the visibility of [param for_peer] according to visibility filters. If [
 */
 //go:nosplit
 func (self class) UpdateVisibility(for_peer int64) { //gd:MultiplayerSynchronizer.update_visibility
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_update_visibility), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ for_peer int64 }{for_peer}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_visibility, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ for_peer int64 }{for_peer}))
 }
 
 //go:nosplit
 func (self class) SetVisibilityPublic(visible bool) { //gd:MultiplayerSynchronizer.set_visibility_public
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_visibility_public), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_public, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
 }
 
 //go:nosplit
 func (self class) IsVisibilityPublic() bool { //gd:MultiplayerSynchronizer.is_visibility_public
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_is_visibility_public), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visibility_public, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -285,7 +331,7 @@ Adds a peer visibility filter for this synchronizer.
 */
 //go:nosplit
 func (self class) AddVisibilityFilter(filter Callable.Function) { //gd:MultiplayerSynchronizer.add_visibility_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_add_visibility_filter), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ filter gdextension.Callable }{pointers.Get(gd.InternalCallable(filter))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_visibility_filter, 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ filter gdextension.Callable }{pointers.Get(gd.InternalCallable(filter))}))
 }
 
 /*
@@ -293,7 +339,7 @@ Removes a peer visibility filter from this synchronizer.
 */
 //go:nosplit
 func (self class) RemoveVisibilityFilter(filter Callable.Function) { //gd:MultiplayerSynchronizer.remove_visibility_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_remove_visibility_filter), 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ filter gdextension.Callable }{pointers.Get(gd.InternalCallable(filter))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_visibility_filter, 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ filter gdextension.Callable }{pointers.Get(gd.InternalCallable(filter))}))
 }
 
 /*
@@ -301,7 +347,7 @@ Sets the visibility of [param peer] to [param visible]. If [param peer] is [code
 */
 //go:nosplit
 func (self class) SetVisibilityFor(peer int64, visible bool) { //gd:MultiplayerSynchronizer.set_visibility_for
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_set_visibility_for), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_for, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		peer    int64
 		visible bool
 	}{peer, visible}))
@@ -312,7 +358,7 @@ Queries the current visibility for peer [param peer].
 */
 //go:nosplit
 func (self class) GetVisibilityFor(peer int64) bool { //gd:MultiplayerSynchronizer.get_visibility_for
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiplayerSynchronizer.Bind_get_visibility_for), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ peer int64 }{peer}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_visibility_for, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ peer int64 }{peer}))
 	var ret = r_ret
 	return ret
 }
@@ -353,9 +399,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MultiplayerSynchronizer", func(ptr gd.Object) any {
-		return [1]gdclass.MultiplayerSynchronizer{*(*gdclass.MultiplayerSynchronizer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("MultiplayerSynchronizer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type VisibilityUpdateMode int //gd:MultiplayerSynchronizer.VisibilityUpdateMode

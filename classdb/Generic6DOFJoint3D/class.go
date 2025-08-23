@@ -74,6 +74,33 @@ The first 3 DOF represent the linear motion of the physics bodies and the last 3
 */
 type Instance [1]gdclass.Generic6DOFJoint3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_param_x gdextension.MethodForClass `hash:"2018184242"`
+	get_param_x gdextension.MethodForClass `hash:"2599835054"`
+	set_param_y gdextension.MethodForClass `hash:"2018184242"`
+	get_param_y gdextension.MethodForClass `hash:"2599835054"`
+	set_param_z gdextension.MethodForClass `hash:"2018184242"`
+	get_param_z gdextension.MethodForClass `hash:"2599835054"`
+	set_flag_x  gdextension.MethodForClass `hash:"2451594564"`
+	get_flag_x  gdextension.MethodForClass `hash:"2122427807"`
+	set_flag_y  gdextension.MethodForClass `hash:"2451594564"`
+	get_flag_y  gdextension.MethodForClass `hash:"2122427807"`
+	set_flag_z  gdextension.MethodForClass `hash:"2451594564"`
+	get_flag_z  gdextension.MethodForClass `hash:"2122427807"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Generic6DOFJoint3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -126,6 +153,20 @@ type Advanced = class
 type class [1]gdclass.Generic6DOFJoint3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Generic6DOFJoint3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Generic6DOFJoint3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -135,7 +176,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Generic6DOFJoint3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Generic6DOFJoint3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -143,7 +184,7 @@ func New() Instance {
 
 //go:nosplit
 func (self class) SetParamX(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_x
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_x), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_x, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		param Param
 		value float64
 	}{param, value}))
@@ -151,14 +192,14 @@ func (self class) SetParamX(param Param, value float64) { //gd:Generic6DOFJoint3
 
 //go:nosplit
 func (self class) GetParamX(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_x
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_x), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_x, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParamY(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_y
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_y), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_y, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		param Param
 		value float64
 	}{param, value}))
@@ -166,14 +207,14 @@ func (self class) SetParamY(param Param, value float64) { //gd:Generic6DOFJoint3
 
 //go:nosplit
 func (self class) GetParamY(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_y
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_y), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_y, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParamZ(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_z
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_param_z), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_z, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		param Param
 		value float64
 	}{param, value}))
@@ -181,14 +222,14 @@ func (self class) SetParamZ(param Param, value float64) { //gd:Generic6DOFJoint3
 
 //go:nosplit
 func (self class) GetParamZ(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_z
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_param_z), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_z, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlagX(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_x
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_x), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_x, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		flag  Flag
 		value bool
 	}{flag, value}))
@@ -196,14 +237,14 @@ func (self class) SetFlagX(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_
 
 //go:nosplit
 func (self class) GetFlagX(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_x
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_x), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_x, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlagY(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_y
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_y), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_y, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		flag  Flag
 		value bool
 	}{flag, value}))
@@ -211,14 +252,14 @@ func (self class) SetFlagY(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_
 
 //go:nosplit
 func (self class) GetFlagY(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_y
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_y), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_y, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlagZ(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_z
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Generic6DOFJoint3D.Bind_set_flag_z), 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_z, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		flag  Flag
 		value bool
 	}{flag, value}))
@@ -226,7 +267,7 @@ func (self class) SetFlagZ(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_
 
 //go:nosplit
 func (self class) GetFlagZ(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_z
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Generic6DOFJoint3D.Bind_get_flag_z), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_z, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
 	var ret = r_ret
 	return ret
 }
@@ -259,9 +300,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Generic6DOFJoint3D", func(ptr gd.Object) any {
-		return [1]gdclass.Generic6DOFJoint3D{*(*gdclass.Generic6DOFJoint3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("Generic6DOFJoint3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Param int //gd:Generic6DOFJoint3D.Param

@@ -72,6 +72,27 @@ This is a stream that can be fitted with sub-streams, which will be played in-sy
 */
 type Instance [1]gdclass.AudioStreamSynchronized
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_stream_count       gdextension.MethodForClass `hash:"1286410249"`
+	get_stream_count       gdextension.MethodForClass `hash:"3905245786"`
+	set_sync_stream        gdextension.MethodForClass `hash:"111075094"`
+	get_sync_stream        gdextension.MethodForClass `hash:"2739380747"`
+	set_sync_stream_volume gdextension.MethodForClass `hash:"1602489585"`
+	get_sync_stream_volume gdextension.MethodForClass `hash:"2339986948"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioStreamSynchronized")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -115,6 +136,20 @@ type Advanced = class
 type class [1]gdclass.AudioStreamSynchronized
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioStreamSynchronized)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioStreamSynchronized)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -124,7 +159,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioStreamSynchronized"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioStreamSynchronized)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -141,12 +176,12 @@ func (self Instance) SetStreamCount(value int) {
 
 //go:nosplit
 func (self class) SetStreamCount(stream_count int64) { //gd:AudioStreamSynchronized.set_stream_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamSynchronized.Bind_set_stream_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_count int64 }{stream_count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_count int64 }{stream_count}))
 }
 
 //go:nosplit
 func (self class) GetStreamCount() int64 { //gd:AudioStreamSynchronized.get_stream_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamSynchronized.Bind_get_stream_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stream_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -156,7 +191,7 @@ Set one of the synchronized streams, by index.
 */
 //go:nosplit
 func (self class) SetSyncStream(stream_index int64, audio_stream [1]gdclass.AudioStream) { //gd:AudioStreamSynchronized.set_sync_stream
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamSynchronized.Bind_set_sync_stream), 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sync_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		stream_index int64
 		audio_stream gdextension.Object
 	}{stream_index, gdextension.Object(gd.ObjectChecked(audio_stream[0].AsObject()))}))
@@ -167,7 +202,7 @@ Get one of the synchronized streams, by index.
 */
 //go:nosplit
 func (self class) GetSyncStream(stream_index int64) [1]gdclass.AudioStream { //gd:AudioStreamSynchronized.get_sync_stream
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamSynchronized.Bind_get_sync_stream), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_index int64 }{stream_index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sync_stream, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_index int64 }{stream_index}))
 	var ret = [1]gdclass.AudioStream{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStream](r_ret)}
 	return ret
 }
@@ -177,7 +212,7 @@ Set the volume of one of the synchronized streams, by index.
 */
 //go:nosplit
 func (self class) SetSyncStreamVolume(stream_index int64, volume_db float64) { //gd:AudioStreamSynchronized.set_sync_stream_volume
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamSynchronized.Bind_set_sync_stream_volume), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sync_stream_volume, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		stream_index int64
 		volume_db    float64
 	}{stream_index, volume_db}))
@@ -188,7 +223,7 @@ Get the volume of one of the synchronized streams, by index.
 */
 //go:nosplit
 func (self class) GetSyncStreamVolume(stream_index int64) float64 { //gd:AudioStreamSynchronized.get_sync_stream_volume
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamSynchronized.Bind_get_sync_stream_volume), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_index int64 }{stream_index}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sync_stream_volume, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_index int64 }{stream_index}))
 	var ret = r_ret
 	return ret
 }
@@ -235,9 +270,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioStreamSynchronized", func(ptr gd.Object) any {
-		return [1]gdclass.AudioStreamSynchronized{*(*gdclass.AudioStreamSynchronized)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioStreamSynchronized", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 const MaxStreams int = 32 //gd:AudioStreamSynchronized.MAX_STREAMS

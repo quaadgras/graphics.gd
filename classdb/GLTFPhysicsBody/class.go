@@ -75,6 +75,41 @@ Represents a physics body as an intermediary between the [code]OMI_physics_body[
 */
 type Instance [1]gdclass.GLTFPhysicsBody
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	from_node               gdextension.MethodForClass `hash:"420544174"`
+	to_node                 gdextension.MethodForClass `hash:"3224013656"`
+	from_dictionary         gdextension.MethodForClass `hash:"1177544336"`
+	to_dictionary           gdextension.MethodForClass `hash:"3102165223"`
+	get_body_type           gdextension.MethodForClass `hash:"201670096"`
+	set_body_type           gdextension.MethodForClass `hash:"83702148"`
+	get_mass                gdextension.MethodForClass `hash:"1740695150"`
+	set_mass                gdextension.MethodForClass `hash:"373806689"`
+	get_linear_velocity     gdextension.MethodForClass `hash:"3360562783"`
+	set_linear_velocity     gdextension.MethodForClass `hash:"3460891852"`
+	get_angular_velocity    gdextension.MethodForClass `hash:"3360562783"`
+	set_angular_velocity    gdextension.MethodForClass `hash:"3460891852"`
+	get_center_of_mass      gdextension.MethodForClass `hash:"3360562783"`
+	set_center_of_mass      gdextension.MethodForClass `hash:"3460891852"`
+	get_inertia_diagonal    gdextension.MethodForClass `hash:"3360562783"`
+	set_inertia_diagonal    gdextension.MethodForClass `hash:"3460891852"`
+	get_inertia_orientation gdextension.MethodForClass `hash:"1222331677"`
+	set_inertia_orientation gdextension.MethodForClass `hash:"1727505552"`
+	get_inertia_tensor      gdextension.MethodForClass `hash:"2716978435"`
+	set_inertia_tensor      gdextension.MethodForClass `hash:"1055510324"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("GLTFPhysicsBody")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -120,6 +155,20 @@ type Advanced = class
 type class [1]gdclass.GLTFPhysicsBody
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GLTFPhysicsBody)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GLTFPhysicsBody)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -129,7 +178,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("GLTFPhysicsBody"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GLTFPhysicsBody)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -205,7 +254,7 @@ Creates a new GLTFPhysicsBody instance from the given Godot [CollisionObject3D] 
 */
 //go:nosplit
 func (self class) FromNode(body_node [1]gdclass.CollisionObject3D) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_node
-	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_from_node), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(body_node[0].AsObject()))}))
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(body_node[0].AsObject()))}))
 	var ret = [1]gdclass.GLTFPhysicsBody{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsBody](r_ret)}
 	return ret
 }
@@ -215,7 +264,7 @@ Converts this GLTFPhysicsBody instance into a Godot [CollisionObject3D] node.
 */
 //go:nosplit
 func (self class) ToNode() [1]gdclass.CollisionObject3D { //gd:GLTFPhysicsBody.to_node
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_to_node), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_node, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.CollisionObject3D{gd.PointerWithOwnershipTransferredToGo[gdclass.CollisionObject3D](r_ret)}
 	return ret
 }
@@ -225,7 +274,7 @@ Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the 
 */
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_dictionary
-	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_from_dictionary), gdextension.SizeObject|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))}))
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_dictionary, gdextension.SizeObject|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))}))
 	var ret = [1]gdclass.GLTFPhysicsBody{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsBody](r_ret)}
 	return ret
 }
@@ -235,105 +284,105 @@ Serializes this GLTFPhysicsBody instance into a [Dictionary]. It will be in the 
 */
 //go:nosplit
 func (self class) ToDictionary() Dictionary.Any { //gd:GLTFPhysicsBody.to_dictionary
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_to_dictionary), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.to_dictionary, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetBodyType() String.Readable { //gd:GLTFPhysicsBody.get_body_type
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_get_body_type), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_body_type, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBodyType(body_type String.Readable) { //gd:GLTFPhysicsBody.set_body_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_set_body_type), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ body_type gdextension.String }{pointers.Get(gd.InternalString(body_type))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_body_type, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ body_type gdextension.String }{pointers.Get(gd.InternalString(body_type))}))
 }
 
 //go:nosplit
 func (self class) GetMass() float64 { //gd:GLTFPhysicsBody.get_mass
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_get_mass), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mass, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMass(mass float64) { //gd:GLTFPhysicsBody.set_mass
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_set_mass), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mass float64 }{mass}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mass, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mass float64 }{mass}))
 }
 
 //go:nosplit
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:GLTFPhysicsBody.get_linear_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_get_linear_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearVelocity(linear_velocity Vector3.XYZ) { //gd:GLTFPhysicsBody.set_linear_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_set_linear_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ linear_velocity Vector3.XYZ }{linear_velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ linear_velocity Vector3.XYZ }{linear_velocity}))
 }
 
 //go:nosplit
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:GLTFPhysicsBody.get_angular_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_get_angular_velocity), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularVelocity(angular_velocity Vector3.XYZ) { //gd:GLTFPhysicsBody.set_angular_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_set_angular_velocity), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ angular_velocity Vector3.XYZ }{angular_velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ angular_velocity Vector3.XYZ }{angular_velocity}))
 }
 
 //go:nosplit
 func (self class) GetCenterOfMass() Vector3.XYZ { //gd:GLTFPhysicsBody.get_center_of_mass
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_get_center_of_mass), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCenterOfMass(center_of_mass Vector3.XYZ) { //gd:GLTFPhysicsBody.set_center_of_mass
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_set_center_of_mass), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ center_of_mass Vector3.XYZ }{center_of_mass}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_center_of_mass, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ center_of_mass Vector3.XYZ }{center_of_mass}))
 }
 
 //go:nosplit
 func (self class) GetInertiaDiagonal() Vector3.XYZ { //gd:GLTFPhysicsBody.get_inertia_diagonal
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_get_inertia_diagonal), gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inertia_diagonal, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInertiaDiagonal(inertia_diagonal Vector3.XYZ) { //gd:GLTFPhysicsBody.set_inertia_diagonal
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_set_inertia_diagonal), 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ inertia_diagonal Vector3.XYZ }{inertia_diagonal}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia_diagonal, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ inertia_diagonal Vector3.XYZ }{inertia_diagonal}))
 }
 
 //go:nosplit
 func (self class) GetInertiaOrientation() Quaternion.IJKX { //gd:GLTFPhysicsBody.get_inertia_orientation
-	var r_ret = gdextension.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_get_inertia_orientation), gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_inertia_orientation, gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInertiaOrientation(inertia_orientation Quaternion.IJKX) { //gd:GLTFPhysicsBody.set_inertia_orientation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_set_inertia_orientation), 0|(gdextension.SizeQuaternion<<4), unsafe.Pointer(&struct{ inertia_orientation Quaternion.IJKX }{inertia_orientation}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia_orientation, 0|(gdextension.SizeQuaternion<<4), unsafe.Pointer(&struct{ inertia_orientation Quaternion.IJKX }{inertia_orientation}))
 }
 
 //go:nosplit
 func (self class) GetInertiaTensor() Basis.XYZ { //gd:GLTFPhysicsBody.get_inertia_tensor
-	var r_ret = gdextension.Call[Basis.XYZ](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_get_inertia_tensor), gdextension.SizeBasis, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Basis.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_inertia_tensor, gdextension.SizeBasis, unsafe.Pointer(&struct{}{}))
 	var ret = Basis.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInertiaTensor(inertia_tensor Basis.XYZ) { //gd:GLTFPhysicsBody.set_inertia_tensor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFPhysicsBody.Bind_set_inertia_tensor), 0|(gdextension.SizeBasis<<4), unsafe.Pointer(&struct{ inertia_tensor Basis.XYZ }{Basis.Transposed(inertia_tensor)}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inertia_tensor, 0|(gdextension.SizeBasis<<4), unsafe.Pointer(&struct{ inertia_tensor Basis.XYZ }{Basis.Transposed(inertia_tensor)}))
 }
 func (self class) AsGLTFPhysicsBody() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGLTFPhysicsBody() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -367,9 +416,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFPhysicsBody", func(ptr gd.Object) any {
-		return [1]gdclass.GLTFPhysicsBody{*(*gdclass.GLTFPhysicsBody)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("GLTFPhysicsBody", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Structure map[interface{}]interface{}

@@ -75,6 +75,27 @@ To ensure proper cleanup without crashes or deadlocks, when a [Thread]'s referen
 */
 type Instance [1]gdclass.Thread
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	start                            gdextension.MethodForClass `hash:"1327203254"`
+	get_id                           gdextension.MethodForClass `hash:"201670096"`
+	is_started                       gdextension.MethodForClass `hash:"36873697"`
+	is_alive                         gdextension.MethodForClass `hash:"36873697"`
+	wait_to_finish                   gdextension.MethodForClass `hash:"1460262497"`
+	set_thread_safety_checks_enabled gdextension.MethodForClass `hash:"2586408642"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Thread")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Thread
@@ -157,6 +178,20 @@ type Advanced = class
 type class [1]gdclass.Thread
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Thread)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Thread)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -166,7 +201,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Thread"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Thread)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -181,7 +216,7 @@ Returns [constant OK] on success, or [constant ERR_CANT_CREATE] on failure.
 */
 //go:nosplit
 func (self class) Start(callable Callable.Function, priority Priority) Error.Code { //gd:Thread.start
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_start), gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		callable gdextension.Callable
 		priority Priority
 	}{pointers.Get(gd.InternalCallable(callable)), priority}))
@@ -194,7 +229,7 @@ Returns the current [Thread]'s ID, uniquely identifying it among all threads. If
 */
 //go:nosplit
 func (self class) GetId() String.Readable { //gd:Thread.get_id
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_get_id), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -204,7 +239,7 @@ Returns [code]true[/code] if this [Thread] has been started. Once started, this 
 */
 //go:nosplit
 func (self class) IsStarted() bool { //gd:Thread.is_started
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_is_started), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_started, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -215,7 +250,7 @@ To check if a [Thread] is joinable, use [method is_started].
 */
 //go:nosplit
 func (self class) IsAlive() bool { //gd:Thread.is_alive
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_is_alive), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_alive, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -227,7 +262,7 @@ To determine if this can be called without blocking the calling thread, check if
 */
 //go:nosplit
 func (self class) WaitToFinish() variant.Any { //gd:Thread.wait_to_finish
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_wait_to_finish), gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.wait_to_finish, gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -243,7 +278,7 @@ Because of that, there may be cases where the user may want to disable them ([pa
 */
 //go:nosplit
 func (self class) SetThreadSafetyChecksEnabled(enabled bool) { //gd:Thread.set_thread_safety_checks_enabled
-	gdextension.CallStatic[struct{}](gdextension.MethodForClass(gd.Global.Methods.Thread.Bind_set_thread_safety_checks_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.CallStatic[struct{}](methods.set_thread_safety_checks_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 func (self class) AsThread() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsThread() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -270,7 +305,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Thread", func(ptr gd.Object) any { return [1]gdclass.Thread{*(*gdclass.Thread)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Thread", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Priority int //gd:Thread.Priority

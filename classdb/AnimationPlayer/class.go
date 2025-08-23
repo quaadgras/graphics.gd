@@ -76,6 +76,74 @@ Updating the target properties of animations occurs at the process frame.
 */
 type Instance [1]gdclass.AnimationPlayer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	animation_set_next                  gdextension.MethodForClass `hash:"3740211285"`
+	animation_get_next                  gdextension.MethodForClass `hash:"1965194235"`
+	set_blend_time                      gdextension.MethodForClass `hash:"3231131886"`
+	get_blend_time                      gdextension.MethodForClass `hash:"1958752504"`
+	set_default_blend_time              gdextension.MethodForClass `hash:"373806689"`
+	get_default_blend_time              gdextension.MethodForClass `hash:"1740695150"`
+	set_auto_capture                    gdextension.MethodForClass `hash:"2586408642"`
+	is_auto_capture                     gdextension.MethodForClass `hash:"36873697"`
+	set_auto_capture_duration           gdextension.MethodForClass `hash:"373806689"`
+	get_auto_capture_duration           gdextension.MethodForClass `hash:"1740695150"`
+	set_auto_capture_transition_type    gdextension.MethodForClass `hash:"1058637742"`
+	get_auto_capture_transition_type    gdextension.MethodForClass `hash:"3842314528"`
+	set_auto_capture_ease_type          gdextension.MethodForClass `hash:"1208105857"`
+	get_auto_capture_ease_type          gdextension.MethodForClass `hash:"631880200"`
+	play                                gdextension.MethodForClass `hash:"3118260607"`
+	play_section_with_markers           gdextension.MethodForClass `hash:"1421431412"`
+	play_section                        gdextension.MethodForClass `hash:"284774635"`
+	play_backwards                      gdextension.MethodForClass `hash:"2787282401"`
+	play_section_with_markers_backwards gdextension.MethodForClass `hash:"910195100"`
+	play_section_backwards              gdextension.MethodForClass `hash:"831955981"`
+	play_with_capture                   gdextension.MethodForClass `hash:"1572969103"`
+	pause                               gdextension.MethodForClass `hash:"3218959716"`
+	stop                                gdextension.MethodForClass `hash:"107499316"`
+	is_playing                          gdextension.MethodForClass `hash:"36873697"`
+	set_current_animation               gdextension.MethodForClass `hash:"83702148"`
+	get_current_animation               gdextension.MethodForClass `hash:"201670096"`
+	set_assigned_animation              gdextension.MethodForClass `hash:"83702148"`
+	get_assigned_animation              gdextension.MethodForClass `hash:"201670096"`
+	queue                               gdextension.MethodForClass `hash:"3304788590"`
+	get_queue                           gdextension.MethodForClass `hash:"2981934095"`
+	clear_queue                         gdextension.MethodForClass `hash:"3218959716"`
+	set_speed_scale                     gdextension.MethodForClass `hash:"373806689"`
+	get_speed_scale                     gdextension.MethodForClass `hash:"1740695150"`
+	get_playing_speed                   gdextension.MethodForClass `hash:"1740695150"`
+	set_autoplay                        gdextension.MethodForClass `hash:"83702148"`
+	get_autoplay                        gdextension.MethodForClass `hash:"201670096"`
+	set_movie_quit_on_finish_enabled    gdextension.MethodForClass `hash:"2586408642"`
+	is_movie_quit_on_finish_enabled     gdextension.MethodForClass `hash:"36873697"`
+	get_current_animation_position      gdextension.MethodForClass `hash:"1740695150"`
+	get_current_animation_length        gdextension.MethodForClass `hash:"1740695150"`
+	set_section_with_markers            gdextension.MethodForClass `hash:"794792241"`
+	set_section                         gdextension.MethodForClass `hash:"3749779719"`
+	reset_section                       gdextension.MethodForClass `hash:"3218959716"`
+	get_section_start_time              gdextension.MethodForClass `hash:"1740695150"`
+	get_section_end_time                gdextension.MethodForClass `hash:"1740695150"`
+	has_section                         gdextension.MethodForClass `hash:"36873697"`
+	seek                                gdextension.MethodForClass `hash:"1807872683"`
+	set_process_callback                gdextension.MethodForClass `hash:"1663839457"`
+	get_process_callback                gdextension.MethodForClass `hash:"4207496604"`
+	set_method_call_mode                gdextension.MethodForClass `hash:"3413514846"`
+	get_method_call_mode                gdextension.MethodForClass `hash:"3583380054"`
+	set_root                            gdextension.MethodForClass `hash:"1348162250"`
+	get_root                            gdextension.MethodForClass `hash:"4075236667"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AnimationPlayer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.AnimationPlayer
@@ -432,6 +500,20 @@ type Advanced = class
 type class [1]gdclass.AnimationPlayer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AnimationPlayer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AnimationPlayer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -441,7 +523,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AnimationPlayer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AnimationPlayer)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -540,7 +622,7 @@ Triggers the [param animation_to] animation when the [param animation_from] anim
 */
 //go:nosplit
 func (self class) AnimationSetNext(animation_from String.Name, animation_to String.Name) { //gd:AnimationPlayer.animation_set_next
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_animation_set_next), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.animation_set_next, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		animation_from gdextension.StringName
 		animation_to   gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(animation_from)), pointers.Get(gd.InternalStringName(animation_to))}))
@@ -551,7 +633,7 @@ Returns the key of the animation which is queued to play after the [param animat
 */
 //go:nosplit
 func (self class) AnimationGetNext(animation_from String.Name) String.Name { //gd:AnimationPlayer.animation_get_next
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_animation_get_next), gdextension.SizeStringName|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ animation_from gdextension.StringName }{pointers.Get(gd.InternalStringName(animation_from))}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.animation_get_next, gdextension.SizeStringName|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ animation_from gdextension.StringName }{pointers.Get(gd.InternalStringName(animation_from))}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -561,7 +643,7 @@ Specifies a blend time (in seconds) between two animations, referenced by their 
 */
 //go:nosplit
 func (self class) SetBlendTime(animation_from String.Name, animation_to String.Name, sec float64) { //gd:AnimationPlayer.set_blend_time
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_blend_time), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_time, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
 		animation_from gdextension.StringName
 		animation_to   gdextension.StringName
 		sec            float64
@@ -573,7 +655,7 @@ Returns the blend time (in seconds) between two animations, referenced by their 
 */
 //go:nosplit
 func (self class) GetBlendTime(animation_from String.Name, animation_to String.Name) float64 { //gd:AnimationPlayer.get_blend_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_blend_time), gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_blend_time, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		animation_from gdextension.StringName
 		animation_to   gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(animation_from)), pointers.Get(gd.InternalStringName(animation_to))}))
@@ -583,60 +665,60 @@ func (self class) GetBlendTime(animation_from String.Name, animation_to String.N
 
 //go:nosplit
 func (self class) SetDefaultBlendTime(sec float64) { //gd:AnimationPlayer.set_default_blend_time
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_default_blend_time), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sec float64 }{sec}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_blend_time, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ sec float64 }{sec}))
 }
 
 //go:nosplit
 func (self class) GetDefaultBlendTime() float64 { //gd:AnimationPlayer.get_default_blend_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_default_blend_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_default_blend_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoCapture(auto_capture bool) { //gd:AnimationPlayer.set_auto_capture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_auto_capture), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ auto_capture bool }{auto_capture}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ auto_capture bool }{auto_capture}))
 }
 
 //go:nosplit
 func (self class) IsAutoCapture() bool { //gd:AnimationPlayer.is_auto_capture
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_is_auto_capture), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_capture, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoCaptureDuration(auto_capture_duration float64) { //gd:AnimationPlayer.set_auto_capture_duration
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_auto_capture_duration), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ auto_capture_duration float64 }{auto_capture_duration}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_duration, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ auto_capture_duration float64 }{auto_capture_duration}))
 }
 
 //go:nosplit
 func (self class) GetAutoCaptureDuration() float64 { //gd:AnimationPlayer.get_auto_capture_duration
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_auto_capture_duration), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_duration, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoCaptureTransitionType(auto_capture_transition_type Tween.TransitionType) { //gd:AnimationPlayer.set_auto_capture_transition_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_auto_capture_transition_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ auto_capture_transition_type Tween.TransitionType }{auto_capture_transition_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_transition_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ auto_capture_transition_type Tween.TransitionType }{auto_capture_transition_type}))
 }
 
 //go:nosplit
 func (self class) GetAutoCaptureTransitionType() Tween.TransitionType { //gd:AnimationPlayer.get_auto_capture_transition_type
-	var r_ret = gdextension.Call[Tween.TransitionType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_auto_capture_transition_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Tween.TransitionType](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_transition_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoCaptureEaseType(auto_capture_ease_type Tween.EaseType) { //gd:AnimationPlayer.set_auto_capture_ease_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_auto_capture_ease_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ auto_capture_ease_type Tween.EaseType }{auto_capture_ease_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_ease_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ auto_capture_ease_type Tween.EaseType }{auto_capture_ease_type}))
 }
 
 //go:nosplit
 func (self class) GetAutoCaptureEaseType() Tween.EaseType { //gd:AnimationPlayer.get_auto_capture_ease_type
-	var r_ret = gdextension.Call[Tween.EaseType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_auto_capture_ease_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Tween.EaseType](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_ease_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -649,7 +731,7 @@ The [AnimationPlayer] keeps track of its current or last played animation with [
 */
 //go:nosplit
 func (self class) Play(name String.Name, custom_blend float64, custom_speed float64, from_end bool) { //gd:AnimationPlayer.play
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_play), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		name         gdextension.StringName
 		custom_blend float64
 		custom_speed float64
@@ -663,7 +745,7 @@ If the start marker is empty, the section starts from the beginning of the anima
 */
 //go:nosplit
 func (self class) PlaySectionWithMarkers(name String.Name, start_marker String.Name, end_marker String.Name, custom_blend float64, custom_speed float64, from_end bool) { //gd:AnimationPlayer.play_section_with_markers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_play_section_with_markers), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section_with_markers, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
 		name         gdextension.StringName
 		start_marker gdextension.StringName
 		end_marker   gdextension.StringName
@@ -679,7 +761,7 @@ Setting [param start_time] to a value outside the range of the animation means t
 */
 //go:nosplit
 func (self class) PlaySection(name String.Name, start_time float64, end_time float64, custom_blend float64, custom_speed float64, from_end bool) { //gd:AnimationPlayer.play_section
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_play_section), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
 		name         gdextension.StringName
 		start_time   float64
 		end_time     float64
@@ -695,7 +777,7 @@ This method is a shorthand for [method play] with [code]custom_speed = -1.0[/cod
 */
 //go:nosplit
 func (self class) PlayBackwards(name String.Name, custom_blend float64) { //gd:AnimationPlayer.play_backwards
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_play_backwards), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_backwards, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		name         gdextension.StringName
 		custom_blend float64
 	}{pointers.Get(gd.InternalStringName(name)), custom_blend}))
@@ -707,7 +789,7 @@ This method is a shorthand for [method play_section_with_markers] with [code]cus
 */
 //go:nosplit
 func (self class) PlaySectionWithMarkersBackwards(name String.Name, start_marker String.Name, end_marker String.Name, custom_blend float64) { //gd:AnimationPlayer.play_section_with_markers_backwards
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_play_section_with_markers_backwards), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section_with_markers_backwards, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
 		name         gdextension.StringName
 		start_marker gdextension.StringName
 		end_marker   gdextension.StringName
@@ -721,7 +803,7 @@ This method is a shorthand for [method play_section] with [code]custom_speed = -
 */
 //go:nosplit
 func (self class) PlaySectionBackwards(name String.Name, start_time float64, end_time float64, custom_blend float64) { //gd:AnimationPlayer.play_section_backwards
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_play_section_backwards), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section_backwards, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
 		name         gdextension.StringName
 		start_time   float64
 		end_time     float64
@@ -742,7 +824,7 @@ If [param duration] is a negative value, the duration is set to the interval bet
 */
 //go:nosplit
 func (self class) PlayWithCapture(name String.Name, duration float64, custom_blend float64, custom_speed float64, from_end bool, trans_type Tween.TransitionType, ease_type Tween.EaseType) { //gd:AnimationPlayer.play_with_capture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_play_with_capture), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_with_capture, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), unsafe.Pointer(&struct {
 		name         gdextension.StringName
 		duration     float64
 		custom_blend float64
@@ -759,7 +841,7 @@ See also [method stop].
 */
 //go:nosplit
 func (self class) Pause() { //gd:AnimationPlayer.pause
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_pause), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pause, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -769,7 +851,7 @@ If [param keep_state] is [code]true[/code], the animation state is not updated v
 */
 //go:nosplit
 func (self class) Stop(keep_state bool) { //gd:AnimationPlayer.stop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_stop), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep_state bool }{keep_state}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep_state bool }{keep_state}))
 }
 
 /*
@@ -777,31 +859,31 @@ Returns [code]true[/code] if an animation is currently playing (even if [member 
 */
 //go:nosplit
 func (self class) IsPlaying() bool { //gd:AnimationPlayer.is_playing
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_is_playing), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurrentAnimation(animation String.Readable) { //gd:AnimationPlayer.set_current_animation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_current_animation), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_animation, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))}))
 }
 
 //go:nosplit
 func (self class) GetCurrentAnimation() String.Readable { //gd:AnimationPlayer.get_current_animation
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_animation, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAssignedAnimation(animation String.Readable) { //gd:AnimationPlayer.set_assigned_animation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_assigned_animation), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_assigned_animation, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))}))
 }
 
 //go:nosplit
 func (self class) GetAssignedAnimation() String.Readable { //gd:AnimationPlayer.get_assigned_animation
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_assigned_animation), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_assigned_animation, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -812,7 +894,7 @@ Queues an animation for playback once the current animation and all previously q
 */
 //go:nosplit
 func (self class) Queue(name String.Name) { //gd:AnimationPlayer.queue
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_queue), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
 }
 
 /*
@@ -820,7 +902,7 @@ Returns a list of the animation keys that are currently queued to play.
 */
 //go:nosplit
 func (self class) GetQueue() Packed.Strings { //gd:AnimationPlayer.get_queue
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_queue), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_queue, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -830,17 +912,17 @@ Clears all queued, unplayed animations.
 */
 //go:nosplit
 func (self class) ClearQueue() { //gd:AnimationPlayer.clear_queue
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_clear_queue), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_queue, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetSpeedScale(speed float64) { //gd:AnimationPlayer.set_speed_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_speed_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ speed float64 }{speed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ speed float64 }{speed}))
 }
 
 //go:nosplit
 func (self class) GetSpeedScale() float64 { //gd:AnimationPlayer.get_speed_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_speed_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -851,45 +933,45 @@ Returns a negative value if the current animation is playing backwards.
 */
 //go:nosplit
 func (self class) GetPlayingSpeed() float64 { //gd:AnimationPlayer.get_playing_speed
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_playing_speed), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playing_speed, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoplay(name String.Readable) { //gd:AnimationPlayer.set_autoplay
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_autoplay), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 }
 
 //go:nosplit
 func (self class) GetAutoplay() String.Readable { //gd:AnimationPlayer.get_autoplay
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_autoplay), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMovieQuitOnFinishEnabled(enabled bool) { //gd:AnimationPlayer.set_movie_quit_on_finish_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_movie_quit_on_finish_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_movie_quit_on_finish_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsMovieQuitOnFinishEnabled() bool { //gd:AnimationPlayer.is_movie_quit_on_finish_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_is_movie_quit_on_finish_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_movie_quit_on_finish_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCurrentAnimationPosition() float64 { //gd:AnimationPlayer.get_current_animation_position
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation_position), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_animation_position, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCurrentAnimationLength() float64 { //gd:AnimationPlayer.get_current_animation_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_current_animation_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_animation_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -900,7 +982,7 @@ If the argument is empty, the section uses the beginning or end of the animation
 */
 //go:nosplit
 func (self class) SetSectionWithMarkers(start_marker String.Name, end_marker String.Name) { //gd:AnimationPlayer.set_section_with_markers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_section_with_markers), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_with_markers, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		start_marker gdextension.StringName
 		end_marker   gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(start_marker)), pointers.Get(gd.InternalStringName(end_marker))}))
@@ -911,7 +993,7 @@ Changes the start and end times of the section being played. The current playbac
 */
 //go:nosplit
 func (self class) SetSection(start_time float64, end_time float64) { //gd:AnimationPlayer.set_section
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_section), 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		start_time float64
 		end_time   float64
 	}{start_time, end_time}))
@@ -922,7 +1004,7 @@ Resets the current section if section is set.
 */
 //go:nosplit
 func (self class) ResetSection() { //gd:AnimationPlayer.reset_section
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_reset_section), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_section, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -930,7 +1012,7 @@ Returns the start time of the section currently being played.
 */
 //go:nosplit
 func (self class) GetSectionStartTime() float64 { //gd:AnimationPlayer.get_section_start_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_section_start_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_start_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -940,7 +1022,7 @@ Returns the end time of the section currently being played.
 */
 //go:nosplit
 func (self class) GetSectionEndTime() float64 { //gd:AnimationPlayer.get_section_end_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_section_end_time), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_end_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -950,7 +1032,7 @@ Returns [code]true[/code] if an animation is currently playing with section.
 */
 //go:nosplit
 func (self class) HasSection() bool { //gd:AnimationPlayer.has_section
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_has_section), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_section, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -962,7 +1044,7 @@ If [param update_only] is [code]true[/code], the method / audio / animation play
 */
 //go:nosplit
 func (self class) SeekTo(seconds float64, update bool, update_only bool) { //gd:AnimationPlayer.seek
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_seek), 0|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		seconds     float64
 		update      bool
 		update_only bool
@@ -974,7 +1056,7 @@ Sets the process notification in which to update animations.
 */
 //go:nosplit
 func (self class) SetProcessCallback(mode AnimationProcessCallback) { //gd:AnimationPlayer.set_process_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_process_callback), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationProcessCallback }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_callback, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationProcessCallback }{mode}))
 }
 
 /*
@@ -982,7 +1064,7 @@ Returns the process notification in which to update animations.
 */
 //go:nosplit
 func (self class) GetProcessCallback() AnimationProcessCallback { //gd:AnimationPlayer.get_process_callback
-	var r_ret = gdextension.Call[AnimationProcessCallback](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_process_callback), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AnimationProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_process_callback, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -992,7 +1074,7 @@ Sets the call mode used for "Call Method" tracks.
 */
 //go:nosplit
 func (self class) SetMethodCallMode(mode AnimationMethodCallMode) { //gd:AnimationPlayer.set_method_call_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_method_call_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationMethodCallMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_method_call_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AnimationMethodCallMode }{mode}))
 }
 
 /*
@@ -1000,7 +1082,7 @@ Returns the call mode used for "Call Method" tracks.
 */
 //go:nosplit
 func (self class) GetMethodCallMode() AnimationMethodCallMode { //gd:AnimationPlayer.get_method_call_mode
-	var r_ret = gdextension.Call[AnimationMethodCallMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_method_call_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AnimationMethodCallMode](gd.ObjectChecked(self.AsObject()), methods.get_method_call_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1010,7 +1092,7 @@ Sets the node which node path references will travel from.
 */
 //go:nosplit
 func (self class) SetRoot(path Path.ToNode) { //gd:AnimationPlayer.set_root
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_set_root), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 }
 
 /*
@@ -1018,7 +1100,7 @@ Returns the node which node path references will travel from.
 */
 //go:nosplit
 func (self class) GetRoot() Path.ToNode { //gd:AnimationPlayer.get_root
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AnimationPlayer.Bind_get_root), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -1060,9 +1142,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AnimationPlayer", func(ptr gd.Object) any {
-		return [1]gdclass.AnimationPlayer{*(*gdclass.AnimationPlayer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AnimationPlayer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type AnimationProcessCallback int //gd:AnimationPlayer.AnimationProcessCallback

@@ -134,6 +134,27 @@ See also [AudioEffectSpectrumAnalyzer] for performing real-time audio spectrum a
 */
 type Instance [1]gdclass.AudioStreamGenerator
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_mix_rate      gdextension.MethodForClass `hash:"373806689"`
+	get_mix_rate      gdextension.MethodForClass `hash:"1740695150"`
+	set_mix_rate_mode gdextension.MethodForClass `hash:"3354885803"`
+	get_mix_rate_mode gdextension.MethodForClass `hash:"3537132591"`
+	set_buffer_length gdextension.MethodForClass `hash:"373806689"`
+	get_buffer_length gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioStreamGenerator")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -149,6 +170,20 @@ type Advanced = class
 type class [1]gdclass.AudioStreamGenerator
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioStreamGenerator)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioStreamGenerator)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -158,7 +193,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioStreamGenerator"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioStreamGenerator)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -191,36 +226,36 @@ func (self Instance) SetBufferLength(value Float.X) {
 
 //go:nosplit
 func (self class) SetMixRate(hz float64) { //gd:AudioStreamGenerator.set_mix_rate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamGenerator.Bind_set_mix_rate), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ hz float64 }{hz}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_rate, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ hz float64 }{hz}))
 }
 
 //go:nosplit
 func (self class) GetMixRate() float64 { //gd:AudioStreamGenerator.get_mix_rate
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamGenerator.Bind_get_mix_rate), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mix_rate, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMixRateMode(mode AudioStreamGeneratorMixRate) { //gd:AudioStreamGenerator.set_mix_rate_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamGenerator.Bind_set_mix_rate_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AudioStreamGeneratorMixRate }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_rate_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode AudioStreamGeneratorMixRate }{mode}))
 }
 
 //go:nosplit
 func (self class) GetMixRateMode() AudioStreamGeneratorMixRate { //gd:AudioStreamGenerator.get_mix_rate_mode
-	var r_ret = gdextension.Call[AudioStreamGeneratorMixRate](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamGenerator.Bind_get_mix_rate_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AudioStreamGeneratorMixRate](gd.ObjectChecked(self.AsObject()), methods.get_mix_rate_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBufferLength(seconds float64) { //gd:AudioStreamGenerator.set_buffer_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamGenerator.Bind_set_buffer_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ seconds float64 }{seconds}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ seconds float64 }{seconds}))
 }
 
 //go:nosplit
 func (self class) GetBufferLength() float64 { //gd:AudioStreamGenerator.get_buffer_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamGenerator.Bind_get_buffer_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_buffer_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -265,9 +300,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioStreamGenerator", func(ptr gd.Object) any {
-		return [1]gdclass.AudioStreamGenerator{*(*gdclass.AudioStreamGenerator)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioStreamGenerator", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type AudioStreamGeneratorMixRate int //gd:AudioStreamGenerator.AudioStreamGeneratorMixRate

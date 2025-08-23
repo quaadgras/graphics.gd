@@ -70,6 +70,47 @@ Parameters to be used with a [Mesh] convex decomposition operation.
 */
 type Instance [1]gdclass.MeshConvexDecompositionSettings
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_max_concavity                    gdextension.MethodForClass `hash:"373806689"`
+	get_max_concavity                    gdextension.MethodForClass `hash:"1740695150"`
+	set_symmetry_planes_clipping_bias    gdextension.MethodForClass `hash:"373806689"`
+	get_symmetry_planes_clipping_bias    gdextension.MethodForClass `hash:"1740695150"`
+	set_revolution_axes_clipping_bias    gdextension.MethodForClass `hash:"373806689"`
+	get_revolution_axes_clipping_bias    gdextension.MethodForClass `hash:"1740695150"`
+	set_min_volume_per_convex_hull       gdextension.MethodForClass `hash:"373806689"`
+	get_min_volume_per_convex_hull       gdextension.MethodForClass `hash:"1740695150"`
+	set_resolution                       gdextension.MethodForClass `hash:"1286410249"`
+	get_resolution                       gdextension.MethodForClass `hash:"3905245786"`
+	set_max_num_vertices_per_convex_hull gdextension.MethodForClass `hash:"1286410249"`
+	get_max_num_vertices_per_convex_hull gdextension.MethodForClass `hash:"3905245786"`
+	set_plane_downsampling               gdextension.MethodForClass `hash:"1286410249"`
+	get_plane_downsampling               gdextension.MethodForClass `hash:"3905245786"`
+	set_convex_hull_downsampling         gdextension.MethodForClass `hash:"1286410249"`
+	get_convex_hull_downsampling         gdextension.MethodForClass `hash:"3905245786"`
+	set_normalize_mesh                   gdextension.MethodForClass `hash:"2586408642"`
+	get_normalize_mesh                   gdextension.MethodForClass `hash:"36873697"`
+	set_mode                             gdextension.MethodForClass `hash:"1668072869"`
+	get_mode                             gdextension.MethodForClass `hash:"23479454"`
+	set_convex_hull_approximation        gdextension.MethodForClass `hash:"2586408642"`
+	get_convex_hull_approximation        gdextension.MethodForClass `hash:"36873697"`
+	set_max_convex_hulls                 gdextension.MethodForClass `hash:"1286410249"`
+	get_max_convex_hulls                 gdextension.MethodForClass `hash:"3905245786"`
+	set_project_hull_vertices            gdextension.MethodForClass `hash:"2586408642"`
+	get_project_hull_vertices            gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("MeshConvexDecompositionSettings")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -85,6 +126,20 @@ type Advanced = class
 type class [1]gdclass.MeshConvexDecompositionSettings
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MeshConvexDecompositionSettings)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MeshConvexDecompositionSettings)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -94,7 +149,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("MeshConvexDecompositionSettings"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.MeshConvexDecompositionSettings)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -207,156 +262,156 @@ func (self Instance) SetProjectHullVertices(value bool) {
 
 //go:nosplit
 func (self class) SetMaxConcavity(max_concavity float64) { //gd:MeshConvexDecompositionSettings.set_max_concavity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_max_concavity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ max_concavity float64 }{max_concavity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_concavity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ max_concavity float64 }{max_concavity}))
 }
 
 //go:nosplit
 func (self class) GetMaxConcavity() float64 { //gd:MeshConvexDecompositionSettings.get_max_concavity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_max_concavity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_concavity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSymmetryPlanesClippingBias(symmetry_planes_clipping_bias float64) { //gd:MeshConvexDecompositionSettings.set_symmetry_planes_clipping_bias
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_symmetry_planes_clipping_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ symmetry_planes_clipping_bias float64 }{symmetry_planes_clipping_bias}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_symmetry_planes_clipping_bias, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ symmetry_planes_clipping_bias float64 }{symmetry_planes_clipping_bias}))
 }
 
 //go:nosplit
 func (self class) GetSymmetryPlanesClippingBias() float64 { //gd:MeshConvexDecompositionSettings.get_symmetry_planes_clipping_bias
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_symmetry_planes_clipping_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_symmetry_planes_clipping_bias, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRevolutionAxesClippingBias(revolution_axes_clipping_bias float64) { //gd:MeshConvexDecompositionSettings.set_revolution_axes_clipping_bias
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_revolution_axes_clipping_bias), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ revolution_axes_clipping_bias float64 }{revolution_axes_clipping_bias}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_revolution_axes_clipping_bias, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ revolution_axes_clipping_bias float64 }{revolution_axes_clipping_bias}))
 }
 
 //go:nosplit
 func (self class) GetRevolutionAxesClippingBias() float64 { //gd:MeshConvexDecompositionSettings.get_revolution_axes_clipping_bias
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_revolution_axes_clipping_bias), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_revolution_axes_clipping_bias, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinVolumePerConvexHull(min_volume_per_convex_hull float64) { //gd:MeshConvexDecompositionSettings.set_min_volume_per_convex_hull
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_min_volume_per_convex_hull), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ min_volume_per_convex_hull float64 }{min_volume_per_convex_hull}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_volume_per_convex_hull, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ min_volume_per_convex_hull float64 }{min_volume_per_convex_hull}))
 }
 
 //go:nosplit
 func (self class) GetMinVolumePerConvexHull() float64 { //gd:MeshConvexDecompositionSettings.get_min_volume_per_convex_hull
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_min_volume_per_convex_hull), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_volume_per_convex_hull, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetResolution(min_volume_per_convex_hull int64) { //gd:MeshConvexDecompositionSettings.set_resolution
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_resolution), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ min_volume_per_convex_hull int64 }{min_volume_per_convex_hull}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resolution, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ min_volume_per_convex_hull int64 }{min_volume_per_convex_hull}))
 }
 
 //go:nosplit
 func (self class) GetResolution() int64 { //gd:MeshConvexDecompositionSettings.get_resolution
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_resolution), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_resolution, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxNumVerticesPerConvexHull(max_num_vertices_per_convex_hull int64) { //gd:MeshConvexDecompositionSettings.set_max_num_vertices_per_convex_hull
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_max_num_vertices_per_convex_hull), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_num_vertices_per_convex_hull int64 }{max_num_vertices_per_convex_hull}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_num_vertices_per_convex_hull, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_num_vertices_per_convex_hull int64 }{max_num_vertices_per_convex_hull}))
 }
 
 //go:nosplit
 func (self class) GetMaxNumVerticesPerConvexHull() int64 { //gd:MeshConvexDecompositionSettings.get_max_num_vertices_per_convex_hull
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_max_num_vertices_per_convex_hull), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_num_vertices_per_convex_hull, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlaneDownsampling(plane_downsampling int64) { //gd:MeshConvexDecompositionSettings.set_plane_downsampling
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_plane_downsampling), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ plane_downsampling int64 }{plane_downsampling}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plane_downsampling, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ plane_downsampling int64 }{plane_downsampling}))
 }
 
 //go:nosplit
 func (self class) GetPlaneDownsampling() int64 { //gd:MeshConvexDecompositionSettings.get_plane_downsampling
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_plane_downsampling), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_plane_downsampling, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetConvexHullDownsampling(convex_hull_downsampling int64) { //gd:MeshConvexDecompositionSettings.set_convex_hull_downsampling
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_convex_hull_downsampling), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ convex_hull_downsampling int64 }{convex_hull_downsampling}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_convex_hull_downsampling, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ convex_hull_downsampling int64 }{convex_hull_downsampling}))
 }
 
 //go:nosplit
 func (self class) GetConvexHullDownsampling() int64 { //gd:MeshConvexDecompositionSettings.get_convex_hull_downsampling
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_convex_hull_downsampling), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_convex_hull_downsampling, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNormalizeMesh(normalize_mesh bool) { //gd:MeshConvexDecompositionSettings.set_normalize_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_normalize_mesh), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ normalize_mesh bool }{normalize_mesh}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normalize_mesh, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ normalize_mesh bool }{normalize_mesh}))
 }
 
 //go:nosplit
 func (self class) GetNormalizeMesh() bool { //gd:MeshConvexDecompositionSettings.get_normalize_mesh
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_normalize_mesh), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_normalize_mesh, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMode(mode Mode) { //gd:MeshConvexDecompositionSettings.set_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetMode() Mode { //gd:MeshConvexDecompositionSettings.get_mode
-	var r_ret = gdextension.Call[Mode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetConvexHullApproximation(convex_hull_approximation bool) { //gd:MeshConvexDecompositionSettings.set_convex_hull_approximation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_convex_hull_approximation), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ convex_hull_approximation bool }{convex_hull_approximation}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_convex_hull_approximation, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ convex_hull_approximation bool }{convex_hull_approximation}))
 }
 
 //go:nosplit
 func (self class) GetConvexHullApproximation() bool { //gd:MeshConvexDecompositionSettings.get_convex_hull_approximation
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_convex_hull_approximation), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_convex_hull_approximation, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxConvexHulls(max_convex_hulls int64) { //gd:MeshConvexDecompositionSettings.set_max_convex_hulls
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_max_convex_hulls), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_convex_hulls int64 }{max_convex_hulls}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_convex_hulls, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_convex_hulls int64 }{max_convex_hulls}))
 }
 
 //go:nosplit
 func (self class) GetMaxConvexHulls() int64 { //gd:MeshConvexDecompositionSettings.get_max_convex_hulls
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_max_convex_hulls), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_convex_hulls, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProjectHullVertices(project_hull_vertices bool) { //gd:MeshConvexDecompositionSettings.set_project_hull_vertices
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_set_project_hull_vertices), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ project_hull_vertices bool }{project_hull_vertices}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_project_hull_vertices, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ project_hull_vertices bool }{project_hull_vertices}))
 }
 
 //go:nosplit
 func (self class) GetProjectHullVertices() bool { //gd:MeshConvexDecompositionSettings.get_project_hull_vertices
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MeshConvexDecompositionSettings.Bind_get_project_hull_vertices), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_project_hull_vertices, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -391,9 +446,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MeshConvexDecompositionSettings", func(ptr gd.Object) any {
-		return [1]gdclass.MeshConvexDecompositionSettings{*(*gdclass.MeshConvexDecompositionSettings)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("MeshConvexDecompositionSettings", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Mode int //gd:MeshConvexDecompositionSettings.Mode

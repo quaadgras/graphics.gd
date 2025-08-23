@@ -75,6 +75,37 @@ This primitive mesh is usually used for particle trails.
 */
 type Instance [1]gdclass.TubeTrailMesh
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_radius         gdextension.MethodForClass `hash:"373806689"`
+	get_radius         gdextension.MethodForClass `hash:"1740695150"`
+	set_radial_steps   gdextension.MethodForClass `hash:"1286410249"`
+	get_radial_steps   gdextension.MethodForClass `hash:"3905245786"`
+	set_sections       gdextension.MethodForClass `hash:"1286410249"`
+	get_sections       gdextension.MethodForClass `hash:"3905245786"`
+	set_section_length gdextension.MethodForClass `hash:"373806689"`
+	get_section_length gdextension.MethodForClass `hash:"1740695150"`
+	set_section_rings  gdextension.MethodForClass `hash:"1286410249"`
+	get_section_rings  gdextension.MethodForClass `hash:"3905245786"`
+	set_cap_top        gdextension.MethodForClass `hash:"2586408642"`
+	is_cap_top         gdextension.MethodForClass `hash:"36873697"`
+	set_cap_bottom     gdextension.MethodForClass `hash:"2586408642"`
+	is_cap_bottom      gdextension.MethodForClass `hash:"36873697"`
+	set_curve          gdextension.MethodForClass `hash:"270443179"`
+	get_curve          gdextension.MethodForClass `hash:"2460114913"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("TubeTrailMesh")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -90,6 +121,20 @@ type Advanced = class
 type class [1]gdclass.TubeTrailMesh
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TubeTrailMesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TubeTrailMesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -99,7 +144,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TubeTrailMesh"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.TubeTrailMesh)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -172,96 +217,96 @@ func (self Instance) SetCurve(value Curve.Instance) {
 
 //go:nosplit
 func (self class) SetRadius(radius float64) { //gd:TubeTrailMesh.set_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_set_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:TubeTrailMesh.get_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_get_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRadialSteps(radial_steps int64) { //gd:TubeTrailMesh.set_radial_steps
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_set_radial_steps), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ radial_steps int64 }{radial_steps}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_steps, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ radial_steps int64 }{radial_steps}))
 }
 
 //go:nosplit
 func (self class) GetRadialSteps() int64 { //gd:TubeTrailMesh.get_radial_steps
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_get_radial_steps), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_radial_steps, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSections(sections int64) { //gd:TubeTrailMesh.set_sections
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_set_sections), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ sections int64 }{sections}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sections, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ sections int64 }{sections}))
 }
 
 //go:nosplit
 func (self class) GetSections() int64 { //gd:TubeTrailMesh.get_sections
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_get_sections), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sections, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSectionLength(section_length float64) { //gd:TubeTrailMesh.set_section_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_set_section_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ section_length float64 }{section_length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ section_length float64 }{section_length}))
 }
 
 //go:nosplit
 func (self class) GetSectionLength() float64 { //gd:TubeTrailMesh.get_section_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_get_section_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSectionRings(section_rings int64) { //gd:TubeTrailMesh.set_section_rings
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_set_section_rings), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ section_rings int64 }{section_rings}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_rings, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ section_rings int64 }{section_rings}))
 }
 
 //go:nosplit
 func (self class) GetSectionRings() int64 { //gd:TubeTrailMesh.get_section_rings
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_get_section_rings), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_section_rings, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCapTop(cap_top bool) { //gd:TubeTrailMesh.set_cap_top
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_set_cap_top), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cap_top bool }{cap_top}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cap_top, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cap_top bool }{cap_top}))
 }
 
 //go:nosplit
 func (self class) IsCapTop() bool { //gd:TubeTrailMesh.is_cap_top
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_is_cap_top), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_top, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCapBottom(cap_bottom bool) { //gd:TubeTrailMesh.set_cap_bottom
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_set_cap_bottom), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cap_bottom bool }{cap_bottom}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cap_bottom, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cap_bottom bool }{cap_bottom}))
 }
 
 //go:nosplit
 func (self class) IsCapBottom() bool { //gd:TubeTrailMesh.is_cap_bottom
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_is_cap_bottom), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_bottom, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:TubeTrailMesh.set_curve
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_set_curve), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetCurve() [1]gdclass.Curve { //gd:TubeTrailMesh.get_curve
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TubeTrailMesh.Bind_get_curve), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
@@ -309,7 +354,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TubeTrailMesh", func(ptr gd.Object) any {
-		return [1]gdclass.TubeTrailMesh{*(*gdclass.TubeTrailMesh)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("TubeTrailMesh", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -76,6 +76,26 @@ Can be used (with an [AudioStreamMicrophone]) to record from a microphone.
 */
 type Instance [1]gdclass.AudioEffectRecord
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_recording_active gdextension.MethodForClass `hash:"2586408642"`
+	is_recording_active  gdextension.MethodForClass `hash:"36873697"`
+	set_format           gdextension.MethodForClass `hash:"60648488"`
+	get_format           gdextension.MethodForClass `hash:"3151724922"`
+	get_recording        gdextension.MethodForClass `hash:"2964110865"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioEffectRecord")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -112,6 +132,20 @@ type Advanced = class
 type class [1]gdclass.AudioEffectRecord
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectRecord)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectRecord)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -121,7 +155,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioEffectRecord"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioEffectRecord)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -141,7 +175,7 @@ If [code]true[/code], the sound will be recorded. Note that restarting the recor
 */
 //go:nosplit
 func (self class) SetRecordingActive(record bool) { //gd:AudioEffectRecord.set_recording_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectRecord.Bind_set_recording_active), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ record bool }{record}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recording_active, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ record bool }{record}))
 }
 
 /*
@@ -149,19 +183,19 @@ Returns whether the recording is active or not.
 */
 //go:nosplit
 func (self class) IsRecordingActive() bool { //gd:AudioEffectRecord.is_recording_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectRecord.Bind_is_recording_active), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recording_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFormat(format AudioStreamWAV.Format) { //gd:AudioEffectRecord.set_format
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectRecord.Bind_set_format), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ format AudioStreamWAV.Format }{format}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ format AudioStreamWAV.Format }{format}))
 }
 
 //go:nosplit
 func (self class) GetFormat() AudioStreamWAV.Format { //gd:AudioEffectRecord.get_format
-	var r_ret = gdextension.Call[AudioStreamWAV.Format](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectRecord.Bind_get_format), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AudioStreamWAV.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -171,7 +205,7 @@ Returns the recorded sample.
 */
 //go:nosplit
 func (self class) GetRecording() [1]gdclass.AudioStreamWAV { //gd:AudioEffectRecord.get_recording
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectRecord.Bind_get_recording), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_recording, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.AudioStreamWAV{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamWAV](r_ret)}
 	return ret
 }
@@ -214,7 +248,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioEffectRecord", func(ptr gd.Object) any {
-		return [1]gdclass.AudioEffectRecord{*(*gdclass.AudioEffectRecord)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioEffectRecord", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

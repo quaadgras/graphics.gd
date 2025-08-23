@@ -74,6 +74,33 @@ A physics joint that attaches two 2D physics bodies at a single point, allowing 
 */
 type Instance [1]gdclass.PinJoint2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_softness              gdextension.MethodForClass `hash:"373806689"`
+	get_softness              gdextension.MethodForClass `hash:"1740695150"`
+	set_angular_limit_lower   gdextension.MethodForClass `hash:"373806689"`
+	get_angular_limit_lower   gdextension.MethodForClass `hash:"1740695150"`
+	set_angular_limit_upper   gdextension.MethodForClass `hash:"373806689"`
+	get_angular_limit_upper   gdextension.MethodForClass `hash:"1740695150"`
+	set_motor_target_velocity gdextension.MethodForClass `hash:"373806689"`
+	get_motor_target_velocity gdextension.MethodForClass `hash:"1740695150"`
+	set_motor_enabled         gdextension.MethodForClass `hash:"2586408642"`
+	is_motor_enabled          gdextension.MethodForClass `hash:"36873697"`
+	set_angular_limit_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_angular_limit_enabled  gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PinJoint2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +116,20 @@ type Advanced = class
 type class [1]gdclass.PinJoint2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PinJoint2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PinJoint2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +139,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PinJoint2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.PinJoint2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -154,72 +195,72 @@ func (self Instance) SetMotorTargetVelocity(value Float.X) {
 
 //go:nosplit
 func (self class) SetSoftness(softness float64) { //gd:PinJoint2D.set_softness
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PinJoint2D.Bind_set_softness), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ softness float64 }{softness}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_softness, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ softness float64 }{softness}))
 }
 
 //go:nosplit
 func (self class) GetSoftness() float64 { //gd:PinJoint2D.get_softness
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PinJoint2D.Bind_get_softness), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_softness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularLimitLower(angular_limit_lower float64) { //gd:PinJoint2D.set_angular_limit_lower
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PinJoint2D.Bind_set_angular_limit_lower), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angular_limit_lower float64 }{angular_limit_lower}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_limit_lower, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angular_limit_lower float64 }{angular_limit_lower}))
 }
 
 //go:nosplit
 func (self class) GetAngularLimitLower() float64 { //gd:PinJoint2D.get_angular_limit_lower
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PinJoint2D.Bind_get_angular_limit_lower), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_limit_lower, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularLimitUpper(angular_limit_upper float64) { //gd:PinJoint2D.set_angular_limit_upper
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PinJoint2D.Bind_set_angular_limit_upper), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angular_limit_upper float64 }{angular_limit_upper}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_limit_upper, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ angular_limit_upper float64 }{angular_limit_upper}))
 }
 
 //go:nosplit
 func (self class) GetAngularLimitUpper() float64 { //gd:PinJoint2D.get_angular_limit_upper
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PinJoint2D.Bind_get_angular_limit_upper), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_limit_upper, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMotorTargetVelocity(motor_target_velocity float64) { //gd:PinJoint2D.set_motor_target_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PinJoint2D.Bind_set_motor_target_velocity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ motor_target_velocity float64 }{motor_target_velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motor_target_velocity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ motor_target_velocity float64 }{motor_target_velocity}))
 }
 
 //go:nosplit
 func (self class) GetMotorTargetVelocity() float64 { //gd:PinJoint2D.get_motor_target_velocity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PinJoint2D.Bind_get_motor_target_velocity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_motor_target_velocity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMotorEnabled(enabled bool) { //gd:PinJoint2D.set_motor_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PinJoint2D.Bind_set_motor_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motor_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsMotorEnabled() bool { //gd:PinJoint2D.is_motor_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PinJoint2D.Bind_is_motor_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_motor_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularLimitEnabled(enabled bool) { //gd:PinJoint2D.set_angular_limit_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PinJoint2D.Bind_set_angular_limit_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_limit_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsAngularLimitEnabled() bool { //gd:PinJoint2D.is_angular_limit_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PinJoint2D.Bind_is_angular_limit_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_angular_limit_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -259,5 +300,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PinJoint2D", func(ptr gd.Object) any { return [1]gdclass.PinJoint2D{*(*gdclass.PinJoint2D)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("PinJoint2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -72,6 +72,24 @@ Playback component of [AudioStreamInteractive]. Contains functions to change the
 */
 type Instance [1]gdclass.AudioStreamPlaybackInteractive
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	switch_to_clip_by_name gdextension.MethodForClass `hash:"3304788590"`
+	switch_to_clip         gdextension.MethodForClass `hash:"1286410249"`
+	get_current_clip_index gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioStreamPlaybackInteractive")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -114,6 +132,20 @@ type Advanced = class
 type class [1]gdclass.AudioStreamPlaybackInteractive
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioStreamPlaybackInteractive)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioStreamPlaybackInteractive)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -123,7 +155,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioStreamPlaybackInteractive"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioStreamPlaybackInteractive)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -135,7 +167,7 @@ Switch to a clip (by name).
 */
 //go:nosplit
 func (self class) SwitchToClipByName(clip_name String.Name) { //gd:AudioStreamPlaybackInteractive.switch_to_clip_by_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_switch_to_clip_by_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ clip_name gdextension.StringName }{pointers.Get(gd.InternalStringName(clip_name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip_by_name, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ clip_name gdextension.StringName }{pointers.Get(gd.InternalStringName(clip_name))}))
 }
 
 /*
@@ -143,7 +175,7 @@ Switch to a clip (by index).
 */
 //go:nosplit
 func (self class) SwitchToClip(clip_index int64) { //gd:AudioStreamPlaybackInteractive.switch_to_clip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_switch_to_clip), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ clip_index int64 }{clip_index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ clip_index int64 }{clip_index}))
 }
 
 /*
@@ -157,7 +189,7 @@ var playing_clip_name = stream.get_clip_name(get_stream_playback().get_current_c
 */
 //go:nosplit
 func (self class) GetCurrentClipIndex() int64 { //gd:AudioStreamPlaybackInteractive.get_current_clip_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioStreamPlaybackInteractive.Bind_get_current_clip_index), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_clip_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -201,7 +233,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioStreamPlaybackInteractive", func(ptr gd.Object) any {
-		return [1]gdclass.AudioStreamPlaybackInteractive{*(*gdclass.AudioStreamPlaybackInteractive)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioStreamPlaybackInteractive", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

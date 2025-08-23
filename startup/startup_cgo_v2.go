@@ -3,8 +3,11 @@
 
 package startup
 
-import "unsafe"
-import "graphics.gd/internal/gdextension"
+import (
+	"unsafe"
+
+	"graphics.gd/internal/gdextension"
+)
 
 // #include "gdextension_interface.h"
 // #include "startup_cgo_v2.h"
@@ -647,7 +650,10 @@ func init() {
 		G float32
 		B float32
 		A float32
-	}]) (result gdextension.Pointer) { result = gdextension.Pointer(C.gd_packed_color_array_unsafe(C.uint64_t(p0[0]), C.uint64_t(p0[1]))); return }
+	}]) (result gdextension.Pointer) {
+		result = gdextension.Pointer(C.gd_packed_color_array_unsafe(C.uint64_t(p0[0]), C.uint64_t(p0[1])))
+		return
+	}
 	gdextension.Host.Packed.Colors.Access = func(p0 gdextension.PackedArray[struct {
 		R float32
 		G float32
@@ -658,7 +664,10 @@ func init() {
 		G float32
 		B float32
 		A float32
-	}]) { C.gd_packed_color_array_access(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2)); return }
+	}]) {
+		C.gd_packed_color_array_access(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2))
+		return
+	}
 	gdextension.Host.Packed.Float32s.Unsafe = func(p0 gdextension.PackedArray[float32]) (result gdextension.Pointer) {
 		result = gdextension.Pointer(C.gd_packed_float32_array_unsafe(C.uint64_t(p0[0]), C.uint64_t(p0[1])))
 		return
@@ -702,19 +711,28 @@ func init() {
 	gdextension.Host.Packed.Vector2s.Unsafe = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
-	}]) (result gdextension.Pointer) { result = gdextension.Pointer(C.gd_packed_vector2_array_unsafe(C.uint64_t(p0[0]), C.uint64_t(p0[1]))); return }
+	}]) (result gdextension.Pointer) {
+		result = gdextension.Pointer(C.gd_packed_vector2_array_unsafe(C.uint64_t(p0[0]), C.uint64_t(p0[1])))
+		return
+	}
 	gdextension.Host.Packed.Vector2s.Access = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
 	}], p1 int, p2 gdextension.CallReturns[struct {
 		X float32
 		Y float32
-	}]) { C.gd_packed_vector2_array_access(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2)); return }
+	}]) {
+		C.gd_packed_vector2_array_access(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2))
+		return
+	}
 	gdextension.Host.Packed.Vector3s.Unsafe = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
 		Z float32
-	}]) (result gdextension.Pointer) { result = gdextension.Pointer(C.gd_packed_vector3_array_unsafe(C.uint64_t(p0[0]), C.uint64_t(p0[1]))); return }
+	}]) (result gdextension.Pointer) {
+		result = gdextension.Pointer(C.gd_packed_vector3_array_unsafe(C.uint64_t(p0[0]), C.uint64_t(p0[1])))
+		return
+	}
 	gdextension.Host.Packed.Vector3s.Access = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
@@ -723,13 +741,19 @@ func init() {
 		X float32
 		Y float32
 		Z float32
-	}]) { C.gd_packed_vector3_array_access(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2)); return }
+	}]) {
+		C.gd_packed_vector3_array_access(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2))
+		return
+	}
 	gdextension.Host.Packed.Vector4s.Unsafe = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
 		Z float32
 		W float32
-	}]) (result gdextension.Pointer) { result = gdextension.Pointer(C.gd_packed_vector4_array_unsafe(C.uint64_t(p0[0]), C.uint64_t(p0[1]))); return }
+	}]) (result gdextension.Pointer) {
+		result = gdextension.Pointer(C.gd_packed_vector4_array_unsafe(C.uint64_t(p0[0]), C.uint64_t(p0[1])))
+		return
+	}
 	gdextension.Host.Packed.Vector4s.Access = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
@@ -740,7 +764,10 @@ func init() {
 		Y float32
 		Z float32
 		W float32
-	}]) { C.gd_packed_vector4_array_access(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2)); return }
+	}]) {
+		C.gd_packed_vector4_array_access(C.uint64_t(p0[0]), C.uint64_t(p0[1]), C.int64_t(p1), unsafe.Pointer(p2))
+		return
+	}
 	gdextension.Host.RefCounted.Get = func(p0 gdextension.RefCounted) (result gdextension.Object) {
 		result = gdextension.Object(C.gd_ref_get_object(C.uintptr_t(p0)))
 		return

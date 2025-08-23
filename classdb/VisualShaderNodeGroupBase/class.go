@@ -73,6 +73,42 @@ Currently, has no direct usage, use the derived classes instead.
 */
 type Instance [1]gdclass.VisualShaderNodeGroupBase
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_inputs              gdextension.MethodForClass `hash:"83702148"`
+	get_inputs              gdextension.MethodForClass `hash:"201670096"`
+	set_outputs             gdextension.MethodForClass `hash:"83702148"`
+	get_outputs             gdextension.MethodForClass `hash:"201670096"`
+	is_valid_port_name      gdextension.MethodForClass `hash:"3927539163"`
+	add_input_port          gdextension.MethodForClass `hash:"2285447957"`
+	remove_input_port       gdextension.MethodForClass `hash:"1286410249"`
+	get_input_port_count    gdextension.MethodForClass `hash:"3905245786"`
+	has_input_port          gdextension.MethodForClass `hash:"1116898809"`
+	clear_input_ports       gdextension.MethodForClass `hash:"3218959716"`
+	add_output_port         gdextension.MethodForClass `hash:"2285447957"`
+	remove_output_port      gdextension.MethodForClass `hash:"1286410249"`
+	get_output_port_count   gdextension.MethodForClass `hash:"3905245786"`
+	has_output_port         gdextension.MethodForClass `hash:"1116898809"`
+	clear_output_ports      gdextension.MethodForClass `hash:"3218959716"`
+	set_input_port_name     gdextension.MethodForClass `hash:"501894301"`
+	set_input_port_type     gdextension.MethodForClass `hash:"3937882851"`
+	set_output_port_name    gdextension.MethodForClass `hash:"501894301"`
+	set_output_port_type    gdextension.MethodForClass `hash:"3937882851"`
+	get_free_input_port_id  gdextension.MethodForClass `hash:"3905245786"`
+	get_free_output_port_id gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VisualShaderNodeGroupBase")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -235,6 +271,20 @@ type Advanced = class
 type class [1]gdclass.VisualShaderNodeGroupBase
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeGroupBase)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VisualShaderNodeGroupBase)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -244,7 +294,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VisualShaderNodeGroupBase"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisualShaderNodeGroupBase)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -256,7 +306,7 @@ Defines all input ports using a [String] formatted as a colon-separated list: [c
 */
 //go:nosplit
 func (self class) SetInputs(inputs String.Readable) { //gd:VisualShaderNodeGroupBase.set_inputs
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_set_inputs), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ inputs gdextension.String }{pointers.Get(gd.InternalString(inputs))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inputs, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ inputs gdextension.String }{pointers.Get(gd.InternalString(inputs))}))
 }
 
 /*
@@ -264,7 +314,7 @@ Returns a [String] description of the input ports as a colon-separated list usin
 */
 //go:nosplit
 func (self class) GetInputs() String.Readable { //gd:VisualShaderNodeGroupBase.get_inputs
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_get_inputs), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_inputs, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -274,7 +324,7 @@ Defines all output ports using a [String] formatted as a colon-separated list: [
 */
 //go:nosplit
 func (self class) SetOutputs(outputs String.Readable) { //gd:VisualShaderNodeGroupBase.set_outputs
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_set_outputs), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ outputs gdextension.String }{pointers.Get(gd.InternalString(outputs))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outputs, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ outputs gdextension.String }{pointers.Get(gd.InternalString(outputs))}))
 }
 
 /*
@@ -282,7 +332,7 @@ Returns a [String] description of the output ports as a colon-separated list usi
 */
 //go:nosplit
 func (self class) GetOutputs() String.Readable { //gd:VisualShaderNodeGroupBase.get_outputs
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_get_outputs), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_outputs, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -292,7 +342,7 @@ Returns [code]true[/code] if the specified port name does not override an existe
 */
 //go:nosplit
 func (self class) IsValidPortName(name String.Readable) bool { //gd:VisualShaderNodeGroupBase.is_valid_port_name
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_is_valid_port_name), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid_port_name, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -302,7 +352,7 @@ Adds an input port with the specified [param type] (see [enum VisualShaderNode.P
 */
 //go:nosplit
 func (self class) AddInputPort(id int64, atype int64, name String.Readable) { //gd:VisualShaderNodeGroupBase.add_input_port
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_add_input_port), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_input_port, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		id    int64
 		atype int64
 		name  gdextension.String
@@ -314,7 +364,7 @@ Removes the specified input port.
 */
 //go:nosplit
 func (self class) RemoveInputPort(id int64) { //gd:VisualShaderNodeGroupBase.remove_input_port
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_remove_input_port), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_input_port, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 }
 
 /*
@@ -322,7 +372,7 @@ Returns the number of input ports in use. Alternative for [method get_free_input
 */
 //go:nosplit
 func (self class) GetInputPortCount() int64 { //gd:VisualShaderNodeGroupBase.get_input_port_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_get_input_port_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_port_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -332,7 +382,7 @@ Returns [code]true[/code] if the specified input port exists.
 */
 //go:nosplit
 func (self class) HasInputPort(id int64) bool { //gd:VisualShaderNodeGroupBase.has_input_port
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_has_input_port), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_input_port, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = r_ret
 	return ret
 }
@@ -342,7 +392,7 @@ Removes all previously specified input ports.
 */
 //go:nosplit
 func (self class) ClearInputPorts() { //gd:VisualShaderNodeGroupBase.clear_input_ports
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_clear_input_ports), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_input_ports, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -350,7 +400,7 @@ Adds an output port with the specified [param type] (see [enum VisualShaderNode.
 */
 //go:nosplit
 func (self class) AddOutputPort(id int64, atype int64, name String.Readable) { //gd:VisualShaderNodeGroupBase.add_output_port
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_add_output_port), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_output_port, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
 		id    int64
 		atype int64
 		name  gdextension.String
@@ -362,7 +412,7 @@ Removes the specified output port.
 */
 //go:nosplit
 func (self class) RemoveOutputPort(id int64) { //gd:VisualShaderNodeGroupBase.remove_output_port
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_remove_output_port), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_output_port, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 }
 
 /*
@@ -370,7 +420,7 @@ Returns the number of output ports in use. Alternative for [method get_free_outp
 */
 //go:nosplit
 func (self class) GetOutputPortCount() int64 { //gd:VisualShaderNodeGroupBase.get_output_port_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_get_output_port_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_port_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -380,7 +430,7 @@ Returns [code]true[/code] if the specified output port exists.
 */
 //go:nosplit
 func (self class) HasOutputPort(id int64) bool { //gd:VisualShaderNodeGroupBase.has_output_port
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_has_output_port), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_output_port, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = r_ret
 	return ret
 }
@@ -390,7 +440,7 @@ Removes all previously specified output ports.
 */
 //go:nosplit
 func (self class) ClearOutputPorts() { //gd:VisualShaderNodeGroupBase.clear_output_ports
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_clear_output_ports), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_output_ports, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -398,7 +448,7 @@ Renames the specified input port.
 */
 //go:nosplit
 func (self class) SetInputPortName(id int64, name String.Readable) { //gd:VisualShaderNodeGroupBase.set_input_port_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_set_input_port_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_port_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		id   int64
 		name gdextension.String
 	}{id, pointers.Get(gd.InternalString(name))}))
@@ -409,7 +459,7 @@ Sets the specified input port's type (see [enum VisualShaderNode.PortType]).
 */
 //go:nosplit
 func (self class) SetInputPortType(id int64, atype int64) { //gd:VisualShaderNodeGroupBase.set_input_port_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_set_input_port_type), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_port_type, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		id    int64
 		atype int64
 	}{id, atype}))
@@ -420,7 +470,7 @@ Renames the specified output port.
 */
 //go:nosplit
 func (self class) SetOutputPortName(id int64, name String.Readable) { //gd:VisualShaderNodeGroupBase.set_output_port_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_set_output_port_name), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_output_port_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		id   int64
 		name gdextension.String
 	}{id, pointers.Get(gd.InternalString(name))}))
@@ -431,7 +481,7 @@ Sets the specified output port's type (see [enum VisualShaderNode.PortType]).
 */
 //go:nosplit
 func (self class) SetOutputPortType(id int64, atype int64) { //gd:VisualShaderNodeGroupBase.set_output_port_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_set_output_port_type), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_output_port_type, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		id    int64
 		atype int64
 	}{id, atype}))
@@ -442,7 +492,7 @@ Returns a free input port ID which can be used in [method add_input_port].
 */
 //go:nosplit
 func (self class) GetFreeInputPortId() int64 { //gd:VisualShaderNodeGroupBase.get_free_input_port_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_get_free_input_port_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_free_input_port_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -452,7 +502,7 @@ Returns a free output port ID which can be used in [method add_output_port].
 */
 //go:nosplit
 func (self class) GetFreeOutputPortId() int64 { //gd:VisualShaderNodeGroupBase.get_free_output_port_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VisualShaderNodeGroupBase.Bind_get_free_output_port_id), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_free_output_port_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -512,7 +562,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisualShaderNodeGroupBase", func(ptr gd.Object) any {
-		return [1]gdclass.VisualShaderNodeGroupBase{*(*gdclass.VisualShaderNodeGroupBase)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VisualShaderNodeGroupBase", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

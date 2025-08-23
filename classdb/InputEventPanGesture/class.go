@@ -77,6 +77,23 @@ Stores information about pan gestures. A pan gesture is performed when the user 
 */
 type Instance [1]gdclass.InputEventPanGesture
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_delta gdextension.MethodForClass `hash:"743155724"`
+	get_delta gdextension.MethodForClass `hash:"3341600327"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("InputEventPanGesture")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -92,6 +109,20 @@ type Advanced = class
 type class [1]gdclass.InputEventPanGesture
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventPanGesture)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventPanGesture)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -101,7 +132,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("InputEventPanGesture"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.InputEventPanGesture)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -118,12 +149,12 @@ func (self Instance) SetDelta(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetDelta(delta Vector2.XY) { //gd:InputEventPanGesture.set_delta
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventPanGesture.Bind_set_delta), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ delta Vector2.XY }{delta}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_delta, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ delta Vector2.XY }{delta}))
 }
 
 //go:nosplit
 func (self class) GetDelta() Vector2.XY { //gd:InputEventPanGesture.get_delta
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventPanGesture.Bind_get_delta), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_delta, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -195,7 +226,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("InputEventPanGesture", func(ptr gd.Object) any {
-		return [1]gdclass.InputEventPanGesture{*(*gdclass.InputEventPanGesture)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("InputEventPanGesture", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

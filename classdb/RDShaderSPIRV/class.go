@@ -73,6 +73,25 @@ This object is used by [RenderingDevice].
 */
 type Instance [1]gdclass.RDShaderSPIRV
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_stage_bytecode      gdextension.MethodForClass `hash:"3514097977"`
+	get_stage_bytecode      gdextension.MethodForClass `hash:"3816765404"`
+	set_stage_compile_error gdextension.MethodForClass `hash:"620821314"`
+	get_stage_compile_error gdextension.MethodForClass `hash:"3354920045"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("RDShaderSPIRV")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +107,20 @@ type Advanced = class
 type class [1]gdclass.RDShaderSPIRV
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDShaderSPIRV)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RDShaderSPIRV)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +130,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RDShaderSPIRV"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RDShaderSPIRV)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -189,7 +222,7 @@ Sets the SPIR-V [param bytecode] for the given shader [param stage]. Equivalent 
 */
 //go:nosplit
 func (self class) SetStageBytecode(stage Rendering.ShaderStage, bytecode Packed.Bytes) { //gd:RDShaderSPIRV.set_stage_bytecode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderSPIRV.Bind_set_stage_bytecode), 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stage_bytecode, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		stage    Rendering.ShaderStage
 		bytecode gdextension.PackedArray[byte]
 	}{stage, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytecode)))}))
@@ -200,7 +233,7 @@ Equivalent to getting one of [member bytecode_compute], [member bytecode_fragmen
 */
 //go:nosplit
 func (self class) GetStageBytecode(stage Rendering.ShaderStage) Packed.Bytes { //gd:RDShaderSPIRV.get_stage_bytecode
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderSPIRV.Bind_get_stage_bytecode), gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stage Rendering.ShaderStage }{stage}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_stage_bytecode, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stage Rendering.ShaderStage }{stage}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -210,7 +243,7 @@ Sets the compilation error message for the given shader [param stage] to [param 
 */
 //go:nosplit
 func (self class) SetStageCompileError(stage Rendering.ShaderStage, compile_error String.Readable) { //gd:RDShaderSPIRV.set_stage_compile_error
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderSPIRV.Bind_set_stage_compile_error), 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stage_compile_error, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		stage         Rendering.ShaderStage
 		compile_error gdextension.String
 	}{stage, pointers.Get(gd.InternalString(compile_error))}))
@@ -221,7 +254,7 @@ Returns the compilation error message for the given shader [param stage]. Equiva
 */
 //go:nosplit
 func (self class) GetStageCompileError(stage Rendering.ShaderStage) String.Readable { //gd:RDShaderSPIRV.get_stage_compile_error
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RDShaderSPIRV.Bind_get_stage_compile_error), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stage Rendering.ShaderStage }{stage}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_stage_compile_error, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stage Rendering.ShaderStage }{stage}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -257,7 +290,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RDShaderSPIRV", func(ptr gd.Object) any {
-		return [1]gdclass.RDShaderSPIRV{*(*gdclass.RDShaderSPIRV)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("RDShaderSPIRV", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

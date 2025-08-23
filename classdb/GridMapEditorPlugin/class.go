@@ -75,6 +75,29 @@ GridMapEditorPlugin provides access to the [GridMap] editor functionality.
 */
 type Instance [1]gdclass.GridMapEditorPlugin
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_current_grid_map      gdextension.MethodForClass `hash:"1184264483"`
+	set_selection             gdextension.MethodForClass `hash:"3659408297"`
+	clear_selection           gdextension.MethodForClass `hash:"3218959716"`
+	get_selection             gdextension.MethodForClass `hash:"1068685055"`
+	has_selection             gdextension.MethodForClass `hash:"36873697"`
+	get_selected_cells        gdextension.MethodForClass `hash:"3995934104"`
+	set_selected_palette_item gdextension.MethodForClass `hash:"998575451"`
+	get_selected_palette_item gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("GridMapEditorPlugin")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -148,6 +171,20 @@ type Advanced = class
 type class [1]gdclass.GridMapEditorPlugin
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GridMapEditorPlugin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GridMapEditorPlugin)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -157,7 +194,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("GridMapEditorPlugin"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GridMapEditorPlugin)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -168,7 +205,7 @@ Returns the [GridMap] node currently edited by the grid map editor.
 */
 //go:nosplit
 func (self class) GetCurrentGridMap() [1]gdclass.GridMap { //gd:GridMapEditorPlugin.get_current_grid_map
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMapEditorPlugin.Bind_get_current_grid_map), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_grid_map, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.GridMap{gd.PointerMustAssertInstanceID[gdclass.GridMap](r_ret)}
 	return ret
 }
@@ -178,7 +215,7 @@ Selects the cells inside the given bounds from [param begin] to [param end].
 */
 //go:nosplit
 func (self class) SetSelection(begin Vector3i.XYZ, end Vector3i.XYZ) { //gd:GridMapEditorPlugin.set_selection
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMapEditorPlugin.Bind_set_selection), 0|(gdextension.SizeVector3i<<4)|(gdextension.SizeVector3i<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selection, 0|(gdextension.SizeVector3i<<4)|(gdextension.SizeVector3i<<8), unsafe.Pointer(&struct {
 		begin Vector3i.XYZ
 		end   Vector3i.XYZ
 	}{begin, end}))
@@ -189,7 +226,7 @@ Deselects any currently selected cells.
 */
 //go:nosplit
 func (self class) ClearSelection() { //gd:GridMapEditorPlugin.clear_selection
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMapEditorPlugin.Bind_clear_selection), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_selection, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -197,7 +234,7 @@ Returns the cell coordinate bounds of the current selection. Use [method has_sel
 */
 //go:nosplit
 func (self class) GetSelection() AABB.PositionSize { //gd:GridMapEditorPlugin.get_selection
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMapEditorPlugin.Bind_get_selection), gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_selection, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -207,7 +244,7 @@ Returns [code]true[/code] if there are selected cells.
 */
 //go:nosplit
 func (self class) HasSelection() bool { //gd:GridMapEditorPlugin.has_selection
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMapEditorPlugin.Bind_has_selection), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_selection, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -217,7 +254,7 @@ Returns an array of [Vector3i]s with the selected cells' coordinates.
 */
 //go:nosplit
 func (self class) GetSelectedCells() Array.Any { //gd:GridMapEditorPlugin.get_selected_cells
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMapEditorPlugin.Bind_get_selected_cells), gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_selected_cells, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -228,7 +265,7 @@ Selects the [MeshLibrary] item with the given index in the grid map editor's pal
 */
 //go:nosplit
 func (self class) SetSelectedPaletteItem(item int64) { //gd:GridMapEditorPlugin.set_selected_palette_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMapEditorPlugin.Bind_set_selected_palette_item), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ item int64 }{item}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected_palette_item, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ item int64 }{item}))
 }
 
 /*
@@ -237,7 +274,7 @@ Returns the index of the selected [MeshLibrary] item in the grid map editor's pa
 */
 //go:nosplit
 func (self class) GetSelectedPaletteItem() int64 { //gd:GridMapEditorPlugin.get_selected_palette_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GridMapEditorPlugin.Bind_get_selected_palette_item), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected_palette_item, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -273,7 +310,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GridMapEditorPlugin", func(ptr gd.Object) any {
-		return [1]gdclass.GridMapEditorPlugin{*(*gdclass.GridMapEditorPlugin)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("GridMapEditorPlugin", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

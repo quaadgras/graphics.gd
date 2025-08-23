@@ -73,6 +73,31 @@ By distorting the waveform the frequency content changes, which will often make 
 */
 type Instance [1]gdclass.AudioEffectDistortion
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_mode       gdextension.MethodForClass `hash:"1314744793"`
+	get_mode       gdextension.MethodForClass `hash:"809118343"`
+	set_pre_gain   gdextension.MethodForClass `hash:"373806689"`
+	get_pre_gain   gdextension.MethodForClass `hash:"1740695150"`
+	set_keep_hf_hz gdextension.MethodForClass `hash:"373806689"`
+	get_keep_hf_hz gdextension.MethodForClass `hash:"1740695150"`
+	set_drive      gdextension.MethodForClass `hash:"373806689"`
+	get_drive      gdextension.MethodForClass `hash:"1740695150"`
+	set_post_gain  gdextension.MethodForClass `hash:"373806689"`
+	get_post_gain  gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AudioEffectDistortion")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +113,20 @@ type Advanced = class
 type class [1]gdclass.AudioEffectDistortion
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectDistortion)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AudioEffectDistortion)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +136,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AudioEffectDistortion"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioEffectDistortion)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -146,60 +185,60 @@ func (self Instance) SetPostGain(value Float.X) {
 
 //go:nosplit
 func (self class) SetMode(mode Mode) { //gd:AudioEffectDistortion.set_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_set_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetMode() Mode { //gd:AudioEffectDistortion.get_mode
-	var r_ret = gdextension.Call[Mode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_get_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPreGain(pre_gain float64) { //gd:AudioEffectDistortion.set_pre_gain
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_set_pre_gain), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pre_gain float64 }{pre_gain}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_gain, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pre_gain float64 }{pre_gain}))
 }
 
 //go:nosplit
 func (self class) GetPreGain() float64 { //gd:AudioEffectDistortion.get_pre_gain
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_get_pre_gain), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_gain, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeepHfHz(keep_hf_hz float64) { //gd:AudioEffectDistortion.set_keep_hf_hz
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_set_keep_hf_hz), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ keep_hf_hz float64 }{keep_hf_hz}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_hf_hz, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ keep_hf_hz float64 }{keep_hf_hz}))
 }
 
 //go:nosplit
 func (self class) GetKeepHfHz() float64 { //gd:AudioEffectDistortion.get_keep_hf_hz
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_get_keep_hf_hz), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_keep_hf_hz, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrive(drive float64) { //gd:AudioEffectDistortion.set_drive
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_set_drive), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ drive float64 }{drive}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drive, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ drive float64 }{drive}))
 }
 
 //go:nosplit
 func (self class) GetDrive() float64 { //gd:AudioEffectDistortion.get_drive
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_get_drive), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drive, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPostGain(post_gain float64) { //gd:AudioEffectDistortion.set_post_gain
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_set_post_gain), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ post_gain float64 }{post_gain}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_post_gain, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ post_gain float64 }{post_gain}))
 }
 
 //go:nosplit
 func (self class) GetPostGain() float64 { //gd:AudioEffectDistortion.get_post_gain
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AudioEffectDistortion.Bind_get_post_gain), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_post_gain, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -244,9 +283,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AudioEffectDistortion", func(ptr gd.Object) any {
-		return [1]gdclass.AudioEffectDistortion{*(*gdclass.AudioEffectDistortion)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AudioEffectDistortion", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Mode int //gd:AudioEffectDistortion.Mode

@@ -77,6 +77,29 @@ To set up different types of inverse kinematics for the given Skeleton2D, a [Ske
 */
 type Instance [1]gdclass.Skeleton2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_bone_count               gdextension.MethodForClass `hash:"3905245786"`
+	get_bone                     gdextension.MethodForClass `hash:"2556267111"`
+	get_skeleton                 gdextension.MethodForClass `hash:"2944877500"`
+	set_modification_stack       gdextension.MethodForClass `hash:"3907307132"`
+	get_modification_stack       gdextension.MethodForClass `hash:"2107508396"`
+	execute_modifications        gdextension.MethodForClass `hash:"1005356550"`
+	set_bone_local_pose_override gdextension.MethodForClass `hash:"555457532"`
+	get_bone_local_pose_override gdextension.MethodForClass `hash:"2995540667"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Skeleton2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -157,6 +180,20 @@ type Advanced = class
 type class [1]gdclass.Skeleton2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Skeleton2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Skeleton2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -166,7 +203,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Skeleton2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Skeleton2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -177,7 +214,7 @@ Returns the number of [Bone2D] nodes in the node hierarchy parented by Skeleton2
 */
 //go:nosplit
 func (self class) GetBoneCount() int64 { //gd:Skeleton2D.get_bone_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton2D.Bind_get_bone_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bone_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -187,7 +224,7 @@ Returns a [Bone2D] from the node hierarchy parented by Skeleton2D. The object to
 */
 //go:nosplit
 func (self class) GetBone(idx int64) [1]gdclass.Bone2D { //gd:Skeleton2D.get_bone
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton2D.Bind_get_bone), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_bone, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = [1]gdclass.Bone2D{gd.PointerMustAssertInstanceID[gdclass.Bone2D](r_ret)}
 	return ret
 }
@@ -197,7 +234,7 @@ Returns the [RID] of a Skeleton2D instance.
 */
 //go:nosplit
 func (self class) GetSkeleton() RID.Any { //gd:Skeleton2D.get_skeleton
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton2D.Bind_get_skeleton), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -207,7 +244,7 @@ Sets the [SkeletonModificationStack2D] attached to this skeleton.
 */
 //go:nosplit
 func (self class) SetModificationStack(modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:Skeleton2D.set_modification_stack
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton2D.Bind_set_modification_stack), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ modification_stack gdextension.Object }{gdextension.Object(gd.ObjectChecked(modification_stack[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification_stack, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ modification_stack gdextension.Object }{gdextension.Object(gd.ObjectChecked(modification_stack[0].AsObject()))}))
 }
 
 /*
@@ -215,7 +252,7 @@ Returns the [SkeletonModificationStack2D] attached to this skeleton, if one exis
 */
 //go:nosplit
 func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:Skeleton2D.get_modification_stack
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton2D.Bind_get_modification_stack), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.SkeletonModificationStack2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModificationStack2D](r_ret)}
 	return ret
 }
@@ -225,7 +262,7 @@ Executes all the modifications on the [SkeletonModificationStack2D], if the Skel
 */
 //go:nosplit
 func (self class) ExecuteModifications(delta float64, execution_mode int64) { //gd:Skeleton2D.execute_modifications
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton2D.Bind_execute_modifications), 0|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.execute_modifications, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		delta          float64
 		execution_mode int64
 	}{delta, execution_mode}))
@@ -238,7 +275,7 @@ Sets the local pose transform, [param override_pose], for the bone at [param bon
 */
 //go:nosplit
 func (self class) SetBoneLocalPoseOverride(bone_idx int64, override_pose Transform2D.OriginXY, strength float64, persistent bool) { //gd:Skeleton2D.set_bone_local_pose_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton2D.Bind_set_bone_local_pose_override), 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform2D<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_local_pose_override, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform2D<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		bone_idx      int64
 		override_pose Transform2D.OriginXY
 		strength      float64
@@ -251,7 +288,7 @@ Returns the local pose override transform for [param bone_idx].
 */
 //go:nosplit
 func (self class) GetBoneLocalPoseOverride(bone_idx int64) Transform2D.OriginXY { //gd:Skeleton2D.get_bone_local_pose_override
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Skeleton2D.Bind_get_bone_local_pose_override), gdextension.SizeTransform2D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_bone_local_pose_override, gdextension.SizeTransform2D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bone_idx int64 }{bone_idx}))
 	var ret = r_ret
 	return ret
 }
@@ -290,5 +327,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Skeleton2D", func(ptr gd.Object) any { return [1]gdclass.Skeleton2D{*(*gdclass.Skeleton2D)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Skeleton2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

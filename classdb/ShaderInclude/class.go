@@ -71,6 +71,23 @@ A shader include file, saved with the [code].gdshaderinc[/code] extension. This 
 */
 type Instance [1]gdclass.ShaderInclude
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_code gdextension.MethodForClass `hash:"83702148"`
+	get_code gdextension.MethodForClass `hash:"201670096"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ShaderInclude")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -86,6 +103,20 @@ type Advanced = class
 type class [1]gdclass.ShaderInclude
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ShaderInclude)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ShaderInclude)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -95,7 +126,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ShaderInclude"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ShaderInclude)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -112,12 +143,12 @@ func (self Instance) SetCode(value string) {
 
 //go:nosplit
 func (self class) SetCode(code String.Readable) { //gd:ShaderInclude.set_code
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ShaderInclude.Bind_set_code), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_code, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))}))
 }
 
 //go:nosplit
 func (self class) GetCode() String.Readable { //gd:ShaderInclude.get_code
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ShaderInclude.Bind_get_code), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -153,7 +184,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ShaderInclude", func(ptr gd.Object) any {
-		return [1]gdclass.ShaderInclude{*(*gdclass.ShaderInclude)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ShaderInclude", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

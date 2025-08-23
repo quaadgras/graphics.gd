@@ -74,6 +74,23 @@ Base class for [Texture2DArray], [Cubemap] and [CubemapArray]. Cannot be used di
 */
 type Instance [1]gdclass.ImageTextureLayered
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	create_from_images gdextension.MethodForClass `hash:"2785773503"`
+	update_layer       gdextension.MethodForClass `hash:"3331733361"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ImageTextureLayered")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -141,6 +158,20 @@ type Advanced = class
 type class [1]gdclass.ImageTextureLayered
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ImageTextureLayered)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ImageTextureLayered)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -150,7 +181,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ImageTextureLayered"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ImageTextureLayered)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -196,7 +227,7 @@ ResourceSaver.save(cubemap_array, "res://cubemap_array.res", ResourceSaver.FLAG_
 */
 //go:nosplit
 func (self class) CreateFromImages(images Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTextureLayered.create_from_images
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTextureLayered.Bind_create_from_images), gdextension.SizeInt|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ images gdextension.Array }{pointers.Get(gd.InternalArray(images))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_from_images, gdextension.SizeInt|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ images gdextension.Array }{pointers.Get(gd.InternalArray(images))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -209,7 +240,7 @@ The update is immediate: it's synchronized with drawing.
 */
 //go:nosplit
 func (self class) UpdateLayer(image [1]gdclass.Image, layer int64) { //gd:ImageTextureLayered.update_layer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ImageTextureLayered.Bind_update_layer), 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_layer, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		image gdextension.Object
 		layer int64
 	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), layer}))
@@ -262,7 +293,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ImageTextureLayered", func(ptr gd.Object) any {
-		return [1]gdclass.ImageTextureLayered{*(*gdclass.ImageTextureLayered)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ImageTextureLayered", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

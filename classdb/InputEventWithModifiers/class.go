@@ -75,6 +75,33 @@ Stores information about mouse, keyboard, and touch gesture input events. This i
 */
 type Instance [1]gdclass.InputEventWithModifiers
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_command_or_control_autoremap gdextension.MethodForClass `hash:"2586408642"`
+	is_command_or_control_autoremap  gdextension.MethodForClass `hash:"36873697"`
+	is_command_or_control_pressed    gdextension.MethodForClass `hash:"36873697"`
+	set_alt_pressed                  gdextension.MethodForClass `hash:"2586408642"`
+	is_alt_pressed                   gdextension.MethodForClass `hash:"36873697"`
+	set_shift_pressed                gdextension.MethodForClass `hash:"2586408642"`
+	is_shift_pressed                 gdextension.MethodForClass `hash:"36873697"`
+	set_ctrl_pressed                 gdextension.MethodForClass `hash:"2586408642"`
+	is_ctrl_pressed                  gdextension.MethodForClass `hash:"36873697"`
+	set_meta_pressed                 gdextension.MethodForClass `hash:"2586408642"`
+	is_meta_pressed                  gdextension.MethodForClass `hash:"36873697"`
+	get_modifiers_mask               gdextension.MethodForClass `hash:"1258259499"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("InputEventWithModifiers")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -105,6 +132,20 @@ type Advanced = class
 type class [1]gdclass.InputEventWithModifiers
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventWithModifiers)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.InputEventWithModifiers)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -114,7 +155,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("InputEventWithModifiers"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.InputEventWithModifiers)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -163,12 +204,12 @@ func (self Instance) SetMetaPressed(value bool) {
 
 //go:nosplit
 func (self class) SetCommandOrControlAutoremap(enable bool) { //gd:InputEventWithModifiers.set_command_or_control_autoremap
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventWithModifiers.Bind_set_command_or_control_autoremap), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_command_or_control_autoremap, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsCommandOrControlAutoremap() bool { //gd:InputEventWithModifiers.is_command_or_control_autoremap
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventWithModifiers.Bind_is_command_or_control_autoremap), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_command_or_control_autoremap, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -179,55 +220,55 @@ On other platforms, returns [code]true[/code] if [kbd]Ctrl[/kbd] is pressed.
 */
 //go:nosplit
 func (self class) IsCommandOrControlPressed() bool { //gd:InputEventWithModifiers.is_command_or_control_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventWithModifiers.Bind_is_command_or_control_pressed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_command_or_control_pressed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAltPressed(pressed bool) { //gd:InputEventWithModifiers.set_alt_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventWithModifiers.Bind_set_alt_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alt_pressed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
 }
 
 //go:nosplit
 func (self class) IsAltPressed() bool { //gd:InputEventWithModifiers.is_alt_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventWithModifiers.Bind_is_alt_pressed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_alt_pressed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShiftPressed(pressed bool) { //gd:InputEventWithModifiers.set_shift_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventWithModifiers.Bind_set_shift_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shift_pressed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
 }
 
 //go:nosplit
 func (self class) IsShiftPressed() bool { //gd:InputEventWithModifiers.is_shift_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventWithModifiers.Bind_is_shift_pressed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shift_pressed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCtrlPressed(pressed bool) { //gd:InputEventWithModifiers.set_ctrl_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventWithModifiers.Bind_set_ctrl_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ctrl_pressed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
 }
 
 //go:nosplit
 func (self class) IsCtrlPressed() bool { //gd:InputEventWithModifiers.is_ctrl_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventWithModifiers.Bind_is_ctrl_pressed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ctrl_pressed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMetaPressed(pressed bool) { //gd:InputEventWithModifiers.set_meta_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventWithModifiers.Bind_set_meta_pressed), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_meta_pressed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
 }
 
 //go:nosplit
 func (self class) IsMetaPressed() bool { //gd:InputEventWithModifiers.is_meta_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventWithModifiers.Bind_is_meta_pressed), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_meta_pressed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -237,7 +278,7 @@ Returns the keycode combination of modifier keys.
 */
 //go:nosplit
 func (self class) GetModifiersMask() Input.KeyModifierMask { //gd:InputEventWithModifiers.get_modifiers_mask
-	var r_ret = gdextension.Call[Input.KeyModifierMask](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.InputEventWithModifiers.Bind_get_modifiers_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Input.KeyModifierMask](gd.ObjectChecked(self.AsObject()), methods.get_modifiers_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -293,7 +334,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("InputEventWithModifiers", func(ptr gd.Object) any {
-		return [1]gdclass.InputEventWithModifiers{*(*gdclass.InputEventWithModifiers)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("InputEventWithModifiers", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -73,6 +73,28 @@ This class is used by a [ShaderMaterial] and allows you to write your own custom
 */
 type Instance [1]gdclass.Shader
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_mode                      gdextension.MethodForClass `hash:"3392948163"`
+	set_code                      gdextension.MethodForClass `hash:"83702148"`
+	get_code                      gdextension.MethodForClass `hash:"201670096"`
+	set_default_texture_parameter gdextension.MethodForClass `hash:"3850209648"`
+	get_default_texture_parameter gdextension.MethodForClass `hash:"4213877425"`
+	get_shader_uniform_list       gdextension.MethodForClass `hash:"1230511656"`
+	inspect_native_shader_code    gdextension.MethodForClass `hash:"3218959716"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Shader")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Shader
@@ -156,6 +178,20 @@ type Advanced = class
 type class [1]gdclass.Shader
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Shader)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Shader)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -165,7 +201,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Shader"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Shader)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -185,19 +221,19 @@ Returns the shader mode for the shader.
 */
 //go:nosplit
 func (self class) GetMode() Mode { //gd:Shader.get_mode
-	var r_ret = gdextension.Call[Mode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shader.Bind_get_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCode(code String.Readable) { //gd:Shader.set_code
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shader.Bind_set_code), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_code, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))}))
 }
 
 //go:nosplit
 func (self class) GetCode() String.Readable { //gd:Shader.get_code
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shader.Bind_get_code), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_code, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -209,7 +245,7 @@ Sets the default texture to be used with a texture uniform. The default is used 
 */
 //go:nosplit
 func (self class) SetDefaultTextureParameter(name String.Name, texture [1]gdclass.Texture, index int64) { //gd:Shader.set_default_texture_parameter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shader.Bind_set_default_texture_parameter), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_texture_parameter, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		name    gdextension.StringName
 		texture gdextension.Object
 		index   int64
@@ -223,7 +259,7 @@ Returns the texture that is set as default for the specified parameter.
 */
 //go:nosplit
 func (self class) GetDefaultTextureParameter(name String.Name, index int64) [1]gdclass.Texture { //gd:Shader.get_default_texture_parameter
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shader.Bind_get_default_texture_parameter), gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_default_texture_parameter, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		name  gdextension.StringName
 		index int64
 	}{pointers.Get(gd.InternalStringName(name)), index}))
@@ -237,7 +273,7 @@ If argument [param get_groups] is [code]true[/code], parameter grouping hints ar
 */
 //go:nosplit
 func (self class) GetShaderUniformList(get_groups bool) Array.Any { //gd:Shader.get_shader_uniform_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shader.Bind_get_shader_uniform_list), gdextension.SizeArray|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ get_groups bool }{get_groups}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_shader_uniform_list, gdextension.SizeArray|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ get_groups bool }{get_groups}))
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -247,7 +283,7 @@ Only available when running in the editor. Opens a popup that visualizes the gen
 */
 //go:nosplit
 func (self class) InspectNativeShaderCode() { //gd:Shader.inspect_native_shader_code
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Shader.Bind_inspect_native_shader_code), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.inspect_native_shader_code, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsShader() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsShader() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -281,7 +317,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Shader", func(ptr gd.Object) any { return [1]gdclass.Shader{*(*gdclass.Shader)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Shader", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Mode int //gd:Shader.Mode

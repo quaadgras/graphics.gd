@@ -106,6 +106,38 @@ while (parser.Read() != Error.FileEof)
 */
 type Instance [1]gdclass.XMLParser
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	read                           gdextension.MethodForClass `hash:"166280745"`
+	get_node_type                  gdextension.MethodForClass `hash:"2984359541"`
+	get_node_name                  gdextension.MethodForClass `hash:"201670096"`
+	get_node_data                  gdextension.MethodForClass `hash:"201670096"`
+	get_node_offset                gdextension.MethodForClass `hash:"3905245786"`
+	get_attribute_count            gdextension.MethodForClass `hash:"3905245786"`
+	get_attribute_name             gdextension.MethodForClass `hash:"844755477"`
+	get_attribute_value            gdextension.MethodForClass `hash:"844755477"`
+	has_attribute                  gdextension.MethodForClass `hash:"3927539163"`
+	get_named_attribute_value      gdextension.MethodForClass `hash:"3135753539"`
+	get_named_attribute_value_safe gdextension.MethodForClass `hash:"3135753539"`
+	is_empty                       gdextension.MethodForClass `hash:"36873697"`
+	get_current_line               gdextension.MethodForClass `hash:"3905245786"`
+	skip_section                   gdextension.MethodForClass `hash:"3218959716"`
+	seek                           gdextension.MethodForClass `hash:"844576869"`
+	open                           gdextension.MethodForClass `hash:"166001499"`
+	open_buffer                    gdextension.MethodForClass `hash:"680677267"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("XMLParser")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -242,6 +274,20 @@ type Advanced = class
 type class [1]gdclass.XMLParser
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XMLParser)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XMLParser)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -251,7 +297,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("XMLParser"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.XMLParser)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -263,7 +309,7 @@ Parses the next node in the file. This method returns an error code.
 */
 //go:nosplit
 func (self class) Read() Error.Code { //gd:XMLParser.read
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_read), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.read, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -273,7 +319,7 @@ Returns the type of the current node. Compare with [enum NodeType] constants.
 */
 //go:nosplit
 func (self class) GetNodeType() NodeType { //gd:XMLParser.get_node_type
-	var r_ret = gdextension.Call[NodeType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_get_node_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[NodeType](gd.ObjectChecked(self.AsObject()), methods.get_node_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -284,7 +330,7 @@ Returns the name of a node. This method will raise an error if the currently par
 */
 //go:nosplit
 func (self class) GetNodeName() String.Readable { //gd:XMLParser.get_node_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_get_node_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_node_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -294,7 +340,7 @@ Returns the contents of a text node. This method will raise an error if the curr
 */
 //go:nosplit
 func (self class) GetNodeData() String.Readable { //gd:XMLParser.get_node_data
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_get_node_data), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_node_data, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -304,7 +350,7 @@ Returns the byte offset of the currently parsed node since the beginning of the 
 */
 //go:nosplit
 func (self class) GetNodeOffset() int64 { //gd:XMLParser.get_node_offset
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_get_node_offset), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_offset, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -315,7 +361,7 @@ Returns the number of attributes in the currently parsed element.
 */
 //go:nosplit
 func (self class) GetAttributeCount() int64 { //gd:XMLParser.get_attribute_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_get_attribute_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_attribute_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -325,7 +371,7 @@ Returns the name of an attribute of the currently parsed element, specified by t
 */
 //go:nosplit
 func (self class) GetAttributeName(idx int64) String.Readable { //gd:XMLParser.get_attribute_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_get_attribute_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_attribute_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -335,7 +381,7 @@ Returns the value of an attribute of the currently parsed element, specified by 
 */
 //go:nosplit
 func (self class) GetAttributeValue(idx int64) String.Readable { //gd:XMLParser.get_attribute_value
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_get_attribute_value), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_attribute_value, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -345,7 +391,7 @@ Returns [code]true[/code] if the currently parsed element has an attribute with 
 */
 //go:nosplit
 func (self class) HasAttribute(name String.Readable) bool { //gd:XMLParser.has_attribute
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_has_attribute), gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_attribute, gdextension.SizeBool|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -355,7 +401,7 @@ Returns the value of an attribute of the currently parsed element, specified by 
 */
 //go:nosplit
 func (self class) GetNamedAttributeValue(name String.Readable) String.Readable { //gd:XMLParser.get_named_attribute_value
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_get_named_attribute_value), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_named_attribute_value, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -365,7 +411,7 @@ Returns the value of an attribute of the currently parsed element, specified by 
 */
 //go:nosplit
 func (self class) GetNamedAttributeValueSafe(name String.Readable) String.Readable { //gd:XMLParser.get_named_attribute_value_safe
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_get_named_attribute_value_safe), gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_named_attribute_value_safe, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -375,7 +421,7 @@ Returns [code]true[/code] if the currently parsed element is empty, e.g. [code]<
 */
 //go:nosplit
 func (self class) IsEmpty() bool { //gd:XMLParser.is_empty
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_is_empty), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_empty, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -385,7 +431,7 @@ Returns the current line in the parsed file, counting from 0.
 */
 //go:nosplit
 func (self class) GetCurrentLine() int64 { //gd:XMLParser.get_current_line
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_get_current_line), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_line, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -395,7 +441,7 @@ Skips the current section. If the currently parsed node contains more inner node
 */
 //go:nosplit
 func (self class) SkipSection() { //gd:XMLParser.skip_section
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_skip_section), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.skip_section, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -403,7 +449,7 @@ Moves the buffer cursor to a certain offset (since the beginning) and reads the 
 */
 //go:nosplit
 func (self class) SeekTo(position int64) Error.Code { //gd:XMLParser.seek
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_seek), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ position int64 }{position}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.seek, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ position int64 }{position}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -413,7 +459,7 @@ Opens an XML [param file] for parsing. This method returns an error code.
 */
 //go:nosplit
 func (self class) Open(file String.Readable) Error.Code { //gd:XMLParser.open
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_open), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -423,7 +469,7 @@ Opens an XML raw [param buffer] for parsing. This method returns an error code.
 */
 //go:nosplit
 func (self class) OpenBuffer(buffer Packed.Bytes) Error.Code { //gd:XMLParser.open_buffer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XMLParser.Bind_open_buffer), gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -452,7 +498,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XMLParser", func(ptr gd.Object) any { return [1]gdclass.XMLParser{*(*gdclass.XMLParser)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("XMLParser", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type NodeType int //gd:XMLParser.NodeType

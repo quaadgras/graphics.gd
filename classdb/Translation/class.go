@@ -73,6 +73,31 @@ type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 */
 type Instance [1]gdclass.Translation
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_locale                  gdextension.MethodForClass `hash:"83702148"`
+	get_locale                  gdextension.MethodForClass `hash:"201670096"`
+	add_message                 gdextension.MethodForClass `hash:"3898530326"`
+	add_plural_message          gdextension.MethodForClass `hash:"2356982266"`
+	get_message                 gdextension.MethodForClass `hash:"1829228469"`
+	get_plural_message          gdextension.MethodForClass `hash:"229954002"`
+	erase_message               gdextension.MethodForClass `hash:"3959009644"`
+	get_message_list            gdextension.MethodForClass `hash:"1139954409"`
+	get_translated_message_list gdextension.MethodForClass `hash:"1139954409"`
+	get_message_count           gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Translation")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.Translation
@@ -246,6 +271,20 @@ type Advanced = class
 type class [1]gdclass.Translation
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Translation)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Translation)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -255,7 +294,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Translation"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Translation)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -315,12 +354,12 @@ func (class) _get_message(impl func(ptr unsafe.Pointer, src_message String.Name,
 
 //go:nosplit
 func (self class) SetLocale(locale String.Readable) { //gd:Translation.set_locale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Translation.Bind_set_locale), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_locale, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))}))
 }
 
 //go:nosplit
 func (self class) GetLocale() String.Readable { //gd:Translation.get_locale
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Translation.Bind_get_locale), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -331,7 +370,7 @@ An additional context could be used to specify the translation context or differ
 */
 //go:nosplit
 func (self class) AddMessage(src_message String.Name, xlated_message String.Name, context String.Name) { //gd:Translation.add_message
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Translation.Bind_add_message), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), unsafe.Pointer(&struct {
 		src_message    gdextension.StringName
 		xlated_message gdextension.StringName
 		context        gdextension.StringName
@@ -344,7 +383,7 @@ An additional context could be used to specify the translation context or differ
 */
 //go:nosplit
 func (self class) AddPluralMessage(src_message String.Name, xlated_messages Packed.Strings, context String.Name) { //gd:Translation.add_plural_message
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Translation.Bind_add_plural_message), 0|(gdextension.SizeStringName<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeStringName<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_plural_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeStringName<<12), unsafe.Pointer(&struct {
 		src_message     gdextension.StringName
 		xlated_messages gdextension.PackedArray[gdextension.String]
 		context         gdextension.StringName
@@ -356,7 +395,7 @@ Returns a message's translation.
 */
 //go:nosplit
 func (self class) GetMessage(src_message String.Name, context String.Name) String.Name { //gd:Translation.get_message
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Translation.Bind_get_message), gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_message, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		src_message gdextension.StringName
 		context     gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(src_message)), pointers.Get(gd.InternalStringName(context))}))
@@ -370,7 +409,7 @@ The number [param n] is the number or quantity of the plural object. It will be 
 */
 //go:nosplit
 func (self class) GetPluralMessage(src_message String.Name, src_plural_message String.Name, n int64, context String.Name) String.Name { //gd:Translation.get_plural_message
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Translation.Bind_get_plural_message), gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_plural_message, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), unsafe.Pointer(&struct {
 		src_message        gdextension.StringName
 		src_plural_message gdextension.StringName
 		n                  int64
@@ -385,7 +424,7 @@ Erases a message.
 */
 //go:nosplit
 func (self class) EraseMessage(src_message String.Name, context String.Name) { //gd:Translation.erase_message
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Translation.Bind_erase_message), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		src_message gdextension.StringName
 		context     gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(src_message)), pointers.Get(gd.InternalStringName(context))}))
@@ -396,7 +435,7 @@ Returns all the messages (keys).
 */
 //go:nosplit
 func (self class) GetMessageList() Packed.Strings { //gd:Translation.get_message_list
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Translation.Bind_get_message_list), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_message_list, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -406,7 +445,7 @@ Returns all the messages (translated text).
 */
 //go:nosplit
 func (self class) GetTranslatedMessageList() Packed.Strings { //gd:Translation.get_translated_message_list
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Translation.Bind_get_translated_message_list), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_translated_message_list, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -416,7 +455,7 @@ Returns the number of existing messages.
 */
 //go:nosplit
 func (self class) GetMessageCount() int64 { //gd:Translation.get_message_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Translation.Bind_get_message_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_message_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -460,5 +499,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Translation", func(ptr gd.Object) any { return [1]gdclass.Translation{*(*gdclass.Translation)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Translation", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

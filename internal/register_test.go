@@ -11,7 +11,8 @@ import (
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/Node2D"
 	gd "graphics.gd/internal"
-	internal "graphics.gd/internal"
+	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/pointers"
 )
 
 func TestRegister(t *testing.T) {
@@ -20,10 +21,10 @@ func TestRegister(t *testing.T) {
 	}
 	classdb.Register[TestingSimpleClass]()
 
-	if tag := internal.Global.ClassDB.GetClassTag(gd.NewStringName("Node2D")); tag == 0 {
+	if tag := gdextension.Host.Objects.Type(pointers.Get(gd.NewStringName("Node2D"))); tag == 0 {
 		t.Fail()
 	}
-	if tag := internal.Global.ClassDB.GetClassTag(gd.NewStringName("TestingSimpleClass")); tag == 0 {
+	if tag := gdextension.Host.Objects.Type(pointers.Get(gd.NewStringName("TestingSimpleClass"))); tag == 0 {
 		t.Fail()
 	}
 

@@ -79,6 +79,28 @@ Internally, Godot maps these files to their respective counterparts in the targe
 */
 type Instance [1]gdclass.TextureLayered
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_format       gdextension.MethodForClass `hash:"3847873762"`
+	get_layered_type gdextension.MethodForClass `hash:"518123893"`
+	get_width        gdextension.MethodForClass `hash:"3905245786"`
+	get_height       gdextension.MethodForClass `hash:"3905245786"`
+	get_layers       gdextension.MethodForClass `hash:"3905245786"`
+	has_mipmaps      gdextension.MethodForClass `hash:"36873697"`
+	get_layer_data   gdextension.MethodForClass `hash:"3655284255"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("TextureLayered")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -255,6 +277,20 @@ type Advanced = class
 type class [1]gdclass.TextureLayered
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TextureLayered)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TextureLayered)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -264,7 +300,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TextureLayered"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.TextureLayered)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -359,7 +395,7 @@ Returns the current format being used by this texture. See [enum Image.Format] f
 */
 //go:nosplit
 func (self class) GetFormat() Image.Format { //gd:TextureLayered.get_format
-	var r_ret = gdextension.Call[Image.Format](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextureLayered.Bind_get_format), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -369,7 +405,7 @@ Returns the [TextureLayered]'s type. The type determines how the data is accesse
 */
 //go:nosplit
 func (self class) GetLayeredType() LayeredType { //gd:TextureLayered.get_layered_type
-	var r_ret = gdextension.Call[LayeredType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextureLayered.Bind_get_layered_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[LayeredType](gd.ObjectChecked(self.AsObject()), methods.get_layered_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -379,7 +415,7 @@ Returns the width of the texture in pixels. Width is typically represented by th
 */
 //go:nosplit
 func (self class) GetWidth() int64 { //gd:TextureLayered.get_width
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextureLayered.Bind_get_width), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -389,7 +425,7 @@ Returns the height of the texture in pixels. Height is typically represented by 
 */
 //go:nosplit
 func (self class) GetHeight() int64 { //gd:TextureLayered.get_height
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextureLayered.Bind_get_height), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -399,7 +435,7 @@ Returns the number of referenced [Image]s.
 */
 //go:nosplit
 func (self class) GetLayers() int64 { //gd:TextureLayered.get_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextureLayered.Bind_get_layers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -409,7 +445,7 @@ Returns [code]true[/code] if the layers have generated mipmaps.
 */
 //go:nosplit
 func (self class) HasMipmaps() bool { //gd:TextureLayered.has_mipmaps
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextureLayered.Bind_has_mipmaps), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_mipmaps, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -419,7 +455,7 @@ Returns an [Image] resource with the data from specified [param layer].
 */
 //go:nosplit
 func (self class) GetLayerData(layer int64) [1]gdclass.Image { //gd:TextureLayered.get_layer_data
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TextureLayered.Bind_get_layer_data), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_layer_data, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
@@ -488,9 +524,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TextureLayered", func(ptr gd.Object) any {
-		return [1]gdclass.TextureLayered{*(*gdclass.TextureLayered)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("TextureLayered", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type LayeredType int //gd:TextureLayered.LayeredType

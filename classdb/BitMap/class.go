@@ -75,6 +75,34 @@ A two-dimensional array of boolean values, can be used to efficiently store a bi
 */
 type Instance [1]gdclass.BitMap
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	create                  gdextension.MethodForClass `hash:"1130785943"`
+	create_from_image_alpha gdextension.MethodForClass `hash:"106271684"`
+	set_bitv                gdextension.MethodForClass `hash:"4153096796"`
+	set_bit                 gdextension.MethodForClass `hash:"1383440665"`
+	get_bitv                gdextension.MethodForClass `hash:"3900751641"`
+	get_bit                 gdextension.MethodForClass `hash:"2522259332"`
+	set_bit_rect            gdextension.MethodForClass `hash:"472162941"`
+	get_true_bit_count      gdextension.MethodForClass `hash:"3905245786"`
+	get_size                gdextension.MethodForClass `hash:"3690982128"`
+	resize                  gdextension.MethodForClass `hash:"1130785943"`
+	grow_mask               gdextension.MethodForClass `hash:"3317281434"`
+	convert_to_image        gdextension.MethodForClass `hash:"4190603485"`
+	opaque_to_polygons      gdextension.MethodForClass `hash:"48478126"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("BitMap")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.BitMap
@@ -207,6 +235,20 @@ type Advanced = class
 type class [1]gdclass.BitMap
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.BitMap)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.BitMap)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -216,7 +258,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("BitMap"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.BitMap)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -228,7 +270,7 @@ Creates a bitmap with the specified size, filled with [code]false[/code].
 */
 //go:nosplit
 func (self class) Create(size Vector2i.XY) { //gd:BitMap.create
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_create), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
 }
 
 /*
@@ -236,7 +278,7 @@ Creates a bitmap that matches the given image dimensions, every element of the b
 */
 //go:nosplit
 func (self class) CreateFromImageAlpha(image [1]gdclass.Image, threshold float64) { //gd:BitMap.create_from_image_alpha
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_create_from_image_alpha), 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_image_alpha, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		image     gdextension.Object
 		threshold float64
 	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), threshold}))
@@ -247,7 +289,7 @@ Sets the bitmap's element at the specified position, to the specified value.
 */
 //go:nosplit
 func (self class) SetBitv(position Vector2i.XY, bit bool) { //gd:BitMap.set_bitv
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_set_bitv), 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bitv, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		position Vector2i.XY
 		bit      bool
 	}{position, bit}))
@@ -258,7 +300,7 @@ Sets the bitmap's element at the specified position, to the specified value.
 */
 //go:nosplit
 func (self class) SetBit(x int64, y int64, bit bool) { //gd:BitMap.set_bit
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_set_bit), 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
 		x   int64
 		y   int64
 		bit bool
@@ -270,7 +312,7 @@ Returns bitmap's value at the specified position.
 */
 //go:nosplit
 func (self class) GetBitv(position Vector2i.XY) bool { //gd:BitMap.get_bitv
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_get_bitv), gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ position Vector2i.XY }{position}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_bitv, gdextension.SizeBool|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ position Vector2i.XY }{position}))
 	var ret = r_ret
 	return ret
 }
@@ -280,7 +322,7 @@ Returns bitmap's value at the specified position.
 */
 //go:nosplit
 func (self class) GetBit(x int64, y int64) bool { //gd:BitMap.get_bit
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_get_bit), gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_bit, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		x int64
 		y int64
 	}{x, y}))
@@ -293,7 +335,7 @@ Sets a rectangular portion of the bitmap to the specified value.
 */
 //go:nosplit
 func (self class) SetBitRect(rect Rect2i.PositionSize, bit bool) { //gd:BitMap.set_bit_rect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_set_bit_rect), 0|(gdextension.SizeRect2i<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bit_rect, 0|(gdextension.SizeRect2i<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		rect Rect2i.PositionSize
 		bit  bool
 	}{rect, bit}))
@@ -304,7 +346,7 @@ Returns the number of bitmap elements that are set to [code]true[/code].
 */
 //go:nosplit
 func (self class) GetTrueBitCount() int64 { //gd:BitMap.get_true_bit_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_get_true_bit_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_true_bit_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -314,7 +356,7 @@ Returns bitmap's dimensions.
 */
 //go:nosplit
 func (self class) GetSize() Vector2i.XY { //gd:BitMap.get_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_get_size), gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -324,7 +366,7 @@ Resizes the image to [param new_size].
 */
 //go:nosplit
 func (self class) Resize(new_size Vector2i.XY) { //gd:BitMap.resize
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_resize), 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ new_size Vector2i.XY }{new_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resize, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ new_size Vector2i.XY }{new_size}))
 }
 
 /*
@@ -332,7 +374,7 @@ Applies morphological dilation or erosion to the bitmap. If [param pixels] is po
 */
 //go:nosplit
 func (self class) GrowMask(pixels int64, rect Rect2i.PositionSize) { //gd:BitMap.grow_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_grow_mask), 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2i<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.grow_mask, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2i<<8), unsafe.Pointer(&struct {
 		pixels int64
 		rect   Rect2i.PositionSize
 	}{pixels, rect}))
@@ -343,7 +385,7 @@ Returns an image of the same size as the bitmap and with a [enum Image.Format] o
 */
 //go:nosplit
 func (self class) ConvertToImage() [1]gdclass.Image { //gd:BitMap.convert_to_image
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_convert_to_image), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.convert_to_image, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
@@ -358,7 +400,7 @@ Rect2(Vector2(), get_size())
 */
 //go:nosplit
 func (self class) OpaqueToPolygons(rect Rect2i.PositionSize, epsilon float64) Array.Contains[Packed.Array[Vector2.XY]] { //gd:BitMap.opaque_to_polygons
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.BitMap.Bind_opaque_to_polygons), gdextension.SizeArray|(gdextension.SizeRect2i<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.opaque_to_polygons, gdextension.SizeArray|(gdextension.SizeRect2i<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		rect    Rect2i.PositionSize
 		epsilon float64
 	}{rect, epsilon}))
@@ -397,5 +439,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("BitMap", func(ptr gd.Object) any { return [1]gdclass.BitMap{*(*gdclass.BitMap)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("BitMap", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

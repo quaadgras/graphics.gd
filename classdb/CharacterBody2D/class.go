@@ -78,6 +78,69 @@ For game objects that don't require complex movement or collision detection, suc
 */
 type Instance [1]gdclass.CharacterBody2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	move_and_slide                   gdextension.MethodForClass `hash:"2240911060"`
+	apply_floor_snap                 gdextension.MethodForClass `hash:"3218959716"`
+	set_velocity                     gdextension.MethodForClass `hash:"743155724"`
+	get_velocity                     gdextension.MethodForClass `hash:"3341600327"`
+	set_safe_margin                  gdextension.MethodForClass `hash:"373806689"`
+	get_safe_margin                  gdextension.MethodForClass `hash:"1740695150"`
+	is_floor_stop_on_slope_enabled   gdextension.MethodForClass `hash:"36873697"`
+	set_floor_stop_on_slope_enabled  gdextension.MethodForClass `hash:"2586408642"`
+	set_floor_constant_speed_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_floor_constant_speed_enabled  gdextension.MethodForClass `hash:"36873697"`
+	set_floor_block_on_wall_enabled  gdextension.MethodForClass `hash:"2586408642"`
+	is_floor_block_on_wall_enabled   gdextension.MethodForClass `hash:"36873697"`
+	set_slide_on_ceiling_enabled     gdextension.MethodForClass `hash:"2586408642"`
+	is_slide_on_ceiling_enabled      gdextension.MethodForClass `hash:"36873697"`
+	set_platform_floor_layers        gdextension.MethodForClass `hash:"1286410249"`
+	get_platform_floor_layers        gdextension.MethodForClass `hash:"3905245786"`
+	set_platform_wall_layers         gdextension.MethodForClass `hash:"1286410249"`
+	get_platform_wall_layers         gdextension.MethodForClass `hash:"3905245786"`
+	get_max_slides                   gdextension.MethodForClass `hash:"3905245786"`
+	set_max_slides                   gdextension.MethodForClass `hash:"1286410249"`
+	get_floor_max_angle              gdextension.MethodForClass `hash:"1740695150"`
+	set_floor_max_angle              gdextension.MethodForClass `hash:"373806689"`
+	get_floor_snap_length            gdextension.MethodForClass `hash:"191475506"`
+	set_floor_snap_length            gdextension.MethodForClass `hash:"373806689"`
+	get_wall_min_slide_angle         gdextension.MethodForClass `hash:"1740695150"`
+	set_wall_min_slide_angle         gdextension.MethodForClass `hash:"373806689"`
+	get_up_direction                 gdextension.MethodForClass `hash:"3341600327"`
+	set_up_direction                 gdextension.MethodForClass `hash:"743155724"`
+	set_motion_mode                  gdextension.MethodForClass `hash:"1224392233"`
+	get_motion_mode                  gdextension.MethodForClass `hash:"1160151236"`
+	set_platform_on_leave            gdextension.MethodForClass `hash:"2423324375"`
+	get_platform_on_leave            gdextension.MethodForClass `hash:"4054324341"`
+	is_on_floor                      gdextension.MethodForClass `hash:"36873697"`
+	is_on_floor_only                 gdextension.MethodForClass `hash:"36873697"`
+	is_on_ceiling                    gdextension.MethodForClass `hash:"36873697"`
+	is_on_ceiling_only               gdextension.MethodForClass `hash:"36873697"`
+	is_on_wall                       gdextension.MethodForClass `hash:"36873697"`
+	is_on_wall_only                  gdextension.MethodForClass `hash:"36873697"`
+	get_floor_normal                 gdextension.MethodForClass `hash:"3341600327"`
+	get_wall_normal                  gdextension.MethodForClass `hash:"3341600327"`
+	get_last_motion                  gdextension.MethodForClass `hash:"3341600327"`
+	get_position_delta               gdextension.MethodForClass `hash:"3341600327"`
+	get_real_velocity                gdextension.MethodForClass `hash:"3341600327"`
+	get_floor_angle                  gdextension.MethodForClass `hash:"2841063350"`
+	get_platform_velocity            gdextension.MethodForClass `hash:"3341600327"`
+	get_slide_collision_count        gdextension.MethodForClass `hash:"3905245786"`
+	get_slide_collision              gdextension.MethodForClass `hash:"860659811"`
+	get_last_slide_collision         gdextension.MethodForClass `hash:"2161834755"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("CharacterBody2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.CharacterBody2D
@@ -253,6 +316,20 @@ type Advanced = class
 type class [1]gdclass.CharacterBody2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CharacterBody2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CharacterBody2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -262,7 +339,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CharacterBody2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.CharacterBody2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -397,7 +474,7 @@ Returns [code]true[/code] if the body collided, otherwise, returns [code]false[/
 */
 //go:nosplit
 func (self class) MoveAndSlide() bool { //gd:CharacterBody2D.move_and_slide
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_move_and_slide), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.move_and_slide, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -407,185 +484,185 @@ Allows to manually apply a snap to the floor regardless of the body's velocity. 
 */
 //go:nosplit
 func (self class) ApplyFloorSnap() { //gd:CharacterBody2D.apply_floor_snap
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_apply_floor_snap), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_floor_snap, 0, unsafe.Pointer(&struct{}{}))
 }
 
 //go:nosplit
 func (self class) SetVelocity(velocity Vector2.XY) { //gd:CharacterBody2D.set_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_velocity), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
 }
 
 //go:nosplit
 func (self class) GetVelocity() Vector2.XY { //gd:CharacterBody2D.get_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_velocity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSafeMargin(margin float64) { //gd:CharacterBody2D.set_safe_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_safe_margin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_safe_margin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ margin float64 }{margin}))
 }
 
 //go:nosplit
 func (self class) GetSafeMargin() float64 { //gd:CharacterBody2D.get_safe_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_safe_margin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_safe_margin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) IsFloorStopOnSlopeEnabled() bool { //gd:CharacterBody2D.is_floor_stop_on_slope_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_is_floor_stop_on_slope_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_floor_stop_on_slope_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFloorStopOnSlopeEnabled(enabled bool) { //gd:CharacterBody2D.set_floor_stop_on_slope_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_floor_stop_on_slope_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_floor_stop_on_slope_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) SetFloorConstantSpeedEnabled(enabled bool) { //gd:CharacterBody2D.set_floor_constant_speed_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_floor_constant_speed_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_floor_constant_speed_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFloorConstantSpeedEnabled() bool { //gd:CharacterBody2D.is_floor_constant_speed_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_is_floor_constant_speed_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_floor_constant_speed_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFloorBlockOnWallEnabled(enabled bool) { //gd:CharacterBody2D.set_floor_block_on_wall_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_floor_block_on_wall_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_floor_block_on_wall_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsFloorBlockOnWallEnabled() bool { //gd:CharacterBody2D.is_floor_block_on_wall_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_is_floor_block_on_wall_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_floor_block_on_wall_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSlideOnCeilingEnabled(enabled bool) { //gd:CharacterBody2D.set_slide_on_ceiling_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_slide_on_ceiling_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slide_on_ceiling_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsSlideOnCeilingEnabled() bool { //gd:CharacterBody2D.is_slide_on_ceiling_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_is_slide_on_ceiling_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_slide_on_ceiling_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlatformFloorLayers(exclude_layer int64) { //gd:CharacterBody2D.set_platform_floor_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_platform_floor_layers), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ exclude_layer int64 }{exclude_layer}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_platform_floor_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ exclude_layer int64 }{exclude_layer}))
 }
 
 //go:nosplit
 func (self class) GetPlatformFloorLayers() int64 { //gd:CharacterBody2D.get_platform_floor_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_platform_floor_layers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_platform_floor_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlatformWallLayers(exclude_layer int64) { //gd:CharacterBody2D.set_platform_wall_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_platform_wall_layers), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ exclude_layer int64 }{exclude_layer}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_platform_wall_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ exclude_layer int64 }{exclude_layer}))
 }
 
 //go:nosplit
 func (self class) GetPlatformWallLayers() int64 { //gd:CharacterBody2D.get_platform_wall_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_platform_wall_layers), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_platform_wall_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetMaxSlides() int64 { //gd:CharacterBody2D.get_max_slides
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_max_slides), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_slides, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxSlides(max_slides int64) { //gd:CharacterBody2D.set_max_slides
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_max_slides), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_slides int64 }{max_slides}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_slides, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_slides int64 }{max_slides}))
 }
 
 //go:nosplit
 func (self class) GetFloorMaxAngle() float64 { //gd:CharacterBody2D.get_floor_max_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_floor_max_angle), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_floor_max_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFloorMaxAngle(radians float64) { //gd:CharacterBody2D.set_floor_max_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_floor_max_angle), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_floor_max_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
 }
 
 //go:nosplit
 func (self class) GetFloorSnapLength() float64 { //gd:CharacterBody2D.get_floor_snap_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_floor_snap_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_floor_snap_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFloorSnapLength(floor_snap_length float64) { //gd:CharacterBody2D.set_floor_snap_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_floor_snap_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ floor_snap_length float64 }{floor_snap_length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_floor_snap_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ floor_snap_length float64 }{floor_snap_length}))
 }
 
 //go:nosplit
 func (self class) GetWallMinSlideAngle() float64 { //gd:CharacterBody2D.get_wall_min_slide_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_wall_min_slide_angle), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wall_min_slide_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWallMinSlideAngle(radians float64) { //gd:CharacterBody2D.set_wall_min_slide_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_wall_min_slide_angle), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wall_min_slide_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radians float64 }{radians}))
 }
 
 //go:nosplit
 func (self class) GetUpDirection() Vector2.XY { //gd:CharacterBody2D.get_up_direction
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_up_direction), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_up_direction, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpDirection(up_direction Vector2.XY) { //gd:CharacterBody2D.set_up_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_up_direction), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ up_direction Vector2.XY }{up_direction}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_up_direction, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ up_direction Vector2.XY }{up_direction}))
 }
 
 //go:nosplit
 func (self class) SetMotionMode(mode MotionMode) { //gd:CharacterBody2D.set_motion_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_motion_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode MotionMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode MotionMode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetMotionMode() MotionMode { //gd:CharacterBody2D.get_motion_mode
-	var r_ret = gdextension.Call[MotionMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_motion_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[MotionMode](gd.ObjectChecked(self.AsObject()), methods.get_motion_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlatformOnLeave(on_leave_apply_velocity PlatformOnLeave) { //gd:CharacterBody2D.set_platform_on_leave
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_set_platform_on_leave), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ on_leave_apply_velocity PlatformOnLeave }{on_leave_apply_velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_platform_on_leave, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ on_leave_apply_velocity PlatformOnLeave }{on_leave_apply_velocity}))
 }
 
 //go:nosplit
 func (self class) GetPlatformOnLeave() PlatformOnLeave { //gd:CharacterBody2D.get_platform_on_leave
-	var r_ret = gdextension.Call[PlatformOnLeave](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_platform_on_leave), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PlatformOnLeave](gd.ObjectChecked(self.AsObject()), methods.get_platform_on_leave, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -595,7 +672,7 @@ Returns [code]true[/code] if the body collided with the floor on the last call o
 */
 //go:nosplit
 func (self class) IsOnFloor() bool { //gd:CharacterBody2D.is_on_floor
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_is_on_floor), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_floor, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -605,7 +682,7 @@ Returns [code]true[/code] if the body collided only with the floor on the last c
 */
 //go:nosplit
 func (self class) IsOnFloorOnly() bool { //gd:CharacterBody2D.is_on_floor_only
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_is_on_floor_only), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_floor_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -615,7 +692,7 @@ Returns [code]true[/code] if the body collided with the ceiling on the last call
 */
 //go:nosplit
 func (self class) IsOnCeiling() bool { //gd:CharacterBody2D.is_on_ceiling
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_is_on_ceiling), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_ceiling, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -625,7 +702,7 @@ Returns [code]true[/code] if the body collided only with the ceiling on the last
 */
 //go:nosplit
 func (self class) IsOnCeilingOnly() bool { //gd:CharacterBody2D.is_on_ceiling_only
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_is_on_ceiling_only), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_ceiling_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -635,7 +712,7 @@ Returns [code]true[/code] if the body collided with a wall on the last call of [
 */
 //go:nosplit
 func (self class) IsOnWall() bool { //gd:CharacterBody2D.is_on_wall
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_is_on_wall), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_wall, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -645,7 +722,7 @@ Returns [code]true[/code] if the body collided only with a wall on the last call
 */
 //go:nosplit
 func (self class) IsOnWallOnly() bool { //gd:CharacterBody2D.is_on_wall_only
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_is_on_wall_only), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_wall_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -656,7 +733,7 @@ Returns the collision normal of the floor at the last collision point. Only vali
 */
 //go:nosplit
 func (self class) GetFloorNormal() Vector2.XY { //gd:CharacterBody2D.get_floor_normal
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_floor_normal), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_floor_normal, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -667,7 +744,7 @@ Returns the collision normal of the wall at the last collision point. Only valid
 */
 //go:nosplit
 func (self class) GetWallNormal() Vector2.XY { //gd:CharacterBody2D.get_wall_normal
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_wall_normal), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_wall_normal, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -677,7 +754,7 @@ Returns the last motion applied to the [CharacterBody2D] during the last call to
 */
 //go:nosplit
 func (self class) GetLastMotion() Vector2.XY { //gd:CharacterBody2D.get_last_motion
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_last_motion), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_last_motion, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -687,7 +764,7 @@ Returns the travel (position delta) that occurred during the last call to [metho
 */
 //go:nosplit
 func (self class) GetPositionDelta() Vector2.XY { //gd:CharacterBody2D.get_position_delta
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_position_delta), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position_delta, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -697,7 +774,7 @@ Returns the current real velocity since the last call to [method move_and_slide]
 */
 //go:nosplit
 func (self class) GetRealVelocity() Vector2.XY { //gd:CharacterBody2D.get_real_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_real_velocity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_real_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -707,7 +784,7 @@ Returns the floor's collision angle at the last collision point according to [pa
 */
 //go:nosplit
 func (self class) GetFloorAngle(up_direction Vector2.XY) float64 { //gd:CharacterBody2D.get_floor_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_floor_angle), gdextension.SizeFloat|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ up_direction Vector2.XY }{up_direction}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_floor_angle, gdextension.SizeFloat|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ up_direction Vector2.XY }{up_direction}))
 	var ret = r_ret
 	return ret
 }
@@ -717,7 +794,7 @@ Returns the linear velocity of the platform at the last collision point. Only va
 */
 //go:nosplit
 func (self class) GetPlatformVelocity() Vector2.XY { //gd:CharacterBody2D.get_platform_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_platform_velocity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_platform_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -727,7 +804,7 @@ Returns the number of times the body collided and changed direction during the l
 */
 //go:nosplit
 func (self class) GetSlideCollisionCount() int64 { //gd:CharacterBody2D.get_slide_collision_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_slide_collision_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_slide_collision_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -752,7 +829,7 @@ for (int i = 0; i < GetSlideCollisionCount(); i++)
 */
 //go:nosplit
 func (self class) GetSlideCollision(slide_idx int64) [1]gdclass.KinematicCollision2D { //gd:CharacterBody2D.get_slide_collision
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_slide_collision), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slide_idx int64 }{slide_idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_slide_collision, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ slide_idx int64 }{slide_idx}))
 	var ret = [1]gdclass.KinematicCollision2D{gd.PointerWithOwnershipTransferredToGo[gdclass.KinematicCollision2D](r_ret)}
 	return ret
 }
@@ -762,7 +839,7 @@ Returns a [KinematicCollision2D], which contains information about the latest co
 */
 //go:nosplit
 func (self class) GetLastSlideCollision() [1]gdclass.KinematicCollision2D { //gd:CharacterBody2D.get_last_slide_collision
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CharacterBody2D.Bind_get_last_slide_collision), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_last_slide_collision, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.KinematicCollision2D{gd.PointerWithOwnershipTransferredToGo[gdclass.KinematicCollision2D](r_ret)}
 	return ret
 }
@@ -815,9 +892,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CharacterBody2D", func(ptr gd.Object) any {
-		return [1]gdclass.CharacterBody2D{*(*gdclass.CharacterBody2D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("CharacterBody2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type MotionMode int //gd:CharacterBody2D.MotionMode

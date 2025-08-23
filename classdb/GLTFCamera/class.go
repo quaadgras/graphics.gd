@@ -72,6 +72,35 @@ Represents a camera as defined by the base glTF spec.
 */
 type Instance [1]gdclass.GLTFCamera
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	from_node       gdextension.MethodForClass `hash:"237784"`
+	to_node         gdextension.MethodForClass `hash:"2285090890"`
+	from_dictionary gdextension.MethodForClass `hash:"2495512509"`
+	to_dictionary   gdextension.MethodForClass `hash:"3102165223"`
+	get_perspective gdextension.MethodForClass `hash:"36873697"`
+	set_perspective gdextension.MethodForClass `hash:"2586408642"`
+	get_fov         gdextension.MethodForClass `hash:"1740695150"`
+	set_fov         gdextension.MethodForClass `hash:"373806689"`
+	get_size_mag    gdextension.MethodForClass `hash:"1740695150"`
+	set_size_mag    gdextension.MethodForClass `hash:"373806689"`
+	get_depth_far   gdextension.MethodForClass `hash:"1740695150"`
+	set_depth_far   gdextension.MethodForClass `hash:"373806689"`
+	get_depth_near  gdextension.MethodForClass `hash:"1740695150"`
+	set_depth_near  gdextension.MethodForClass `hash:"373806689"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("GLTFCamera")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -117,6 +146,20 @@ type Advanced = class
 type class [1]gdclass.GLTFCamera
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GLTFCamera)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.GLTFCamera)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -126,7 +169,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("GLTFCamera"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GLTFCamera)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -178,7 +221,7 @@ Create a new GLTFCamera instance from the given Godot [Camera3D] node.
 */
 //go:nosplit
 func (self class) FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_node
-	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_from_node), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(camera_node[0].AsObject()))}))
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(camera_node[0].AsObject()))}))
 	var ret = [1]gdclass.GLTFCamera{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFCamera](r_ret)}
 	return ret
 }
@@ -188,7 +231,7 @@ Converts this GLTFCamera instance into a Godot [Camera3D] node.
 */
 //go:nosplit
 func (self class) ToNode() [1]gdclass.Camera3D { //gd:GLTFCamera.to_node
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_to_node), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_node, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Camera3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Camera3D](r_ret)}
 	return ret
 }
@@ -198,7 +241,7 @@ Creates a new GLTFCamera instance by parsing the given [Dictionary].
 */
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_dictionary
-	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_from_dictionary), gdextension.SizeObject|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))}))
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_dictionary, gdextension.SizeObject|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))}))
 	var ret = [1]gdclass.GLTFCamera{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFCamera](r_ret)}
 	return ret
 }
@@ -208,69 +251,69 @@ Serializes this GLTFCamera instance into a [Dictionary].
 */
 //go:nosplit
 func (self class) ToDictionary() Dictionary.Any { //gd:GLTFCamera.to_dictionary
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_to_dictionary), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.to_dictionary, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetPerspective() bool { //gd:GLTFCamera.get_perspective
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_get_perspective), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_perspective, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPerspective(perspective bool) { //gd:GLTFCamera.set_perspective
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_set_perspective), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ perspective bool }{perspective}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_perspective, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ perspective bool }{perspective}))
 }
 
 //go:nosplit
 func (self class) GetFov() float64 { //gd:GLTFCamera.get_fov
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_get_fov), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fov, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFov(fov float64) { //gd:GLTFCamera.set_fov
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_set_fov), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fov float64 }{fov}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fov, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fov float64 }{fov}))
 }
 
 //go:nosplit
 func (self class) GetSizeMag() float64 { //gd:GLTFCamera.get_size_mag
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_get_size_mag), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_size_mag, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSizeMag(size_mag float64) { //gd:GLTFCamera.set_size_mag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_set_size_mag), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size_mag float64 }{size_mag}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_mag, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size_mag float64 }{size_mag}))
 }
 
 //go:nosplit
 func (self class) GetDepthFar() float64 { //gd:GLTFCamera.get_depth_far
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_get_depth_far), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_far, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepthFar(zdepth_far float64) { //gd:GLTFCamera.set_depth_far
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_set_depth_far), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ zdepth_far float64 }{zdepth_far}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_far, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ zdepth_far float64 }{zdepth_far}))
 }
 
 //go:nosplit
 func (self class) GetDepthNear() float64 { //gd:GLTFCamera.get_depth_near
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_get_depth_near), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_near, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepthNear(zdepth_near float64) { //gd:GLTFCamera.set_depth_near
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.GLTFCamera.Bind_set_depth_near), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ zdepth_near float64 }{zdepth_near}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_near, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ zdepth_near float64 }{zdepth_near}))
 }
 func (self class) AsGLTFCamera() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGLTFCamera() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -304,7 +347,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("GLTFCamera", func(ptr gd.Object) any { return [1]gdclass.GLTFCamera{*(*gdclass.GLTFCamera)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("GLTFCamera", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Structure map[interface{}]interface{}

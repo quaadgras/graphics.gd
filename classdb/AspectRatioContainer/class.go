@@ -74,6 +74,29 @@ A container type that arranges its child controls in a way that preserves their 
 */
 type Instance [1]gdclass.AspectRatioContainer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_ratio                gdextension.MethodForClass `hash:"373806689"`
+	get_ratio                gdextension.MethodForClass `hash:"1740695150"`
+	set_stretch_mode         gdextension.MethodForClass `hash:"1876743467"`
+	get_stretch_mode         gdextension.MethodForClass `hash:"3416449033"`
+	set_alignment_horizontal gdextension.MethodForClass `hash:"2147829016"`
+	get_alignment_horizontal gdextension.MethodForClass `hash:"3838875429"`
+	set_alignment_vertical   gdextension.MethodForClass `hash:"2147829016"`
+	get_alignment_vertical   gdextension.MethodForClass `hash:"3838875429"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("AspectRatioContainer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -89,6 +112,20 @@ type Advanced = class
 type class [1]gdclass.AspectRatioContainer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AspectRatioContainer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.AspectRatioContainer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -98,7 +135,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("AspectRatioContainer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AspectRatioContainer)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -138,48 +175,48 @@ func (self Instance) SetAlignmentVertical(value AlignmentMode) {
 
 //go:nosplit
 func (self class) SetRatio(ratio float64) { //gd:AspectRatioContainer.set_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AspectRatioContainer.Bind_set_ratio), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
 }
 
 //go:nosplit
 func (self class) GetRatio() float64 { //gd:AspectRatioContainer.get_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AspectRatioContainer.Bind_get_ratio), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStretchMode(stretch_mode StretchMode) { //gd:AspectRatioContainer.set_stretch_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AspectRatioContainer.Bind_set_stretch_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stretch_mode StretchMode }{stretch_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stretch_mode StretchMode }{stretch_mode}))
 }
 
 //go:nosplit
 func (self class) GetStretchMode() StretchMode { //gd:AspectRatioContainer.get_stretch_mode
-	var r_ret = gdextension.Call[StretchMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AspectRatioContainer.Bind_get_stretch_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[StretchMode](gd.ObjectChecked(self.AsObject()), methods.get_stretch_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlignmentHorizontal(alignment_horizontal AlignmentMode) { //gd:AspectRatioContainer.set_alignment_horizontal
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AspectRatioContainer.Bind_set_alignment_horizontal), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment_horizontal AlignmentMode }{alignment_horizontal}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment_horizontal, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment_horizontal AlignmentMode }{alignment_horizontal}))
 }
 
 //go:nosplit
 func (self class) GetAlignmentHorizontal() AlignmentMode { //gd:AspectRatioContainer.get_alignment_horizontal
-	var r_ret = gdextension.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AspectRatioContainer.Bind_get_alignment_horizontal), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment_horizontal, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlignmentVertical(alignment_vertical AlignmentMode) { //gd:AspectRatioContainer.set_alignment_vertical
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AspectRatioContainer.Bind_set_alignment_vertical), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment_vertical AlignmentMode }{alignment_vertical}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment_vertical, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment_vertical AlignmentMode }{alignment_vertical}))
 }
 
 //go:nosplit
 func (self class) GetAlignmentVertical() AlignmentMode { //gd:AspectRatioContainer.get_alignment_vertical
-	var r_ret = gdextension.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.AspectRatioContainer.Bind_get_alignment_vertical), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment_vertical, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -225,9 +262,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AspectRatioContainer", func(ptr gd.Object) any {
-		return [1]gdclass.AspectRatioContainer{*(*gdclass.AspectRatioContainer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("AspectRatioContainer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type StretchMode int //gd:AspectRatioContainer.StretchMode

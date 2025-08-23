@@ -78,6 +78,26 @@ External XR interface plugins should inherit from this class.
 */
 type Instance [1]gdclass.XRInterfaceExtension
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_color_texture         gdextension.MethodForClass `hash:"529393457"`
+	get_depth_texture         gdextension.MethodForClass `hash:"529393457"`
+	get_velocity_texture      gdextension.MethodForClass `hash:"529393457"`
+	add_blit                  gdextension.MethodForClass `hash:"258596971"`
+	get_render_target_texture gdextension.MethodForClass `hash:"41030802"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("XRInterfaceExtension")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -606,6 +626,20 @@ type Advanced = class
 type class [1]gdclass.XRInterfaceExtension
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRInterfaceExtension)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRInterfaceExtension)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -615,7 +649,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("XRInterfaceExtension"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.XRInterfaceExtension)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -1007,21 +1041,21 @@ func (class) _get_velocity_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd
 
 //go:nosplit
 func (self class) GetColorTexture() RID.Any { //gd:XRInterfaceExtension.get_color_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterfaceExtension.Bind_get_color_texture), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_color_texture, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetDepthTexture() RID.Any { //gd:XRInterfaceExtension.get_depth_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterfaceExtension.Bind_get_depth_texture), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_depth_texture, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetVelocityTexture() RID.Any { //gd:XRInterfaceExtension.get_velocity_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterfaceExtension.Bind_get_velocity_texture), gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_velocity_texture, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -1031,7 +1065,7 @@ Blits our render results to screen optionally applying lens distortion. This can
 */
 //go:nosplit
 func (self class) AddBlit(render_target RID.Any, src_rect Rect2.PositionSize, dst_rect Rect2i.PositionSize, use_layer bool, layer int64, apply_lens_distortion bool, eye_center Vector2.XY, k1 float64, k2 float64, upscale float64, aspect_ratio float64) { //gd:XRInterfaceExtension.add_blit
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterfaceExtension.Bind_add_blit), 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2i<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeVector2<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_blit, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2i<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeVector2<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44), unsafe.Pointer(&struct {
 		render_target         RID.Any
 		src_rect              Rect2.PositionSize
 		dst_rect              Rect2i.PositionSize
@@ -1051,7 +1085,7 @@ Returns a valid [RID] for a texture to which we should render the current frame 
 */
 //go:nosplit
 func (self class) GetRenderTargetTexture(render_target RID.Any) RID.Any { //gd:XRInterfaceExtension.get_render_target_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRInterfaceExtension.Bind_get_render_target_texture), gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ render_target RID.Any }{render_target}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_render_target_texture, gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ render_target RID.Any }{render_target}))
 	var ret = r_ret
 	return ret
 }
@@ -1213,7 +1247,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRInterfaceExtension", func(ptr gd.Object) any {
-		return [1]gdclass.XRInterfaceExtension{*(*gdclass.XRInterfaceExtension)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("XRInterfaceExtension", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

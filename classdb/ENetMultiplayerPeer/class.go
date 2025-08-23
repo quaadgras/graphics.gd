@@ -75,6 +75,28 @@ A MultiplayerPeer implementation that should be passed to [member MultiplayerAPI
 */
 type Instance [1]gdclass.ENetMultiplayerPeer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	create_server gdextension.MethodForClass `hash:"2917761309"`
+	create_client gdextension.MethodForClass `hash:"2327163476"`
+	create_mesh   gdextension.MethodForClass `hash:"844576869"`
+	add_mesh_peer gdextension.MethodForClass `hash:"1293458335"`
+	set_bind_ip   gdextension.MethodForClass `hash:"83702148"`
+	get_host      gdextension.MethodForClass `hash:"4103238886"`
+	get_peer      gdextension.MethodForClass `hash:"3793311544"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ENetMultiplayerPeer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.ENetMultiplayerPeer
@@ -149,6 +171,20 @@ type Advanced = class
 type class [1]gdclass.ENetMultiplayerPeer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ENetMultiplayerPeer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ENetMultiplayerPeer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -158,7 +194,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ENetMultiplayerPeer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ENetMultiplayerPeer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -174,7 +210,7 @@ Create server that listens to connections via [param port]. The port needs to be
 */
 //go:nosplit
 func (self class) CreateServer(port int64, max_clients int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) Error.Code { //gd:ENetMultiplayerPeer.create_server
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_server), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_server, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
 		port          int64
 		max_clients   int64
 		max_channels  int64
@@ -190,7 +226,7 @@ Create client that connects to a server at [param address] using specified [para
 */
 //go:nosplit
 func (self class) CreateClient(address String.Readable, port int64, channel_count int64, in_bandwidth int64, out_bandwidth int64, local_port int64) Error.Code { //gd:ENetMultiplayerPeer.create_client
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_client), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_client, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
 		address       gdextension.String
 		port          int64
 		channel_count int64
@@ -207,7 +243,7 @@ Initialize this [MultiplayerPeer] in mesh mode. The provided [param unique_id] w
 */
 //go:nosplit
 func (self class) CreateMesh(unique_id int64) Error.Code { //gd:ENetMultiplayerPeer.create_mesh
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetMultiplayerPeer.Bind_create_mesh), gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ unique_id int64 }{unique_id}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_mesh, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ unique_id int64 }{unique_id}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -218,7 +254,7 @@ Add a new remote peer with the given [param peer_id] connected to the given [par
 */
 //go:nosplit
 func (self class) AddMeshPeer(peer_id int64, host [1]gdclass.ENetConnection) Error.Code { //gd:ENetMultiplayerPeer.add_mesh_peer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetMultiplayerPeer.Bind_add_mesh_peer), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_mesh_peer, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		peer_id int64
 		host    gdextension.Object
 	}{peer_id, gdextension.Object(gd.ObjectChecked(host[0].AsObject()))}))
@@ -231,12 +267,12 @@ The IP used when creating a server. This is set to the wildcard [code]"*"[/code]
 */
 //go:nosplit
 func (self class) SetBindIp(ip String.Readable) { //gd:ENetMultiplayerPeer.set_bind_ip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetMultiplayerPeer.Bind_set_bind_ip), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ ip gdextension.String }{pointers.Get(gd.InternalString(ip))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bind_ip, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ ip gdextension.String }{pointers.Get(gd.InternalString(ip))}))
 }
 
 //go:nosplit
 func (self class) GetHost() [1]gdclass.ENetConnection { //gd:ENetMultiplayerPeer.get_host
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_host), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_host, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.ENetConnection{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetConnection](r_ret)}
 	return ret
 }
@@ -246,7 +282,7 @@ Returns the [ENetPacketPeer] associated to the given [param id].
 */
 //go:nosplit
 func (self class) GetPeer(id int64) [1]gdclass.ENetPacketPeer { //gd:ENetMultiplayerPeer.get_peer
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ENetMultiplayerPeer.Bind_get_peer), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_peer, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
 	var ret = [1]gdclass.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetPacketPeer](r_ret)}
 	return ret
 }
@@ -293,7 +329,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ENetMultiplayerPeer", func(ptr gd.Object) any {
-		return [1]gdclass.ENetMultiplayerPeer{*(*gdclass.ENetMultiplayerPeer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("ENetMultiplayerPeer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

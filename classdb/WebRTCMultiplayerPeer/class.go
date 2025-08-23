@@ -76,6 +76,29 @@ When creating the peer via [method create_client] or [method create_server] the 
 */
 type Instance [1]gdclass.WebRTCMultiplayerPeer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	create_server gdextension.MethodForClass `hash:"2865356025"`
+	create_client gdextension.MethodForClass `hash:"2641732907"`
+	create_mesh   gdextension.MethodForClass `hash:"2641732907"`
+	add_peer      gdextension.MethodForClass `hash:"4078953270"`
+	remove_peer   gdextension.MethodForClass `hash:"1286410249"`
+	has_peer      gdextension.MethodForClass `hash:"3067735520"`
+	get_peer      gdextension.MethodForClass `hash:"3554694381"`
+	get_peers     gdextension.MethodForClass `hash:"2382534195"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("WebRTCMultiplayerPeer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.WebRTCMultiplayerPeer
@@ -183,6 +206,20 @@ type Advanced = class
 type class [1]gdclass.WebRTCMultiplayerPeer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.WebRTCMultiplayerPeer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.WebRTCMultiplayerPeer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -192,7 +229,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("WebRTCMultiplayerPeer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.WebRTCMultiplayerPeer)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -205,7 +242,7 @@ You can optionally specify a [param channels_config] array of [enum MultiplayerP
 */
 //go:nosplit
 func (self class) CreateServer(channels_config Array.Any) Error.Code { //gd:WebRTCMultiplayerPeer.create_server
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_create_server), gdextension.SizeInt|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ channels_config gdextension.Array }{pointers.Get(gd.InternalArray(channels_config))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_server, gdextension.SizeInt|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ channels_config gdextension.Array }{pointers.Get(gd.InternalArray(channels_config))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -216,7 +253,7 @@ You can optionally specify a [param channels_config] array of [enum MultiplayerP
 */
 //go:nosplit
 func (self class) CreateClient(peer_id int64, channels_config Array.Any) Error.Code { //gd:WebRTCMultiplayerPeer.create_client
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_create_client), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_client, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		peer_id         int64
 		channels_config gdextension.Array
 	}{peer_id, pointers.Get(gd.InternalArray(channels_config))}))
@@ -229,7 +266,7 @@ Initialize the multiplayer peer as a mesh (i.e. all peers connect to each other)
 */
 //go:nosplit
 func (self class) CreateMesh(peer_id int64, channels_config Array.Any) Error.Code { //gd:WebRTCMultiplayerPeer.create_mesh
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_create_mesh), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_mesh, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
 		peer_id         int64
 		channels_config gdextension.Array
 	}{peer_id, pointers.Get(gd.InternalArray(channels_config))}))
@@ -243,7 +280,7 @@ Three channels will be created for reliable, unreliable, and ordered transport. 
 */
 //go:nosplit
 func (self class) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int64, unreliable_lifetime int64) Error.Code { //gd:WebRTCMultiplayerPeer.add_peer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_add_peer), gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_peer, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		peer                gdextension.Object
 		peer_id             int64
 		unreliable_lifetime int64
@@ -257,7 +294,7 @@ Remove the peer with given [param peer_id] from the mesh. If the peer was connec
 */
 //go:nosplit
 func (self class) RemovePeer(peer_id int64) { //gd:WebRTCMultiplayerPeer.remove_peer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_remove_peer), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ peer_id int64 }{peer_id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_peer, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ peer_id int64 }{peer_id}))
 }
 
 /*
@@ -265,7 +302,7 @@ Returns [code]true[/code] if the given [param peer_id] is in the peers map (it m
 */
 //go:nosplit
 func (self class) HasPeer(peer_id int64) bool { //gd:WebRTCMultiplayerPeer.has_peer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_has_peer), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ peer_id int64 }{peer_id}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_peer, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ peer_id int64 }{peer_id}))
 	var ret = r_ret
 	return ret
 }
@@ -275,7 +312,7 @@ Returns a dictionary representation of the peer with given [param peer_id] with 
 */
 //go:nosplit
 func (self class) GetPeer(peer_id int64) Dictionary.Any { //gd:WebRTCMultiplayerPeer.get_peer
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_get_peer), gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ peer_id int64 }{peer_id}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_peer, gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ peer_id int64 }{peer_id}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -285,7 +322,7 @@ Returns a dictionary which keys are the peer ids and values the peer representat
 */
 //go:nosplit
 func (self class) GetPeers() Dictionary.Any { //gd:WebRTCMultiplayerPeer.get_peers
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.WebRTCMultiplayerPeer.Bind_get_peers), gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_peers, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -332,9 +369,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("WebRTCMultiplayerPeer", func(ptr gd.Object) any {
-		return [1]gdclass.WebRTCMultiplayerPeer{*(*gdclass.WebRTCMultiplayerPeer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("WebRTCMultiplayerPeer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Conn struct {

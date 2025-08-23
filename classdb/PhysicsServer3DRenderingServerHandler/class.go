@@ -68,6 +68,24 @@ T should be the type that is embedding this [Extension]
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 type Instance [1]gdclass.PhysicsServer3DRenderingServerHandler
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_vertex gdextension.MethodForClass `hash:"1530502735"`
+	set_normal gdextension.MethodForClass `hash:"1530502735"`
+	set_aabb   gdextension.MethodForClass `hash:"259215842"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PhysicsServer3DRenderingServerHandler")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -160,6 +178,20 @@ type Advanced = class
 type class [1]gdclass.PhysicsServer3DRenderingServerHandler
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PhysicsServer3DRenderingServerHandler)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PhysicsServer3DRenderingServerHandler)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -169,7 +201,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PhysicsServer3DRenderingServerHandler"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.PhysicsServer3DRenderingServerHandler)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -217,7 +249,7 @@ Sets the position for the [SoftBody3D] vertex at the index specified by [param v
 */
 //go:nosplit
 func (self class) SetVertex(vertex_id int64, vertex Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_vertex
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_vertex), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		vertex_id int64
 		vertex    Vector3.XYZ
 	}{vertex_id, vertex}))
@@ -228,7 +260,7 @@ Sets the normal for the [SoftBody3D] vertex at the index specified by [param ver
 */
 //go:nosplit
 func (self class) SetNormal(vertex_id int64, normal Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_normal
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_normal), 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
 		vertex_id int64
 		normal    Vector3.XYZ
 	}{vertex_id, normal}))
@@ -239,7 +271,7 @@ Sets the bounding box for the [SoftBody3D].
 */
 //go:nosplit
 func (self class) SetAabb(aabb AABB.PositionSize) { //gd:PhysicsServer3DRenderingServerHandler.set_aabb
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PhysicsServer3DRenderingServerHandler.Bind_set_aabb), 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ aabb AABB.PositionSize }{aabb}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aabb, 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ aabb AABB.PositionSize }{aabb}))
 }
 func (self class) AsPhysicsServer3DRenderingServerHandler() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))
@@ -277,7 +309,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicsServer3DRenderingServerHandler", func(ptr gd.Object) any {
-		return [1]gdclass.PhysicsServer3DRenderingServerHandler{*(*gdclass.PhysicsServer3DRenderingServerHandler)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("PhysicsServer3DRenderingServerHandler", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

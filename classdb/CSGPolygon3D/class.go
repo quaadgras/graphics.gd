@@ -79,6 +79,55 @@ An array of 2D points is extruded to quickly and easily create a variety of 3D m
 */
 type Instance [1]gdclass.CSGPolygon3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_polygon                gdextension.MethodForClass `hash:"1509147220"`
+	get_polygon                gdextension.MethodForClass `hash:"2961356807"`
+	set_mode                   gdextension.MethodForClass `hash:"3158377035"`
+	get_mode                   gdextension.MethodForClass `hash:"1201612222"`
+	set_depth                  gdextension.MethodForClass `hash:"373806689"`
+	get_depth                  gdextension.MethodForClass `hash:"1740695150"`
+	set_spin_degrees           gdextension.MethodForClass `hash:"373806689"`
+	get_spin_degrees           gdextension.MethodForClass `hash:"1740695150"`
+	set_spin_sides             gdextension.MethodForClass `hash:"1286410249"`
+	get_spin_sides             gdextension.MethodForClass `hash:"3905245786"`
+	set_path_node              gdextension.MethodForClass `hash:"1348162250"`
+	get_path_node              gdextension.MethodForClass `hash:"4075236667"`
+	set_path_interval_type     gdextension.MethodForClass `hash:"3744240707"`
+	get_path_interval_type     gdextension.MethodForClass `hash:"3434618397"`
+	set_path_interval          gdextension.MethodForClass `hash:"373806689"`
+	get_path_interval          gdextension.MethodForClass `hash:"1740695150"`
+	set_path_simplify_angle    gdextension.MethodForClass `hash:"373806689"`
+	get_path_simplify_angle    gdextension.MethodForClass `hash:"1740695150"`
+	set_path_rotation          gdextension.MethodForClass `hash:"1412947288"`
+	get_path_rotation          gdextension.MethodForClass `hash:"647219346"`
+	set_path_rotation_accurate gdextension.MethodForClass `hash:"2586408642"`
+	get_path_rotation_accurate gdextension.MethodForClass `hash:"36873697"`
+	set_path_local             gdextension.MethodForClass `hash:"2586408642"`
+	is_path_local              gdextension.MethodForClass `hash:"36873697"`
+	set_path_continuous_u      gdextension.MethodForClass `hash:"2586408642"`
+	is_path_continuous_u       gdextension.MethodForClass `hash:"36873697"`
+	set_path_u_distance        gdextension.MethodForClass `hash:"373806689"`
+	get_path_u_distance        gdextension.MethodForClass `hash:"1740695150"`
+	set_path_joined            gdextension.MethodForClass `hash:"2586408642"`
+	is_path_joined             gdextension.MethodForClass `hash:"36873697"`
+	set_material               gdextension.MethodForClass `hash:"2757459619"`
+	get_material               gdextension.MethodForClass `hash:"5934680"`
+	set_smooth_faces           gdextension.MethodForClass `hash:"2586408642"`
+	get_smooth_faces           gdextension.MethodForClass `hash:"36873697"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("CSGPolygon3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -94,6 +143,20 @@ type Advanced = class
 type class [1]gdclass.CSGPolygon3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CSGPolygon3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CSGPolygon3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -103,7 +166,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CSGPolygon3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.CSGPolygon3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -247,206 +310,206 @@ func (self Instance) SetMaterial(value Material.Instance) {
 
 //go:nosplit
 func (self class) SetPolygon(polygon Packed.Array[Vector2.XY]) { //gd:CSGPolygon3D.set_polygon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_polygon), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_polygon, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		polygon gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))}))
 }
 
 //go:nosplit
 func (self class) GetPolygon() Packed.Array[Vector2.XY] { //gd:CSGPolygon3D.get_polygon
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_polygon), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_polygon, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMode(mode Mode) { //gd:CSGPolygon3D.set_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mode }{mode}))
 }
 
 //go:nosplit
 func (self class) GetMode() Mode { //gd:CSGPolygon3D.get_mode
-	var r_ret = gdextension.Call[Mode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepth(depth float64) { //gd:CSGPolygon3D.set_depth
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_depth), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ depth float64 }{depth}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ depth float64 }{depth}))
 }
 
 //go:nosplit
 func (self class) GetDepth() float64 { //gd:CSGPolygon3D.get_depth
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_depth), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpinDegrees(degrees float64) { //gd:CSGPolygon3D.set_spin_degrees
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_spin_degrees), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ degrees float64 }{degrees}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spin_degrees, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ degrees float64 }{degrees}))
 }
 
 //go:nosplit
 func (self class) GetSpinDegrees() float64 { //gd:CSGPolygon3D.get_spin_degrees
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_spin_degrees), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_spin_degrees, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpinSides(spin_sides int64) { //gd:CSGPolygon3D.set_spin_sides
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_spin_sides), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ spin_sides int64 }{spin_sides}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spin_sides, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ spin_sides int64 }{spin_sides}))
 }
 
 //go:nosplit
 func (self class) GetSpinSides() int64 { //gd:CSGPolygon3D.get_spin_sides
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_spin_sides), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_spin_sides, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathNode(path Path.ToNode) { //gd:CSGPolygon3D.set_path_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_path_node), 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_node, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
 }
 
 //go:nosplit
 func (self class) GetPathNode() Path.ToNode { //gd:CSGPolygon3D.get_path_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_path_node), gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_path_node, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathIntervalType(interval_type PathIntervalType) { //gd:CSGPolygon3D.set_path_interval_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_path_interval_type), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ interval_type PathIntervalType }{interval_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_interval_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ interval_type PathIntervalType }{interval_type}))
 }
 
 //go:nosplit
 func (self class) GetPathIntervalType() PathIntervalType { //gd:CSGPolygon3D.get_path_interval_type
-	var r_ret = gdextension.Call[PathIntervalType](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_path_interval_type), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PathIntervalType](gd.ObjectChecked(self.AsObject()), methods.get_path_interval_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathInterval(interval float64) { //gd:CSGPolygon3D.set_path_interval
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_path_interval), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ interval float64 }{interval}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_interval, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ interval float64 }{interval}))
 }
 
 //go:nosplit
 func (self class) GetPathInterval() float64 { //gd:CSGPolygon3D.get_path_interval
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_path_interval), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_interval, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathSimplifyAngle(degrees float64) { //gd:CSGPolygon3D.set_path_simplify_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_path_simplify_angle), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ degrees float64 }{degrees}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_simplify_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ degrees float64 }{degrees}))
 }
 
 //go:nosplit
 func (self class) GetPathSimplifyAngle() float64 { //gd:CSGPolygon3D.get_path_simplify_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_path_simplify_angle), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_simplify_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathRotation(path_rotation PathRotation) { //gd:CSGPolygon3D.set_path_rotation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_path_rotation), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ path_rotation PathRotation }{path_rotation}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_rotation, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ path_rotation PathRotation }{path_rotation}))
 }
 
 //go:nosplit
 func (self class) GetPathRotation() PathRotation { //gd:CSGPolygon3D.get_path_rotation
-	var r_ret = gdextension.Call[PathRotation](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_path_rotation), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PathRotation](gd.ObjectChecked(self.AsObject()), methods.get_path_rotation, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathRotationAccurate(enable bool) { //gd:CSGPolygon3D.set_path_rotation_accurate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_path_rotation_accurate), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_rotation_accurate, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetPathRotationAccurate() bool { //gd:CSGPolygon3D.get_path_rotation_accurate
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_path_rotation_accurate), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_path_rotation_accurate, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathLocal(enable bool) { //gd:CSGPolygon3D.set_path_local
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_path_local), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_local, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsPathLocal() bool { //gd:CSGPolygon3D.is_path_local
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_is_path_local), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_path_local, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathContinuousU(enable bool) { //gd:CSGPolygon3D.set_path_continuous_u
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_path_continuous_u), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_continuous_u, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsPathContinuousU() bool { //gd:CSGPolygon3D.is_path_continuous_u
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_is_path_continuous_u), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_path_continuous_u, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathUDistance(distance float64) { //gd:CSGPolygon3D.set_path_u_distance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_path_u_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_u_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetPathUDistance() float64 { //gd:CSGPolygon3D.get_path_u_distance
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_path_u_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_u_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathJoined(enable bool) { //gd:CSGPolygon3D.set_path_joined
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_path_joined), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_joined, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsPathJoined() bool { //gd:CSGPolygon3D.is_path_joined
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_is_path_joined), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_path_joined, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGPolygon3D.set_material
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_material), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:CSGPolygon3D.get_material
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_material), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSmoothFaces(smooth_faces bool) { //gd:CSGPolygon3D.set_smooth_faces
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_set_smooth_faces), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ smooth_faces bool }{smooth_faces}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_smooth_faces, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ smooth_faces bool }{smooth_faces}))
 }
 
 //go:nosplit
 func (self class) GetSmoothFaces() bool { //gd:CSGPolygon3D.get_smooth_faces
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CSGPolygon3D.Bind_get_smooth_faces), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_smooth_faces, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -508,9 +571,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CSGPolygon3D", func(ptr gd.Object) any {
-		return [1]gdclass.CSGPolygon3D{*(*gdclass.CSGPolygon3D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("CSGPolygon3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Mode int //gd:CSGPolygon3D.Mode

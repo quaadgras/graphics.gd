@@ -410,36 +410,6 @@ func generate() error {
 	fmt.Fprintf(out, "\t}\n")
 	fmt.Fprintf(out, "}\n")
 
-	fmt.Fprintf(out, "type singletons struct{\n")
-	for _, class := range spec.Classes {
-		if class.IsEphemeral {
-			continue
-		}
-		if singletons[class.Name] {
-			fmt.Fprintf(out, "\t%v StringName\n", class.Name)
-		}
-	}
-	fmt.Fprintf(out, "}\n")
-
-	fmt.Fprintf(out, "type methods struct{\n")
-	for _, class := range spec.Classes {
-		if class.IsEphemeral {
-			continue
-		}
-		fmt.Fprintf(out, "\t%v struct{\n", class.Name)
-		for _, method := range class.Methods {
-			if method.Name == "select" {
-				method.Name = "select_"
-			}
-			if method.IsVirtual {
-				continue
-			}
-			fmt.Fprintf(out, "\t\tBind_%v gdextension.MethodForClass `hash:\"%v\"`\n", method.Name, method.Hash)
-		}
-		fmt.Fprintf(out, "\t}\n")
-	}
-	fmt.Fprintf(out, "}\n")
-
 	for _, class := range spec.Classes {
 		if class.IsEphemeral {
 			continue

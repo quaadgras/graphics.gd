@@ -79,6 +79,32 @@ func _ready():
 */
 type Instance [1]gdclass.RandomNumberGenerator
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_seed      gdextension.MethodForClass `hash:"1286410249"`
+	get_seed      gdextension.MethodForClass `hash:"2455072627"`
+	set_state     gdextension.MethodForClass `hash:"1286410249"`
+	get_state     gdextension.MethodForClass `hash:"3905245786"`
+	randi         gdextension.MethodForClass `hash:"2455072627"`
+	randf         gdextension.MethodForClass `hash:"191475506"`
+	randfn        gdextension.MethodForClass `hash:"837325100"`
+	randf_range   gdextension.MethodForClass `hash:"4269894367"`
+	randi_range   gdextension.MethodForClass `hash:"50157827"`
+	rand_weighted gdextension.MethodForClass `hash:"4189642986"`
+	randomize     gdextension.MethodForClass `hash:"3218959716"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("RandomNumberGenerator")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.RandomNumberGenerator
@@ -166,6 +192,20 @@ type Advanced = class
 type class [1]gdclass.RandomNumberGenerator
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RandomNumberGenerator)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.RandomNumberGenerator)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -175,7 +215,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("RandomNumberGenerator"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RandomNumberGenerator)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -200,24 +240,24 @@ func (self Instance) SetState(value int) {
 
 //go:nosplit
 func (self class) SetSeed(seed int64) { //gd:RandomNumberGenerator.set_seed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RandomNumberGenerator.Bind_set_seed), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ seed int64 }{seed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seed, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ seed int64 }{seed}))
 }
 
 //go:nosplit
 func (self class) GetSeed() int64 { //gd:RandomNumberGenerator.get_seed
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RandomNumberGenerator.Bind_get_seed), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_seed, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetState(state int64) { //gd:RandomNumberGenerator.set_state
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RandomNumberGenerator.Bind_set_state), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ state int64 }{state}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_state, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ state int64 }{state}))
 }
 
 //go:nosplit
 func (self class) GetState() int64 { //gd:RandomNumberGenerator.get_state
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RandomNumberGenerator.Bind_get_state), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_state, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -227,7 +267,7 @@ Returns a pseudo-random 32-bit unsigned integer between [code]0[/code] and [code
 */
 //go:nosplit
 func (self class) Randi() int64 { //gd:RandomNumberGenerator.randi
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RandomNumberGenerator.Bind_randi), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.randi, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -237,7 +277,7 @@ Returns a pseudo-random float between [code]0.0[/code] and [code]1.0[/code] (inc
 */
 //go:nosplit
 func (self class) Randf() float64 { //gd:RandomNumberGenerator.randf
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RandomNumberGenerator.Bind_randf), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.randf, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -248,7 +288,7 @@ Returns a [url=https://en.wikipedia.org/wiki/Normal_distribution]normally-distri
 */
 //go:nosplit
 func (self class) Randfn(mean float64, deviation float64) float64 { //gd:RandomNumberGenerator.randfn
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RandomNumberGenerator.Bind_randfn), gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.randfn, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		mean      float64
 		deviation float64
 	}{mean, deviation}))
@@ -261,7 +301,7 @@ Returns a pseudo-random float between [param from] and [param to] (inclusive).
 */
 //go:nosplit
 func (self class) RandfRange(from float64, to float64) float64 { //gd:RandomNumberGenerator.randf_range
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RandomNumberGenerator.Bind_randf_range), gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.randf_range, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		from float64
 		to   float64
 	}{from, to}))
@@ -274,7 +314,7 @@ Returns a pseudo-random 32-bit signed integer between [param from] and [param to
 */
 //go:nosplit
 func (self class) RandiRange(from int64, to int64) int64 { //gd:RandomNumberGenerator.randi_range
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RandomNumberGenerator.Bind_randi_range), gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.randi_range, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		from int64
 		to   int64
 	}{from, to}))
@@ -299,7 +339,7 @@ print(my_array[rng.rand_weighted(weights)])
 */
 //go:nosplit
 func (self class) RandWeighted(weights Packed.Array[float32]) int64 { //gd:RandomNumberGenerator.rand_weighted
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RandomNumberGenerator.Bind_rand_weighted), gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.rand_weighted, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		weights gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](weights))}))
 	var ret = r_ret
@@ -311,7 +351,7 @@ Sets up a time-based seed for this [RandomNumberGenerator] instance. Unlike the 
 */
 //go:nosplit
 func (self class) Randomize() { //gd:RandomNumberGenerator.randomize
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.RandomNumberGenerator.Bind_randomize), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.randomize, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsRandomNumberGenerator() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsRandomNumberGenerator() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -340,7 +380,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("RandomNumberGenerator", func(ptr gd.Object) any {
-		return [1]gdclass.RandomNumberGenerator{*(*gdclass.RandomNumberGenerator)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("RandomNumberGenerator", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -91,6 +91,23 @@ commandPalette.AddCommand("command", "test/command", commandCallable)
 */
 type Instance [1]gdclass.EditorCommandPalette
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	add_command    gdextension.MethodForClass `hash:"864043298"`
+	remove_command gdextension.MethodForClass `hash:"83702148"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorCommandPalette")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.EditorCommandPalette
@@ -138,6 +155,20 @@ type Advanced = class
 type class [1]gdclass.EditorCommandPalette
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorCommandPalette)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorCommandPalette)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -147,7 +178,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorCommandPalette"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorCommandPalette)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -162,7 +193,7 @@ Adds a custom command to EditorCommandPalette.
 */
 //go:nosplit
 func (self class) AddCommand(command_name String.Readable, key_name String.Readable, binded_callable Callable.Function, shortcut_text String.Readable) { //gd:EditorCommandPalette.add_command
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorCommandPalette.Bind_add_command), 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_command, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
 		command_name    gdextension.String
 		key_name        gdextension.String
 		binded_callable gdextension.Callable
@@ -176,7 +207,7 @@ Removes the custom command from EditorCommandPalette.
 */
 //go:nosplit
 func (self class) RemoveCommand(key_name String.Readable) { //gd:EditorCommandPalette.remove_command
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorCommandPalette.Bind_remove_command), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ key_name gdextension.String }{pointers.Get(gd.InternalString(key_name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_command, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ key_name gdextension.String }{pointers.Get(gd.InternalString(key_name))}))
 }
 func (self class) AsEditorCommandPalette() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsEditorCommandPalette() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -229,7 +260,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorCommandPalette", func(ptr gd.Object) any {
-		return [1]gdclass.EditorCommandPalette{*(*gdclass.EditorCommandPalette)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorCommandPalette", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

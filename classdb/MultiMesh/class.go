@@ -81,6 +81,50 @@ Since instances may have any behavior, the AABB used for visibility must be prov
 */
 type Instance [1]gdclass.MultiMesh
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_mesh                             gdextension.MethodForClass `hash:"194775623"`
+	get_mesh                             gdextension.MethodForClass `hash:"1808005922"`
+	set_use_colors                       gdextension.MethodForClass `hash:"2586408642"`
+	is_using_colors                      gdextension.MethodForClass `hash:"36873697"`
+	set_use_custom_data                  gdextension.MethodForClass `hash:"2586408642"`
+	is_using_custom_data                 gdextension.MethodForClass `hash:"36873697"`
+	set_transform_format                 gdextension.MethodForClass `hash:"2404750322"`
+	get_transform_format                 gdextension.MethodForClass `hash:"2444156481"`
+	set_instance_count                   gdextension.MethodForClass `hash:"1286410249"`
+	get_instance_count                   gdextension.MethodForClass `hash:"3905245786"`
+	set_visible_instance_count           gdextension.MethodForClass `hash:"1286410249"`
+	get_visible_instance_count           gdextension.MethodForClass `hash:"3905245786"`
+	set_physics_interpolation_quality    gdextension.MethodForClass `hash:"1819488408"`
+	get_physics_interpolation_quality    gdextension.MethodForClass `hash:"1465701882"`
+	set_instance_transform               gdextension.MethodForClass `hash:"3616898986"`
+	set_instance_transform_2d            gdextension.MethodForClass `hash:"30160968"`
+	get_instance_transform               gdextension.MethodForClass `hash:"1965739696"`
+	get_instance_transform_2d            gdextension.MethodForClass `hash:"3836996910"`
+	set_instance_color                   gdextension.MethodForClass `hash:"2878471219"`
+	get_instance_color                   gdextension.MethodForClass `hash:"3457211756"`
+	set_instance_custom_data             gdextension.MethodForClass `hash:"2878471219"`
+	get_instance_custom_data             gdextension.MethodForClass `hash:"3457211756"`
+	reset_instance_physics_interpolation gdextension.MethodForClass `hash:"1286410249"`
+	set_custom_aabb                      gdextension.MethodForClass `hash:"259215842"`
+	get_custom_aabb                      gdextension.MethodForClass `hash:"1068685055"`
+	get_aabb                             gdextension.MethodForClass `hash:"1068685055"`
+	get_buffer                           gdextension.MethodForClass `hash:"675695659"`
+	set_buffer                           gdextension.MethodForClass `hash:"2899603908"`
+	set_buffer_interpolated              gdextension.MethodForClass `hash:"3514430332"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("MultiMesh")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -181,6 +225,20 @@ type Advanced = class
 type class [1]gdclass.MultiMesh
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MultiMesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.MultiMesh)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -190,7 +248,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("MultiMesh"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.MultiMesh)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -271,84 +329,84 @@ func (self Instance) SetPhysicsInterpolationQuality(value PhysicsInterpolationQu
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MultiMesh.set_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_mesh), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:MultiMesh.get_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_mesh), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseColors(enable bool) { //gd:MultiMesh.set_use_colors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_use_colors), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_colors, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingColors() bool { //gd:MultiMesh.is_using_colors
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_is_using_colors), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_colors, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseCustomData(enable bool) { //gd:MultiMesh.set_use_custom_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_use_custom_data), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_custom_data, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsUsingCustomData() bool { //gd:MultiMesh.is_using_custom_data
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_is_using_custom_data), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_data, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransformFormat(format TransformFormat) { //gd:MultiMesh.set_transform_format
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_transform_format), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ format TransformFormat }{format}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ format TransformFormat }{format}))
 }
 
 //go:nosplit
 func (self class) GetTransformFormat() TransformFormat { //gd:MultiMesh.get_transform_format
-	var r_ret = gdextension.Call[TransformFormat](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_transform_format), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TransformFormat](gd.ObjectChecked(self.AsObject()), methods.get_transform_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInstanceCount(count int64) { //gd:MultiMesh.set_instance_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_instance_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 //go:nosplit
 func (self class) GetInstanceCount() int64 { //gd:MultiMesh.get_instance_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_instance_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_instance_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibleInstanceCount(count int64) { //gd:MultiMesh.set_visible_instance_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_visible_instance_count), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_instance_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
 }
 
 //go:nosplit
 func (self class) GetVisibleInstanceCount() int64 { //gd:MultiMesh.get_visible_instance_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_visible_instance_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_instance_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicsInterpolationQuality(quality PhysicsInterpolationQuality) { //gd:MultiMesh.set_physics_interpolation_quality
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_physics_interpolation_quality), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ quality PhysicsInterpolationQuality }{quality}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_interpolation_quality, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ quality PhysicsInterpolationQuality }{quality}))
 }
 
 //go:nosplit
 func (self class) GetPhysicsInterpolationQuality() PhysicsInterpolationQuality { //gd:MultiMesh.get_physics_interpolation_quality
-	var r_ret = gdextension.Call[PhysicsInterpolationQuality](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_physics_interpolation_quality), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[PhysicsInterpolationQuality](gd.ObjectChecked(self.AsObject()), methods.get_physics_interpolation_quality, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -358,7 +416,7 @@ Sets the [Transform3D] for a specific instance.
 */
 //go:nosplit
 func (self class) SetInstanceTransform(instance int64, transform Transform3D.BasisOrigin) { //gd:MultiMesh.set_instance_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_instance_transform), 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
 		instance  int64
 		transform Transform3D.BasisOrigin
 	}{instance, gd.Transposed(transform)}))
@@ -369,7 +427,7 @@ Sets the [Transform2D] for a specific instance.
 */
 //go:nosplit
 func (self class) SetInstanceTransform2d(instance int64, transform Transform2D.OriginXY) { //gd:MultiMesh.set_instance_transform_2d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_instance_transform_2d), 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_transform_2d, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
 		instance  int64
 		transform Transform2D.OriginXY
 	}{instance, transform}))
@@ -380,7 +438,7 @@ Returns the [Transform3D] of a specific instance.
 */
 //go:nosplit
 func (self class) GetInstanceTransform(instance int64) Transform3D.BasisOrigin { //gd:MultiMesh.get_instance_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_instance_transform), gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ instance int64 }{instance}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_instance_transform, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ instance int64 }{instance}))
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -390,7 +448,7 @@ Returns the [Transform2D] of a specific instance.
 */
 //go:nosplit
 func (self class) GetInstanceTransform2d(instance int64) Transform2D.OriginXY { //gd:MultiMesh.get_instance_transform_2d
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_instance_transform_2d), gdextension.SizeTransform2D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ instance int64 }{instance}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_instance_transform_2d, gdextension.SizeTransform2D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ instance int64 }{instance}))
 	var ret = r_ret
 	return ret
 }
@@ -402,7 +460,7 @@ For the color to take effect, ensure that [member use_colors] is [code]true[/cod
 */
 //go:nosplit
 func (self class) SetInstanceColor(instance int64, color Color.RGBA) { //gd:MultiMesh.set_instance_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_instance_color), 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		instance int64
 		color    Color.RGBA
 	}{instance, color}))
@@ -413,7 +471,7 @@ Gets a specific instance's color multiplier.
 */
 //go:nosplit
 func (self class) GetInstanceColor(instance int64) Color.RGBA { //gd:MultiMesh.get_instance_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_instance_color), gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ instance int64 }{instance}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_instance_color, gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ instance int64 }{instance}))
 	var ret = r_ret
 	return ret
 }
@@ -426,7 +484,7 @@ This custom instance data has to be manually accessed in your custom shader usin
 */
 //go:nosplit
 func (self class) SetInstanceCustomData(instance int64, custom_data Color.RGBA) { //gd:MultiMesh.set_instance_custom_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_instance_custom_data), 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_custom_data, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), unsafe.Pointer(&struct {
 		instance    int64
 		custom_data Color.RGBA
 	}{instance, custom_data}))
@@ -437,7 +495,7 @@ Returns the custom data that has been set for a specific instance.
 */
 //go:nosplit
 func (self class) GetInstanceCustomData(instance int64) Color.RGBA { //gd:MultiMesh.get_instance_custom_data
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_instance_custom_data), gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ instance int64 }{instance}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_instance_custom_data, gdextension.SizeColor|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ instance int64 }{instance}))
 	var ret = r_ret
 	return ret
 }
@@ -448,17 +506,17 @@ This allows you to move instances instantaneously, and should usually be used wh
 */
 //go:nosplit
 func (self class) ResetInstancePhysicsInterpolation(instance int64) { //gd:MultiMesh.reset_instance_physics_interpolation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_reset_instance_physics_interpolation), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ instance int64 }{instance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_instance_physics_interpolation, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ instance int64 }{instance}))
 }
 
 //go:nosplit
 func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:MultiMesh.set_custom_aabb
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_custom_aabb), 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ aabb AABB.PositionSize }{aabb}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_aabb, 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ aabb AABB.PositionSize }{aabb}))
 }
 
 //go:nosplit
 func (self class) GetCustomAabb() AABB.PositionSize { //gd:MultiMesh.get_custom_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_custom_aabb), gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -468,21 +526,21 @@ Returns the visibility axis-aligned bounding box in local space.
 */
 //go:nosplit
 func (self class) GetAabb() AABB.PositionSize { //gd:MultiMesh.get_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_aabb), gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_aabb, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetBuffer() Packed.Array[float32] { //gd:MultiMesh.get_buffer
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_get_buffer), gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_buffer, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBuffer(buffer Packed.Array[float32]) { //gd:MultiMesh.set_buffer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_buffer), 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
 		buffer gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer))}))
 }
@@ -494,7 +552,7 @@ When the order of instances is coherent, the simpler alternative of setting [mem
 */
 //go:nosplit
 func (self class) SetBufferInterpolated(buffer_curr Packed.Array[float32], buffer_prev Packed.Array[float32]) { //gd:MultiMesh.set_buffer_interpolated
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.MultiMesh.Bind_set_buffer_interpolated), 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_interpolated, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		buffer_curr gdextension.PackedArray[float32]
 		buffer_prev gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_curr)), pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_prev))}))
@@ -531,7 +589,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("MultiMesh", func(ptr gd.Object) any { return [1]gdclass.MultiMesh{*(*gdclass.MultiMesh)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("MultiMesh", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type TransformFormat int //gd:MultiMesh.TransformFormat

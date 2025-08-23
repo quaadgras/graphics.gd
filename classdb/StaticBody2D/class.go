@@ -79,6 +79,27 @@ When [StaticBody2D] is moved, it is teleported to its new position without affec
 */
 type Instance [1]gdclass.StaticBody2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_constant_linear_velocity  gdextension.MethodForClass `hash:"743155724"`
+	set_constant_angular_velocity gdextension.MethodForClass `hash:"373806689"`
+	get_constant_linear_velocity  gdextension.MethodForClass `hash:"3341600327"`
+	get_constant_angular_velocity gdextension.MethodForClass `hash:"1740695150"`
+	set_physics_material_override gdextension.MethodForClass `hash:"1784508650"`
+	get_physics_material_override gdextension.MethodForClass `hash:"2521850424"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("StaticBody2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -94,6 +115,20 @@ type Advanced = class
 type class [1]gdclass.StaticBody2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.StaticBody2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.StaticBody2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -103,7 +138,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("StaticBody2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.StaticBody2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -135,36 +170,36 @@ func (self Instance) SetConstantAngularVelocity(value Float.X) {
 
 //go:nosplit
 func (self class) SetConstantLinearVelocity(vel Vector2.XY) { //gd:StaticBody2D.set_constant_linear_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StaticBody2D.Bind_set_constant_linear_velocity), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ vel Vector2.XY }{vel}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_linear_velocity, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ vel Vector2.XY }{vel}))
 }
 
 //go:nosplit
 func (self class) SetConstantAngularVelocity(vel float64) { //gd:StaticBody2D.set_constant_angular_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StaticBody2D.Bind_set_constant_angular_velocity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ vel float64 }{vel}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_angular_velocity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ vel float64 }{vel}))
 }
 
 //go:nosplit
 func (self class) GetConstantLinearVelocity() Vector2.XY { //gd:StaticBody2D.get_constant_linear_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StaticBody2D.Bind_get_constant_linear_velocity), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant_linear_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetConstantAngularVelocity() float64 { //gd:StaticBody2D.get_constant_angular_velocity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StaticBody2D.Bind_get_constant_angular_velocity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constant_angular_velocity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclass.PhysicsMaterial) { //gd:StaticBody2D.set_physics_material_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StaticBody2D.Bind_set_physics_material_override), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(physics_material_override[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material_override, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(physics_material_override[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial { //gd:StaticBody2D.get_physics_material_override
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.StaticBody2D.Bind_get_physics_material_override), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material_override, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret)}
 	return ret
 }
@@ -217,7 +252,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("StaticBody2D", func(ptr gd.Object) any {
-		return [1]gdclass.StaticBody2D{*(*gdclass.StaticBody2D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("StaticBody2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

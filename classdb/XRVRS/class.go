@@ -72,6 +72,28 @@ This class is used by various XR interfaces to generate VRS textures that can be
 */
 type Instance [1]gdclass.XRVRS
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_vrs_min_radius    gdextension.MethodForClass `hash:"1740695150"`
+	set_vrs_min_radius    gdextension.MethodForClass `hash:"373806689"`
+	get_vrs_strength      gdextension.MethodForClass `hash:"1740695150"`
+	set_vrs_strength      gdextension.MethodForClass `hash:"373806689"`
+	get_vrs_render_region gdextension.MethodForClass `hash:"410525958"`
+	set_vrs_render_region gdextension.MethodForClass `hash:"1763793166"`
+	make_vrs_texture      gdextension.MethodForClass `hash:"3647044786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("XRVRS")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -95,6 +117,20 @@ type Advanced = class
 type class [1]gdclass.XRVRS
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRVRS)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRVRS)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -104,7 +140,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("XRVRS"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.XRVRS)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -136,38 +172,38 @@ func (self Instance) SetVrsRenderRegion(value Rect2i.PositionSize) {
 
 //go:nosplit
 func (self class) GetVrsMinRadius() float64 { //gd:XRVRS.get_vrs_min_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRVRS.Bind_get_vrs_min_radius), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_min_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVrsMinRadius(radius float64) { //gd:XRVRS.set_vrs_min_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRVRS.Bind_set_vrs_min_radius), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_min_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
 }
 
 //go:nosplit
 func (self class) GetVrsStrength() float64 { //gd:XRVRS.get_vrs_strength
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRVRS.Bind_get_vrs_strength), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_strength, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVrsStrength(strength float64) { //gd:XRVRS.set_vrs_strength
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRVRS.Bind_set_vrs_strength), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_strength, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
 }
 
 //go:nosplit
 func (self class) GetVrsRenderRegion() Rect2i.PositionSize { //gd:XRVRS.get_vrs_render_region
-	var r_ret = gdextension.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRVRS.Bind_get_vrs_render_region), gdextension.SizeRect2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_vrs_render_region, gdextension.SizeRect2i, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVrsRenderRegion(render_region Rect2i.PositionSize) { //gd:XRVRS.set_vrs_render_region
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRVRS.Bind_set_vrs_render_region), 0|(gdextension.SizeRect2i<<4), unsafe.Pointer(&struct{ render_region Rect2i.PositionSize }{render_region}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_render_region, 0|(gdextension.SizeRect2i<<4), unsafe.Pointer(&struct{ render_region Rect2i.PositionSize }{render_region}))
 }
 
 /*
@@ -176,7 +212,7 @@ The result will be cached, requesting a VRS texture with unchanged parameters an
 */
 //go:nosplit
 func (self class) MakeVrsTexture(target_size Vector2.XY, eye_foci Packed.Array[Vector2.XY]) RID.Any { //gd:XRVRS.make_vrs_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRVRS.Bind_make_vrs_texture), gdextension.SizeRID|(gdextension.SizeVector2<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.make_vrs_texture, gdextension.SizeRID|(gdextension.SizeVector2<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		target_size Vector2.XY
 		eye_foci    gdextension.PackedArray[Vector2.XY]
 	}{target_size, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](eye_foci))}))
@@ -201,5 +237,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRVRS", func(ptr gd.Object) any { return [1]gdclass.XRVRS{*(*gdclass.XRVRS)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("XRVRS", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

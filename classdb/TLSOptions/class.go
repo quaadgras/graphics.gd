@@ -85,6 +85,30 @@ var server_tls_options = TLSOptions.server(server_key, server_certs)
 */
 type Instance [1]gdclass.TLSOptions
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	client                   gdextension.MethodForClass `hash:"3565000357"`
+	client_unsafe            gdextension.MethodForClass `hash:"2090251749"`
+	server                   gdextension.MethodForClass `hash:"36969539"`
+	is_server                gdextension.MethodForClass `hash:"36873697"`
+	is_unsafe_client         gdextension.MethodForClass `hash:"36873697"`
+	get_common_name_override gdextension.MethodForClass `hash:"201670096"`
+	get_trusted_ca_chain     gdextension.MethodForClass `hash:"1120709175"`
+	get_private_key          gdextension.MethodForClass `hash:"2119971811"`
+	get_own_certificate      gdextension.MethodForClass `hash:"1120709175"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("TLSOptions")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -189,6 +213,20 @@ type Advanced = class
 type class [1]gdclass.TLSOptions
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TLSOptions)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.TLSOptions)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -198,7 +236,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("TLSOptions"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.TLSOptions)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -212,7 +250,7 @@ You can specify a custom [param trusted_chain] of certification authorities (the
 */
 //go:nosplit
 func (self class) Client(trusted_chain [1]gdclass.X509Certificate, common_name_override String.Readable) [1]gdclass.TLSOptions { //gd:TLSOptions.client
-	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.TLSOptions.Bind_client), gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.client, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		trusted_chain        gdextension.Object
 		common_name_override gdextension.String
 	}{gdextension.Object(gd.ObjectChecked(trusted_chain[0].AsObject())), pointers.Get(gd.InternalString(common_name_override))}))
@@ -226,7 +264,7 @@ Creates an [b]unsafe[/b] TLS client configuration where certificate validation i
 */
 //go:nosplit
 func (self class) ClientUnsafe(trusted_chain [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.client_unsafe
-	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.TLSOptions.Bind_client_unsafe), gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ trusted_chain gdextension.Object }{gdextension.Object(gd.ObjectChecked(trusted_chain[0].AsObject()))}))
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.client_unsafe, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ trusted_chain gdextension.Object }{gdextension.Object(gd.ObjectChecked(trusted_chain[0].AsObject()))}))
 	var ret = [1]gdclass.TLSOptions{gd.PointerWithOwnershipTransferredToGo[gdclass.TLSOptions](r_ret)}
 	return ret
 }
@@ -237,7 +275,7 @@ Creates a TLS server configuration using the provided [param key] and [param cer
 */
 //go:nosplit
 func (self class) Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.server
-	var r_ret = gdextension.CallStatic[gdextension.Object](gdextension.MethodForClass(gd.Global.Methods.TLSOptions.Bind_server), gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.server, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		key         gdextension.Object
 		certificate gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(key[0].AsObject())), gdextension.Object(gd.ObjectChecked(certificate[0].AsObject()))}))
@@ -250,7 +288,7 @@ Returns [code]true[/code] if created with [method TLSOptions.server], [code]fals
 */
 //go:nosplit
 func (self class) IsServer() bool { //gd:TLSOptions.is_server
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TLSOptions.Bind_is_server), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_server, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -260,7 +298,7 @@ Returns [code]true[/code] if created with [method TLSOptions.client_unsafe], [co
 */
 //go:nosplit
 func (self class) IsUnsafeClient() bool { //gd:TLSOptions.is_unsafe_client
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TLSOptions.Bind_is_unsafe_client), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_unsafe_client, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -270,7 +308,7 @@ Returns the common name (domain name) override specified when creating with [met
 */
 //go:nosplit
 func (self class) GetCommonNameOverride() String.Readable { //gd:TLSOptions.get_common_name_override
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TLSOptions.Bind_get_common_name_override), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_common_name_override, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -280,7 +318,7 @@ Returns the CA [X509Certificate] chain specified when creating with [method TLSO
 */
 //go:nosplit
 func (self class) GetTrustedCaChain() [1]gdclass.X509Certificate { //gd:TLSOptions.get_trusted_ca_chain
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TLSOptions.Bind_get_trusted_ca_chain), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_trusted_ca_chain, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret)}
 	return ret
 }
@@ -290,7 +328,7 @@ Returns the [CryptoKey] specified when creating with [method TLSOptions.server].
 */
 //go:nosplit
 func (self class) GetPrivateKey() [1]gdclass.CryptoKey { //gd:TLSOptions.get_private_key
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TLSOptions.Bind_get_private_key), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_private_key, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.CryptoKey{gd.PointerWithOwnershipTransferredToGo[gdclass.CryptoKey](r_ret)}
 	return ret
 }
@@ -300,7 +338,7 @@ Returns the [X509Certificate] specified when creating with [method TLSOptions.se
 */
 //go:nosplit
 func (self class) GetOwnCertificate() [1]gdclass.X509Certificate { //gd:TLSOptions.get_own_certificate
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.TLSOptions.Bind_get_own_certificate), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_own_certificate, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret)}
 	return ret
 }
@@ -329,5 +367,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TLSOptions", func(ptr gd.Object) any { return [1]gdclass.TLSOptions{*(*gdclass.TLSOptions)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("TLSOptions", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

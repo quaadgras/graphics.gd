@@ -77,6 +77,49 @@ Supported video formats are [url=https://www.theora.org/]Ogg Theora[/url] ([code
 */
 type Instance [1]gdclass.VideoStreamPlayer
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_stream          gdextension.MethodForClass `hash:"2317102564"`
+	get_stream          gdextension.MethodForClass `hash:"438621487"`
+	play                gdextension.MethodForClass `hash:"3218959716"`
+	stop                gdextension.MethodForClass `hash:"3218959716"`
+	is_playing          gdextension.MethodForClass `hash:"36873697"`
+	set_paused          gdextension.MethodForClass `hash:"2586408642"`
+	is_paused           gdextension.MethodForClass `hash:"36873697"`
+	set_loop            gdextension.MethodForClass `hash:"2586408642"`
+	has_loop            gdextension.MethodForClass `hash:"36873697"`
+	set_volume          gdextension.MethodForClass `hash:"373806689"`
+	get_volume          gdextension.MethodForClass `hash:"1740695150"`
+	set_volume_db       gdextension.MethodForClass `hash:"373806689"`
+	get_volume_db       gdextension.MethodForClass `hash:"1740695150"`
+	set_audio_track     gdextension.MethodForClass `hash:"1286410249"`
+	get_audio_track     gdextension.MethodForClass `hash:"3905245786"`
+	get_stream_name     gdextension.MethodForClass `hash:"201670096"`
+	get_stream_length   gdextension.MethodForClass `hash:"1740695150"`
+	set_stream_position gdextension.MethodForClass `hash:"373806689"`
+	get_stream_position gdextension.MethodForClass `hash:"1740695150"`
+	set_autoplay        gdextension.MethodForClass `hash:"2586408642"`
+	has_autoplay        gdextension.MethodForClass `hash:"36873697"`
+	set_expand          gdextension.MethodForClass `hash:"2586408642"`
+	has_expand          gdextension.MethodForClass `hash:"36873697"`
+	set_buffering_msec  gdextension.MethodForClass `hash:"1286410249"`
+	get_buffering_msec  gdextension.MethodForClass `hash:"3905245786"`
+	set_bus             gdextension.MethodForClass `hash:"3304788590"`
+	get_bus             gdextension.MethodForClass `hash:"2002593661"`
+	get_video_texture   gdextension.MethodForClass `hash:"3635182373"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("VideoStreamPlayer")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -137,6 +180,20 @@ type Advanced = class
 type class [1]gdclass.VideoStreamPlayer
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VideoStreamPlayer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.VideoStreamPlayer)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -146,7 +203,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("VideoStreamPlayer"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VideoStreamPlayer)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -242,12 +299,12 @@ func (self Instance) SetBus(value string) {
 
 //go:nosplit
 func (self class) SetStream(stream [1]gdclass.VideoStream) { //gd:VideoStreamPlayer.set_stream
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_set_stream), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetStream() [1]gdclass.VideoStream { //gd:VideoStreamPlayer.get_stream
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_get_stream), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.VideoStream{gd.PointerWithOwnershipTransferredToGo[gdclass.VideoStream](r_ret)}
 	return ret
 }
@@ -257,7 +314,7 @@ Starts the video playback from the beginning. If the video is paused, this will 
 */
 //go:nosplit
 func (self class) Play() { //gd:VideoStreamPlayer.play
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_play), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -266,7 +323,7 @@ Stops the video playback and sets the stream position to 0.
 */
 //go:nosplit
 func (self class) Stop() { //gd:VideoStreamPlayer.stop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_stop), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -275,67 +332,67 @@ Returns [code]true[/code] if the video is playing.
 */
 //go:nosplit
 func (self class) IsPlaying() bool { //gd:VideoStreamPlayer.is_playing
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_is_playing), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPaused(paused bool) { //gd:VideoStreamPlayer.set_paused
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_set_paused), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ paused bool }{paused}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_paused, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ paused bool }{paused}))
 }
 
 //go:nosplit
 func (self class) IsPaused() bool { //gd:VideoStreamPlayer.is_paused
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_is_paused), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_paused, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoop(loop bool) { //gd:VideoStreamPlayer.set_loop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_set_loop), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ loop bool }{loop}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ loop bool }{loop}))
 }
 
 //go:nosplit
 func (self class) HasLoop() bool { //gd:VideoStreamPlayer.has_loop
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_has_loop), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolume(volume float64) { //gd:VideoStreamPlayer.set_volume
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_set_volume), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume float64 }{volume}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume float64 }{volume}))
 }
 
 //go:nosplit
 func (self class) GetVolume() float64 { //gd:VideoStreamPlayer.get_volume
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_get_volume), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumeDb(db float64) { //gd:VideoStreamPlayer.set_volume_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_set_volume_db), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ db float64 }{db}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ db float64 }{db}))
 }
 
 //go:nosplit
 func (self class) GetVolumeDb() float64 { //gd:VideoStreamPlayer.get_volume_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_get_volume_db), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAudioTrack(track int64) { //gd:VideoStreamPlayer.set_audio_track
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_set_audio_track), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ track int64 }{track}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_audio_track, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ track int64 }{track}))
 }
 
 //go:nosplit
 func (self class) GetAudioTrack() int64 { //gd:VideoStreamPlayer.get_audio_track
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_get_audio_track), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_audio_track, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -345,7 +402,7 @@ Returns the video stream's name, or [code]"<No Stream>"[/code] if no video strea
 */
 //go:nosplit
 func (self class) GetStreamName() String.Readable { //gd:VideoStreamPlayer.get_stream_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_get_stream_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_stream_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -356,67 +413,67 @@ The length of the current stream, in seconds.
 */
 //go:nosplit
 func (self class) GetStreamLength() float64 { //gd:VideoStreamPlayer.get_stream_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_get_stream_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stream_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStreamPosition(position float64) { //gd:VideoStreamPlayer.set_stream_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_set_stream_position), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ position float64 }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_position, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ position float64 }{position}))
 }
 
 //go:nosplit
 func (self class) GetStreamPosition() float64 { //gd:VideoStreamPlayer.get_stream_position
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_get_stream_position), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stream_position, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoplay(enabled bool) { //gd:VideoStreamPlayer.set_autoplay
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_set_autoplay), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) HasAutoplay() bool { //gd:VideoStreamPlayer.has_autoplay
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_has_autoplay), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_autoplay, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExpand(enable bool) { //gd:VideoStreamPlayer.set_expand
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_set_expand), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_expand, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) HasExpand() bool { //gd:VideoStreamPlayer.has_expand
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_has_expand), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_expand, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBufferingMsec(msec int64) { //gd:VideoStreamPlayer.set_buffering_msec
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_set_buffering_msec), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msec int64 }{msec}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffering_msec, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ msec int64 }{msec}))
 }
 
 //go:nosplit
 func (self class) GetBufferingMsec() int64 { //gd:VideoStreamPlayer.get_buffering_msec
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_get_buffering_msec), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_buffering_msec, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBus(bus String.Name) { //gd:VideoStreamPlayer.set_bus
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_set_bus), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ bus gdextension.StringName }{pointers.Get(gd.InternalStringName(bus))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bus, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ bus gdextension.StringName }{pointers.Get(gd.InternalStringName(bus))}))
 }
 
 //go:nosplit
 func (self class) GetBus() String.Name { //gd:VideoStreamPlayer.get_bus
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_get_bus), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_bus, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -426,7 +483,7 @@ Returns the current frame as a [Texture2D].
 */
 //go:nosplit
 func (self class) GetVideoTexture() [1]gdclass.Texture2D { //gd:VideoStreamPlayer.get_video_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.VideoStreamPlayer.Bind_get_video_texture), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_video_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -467,7 +524,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VideoStreamPlayer", func(ptr gd.Object) any {
-		return [1]gdclass.VideoStreamPlayer{*(*gdclass.VideoStreamPlayer)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("VideoStreamPlayer", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

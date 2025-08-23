@@ -73,6 +73,39 @@ When used in a [WorldEnvironment] it provides default settings for exposure, aut
 */
 type Instance [1]gdclass.CameraAttributesPractical
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_dof_blur_far_enabled          gdextension.MethodForClass `hash:"2586408642"`
+	is_dof_blur_far_enabled           gdextension.MethodForClass `hash:"36873697"`
+	set_dof_blur_far_distance         gdextension.MethodForClass `hash:"373806689"`
+	get_dof_blur_far_distance         gdextension.MethodForClass `hash:"1740695150"`
+	set_dof_blur_far_transition       gdextension.MethodForClass `hash:"373806689"`
+	get_dof_blur_far_transition       gdextension.MethodForClass `hash:"1740695150"`
+	set_dof_blur_near_enabled         gdextension.MethodForClass `hash:"2586408642"`
+	is_dof_blur_near_enabled          gdextension.MethodForClass `hash:"36873697"`
+	set_dof_blur_near_distance        gdextension.MethodForClass `hash:"373806689"`
+	get_dof_blur_near_distance        gdextension.MethodForClass `hash:"1740695150"`
+	set_dof_blur_near_transition      gdextension.MethodForClass `hash:"373806689"`
+	get_dof_blur_near_transition      gdextension.MethodForClass `hash:"1740695150"`
+	set_dof_blur_amount               gdextension.MethodForClass `hash:"373806689"`
+	get_dof_blur_amount               gdextension.MethodForClass `hash:"1740695150"`
+	set_auto_exposure_max_sensitivity gdextension.MethodForClass `hash:"373806689"`
+	get_auto_exposure_max_sensitivity gdextension.MethodForClass `hash:"1740695150"`
+	set_auto_exposure_min_sensitivity gdextension.MethodForClass `hash:"373806689"`
+	get_auto_exposure_min_sensitivity gdextension.MethodForClass `hash:"1740695150"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("CameraAttributesPractical")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +121,20 @@ type Advanced = class
 type class [1]gdclass.CameraAttributesPractical
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CameraAttributesPractical)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.CameraAttributesPractical)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +144,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("CameraAttributesPractical"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.CameraAttributesPractical)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -178,108 +225,108 @@ func (self Instance) SetAutoExposureMaxSensitivity(value Float.X) {
 
 //go:nosplit
 func (self class) SetDofBlurFarEnabled(enabled bool) { //gd:CameraAttributesPractical.set_dof_blur_far_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_set_dof_blur_far_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_far_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsDofBlurFarEnabled() bool { //gd:CameraAttributesPractical.is_dof_blur_far_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_is_dof_blur_far_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dof_blur_far_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDofBlurFarDistance(distance float64) { //gd:CameraAttributesPractical.set_dof_blur_far_distance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_set_dof_blur_far_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_far_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetDofBlurFarDistance() float64 { //gd:CameraAttributesPractical.get_dof_blur_far_distance
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_get_dof_blur_far_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_far_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDofBlurFarTransition(distance float64) { //gd:CameraAttributesPractical.set_dof_blur_far_transition
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_set_dof_blur_far_transition), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_far_transition, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetDofBlurFarTransition() float64 { //gd:CameraAttributesPractical.get_dof_blur_far_transition
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_get_dof_blur_far_transition), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_far_transition, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDofBlurNearEnabled(enabled bool) { //gd:CameraAttributesPractical.set_dof_blur_near_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_set_dof_blur_near_enabled), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_near_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsDofBlurNearEnabled() bool { //gd:CameraAttributesPractical.is_dof_blur_near_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_is_dof_blur_near_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dof_blur_near_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDofBlurNearDistance(distance float64) { //gd:CameraAttributesPractical.set_dof_blur_near_distance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_set_dof_blur_near_distance), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_near_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetDofBlurNearDistance() float64 { //gd:CameraAttributesPractical.get_dof_blur_near_distance
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_get_dof_blur_near_distance), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_near_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDofBlurNearTransition(distance float64) { //gd:CameraAttributesPractical.set_dof_blur_near_transition
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_set_dof_blur_near_transition), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_near_transition, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetDofBlurNearTransition() float64 { //gd:CameraAttributesPractical.get_dof_blur_near_transition
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_get_dof_blur_near_transition), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_near_transition, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDofBlurAmount(amount float64) { //gd:CameraAttributesPractical.set_dof_blur_amount
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_set_dof_blur_amount), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dof_blur_amount, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
 }
 
 //go:nosplit
 func (self class) GetDofBlurAmount() float64 { //gd:CameraAttributesPractical.get_dof_blur_amount
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_get_dof_blur_amount), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dof_blur_amount, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureMaxSensitivity(max_sensitivity float64) { //gd:CameraAttributesPractical.set_auto_exposure_max_sensitivity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_set_auto_exposure_max_sensitivity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ max_sensitivity float64 }{max_sensitivity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_max_sensitivity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ max_sensitivity float64 }{max_sensitivity}))
 }
 
 //go:nosplit
 func (self class) GetAutoExposureMaxSensitivity() float64 { //gd:CameraAttributesPractical.get_auto_exposure_max_sensitivity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_get_auto_exposure_max_sensitivity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_max_sensitivity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureMinSensitivity(min_sensitivity float64) { //gd:CameraAttributesPractical.set_auto_exposure_min_sensitivity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_set_auto_exposure_min_sensitivity), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ min_sensitivity float64 }{min_sensitivity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_min_sensitivity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ min_sensitivity float64 }{min_sensitivity}))
 }
 
 //go:nosplit
 func (self class) GetAutoExposureMinSensitivity() float64 { //gd:CameraAttributesPractical.get_auto_exposure_min_sensitivity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.CameraAttributesPractical.Bind_get_auto_exposure_min_sensitivity), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_min_sensitivity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -330,7 +377,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("CameraAttributesPractical", func(ptr gd.Object) any {
-		return [1]gdclass.CameraAttributesPractical{*(*gdclass.CameraAttributesPractical)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("CameraAttributesPractical", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

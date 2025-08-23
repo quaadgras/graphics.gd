@@ -51,7 +51,7 @@ func fixReserved(name string) string {
 	case "internal":
 		return "internal_"
 	case "map":
-		return "mapping"
+		return "map_"
 	case "var":
 		return "v"
 	case "object":
@@ -62,6 +62,8 @@ func fixReserved(name string) string {
 		return "rid"
 	case "variant":
 		return "v"
+	case "select":
+		return "select_"
 	default:
 		return name
 	}

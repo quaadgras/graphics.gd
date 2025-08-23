@@ -76,14 +76,40 @@ This singleton provides access to static information about [Theme] resources use
 */
 type Instance [1]gdclass.ThemeDB
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_default_theme       gdextension.MethodForClass `hash:"754276358"`
+	get_project_theme       gdextension.MethodForClass `hash:"754276358"`
+	set_fallback_base_scale gdextension.MethodForClass `hash:"373806689"`
+	get_fallback_base_scale gdextension.MethodForClass `hash:"191475506"`
+	set_fallback_font       gdextension.MethodForClass `hash:"1262170328"`
+	get_fallback_font       gdextension.MethodForClass `hash:"3656929885"`
+	set_fallback_font_size  gdextension.MethodForClass `hash:"1286410249"`
+	get_fallback_font_size  gdextension.MethodForClass `hash:"2455072627"`
+	set_fallback_icon       gdextension.MethodForClass `hash:"4051416890"`
+	get_fallback_icon       gdextension.MethodForClass `hash:"255860311"`
+	set_fallback_stylebox   gdextension.MethodForClass `hash:"2797200388"`
+	get_fallback_stylebox   gdextension.MethodForClass `hash:"496040854"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ThemeDB")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 var self [1]gdclass.ThemeDB
 var once sync.Once
 
 func singleton() {
-	obj := pointers.Raw[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Global(pointers.Get(gd.Global.Singletons.ThemeDB)))})
-	self = *(*[1]gdclass.ThemeDB)(unsafe.Pointer(&obj))
+	self[0] = pointers.Raw[gdclass.ThemeDB]([3]uint64{uint64(gdextension.Host.Objects.Global(sname))})
 }
 
 /*
@@ -109,6 +135,20 @@ func Advanced() class { once.Do(singleton); return self }
 type class [1]gdclass.ThemeDB
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ThemeDB)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ThemeDB)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -173,7 +213,7 @@ Returns a reference to the default engine [Theme]. This theme resource is respon
 */
 //go:nosplit
 func (self class) GetDefaultTheme() [1]gdclass.Theme { //gd:ThemeDB.get_default_theme
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ThemeDB.Bind_get_default_theme), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_default_theme, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret)}
 	return ret
 }
@@ -184,67 +224,67 @@ To set the project theme, see [member ProjectSettings.gui/theme/custom].
 */
 //go:nosplit
 func (self class) GetProjectTheme() [1]gdclass.Theme { //gd:ThemeDB.get_project_theme
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ThemeDB.Bind_get_project_theme), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_project_theme, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Theme{gd.PointerWithOwnershipTransferredToGo[gdclass.Theme](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFallbackBaseScale(base_scale float64) { //gd:ThemeDB.set_fallback_base_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ThemeDB.Bind_set_fallback_base_scale), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ base_scale float64 }{base_scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_base_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ base_scale float64 }{base_scale}))
 }
 
 //go:nosplit
 func (self class) GetFallbackBaseScale() float64 { //gd:ThemeDB.get_fallback_base_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ThemeDB.Bind_get_fallback_base_scale), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_base_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFallbackFont(font [1]gdclass.Font) { //gd:ThemeDB.set_fallback_font
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ThemeDB.Bind_set_fallback_font), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetFallbackFont() [1]gdclass.Font { //gd:ThemeDB.get_fallback_font
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ThemeDB.Bind_get_fallback_font), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_fallback_font, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFallbackFontSize(font_size int64) { //gd:ThemeDB.set_fallback_font_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ThemeDB.Bind_set_fallback_font_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_font_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ font_size int64 }{font_size}))
 }
 
 //go:nosplit
 func (self class) GetFallbackFontSize() int64 { //gd:ThemeDB.get_fallback_font_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ThemeDB.Bind_get_fallback_font_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_font_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFallbackIcon(icon [1]gdclass.Texture2D) { //gd:ThemeDB.set_fallback_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ThemeDB.Bind_set_fallback_icon), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ icon gdextension.Object }{gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ icon gdextension.Object }{gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetFallbackIcon() [1]gdclass.Texture2D { //gd:ThemeDB.get_fallback_icon
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ThemeDB.Bind_get_fallback_icon), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_fallback_icon, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFallbackStylebox(stylebox [1]gdclass.StyleBox) { //gd:ThemeDB.set_fallback_stylebox
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ThemeDB.Bind_set_fallback_stylebox), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stylebox gdextension.Object }{gdextension.Object(gd.ObjectChecked(stylebox[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_stylebox, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stylebox gdextension.Object }{gdextension.Object(gd.ObjectChecked(stylebox[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetFallbackStylebox() [1]gdclass.StyleBox { //gd:ThemeDB.get_fallback_stylebox
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ThemeDB.Bind_get_fallback_stylebox), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_fallback_stylebox, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.StyleBox{gd.PointerWithOwnershipTransferredToGo[gdclass.StyleBox](r_ret)}
 	return ret
 }
@@ -266,5 +306,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ThemeDB", func(ptr gd.Object) any { return [1]gdclass.ThemeDB{*(*gdclass.ThemeDB)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("ThemeDB", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

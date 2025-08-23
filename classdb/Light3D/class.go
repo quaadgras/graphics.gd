@@ -75,6 +75,52 @@ Light3D is the [i]abstract[/i] base class for light nodes. As it can't be instan
 */
 type Instance [1]gdclass.Light3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_editor_only              gdextension.MethodForClass `hash:"2586408642"`
+	is_editor_only               gdextension.MethodForClass `hash:"36873697"`
+	set_param                    gdextension.MethodForClass `hash:"1722734213"`
+	get_param                    gdextension.MethodForClass `hash:"1844084987"`
+	set_shadow                   gdextension.MethodForClass `hash:"2586408642"`
+	has_shadow                   gdextension.MethodForClass `hash:"36873697"`
+	set_negative                 gdextension.MethodForClass `hash:"2586408642"`
+	is_negative                  gdextension.MethodForClass `hash:"36873697"`
+	set_cull_mask                gdextension.MethodForClass `hash:"1286410249"`
+	get_cull_mask                gdextension.MethodForClass `hash:"3905245786"`
+	set_enable_distance_fade     gdextension.MethodForClass `hash:"2586408642"`
+	is_distance_fade_enabled     gdextension.MethodForClass `hash:"36873697"`
+	set_distance_fade_begin      gdextension.MethodForClass `hash:"373806689"`
+	get_distance_fade_begin      gdextension.MethodForClass `hash:"1740695150"`
+	set_distance_fade_shadow     gdextension.MethodForClass `hash:"373806689"`
+	get_distance_fade_shadow     gdextension.MethodForClass `hash:"1740695150"`
+	set_distance_fade_length     gdextension.MethodForClass `hash:"373806689"`
+	get_distance_fade_length     gdextension.MethodForClass `hash:"1740695150"`
+	set_color                    gdextension.MethodForClass `hash:"2920490490"`
+	get_color                    gdextension.MethodForClass `hash:"3444240500"`
+	set_shadow_reverse_cull_face gdextension.MethodForClass `hash:"2586408642"`
+	get_shadow_reverse_cull_face gdextension.MethodForClass `hash:"36873697"`
+	set_shadow_caster_mask       gdextension.MethodForClass `hash:"1286410249"`
+	get_shadow_caster_mask       gdextension.MethodForClass `hash:"3905245786"`
+	set_bake_mode                gdextension.MethodForClass `hash:"37739303"`
+	get_bake_mode                gdextension.MethodForClass `hash:"371737608"`
+	set_projector                gdextension.MethodForClass `hash:"4051416890"`
+	get_projector                gdextension.MethodForClass `hash:"3635182373"`
+	set_temperature              gdextension.MethodForClass `hash:"373806689"`
+	get_temperature              gdextension.MethodForClass `hash:"1740695150"`
+	get_correlated_color         gdextension.MethodForClass `hash:"3444240500"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Light3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -97,6 +143,20 @@ type Advanced = class
 type class [1]gdclass.Light3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Light3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Light3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -106,7 +166,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Light3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Light3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -330,12 +390,12 @@ func (self Instance) SetEditorOnly(value bool) {
 
 //go:nosplit
 func (self class) SetEditorOnly(editor_only bool) { //gd:Light3D.set_editor_only
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_editor_only), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ editor_only bool }{editor_only}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_only, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ editor_only bool }{editor_only}))
 }
 
 //go:nosplit
 func (self class) IsEditorOnly() bool { //gd:Light3D.is_editor_only
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_is_editor_only), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editor_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -345,7 +405,7 @@ Sets the value of the specified [enum Light3D.Param] parameter.
 */
 //go:nosplit
 func (self class) SetParam(param Param, value float64) { //gd:Light3D.set_param
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_param), 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		param Param
 		value float64
 	}{param, value}))
@@ -356,163 +416,163 @@ Returns the value of the specified [enum Light3D.Param] parameter.
 */
 //go:nosplit
 func (self class) GetParam(param Param) float64 { //gd:Light3D.get_param
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_get_param), gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShadow(enabled bool) { //gd:Light3D.set_shadow
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_shadow), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) HasShadow() bool { //gd:Light3D.has_shadow
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_has_shadow), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_shadow, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNegative(enabled bool) { //gd:Light3D.set_negative
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_negative), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_negative, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 
 //go:nosplit
 func (self class) IsNegative() bool { //gd:Light3D.is_negative
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_is_negative), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_negative, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCullMask(cull_mask int64) { //gd:Light3D.set_cull_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_cull_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cull_mask int64 }{cull_mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ cull_mask int64 }{cull_mask}))
 }
 
 //go:nosplit
 func (self class) GetCullMask() int64 { //gd:Light3D.get_cull_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_get_cull_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableDistanceFade(enable bool) { //gd:Light3D.set_enable_distance_fade
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_enable_distance_fade), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_distance_fade, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) IsDistanceFadeEnabled() bool { //gd:Light3D.is_distance_fade_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_is_distance_fade_enabled), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_distance_fade_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDistanceFadeBegin(distance float64) { //gd:Light3D.set_distance_fade_begin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_distance_fade_begin), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade_begin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetDistanceFadeBegin() float64 { //gd:Light3D.get_distance_fade_begin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_get_distance_fade_begin), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_begin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDistanceFadeShadow(distance float64) { //gd:Light3D.set_distance_fade_shadow
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_distance_fade_shadow), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade_shadow, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetDistanceFadeShadow() float64 { //gd:Light3D.get_distance_fade_shadow
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_get_distance_fade_shadow), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_shadow, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDistanceFadeLength(distance float64) { //gd:Light3D.set_distance_fade_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_distance_fade_length), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance_fade_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ distance float64 }{distance}))
 }
 
 //go:nosplit
 func (self class) GetDistanceFadeLength() float64 { //gd:Light3D.get_distance_fade_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_get_distance_fade_length), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance_fade_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColor(color Color.RGBA) { //gd:Light3D.set_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_color), 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
 }
 
 //go:nosplit
 func (self class) GetColor() Color.RGBA { //gd:Light3D.get_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_get_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShadowReverseCullFace(enable bool) { //gd:Light3D.set_shadow_reverse_cull_face
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_shadow_reverse_cull_face), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_reverse_cull_face, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
 }
 
 //go:nosplit
 func (self class) GetShadowReverseCullFace() bool { //gd:Light3D.get_shadow_reverse_cull_face
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_get_shadow_reverse_cull_face), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_shadow_reverse_cull_face, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShadowCasterMask(caster_mask int64) { //gd:Light3D.set_shadow_caster_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_shadow_caster_mask), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caster_mask int64 }{caster_mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_caster_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ caster_mask int64 }{caster_mask}))
 }
 
 //go:nosplit
 func (self class) GetShadowCasterMask() int64 { //gd:Light3D.get_shadow_caster_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_get_shadow_caster_mask), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_shadow_caster_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBakeMode(bake_mode BakeMode) { //gd:Light3D.set_bake_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_bake_mode), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bake_mode BakeMode }{bake_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ bake_mode BakeMode }{bake_mode}))
 }
 
 //go:nosplit
 func (self class) GetBakeMode() BakeMode { //gd:Light3D.get_bake_mode
-	var r_ret = gdextension.Call[BakeMode](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_get_bake_mode), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[BakeMode](gd.ObjectChecked(self.AsObject()), methods.get_bake_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProjector(projector [1]gdclass.Texture2D) { //gd:Light3D.set_projector
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_projector), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ projector gdextension.Object }{gdextension.Object(gd.ObjectChecked(projector[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_projector, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ projector gdextension.Object }{gdextension.Object(gd.ObjectChecked(projector[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetProjector() [1]gdclass.Texture2D { //gd:Light3D.get_projector
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_get_projector), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_projector, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTemperature(temperature float64) { //gd:Light3D.set_temperature
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_set_temperature), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ temperature float64 }{temperature}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_temperature, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ temperature float64 }{temperature}))
 }
 
 //go:nosplit
 func (self class) GetTemperature() float64 { //gd:Light3D.get_temperature
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_get_temperature), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_temperature, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -522,7 +582,7 @@ Returns the [Color] of an idealized blackbody at the given [member light_tempera
 */
 //go:nosplit
 func (self class) GetCorrelatedColor() Color.RGBA { //gd:Light3D.get_correlated_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Light3D.Bind_get_correlated_color), gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_correlated_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -559,7 +619,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Light3D", func(ptr gd.Object) any { return [1]gdclass.Light3D{*(*gdclass.Light3D)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Light3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type Param int //gd:Light3D.Param

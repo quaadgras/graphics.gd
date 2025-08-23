@@ -73,6 +73,27 @@ PacketStreamPeer provides a wrapper for working using packets over a stream. Thi
 */
 type Instance [1]gdclass.PacketPeerStream
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_stream_peer            gdextension.MethodForClass `hash:"3281897016"`
+	get_stream_peer            gdextension.MethodForClass `hash:"2741655269"`
+	set_input_buffer_max_size  gdextension.MethodForClass `hash:"1286410249"`
+	set_output_buffer_max_size gdextension.MethodForClass `hash:"1286410249"`
+	get_input_buffer_max_size  gdextension.MethodForClass `hash:"3905245786"`
+	get_output_buffer_max_size gdextension.MethodForClass `hash:"3905245786"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("PacketPeerStream")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +109,20 @@ type Advanced = class
 type class [1]gdclass.PacketPeerStream
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PacketPeerStream)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PacketPeerStream)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +132,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("PacketPeerStream"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.PacketPeerStream)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -130,36 +165,36 @@ func (self Instance) SetStreamPeer(value StreamPeer.Instance) {
 
 //go:nosplit
 func (self class) SetStreamPeer(peer [1]gdclass.StreamPeer) { //gd:PacketPeerStream.set_stream_peer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerStream.Bind_set_stream_peer), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(peer[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_peer, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(peer[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) GetStreamPeer() [1]gdclass.StreamPeer { //gd:PacketPeerStream.get_stream_peer
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerStream.Bind_get_stream_peer), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream_peer, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.StreamPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeer](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInputBufferMaxSize(max_size_bytes int64) { //gd:PacketPeerStream.set_input_buffer_max_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerStream.Bind_set_input_buffer_max_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_size_bytes int64 }{max_size_bytes}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_buffer_max_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_size_bytes int64 }{max_size_bytes}))
 }
 
 //go:nosplit
 func (self class) SetOutputBufferMaxSize(max_size_bytes int64) { //gd:PacketPeerStream.set_output_buffer_max_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerStream.Bind_set_output_buffer_max_size), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_size_bytes int64 }{max_size_bytes}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_output_buffer_max_size, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_size_bytes int64 }{max_size_bytes}))
 }
 
 //go:nosplit
 func (self class) GetInputBufferMaxSize() int64 { //gd:PacketPeerStream.get_input_buffer_max_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerStream.Bind_get_input_buffer_max_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_input_buffer_max_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetOutputBufferMaxSize() int64 { //gd:PacketPeerStream.get_output_buffer_max_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.PacketPeerStream.Bind_get_output_buffer_max_size), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_output_buffer_max_size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -195,7 +230,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PacketPeerStream", func(ptr gd.Object) any {
-		return [1]gdclass.PacketPeerStream{*(*gdclass.PacketPeerStream)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("PacketPeerStream", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

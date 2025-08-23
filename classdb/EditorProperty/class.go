@@ -77,6 +77,56 @@ A custom control for editing properties that can be added to the [EditorInspecto
 */
 type Instance [1]gdclass.EditorProperty
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_label               gdextension.MethodForClass `hash:"83702148"`
+	get_label               gdextension.MethodForClass `hash:"201670096"`
+	set_read_only           gdextension.MethodForClass `hash:"2586408642"`
+	is_read_only            gdextension.MethodForClass `hash:"36873697"`
+	set_draw_label          gdextension.MethodForClass `hash:"2586408642"`
+	is_draw_label           gdextension.MethodForClass `hash:"36873697"`
+	set_draw_background     gdextension.MethodForClass `hash:"2586408642"`
+	is_draw_background      gdextension.MethodForClass `hash:"36873697"`
+	set_checkable           gdextension.MethodForClass `hash:"2586408642"`
+	is_checkable            gdextension.MethodForClass `hash:"36873697"`
+	set_checked             gdextension.MethodForClass `hash:"2586408642"`
+	is_checked              gdextension.MethodForClass `hash:"36873697"`
+	set_draw_warning        gdextension.MethodForClass `hash:"2586408642"`
+	is_draw_warning         gdextension.MethodForClass `hash:"36873697"`
+	set_keying              gdextension.MethodForClass `hash:"2586408642"`
+	is_keying               gdextension.MethodForClass `hash:"36873697"`
+	set_deletable           gdextension.MethodForClass `hash:"2586408642"`
+	is_deletable            gdextension.MethodForClass `hash:"36873697"`
+	get_edited_property     gdextension.MethodForClass `hash:"2002593661"`
+	get_edited_object       gdextension.MethodForClass `hash:"2050059866"`
+	update_property         gdextension.MethodForClass `hash:"3218959716"`
+	add_focusable           gdextension.MethodForClass `hash:"1496901182"`
+	set_bottom_editor       gdextension.MethodForClass `hash:"1496901182"`
+	set_selectable          gdextension.MethodForClass `hash:"2586408642"`
+	is_selectable           gdextension.MethodForClass `hash:"36873697"`
+	set_use_folding         gdextension.MethodForClass `hash:"2586408642"`
+	is_using_folding        gdextension.MethodForClass `hash:"36873697"`
+	set_name_split_ratio    gdextension.MethodForClass `hash:"373806689"`
+	get_name_split_ratio    gdextension.MethodForClass `hash:"1740695150"`
+	deselect                gdextension.MethodForClass `hash:"3218959716"`
+	is_selected             gdextension.MethodForClass `hash:"36873697"`
+	select_                 gdextension.MethodForClass `hash:"1025054187"`
+	set_object_and_property gdextension.MethodForClass `hash:"4157606280"`
+	set_label_reference     gdextension.MethodForClass `hash:"1496901182"`
+	emit_changed            gdextension.MethodForClass `hash:"1822500399"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorProperty")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.EditorProperty
@@ -220,6 +270,20 @@ type Advanced = class
 type class [1]gdclass.EditorProperty
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorProperty)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorProperty)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -229,7 +293,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorProperty"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorProperty)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -350,108 +414,108 @@ func (class) _set_read_only(impl func(ptr unsafe.Pointer, read_only bool)) (cb g
 
 //go:nosplit
 func (self class) SetLabel(text String.Readable) { //gd:EditorProperty.set_label
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_label), 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))}))
 }
 
 //go:nosplit
 func (self class) GetLabel() String.Readable { //gd:EditorProperty.get_label
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_get_label), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetReadOnly(read_only bool) { //gd:EditorProperty.set_read_only
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_read_only), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ read_only bool }{read_only}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_read_only, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ read_only bool }{read_only}))
 }
 
 //go:nosplit
 func (self class) IsReadOnly() bool { //gd:EditorProperty.is_read_only
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_is_read_only), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_read_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawLabel(draw_label bool) { //gd:EditorProperty.set_draw_label
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_draw_label), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_label bool }{draw_label}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_label, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_label bool }{draw_label}))
 }
 
 //go:nosplit
 func (self class) IsDrawLabel() bool { //gd:EditorProperty.is_draw_label
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_is_draw_label), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_label, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawBackground(draw_background bool) { //gd:EditorProperty.set_draw_background
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_draw_background), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_background bool }{draw_background}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_background, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_background bool }{draw_background}))
 }
 
 //go:nosplit
 func (self class) IsDrawBackground() bool { //gd:EditorProperty.is_draw_background
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_is_draw_background), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_background, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCheckable(checkable bool) { //gd:EditorProperty.set_checkable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_checkable), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ checkable bool }{checkable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_checkable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ checkable bool }{checkable}))
 }
 
 //go:nosplit
 func (self class) IsCheckable() bool { //gd:EditorProperty.is_checkable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_is_checkable), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_checkable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetChecked(checked bool) { //gd:EditorProperty.set_checked
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_checked), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ checked bool }{checked}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_checked, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ checked bool }{checked}))
 }
 
 //go:nosplit
 func (self class) IsChecked() bool { //gd:EditorProperty.is_checked
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_is_checked), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_checked, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawWarning(draw_warning bool) { //gd:EditorProperty.set_draw_warning
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_draw_warning), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_warning bool }{draw_warning}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_warning, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_warning bool }{draw_warning}))
 }
 
 //go:nosplit
 func (self class) IsDrawWarning() bool { //gd:EditorProperty.is_draw_warning
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_is_draw_warning), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_warning, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeying(keying bool) { //gd:EditorProperty.set_keying
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_keying), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keying bool }{keying}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keying, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keying bool }{keying}))
 }
 
 //go:nosplit
 func (self class) IsKeying() bool { //gd:EditorProperty.is_keying
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_is_keying), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keying, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeletable(deletable bool) { //gd:EditorProperty.set_deletable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_deletable), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ deletable bool }{deletable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deletable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ deletable bool }{deletable}))
 }
 
 //go:nosplit
 func (self class) IsDeletable() bool { //gd:EditorProperty.is_deletable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_is_deletable), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deletable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -461,7 +525,7 @@ Gets the edited property. If your editor is for a single property (added via [me
 */
 //go:nosplit
 func (self class) GetEditedProperty() String.Name { //gd:EditorProperty.get_edited_property
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_get_edited_property), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_edited_property, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -471,7 +535,7 @@ Gets the edited object.
 */
 //go:nosplit
 func (self class) GetEditedObject() [1]gd.Object { //gd:EditorProperty.get_edited_object
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_get_edited_object), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -481,7 +545,7 @@ Forces refresh of the property display.
 */
 //go:nosplit
 func (self class) UpdateProperty() { //gd:EditorProperty.update_property
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_update_property), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_property, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -489,7 +553,7 @@ If any of the controls added can gain keyboard focus, add it here. This ensures 
 */
 //go:nosplit
 func (self class) AddFocusable(control [1]gdclass.Control) { //gd:EditorProperty.add_focusable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_add_focusable), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_focusable, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))}))
 }
 
 /*
@@ -497,41 +561,41 @@ Puts the [param editor] control below the property label. The control must be pr
 */
 //go:nosplit
 func (self class) SetBottomEditor(editor [1]gdclass.Control) { //gd:EditorProperty.set_bottom_editor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_bottom_editor), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ editor gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bottom_editor, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ editor gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(editor[0].AsObject()[0]))}))
 }
 
 //go:nosplit
 func (self class) SetSelectable(selectable bool) { //gd:EditorProperty.set_selectable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_selectable), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ selectable bool }{selectable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selectable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ selectable bool }{selectable}))
 }
 
 //go:nosplit
 func (self class) IsSelectable() bool { //gd:EditorProperty.is_selectable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_is_selectable), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selectable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseFolding(use_folding bool) { //gd:EditorProperty.set_use_folding
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_use_folding), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_folding bool }{use_folding}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_folding, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_folding bool }{use_folding}))
 }
 
 //go:nosplit
 func (self class) IsUsingFolding() bool { //gd:EditorProperty.is_using_folding
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_is_using_folding), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_folding, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNameSplitRatio(ratio float64) { //gd:EditorProperty.set_name_split_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_name_split_ratio), 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name_split_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
 }
 
 //go:nosplit
 func (self class) GetNameSplitRatio() float64 { //gd:EditorProperty.get_name_split_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_get_name_split_ratio), gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_name_split_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -541,7 +605,7 @@ Draw property as not selected. Used by the inspector.
 */
 //go:nosplit
 func (self class) Deselect() { //gd:EditorProperty.deselect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_deselect), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.deselect, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -549,7 +613,7 @@ Returns [code]true[/code] if property is drawn as selected. Used by the inspecto
 */
 //go:nosplit
 func (self class) IsSelected() bool { //gd:EditorProperty.is_selected
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_is_selected), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selected, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -559,7 +623,7 @@ Draw property as selected. Used by the inspector.
 */
 //go:nosplit
 func (self class) Select(focusable int64) { //gd:EditorProperty.select_
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_select_), 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ focusable int64 }{focusable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ focusable int64 }{focusable}))
 }
 
 /*
@@ -567,7 +631,7 @@ Assigns object and property to edit.
 */
 //go:nosplit
 func (self class) SetObjectAndProperty(obj [1]gd.Object, property String.Name) { //gd:EditorProperty.set_object_and_property
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_object_and_property), 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_and_property, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
 		obj      gdextension.Object
 		property gdextension.StringName
 	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), pointers.Get(gd.InternalStringName(property))}))
@@ -578,7 +642,7 @@ Used by the inspector, set to a control that will be used as a reference to calc
 */
 //go:nosplit
 func (self class) SetLabelReference(control [1]gdclass.Control) { //gd:EditorProperty.set_label_reference
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_set_label_reference), 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_label_reference, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
 }
 
 /*
@@ -586,7 +650,7 @@ If one or several properties have changed, this must be called. [param field] is
 */
 //go:nosplit
 func (self class) EmitChanged(property String.Name, value variant.Any, field String.Name, changing bool) { //gd:EditorProperty.emit_changed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorProperty.Bind_emit_changed), 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.emit_changed, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
 		property gdextension.StringName
 		value    gdextension.Variant
 		field    gdextension.StringName
@@ -689,7 +753,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorProperty", func(ptr gd.Object) any {
-		return [1]gdclass.EditorProperty{*(*gdclass.EditorProperty)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorProperty", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

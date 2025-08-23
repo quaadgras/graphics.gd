@@ -71,6 +71,22 @@ Uniform set cache manager for Rendering Device based renderers. Provides a way t
 */
 type Instance [1]gdclass.UniformSetCacheRD
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_cache gdextension.MethodForClass `hash:"658571723"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("UniformSetCacheRD")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -94,6 +110,20 @@ type Advanced = class
 type class [1]gdclass.UniformSetCacheRD
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.UniformSetCacheRD)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.UniformSetCacheRD)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -103,7 +133,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("UniformSetCacheRD"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.UniformSetCacheRD)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -114,7 +144,7 @@ Creates/returns a cached uniform set based on the provided uniforms for a given 
 */
 //go:nosplit
 func (self class) GetCache(shader RID.Any, set int64, uniforms Array.Contains[[1]gdclass.RDUniform]) RID.Any { //gd:UniformSetCacheRD.get_cache
-	var r_ret = gdextension.CallStatic[RID.Any](gdextension.MethodForClass(gd.Global.Methods.UniformSetCacheRD.Bind_get_cache), gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[RID.Any](methods.get_cache, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12), unsafe.Pointer(&struct {
 		shader   RID.Any
 		set      int64
 		uniforms gdextension.Array
@@ -140,7 +170,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("UniformSetCacheRD", func(ptr gd.Object) any {
-		return [1]gdclass.UniformSetCacheRD{*(*gdclass.UniformSetCacheRD)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("UniformSetCacheRD", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -70,6 +70,35 @@ A more generalized, low-level variation of the directory concept.
 */
 type Instance [1]gdclass.EditorFileSystemDirectory
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	get_subdir_count              gdextension.MethodForClass `hash:"3905245786"`
+	get_subdir                    gdextension.MethodForClass `hash:"2330964164"`
+	get_file_count                gdextension.MethodForClass `hash:"3905245786"`
+	get_file                      gdextension.MethodForClass `hash:"844755477"`
+	get_file_path                 gdextension.MethodForClass `hash:"844755477"`
+	get_file_type                 gdextension.MethodForClass `hash:"659327637"`
+	get_file_script_class_name    gdextension.MethodForClass `hash:"844755477"`
+	get_file_script_class_extends gdextension.MethodForClass `hash:"844755477"`
+	get_file_import_is_valid      gdextension.MethodForClass `hash:"1116898809"`
+	get_name                      gdextension.MethodForClass `hash:"2841200299"`
+	get_path                      gdextension.MethodForClass `hash:"201670096"`
+	get_parent                    gdextension.MethodForClass `hash:"842323275"`
+	find_file_index               gdextension.MethodForClass `hash:"1321353865"`
+	find_dir_index                gdextension.MethodForClass `hash:"1321353865"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("EditorFileSystemDirectory")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, true)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -183,6 +212,20 @@ type Advanced = class
 type class [1]gdclass.EditorFileSystemDirectory
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorFileSystemDirectory)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.EditorFileSystemDirectory)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -192,7 +235,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("EditorFileSystemDirectory"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorFileSystemDirectory)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -203,7 +246,7 @@ Returns the number of subdirectories in this directory.
 */
 //go:nosplit
 func (self class) GetSubdirCount() int64 { //gd:EditorFileSystemDirectory.get_subdir_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_subdir_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdir_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -213,7 +256,7 @@ Returns the subdirectory at index [param idx].
 */
 //go:nosplit
 func (self class) GetSubdir(idx int64) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_subdir
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_subdir), gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_subdir, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerMustAssertInstanceID[gdclass.EditorFileSystemDirectory](r_ret)}
 	return ret
 }
@@ -223,7 +266,7 @@ Returns the number of files in this directory.
 */
 //go:nosplit
 func (self class) GetFileCount() int64 { //gd:EditorFileSystemDirectory.get_file_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_file_count), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_file_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -233,7 +276,7 @@ Returns the name of the file at index [param idx].
 */
 //go:nosplit
 func (self class) GetFile(idx int64) String.Readable { //gd:EditorFileSystemDirectory.get_file
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_file), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -243,7 +286,7 @@ Returns the path to the file at index [param idx].
 */
 //go:nosplit
 func (self class) GetFilePath(idx int64) String.Readable { //gd:EditorFileSystemDirectory.get_file_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_file_path), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file_path, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -253,7 +296,7 @@ Returns the resource type of the file at index [param idx]. This returns a strin
 */
 //go:nosplit
 func (self class) GetFileType(idx int64) String.Name { //gd:EditorFileSystemDirectory.get_file_type
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_file_type), gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_file_type, gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -263,7 +306,7 @@ Returns the name of the script class defined in the file at index [param idx]. I
 */
 //go:nosplit
 func (self class) GetFileScriptClassName(idx int64) String.Readable { //gd:EditorFileSystemDirectory.get_file_script_class_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_file_script_class_name), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file_script_class_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -273,7 +316,7 @@ Returns the base class of the script class defined in the file at index [param i
 */
 //go:nosplit
 func (self class) GetFileScriptClassExtends(idx int64) String.Readable { //gd:EditorFileSystemDirectory.get_file_script_class_extends
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_file_script_class_extends), gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file_script_class_extends, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -283,7 +326,7 @@ Returns [code]true[/code] if the file at index [param idx] imported properly.
 */
 //go:nosplit
 func (self class) GetFileImportIsValid(idx int64) bool { //gd:EditorFileSystemDirectory.get_file_import_is_valid
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_file_import_is_valid), gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_file_import_is_valid, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
 	var ret = r_ret
 	return ret
 }
@@ -293,7 +336,7 @@ Returns the name of this directory.
 */
 //go:nosplit
 func (self class) GetName() String.Readable { //gd:EditorFileSystemDirectory.get_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_name), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -303,7 +346,7 @@ Returns the path to this directory.
 */
 //go:nosplit
 func (self class) GetPath() String.Readable { //gd:EditorFileSystemDirectory.get_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_path), gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -313,7 +356,7 @@ Returns the parent directory for this directory or [code]null[/code] if called o
 */
 //go:nosplit
 func (self class) GetParent() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_parent
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_get_parent), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerMustAssertInstanceID[gdclass.EditorFileSystemDirectory](r_ret)}
 	return ret
 }
@@ -323,7 +366,7 @@ Returns the index of the file with name [param name] or [code]-1[/code] if not f
 */
 //go:nosplit
 func (self class) FindFileIndex(name String.Readable) int64 { //gd:EditorFileSystemDirectory.find_file_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_find_file_index), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_file_index, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -333,7 +376,7 @@ Returns the index of the directory with name [param name] or [code]-1[/code] if 
 */
 //go:nosplit
 func (self class) FindDirIndex(name String.Readable) int64 { //gd:EditorFileSystemDirectory.find_dir_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.EditorFileSystemDirectory.Bind_find_dir_index), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_dir_index, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
 	var ret = r_ret
 	return ret
 }
@@ -361,7 +404,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorFileSystemDirectory", func(ptr gd.Object) any {
-		return [1]gdclass.EditorFileSystemDirectory{*(*gdclass.EditorFileSystemDirectory)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("EditorFileSystemDirectory", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

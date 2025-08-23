@@ -73,6 +73,31 @@ This node can be bound to a specific pose of a [XRPositionalTracker] and will au
 */
 type Instance [1]gdclass.XRNode3D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_tracker           gdextension.MethodForClass `hash:"3304788590"`
+	get_tracker           gdextension.MethodForClass `hash:"2002593661"`
+	set_pose_name         gdextension.MethodForClass `hash:"3304788590"`
+	get_pose_name         gdextension.MethodForClass `hash:"2002593661"`
+	set_show_when_tracked gdextension.MethodForClass `hash:"2586408642"`
+	get_show_when_tracked gdextension.MethodForClass `hash:"36873697"`
+	get_is_active         gdextension.MethodForClass `hash:"36873697"`
+	get_has_tracking_data gdextension.MethodForClass `hash:"36873697"`
+	get_pose              gdextension.MethodForClass `hash:"2806551826"`
+	trigger_haptic_pulse  gdextension.MethodForClass `hash:"508576839"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("XRNode3D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -121,6 +146,20 @@ type Advanced = class
 type class [1]gdclass.XRNode3D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRNode3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.XRNode3D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -130,7 +169,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("XRNode3D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.XRNode3D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
 	return casted
@@ -162,36 +201,36 @@ func (self Instance) SetShowWhenTracked(value bool) {
 
 //go:nosplit
 func (self class) SetTracker(tracker_name String.Name) { //gd:XRNode3D.set_tracker
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRNode3D.Bind_set_tracker), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))}))
 }
 
 //go:nosplit
 func (self class) GetTracker() String.Name { //gd:XRNode3D.get_tracker
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRNode3D.Bind_get_tracker), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPoseName(pose String.Name) { //gd:XRNode3D.set_pose_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRNode3D.Bind_set_pose_name), 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ pose gdextension.StringName }{pointers.Get(gd.InternalStringName(pose))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pose_name, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ pose gdextension.StringName }{pointers.Get(gd.InternalStringName(pose))}))
 }
 
 //go:nosplit
 func (self class) GetPoseName() String.Name { //gd:XRNode3D.get_pose_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRNode3D.Bind_get_pose_name), gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_pose_name, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShowWhenTracked(show bool) { //gd:XRNode3D.set_show_when_tracked
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRNode3D.Bind_set_show_when_tracked), 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ show bool }{show}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_when_tracked, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ show bool }{show}))
 }
 
 //go:nosplit
 func (self class) GetShowWhenTracked() bool { //gd:XRNode3D.get_show_when_tracked
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRNode3D.Bind_get_show_when_tracked), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_show_when_tracked, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -201,7 +240,7 @@ Returns [code]true[/code] if the [member tracker] has been registered and the [m
 */
 //go:nosplit
 func (self class) GetIsActive() bool { //gd:XRNode3D.get_is_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRNode3D.Bind_get_is_active), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -211,7 +250,7 @@ Returns [code]true[/code] if the [member tracker] has current tracking data for 
 */
 //go:nosplit
 func (self class) GetHasTrackingData() bool { //gd:XRNode3D.get_has_tracking_data
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRNode3D.Bind_get_has_tracking_data), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -221,7 +260,7 @@ Returns the [XRPose] containing the current state of the pose being tracked. Thi
 */
 //go:nosplit
 func (self class) GetPose() [1]gdclass.XRPose { //gd:XRNode3D.get_pose
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRNode3D.Bind_get_pose), gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_pose, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
 	var ret = [1]gdclass.XRPose{gd.PointerWithOwnershipTransferredToGo[gdclass.XRPose](r_ret)}
 	return ret
 }
@@ -236,7 +275,7 @@ Triggers a haptic pulse on a device associated with this interface.
 */
 //go:nosplit
 func (self class) TriggerHapticPulse(action_name String.Readable, frequency float64, amplitude float64, duration_sec float64, delay_sec float64) { //gd:XRNode3D.trigger_haptic_pulse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.XRNode3D.Bind_trigger_haptic_pulse), 0|(gdextension.SizeString<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.trigger_haptic_pulse, 0|(gdextension.SizeString<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), unsafe.Pointer(&struct {
 		action_name  gdextension.String
 		frequency    float64
 		amplitude    float64
@@ -272,5 +311,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRNode3D", func(ptr gd.Object) any { return [1]gdclass.XRNode3D{*(*gdclass.XRNode3D)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("XRNode3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

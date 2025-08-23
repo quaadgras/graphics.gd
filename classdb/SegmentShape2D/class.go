@@ -73,6 +73,25 @@ A 2D line segment shape, intended for use in physics. Usually used to provide a 
 */
 type Instance [1]gdclass.SegmentShape2D
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	set_a gdextension.MethodForClass `hash:"743155724"`
+	get_a gdextension.MethodForClass `hash:"3341600327"`
+	set_b gdextension.MethodForClass `hash:"743155724"`
+	get_b gdextension.MethodForClass `hash:"3341600327"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("SegmentShape2D")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -88,6 +107,20 @@ type Advanced = class
 type class [1]gdclass.SegmentShape2D
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SegmentShape2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.SegmentShape2D)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -97,7 +130,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("SegmentShape2D"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SegmentShape2D)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -122,24 +155,24 @@ func (self Instance) SetB(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetA(a Vector2.XY) { //gd:SegmentShape2D.set_a
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_set_a), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ a Vector2.XY }{a}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_a, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ a Vector2.XY }{a}))
 }
 
 //go:nosplit
 func (self class) GetA() Vector2.XY { //gd:SegmentShape2D.get_a
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_get_a), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_a, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetB(b Vector2.XY) { //gd:SegmentShape2D.set_b
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_set_b), 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ b Vector2.XY }{b}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_b, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ b Vector2.XY }{b}))
 }
 
 //go:nosplit
 func (self class) GetB() Vector2.XY { //gd:SegmentShape2D.get_b
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.SegmentShape2D.Bind_get_b), gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_b, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -180,7 +213,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("SegmentShape2D", func(ptr gd.Object) any {
-		return [1]gdclass.SegmentShape2D{*(*gdclass.SegmentShape2D)(unsafe.Pointer(&ptr))}
-	})
+	gdclass.Register("SegmentShape2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

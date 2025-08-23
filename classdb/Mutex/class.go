@@ -75,6 +75,24 @@ This is a reentrant mutex, meaning that it can be locked multiple times by one t
 */
 type Instance [1]gdclass.Mutex
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	lock     gdextension.MethodForClass `hash:"3218959716"`
+	try_lock gdextension.MethodForClass `hash:"2240911060"`
+	unlock   gdextension.MethodForClass `hash:"3218959716"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("Mutex")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
@@ -115,6 +133,20 @@ type Advanced = class
 type class [1]gdclass.Mutex
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Mutex)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.Mutex)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -124,7 +156,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Mutex"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Mutex)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -137,7 +169,7 @@ Locks this [Mutex], blocks until it is unlocked by the current owner.
 */
 //go:nosplit
 func (self class) Lock() { //gd:Mutex.lock
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mutex.Bind_lock), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.lock, 0, unsafe.Pointer(&struct{}{}))
 }
 
 /*
@@ -146,7 +178,7 @@ Tries locking this [Mutex], but does not block. Returns [code]true[/code] on suc
 */
 //go:nosplit
 func (self class) TryLock() bool { //gd:Mutex.try_lock
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mutex.Bind_try_lock), gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.try_lock, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
 	var ret = r_ret
 	return ret
 }
@@ -158,7 +190,7 @@ Unlocks this [Mutex], leaving it to other threads.
 */
 //go:nosplit
 func (self class) Unlock() { //gd:Mutex.unlock
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.Mutex.Bind_unlock), 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unlock, 0, unsafe.Pointer(&struct{}{}))
 }
 func (self class) AsMutex() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsMutex() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
@@ -185,5 +217,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Mutex", func(ptr gd.Object) any { return [1]gdclass.Mutex{*(*gdclass.Mutex)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("Mutex", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }

@@ -86,6 +86,26 @@ func write_zip_file():
 */
 type Instance [1]gdclass.ZIPPacker
 
+var otype gdextension.ObjectType
+var sname gdextension.StringName
+var methods struct {
+	open       gdextension.MethodForClass `hash:"1936816515"`
+	start_file gdextension.MethodForClass `hash:"166001499"`
+	write_file gdextension.MethodForClass `hash:"680677267"`
+	close_file gdextension.MethodForClass `hash:"166280745"`
+	close      gdextension.MethodForClass `hash:"166280745"`
+}
+
+func init() {
+	gd.Links = append(gd.Links, func() {
+		sname = gdextension.Host.Strings.Intern.UTF8("ZIPPacker")
+		otype = gdextension.Host.Objects.Type(sname)
+		gd.LinkMethods(sname, &methods, false)
+	})
+	gd.RegisterCleanup(func() {
+		pointers.Raw[gd.StringName](sname).Free()
+	})
+}
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
 type Expanded [1]gdclass.ZIPPacker
@@ -150,6 +170,20 @@ type Advanced = class
 type class [1]gdclass.ZIPPacker
 
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
+func (self *class) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ZIPPacker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
+func (self *Instance) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.ZIPPacker)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
+}
 
 //go:nosplit
 func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
@@ -159,7 +193,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("ZIPPacker"))))})}
+	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.ZIPPacker)(unsafe.Pointer(&object))}
 	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
@@ -172,7 +206,7 @@ This must be called before everything else.
 */
 //go:nosplit
 func (self class) Open(path String.Readable, append ZipAppend) Error.Code { //gd:ZIPPacker.open
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ZIPPacker.Bind_open), gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		path   gdextension.String
 		append ZipAppend
 	}{pointers.Get(gd.InternalString(path)), append}))
@@ -186,7 +220,7 @@ Must be called after [method open].
 */
 //go:nosplit
 func (self class) StartFile(path String.Readable) Error.Code { //gd:ZIPPacker.start_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ZIPPacker.Bind_start_file), gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_file, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -197,7 +231,7 @@ Needs to be called after [method start_file].
 */
 //go:nosplit
 func (self class) WriteFile(data Packed.Bytes) Error.Code { //gd:ZIPPacker.write_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ZIPPacker.Bind_write_file), gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.write_file, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -208,7 +242,7 @@ It will fail if there is no open file.
 */
 //go:nosplit
 func (self class) CloseFile() Error.Code { //gd:ZIPPacker.close_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ZIPPacker.Bind_close_file), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close_file, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -218,7 +252,7 @@ Closes the underlying resources used by this instance.
 */
 //go:nosplit
 func (self class) Close() Error.Code { //gd:ZIPPacker.close
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), gdextension.MethodForClass(gd.Global.Methods.ZIPPacker.Bind_close), gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -247,7 +281,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ZIPPacker", func(ptr gd.Object) any { return [1]gdclass.ZIPPacker{*(*gdclass.ZIPPacker)(unsafe.Pointer(&ptr))} })
+	gdclass.Register("ZIPPacker", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
 }
 
 type ZipAppend int //gd:ZIPPacker.ZipAppend
