@@ -9,6 +9,9 @@ import (
 )
 
 func Get[T any](frame gdextension.Pointer) T {
+	if frame == 0 {
+		panic("nil pointer dereference")
+	}
 	var addr = frame
 	var zero T
 	var done = 0
@@ -41,6 +44,9 @@ func Get[T any](frame gdextension.Pointer) T {
 }
 
 func Set[T any](frame gdextension.Pointer, value T) {
+	if frame == 0 {
+		panic("nil pointer dereference")
+	}
 	var addr = gdextension.Pointer(uintptr(frame))
 	var size = unsafe.Sizeof([1]T{})
 	var done = 0
@@ -71,6 +77,9 @@ func Set[T any](frame gdextension.Pointer, value T) {
 }
 
 func IntoSlice[T any](ptr gdextension.Pointer, len int) []T {
+	if ptr == 0 {
+		panic("nil pointer dereference")
+	}
 	var slice = make([]T, len)
 	for i := range slice {
 		slice[i] = Get[T](ptr + gdextension.Pointer(i)*gdextension.Pointer(unsafe.Sizeof([1]T{}[0])))
@@ -79,6 +88,9 @@ func IntoSlice[T any](ptr gdextension.Pointer, len int) []T {
 }
 
 func LoadSlice[T any](ptr gdextension.Pointer, slice []T) {
+	if ptr == 0 {
+		panic("nil pointer dereference")
+	}
 	if len(slice) == 0 {
 		return
 	}
@@ -107,6 +119,9 @@ func LoadSlice[T any](ptr gdextension.Pointer, slice []T) {
 }
 
 func IndexVariants(addr gdextension.Accepts[gdextension.Variant], len, idx int) gdextension.Variant {
+	if addr == 0 {
+		panic("nil pointer dereference")
+	}
 	ptr := Get[gdextension.Pointer](gdextension.Pointer(addr) + gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(gdextension.Pointer(0))))
 	if ptr == 0 {
 		return gdextension.Variant{}

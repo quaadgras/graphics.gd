@@ -65,6 +65,9 @@ func (s StringName) Free() {
 	if !ok {
 		return
 	}
+	if ptr == (gdextension.StringName{}) {
+		return
+	}
 	gdextension.Free(gdextension.TypeStringName, &ptr)
 }
 

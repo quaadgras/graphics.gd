@@ -26,6 +26,7 @@ var setup = sync.OnceFunc(func() {
 
 // CopyArguments copies arguments from args to the arguments buffer, respecting Go's alignment rules.
 func CopyArguments[T any](shape gdextension.Shape, args gdextension.CallAccepts[T]) gdextension.Pointer {
+	setup()
 	if args == nil {
 		return 0
 	}
@@ -34,6 +35,7 @@ func CopyArguments[T any](shape gdextension.Shape, args gdextension.CallAccepts[
 
 // CopyReceiver copies the receiver into the receiver buffer, respecting Go's alignment rules.
 func CopyReceiver[T any](shape gdextension.Shape, self gdextension.CallMutates[T]) gdextension.Pointer {
+	setup()
 	if self == nil {
 		return 0
 	}
@@ -41,7 +43,9 @@ func CopyReceiver[T any](shape gdextension.Shape, self gdextension.CallMutates[T
 }
 
 func copyIntoEngine(shape gdextension.Shape, args unsafe.Pointer, into gdextension.Pointer) gdextension.Pointer {
-	setup()
+	if into == 0 {
+		panic("nil pointer dereference")
+	}
 	buf := unsafe.Slice((*byte)(args), shape.SizeArguments())
 	ptr := into
 	off := gdextension.Pointer(0)
@@ -82,6 +86,9 @@ func MakeResult(shape gdextension.Shape) gdextension.Pointer {
 
 func LoadResult[T ~unsafe.Pointer](shape gdextension.Shape, result T, from gdextension.Pointer) {
 	setup()
+	if from == 0 {
+		panic("nil pointer dereference")
+	}
 	data := unsafe.Pointer(result)
 	done := 0
 	size := shape.SizeResult()
@@ -154,6 +161,9 @@ func CopyBufferToEngine(buf []byte) gdextension.Pointer {
 }
 
 func CopyBufferToGo(ptr gdextension.Pointer, buf []byte) {
+	if ptr == 0 {
+		panic("nil pointer dereference")
+	}
 	off := 0
 	for len(buf) > 0 {
 		switch {
