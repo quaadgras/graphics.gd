@@ -38,7 +38,7 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %s to %s", value.Type(), rtype))
 			}
 			var result = reflect.New(rtype)
-			result.Interface().(IsClassCastable).SetObject([1]Object{LetVariantAsObject(value)})
+			result.Interface().(IsClassCastable).SetObject([1]Object{VariantAsNewObject(value)})
 			return result.Elem(), nil
 		}
 		fallthrough
@@ -134,7 +134,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 	case reflect.Array:
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			var obj = reflect.New(rtype)
-			*(*Object)(obj.UnsafePointer()) = LetVariantAsPointerType[Object](variant, TypeObject)
+			*(*Object)(obj.UnsafePointer()) = VariantAsNewObject(variant)
 			return obj.Elem(), nil
 		}
 		val, err := convertToGoArrayOf(rtype.Elem(), value)

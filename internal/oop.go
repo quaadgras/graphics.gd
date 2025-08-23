@@ -37,13 +37,19 @@ func PointerWithOwnershipTransferredToGo[T pointers.Generic[T, [3]uint64]](ptr g
 		// them first. Probably has something to do with complex
 		// cross-language call stacks, ie.
 		//
-		// 	C -> JS -> Go -> JS -> C -> JS -> Go
+		// 	C -> JS -> Go -> JS -> C -> JS -> GsPointerWithOwnershipTransferredToGoo
 		//
 		// Maybe emscripten needs a chance to properly allocate the
 		// object or something? or there could be a serious memory
 		// corruption bug somewhere.
 		pointers.Raw[Object]([3]uint64{uint64(ptr), 0}).IsBlockingSignals()
 	}
+
+	ref := gdextension.Host.Objects.Cast(ptr, Global.refCountedClassTag)
+	if ref != 0 {
+		RefCounted(pointers.Raw[Object]([3]uint64{uint64(ptr)})).Reference()
+	}
+
 	return pointers.New[T]([3]uint64{uint64(ptr)})
 }
 
@@ -111,6 +117,14 @@ func (self RefCounted) Free() {
 		return
 	}
 }
+func (self *RefCounted) SetObject(obj [1]Object) bool {
+	ref := gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), Global.refCountedClassTag)
+	if ref != 0 {
+		*self = RefCounted(obj[0])
+		return true
+	}
+	return false
+}
 
 func (self Object) IsAlive(raw [3]uint64) bool {
 	return raw[1] == 0 || gdextension.Host.Objects.Lookup(gdextension.ObjectID(raw[1])) != 0
@@ -121,13 +135,13 @@ func (self Object) Free() {
 	if !ok {
 		return
 	}
-	//fmt.Println("FREE ", pointers.Trio[Object](self), this[0].GetClass().String())
+	//fmt.Fprintln(os.Stderr, "FREE ", pointers.Trio[Object](self), pointers.Raw[Object](raw).GetClass().String())
 	//	fmt.Println(runtime.Caller(2))
 	// Important that we don't destroy RefCounted objects, instead
 	// they should be unreferenced instead.
 	ref := gdextension.Host.Objects.Cast(gdextension.Object(raw[0]), Global.refCountedClassTag)
 	if ref != 0 {
-		if (*(*RefCounted)(unsafe.Pointer(&ref))).Unreference() {
+		if RefCounted(pointers.Raw[Object](raw)).Unreference() {
 			gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
 		}
 	} else {

@@ -565,6 +565,10 @@ func LetVariantAsObject(variant Variant) Object {
 	return pointers.Let[Object]([3]uint64{uint64(gdextension.LoadNative[gdextension.Object](TypeObject, gdextension.Variant(pointers.Get(variant))))})
 }
 
+func VariantAsNewObject(variant Variant) Object {
+	return pointers.New[Object]([3]uint64{uint64(gdextension.LoadNative[gdextension.Object](TypeObject, gdextension.Variant(pointers.Get(variant))))})
+}
+
 func LetVariantAsPointerType[T pointers.Generic[T, Size], Size pointers.Size](variant Variant, vtype VariantType) T {
 	return pointers.Let[T](gdextension.LoadNative[Size](vtype, gdextension.Variant(pointers.Get(variant))))
 }
