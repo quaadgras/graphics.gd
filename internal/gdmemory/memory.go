@@ -126,6 +126,7 @@ func CopyVariants[T any](args gdextension.CallAccepts[T], n int) gdextension.Poi
 	for i := range n {
 		gdextension.Host.Memory.Edit.Bits128(arguments+gdextension.Pointer(offset), *(*[2]uint64)(unsafe.Add(data, uintptr(i*24))))
 		gdextension.Host.Memory.Edit.Uint64(arguments+gdextension.Pointer(offset+16), *(*uint64)(unsafe.Add(data, uintptr(i*24+16))))
+		offset += 24
 	}
 	return arguments
 }

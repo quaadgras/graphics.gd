@@ -731,8 +731,9 @@ uint32_t gd_property_info_usage(uintptr_t list_p) {
 
 GDExtensionBool cgo_class_set_func(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field, GDExtensionConstVariantPtr value) {
     uint64_t *v = (uint64_t *)value;
-    return go_on_extension_instance_set((uintptr_t)instance, *(uintptr_t*)field, v[0], v[1], v[2]);
+    return go_on_extension_instance_set((uintptr_t)instance, *(uintptr_t*)field, UINT64_MAKE(v[0]), UINT64_MAKE(v[1]), UINT64_MAKE(v[2]));
 }
+
 GDExtensionBool cgo_class_get_func(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field, GDExtensionVariantPtr value) {
     return go_on_extension_instance_get((uintptr_t)instance, *(uintptr_t*)field, value);
 }

@@ -8,23 +8,23 @@ import (
 	"graphics.gd/internal/gdextension"
 )
 
-func Get[T any](frame gdextension.Pointer) T {
+func Get[T gdextension.AnyVariant](frame gdextension.Pointer) T {
 	ptr := *(*unsafe.Pointer)(unsafe.Pointer(&frame))
 	return *(*T)(ptr)
 }
 
-func Set[T any](frame gdextension.Pointer, value T) {
+func Set[T gdextension.AnyVariant](frame gdextension.Pointer, value T) {
 	ptr := *(*unsafe.Pointer)(unsafe.Pointer(&frame))
 	*(*T)(ptr) = value
 }
 
-func IntoSlice[T any](ptr gdextension.Pointer, len int) []T {
+func IntoSlice[T gdextension.Packable](ptr gdextension.Pointer, len int) []T {
 	var slice = make([]T, len)
 	copy(slice, unsafe.Slice(*(**T)(unsafe.Pointer(&ptr)), len))
 	return slice
 }
 
-func LoadSlice[T any](ptr gdextension.Pointer, slice []T) {
+func LoadSlice[T gdextension.Packable](ptr gdextension.Pointer, slice []T) {
 	if len(slice) == 0 {
 		return
 	}

@@ -581,7 +581,7 @@ func SizeOf[T AnyVariant]() Shape {
 	case unsafe.Sizeof([1]bytes8{})<<8 + unsafe.Alignof([1]bytes8{}):
 		return ShapeBytes8
 	case unsafe.Sizeof([2]bytes4{})<<8 + unsafe.Alignof([2]bytes4{}):
-		return ShapeBytes4
+		return ShapeBytes4x2
 	case unsafe.Sizeof([3]bytes4{})<<8 + unsafe.Alignof([3]bytes4{}):
 		return ShapeBytes4x3
 	case unsafe.Sizeof([2]bytes8{})<<8 + unsafe.Alignof([2]bytes8{}):
@@ -670,13 +670,13 @@ const (
 )
 
 type AnyVariant interface {
-	Variant | ~bool | ~int64 | ~float64 | String | ~Vector2i.XY | Vector2.XY | ~Rect2.PositionSize |
+	Variant | ~byte | ~bool | ~int64 | ~float64 | ~float32 | ~int32 | String | ~Vector2i.XY | Vector2.XY | ~Rect2.PositionSize |
 		Rect2i.PositionSize | ~Vector3.XYZ | ~Vector3i.XYZ |
 		~Transform2D.OriginXY | ~Vector4.XYZW | ~Vector4i.XYZW | ~Plane.NormalD | ~Quaternion.IJKX | ~AABB.PositionSize |
 		~Basis.XYZ | ~Transform3D.BasisOrigin | ~Projection.XYZW | ~Color.RGBA | StringName | NodePath | ~uint64 |
 		Object | Callable | Signal | Dictionary | Array | PackedArray[byte] | PackedArray[int32] | PackedArray[int64] |
 		PackedArray[float32] | PackedArray[float64] | PackedArray[String] | PackedArray[Vector2.XY] |
-		PackedArray[Vector3.XYZ] | PackedArray[Color.RGBA] | PackedArray[Vector4.XYZW]
+		PackedArray[Vector3.XYZ] | PackedArray[Color.RGBA] | PackedArray[Vector4.XYZW] | CallError
 }
 
 type AnyPointer interface {
@@ -713,94 +713,94 @@ const (
 )
 
 func init() {
-	if SizeVariant.SizeResult() != int(unsafe.Sizeof(Variant{})) {
+	if SizeVariant.SizeResult() != int(unsafe.Sizeof(Variant{})) || SizeVariant.Alignment() != int(unsafe.Alignof(Variant{})) {
 		panic("Size of Variant does not match expected size")
 	}
-	if SizeBool.SizeResult() != int(unsafe.Sizeof(bool(false))) {
+	if SizeBool.SizeResult() != int(unsafe.Sizeof(bool(false))) || SizeBool.Alignment() != int(unsafe.Alignof(bool(false))) {
 		panic("Size of Bool does not match expected size")
 	}
-	if SizeInt.SizeResult() != int(unsafe.Sizeof(int64(0))) {
+	if SizeInt.SizeResult() != int(unsafe.Sizeof(int64(0))) || SizeInt.Alignment() != int(unsafe.Alignof(int64(0))) {
 		panic("Size of Int does not match expected size")
 	}
-	if SizeFloat.SizeResult() != int(unsafe.Sizeof(float64(0))) {
+	if SizeFloat.SizeResult() != int(unsafe.Sizeof(float64(0))) || SizeFloat.Alignment() != int(unsafe.Alignof(float64(0))) {
 		panic("Size of Float does not match expected size")
 	}
-	if SizeString.SizeResult() != int(unsafe.Sizeof(String{})) {
+	if SizeString.SizeResult() != int(unsafe.Sizeof(String{})) || SizeString.Alignment() != int(unsafe.Alignof(String{})) {
 		panic("Size of String does not match expected size")
 	}
-	if SizeVector2.SizeResult() != int(unsafe.Sizeof(Vector2.XY{})) {
+	if SizeVector2.SizeResult() != int(unsafe.Sizeof(Vector2.XY{})) || SizeVector2.Alignment() != int(unsafe.Alignof(Vector2.XY{})) {
 		panic("Size of Vector2 does not match expected size")
 	}
-	if SizeVector3.SizeResult() != int(unsafe.Sizeof(Vector3.XYZ{})) {
+	if SizeVector3.SizeResult() != int(unsafe.Sizeof(Vector3.XYZ{})) || SizeVector3.Alignment() != int(unsafe.Alignof(Vector3.XYZ{})) {
 		panic("Size of Vector3 does not match expected size")
 	}
-	if SizeVector4.SizeResult() != int(unsafe.Sizeof(Vector4.XYZW{})) {
+	if SizeVector4.SizeResult() != int(unsafe.Sizeof(Vector4.XYZW{})) || SizeVector4.Alignment() != int(unsafe.Alignof(Vector4.XYZW{})) {
 		panic("Size of Vector4 does not match expected size")
 	}
-	if SizeColor.SizeResult() != int(unsafe.Sizeof(Color.RGBA{})) {
+	if SizeColor.SizeResult() != int(unsafe.Sizeof(Color.RGBA{})) || SizeColor.Alignment() != int(unsafe.Alignof(Color.RGBA{})) {
 		panic("Size of Color does not match expected size")
 	}
-	if SizeRect2.SizeResult() != int(unsafe.Sizeof(Rect2.PositionSize{})) {
+	if SizeRect2.SizeResult() != int(unsafe.Sizeof(Rect2.PositionSize{})) || SizeRect2.Alignment() != int(unsafe.Alignof(Rect2.PositionSize{})) {
 		panic("Size of Rect2 does not match expected size")
 	}
-	if SizeRect2i.SizeResult() != int(unsafe.Sizeof(Rect2i.PositionSize{})) {
+	if SizeRect2i.SizeResult() != int(unsafe.Sizeof(Rect2i.PositionSize{})) || SizeRect2i.Alignment() != int(unsafe.Alignof(Rect2i.PositionSize{})) {
 		panic("Size of Rect2i does not match expected size")
 	}
-	if SizeVector2i.SizeResult() != int(unsafe.Sizeof(Vector2i.XY{})) {
+	if SizeVector2i.SizeResult() != int(unsafe.Sizeof(Vector2i.XY{})) || SizeVector2i.Alignment() != int(unsafe.Alignof(Vector2i.XY{})) {
 		panic("Size of Vector2i does not match expected size")
 	}
-	if SizeVector3i.SizeResult() != int(unsafe.Sizeof(Vector3i.XYZ{})) {
+	if SizeVector3i.SizeResult() != int(unsafe.Sizeof(Vector3i.XYZ{})) || SizeVector3i.Alignment() != int(unsafe.Alignof(Vector3i.XYZ{})) {
 		panic("Size of Vector3i does not match expected size")
 	}
-	if SizeVector4i.SizeResult() != int(unsafe.Sizeof(Vector4i.XYZW{})) {
+	if SizeVector4i.SizeResult() != int(unsafe.Sizeof(Vector4i.XYZW{})) || SizeVector4i.Alignment() != int(unsafe.Alignof(Vector4i.XYZW{})) {
 		panic("Size of Vector4i does not match expected size")
 	}
-	if SizeTransform2D.SizeResult() != int(unsafe.Sizeof(Transform2D.OriginXY{})) {
+	if SizeTransform2D.SizeResult() != int(unsafe.Sizeof(Transform2D.OriginXY{})) || SizeTransform2D.Alignment() != int(unsafe.Alignof(Transform2D.OriginXY{})) {
 		panic("Size of Transform2D does not match expected size")
 	}
-	if SizeTransform3D.SizeResult() != int(unsafe.Sizeof(Transform3D.BasisOrigin{})) {
+	if SizeTransform3D.SizeResult() != int(unsafe.Sizeof(Transform3D.BasisOrigin{})) || SizeTransform3D.Alignment() != int(unsafe.Alignof(Transform3D.BasisOrigin{})) {
 		panic("Size of Transform3D does not match expected size")
 	}
-	if SizePlane.SizeResult() != int(unsafe.Sizeof(Plane.NormalD{})) {
+	if SizePlane.SizeResult() != int(unsafe.Sizeof(Plane.NormalD{})) || SizePlane.Alignment() != int(unsafe.Alignof(Plane.NormalD{})) {
 		panic("Size of Plane does not match expected size")
 	}
-	if SizeQuaternion.SizeResult() != int(unsafe.Sizeof(Quaternion.IJKX{})) {
+	if SizeQuaternion.SizeResult() != int(unsafe.Sizeof(Quaternion.IJKX{})) || SizeQuaternion.Alignment() != int(unsafe.Alignof(Quaternion.IJKX{})) {
 		panic("Size of Quaternion does not match expected size")
 	}
-	if SizeAABB.SizeResult() != int(unsafe.Sizeof(AABB.PositionSize{})) {
+	if SizeAABB.SizeResult() != int(unsafe.Sizeof(AABB.PositionSize{})) || SizeAABB.Alignment() != int(unsafe.Alignof(AABB.PositionSize{})) {
 		panic("Size of AABB does not match expected size")
 	}
-	if SizeBasis.SizeResult() != int(unsafe.Sizeof(Basis.XYZ{})) {
+	if SizeBasis.SizeResult() != int(unsafe.Sizeof(Basis.XYZ{})) || SizeBasis.Alignment() != int(unsafe.Alignof(Basis.XYZ{})) {
 		panic("Size of Basis does not match expected size")
 	}
-	if SizeProjection.SizeResult() != int(unsafe.Sizeof(Projection.XYZW{})) {
+	if SizeProjection.SizeResult() != int(unsafe.Sizeof(Projection.XYZW{})) || SizeProjection.Alignment() != int(unsafe.Alignof(Projection.XYZW{})) {
 		panic("Size of Projection does not match expected size")
 	}
-	if SizeStringName.SizeResult() != int(unsafe.Sizeof(StringName{})) {
+	if SizeStringName.SizeResult() != int(unsafe.Sizeof(StringName{})) || SizeStringName.Alignment() != int(unsafe.Alignof(StringName{})) {
 		panic("Size of StringName does not match expected size")
 	}
-	if SizeNodePath.SizeResult() != int(unsafe.Sizeof([1]Pointer{})) {
+	if SizeNodePath.SizeResult() != int(unsafe.Sizeof([1]Pointer{})) || SizeNodePath.Alignment() != int(unsafe.Alignof([1]Pointer{})) {
 		panic("Size of NodePath does not match expected size")
 	}
-	if SizeRID.SizeResult() != int(unsafe.Sizeof([1]uint64{})) {
+	if SizeRID.SizeResult() != int(unsafe.Sizeof([1]uint64{})) || SizeRID.Alignment() != int(unsafe.Alignof([1]uint64{})) {
 		panic("Size of RID does not match expected size")
 	}
-	if SizeObject.SizeResult() != int(unsafe.Sizeof(Object(0))) {
+	if SizeObject.SizeResult() != int(unsafe.Sizeof(Object(0))) || SizeObject.Alignment() != int(unsafe.Alignof(Object(0))) {
 		panic("Size of Object does not match expected size")
 	}
-	if SizeCallable.SizeResult() != int(unsafe.Sizeof(Callable{})) {
+	if SizeCallable.SizeResult() != int(unsafe.Sizeof(Callable{})) || SizeCallable.Alignment() != int(unsafe.Alignof(Callable{})) {
 		panic("Size of Callable does not match expected size")
 	}
-	if SizeSignal.SizeResult() != int(unsafe.Sizeof([2]uint64{})) {
+	if SizeSignal.SizeResult() != int(unsafe.Sizeof([2]uint64{})) || SizeSignal.Alignment() != int(unsafe.Alignof([2]uint64{})) {
 		panic("Size of Signal does not match expected size")
 	}
-	if SizeDictionary.SizeResult() != int(unsafe.Sizeof(Dictionary{})) {
+	if SizeDictionary.SizeResult() != int(unsafe.Sizeof(Dictionary{})) || SizeDictionary.Alignment() != int(unsafe.Alignof(Dictionary{})) {
 		panic("Size of Dictionary does not match expected size")
 	}
-	if SizeArray.SizeResult() != int(unsafe.Sizeof(Array{})) {
+	if SizeArray.SizeResult() != int(unsafe.Sizeof(Array{})) || SizeArray.Alignment() != int(unsafe.Alignof(Array{})) {
 		panic("Size of Array does not match expected size")
 	}
-	if SizePackedArray.SizeResult() != int(unsafe.Sizeof(PackedArray[byte]{})) {
+	if SizePackedArray.SizeResult() != int(unsafe.Sizeof(PackedArray[byte]{})) || SizePackedArray.Alignment() != int(unsafe.Alignof(PackedArray[byte]{})) {
 		panic("Size of PackedArray does not match expected size")
 	}
 }

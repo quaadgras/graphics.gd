@@ -20,7 +20,7 @@ const (
 	SizeString      Shape = ShapeBytes4
 	SizeObject      Shape = ShapeBytes4
 	SizeArray       Shape = ShapeBytes4
-	SizePackedArray Shape = ShapeBytes4x2
+	SizePackedArray Shape = ShapeBytes8
 	SizeDictionary  Shape = ShapeBytes4
 	SizeStringName  Shape = ShapeBytes4
 	SizeNodePath    Shape = ShapeBytes4

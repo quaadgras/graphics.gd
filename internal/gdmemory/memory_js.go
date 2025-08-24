@@ -8,7 +8,7 @@ import (
 	"graphics.gd/internal/gdextension"
 )
 
-func Get[T any](frame gdextension.Pointer) T {
+func Get[T gdextension.AnyVariant | gdextension.CallError](frame gdextension.Pointer) T {
 	if frame == 0 {
 		panic("nil pointer dereference")
 	}
@@ -43,7 +43,7 @@ func Get[T any](frame gdextension.Pointer) T {
 	return zero
 }
 
-func Set[T any](frame gdextension.Pointer, value T) {
+func Set[T gdextension.AnyVariant | gdextension.CallError](frame gdextension.Pointer, value T) {
 	if frame == 0 {
 		panic("nil pointer dereference")
 	}
@@ -76,7 +76,7 @@ func Set[T any](frame gdextension.Pointer, value T) {
 	}
 }
 
-func IntoSlice[T any](ptr gdextension.Pointer, len int) []T {
+func IntoSlice[T gdextension.Packable](ptr gdextension.Pointer, len int) []T {
 	if ptr == 0 {
 		panic("nil pointer dereference")
 	}
@@ -87,7 +87,7 @@ func IntoSlice[T any](ptr gdextension.Pointer, len int) []T {
 	return slice
 }
 
-func LoadSlice[T any](ptr gdextension.Pointer, slice []T) {
+func LoadSlice[T gdextension.Packable](ptr gdextension.Pointer, slice []T) {
 	if ptr == 0 {
 		panic("nil pointer dereference")
 	}
@@ -122,9 +122,9 @@ func IndexVariants(addr gdextension.Accepts[gdextension.Variant], len, idx int) 
 	if addr == 0 {
 		panic("nil pointer dereference")
 	}
-	ptr := Get[gdextension.Pointer](gdextension.Pointer(addr) + gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(gdextension.Pointer(0))))
+	ptr := Get[gdextension.Object](gdextension.Pointer(addr) + gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(gdextension.Pointer(0))))
 	if ptr == 0 {
 		return gdextension.Variant{}
 	}
-	return Get[gdextension.Variant](ptr)
+	return Get[gdextension.Variant](gdextension.Pointer(ptr))
 }

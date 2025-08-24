@@ -4,7 +4,6 @@ package gd
 
 import (
 	"reflect"
-	"structs"
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
@@ -47,34 +46,9 @@ const (
 	ErrMethodNotConst
 )
 
-type CallError struct {
-	_ structs.HostLayout
-
-	ErrorType CallErrorType
-	Argument  int32
-	Expected  int32
-}
+type CallError = gdextension.CallError
 
 type InstanceBindingType unsafe.Pointer
-
-func (err CallError) Error() string {
-	switch err.ErrorType {
-	case ErrInvalidMethod:
-		return "invalid method"
-	case ErrInvalidArgument:
-		return "invalid argument"
-	case ErrTooManyArguments:
-		return "too many arguments"
-	case ErrTooFewArguments:
-		return "too few arguments"
-	case ErrInstanceIsNil:
-		return "instance is nil"
-	case ErrMethodNotConst:
-		return "method not const"
-	default:
-		return "unknown error"
-	}
-}
 
 type Version struct {
 	Major uint32
