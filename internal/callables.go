@@ -51,7 +51,7 @@ func init() {
 				return
 			}
 		}
-		if len(vargs) < rtype.NumIn() {
+		if len(vargs) < rtype.NumIn() && (!rtype.IsVariadic() && len(vargs) == rtype.NumIn()-1) {
 			gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{
 				Type:     gdextension.CallTooFewArguments,
 				Expected: int32(rtype.NumIn()),
