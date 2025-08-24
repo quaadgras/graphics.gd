@@ -473,6 +473,24 @@ const (
 // Shape is used to correctly transfer data for unsafe calls into the engine.
 type Shape uint64
 
+const (
+	ShapeEmpty Shape = iota
+
+	ShapeBytes1
+	ShapeBytes2
+	ShapeBytes4
+	ShapeBytes8
+	ShapeBytes4x2
+	ShapeBytes4x3
+	ShapeBytes8x2
+	ShapeBytes4x4
+	ShapeBytes8x3
+	ShapeBytes4x6
+	ShapeBytes4x9
+	ShapeBytes4x12
+	ShapeBytes4x16
+)
+
 func ShapeVariants(count int) Shape {
 	if count == 0 {
 		return 0
@@ -494,73 +512,92 @@ func alignUp(value, align uint32) uint32 {
 
 func (shape Shape) SizeResult() (size int) {
 	switch shape & 0xF {
-	case SizeBytes0:
+	case ShapeEmpty:
 		return 0
-	case SizeBytes1:
+	case ShapeBytes1:
 		return 1
-	case SizeBytes2:
+	case ShapeBytes2:
 		return 2
-	case SizeBytes4:
+	case ShapeBytes4:
 		return 4
-	case SizeBytes8:
+	case ShapeBytes8:
 		return 8
-	case SizeBytes12:
-		return 12
-	case SizeBytes16:
-		return 16
-	case SizeBytes24:
-		return 24
-	case SizeBytes32:
-		return 32
-	case SizeBytes36:
-		return 36
-	case SizeBytes40:
-		return 40
-	case SizeBytes48:
-		return 48
-	case SizeBytes64:
-		return 64
-	case SizeBytes72:
-		return 72
-	case SizeBytes96:
-		return 96
+	case ShapeBytes4x2:
+		return 4 * 2
+	case ShapeBytes4x3:
+		return 4 * 3
+	case ShapeBytes8x2:
+		return 8 * 2
+	case ShapeBytes4x4:
+		return 4 * 4
+	case ShapeBytes8x3:
+		return 8 * 3
+	case ShapeBytes4x6:
+		return 4 * 6
+	case ShapeBytes4x9:
+		return 4 * 9
+	case ShapeBytes4x12:
+		return 4 * 12
+	case ShapeBytes4x16:
+		return 4 * 16
 	default:
-		return 128
+		panic("Shape.SizeResult: invalid shape")
 	}
 }
 
-func SizeOf[T any]() Shape {
-	switch unsafe.Sizeof([1]T{}[0]) {
-	case 1:
-		return SizeBytes1
-	case 2:
-		return SizeBytes2
-	case 4:
-		return SizeBytes4
-	case 8:
-		return SizeBytes8
-	case 12:
-		return SizeBytes12
-	case 16:
-		return SizeBytes16
-	case 24:
-		return SizeBytes24
-	case 32:
-		return SizeBytes32
-	case 36:
-		return SizeBytes36
-	case 40:
-		return SizeBytes40
-	case 48:
-		return SizeBytes48
-	case 64:
-		return SizeBytes64
-	case 72:
-		return SizeBytes72
-	case 96:
-		return SizeBytes96
-	case 128:
-		return SizeBytes128
+func (shape Shape) Alignment() int {
+	switch shape {
+	case ShapeEmpty:
+		return 0
+	case ShapeBytes1:
+		return 1
+	case ShapeBytes2:
+		return 2
+	case ShapeBytes4, ShapeBytes4x2, ShapeBytes4x3, ShapeBytes4x4, ShapeBytes4x6, ShapeBytes4x9, ShapeBytes4x12, ShapeBytes4x16:
+		return 4
+	case ShapeBytes8, ShapeBytes8x2, ShapeBytes8x3:
+		return 8
+	default:
+		panic("Shape.Alignment: invalid shape")
+	}
+}
+
+func SizeOf[T AnyVariant]() Shape {
+	type (
+		bytes1 = uint8
+		bytes2 = uint16
+		bytes4 = uint32
+		bytes8 = uint64
+	)
+	switch unsafe.Sizeof([1]T{}[0])<<8 + unsafe.Alignof([1]T{}[0]) {
+	case 0:
+		return ShapeEmpty
+	case unsafe.Sizeof([1]bytes1{})<<8 + unsafe.Alignof([1]bytes1{}):
+		return ShapeBytes1
+	case unsafe.Sizeof([1]bytes2{})<<8 + unsafe.Alignof([1]bytes2{}):
+		return ShapeBytes2
+	case unsafe.Sizeof([1]bytes4{})<<8 + unsafe.Alignof([1]bytes4{}):
+		return ShapeBytes4
+	case unsafe.Sizeof([1]bytes8{})<<8 + unsafe.Alignof([1]bytes8{}):
+		return ShapeBytes8
+	case unsafe.Sizeof([2]bytes4{})<<8 + unsafe.Alignof([2]bytes4{}):
+		return ShapeBytes4
+	case unsafe.Sizeof([3]bytes4{})<<8 + unsafe.Alignof([3]bytes4{}):
+		return ShapeBytes4x3
+	case unsafe.Sizeof([2]bytes8{})<<8 + unsafe.Alignof([2]bytes8{}):
+		return ShapeBytes8x2
+	case unsafe.Sizeof([4]bytes4{})<<8 + unsafe.Alignof([4]bytes4{}):
+		return ShapeBytes4x4
+	case unsafe.Sizeof([3]bytes8{})<<8 + unsafe.Alignof([3]bytes8{}):
+		return ShapeBytes8x3
+	case unsafe.Sizeof([6]bytes4{})<<8 + unsafe.Alignof([6]bytes4{}):
+		return ShapeBytes4x6
+	case unsafe.Sizeof([9]bytes4{})<<8 + unsafe.Alignof([9]bytes4{}):
+		return ShapeBytes4x9
+	case unsafe.Sizeof([12]bytes4{})<<8 + unsafe.Alignof([12]bytes4{}):
+		return ShapeBytes4x12
+	case unsafe.Sizeof([16]bytes4{})<<8 + unsafe.Alignof([16]bytes4{}):
+		return ShapeBytes4x16
 	default:
 		panic("SizeOf: unsupported type " + reflect.TypeFor[T]().String())
 	}
@@ -568,82 +605,17 @@ func SizeOf[T any]() Shape {
 
 func (shape Shape) SizeArguments() (size int) {
 	for i := 1; i < 16; i++ {
-		var alignment uint32 = 0
-		switch (shape >> (i * 4)) & 0xF {
-		case SizeBytes0:
+		var current = (shape >> (i * 4)) & 0xF
+		switch current {
+		case ShapeEmpty:
 			return size
-		case SizeBytes1:
-			alignment = 1
-			size += 1
-		case SizeBytes2:
-			alignment = 2
-			size += 2
-		case SizeBytes4:
-			alignment = 4
-			size += 4
-		case SizeBytes8:
-			alignment = 8
-			size += 8
-		case SizeBytes12:
-			alignment = 12
-			size += 12
-		case SizeBytes16:
-			alignment = 16
-			size += 16
-		case SizeBytes24:
-			alignment = 24
-			size += 24
-		case SizeBytes32:
-			alignment = 32
-			size += 32
-		case SizeBytes36:
-			alignment = 36
-			size += 36
-		case SizeBytes40:
-			alignment = 40
-			size += 40
-		case SizeBytes48:
-			alignment = 48
-			size += 48
-		case SizeBytes64:
-			alignment = 64
-			size += 64
-		case SizeBytes72:
-			alignment = 72
-			size += 72
-		case SizeBytes96:
-			alignment = 96
-			size += 96
-		case SizeBytes128:
-			alignment = 128
-			size += 128
+		default:
+			size += current.SizeResult()
+			size = int(alignUp(uint32(size), uint32(current.Alignment())))
 		}
-		if alignment > 8 {
-			alignment = 8
-		}
-		size = int(alignUp(uint32(size), alignment))
 	}
 	return
 }
-
-const (
-	SizeBytes0 Shape = iota
-	SizeBytes1
-	SizeBytes2
-	SizeBytes4
-	SizeBytes8
-	SizeBytes12
-	SizeBytes16
-	SizeBytes24
-	SizeBytes32
-	SizeBytes36
-	SizeBytes40
-	SizeBytes48
-	SizeBytes64
-	SizeBytes72
-	SizeBytes96
-	SizeBytes128
-)
 
 type VariantType uint32
 
@@ -697,30 +669,47 @@ const (
 	TypeMax                VariantType = 39
 )
 
+type AnyVariant interface {
+	Variant | ~bool | ~int64 | ~float64 | String | ~Vector2i.XY | Vector2.XY | ~Rect2.PositionSize |
+		Rect2i.PositionSize | ~Vector3.XYZ | ~Vector3i.XYZ |
+		~Transform2D.OriginXY | ~Vector4.XYZW | ~Vector4i.XYZW | ~Plane.NormalD | ~Quaternion.IJKX | ~AABB.PositionSize |
+		~Basis.XYZ | ~Transform3D.BasisOrigin | ~Projection.XYZW | ~Color.RGBA | StringName | NodePath | ~uint64 |
+		Object | Callable | Signal | Dictionary | Array | PackedArray[byte] | PackedArray[int32] | PackedArray[int64] |
+		PackedArray[float32] | PackedArray[float64] | PackedArray[String] | PackedArray[Vector2.XY] |
+		PackedArray[Vector3.XYZ] | PackedArray[Color.RGBA] | PackedArray[Vector4.XYZW]
+}
+
+type AnyPointer interface {
+	Variant | String | Callable | Signal | Dictionary | Array | PackedArray[byte] |
+		StringName | NodePath | PackedArray[int32] | PackedArray[int64] |
+		PackedArray[float32] | PackedArray[float64] | PackedArray[String] | PackedArray[Vector2.XY] |
+		PackedArray[Vector3.XYZ] | PackedArray[Color.RGBA] | PackedArray[Vector4.XYZW]
+}
+
 const (
-	SizeVariant     Shape = SizeBytes24
-	SizeBool        Shape = SizeBytes1
-	SizeInt         Shape = SizeBytes8
-	SizeFloat       Shape = SizeBytes8
-	SizeVector2     Shape = SizeBytes8
-	SizeVector3     Shape = SizeBytes12
-	SizeVector4     Shape = SizeBytes16
-	SizeColor       Shape = SizeBytes16
-	SizeRect2       Shape = SizeBytes16
-	SizeRect2i      Shape = SizeBytes16
-	SizeVector2i    Shape = SizeBytes8
-	SizeVector3i    Shape = SizeBytes12
-	SizeVector4i    Shape = SizeBytes16
-	SizeTransform2D Shape = SizeBytes24
-	SizeTransform3D Shape = SizeBytes48
-	SizePlane       Shape = SizeBytes16
-	SizeQuaternion  Shape = SizeBytes16
-	SizeAABB        Shape = SizeBytes24
-	SizeBasis       Shape = SizeBytes36
-	SizeProjection  Shape = SizeBytes64
-	SizeRID         Shape = SizeBytes8
-	SizeCallable    Shape = SizeBytes16
-	SizeSignal      Shape = SizeBytes16
+	SizeVariant     Shape = ShapeBytes8x3
+	SizeBool        Shape = ShapeBytes1
+	SizeInt         Shape = ShapeBytes8
+	SizeFloat       Shape = ShapeBytes8
+	SizeVector2     Shape = ShapeBytes4x2
+	SizeVector3     Shape = ShapeBytes4x3
+	SizeVector4     Shape = ShapeBytes4x4
+	SizeColor       Shape = ShapeBytes4x4
+	SizeRect2       Shape = ShapeBytes4x4
+	SizeRect2i      Shape = ShapeBytes4x4
+	SizeVector2i    Shape = ShapeBytes4x2
+	SizeVector3i    Shape = ShapeBytes4x3
+	SizeVector4i    Shape = ShapeBytes4x4
+	SizeTransform2D Shape = ShapeBytes4x6
+	SizeTransform3D Shape = ShapeBytes4x12
+	SizePlane       Shape = ShapeBytes4x4
+	SizeQuaternion  Shape = ShapeBytes4x4
+	SizeAABB        Shape = ShapeBytes4x6
+	SizeBasis       Shape = ShapeBytes4x9
+	SizeProjection  Shape = ShapeBytes4x16
+	SizeRID         Shape = ShapeBytes8
+	SizeCallable    Shape = ShapeBytes8x2
+	SizeSignal      Shape = ShapeBytes8x2
 )
 
 func init() {

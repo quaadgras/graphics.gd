@@ -17,14 +17,14 @@ type Accepts[T any] Pointer
 type PackedArray[T byte | int32 | int64 | float32 | float64 | Color.RGBA | Vector2.XY | Vector3.XYZ | Vector4.XYZW | String] [1]uint64
 
 const (
-	SizeString      Shape = SizeBytes4
-	SizeObject      Shape = SizeBytes4
-	SizeArray       Shape = SizeBytes4
-	SizePackedArray Shape = SizeBytes8
-	SizeDictionary  Shape = SizeBytes4
-	SizeStringName  Shape = SizeBytes4
-	SizeNodePath    Shape = SizeBytes4
-	SizePointer     Shape = SizeBytes4
+	SizeString      Shape = ShapeBytes4
+	SizeObject      Shape = ShapeBytes4
+	SizeArray       Shape = ShapeBytes4
+	SizePackedArray Shape = ShapeBytes4x2
+	SizeDictionary  Shape = ShapeBytes4
+	SizeStringName  Shape = ShapeBytes4
+	SizeNodePath    Shape = ShapeBytes4
+	SizePointer     Shape = ShapeBytes4
 )
 
 func (p PackedArray[T]) JS() [2]uint32 {

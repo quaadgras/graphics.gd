@@ -549,11 +549,11 @@ func (variant Variant) Interface() any {
 	}
 }
 
-func variantAsValueType[T comparable](variant Variant, vtype VariantType) T {
+func variantAsValueType[T gdextension.AnyVariant](variant Variant, vtype VariantType) T {
 	return gdextension.LoadNative[T](vtype, gdextension.Variant(pointers.Get(variant)))
 }
 
-func variantAsPointerType[T pointers.Generic[T, Size], Size pointers.Size](variant Variant, vtype VariantType) T {
+func variantAsPointerType[T pointers.Generic[T, Size], Size gdextension.AnyPointer](variant Variant, vtype VariantType) T {
 	return pointers.New[T](gdextension.LoadNative[Size](vtype, gdextension.Variant(pointers.Get(variant))))
 }
 
@@ -568,7 +568,7 @@ func VariantAsObject(variant Variant) Object {
 	}
 }
 
-func LetVariantAsPointerType[T pointers.Generic[T, Size], Size pointers.Size](variant Variant, vtype VariantType) T {
+func LetVariantAsPointerType[T pointers.Generic[T, Size], Size gdextension.AnyPointer](variant Variant, vtype VariantType) T {
 	return pointers.Let[T](gdextension.LoadNative[Size](vtype, gdextension.Variant(pointers.Get(variant))))
 }
 

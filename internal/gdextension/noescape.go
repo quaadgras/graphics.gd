@@ -51,7 +51,7 @@ func variant_from_native(vtype VariantType, result *Variant, size Shape, ptr uns
 	Host.Variants.Unsafe.FromNative(vtype, CallReturns[Variant](result), SizeVariant|size<<4, CallAccepts[any](ptr))
 }
 
-func LoadNative[T any](vtype VariantType, variant Variant) T {
+func LoadNative[T AnyVariant](vtype VariantType, variant Variant) T {
 	var result T
 	variant_into_native_noescape(vtype, variant, unsafe.Pointer(&result), SizeOf[T]())
 	return result
@@ -65,7 +65,7 @@ func variant_into_native(vtype VariantType, variant Variant, ptr unsafe.Pointer,
 	Host.Variants.Unsafe.MakeNative(vtype, variant, size|SizeVariant<<4, CallReturns[any](ptr))
 }
 
-func Free[T any](vtype VariantType, val *T) {
+func Free[T AnyVariant](vtype VariantType, val *T) {
 	free_noescape(vtype, SizeOf[T](), unsafe.Pointer(val))
 }
 
@@ -77,7 +77,7 @@ func free(vtype VariantType, size Shape, ptr unsafe.Pointer) {
 	Host.Builtin.Types.Unsafe.Free(vtype, size<<4, CallAccepts[any](ptr))
 }
 
-func Make[T any](constructor FunctionID, size Shape, ptr unsafe.Pointer) T {
+func Make[T AnyVariant](constructor FunctionID, size Shape, ptr unsafe.Pointer) T {
 	var result T
 	make_native_noescape(constructor, unsafe.Pointer(&result), SizeOf[T]()|size, ptr)
 	return result

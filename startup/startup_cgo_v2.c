@@ -491,34 +491,48 @@ void prepare_variants(void **frame, uint32_t argc, ANY args) {
 // Helper macro to align a value to the next multiple of 'align'
 #define ALIGN_UP(value, align) (((value) + ((align) - 1)) & ~((align) - 1))
 
+typedef enum {
+    ShapeEmpty,
+    ShapeBytes1,
+	ShapeBytes2,
+	ShapeBytes4,
+	ShapeBytes8,
+	ShapeBytes4x2,
+	ShapeBytes4x3,
+	ShapeBytes8x2,
+	ShapeBytes4x4,
+	ShapeBytes8x3,
+	ShapeBytes4x6,
+	ShapeBytes4x9,
+	ShapeBytes4x12,
+	ShapeBytes4x16
+} Shape;
+
 uint8_t prepare_callframe(int skip, void **frame, UINT64 shape, ANY args) {
     uint8_t *head = (uint8_t *)args;
     ptrdiff_t offset = 0; // Track current offset in the frame
     for (int i = skip; i < 16; i++) {
-        uint32_t code = (UINT64_FROM(shape) >> (i * 4)) & 0xF;
+        Shape code = (Shape)((UINT64_FROM(shape) >> (i * 4)) & 0xF);
         uint32_t size;
+        uint32_t align;
         // Determine size based on code
         switch (code) {
-            case 0: size = 0; frame[i-skip] = NULL; return i-skip; // Early return for zero-sized argument
-            case 1: size = 1; break;
-            case 2: size = 2; break;
-            case 3: size = 4; break;
-            case 4: size = 8; break;
-            case 5: size = 12; break;
-            case 6: size = 16; break;
-            case 7: size = 24; break;
-            case 8: size = 32; break;
-            case 9: size = 36; break;
-            case 10: size = 40; break;
-            case 11: size = 48; break;
-            case 12: size = 64; break;
-            case 13: size = 72; break;
-            case 14: size = 96; break;
-            case 15: size = 128; break;
+            case ShapeEmpty: size = 0; frame[i-skip] = NULL; return i-skip;
+            case ShapeBytes1: size = 1; align = 1; break;
+            case ShapeBytes2: size = 2; align = 2; break;
+            case ShapeBytes4: size = 4; align = 4; break;
+            case ShapeBytes8: size = 8; align = 8; break;
+            case ShapeBytes4x2: size = 4*2; align = 4; break;
+            case ShapeBytes4x3: size = 4*3; align = 4; break;
+            case ShapeBytes8x2: size = 8*2; align = 8; break;
+            case ShapeBytes4x4: size = 4*4; align = 4; break;
+            case ShapeBytes8x3: size = 8*3; align = 8; break;
+            case ShapeBytes4x6: size = 4*6; align = 4; break;
+            case ShapeBytes4x9: size = 4*9; align = 4; break;
+            case ShapeBytes4x12: size = 4*12; align = 4; break;
+            case ShapeBytes4x16: size = 4*16; align = 4; break;
         }
-        // Align to the minimum of the argument's size or 8 bytes (Go's max alignment on 64-bit systems)
-        uint32_t alignment = (size > 8) ? 8 : size;
-        offset = ALIGN_UP(offset, alignment);
+        offset = ALIGN_UP(offset, align);
         frame[i-skip] = head + offset;     // Set frame pointer to the aligned address
         offset += size;                 // Move offset forward by the size of the current argument
     }
