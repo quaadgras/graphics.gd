@@ -76,7 +76,11 @@ void cgo_callable_to_string_func(void *callable_userdata, GDExtensionBool *r_is_
     uint64_t invalid = 0;
     uintptr_t s = go_on_callable_stringify((uintptr_t)callable_userdata, &invalid);
     *r_is_valid = !(GDExtensionBool)invalid;
-    if (!invalid) *((uintptr_t*)r_out) = s;
+    if (invalid) {
+        *((uintptr_t*)r_out) = 0;
+    } else {
+        *((uintptr_t*)r_out) = s;
+    }
 }
 GDExtensionInt cgo_callable_get_argument_count_func(void *callable_userdata, GDExtensionBool *r_is_valid) {
     uint64_t invalid = 0;
@@ -471,6 +475,9 @@ GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc
         variant_ptr_keyed_setters[i] = gdextension_variant_get_ptr_keyed_setter(v);
         variant_ptr_keyed_getters[i] = gdextension_variant_get_ptr_keyed_getter(v);
     }
+    #ifdef __EMSCRIPTEN__
+    	Go = emscripten::val::global("GO");
+    #endif
     return true;
 }
 
@@ -484,34 +491,48 @@ void prepare_variants(void **frame, uint32_t argc, ANY args) {
 // Helper macro to align a value to the next multiple of 'align'
 #define ALIGN_UP(value, align) (((value) + ((align) - 1)) & ~((align) - 1))
 
+typedef enum {
+    ShapeEmpty,
+    ShapeBytes1,
+	ShapeBytes2,
+	ShapeBytes4,
+	ShapeBytes8,
+	ShapeBytes4x2,
+	ShapeBytes4x3,
+	ShapeBytes8x2,
+	ShapeBytes4x4,
+	ShapeBytes8x3,
+	ShapeBytes4x6,
+	ShapeBytes4x9,
+	ShapeBytes4x12,
+	ShapeBytes4x16
+} Shape;
+
 uint8_t prepare_callframe(int skip, void **frame, UINT64 shape, ANY args) {
     uint8_t *head = (uint8_t *)args;
     ptrdiff_t offset = 0; // Track current offset in the frame
     for (int i = skip; i < 16; i++) {
-        uint32_t code = (UINT64_FROM(shape) >> (i * 4)) & 0xF;
+        Shape code = (Shape)((UINT64_FROM(shape) >> (i * 4)) & 0xF);
         uint32_t size;
+        uint32_t align;
         // Determine size based on code
         switch (code) {
-            case 0: size = 0; frame[i-skip] = NULL; return i-skip; // Early return for zero-sized argument
-            case 1: size = 1; break;
-            case 2: size = 2; break;
-            case 3: size = 4; break;
-            case 4: size = 8; break;
-            case 5: size = 12; break;
-            case 6: size = 16; break;
-            case 7: size = 24; break;
-            case 8: size = 32; break;
-            case 9: size = 36; break;
-            case 10: size = 40; break;
-            case 11: size = 48; break;
-            case 12: size = 64; break;
-            case 13: size = 72; break;
-            case 14: size = 96; break;
-            case 15: size = 128; break;
+            case ShapeEmpty: size = 0; frame[i-skip] = NULL; return i-skip;
+            case ShapeBytes1: size = 1; align = 1; break;
+            case ShapeBytes2: size = 2; align = 2; break;
+            case ShapeBytes4: size = 4; align = 4; break;
+            case ShapeBytes8: size = 8; align = 8; break;
+            case ShapeBytes4x2: size = 4*2; align = 4; break;
+            case ShapeBytes4x3: size = 4*3; align = 4; break;
+            case ShapeBytes8x2: size = 8*2; align = 8; break;
+            case ShapeBytes4x4: size = 4*4; align = 4; break;
+            case ShapeBytes8x3: size = 8*3; align = 8; break;
+            case ShapeBytes4x6: size = 4*6; align = 4; break;
+            case ShapeBytes4x9: size = 4*9; align = 4; break;
+            case ShapeBytes4x12: size = 4*12; align = 4; break;
+            case ShapeBytes4x16: size = 4*16; align = 4; break;
         }
-        // Align to the minimum of the argument's size or 8 bytes (Go's max alignment on 64-bit systems)
-        uint32_t alignment = (size > 8) ? 8 : size;
-        offset = ALIGN_UP(offset, alignment);
+        offset = ALIGN_UP(offset, align);
         frame[i-skip] = head + offset;     // Set frame pointer to the aligned address
         offset += size;                 // Move offset forward by the size of the current argument
     }
@@ -719,28 +740,27 @@ GDExtensionBool cgo_class_property_can_revert_func(GDExtensionClassInstancePtr i
     return go_on_extension_instance_property_has_default((uintptr_t)instance, *(uintptr_t*)field);
 }
 GDExtensionBool cgo_class_property_get_revert_func(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field, GDExtensionVariantPtr value) {
-    reverse_variant_frame frame = { .r_return = value, .r_error = NULL, .p_args = NULL, .p_argument_count = 0 };
-    return go_on_extension_instance_property_get_default((uintptr_t)instance, *(uintptr_t*)field, &frame);
+    return go_on_extension_instance_property_get_default((uintptr_t)instance, *(uintptr_t*)field, value);
 }
 
 const GDExtensionPropertyInfo *cgo_class_get_property_list_func(GDExtensionClassInstancePtr instance, uint32_t *count) {
     property_list *list = (property_list*)go_on_extension_instance_property_list((uintptr_t)instance);
     GDExtensionPropertyInfo *info = list ? list->info : NULL;
     *count = list ? list->push : 0;
-    if (list) {
+    if (list && list->meta) {
         gdextension_mem_free(list->meta);
-        gdextension_mem_free(list);
     }
     return info;
 }
 
 void cgo_class_free_property_list_func(GDExtensionClassInstancePtr instance, const GDExtensionPropertyInfo *list, uint32_t count) {
-   gdextension_mem_free((void*)list);
+   if (list) gdextension_mem_free((void*)list);
 }
 
 GDExtensionBool cgo_class_validate_property_func(GDExtensionClassInstancePtr instance, GDExtensionPropertyInfo *field) {
     property_list list = {
-        .push = 0,
+        .push = 1,
+        .size = 1,
         .info = field,
         .meta = NULL
     };
@@ -748,7 +768,15 @@ GDExtensionBool cgo_class_validate_property_func(GDExtensionClassInstancePtr ins
 }
 
 void cgo_class_to_string_func(GDExtensionClassInstancePtr instance, GDExtensionBool *ok, GDExtensionStringPtr s) {
-    *(uintptr_t*)s = go_on_extension_instance_stringify((uintptr_t)instance);
+    printf("to_string!");
+    uint32_t result = go_on_extension_instance_stringify((uintptr_t)instance);
+    if (result) {
+        *(uint32_t*)s = result;
+        *ok = true;
+    } else {
+        gdextension_string_new_with_latin1_chars(s, ""); // FIXME/TODO remove in 4.5 (where my PR to fix this has been merged https://github.com/godotengine/godot/pull/105546)
+        *ok = false;
+    }
 }
 
 void cgo_class_reference_func(GDExtensionClassInstancePtr instance) {

@@ -255,17 +255,21 @@ func generate_startup_js() error {
 				case reflect.TypeFor[gdextension.CallAccepts[gdextension.Variant]]():
 					fmt.Fprintf(f, "\t\tmem%d := gdmemory.CopyVariants(p%[1]d, p%d)\n", i, i-1)
 				case reflect.TypeFor[gdextension.CallReturns[gdextension.Variant]](), reflect.TypeFor[gdextension.CallReturns[gdextension.Iterator]]():
-					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeBytes24)\n", i)
+					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeVariant)\n", i)
 				case reflect.TypeFor[gdextension.CallReturns[gdextension.CallError]](), reflect.TypeFor[gdextension.CallReturns[Vector3.XYZ]]():
-					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeBytes12)\n", i)
+					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeVariant)\n", i)
 				case reflect.TypeFor[gdextension.CallReturns[Vector2.XY]]():
-					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeBytes8)\n", i)
-				case reflect.TypeFor[gdextension.CallReturns[gdextension.Callable]](), reflect.TypeFor[gdextension.CallReturns[Color.RGBA]](), reflect.TypeFor[gdextension.CallReturns[Vector4.XYZW]]():
-					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeBytes16)\n", i)
+					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeVector2)\n", i)
+				case reflect.TypeFor[gdextension.CallReturns[gdextension.Callable]]():
+					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeCallable)\n", i)
+				case reflect.TypeFor[gdextension.CallReturns[Color.RGBA]]():
+					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeColor)\n", i)
+				case reflect.TypeFor[gdextension.CallReturns[Vector4.XYZW]]():
+					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeVector4)\n", i)
 				case reflect.TypeFor[gdextension.CallMutates[any]]():
 					fmt.Fprintf(f, "\t\tmem%d := gdmemory.CopyReceiver(shape, p%[1]d)\n", i)
 				case reflect.TypeFor[gdextension.CallMutates[gdextension.Iterator]]():
-					fmt.Fprintf(f, "\t\tmem%d := gdmemory.CopyReceiver(gdextension.SizeBytes24, p%[1]d)\n", i)
+					fmt.Fprintf(f, "\t\tmem%d := gdmemory.CopyReceiver(gdextension.SizeVariant, p%[1]d)\n", i)
 				}
 			}
 		}
@@ -352,17 +356,21 @@ func generate_startup_js() error {
 				case reflect.TypeFor[gdextension.CallReturns[any]]():
 					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(shape, p%d, mem%[1]d)\n", i)
 				case reflect.TypeFor[gdextension.CallReturns[gdextension.Variant]](), reflect.TypeFor[gdextension.CallReturns[gdextension.Iterator]]():
-					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeBytes24, p%d, mem%[1]d)\n", i)
+					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeVariant, p%d, mem%[1]d)\n", i)
 				case reflect.TypeFor[gdextension.CallReturns[gdextension.CallError]](), reflect.TypeFor[gdextension.CallReturns[Vector3.XYZ]]():
-					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeBytes12, p%d, mem%[1]d)\n", i)
+					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeVector3, p%d, mem%[1]d)\n", i)
 				case reflect.TypeFor[gdextension.CallReturns[Vector2.XY]]():
-					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeBytes8, p%d, mem%[1]d)\n", i)
-				case reflect.TypeFor[gdextension.CallReturns[gdextension.Callable]](), reflect.TypeFor[gdextension.CallReturns[Color.RGBA]](), reflect.TypeFor[gdextension.CallReturns[Vector4.XYZW]]():
-					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeBytes16, p%d, mem%[1]d)\n", i)
+					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeVector2, p%d, mem%[1]d)\n", i)
+				case reflect.TypeFor[gdextension.CallReturns[gdextension.Callable]]():
+					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeCallable, p%d, mem%[1]d)\n", i)
+				case reflect.TypeFor[gdextension.CallReturns[Color.RGBA]]():
+					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeColor, p%d, mem%[1]d)\n", i)
+				case reflect.TypeFor[gdextension.CallReturns[Vector4.XYZW]]():
+					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeVector4, p%d, mem%[1]d)\n", i)
 				case reflect.TypeFor[gdextension.CallMutates[any]]():
 					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(shape>>4, p%d, mem%[1]d)\n", i)
 				case reflect.TypeFor[gdextension.CallMutates[gdextension.Iterator]]():
-					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeBytes24, p%d, mem%[1]d)\n", i)
+					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeVariant, p%d, mem%[1]d)\n", i)
 				}
 			}
 		}
