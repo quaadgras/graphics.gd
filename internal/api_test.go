@@ -21,6 +21,9 @@ import (
 func TestMain(m *testing.M) {
 	classdb.Register[Converter]()
 	classdb.Register[CustomConverterObject]()
+	classdb.Register[CustomStringSignals]()
+	classdb.Register[CustomSignal]()
+
 	startup.LoadingScene()
 	m.Run()
 	if tree, ok := Object.As[SceneTree.Instance](Engine.GetMainLoop()); ok {

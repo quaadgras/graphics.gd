@@ -39,7 +39,7 @@ func CopyReceiver[T any](shape gdextension.Shape, self gdextension.CallMutates[T
 	if self == nil {
 		return 0
 	}
-	return copyIntoEngine(shape, unsafe.Pointer(self), receiver)
+	return copyIntoEngine(shape&0xff00, unsafe.Pointer(self), receiver)
 }
 
 func copyIntoEngine(shape gdextension.Shape, args unsafe.Pointer, into gdextension.Pointer) gdextension.Pointer {

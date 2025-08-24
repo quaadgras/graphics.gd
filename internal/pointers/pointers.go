@@ -21,12 +21,14 @@
 //
 // The following methods are available:
 //
-//	Set(X, ptr) // sets and returns the mutable pointer at slot N.
-//	End(X) (ptr, bool) // returns true on the first call to [End], false on all subsequent calls, GC-related metadata is marked for reuse.
-//	Use(ptr) // refreshes a [New] pointer, as if it were just allocated, similar (in some sense) to [runtime.KeepAlive].
-//	Pin(ptr) // pin a [New] pointer, so that it will be available for use until the next call to [Free]
-//	Bad(ptr) // returns true if the pointer is nil, or freed.
-//	Lay(ptr) // converts a [New] pointer to a [Let] pointer.
+//		Set(X, ptr) // sets and returns the mutable pointer at slot N.
+//		End(X) (ptr, bool) // returns true on the first call to [End], false on all subsequent calls, GC-related metadata is marked for reuse.
+//		Use(ptr) // refreshes a [New] pointer, as if it were just allocated, similar (in some sense) to [runtime.KeepAlive].
+//		Pin(ptr) // pin a [New] pointer, so that it will be available for use until the next call to [Free]
+//		Bad(ptr) // returns true if the pointer is nil, or freed.
+//		Lay(ptr) // converts a [New] pointer to a [Let] pointer.
+//
+//	 Ask(ptr) (ptr T, pinned bool, letted bool)
 //
 // [Cycle] should be called periodically to invalidate any pointer-related resources for re-use. Invalidated pointers
 // will eventually have their [Free] method called as long as the program continues to construct new pointers of the same types.
@@ -627,6 +629,67 @@ func End[T Generic[T, Raw], Raw Size](ptr T) (Raw, bool) {
 		return p.checksum, true
 	}
 	return [1]Raw{}[0], false
+}
+
+type Kind int
+
+const (
+	Normal Kind = iota
+	Pinned
+	Letted
+	Static
+	Unsafe
+)
+
+// Ask returns the pointer value, as well as the raw, pinned and letted status.
+func Ask[T Generic[T, P], P Size](ptr T) (P, Kind) {
+	p := (struct {
+		_ [0]*T
+
+		sentinal uint64
+		revision revision
+		checksum P
+	})(ptr)
+	if p.revision == 0 && p.sentinal == 0 {
+		return p.checksum, Unsafe
+	}
+	if p.revision == 0 {
+		var result [3]uint64
+		for i := 0; i < len(p.checksum); i++ {
+			result[i] = static[len(p.checksum)][p.sentinal/pageSize][uintptr(p.sentinal)%pageSize+uintptr(i)]
+		}
+		return *(*P)(unsafe.Pointer(&result)), Static
+	}
+	page, addr := uint64(p.sentinal/pageSize), uint64(p.sentinal%pageSize)
+	arr := tables[len(p.checksum)].Index(page)
+	var ptrs [3]uint64
+	for i := 0; i < len(p.checksum); i++ {
+		ptrs[i] = arr[addr+offsetPointers+uint64(i)].Load()
+	}
+	for {
+		rev := revision(arr[addr+offsetRevision].Load())
+		if rev == revisionLocked {
+			continue
+		}
+		if !rev.matches(p.revision) {
+			fmt.Printf("%b != %b\b", rev&0b00111111111111111111111111111111111111111111111111111111111111, p.revision&0b00111111111111111111111111111111111111111111111111111111111111)
+			panic("expired pointer")
+		}
+		if !rev.isActive() {
+			if live, ok := any(T(p)).(Liveness[P]); ok && !live.IsAlive(*(*P)(unsafe.Pointer(&ptrs))) {
+				panic("dead pointer")
+			}
+			arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active()))
+		}
+		switch {
+		case rev.isPinned():
+			return *(*P)(unsafe.Pointer(&ptrs)), Pinned
+		case arr[addr+offsetFreeFunc].Load() == 0:
+			return *(*P)(unsafe.Pointer(&ptrs)), Letted
+		default:
+			return *(*P)(unsafe.Pointer(&ptrs)), Normal
+		}
+	}
 }
 
 // Half pointer value that safely wraps a single uintptr-sized value.

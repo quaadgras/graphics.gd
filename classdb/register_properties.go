@@ -159,7 +159,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	var isExtensionClass bool
 	var converted reflect.Value
 	if value.Type() == gd.TypeObject {
-		obj := gd.LetVariantAsObject(value)
+		obj := gd.VariantAsObject(value)
 		ext, ok := gd.ExtensionInstances.Load(pointers.Get(obj)[0])
 		if ok {
 			converted = reflect.ValueOf(ext)

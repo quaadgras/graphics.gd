@@ -32,5 +32,5 @@ func LoadSlice[T any](ptr gdextension.Pointer, slice []T) {
 }
 
 func IndexVariants(ptr gdextension.Accepts[gdextension.Variant], len, idx int) gdextension.Variant {
-	return *unsafe.Slice((**gdextension.Variant)(unsafe.Pointer(&ptr)), len)[idx]
+	return *(unsafe.Slice((**gdextension.Variant)(ptr), len)[idx])
 }

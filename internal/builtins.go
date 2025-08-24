@@ -359,10 +359,10 @@ func (a PackedInt64Array) Size() int64 {
 func (s Signal) Emit(args ...Variant) {
 	var ptr = gdextension.Signal(pointers.Get(s))
 	var converted = make([]gdextension.Variant, len(args))
-	for _, arg := range args {
-		converted = append(converted, gdextension.Variant(pointers.Get(arg)))
+	for i, arg := range args {
+		converted[i] = gdextension.Variant(pointers.Get(arg))
 	}
-	callBuiltinMethod[struct{}](unsafe.Pointer(&ptr), Global.builtin.Signal.emit, gdextension.ShapeVariants(len(args)), unsafe.Pointer(unsafe.SliceData(converted)))
+	callBuiltinMethod[struct{}](unsafe.Pointer(&ptr), Global.builtin.Signal.emit, gdextension.SizeSignal<<4|gdextension.ShapeVariants(len(args))<<4, unsafe.Pointer(unsafe.SliceData(converted)))
 }
 
 func (s Signal) Connect(callable Callable, flags int64) int64 {

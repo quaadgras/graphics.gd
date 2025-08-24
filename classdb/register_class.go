@@ -762,19 +762,19 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		return
 	}
 	var node = NodeClass.Advanced(parent).GetNode(path)
-	if name := node[0].AsObject()[0].GetClass().String(); name != nameOf(field.Type) {
-		fmt.Printf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name)
-		panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
-	}
 	ref, native := gd.ExtensionInstances.Load(pointers.Get(node[0])[0])
 	if native {
+		if reflect.ValueOf(ref).Type() != rvalue.Elem().Type() {
+			fmt.Printf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name)
+			panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
+		}
 		rvalue.Elem().Set(reflect.ValueOf(ref))
 		pointers.End(node[0])
 	} else {
-		type isUnsafe interface {
-			UnsafePointer() unsafe.Pointer
+		if !class.(gd.IsClassCastable).SetObject([1]gd.Object{pointers.Raw[gd.Object](pointers.Get(node[0]))}) {
+			fmt.Printf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name)
+			panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 		}
-		*(*gd.Object)(class.(isUnsafe).UnsafePointer()) = pointers.Raw[gd.Object](pointers.Get(node[0]))
 		pointers.End(node[0])
 	}
 }

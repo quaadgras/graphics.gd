@@ -269,6 +269,8 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 			vtype = TypePackedVector3Array
 		case reflect.TypeOf([0]PackedColorArray{}).Elem():
 			vtype = TypePackedColorArray
+		case reflect.TypeFor[VariantPkg.Any]():
+			vtype = TypeNil
 		case reflect.TypeOf([0]unsafe.Pointer{}).Elem():
 			vtype = TypeNil
 		case reflect.TypeOf([0]*ScriptLanguageExtensionProfilingInfo{}).Elem():

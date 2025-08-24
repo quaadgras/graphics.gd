@@ -8,6 +8,7 @@ import (
 )
 
 // FIXME/TODO move this into gdextension package?
+//
 
 // Copy returns a copy of the variant that will belong to the provided context.
 func (variant Variant) Copy() Variant {

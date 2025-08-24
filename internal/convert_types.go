@@ -19,6 +19,10 @@ import (
 	"runtime.link/api/xray"
 )
 
+func (variant Variant) ConvertTo(rtype reflect.Type) (reflect.Value, error) {
+	return convertVariantToDesiredGoType(variant, rtype)
+}
+
 func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.Value, error) {
 	if value.Type() == TypeNil {
 		return reflect.Zero(rtype), nil
@@ -38,7 +42,7 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %s to %s", value.Type(), rtype))
 			}
 			var result = reflect.New(rtype)
-			result.Interface().(IsClassCastable).SetObject([1]Object{VariantAsNewObject(value)})
+			result.Interface().(IsClassCastable).SetObject([1]Object{VariantAsObject(value)})
 			return result.Elem(), nil
 		}
 		fallthrough
@@ -71,6 +75,9 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 	}
 	if reflect.TypeOf(value).ConvertibleTo(rtype) {
 		return reflect.ValueOf(value).Convert(rtype), nil
+	}
+	if rtype == reflect.TypeFor[VariantPkg.Any]() {
+		return reflect.ValueOf(VariantPkg.New(value)), nil
 	}
 	variant, ok := value.(Variant)
 	if ok {
@@ -134,7 +141,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 	case reflect.Array:
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			var obj = reflect.New(rtype)
-			*(*Object)(obj.UnsafePointer()) = VariantAsNewObject(variant)
+			*(*Object)(obj.UnsafePointer()) = VariantAsObject(variant)
 			return obj.Elem(), nil
 		}
 		val, err := convertToGoArrayOf(rtype.Elem(), value)

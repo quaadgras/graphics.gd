@@ -26,14 +26,37 @@ func init() {
 		vargs := make([]reflect.Value, min(arg_count, 16))
 		rtype := reflect.TypeOf(value)
 		for i := range arg_count {
+			var to_type reflect.Type
+			if rtype.IsVariadic() && i >= rtype.NumIn()-1 {
+				to_type = rtype.In(rtype.NumIn() - 1).Elem()
+			} else {
+				if i >= rtype.NumIn() {
+					gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{
+						Type:     gdextension.CallTooManyArguments,
+						Expected: int32(rtype.NumIn()),
+					})
+					return
+				}
+				to_type = rtype.In(i)
+			}
 			var err error
-			vargs[i], err = ConvertToDesiredGoType(gdmemory.IndexVariants(args, arg_count, i), rtype.In(i))
+			vargs[i], err = ConvertToDesiredGoType(pointers.Let[Variant](gdmemory.IndexVariants(args, arg_count, i)), to_type)
 			if err != nil {
+				vtype, _ := VariantTypeOf(rtype.In(i))
 				gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{
-					Type: gdextension.CallInvalidArguments,
+					Type:     gdextension.CallInvalidArguments,
+					Argument: int32(i),
+					Expected: int32(vtype),
 				})
 				return
 			}
+		}
+		if len(vargs) < rtype.NumIn() {
+			gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{
+				Type:     gdextension.CallTooFewArguments,
+				Expected: int32(rtype.NumIn()),
+			})
+			return
 		}
 		results := reflect.ValueOf(value).Call(vargs)
 		if len(results) > 0 {

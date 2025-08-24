@@ -96,7 +96,17 @@ func (l *local) Call(_ complex128, args ...variant.Any) variant.Any {
 		}
 		for i := range ftype.NumIn() {
 			value := values.Index(i)
-			if value.Type() != ftype.In(i) && value.Type().ConvertibleTo(ftype.In(i)) {
+			if value.Type().Implements(reflect.TypeFor[interface {
+				ConvertTo(reflect.Type) (reflect.Value, error)
+			}]()) {
+				converted, err := value.Interface().(interface {
+					ConvertTo(reflect.Type) (reflect.Value, error)
+				}).ConvertTo(ftype.In(i))
+				if err != nil {
+					panic(err)
+				}
+				values.SetIndex(i, converted)
+			} else if value.Type() != ftype.In(i) && value.Type().ConvertibleTo(ftype.In(i)) {
 				values.SetIndex(i, value.Convert(ftype.In(i)))
 			}
 		}

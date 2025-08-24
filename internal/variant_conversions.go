@@ -500,7 +500,7 @@ func (variant Variant) Interface() any {
 	case TypeRID:
 		return variantAsValueType[RID](variant, vtype)
 	case TypeObject:
-		var obj = variantAsObject(variant)
+		var obj = VariantAsObject(variant)
 		return ObjectAs(obj.GetClass().String(), obj)
 	case TypeCallable:
 		callable := variantAsPointerType[Callable](variant, vtype)
@@ -557,16 +557,15 @@ func variantAsPointerType[T pointers.Generic[T, Size], Size pointers.Size](varia
 	return pointers.New[T](gdextension.LoadNative[Size](vtype, gdextension.Variant(pointers.Get(variant))))
 }
 
-func variantAsObject(variant Variant) Object {
-	return PointerMustAssertInstanceID[Object](gdextension.LoadNative[gdextension.Object](TypeObject, gdextension.Variant(pointers.Get(variant))))
-}
-
-func LetVariantAsObject(variant Variant) Object {
-	return pointers.Let[Object]([3]uint64{uint64(gdextension.LoadNative[gdextension.Object](TypeObject, gdextension.Variant(pointers.Get(variant))))})
-}
-
-func VariantAsNewObject(variant Variant) Object {
-	return pointers.New[Object]([3]uint64{uint64(gdextension.LoadNative[gdextension.Object](TypeObject, gdextension.Variant(pointers.Get(variant))))})
+func VariantAsObject(variant Variant) Object {
+	raw, kind := pointers.Ask(variant)
+	obj := gdextension.LoadNative[gdextension.Object](TypeObject, raw)
+	switch kind {
+	case pointers.Letted:
+		return pointers.Let[Object]([3]uint64{uint64(obj)})
+	default:
+		return PointerMustAssertInstanceID[Object](obj)
+	}
 }
 
 func LetVariantAsPointerType[T pointers.Generic[T, Size], Size pointers.Size](variant Variant, vtype VariantType) T {

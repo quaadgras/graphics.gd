@@ -135,8 +135,9 @@ func (self Object) Free() {
 	if !ok {
 		return
 	}
+	//fmt.Println(raw)
 	//fmt.Fprintln(os.Stderr, "FREE ", pointers.Trio[Object](self), pointers.Raw[Object](raw).GetClass().String())
-	//	fmt.Println(runtime.Caller(2))
+	//fmt.Println(runtime.Caller(2))
 	// Important that we don't destroy RefCounted objects, instead
 	// they should be unreferenced instead.
 	ref := gdextension.Host.Objects.Cast(gdextension.Object(raw[0]), Global.refCountedClassTag)
