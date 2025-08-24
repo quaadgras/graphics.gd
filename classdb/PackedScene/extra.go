@@ -8,6 +8,8 @@ import (
 	"graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
+	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Object"
 )
 
@@ -26,6 +28,13 @@ func (self Is[T]) AsResource() Resource.Instance {
 }
 func (self Is[T]) AsRefCounted() [1]gd.RefCounted {
 	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+}
+func (self *Is[T]) SetObject(obj [1]gd.Object) bool {
+	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
+		self[0] = *(*gdclass.PackedScene)(unsafe.Pointer(&obj))
+		return true
+	}
+	return false
 }
 
 func (self Is[T]) Virtual(name string) reflect.Value {

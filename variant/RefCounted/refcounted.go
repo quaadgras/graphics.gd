@@ -16,6 +16,10 @@ func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(sel
 // Virtual method lookup.
 func (obj Instance) Virtual(name string) reflect.Value { return obj[0].Virtual(name) }
 
+func (obj *Instance) SetObject(object [1]gd.Object) bool {
+	return obj[0].SetObject(object)
+}
+
 // Extension can be embedded in a struct to create a new class. T should be the type of the struct
 // that embeds this Extension.
 type Extension[T gdclass.Interface] struct {

@@ -694,7 +694,7 @@ func (instance *instanceImplementation) ready() {
 	}
 }
 
-func (instance *instanceImplementation) assertChild(value any, field reflect.StructField, parent, owner Node) {
+func (instance *instanceImplementation) assertChild(value any, field reflect.StructField, parent, owner [1]gdclass.Node) {
 	type isNode interface {
 		AsNode() NodeClass.Instance
 	}
