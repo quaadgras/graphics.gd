@@ -40,7 +40,7 @@ func generate_gdextension_web_cgo_callbacks() error {
 
 	fmt.Fprint(h, "emscripten::val Go;\n\n")
 	fmt.Fprint(h, "void go_on_init(uint32_t level) {")
-	fmt.Fprint(h, "\n\tif (level == GDEXTENSION_INITIALIZATION_CORE) Go = emscripten::val::global(\"Go\");\n")
+	fmt.Fprint(h, "\n\tif (level == GDEXTENSION_INITIALIZATION_CORE) Go = emscripten::val::global(\"GO\");\n")
 	fmt.Fprint(h, "\tGo.call<void>(\"on_init\", level);\n")
 	fmt.Fprint(h, "}\n\n")
 
@@ -141,8 +141,8 @@ func generate_startup_js() error {
 
 	fmt.Fprint(f, "func init() {\n")
 
-	fmt.Fprint(f, "js.Global().Set(\"Go\", js.Global().Get(\"Object\").New())\n")
-	fmt.Fprint(f, "Go := js.Global().Get(\"Go\")\n")
+	fmt.Fprint(f, "js.Global().Set(\"GO\", js.Global().Get(\"Object\").New())\n")
+	fmt.Fprint(f, "Go := js.Global().Get(\"GO\")\n")
 
 	fmt.Fprint(f, "var (\n")
 	for fn := range api.StructureOf(&gdextension.Host).Iter() {
