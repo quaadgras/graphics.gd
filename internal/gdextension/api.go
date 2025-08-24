@@ -22,81 +22,9 @@ import (
 	"graphics.gd/variant/Vector3i"
 	"graphics.gd/variant/Vector4"
 	"graphics.gd/variant/Vector4i"
-	"runtime.link/api"
-	"runtime.link/api/stub"
 )
 
 var Host API
-var On = api.Import[Callbacks](stub.API, "", nil)
-
-type Callbacks struct {
-	Init func(level InitializationLevel) `gd:"on_init"`
-	Exit func(level InitializationLevel) `gd:"on_exit"`
-
-	Frames struct {
-		First func() `gd:"on_first_frame"`
-		Every func() `gd:"on_every_frame"`
-		Final func() `gd:"on_final_frame"`
-	}
-	Extension struct {
-		Binding struct {
-			Created   func(instance ExtensionInstanceID) ExtensionBindingID          `gd:"on_extension_binding_created"`
-			Removed   func(instance ExtensionInstanceID, binding ExtensionBindingID) `gd:"on_extension_binding_removed"`
-			Reference func(instance ExtensionInstanceID, increment bool) bool        `gd:"on_extension_binding_reference"`
-		}
-		Instance struct {
-			Set                func(instance ExtensionInstanceID, field StringName, value Variant) bool                                                                 `gd:"on_extension_instance_set"`
-			Get                func(instance ExtensionInstanceID, field StringName, result Returns[Variant]) bool                                                       `gd:"on_extension_instance_get"`
-			PropertyList       func(instance ExtensionInstanceID) PropertyList                                                                                          `gd:"on_extension_instance_property_list"`
-			PropertyHasDefault func(instance ExtensionInstanceID, field StringName) bool                                                                                `gd:"on_extension_instance_property_has_default"`
-			PropertyGetDefault func(instance ExtensionInstanceID, field StringName, result Returns[Variant]) bool                                                       `gd:"on_extension_instance_property_get_default"`
-			PropertyValidation func(instance ExtensionInstanceID, field PropertyList) bool                                                                              `gd:"on_extension_instance_property_validation"`
-			Notification       func(instance ExtensionInstanceID, reverse bool)                                                                                         `gd:"on_extension_instance_notification"`
-			Stringify          func(instance ExtensionInstanceID) String                                                                                                `gd:"on_extension_instance_stringify"`
-			Reference          func(instance ExtensionInstanceID, increment bool) bool                                                                                  `gd:"on_extension_instance_reference"`
-			RID                func(instance ExtensionInstanceID) uint64                                                                                                `gd:"on_extension_instance_rid"`
-			Call               func(instance ExtensionInstanceID, fn FunctionID, result Returns[Variant], arg_count int, args Accepts[Variant], err Returns[CallError]) `gd:"on_extension_instance_call"`
-			CallChecked        func(instance ExtensionInstanceID, fn FunctionID, result Returns[Variant], args Accepts[Variant])                                        `gd:"on_extension_instance_call_checked"`
-			Unsafe             struct {
-				Call func(instance ExtensionInstanceID, fn FunctionID, result Returns[any], args Accepts[any]) `gd:"on_extension_instance_unsafe_call"`
-			}
-			Free func(instance ExtensionInstanceID) `gd:"on_extension_instance_free"`
-		}
-		Class struct {
-			Create func(class ExtensionClassID, notify_postinitialize bool) Object         `gd:"on_extension_class_create"`
-			Method func(class ExtensionClassID, method StringName, hash uint32) FunctionID `gd:"on_extension_class_method"`
-		}
-		Script struct {
-			Categorization      func(instance ExtensionInstanceID, into PropertyList) bool      `gd:"on_extension_script_categorization"`
-			PropertyType        func(field StringName, err Returns[CallError]) VariantType      `gd:"on_extension_script_get_property_type"`
-			Owner               func(instance ExtensionInstanceID) Object                       `gd:"on_extension_script_get_owner"`
-			PropertyState       func(instance ExtensionInstanceID, add FunctionID, arg Pointer) `gd:"on_extension_script_get_property_state"`
-			Methods             func(instance ExtensionInstanceID) MethodList                   `gd:"on_extension_script_get_methods"`
-			HasMethod           func(instance ExtensionInstanceID, method StringName) bool      `gd:"on_extension_script_has_method"`
-			MethodArgumentCount func(instance ExtensionInstanceID, method StringName) int       `gd:"on_extension_script_get_method_argument_count"`
-			Get                 func(instance ExtensionInstanceID) Object                       `gd:"on_extension_script_get"`
-			IsPlaceholder       func(instance ExtensionInstanceID) bool                         `gd:"on_extension_script_is_placeholder"`
-			Language            func(instance ExtensionInstanceID) Object                       `gd:"on_extension_script_get_language"`
-		}
-	}
-	Callables struct {
-		Call          func(fn FunctionID, result Returns[Variant], arg_count int, args Accepts[Variant], err Returns[CallError]) `gd:"on_callable_call"`
-		Validation    func(fn FunctionID) bool                                                                                   `gd:"on_callable_validation"`
-		Free          func(fn FunctionID)                                                                                        `gd:"on_callable_free"`
-		Hash          func(fn FunctionID) uint32                                                                                 `gd:"on_callable_hash"`
-		Compare       func(fn FunctionID, other FunctionID) bool                                                                 `gd:"on_callable_compare"`
-		LessThan      func(fn FunctionID, other FunctionID) bool                                                                 `gd:"on_callable_less_than"`
-		Stringify     func(fn FunctionID, err Returns[CallError]) String                                                         `gd:"on_callable_stringify"`
-		ArgumentCount func(fn FunctionID, err Returns[CallError]) int                                                            `gd:"on_callable_get_argument_count"`
-	}
-	Editor struct {
-		ClassInUseDetection func(classes PackedArray[String], result Returns[PackedArray[String]]) `gd:"on_editor_class_in_use_detection"`
-	}
-	Tasks struct {
-		Run        func(task TaskID)           `gd:"on_worker_thread_pool_task"`
-		RunInGroup func(task TaskID, n uint32) `gd:"on_worker_thread_pool_group_task"`
-	}
-}
 
 type API struct {
 	Version struct {
@@ -109,6 +37,9 @@ type API struct {
 		Hash      func() String `gd:"version_hash"`
 		Timestamp func() uint64 `gd:"version_timestamp"`
 		String    func() String `gd:"version_string"`
+	}
+	Library struct {
+		Location func() String `gd:"library_location"`
 	}
 	Memory struct {
 		Malloc func(size int) Pointer               `gd:"memory_malloc"`
@@ -380,11 +311,9 @@ type API struct {
 				name StringName,
 				call FunctionID,
 				method_flags MethodFlags,
-				has_return_value bool,
 				return_value_info PropertyList,
-				argument_count uint32,
 				arguments_info PropertyList,
-				default_argument_count int,
+				count int,
 				default_arguments CallAccepts[Variant],
 			) `gd:"method_list_push"`
 			Free func(info MethodList) `gd:"method_list_free"`
@@ -421,10 +350,10 @@ type API struct {
 type InitializationLevel uint32
 
 const (
-	InitCore    InitializationLevel = 0
-	InitServers InitializationLevel = 1
-	InitScene   InitializationLevel = 2
-	InitEditor  InitializationLevel = 3
+	InitializationLevelCore    InitializationLevel = 0
+	InitializationLevelServers InitializationLevel = 1
+	InitializationLevelScene   InitializationLevel = 2
+	InitializationLevelEditor  InitializationLevel = 3
 )
 
 type String [1]Pointer

@@ -32,14 +32,13 @@ func TestMain(m *testing.M) {
 }
 
 func TestGetGodotVersion(t *testing.T) {
-	version := gd.Global.GetGodotVersion()
-	if version.Major != 4 {
+	if gdextension.Host.Version.Major() != 4 {
 		t.Fail()
 	}
-	if version.Minor < 3 {
+	if gdextension.Host.Version.Major() < 3 {
 		t.Fail()
 	}
-	if version.String() == "" {
+	if gdextension.Host.Version.String() == (gdextension.String{}) {
 		t.Fail()
 	}
 }

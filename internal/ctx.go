@@ -13,16 +13,6 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
-// Version returns the version of the Godot API that we are linked in to.
-func EngineVersion() Version {
-	return Global.GetGodotVersion()
-}
-
-// GetLibraryPath returns the path to the library that was loaded.
-func GetLibraryPath() string {
-	return Global.GetLibraryPath(Global.ExtensionToken).String()
-}
-
 // String returns a [String] from a standard UTF8 Go string.
 func NewString(s string) String {
 	return pointers.New[String](gdextension.Host.Strings.Decode.UTF8(s))

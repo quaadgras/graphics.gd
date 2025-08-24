@@ -11,6 +11,8 @@ import (
 	"graphics.gd/variant/Float"
 )
 
+// TODO: switch to mainloop callbacks for Godot 4.5
+
 // goRuntime is injected into the scene tree so that the process function can process
 // the frame-based garbage collection routine.
 type goRuntime struct {

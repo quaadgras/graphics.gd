@@ -1,4 +1,4 @@
-package startup
+package classdb
 
 import (
 	"sync"

@@ -6,13 +6,10 @@
 emscripten::val Go;
 
 void go_on_init(uint32_t level) {
-	if (level == GDEXTENSION_INITIALIZATION_CORE) Go = emscripten::val::global("Go");
+	if (level == GDEXTENSION_INITIALIZATION_CORE) Go = emscripten::val::global("GO");
 	Go.call<void>("on_init", level);
 }
 
-void go_on_exit(uint32_t p0) {
-	Go.call<void>("on_exit",p0);
-}
 void go_on_callable_call(uintptr_t p0, void* p1, double p2, void* p3, void* p4) {
 	Go.call<void>("on_callable_call",p0, uintptr_t(p1),p2, uintptr_t(p3), uintptr_t(p4));
 }
@@ -39,6 +36,12 @@ int32_t go_on_callable_get_argument_count(uintptr_t p0, void* p1) {
 }
 void go_on_editor_class_in_use_detection(double p0, double p1, void* p2) {
 	Go.call<void>("on_editor_class_in_use_detection",p0,p1, uintptr_t(p2));
+}
+void go_on_engine_init(uint32_t p0) {
+	Go.call<void>("on_engine_init",p0);
+}
+void go_on_engine_exit(uint32_t p0) {
+	Go.call<void>("on_engine_exit",p0);
 }
 uintptr_t go_on_extension_binding_created(uintptr_t p0) {
 	return Go.call<uintptr_t>("on_extension_binding_created",p0);
@@ -73,8 +76,8 @@ bool go_on_extension_instance_property_get_default(uintptr_t p0, uintptr_t p1, v
 bool go_on_extension_instance_property_validation(uintptr_t p0, uintptr_t p1) {
 	return Go.call<bool>("on_extension_instance_property_validation",p0,p1);
 }
-void go_on_extension_instance_notification(uintptr_t p0, bool p1) {
-	Go.call<void>("on_extension_instance_notification",p0,p1);
+void go_on_extension_instance_notification(uintptr_t p0, int32_t p1, bool p2) {
+	Go.call<void>("on_extension_instance_notification",p0,p1,p2);
 }
 uintptr_t go_on_extension_instance_stringify(uintptr_t p0) {
 	return Go.call<uintptr_t>("on_extension_instance_stringify",p0);
@@ -85,17 +88,17 @@ bool go_on_extension_instance_reference(uintptr_t p0, bool p1) {
 uint64_t go_on_extension_instance_rid(uintptr_t p0) {
 	return std::__bit_cast<uint64_t>(Go.call<double>("on_extension_instance_rid",p0));
 }
-void go_on_extension_instance_call(uintptr_t p0, uintptr_t p1, void* p2, double p3, void* p4, void* p5) {
-	Go.call<void>("on_extension_instance_call",p0,p1, uintptr_t(p2),p3, uintptr_t(p4), uintptr_t(p5));
+void go_on_extension_instance_checked_call(uintptr_t p0, uintptr_t p1, void* p2, void* p3) {
+	Go.call<void>("on_extension_instance_checked_call",p0,p1, uintptr_t(p2), uintptr_t(p3));
 }
-void go_on_extension_instance_call_checked(uintptr_t p0, uintptr_t p1, void* p2, void* p3) {
-	Go.call<void>("on_extension_instance_call_checked",p0,p1, uintptr_t(p2), uintptr_t(p3));
+void go_on_extension_instance_variant_call(uintptr_t p0, uintptr_t p1, void* p2, void* p3) {
+	Go.call<void>("on_extension_instance_variant_call",p0,p1, uintptr_t(p2), uintptr_t(p3));
+}
+void go_on_extension_instance_dynamic_call(uintptr_t p0, uintptr_t p1, void* p2, double p3, void* p4, void* p5) {
+	Go.call<void>("on_extension_instance_dynamic_call",p0,p1, uintptr_t(p2),p3, uintptr_t(p4), uintptr_t(p5));
 }
 void go_on_extension_instance_free(uintptr_t p0) {
 	Go.call<void>("on_extension_instance_free",p0);
-}
-void go_on_extension_instance_unsafe_call(uintptr_t p0, uintptr_t p1, void* p2, void* p3) {
-	Go.call<void>("on_extension_instance_unsafe_call",p0,p1, uintptr_t(p2), uintptr_t(p3));
 }
 bool go_on_extension_script_categorization(uintptr_t p0, uintptr_t p1) {
 	return Go.call<bool>("on_extension_script_categorization",p0,p1);

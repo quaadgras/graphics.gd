@@ -12,6 +12,8 @@
 
 #ifndef GO_CGO_GOSTRING_TYPEDEF
 typedef struct { const char *p; ptrdiff_t n; } _GoString_;
+extern size_t _GoStringLen(_GoString_ s);
+extern const char *_GoStringPtr(_GoString_ s);
 #endif
 
 #endif
@@ -51,9 +53,15 @@ typedef size_t GoUintptr;
 typedef float GoFloat32;
 typedef double GoFloat64;
 #ifdef _MSC_VER
+#if !defined(__cplusplus) || _MSVC_LANG <= 201402L
 #include <complex.h>
 typedef _Fcomplex GoComplex64;
 typedef _Dcomplex GoComplex128;
+#else
+#include <complex>
+typedef std::complex<float> GoComplex64;
+typedef std::complex<double> GoComplex128;
+#endif
 #else
 typedef float _Complex GoComplex64;
 typedef double _Complex GoComplex128;
@@ -81,17 +89,17 @@ typedef struct { void *data; GoInt len; GoInt cap; } GoSlice;
 extern "C" {
 #endif
 
-extern void go_on_init(uint32_t p0);
-extern void go_on_exit(uint32_t p0);
 extern void go_on_callable_call(uintptr_t p0, void* p1, int64_t p2, void* p3, void* p4);
 extern _Bool go_on_callable_validation(uintptr_t p0);
 extern void go_on_callable_free(uintptr_t p0);
-extern int64_t go_on_callable_hash(uintptr_t p0);
+extern uint32_t go_on_callable_hash(uintptr_t p0);
 extern _Bool go_on_callable_compare(uintptr_t p0, uintptr_t p1);
 extern _Bool go_on_callable_less_than(uintptr_t p0, uintptr_t p1);
 extern uintptr_t go_on_callable_stringify(uintptr_t p0, void* p1);
 extern int64_t go_on_callable_get_argument_count(uintptr_t p0, void* p1);
-extern void go_on_editor_class_in_use_detection(uintptr_t p0, uintptr_t p1, void* p2);
+extern void go_on_editor_class_in_use_detection(uint64_t p0, uint64_t p1, void* p2);
+extern void go_on_engine_init(uint32_t p0);
+extern void go_on_engine_exit(uint32_t p0);
 extern uintptr_t go_on_extension_binding_created(uintptr_t p0);
 extern void go_on_extension_binding_removed(uintptr_t p0, uintptr_t p1);
 extern _Bool go_on_extension_binding_reference(uintptr_t p0, _Bool p1);
@@ -103,14 +111,14 @@ extern uintptr_t go_on_extension_instance_property_list(uintptr_t p0);
 extern _Bool go_on_extension_instance_property_has_default(uintptr_t p0, uintptr_t p1);
 extern _Bool go_on_extension_instance_property_get_default(uintptr_t p0, uintptr_t p1, void* p2);
 extern _Bool go_on_extension_instance_property_validation(uintptr_t p0, uintptr_t p1);
-extern void go_on_extension_instance_notification(uintptr_t p0, _Bool p1);
+extern void go_on_extension_instance_notification(uintptr_t p0, int32_t p1, _Bool p2);
 extern uintptr_t go_on_extension_instance_stringify(uintptr_t p0);
 extern _Bool go_on_extension_instance_reference(uintptr_t p0, _Bool p1);
 extern uint64_t go_on_extension_instance_rid(uintptr_t p0);
-extern void go_on_extension_instance_call(uintptr_t p0, uintptr_t p1, void* p2, int64_t p3, void* p4, void* p5);
-extern void go_on_extension_instance_call_checked(uintptr_t p0, uintptr_t p1, void* p2, void* p3);
+extern void go_on_extension_instance_checked_call(uintptr_t p0, uintptr_t p1, void* p2, void* p3);
+extern void go_on_extension_instance_variant_call(uintptr_t p0, uintptr_t p1, void* p2, void* p3);
+extern void go_on_extension_instance_dynamic_call(uintptr_t p0, uintptr_t p1, void* p2, int64_t p3, void* p4, void* p5);
 extern void go_on_extension_instance_free(uintptr_t p0);
-extern void go_on_extension_instance_unsafe_call(uintptr_t p0, uintptr_t p1, void* p2, void* p3);
 extern _Bool go_on_extension_script_categorization(uintptr_t p0, uintptr_t p1);
 extern uint32_t go_on_extension_script_get_property_type(uintptr_t p0, void* p1);
 extern uintptr_t go_on_extension_script_get_owner(uintptr_t p0);
@@ -121,9 +129,9 @@ extern int64_t go_on_extension_script_get_method_argument_count(uintptr_t p0, ui
 extern uintptr_t go_on_extension_script_get(uintptr_t p0);
 extern _Bool go_on_extension_script_is_placeholder(uintptr_t p0);
 extern uintptr_t go_on_extension_script_get_language(uintptr_t p0);
-extern void go_on_first_frame();
-extern void go_on_every_frame();
-extern void go_on_final_frame();
+extern void go_on_first_frame(void);
+extern void go_on_every_frame(void);
+extern void go_on_final_frame(void);
 extern void go_on_worker_thread_pool_task(uintptr_t p0);
 extern void go_on_worker_thread_pool_group_task(uintptr_t p0, uint32_t p1);
 

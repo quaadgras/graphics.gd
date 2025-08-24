@@ -21,11 +21,9 @@ import (
 
 func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintptr]string) {
 	classTypePtr := reflect.PointerTo(rtype)
+	var elligible []reflect.Method
 	for i := range classTypePtr.NumMethod() {
 		i := i
-
-		var hasContext bool = false
-
 		method := classTypePtr.Method(i)
 		if !method.IsExported() || method.Type.NumIn() < 1 {
 			continue
@@ -43,77 +41,92 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 		if method.Name == "OnRegister" {
 			continue
 		}
+		elligible = append(elligible, method)
+	}
+	var minfo = gdextension.Host.ClassDB.MethodList.Make(len(elligible))
+	for _, method := range elligible {
 		if name, ok := renames[method.Func.Pointer()]; ok {
 			method.Name = name
 		} else {
 			method.Name = String.ToSnakeCase(method.Name)
 		}
 		var offset = 0
-		var arguments = make([]gd.PropertyInfo, 0, method.Type.NumIn()-1-offset)
-		var metadatas = make([]gd.ClassMethodArgumentMetadata, 0, method.Type.NumIn()-1-offset)
+		var arguments = gdextension.Host.ClassDB.PropertyList.Make(method.Type.NumIn() - 1 - offset)
 		for i := 1 + offset; i < method.Type.NumIn(); i++ {
-			vtype, ok := propertyOf(class, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: method.Type.In(i)})
-			if ok {
-				arguments = append(arguments, vtype)
-				metadatas = append(metadatas, 0)
+			if !propertyOf(class, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: method.Type.In(i)}, arguments) {
+				panic(fmt.Sprintf("gdextension: method %s has an argument of unsupported type %v", method.Name, method.Type.In(i)))
 			}
 		}
-		var returns *gd.PropertyInfo
-		var returnMetadata gd.ClassMethodArgumentMetadata
+		var returns = gdextension.Host.ClassDB.PropertyList.Make(method.Type.NumOut())
 		if method.Type.NumOut() > 0 {
-			property, ok := propertyOf(class, reflect.StructField{Name: "result", Type: method.Type.Out(0)})
-			if ok {
-				returns = &property
-				returnMetadata = 0
+			if !propertyOf(class, reflect.StructField{Name: "result", Type: method.Type.Out(0)}, returns) {
+				panic(fmt.Sprintf("gdextension: method %s has a return value of unsupported type %v", method.Name, method.Type.Out(0)))
 			}
 		}
-		gd.Global.ClassDB.RegisterClassMethod(gd.Global.ExtensionToken, class, gd.Method{
-			Name: gd.NewStringName(method.Name),
-			Call: variantCall(method),
-			PointerCall: func(instance any, args gd.Address, ret gd.Address) {
-				extensionInstance := instance.(*instanceImplementation).Value
-				slowCall(hasContext, reflect.ValueOf(extensionInstance).Method(i), args, ret)
-			},
-			Arguments:           arguments,
-			ArgumentsMetadata:   metadatas,
-			ReturnValueInfo:     returns,
-			ReturnValueMetadata: returnMetadata,
-		})
+		call := variantCall(method)
+		gdextension.Host.ClassDB.MethodList.Push(minfo,
+			pointers.Get(gd.NewStringName(method.Name)),
+			gdextension.FunctionID(cgoNewHandle(&methodImplementation{
+				arg_count: method.Type.NumIn(),
+				dynamic:   call,
+				checked: func(instance any, args gd.Address, ret gd.Address) {
+					extensionInstance := instance.(*instanceImplementation).Value
+					slowCall(false, reflect.ValueOf(extensionInstance).Method(method.Index), args, ret)
+				},
+				variant: func(instance any, v ...gd.Variant) gd.Variant {
+					result, _ := call(instance, v...)
+					return result
+				},
+			})),
+			0,
+			returns,
+			arguments,
+			0,
+			nil,
+		)
+		defer gdextension.Host.ClassDB.PropertyList.Free(arguments)
+		defer gdextension.Host.ClassDB.PropertyList.Free(returns)
 	}
+	gdextension.Host.ClassDB.Register.Methods(pointers.Get(class), minfo)
+	gdextension.Host.ClassDB.MethodList.Free(minfo)
 }
 
 func registerStaticMethod(class gd.StringName, name string, fn reflect.Value) {
 	ftype := fn.Type()
-	var arguments = make([]gd.PropertyInfo, 0, ftype.NumIn())
-	var metadatas = make([]gd.ClassMethodArgumentMetadata, 0, ftype.NumIn())
+	var arguments = gdextension.Host.ClassDB.PropertyList.Make(ftype.NumIn())
 	for i := 0; i < ftype.NumIn(); i++ {
-		vtype, ok := propertyOf(class, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: ftype.In(i)})
-		if ok {
-			arguments = append(arguments, vtype)
-			metadatas = append(metadatas, 0)
+		if !propertyOf(class, reflect.StructField{Name: "arg" + fmt.Sprint(i), Type: ftype.In(i)}, arguments) {
+			panic(fmt.Sprintf("gdextension: method %s has an argument of unsupported type %v", name, ftype.In(i)))
 		}
 	}
-	var returns *gd.PropertyInfo
-	var returnMetadata gd.ClassMethodArgumentMetadata
+	var returns = gdextension.Host.ClassDB.PropertyList.Make(ftype.NumIn())
 	if ftype.NumOut() > 0 {
-		property, ok := propertyOf(class, reflect.StructField{Name: "result", Type: ftype.Out(0)})
-		if ok {
-			returns = &property
-			returnMetadata = 0
+		if !propertyOf(class, reflect.StructField{Name: "result", Type: ftype.Out(0)}, returns) {
+			panic(fmt.Sprintf("gdextension: method %s has a return value of unsupported type %v", name, ftype.Out(0)))
 		}
 	}
-	gd.Global.ClassDB.RegisterClassMethod(gd.Global.ExtensionToken, class, gd.Method{
-		Name:        gd.NewStringName(name),
-		Call:        variantCallStatic(fn),
-		MethodFlags: gd.MethodFlags(MethodFlagStatic),
-		PointerCall: func(instance any, args gd.Address, ret gd.Address) {
-			slowCall(false, fn, args, ret)
-		},
-		Arguments:           arguments,
-		ArgumentsMetadata:   metadatas,
-		ReturnValueInfo:     returns,
-		ReturnValueMetadata: returnMetadata,
-	})
+	var method = gdextension.Host.ClassDB.MethodList.Make(1)
+	gdextension.Host.ClassDB.MethodList.Push(method,
+		pointers.Get(gd.NewStringName(name)),
+		gdextension.FunctionID(cgoNewHandle(variantCallStatic(fn))),
+		gdextension.MethodFlagStatic,
+		returns,
+		arguments,
+		0,
+		nil,
+	)
+	gdextension.Host.ClassDB.Register.Methods(pointers.Get(class), method)
+	gdextension.Host.ClassDB.MethodList.Free(method)
+	gdextension.Host.ClassDB.PropertyList.Free(arguments)
+	gdextension.Host.ClassDB.PropertyList.Free(returns)
+}
+
+type methodImplementation struct {
+	arg_count int
+
+	dynamic func(instance any, v ...gd.Variant) (gd.Variant, error)
+	checked func(instance any, args gd.Address, ret gd.Address)
+	variant func(instance any, v ...gd.Variant) gd.Variant
 }
 
 func variantCallStatic(fn reflect.Value) func(instance any, v ...gd.Variant) (gd.Variant, error) {

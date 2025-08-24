@@ -18,8 +18,8 @@ var Links []func()
 // Link needs to be called once for the API to load in all of the
 // dynamic function pointers. Typically, the link layer will take
 // care of this (and you won't need to call it yourself).
-func (Godot *API) Init(level GDExtensionInitializationLevel) {
-	if level == GDExtensionInitializationLevelScene {
+func (Godot *API) Init(level gdextension.InitializationLevel) {
+	if level == gdextension.InitializationLevelScene {
 		Godot.linkBuiltin()
 		Godot.linkTypeset()
 		Godot.linkTypesetCreation()
@@ -30,7 +30,7 @@ func (Godot *API) Init(level GDExtensionInitializationLevel) {
 		}
 		Linked = true
 	}
-	if level == GDExtensionInitializationLevelEditor {
+	if level == gdextension.InitializationLevelEditor {
 		for _, fn := range EditorStartupFunctions {
 			fn()
 		}

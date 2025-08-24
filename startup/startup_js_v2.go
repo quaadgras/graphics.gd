@@ -74,6 +74,7 @@ func init() {
 		gd_iterator_make                           js.Value
 		gd_iterator_next                           js.Value
 		gd_iterator_load                           js.Value
+		gd_library_location                        js.Value
 		gd_log_error                               js.Value
 		gd_log_warning                             js.Value
 		gd_memory_malloc                           js.Value
@@ -254,6 +255,7 @@ func init() {
 		gd_iterator_make = GD.Get("iterator_make")
 		gd_iterator_next = GD.Get("iterator_next")
 		gd_iterator_load = GD.Get("iterator_load")
+		gd_library_location = GD.Get("library_location")
 		gd_log_error = GD.Get("log_error")
 		gd_log_warning = GD.Get("log_warning")
 		gd_memory_malloc = GD.Get("memory_malloc")
@@ -374,14 +376,6 @@ func init() {
 		gd_version_timestamp = GD.Get("version_timestamp")
 		gd_version_string = GD.Get("version_string")
 	})
-	Go.Set("on_init", js.FuncOf(func(self js.Value, args []js.Value) any {
-		gdextension.On.Init(gdextension.InitializationLevel(args[0].Int()))
-		return nil
-	}))
-	Go.Set("on_exit", js.FuncOf(func(self js.Value, args []js.Value) any {
-		gdextension.On.Exit(gdextension.InitializationLevel(args[0].Int()))
-		return nil
-	}))
 	Go.Set("on_callable_call", js.FuncOf(func(self js.Value, args []js.Value) any {
 		gdextension.On.Callables.Call(gdextension.FunctionID(args[0].Int()), gdextension.Returns[gdextension.Variant](args[1].Int()), int(args[2].Int()), gdextension.Accepts[gdextension.Variant](args[3].Int()), gdextension.Returns[gdextension.CallError](args[4].Int()))
 		return nil
@@ -410,6 +404,14 @@ func init() {
 	}))
 	Go.Set("on_editor_class_in_use_detection", js.FuncOf(func(self js.Value, args []js.Value) any {
 		gdextension.On.Editor.ClassInUseDetection(gdextension.PackedArray[gdextension.String]{uint64(math.Float64bits(args[0].Float()))}, gdextension.Returns[gdextension.PackedArray[gdextension.String]](args[1].Int()))
+		return nil
+	}))
+	Go.Set("on_engine_init", js.FuncOf(func(self js.Value, args []js.Value) any {
+		gdextension.On.Engine.Init(gdextension.InitializationLevel(args[0].Int()))
+		return nil
+	}))
+	Go.Set("on_engine_exit", js.FuncOf(func(self js.Value, args []js.Value) any {
+		gdextension.On.Engine.Exit(gdextension.InitializationLevel(args[0].Int()))
 		return nil
 	}))
 	Go.Set("on_extension_binding_created", js.FuncOf(func(self js.Value, args []js.Value) any {
@@ -447,7 +449,7 @@ func init() {
 		return bool(gdextension.On.Extension.Instance.PropertyValidation(gdextension.ExtensionInstanceID(args[0].Int()), gdextension.PropertyList(args[1].Int())))
 	}))
 	Go.Set("on_extension_instance_notification", js.FuncOf(func(self js.Value, args []js.Value) any {
-		gdextension.On.Extension.Instance.Notification(gdextension.ExtensionInstanceID(args[0].Int()), bool(args[1].Bool()))
+		gdextension.On.Extension.Instance.Notification(gdextension.ExtensionInstanceID(args[0].Int()), int32(args[1].Int()), bool(args[2].Bool()))
 		return nil
 	}))
 	Go.Set("on_extension_instance_stringify", js.FuncOf(func(self js.Value, args []js.Value) any {
@@ -459,20 +461,20 @@ func init() {
 	Go.Set("on_extension_instance_rid", js.FuncOf(func(self js.Value, args []js.Value) any {
 		return uint64(gdextension.On.Extension.Instance.RID(gdextension.ExtensionInstanceID(args[0].Int())))
 	}))
-	Go.Set("on_extension_instance_call", js.FuncOf(func(self js.Value, args []js.Value) any {
-		gdextension.On.Extension.Instance.Call(gdextension.ExtensionInstanceID(args[0].Int()), gdextension.FunctionID(args[1].Int()), gdextension.Returns[gdextension.Variant](args[2].Int()), int(args[3].Int()), gdextension.Accepts[gdextension.Variant](args[4].Int()), gdextension.Returns[gdextension.CallError](args[5].Int()))
+	Go.Set("on_extension_instance_checked_call", js.FuncOf(func(self js.Value, args []js.Value) any {
+		gdextension.On.Extension.Instance.CheckedCall(gdextension.ExtensionInstanceID(args[0].Int()), gdextension.FunctionID(args[1].Int()), gdextension.Returns[interface{}](args[2].Int()), gdextension.Accepts[interface{}](args[3].Int()))
 		return nil
 	}))
-	Go.Set("on_extension_instance_call_checked", js.FuncOf(func(self js.Value, args []js.Value) any {
-		gdextension.On.Extension.Instance.CallChecked(gdextension.ExtensionInstanceID(args[0].Int()), gdextension.FunctionID(args[1].Int()), gdextension.Returns[gdextension.Variant](args[2].Int()), gdextension.Accepts[gdextension.Variant](args[3].Int()))
+	Go.Set("on_extension_instance_variant_call", js.FuncOf(func(self js.Value, args []js.Value) any {
+		gdextension.On.Extension.Instance.VariantCall(gdextension.ExtensionInstanceID(args[0].Int()), gdextension.FunctionID(args[1].Int()), gdextension.Returns[gdextension.Variant](args[2].Int()), gdextension.Accepts[gdextension.Variant](args[3].Int()))
+		return nil
+	}))
+	Go.Set("on_extension_instance_dynamic_call", js.FuncOf(func(self js.Value, args []js.Value) any {
+		gdextension.On.Extension.Instance.DynamicCall(gdextension.ExtensionInstanceID(args[0].Int()), gdextension.FunctionID(args[1].Int()), gdextension.Returns[gdextension.Variant](args[2].Int()), int(args[3].Int()), gdextension.Accepts[gdextension.Variant](args[4].Int()), gdextension.Returns[gdextension.CallError](args[5].Int()))
 		return nil
 	}))
 	Go.Set("on_extension_instance_free", js.FuncOf(func(self js.Value, args []js.Value) any {
 		gdextension.On.Extension.Instance.Free(gdextension.ExtensionInstanceID(args[0].Int()))
-		return nil
-	}))
-	Go.Set("on_extension_instance_unsafe_call", js.FuncOf(func(self js.Value, args []js.Value) any {
-		gdextension.On.Extension.Instance.Unsafe.Call(gdextension.ExtensionInstanceID(args[0].Int()), gdextension.FunctionID(args[1].Int()), gdextension.Returns[interface{}](args[2].Int()), gdextension.Accepts[interface{}](args[3].Int()))
 		return nil
 	}))
 	Go.Set("on_extension_script_categorization", js.FuncOf(func(self js.Value, args []js.Value) any {
@@ -507,23 +509,23 @@ func init() {
 		return uint32(gdextension.On.Extension.Script.Language(gdextension.ExtensionInstanceID(args[0].Int())))
 	}))
 	Go.Set("on_first_frame", js.FuncOf(func(self js.Value, args []js.Value) any {
-		gdextension.On.Frames.First()
+		gdextension.On.MainLoop.FirstFrame()
 		return nil
 	}))
 	Go.Set("on_every_frame", js.FuncOf(func(self js.Value, args []js.Value) any {
-		gdextension.On.Frames.Every()
+		gdextension.On.MainLoop.EveryFrame()
 		return nil
 	}))
 	Go.Set("on_final_frame", js.FuncOf(func(self js.Value, args []js.Value) any {
-		gdextension.On.Frames.Final()
+		gdextension.On.MainLoop.FinalFrame()
 		return nil
 	}))
 	Go.Set("on_worker_thread_pool_task", js.FuncOf(func(self js.Value, args []js.Value) any {
-		gdextension.On.Tasks.Run(gdextension.TaskID(args[0].Int()))
+		gdextension.On.Threading.Run(gdextension.TaskID(args[0].Int()))
 		return nil
 	}))
 	Go.Set("on_worker_thread_pool_group_task", js.FuncOf(func(self js.Value, args []js.Value) any {
-		gdextension.On.Tasks.RunInGroup(gdextension.TaskID(args[0].Int()), uint32(args[1].Int()))
+		gdextension.On.Threading.RunInGroup(gdextension.TaskID(args[0].Int()), uint32(args[1].Int()))
 		return nil
 	}))
 	gdextension.Host.Array.Get = func(p0 gdextension.Array, p1 int, p2 gdextension.CallReturns[gdextension.Variant]) {
@@ -693,10 +695,10 @@ func init() {
 		result = gdextension.MethodList(gd_method_list_make.Invoke(p0).Int())
 		return
 	}
-	gdextension.Host.ClassDB.MethodList.Push = func(p0 gdextension.MethodList, p1 gdextension.StringName, p2 gdextension.FunctionID, p3 gdextension.MethodFlags, p4 bool, p5 gdextension.PropertyList, p6 uint32, p7 gdextension.PropertyList, p8 int, p9 gdextension.CallAccepts[gdextension.Variant]) {
+	gdextension.Host.ClassDB.MethodList.Push = func(p0 gdextension.MethodList, p1 gdextension.StringName, p2 gdextension.FunctionID, p3 gdextension.MethodFlags, p4 gdextension.PropertyList, p5 gdextension.PropertyList, p6 int, p7 gdextension.CallAccepts[gdextension.Variant]) {
 		setup()
-		mem9 := gdmemory.CopyVariants(p9, p8)
-		gd_method_list_push.Invoke(uint32(p0), uint32(p1[0]), uint32(p2), uint32(p3), p4, uint32(p5), uint32(p6), uint32(p7), p8, uint32(mem9))
+		mem7 := gdmemory.CopyVariants(p7, p6)
+		gd_method_list_push.Invoke(uint32(p0), uint32(p1[0]), uint32(p2), uint32(p3), uint32(p4), uint32(p5), p6, uint32(mem7))
 		return
 	}
 	gdextension.Host.ClassDB.MethodList.Free = func(p0 gdextension.MethodList) {
@@ -863,6 +865,11 @@ func init() {
 		gd_iterator_load.Invoke(math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p0[2]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1[0]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1[1]))), math.Float64frombits(*(*uint64)(unsafe.Pointer(&p1[2]))), uint32(mem2), uint32(mem3))
 		gdmemory.LoadResult(gdextension.SizeBytes24, p2, mem2)
 		gdmemory.LoadResult(gdextension.SizeBytes12, p3, mem3)
+		return
+	}
+	gdextension.Host.Library.Location = func() (result gdextension.String) {
+		setup()
+		result = gdextension.String{gdextension.Pointer(gd_library_location.Invoke().Int())}
 		return
 	}
 	gdextension.Host.Log.Error = func(p0 string, p1 string, p2 string, p3 string, p4 int32, p5 bool) {

@@ -154,7 +154,7 @@ func Register[T Class](exports ...any) {
 		}
 		gdclass.Registered.Store(classType, impl)
 
-		gd.Global.ClassDB.RegisterClass(gd.Global.ExtensionToken, className, superName, impl)
+		gdextension.Host.ClassDB.Register.Class(pointers.Get(className), pointers.Get(superName), gdextension.ExtensionClassID(cgoNewHandle(impl)), false, false, true, false, gdextension.String{})
 
 		gd.RegisterCleanup(func() {
 			gdextension.Host.ClassDB.Register.Removal(pointers.Get(className))
@@ -274,7 +274,7 @@ var preloaded_documentation = make(map[string]docgen.Class)
 func init() {
 	gd.StartupFunctions = append(gd.StartupFunctions, func() {
 		if EngineClass.IsEditorHint() {
-			path := gd.Global.GetLibraryPath(gd.Global.ExtensionToken)
+			path := pointers.New[gd.String](gdextension.Host.Library.Location())
 			data, err := os.Open(filepath.Join(filepath.Dir(path.String()), "library_documentation.xml"))
 			if err != nil {
 				if errors.Is(err, os.ErrNotExist) {
@@ -358,8 +358,9 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			class.Signals = append(class.Signals, signal)
 			return
 		}
-		ptype, ok := propertyOf(className, field)
-		if ok {
+		var ptype gdextension.PropertyList
+		ptype = gdextension.Host.ClassDB.PropertyList.Make(1)
+		if propertyOf(className, field, ptype) {
 			var exists bool
 			var member = new(docgen.Member)
 			for i := range class.Members {
@@ -379,12 +380,13 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			if docs, ok := docs[member.Name]; ok {
 				member.Description = extractDoc(docs)
 			}
-			member.Type = ptype.Type.String()
+			member.Type = gdextension.Host.ClassDB.PropertyList.Info.Type(ptype).String()
 			if !exists {
 				class.Members = append(class.Members, *member)
 			}
-			gd.Global.ClassDB.RegisterClassProperty(gd.Global.ExtensionToken, className, ptype, gd.NewStringName(""), gd.NewStringName(""))
+			gdextension.Host.ClassDB.Register.Property(pointers.Get(className), ptype, pointers.Get(gd.NewStringName("")), pointers.Get(gd.NewStringName("")))
 		}
+		gdextension.Host.ClassDB.PropertyList.Free(ptype)
 	}
 	for _, field := range ungroupedFields {
 		registerField(field)
@@ -446,8 +448,6 @@ type classImplementation struct {
 	Constructor    func() reflect.Value
 }
 
-var _ gd.ClassInterface = classImplementation{}
-
 func (class classImplementation) IsVirtual() bool {
 	return false
 }
@@ -460,25 +460,26 @@ func (class classImplementation) IsExposed() bool {
 	return true // TODO return false if the Go type is not exported.
 }
 
-func (class classImplementation) CreateInstance() [1]gd.Object {
-	return class.CreateInstanceFrom(class.Constructor())
+func (class classImplementation) CreateInstance(notify_postinitialize bool) [1]gd.Object {
+	return class.CreateInstanceFrom(class.Constructor(), notify_postinitialize)
 }
 
-func (class classImplementation) CreateInstanceFrom(value reflect.Value) [1]gd.Object {
+func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_postinitialize bool) [1]gd.Object {
 	var super = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(class.Super)))})}
 	if class.RefCounted {
 		Object.To[RefCounted.Instance](super[0])[0].Reference()
 	}
 	super = [1]gd.Object{pointers.Pin(super[0])}
 	instance := class.reloadInstance(value, super)
-	gd.Global.Object.SetInstance(super, class.Name, instance)
-	gd.Global.Object.SetInstanceBinding(super, gd.Global.ExtensionToken, nil, nil)
-	super[0].Notification(0, false)
+	gdextension.Host.Objects.Extension.Setup(gdextension.Object(pointers.Get(super[0])[0]), pointers.Get(class.Name), gdextension.ExtensionInstanceID(cgoNewHandle(instance)))
+	if notify_postinitialize {
+		super[0].Notification(0, false)
+	}
 	instance.OnCreate(value)
 	return super
 }
 
-func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd.Object) gd.ObjectInterface {
+func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd.Object) *instanceImplementation {
 	extensionClass := value.Interface().(gdclass.Pointer)
 	gdclass.SetObject(extensionClass, super)
 
@@ -624,11 +625,11 @@ func (instance *instanceImplementation) ToString() (gd.String, bool) {
 func (instance *instanceImplementation) Reference() {
 
 }
-func (instance *instanceImplementation) Unreference() {
-
+func (instance *instanceImplementation) Unreference() bool {
+	return false
 }
 
-func (instance *instanceImplementation) CallVirtual(name gd.StringName, virtual any, args gd.Address, back gd.Address) {
+func (instance *instanceImplementation) CallVirtual(virtual any, args gd.Address, back gd.Address) {
 	virtual.(gd.ExtensionClassCallVirtualFunc)(instance.Value, args, back)
 }
 

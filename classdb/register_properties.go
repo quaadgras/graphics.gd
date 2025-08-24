@@ -8,6 +8,7 @@ import (
 	NodeClass "graphics.gd/classdb/Node"
 	ResourceClass "graphics.gd/classdb/Resource"
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Array"
 	"graphics.gd/variant/Enum"
@@ -16,7 +17,7 @@ import (
 	"graphics.gd/variant/String"
 )
 
-func propertyOf(class gd.StringName, field reflect.StructField) (gd.PropertyInfo, bool) {
+func propertyOf(class gd.StringName, field reflect.StructField, push_into gdextension.PropertyList) bool {
 	var name = String.ToSnakeCase(field.Name)
 	tag, ok := field.Tag.Lookup("gd")
 	if ok {
@@ -53,13 +54,13 @@ func propertyOf(class gd.StringName, field reflect.StructField) (gd.PropertyInfo
 		default:
 			vtype, ok = gd.VariantTypeOf(field.Type)
 			if !ok {
-				return gd.PropertyInfo{}, false
+				return false
 			}
 			if vtype == gd.TypeArray && (field.Type.Kind() == reflect.Array || field.Type.Kind() == reflect.Slice) {
 				elem := field.Type.Elem()
 				etype, ok := gd.VariantTypeOf(elem)
 				if !ok {
-					return gd.PropertyInfo{}, false
+					return false
 				}
 				if elem.Implements(reflect.TypeFor[ResourceClass.Any]()) {
 					hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, PropertyHintResourceType, nameOf(elem)) // MAKE_RESOURCE_TYPE_HINT
@@ -72,7 +73,7 @@ func propertyOf(class gd.StringName, field reflect.StructField) (gd.PropertyInfo
 				elem := reflect.Zero(field.Type).Interface().(Array.Interface).ElemType()
 				etype, ok := gd.VariantTypeOf(elem)
 				if !ok {
-					return gd.PropertyInfo{}, false
+					return false
 				}
 				if etype != gd.TypeNil {
 					hint |= PropertyHintArrayType
@@ -95,14 +96,16 @@ func propertyOf(class gd.StringName, field reflect.StructField) (gd.PropertyInfo
 		hint |= PropertyHintRange
 		hintString = rangeHint
 	}
-	return gd.PropertyInfo{
-		Type:       vtype,
-		Name:       gd.NewStringName(name),
-		ClassName:  gd.NewStringName(className),
-		Hint:       int64(hint),
-		HintString: gd.NewString(hintString),
-		Usage:      int64(usage),
-	}, true
+	gdextension.Host.ClassDB.PropertyList.Push(push_into,
+		vtype,
+		pointers.Get(gd.NewStringName(name)),
+		pointers.Get(gd.NewStringName(className)),
+		uint32(hint),
+		pointers.Get(gd.NewString(hintString)),
+		uint32(usage),
+		0,
+	)
+	return true
 }
 
 // Set needs to reference++ any resources that are sucessfully set.
@@ -244,26 +247,27 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 	return gd.NewVariant(field.Interface()), true
 }
 
-func (instance *instanceImplementation) GetPropertyList() []gd.PropertyInfo {
+func (instance *instanceImplementation) GetPropertyList() gdextension.PropertyList {
 	if impl, ok := instance.Value.(interface {
 		GetPropertyList() []Object.PropertyInfo
 	}); ok {
 		var list = impl.GetPropertyList()
-		var results = make([]gd.PropertyInfo, len(list))
-		for i, info := range list {
+		var results = gdextension.Host.ClassDB.PropertyList.Make(len(list))
+		for _, info := range list {
 			vtype, _ := gd.VariantTypeOf(info.Type)
-			results[i] = gd.PropertyInfo{
-				Type:       vtype,
-				Name:       gd.NewStringName(info.Name),
-				ClassName:  gd.NewStringName(info.ClassName),
-				HintString: gd.NewString(info.HintString),
-				Usage:      int64(info.Usage),
-				Hint:       int64(info.Hint),
-			}
+			gdextension.Host.ClassDB.PropertyList.Push(results,
+				vtype,
+				pointers.Get(gd.NewStringName(info.Name)),
+				pointers.Get(gd.NewStringName(info.ClassName)),
+				uint32(info.Hint),
+				pointers.Get(gd.NewString(info.HintString)),
+				uint32(info.Usage),
+				0,
+			)
 		}
 		return results
 	}
-	return nil
+	return 0
 }
 
 func (instance *instanceImplementation) PropertyCanRevert(name gd.StringName) bool {
@@ -322,18 +326,18 @@ func (instance *instanceImplementation) PropertyGetRevert(name gd.StringName) (g
 	return gd.NewVariant(value.Elem().Interface()), true
 }
 
-func (instance *instanceImplementation) ValidateProperty(info *gd.PropertyInfo) bool {
+func (instance *instanceImplementation) ValidateProperty(list gdextension.PropertyList) bool {
 	switch validate := instance.Value.(type) {
 	case interface {
 		ValidateProperty(Object.PropertyInfo) bool
 	}:
 		return bool(validate.ValidateProperty(Object.PropertyInfo{
-			ClassName:  info.ClassName.String(),
-			Usage:      int(info.Usage),
-			Type:       gd.ConvieniantGoTypeOf(info.Type),
-			HintString: info.HintString.String(),
-			Hint:       int(info.Hint),
-			Name:       info.Name.String(),
+			ClassName:  pointers.Raw[gd.StringName](gdextension.Host.ClassDB.PropertyList.Info.ClassName(list)).String(),
+			Usage:      int(gdextension.Host.ClassDB.PropertyList.Info.Usage(list)),
+			Type:       gd.ConvieniantGoTypeOf(gdextension.Host.ClassDB.PropertyList.Info.Type(list)),
+			HintString: pointers.Raw[gd.String](gdextension.Host.ClassDB.PropertyList.Info.HinString(list)).String(),
+			Hint:       int(gdextension.Host.ClassDB.PropertyList.Info.Hint(list)),
+			Name:       pointers.Raw[gd.StringName](gdextension.Host.ClassDB.PropertyList.Info.Name(list)).String(),
 		}))
 	}
 	return true

@@ -48,7 +48,7 @@
 #define LOAD_PROC_ADDRESS(m_name, m_type) gdextension_##m_name = (m_type)p_get_proc_address(#m_name);
 
 GDExtensionClassLibraryPtr cgo_library = NULL;
-GDExtensionGodotVersion2 cgo_cached_godot_version;
+GDExtensionGodotVersion2 cgo_cached_godot_version = {};
 
 typedef struct {
     GDExtensionVariantPtr r_return;
@@ -62,8 +62,8 @@ typedef struct {
     const GDExtensionConstTypePtr *p_args;
 } reverse_unsafe_frame;
 
-void cgo_initialize(void *ignore, GDExtensionInitializationLevel level) { go_on_init(level); }
-void cgo_deinitialize(void *ignore, GDExtensionInitializationLevel level) { go_on_exit(level); }
+void cgo_initialize(void *ignore, GDExtensionInitializationLevel level) { go_on_engine_init(level); }
+void cgo_deinitialize(void *ignore, GDExtensionInitializationLevel level) { go_on_engine_exit(level); }
 void cgo_callable_call_func(void *callable_userdata, const GDExtensionConstVariantPtr *p_args, GDExtensionInt p_argument_count, GDExtensionVariantPtr r_return, GDExtensionCallError *r_error) {
     go_on_callable_call((uintptr_t)callable_userdata, r_return, p_argument_count, (void *)p_args, r_error);
 }
@@ -87,10 +87,10 @@ GDExtensionInt cgo_callable_get_argument_count_func(void *callable_userdata, GDE
 }
 
 void cgo_method_call_func(void *method_userdata, GDExtensionClassInstancePtr p_instance, const GDExtensionConstVariantPtr *p_args, GDExtensionInt p_argument_count, GDExtensionVariantPtr r_return, GDExtensionCallError *r_error) {
-    go_on_extension_instance_call((uintptr_t)p_instance, (uintptr_t)method_userdata, r_return, p_argument_count, (void *)p_args, r_error);
+    go_on_extension_instance_dynamic_call((uintptr_t)p_instance, (uintptr_t)method_userdata, r_return, p_argument_count, (void *)p_args, r_error);
 }
 void cgo_method_ptrcall_func(void *method_userdata, GDExtensionClassInstancePtr p_instance, const GDExtensionConstTypePtr *p_args, GDExtensionTypePtr r_ret) {
-    go_on_extension_instance_unsafe_call((uintptr_t)p_instance, (uintptr_t)method_userdata, r_ret, (void *)p_args);
+    go_on_extension_instance_checked_call((uintptr_t)p_instance, (uintptr_t)method_userdata, r_ret, (void *)p_args);
 }
 
 void *cgo_instance_binding_create_func(void *p_token, void *p_instance) {
@@ -281,7 +281,7 @@ GDExtensionsInterfaceEditorHelpLoadXmlFromUtf8CharsAndLen gdextension_editor_hel
 GDExtensionInterfaceImagePtrw gdextension_image_ptrw = NULL;
 GDExtensionInterfaceImagePtr gdextension_image_ptr = NULL;
 GDExtensionInterfaceRegisterMainLoopCallbacks gdextension_register_main_loop_callbacks = NULL;
-
+GDExtensionInterfaceGetGodotVersion gdextension_get_godot_version = NULL;
 
 
 GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
@@ -294,6 +294,7 @@ GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc
 	LOAD_PROC_ADDRESS(print_script_error, GDExtensionInterfacePrintScriptError);
 	LOAD_PROC_ADDRESS(print_script_error_with_message, GDExtensionInterfacePrintScriptErrorWithMessage);
 	LOAD_PROC_ADDRESS(get_native_struct_size, GDExtensionInterfaceGetNativeStructSize);
+	LOAD_PROC_ADDRESS(get_godot_version, GDExtensionInterfaceGetGodotVersion);
 	LOAD_PROC_ADDRESS(variant_new_copy, GDExtensionInterfaceVariantNewCopy);
 	LOAD_PROC_ADDRESS(variant_new_nil, GDExtensionInterfaceVariantNewNil);
 	LOAD_PROC_ADDRESS(variant_destroy, GDExtensionInterfaceVariantDestroy);
@@ -450,7 +451,14 @@ GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc
     r_initialization->minimum_initialization_level = GDEXTENSION_INITIALIZATION_CORE;
     r_initialization->initialize = cgo_initialize;
     r_initialization->deinitialize = cgo_deinitialize;
-    //((GDExtensionInterfaceGetGodotVersion2)p_get_proc_address("get_godot_version2"))(&cgo_cached_godot_version);
+
+    // polyfill
+    GDExtensionGodotVersion version;
+    gdextension_get_godot_version(&version);
+    cgo_cached_godot_version.major = version.major;
+    cgo_cached_godot_version.minor = version.minor;
+    cgo_cached_godot_version.patch = version.patch;
+    cgo_cached_godot_version.string = version.string;
 
     for (int i = 1; i < GDEXTENSION_VARIANT_TYPE_VARIANT_MAX; i++) {
     	GDExtensionVariantType v = (GDExtensionVariantType)i;
@@ -533,6 +541,12 @@ void gd_callable_create(uintptr_t id, UINT64 object, ANY result) {
     gdextension_callable_custom_create2((uint64_t *)result, &info);
 }
 
+uintptr_t gd_library_location() {
+    uintptr_t s;
+    gdextension_get_library_path(cgo_library, &s);
+    return s;
+}
+
 uintptr_t gd_callable_lookup(UINT64 a, UINT64 b) {
     uint64_t callable[2] = {UINT64_FROM(a), UINT64_FROM(b)};
     return (uintptr_t)gdextension_callable_custom_get_userdata(&callable, cgo_library);
@@ -556,11 +570,13 @@ uint8_t gd_classdb_Image_access(uintptr_t Image, INT offset) {
 
 typedef struct {
     int32_t push;
+    int32_t size;
     GDExtensionClassMethodInfo *info;
 } method_list;
 
 typedef struct {
     int32_t push;
+    int32_t size;
     GDExtensionPropertyInfo *info;
     GDExtensionClassMethodArgumentMetadata *meta;
 } property_list;
@@ -568,12 +584,14 @@ typedef struct {
 uintptr_t gd_method_list_make(INT length) {
     method_list *list = (method_list *)gdextension_mem_alloc(sizeof(method_list));
     list->push = 0;
+    list->size = length;
     list->info = (GDExtensionClassMethodInfo*)gdextension_mem_alloc(sizeof(GDExtensionClassMethodInfo) * length);
     return (uintptr_t)list;
 };
 
-void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uint32_t method_flags, bool has_return_value, uintptr_t return_value_info, uint32_t argument_count, uintptr_t arguments_info, INT default_argument_count, ANY default_arguments) {
+void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uint32_t method_flags, uintptr_t return_value_info, uintptr_t arguments_info, INT default_argument_count, ANY default_arguments) {
     method_list *list = (method_list *)list_p;
+    if (list->push >= list->size) return;
     GDExtensionClassMethodInfo *info = &list->info[list->push++];
     property_list *return_value = (property_list *)return_value_info;
     property_list *arguments = (property_list *)arguments_info;
@@ -584,21 +602,37 @@ void gd_method_list_push(uintptr_t list_p, uintptr_t name, uintptr_t method, uin
     info->call_func = cgo_method_call_func;
     info->ptrcall_func = cgo_method_ptrcall_func;
     info->method_flags = method_flags;
-    info->has_return_value = has_return_value;
-    info->return_value_info = return_value->info;
-    info->return_value_metadata = *return_value->meta;
-    info->argument_count = argument_count;
-    info->arguments_info = arguments->info;
-    info->arguments_metadata = arguments->meta;
+    if (return_value && return_value->push > 0) {
+        info->has_return_value = true;
+        info->return_value_info = return_value->info;
+        info->return_value_metadata = *return_value->meta;
+    } else {
+        info->has_return_value = false;
+        info->return_value_info = NULL;
+        info->return_value_metadata = (GDExtensionClassMethodArgumentMetadata)0;
+    }
+    if (arguments && arguments->push > 0) {
+        info->argument_count = arguments->push;
+        info->arguments_info = arguments->info;
+        info->arguments_metadata = arguments->meta;
+    } else {
+        info->argument_count = 0;
+        info->arguments_info = NULL;
+        info->arguments_metadata = NULL;
+    }
+    void **points = (void **)gdextension_mem_alloc(sizeof(void*) * default_argument_count);
+    prepare_variants(&points[0], default_argument_count, default_arguments);
     info->default_argument_count = default_argument_count;
-    void *points[16]; prepare_variants(&points[0], default_argument_count, (ANY)default_arguments);
-    info->default_arguments = &points[0];
+    info->default_arguments = points;
 };
 
 void gd_method_list_free(uintptr_t list_p) {
     method_list *list = (method_list *)list_p;
     for (int i = 0; i < list->push; i++) {
         gdextension_mem_free(list->info[i].name);
+        if (list->info[i].default_arguments) {
+            gdextension_mem_free(list->info[i].default_arguments);
+        }
     }
     gdextension_mem_free(list->info); gdextension_mem_free(list);
 };
@@ -606,6 +640,7 @@ void gd_method_list_free(uintptr_t list_p) {
 uintptr_t gd_property_list_make(INT length) {
     property_list *list = (property_list*)gdextension_mem_alloc(sizeof(property_list));
     list->push = 0;
+    list->size = length;
     list->info = (GDExtensionPropertyInfo*)gdextension_mem_alloc(sizeof(GDExtensionPropertyInfo) * length);
     list->meta = (GDExtensionClassMethodArgumentMetadata*)gdextension_mem_alloc(sizeof(GDExtensionClassMethodArgumentMetadata) * length);
     return (uintptr_t)list;
@@ -613,6 +648,7 @@ uintptr_t gd_property_list_make(INT length) {
 
 void gd_property_list_push(uintptr_t list_p, uint32_t vtype, uintptr_t name, uintptr_t class_name, uint32_t hint, uintptr_t hint_string, uint32_t usage, uint32_t meta) {
     property_list *list = (property_list *)list_p;
+    if (list->push >= list->size) return;
     GDExtensionPropertyInfo *info = &list->info[list->push++];
     GDExtensionClassMethodArgumentMetadata *meta_info = &list->meta[list->push - 1];
     uintptr_t *name_allocated = (uintptr_t *)gdextension_mem_alloc(sizeof(uintptr_t));
@@ -625,7 +661,7 @@ void gd_property_list_push(uintptr_t list_p, uint32_t vtype, uintptr_t name, uin
     info->name = (GDExtensionStringNamePtr)name_allocated;
     info->class_name = (GDExtensionStringNamePtr)class_name_allocated;
     info->hint = hint;
-    info->hint_string = (GDExtensionStringNamePtr)hint_string_allocated;
+    info->hint_string = (GDExtensionStringPtr)hint_string_allocated;
     info->usage = usage;
     *meta_info = (GDExtensionClassMethodArgumentMetadata)meta;
 };
@@ -644,32 +680,32 @@ void gd_property_list_free(uintptr_t list_p) {
 
 uint32_t gd_property_info_type(uintptr_t list_p) {
     property_list *list = (property_list *)list_p;
-    return list->info[list->push].type;
+    return list->info[list->push-1].type;
 };
 
 uintptr_t gd_property_info_name(uintptr_t list_p) {
     property_list *list = (property_list *)list_p;
-    return (uintptr_t)list->info[list->push].name;
+    return (uintptr_t)list->info[list->push-1].name;
 };
 
 uintptr_t gd_property_info_class_name(uintptr_t list_p) {
     property_list *list = (property_list *)list_p;
-    return (uintptr_t)list->info[list->push].class_name;
+    return (uintptr_t)list->info[list->push-1].class_name;
 };
 
 uint32_t gd_property_info_hint(uintptr_t list_p) {
     property_list *list = (property_list *)list_p;
-    return list->info[list->push].hint;
+    return list->info[list->push-1].hint;
 };
 
 uintptr_t gd_property_info_hint_string(uintptr_t list_p) {
     property_list *list = (property_list *)list_p;
-    return (uintptr_t)list->info[list->push].hint_string;
+    return (uintptr_t)list->info[list->push-1].hint_string;
 };
 
 uint32_t gd_property_info_usage(uintptr_t list_p) {
     property_list *list = (property_list *)list_p;
-    return list->info[list->push].usage;
+    return list->info[list->push-1].usage;
 };
 
 GDExtensionBool cgo_class_set_func(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field, GDExtensionConstVariantPtr value) {
@@ -677,8 +713,7 @@ GDExtensionBool cgo_class_set_func(GDExtensionClassInstancePtr instance, GDExten
     return go_on_extension_instance_set((uintptr_t)instance, *(uintptr_t*)field, v[0], v[1], v[2]);
 }
 GDExtensionBool cgo_class_get_func(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field, GDExtensionVariantPtr value) {
-    reverse_variant_frame frame = { .r_return = value, .r_error = NULL, .p_args = NULL, .p_argument_count = 0 };
-    return go_on_extension_instance_get((uintptr_t)instance, *(uintptr_t*)field, &frame);
+    return go_on_extension_instance_get((uintptr_t)instance, *(uintptr_t*)field, value);
 }
 GDExtensionBool cgo_class_property_can_revert_func(GDExtensionClassInstancePtr instance, GDExtensionConstStringNamePtr field) {
     return go_on_extension_instance_property_has_default((uintptr_t)instance, *(uintptr_t*)field);
@@ -692,8 +727,10 @@ const GDExtensionPropertyInfo *cgo_class_get_property_list_func(GDExtensionClass
     property_list *list = (property_list*)go_on_extension_instance_property_list((uintptr_t)instance);
     GDExtensionPropertyInfo *info = list ? list->info : NULL;
     *count = list ? list->push : 0;
-    gdextension_mem_free(list->meta);
-    gdextension_mem_free(list);
+    if (list) {
+        gdextension_mem_free(list->meta);
+        gdextension_mem_free(list);
+    }
     return info;
 }
 
@@ -731,7 +768,7 @@ void *cgo_class_get_virtual_call_data_func(void *user_data, GDExtensionConstStri
 }
 
 void cgo_class_call_virtual_with_data_func(GDExtensionClassInstancePtr p_instance, GDExtensionConstStringNamePtr p_name, void *p_virtual_call_userdata, const GDExtensionConstTypePtr *p_args, GDExtensionTypePtr r_ret) {
-    go_on_extension_instance_unsafe_call((uintptr_t)p_instance, (uintptr_t)p_virtual_call_userdata, r_ret, (void *)p_args);
+    go_on_extension_instance_checked_call((uintptr_t)p_instance, (uintptr_t)p_virtual_call_userdata, r_ret, (void *)p_args);
 }
 
 void cgo_class_free_instance_func(void *p_class_userdata, GDExtensionClassInstancePtr p_instance) {

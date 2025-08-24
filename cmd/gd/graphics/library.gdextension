@@ -1,6 +1,6 @@
 [configuration]
 
-entry_symbol = "loadExtension"
+entry_symbol = "cgo_extension_init"
 compatibility_minimum = "%v"
 
 [libraries]

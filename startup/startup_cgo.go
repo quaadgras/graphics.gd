@@ -11,544 +11,71 @@ package startup
 import "C"
 
 import (
+	"fmt"
 	"iter"
-	"runtime"
-	"runtime/cgo"
-	"unsafe"
+	"os"
+	"runtime/debug"
 
-	gd "graphics.gd/internal"
 	internal "graphics.gd/internal"
-	"graphics.gd/internal/callframe"
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 )
 
-func btoi(b bool) int {
-	if b {
-		return 1
-	}
-	return 0
-}
-
-type initialization = C.GDExtensionInitialization
-type initializationLevel = C.GDExtensionInitializationLevel
-
-func doInitialization(init *initialization) {
-	C.initialization(init)
-}
-
-//export initialize
-func initialize(_ unsafe.Pointer, level initializationLevel) {
-	internal.Global.Init(gd.GDExtensionInitializationLevel(level))
-	if level == 2 {
-		for _, fn := range internal.StartupFunctions {
-			fn()
-		}
-		close(intialized)
-		resume_main, stop_main = iter.Pull(call_main_in_steps())
-		resume_main()
-		for _, fn := range internal.PostStartupFunctions {
-			fn()
+func init() {
+	// little hack to enable `gd test` to work, we strip away the headless flag
+	// so that 'go test' doesn't complain on startup.
+	for i := 0; i < len(os.Args); i++ {
+		if os.Args[i] == "--headless" {
+			os.Args = append(os.Args[:i], os.Args[i+1:]...)
 		}
 	}
-}
-
-//export deinitialize
-func deinitialize(_ unsafe.Pointer, level initializationLevel) {
-	if level == 2 {
-		for _, cleanup := range internal.Cleanups() {
-			cleanup()
-		}
-		pointers.Cycle()
-		pointers.Cycle()
-		if theMainFunctionIsWaitingForTheEngineToShutDown {
-			resume_main()
-		}
-	}
-}
-
-func get_proc_address(handle uintptr, name string) unsafe.Pointer {
-	name = name + "\000"
-	char := C.CString(name)
-	defer C.free(unsafe.Pointer(char))
-	return C.get_proc_address(C.pointer(handle), char)
-}
-
-// linkCGO implements the Godot GDExtension API via CGO.
-func linkCGO(API *gd.API) {
-	get_godot_version := dlsymGD("get_godot_version")
-	API.GetGodotVersion = func() gd.Version {
-		var version = new(C.GDExtensionGodotVersion)
-		C.get_godot_version(C.uintptr_t(uintptr(get_godot_version)), version)
-		return gd.Version{
-			Major: uint32(version.major),
-			Minor: uint32(version.minor),
-			Patch: uint32(version.patch),
-			Value: C.GoString(version.string),
-		}
-	}
-	object_get_instance_binding := dlsymGD("object_get_instance_binding")
-	API.Object.GetInstanceBinding = func(o [1]gd.Object, et gd.ExtensionToken, ibt gd.InstanceBindingType) any {
-		var self = pointers.Get(o[0])
-		if self[0] == 0 {
-			panic("nil gd.Object dereference")
-		}
-		var ret = C.object_get_instance_binding(
-			C.uintptr_t(uintptr(object_get_instance_binding)),
-			C.uintptr_t(self[0]),
-			C.uintptr_t(et),
-			unsafe.Pointer(ibt),
-		)
-		return cgo.Handle(ret).Value()
-	}
-	object_set_instance_binding := dlsymGD("object_set_instance_binding")
-	API.Object.SetInstanceBinding = func(o [1]gd.Object, et gd.ExtensionToken, val any, ibt gd.InstanceBindingType) {
-		var self = pointers.Get(o[0])
-		if self[0] == 0 {
-			panic("nil gd.Object dereference")
-		}
-
-		var pinner runtime.Pinner
-		var bindings C.GDExtensionInstanceBindingCallbacks
-		pinner.Pin(&bindings)
-		defer pinner.Unpin()
-
-		p_val := cgo.NewHandle(val)
-		C.object_set_instance_binding(
-			C.uintptr_t(uintptr(object_set_instance_binding)),
-			C.uintptr_t(self[0]),
-			C.uintptr_t(et),
-			C.uintptr_t(p_val),
-			unsafe.Pointer(&bindings),
-		)
-	}
-	object_free_instance_binding := dlsymGD("object_free_instance_binding")
-	API.Object.FreeInstanceBinding = func(o [1]gd.Object, et gd.ExtensionToken) {
-		var self = pointers.Get(o[0])
-		if self[0] == 0 {
-			panic("nil gd.Object dereference")
-		}
-		C.object_free_instance_binding(
-			C.uintptr_t(uintptr(object_free_instance_binding)),
-			C.uintptr_t(self[0]),
-			C.uintptr_t(et),
-		)
-	}
-	object_set_instance := dlsymGD("object_set_instance")
-	API.Object.SetInstance = func(o [1]gd.Object, sn gd.StringName, a gd.ObjectInterface) {
-		var self = pointers.Get(o[0])
-		if self[0] == 0 {
-			panic("nil gd.Object dereference")
-		}
-		var frame = callframe.New()
-		var p_sn = callframe.Arg(frame, pointers.Get(sn))
-		var p_val = cgo.NewHandle(a)
-		C.object_set_instance(
-			C.uintptr_t(uintptr(object_set_instance)),
-			C.uintptr_t(self[0]),
-			C.uintptr_t(p_sn.Uintptr()),
-			C.uintptr_t(p_val),
-		)
-		frame.Free()
-	}
-	get_library_path := dlsymGD("get_library_path")
-	API.GetLibraryPath = func(et gd.ExtensionToken) gd.String {
-		var frame = callframe.New()
-		var r_ret = callframe.Ret[gdextension.String](frame)
-		C.get_library_path(
-			C.uintptr_t(uintptr(get_library_path)),
-			C.uintptr_t(et),
-			C.uintptr_t(r_ret.Uintptr()),
-		)
-		var ret = pointers.New[gd.String](r_ret.Get())
-		frame.Free()
-		return ret
-	}
-
-	classdb_register_extension_class_signal := dlsymGD("classdb_register_extension_class_signal")
-	API.ClassDB.RegisterClassSignal = func(library gd.ExtensionToken, class, signal gd.StringName, args []gd.PropertyInfo) {
-		var frame = callframe.New()
-		var p_class = callframe.Arg(frame, pointers.Get(class))
-		var p_signal = callframe.Arg(frame, pointers.Get(signal))
-		p_list, free := cPropertyList(args) //FIXME
-		defer free()
-		C.classdb_register_extension_class_signal(
-			C.uintptr_t(uintptr(classdb_register_extension_class_signal)),
-			C.uintptr_t(uintptr(library)),
-			C.uintptr_t(p_class.Uintptr()),
-			C.uintptr_t(p_signal.Uintptr()),
-			p_list,
-			C.GDExtensionInt(len(args)),
-		)
-		frame.Free()
-	}
-
-	classdb_register_extension_class2 := dlsymGD("classdb_register_extension_class2")
-	API.ClassDB.RegisterClass = func(library gd.ExtensionToken, name, extends gd.StringName, info gd.ClassInterface) {
-		var frame = callframe.New()
-		var p_name = callframe.Arg(frame, pointers.Get(name))
-		var p_extends = callframe.Arg(frame, pointers.Get(extends))
-		var is_virtual C.GDExtensionBool
-		if info.IsVirtual() {
-			is_virtual = 1
-		}
-		var is_abstract C.GDExtensionBool
-		if info.IsAbstract() {
-			is_abstract = 1
-		}
-		var is_exposed C.GDExtensionBool
-		if info.IsExposed() {
-			is_exposed = 1
-		}
-		var p_info = C.GDExtensionClassCreationInfo2{
-			is_virtual:  is_virtual,
-			is_abstract: is_abstract,
-			is_exposed:  is_exposed,
-		}
-		*(*uintptr)(unsafe.Pointer(&p_info.class_userdata)) = uintptr(cgo.NewHandle(info))
-		C.classdb_register_extension_class2(
-			C.uintptr_t(uintptr(classdb_register_extension_class2)),
-			C.uintptr_t(uintptr(library)),
-			C.uintptr_t(p_name.Uintptr()),
-			C.uintptr_t(p_extends.Uintptr()),
-			&p_info,
-		)
-		frame.Free()
-	}
-	classdb_register_extension_class_property := dlsymGD("classdb_register_extension_class_property")
-	API.ClassDB.RegisterClassProperty = func(library gd.ExtensionToken, class gd.StringName, info gd.PropertyInfo, getter, setter gd.StringName) {
-		var frame = callframe.New()
-		var p_class = callframe.Arg(frame, pointers.Get(class))
-		var p_getter = callframe.Arg(frame, pointers.Get(getter))
-		var p_setter = callframe.Arg(frame, pointers.Get(setter))
-		var pins runtime.Pinner
-		defer pins.Unpin()
-		var info_name = pointers.Get(info.Name)
-		var info_className = pointers.Get(info.ClassName)
-		var info_hintString = pointers.Get(info.HintString)
-		pins.Pin(&info_name)
-		pins.Pin(&info_className)
-		pins.Pin(&info_hintString)
-		var p_info = C.GDExtensionPropertyInfo{
-			_type:       C.GDExtensionVariantType(info.Type),
-			name:        (C.GDExtensionStringNamePtr)(unsafe.Pointer(&info_name)),
-			class_name:  (C.GDExtensionStringNamePtr)(unsafe.Pointer(&info_className)),
-			hint:        C.uint32_t(info.Hint),
-			hint_string: (C.GDExtensionStringPtr)(unsafe.Pointer(&info_hintString)),
-			usage:       C.uint32_t(info.Usage),
-		}
-		C.classdb_register_extension_class_property(
-			C.uintptr_t(uintptr(classdb_register_extension_class_property)),
-			C.uintptr_t(uintptr(library)),
-			C.uintptr_t(p_class.Uintptr()),
-			&p_info,
-			C.uintptr_t(p_getter.Uintptr()),
-			C.uintptr_t(p_setter.Uintptr()),
-		)
-		frame.Free()
-	}
-	classdb_register_extension_class_property_indexed := dlsymGD("classdb_register_extension_class_property_indexed")
-	API.ClassDB.RegisterClassPropertyIndexed = func(library gd.ExtensionToken, class gd.StringName, info gd.PropertyInfo, getter, setter gd.StringName, index int64) {
-		var frame = callframe.New()
-		var p_class = callframe.Arg(frame, pointers.Get(class))
-		var p_getter = callframe.Arg(frame, pointers.Get(getter))
-		var p_setter = callframe.Arg(frame, pointers.Get(setter))
-		var pins runtime.Pinner
-		defer pins.Unpin()
-		var info_name = pointers.Get(info.Name)
-		var info_className = pointers.Get(info.ClassName)
-		var info_hintString = pointers.Get(info.HintString)
-		pins.Pin(&info_name)
-		pins.Pin(&info_className)
-		pins.Pin(&info_hintString)
-		var p_info = C.GDExtensionPropertyInfo{
-			_type:       C.GDExtensionVariantType(info.Type),
-			name:        (C.GDExtensionStringNamePtr)(unsafe.Pointer(&info_name)),
-			class_name:  (C.GDExtensionStringNamePtr)(unsafe.Pointer(&info_className)),
-			hint:        C.uint32_t(info.Hint),
-			hint_string: (C.GDExtensionStringPtr)(unsafe.Pointer(&info_hintString)),
-			usage:       C.uint32_t(info.Usage),
-		}
-		C.classdb_register_extension_class_property_indexed(
-			C.uintptr_t(uintptr(classdb_register_extension_class_property_indexed)),
-			C.uintptr_t(uintptr(library)),
-			C.uintptr_t(p_class.Uintptr()),
-			&p_info,
-			C.uintptr_t(p_getter.Uintptr()),
-			C.uintptr_t(p_setter.Uintptr()),
-			C.GDExtensionInt(index),
-		)
-		frame.Free()
-	}
-	classdb_register_extension_class_method := dlsymGD("classdb_register_extension_class_method")
-	API.ClassDB.RegisterClassMethod = func(library gd.ExtensionToken, class gd.StringName, info gd.Method) {
-		infoHandle := cgo.NewHandle(&info)
-		gd.RegisterCleanup(func() {
-			infoHandle.Delete() // FIXME link this to class registration lifetime?
-		})
-
-		var pins runtime.Pinner
-		defer pins.Unpin()
-
-		var name = pointers.Get(info.Name)
-		pins.Pin(&name)
-
-		var returnInfo *C.GDExtensionPropertyInfo
-
-		var has_return_value C.GDExtensionBool
-		if info.ReturnValueInfo != nil {
-			has_return_value = 1
-
-			var retName = pointers.Get(info.ReturnValueInfo.Name)
-			pins.Pin(&retName)
-
-			var className = pointers.Get(info.ReturnValueInfo.ClassName)
-			pins.Pin(&className)
-
-			var hintString = pointers.Get(info.ReturnValueInfo.HintString)
-			pins.Pin(&hintString)
-
-			returnInfo = &C.GDExtensionPropertyInfo{
-				_type:       C.GDExtensionVariantType(info.ReturnValueInfo.Type),
-				name:        (C.GDExtensionStringNamePtr)(unsafe.Pointer(&retName)),
-				class_name:  (C.GDExtensionStringNamePtr)(unsafe.Pointer(&className)),
-				hint:        C.uint32_t(info.ReturnValueInfo.Hint),
-				hint_string: (C.GDExtensionStringPtr)(unsafe.Pointer(&hintString)),
-				usage:       C.uint32_t(info.ReturnValueInfo.Usage),
+	gdextension.On.Engine = gdextension.CallbacksForEngine{
+		Init: func(level gdextension.InitializationLevel) {
+			internal.Linked = true
+			internal.Global.Init(level)
+			if level == 2 {
+				for _, fn := range internal.StartupFunctions {
+					fn()
+				}
+				close(intialized)
+				resume_main, stop_main = iter.Pull(call_main_in_steps())
+				resume_main()
+				for _, fn := range internal.PostStartupFunctions {
+					fn()
+				}
 			}
-
-			pins.Pin(returnInfo)
-		}
-
-		var list, free = cPropertyList(info.Arguments)
-		defer free()
-
-		var firstMetadata *C.GDExtensionClassMethodArgumentMetadata
-		var metadatas = make([]C.GDExtensionClassMethodArgumentMetadata, 0, len(info.ArgumentsMetadata))
-		for _, metadata := range info.ArgumentsMetadata {
-			metadatas = append(metadatas, C.GDExtensionClassMethodArgumentMetadata(metadata))
-		}
-		if len(metadatas) > 0 {
-			firstMetadata = &metadatas[0]
-			pins.Pin(&metadatas[0])
-		}
-
-		var firstDefaultArgument *C.GDExtensionVariantPtr
-		var defaultArguments = make([]C.GDExtensionVariantPtr, 0, len(info.DefaultArguments))
-		for _, arg := range info.DefaultArguments {
-			var def = pointers.Get(arg)
-			pins.Pin(&def)
-			defaultArguments = append(defaultArguments, C.GDExtensionVariantPtr(unsafe.Pointer(&def)))
-		}
-		if len(defaultArguments) > 0 {
-			firstDefaultArgument = &defaultArguments[0]
-			pins.Pin(&defaultArguments[0])
-		}
-
-		var frame = callframe.New()
-		var p_class = callframe.Arg(frame, pointers.Get(class))
-		var p_info = C.GDExtensionClassMethodInfo{
-			name:                   (C.GDExtensionStringNamePtr)(unsafe.Pointer(&name)),
-			method_flags:           C.uint32_t(info.MethodFlags),
-			has_return_value:       has_return_value,
-			return_value_info:      returnInfo,
-			return_value_metadata:  C.GDExtensionClassMethodArgumentMetadata(info.ReturnValueMetadata),
-			argument_count:         C.uint32_t(len(info.Arguments)),
-			arguments_info:         list,
-			arguments_metadata:     firstMetadata,
-			default_argument_count: C.uint32_t(len(info.DefaultArguments)),
-			default_arguments:      firstDefaultArgument,
-		}
-		*(*uintptr)(unsafe.Pointer(&p_info.method_userdata)) = uintptr(infoHandle) // FIXME leak
-		C.classdb_register_extension_class_method(
-			C.uintptr_t(uintptr(classdb_register_extension_class_method)),
-			C.uintptr_t(uintptr(library)),
-			C.uintptr_t(p_class.Uintptr()),
-			&p_info,
-		)
-		frame.Free()
+		},
+		Exit: func(level gdextension.InitializationLevel) {
+			if level == 2 {
+				for _, cleanup := range internal.Cleanups() {
+					cleanup()
+				}
+				pointers.Cycle()
+				pointers.Cycle()
+				if theMainFunctionIsWaitingForTheEngineToShutDown {
+					resume_main()
+				}
+				internal.Linked = false
+			}
+		},
 	}
 }
 
-//export set_func
-func set_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
-	name := pointers.Let[gd.StringName](*(*gdextension.StringName)(p_name))
-	value := pointers.Let[gd.Variant](*(*[3]uint64)(p_value))
-	return cgo.Handle(p_instance).Value().(gd.ObjectInterface).Set(name, value)
-}
+//go:linkname main main.main
+func main()
 
-//export get_func
-func get_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
-	name := pointers.Let[gd.StringName](*(*gdextension.StringName)(p_name))
-	variant, ok := cgo.Handle(p_instance).Value().(gd.ObjectInterface).Get(name)
-	if !ok {
-		return false
+// call_main_in_steps calls the main function on the main thread in steps,
+// so that we can yield control back to the engine every frame and before
+// and after startup.
+func call_main_in_steps() iter.Seq[bool] {
+	return func(yield func(bool) bool) {
+		defer func() {
+			if r := recover(); r != nil {
+				fmt.Println(r)
+				debug.PrintStack()
+			}
+		}()
+		pause_main = yield
+		main()
 	}
-	*(*[3]uint64)(p_value), _ = pointers.End(variant)
-	return true
-}
-
-type FIXME *struct{}
-
-func cPropertyList(list []gd.PropertyInfo) (*C.GDExtensionPropertyInfo, func()) {
-	if len(list) == 0 {
-		return nil, func() {}
-	}
-	var pins runtime.Pinner
-	var slice = make([]C.GDExtensionPropertyInfo, 0, len(list))
-	for i := range list {
-		property := &list[i]
-		name := pointers.Get(property.Name)
-		pins.Pin(&name)
-		class_name := pointers.Get(property.ClassName)
-		pins.Pin(&class_name)
-		hint_string := pointers.Get(property.HintString)
-		pins.Pin(&hint_string)
-		slice = append(slice, C.GDExtensionPropertyInfo{
-			_type:       C.GDExtensionVariantType(property.Type),
-			name:        (C.GDExtensionStringNamePtr)(unsafe.Pointer(&name)),
-			class_name:  (C.GDExtensionStringNamePtr)(unsafe.Pointer(&class_name)),
-			hint:        C.uint32_t(property.Hint),
-			hint_string: (C.GDExtensionStringPtr)(unsafe.Pointer(&hint_string)),
-			usage:       C.uint32_t(property.Usage),
-		})
-	}
-	pins.Pin(&slice[0])
-	return &slice[0], func() {
-		pins.Unpin()
-	}
-}
-
-var propertyLists = make(map[uintptr]func())
-
-//export get_property_list_func
-func get_property_list_func(p_instance uintptr, p_length *uint32) *C.GDExtensionPropertyInfo {
-	list := cgo.Handle(p_instance).Value().(gd.ObjectInterface).GetPropertyList()
-	*p_length = uint32(len(list))
-	clist, free := cPropertyList(list)
-	propertyLists[p_instance] = free
-	return clist
-}
-
-//export free_property_list_func
-func free_property_list_func(p_instance uintptr, p_properties *C.GDExtensionPropertyInfo) {
-	propertyLists[p_instance]()
-}
-
-//export property_can_revert_func
-func property_can_revert_func(p_instance uintptr, p_name unsafe.Pointer) bool {
-	name := pointers.Let[gd.StringName](*(*gdextension.StringName)(p_name))
-	return cgo.Handle(p_instance).Value().(gd.ObjectInterface).PropertyCanRevert(name)
-}
-
-//export property_get_revert_func
-func property_get_revert_func(p_instance uintptr, p_name, p_value unsafe.Pointer) bool {
-	name := pointers.Let[gd.StringName](*(*gdextension.StringName)(p_name))
-	variant, ok := cgo.Handle(p_instance).Value().(gd.ObjectInterface).PropertyGetRevert(name)
-	if ok {
-		*(*[3]uint64)(p_value), _ = pointers.End(variant)
-	}
-	return ok
-}
-
-//export notification_func
-func notification_func(p_instance uintptr, p_notification int32, p_reversed bool) {
-	cgo.Handle(p_instance).Value().(gd.ObjectInterface).Notification(p_notification, p_reversed)
-}
-
-//export to_string_func
-func to_string_func(p_instance uintptr, valid, out unsafe.Pointer) {
-	s, ok := cgo.Handle(p_instance).Value().(gd.ObjectInterface).ToString()
-	if !ok {
-		*(*bool)(valid) = false
-		return
-	}
-	*(*bool)(valid) = true
-	*(*gdextension.String)(out) = pointers.Get(s)
-}
-
-//export reference_func
-func reference_func(p_instance uintptr) {
-	cgo.Handle(p_instance).Value().(gd.ObjectInterface).Reference()
-}
-
-//export unreference_func
-func unreference_func(p_instance uintptr) {
-	cgo.Handle(p_instance).Value().(gd.ObjectInterface).Unreference()
-}
-
-//export create_instance_func
-func create_instance_func(p_class uintptr) uintptr {
-	return uintptr(pointers.Get(cgo.Handle(p_class).Value().(gd.ClassInterface).CreateInstance()[0])[0])
-}
-
-//export free_instance_func
-func free_instance_func(_, p_instance uintptr) {
-	cgo.Handle(p_instance).Value().(gd.ObjectInterface).Free()
-}
-
-//export get_virtual_call_data_func
-func get_virtual_call_data_func(p_class uintptr, p_name unsafe.Pointer) uintptr {
-	var name = pointers.Let[gd.StringName](*(*gdextension.StringName)(p_name))
-	virtual := cgo.Handle(p_class).Value().(gd.ClassInterface).GetVirtual(name)
-	if virtual == nil {
-		return 0
-	}
-	return uintptr(cgo.NewHandle(virtual))
-}
-
-//export call_virtual_with_data_func
-func call_virtual_with_data_func(p_instance uintptr, p_name unsafe.Pointer, p_data uintptr, p_args, p_ret unsafe.Pointer) {
-	var name = pointers.Let[gd.StringName](*(*gdextension.StringName)(p_name))
-	cgo.Handle(p_instance).Value().(gd.ObjectInterface).CallVirtual(name, cgo.Handle(p_data).Value(), gd.Address(p_args), gd.Address(p_ret))
-}
-
-//export get_rid_func
-func get_rid_func(p_instance uintptr) C.uint64_t {
-	return C.uint64_t(cgo.Handle(p_instance).Value().(gd.ObjectInterface).GetRID())
-}
-
-//export callable_call
-func callable_call(p_callable uintptr, p_args unsafe.Pointer, count C.GDExtensionInt, p_ret unsafe.Pointer, issue *C.GDExtensionCallError) {
-	fn := cgo.Handle(p_callable).Value().(func(...gd.Variant) (gd.Variant, error))
-	var slice = unsafe.Slice((**[3]uint64)(p_args), int(count))
-	var args = make([]gd.Variant, 0, len(slice))
-	for _, elem := range slice {
-		args = append(args, pointers.Let[gd.Variant](*elem))
-	}
-	ret, err := fn(args...)
-	if err != nil {
-		*issue = C.GDExtensionCallError{}
-		issue.error = 7 // TODO no generic error>
-		return
-	}
-	*(*[3]uint64)(p_ret), _ = pointers.End(ret)
-	*issue = C.GDExtensionCallError{}
-}
-
-//export method_call
-func method_call(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, count C.GDExtensionInt, p_ret unsafe.Pointer, issue *C.GDExtensionCallError) {
-	method := cgo.Handle(p_method).Value().(*gd.Method)
-	var variants = make([]gd.Variant, 0, int(count))
-	for _, elem := range unsafe.Slice((**[3]uint64)(p_args), int(count)) {
-		variants = append(variants, pointers.Let[gd.Variant](*elem))
-	}
-	result, err := method.Call(cgo.Handle(p_instance).Value(), variants...)
-	if err != nil {
-		issue.error = 7 // TODO no generic error>
-		return
-	}
-	if result != (gd.Variant{}) {
-		*(*[3]uint64)(p_ret), _ = pointers.End(result)
-	}
-}
-
-//export method_ptrcall
-func method_ptrcall(p_method uintptr, p_instance uintptr, p_args unsafe.Pointer, p_ret unsafe.Pointer) {
-	method := cgo.Handle(p_method).Value().(*gd.Method)
-	var instance any
-	if p_instance != 0 {
-		instance = cgo.Handle(p_instance).Value()
-	}
-	method.PointerCall(instance, gd.Address(p_args), gd.Address(p_ret))
 }

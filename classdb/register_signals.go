@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Signal"
@@ -41,7 +42,7 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 				panic(fmt.Sprintf("gdextension.RegisterClass: %v.%v must not return any values",
 					rtype.Name(), name))
 			}
-			var args []gd.PropertyInfo
+			var args = gdextension.Host.ClassDB.PropertyList.Make(ftype.NumIn() - 1)
 			for i := 1; i < ftype.NumIn(); i++ {
 				vtype, ok := gd.VariantTypeOf(ftype.In(i))
 				if ok {
@@ -49,20 +50,24 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 					if i-1 < len(argNames) {
 						name = argNames[i-1]
 					}
-					args = append(args, gd.PropertyInfo{
-						Type:      vtype,
-						Name:      gd.NewStringName(name),
-						ClassName: gd.NewStringName(nameOf(ftype.In(i))),
-					})
+					gdextension.Host.ClassDB.PropertyList.Push(args,
+						vtype,
+						pointers.Get(gd.NewStringName(name)),
+						pointers.Get(gd.NewStringName(nameOf(ftype.In(i)))),
+						0,
+						pointers.Get(gd.NewString("")),
+						0,
+						0,
+					)
 				}
 			}
-			gd.Global.ClassDB.RegisterClassSignal(gd.Global.ExtensionToken, class, signalName, args)
+			gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), args)
 		}
 		if field.Type.Kind() == reflect.Chan && field.Type.ChanDir() == reflect.SendDir {
 			var signalName = gd.NewStringName(name)
 			var etype = field.Type.Elem()
-			var args []gd.PropertyInfo
 			if etype.Kind() == reflect.Func {
+				var args = gdextension.Host.ClassDB.PropertyList.Make(etype.NumOut())
 				for i := 0; i < etype.NumOut(); i++ {
 					arg := etype.Out(i)
 					vtype, ok := gd.VariantTypeOf(arg)
@@ -71,28 +76,40 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 						if i < len(argNames) {
 							name = argNames[i]
 						}
-						args = append(args, gd.PropertyInfo{
-							Type:      vtype,
-							Name:      gd.NewStringName(name),
-							ClassName: gd.NewStringName(nameOf(arg)),
-						})
+						gdextension.Host.ClassDB.PropertyList.Push(args,
+							vtype,
+							pointers.Get(gd.NewStringName(name)),
+							pointers.Get(gd.NewStringName(nameOf(arg))),
+							0,
+							pointers.Get(gd.NewString("")),
+							0,
+							0,
+						)
 					}
 				}
+				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), args)
+				gdextension.Host.ClassDB.PropertyList.Free(args)
 			} else if !(etype.Kind() == reflect.Struct && etype.NumField() == 0) {
+				var args = gdextension.Host.ClassDB.PropertyList.Make(etype.NumOut())
 				vtype, ok := gd.VariantTypeOf(etype)
 				if ok {
 					name := "event"
 					if len(argNames) > 0 {
 						name = argNames[0]
 					}
-					args = append(args, gd.PropertyInfo{
-						Type:      vtype,
-						Name:      gd.NewStringName(name),
-						ClassName: gd.NewStringName(nameOf(etype)),
-					})
+					gdextension.Host.ClassDB.PropertyList.Push(args,
+						vtype,
+						pointers.Get(gd.NewStringName(name)),
+						pointers.Get(gd.NewStringName(nameOf(etype))),
+						0,
+						pointers.Get(gd.NewString("")),
+						0,
+						0,
+					)
 				}
+				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), args)
+				gdextension.Host.ClassDB.PropertyList.Free(args)
 			}
-			gd.Global.ClassDB.RegisterClassSignal(gd.Global.ExtensionToken, class, signalName, args)
 		}
 	}
 }

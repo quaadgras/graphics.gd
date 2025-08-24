@@ -20,24 +20,6 @@ type Address uintptr
 type API struct {
 	api.Specification
 
-	GetGodotVersion func() Version
-
-	Object struct {
-		GetInstanceBinding  func([1]Object, ExtensionToken, InstanceBindingType) any
-		SetInstanceBinding  func([1]Object, ExtensionToken, any, InstanceBindingType)
-		FreeInstanceBinding func([1]Object, ExtensionToken)
-		SetInstance         func([1]Object, StringName, ObjectInterface)
-	}
-	ClassDB struct {
-		RegisterClass                func(library ExtensionToken, name, extends StringName, info ClassInterface)
-		RegisterClassMethod          func(library ExtensionToken, class StringName, info Method)
-		RegisterClassProperty        func(library ExtensionToken, class StringName, info PropertyInfo, getter, setter StringName)
-		RegisterClassPropertyIndexed func(library ExtensionToken, class StringName, info PropertyInfo, getter, setter StringName, index int64)
-		RegisterClassSignal          func(library ExtensionToken, class, signal StringName, args []PropertyInfo)
-	}
-
-	GetLibraryPath func(ExtensionToken) String
-
 	// The following fields are primarily reserved for internal use within the gd module,
 	// no backwards compatibility is guaranteed for these fields.
 
@@ -169,15 +151,6 @@ type MethodInfo struct {
 	ID               int32
 	Arguments        []PropertyInfo
 	DefaultArguments []Variant
-}
-
-type ClassInterface interface {
-	IsVirtual() bool
-	IsAbstract() bool
-	IsExposed() bool
-
-	CreateInstance() [1]Object
-	GetVirtual(StringName) any
 }
 
 type ObjectInterface interface {

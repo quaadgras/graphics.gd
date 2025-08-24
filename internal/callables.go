@@ -14,80 +14,82 @@ import (
 )
 
 func init() {
-	gdextension.On.Callables.Call = func(fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], arg_count int, args gdextension.Accepts[gdextension.Variant], call_error gdextension.Returns[gdextension.CallError]) {
-		value := cgoHandle(fn).Value()
-		switch cb := value.(type) {
-		case func():
-			cb()
-			gdmemory.Set(gdextension.Pointer(result), gdextension.Variant{})
-			gdmemory.Set(gdextension.Pointer(call_error), CallError{})
-			return
-		}
-		vargs := make([]reflect.Value, min(arg_count, 16))
-		rtype := reflect.TypeOf(value)
-		for i := range arg_count {
-			var to_type reflect.Type
-			if rtype.IsVariadic() && i >= rtype.NumIn()-1 {
-				to_type = rtype.In(rtype.NumIn() - 1).Elem()
-			} else {
-				if i >= rtype.NumIn() {
+	gdextension.On.Callables = gdextension.CallbacksForCallables{
+		Call: func(fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], arg_count int, args gdextension.Accepts[gdextension.Variant], call_error gdextension.Returns[gdextension.CallError]) {
+			value := cgoHandle(fn).Value()
+			switch cb := value.(type) {
+			case func():
+				cb()
+				gdmemory.Set(gdextension.Pointer(result), gdextension.Variant{})
+				gdmemory.Set(gdextension.Pointer(call_error), CallError{})
+				return
+			}
+			vargs := make([]reflect.Value, min(arg_count, 16))
+			rtype := reflect.TypeOf(value)
+			for i := range arg_count {
+				var to_type reflect.Type
+				if rtype.IsVariadic() && i >= rtype.NumIn()-1 {
+					to_type = rtype.In(rtype.NumIn() - 1).Elem()
+				} else {
+					if i >= rtype.NumIn() {
+						gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{
+							Type:     gdextension.CallTooManyArguments,
+							Expected: int32(rtype.NumIn()),
+						})
+						return
+					}
+					to_type = rtype.In(i)
+				}
+				var err error
+				vargs[i], err = ConvertToDesiredGoType(pointers.Let[Variant](gdmemory.IndexVariants(args, arg_count, i)), to_type)
+				if err != nil {
+					vtype, _ := VariantTypeOf(rtype.In(i))
 					gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{
-						Type:     gdextension.CallTooManyArguments,
-						Expected: int32(rtype.NumIn()),
+						Type:     gdextension.CallInvalidArguments,
+						Argument: int32(i),
+						Expected: int32(vtype),
 					})
 					return
 				}
-				to_type = rtype.In(i)
 			}
-			var err error
-			vargs[i], err = ConvertToDesiredGoType(pointers.Let[Variant](gdmemory.IndexVariants(args, arg_count, i)), to_type)
-			if err != nil {
-				vtype, _ := VariantTypeOf(rtype.In(i))
+			if len(vargs) < rtype.NumIn() && (!rtype.IsVariadic() && len(vargs) == rtype.NumIn()-1) {
 				gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{
-					Type:     gdextension.CallInvalidArguments,
-					Argument: int32(i),
-					Expected: int32(vtype),
+					Type:     gdextension.CallTooFewArguments,
+					Expected: int32(rtype.NumIn()),
 				})
 				return
 			}
-		}
-		if len(vargs) < rtype.NumIn() && (!rtype.IsVariadic() && len(vargs) == rtype.NumIn()-1) {
-			gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{
-				Type:     gdextension.CallTooFewArguments,
-				Expected: int32(rtype.NumIn()),
-			})
-			return
-		}
-		results := reflect.ValueOf(value).Call(vargs)
-		if len(results) > 0 {
-			raw, _ := pointers.End(CutVariant(results[0].Interface(), true))
-			gdmemory.Set(gdextension.Pointer(result), raw)
-		}
-		gdmemory.Set(gdextension.Pointer(call_error), CallError{})
-	}
-	gdextension.On.Callables.Hash = func(fn gdextension.FunctionID) uint32 {
-		return uint32(reflect.ValueOf(cgoHandle(fn).Value()).Pointer())
-	}
-	gdextension.On.Callables.Stringify = func(fn gdextension.FunctionID, err gdextension.Returns[gdextension.CallError]) gdextension.String {
-		s := NewString(reflect.ValueOf(cgoHandle(fn).Value()).String())
-		raw, _ := pointers.End(s)
-		return raw
-	}
-	gdextension.On.Callables.Free = func(fn gdextension.FunctionID) {
-		cgoHandle(fn).Delete()
-	}
-	gdextension.On.Callables.ArgumentCount = func(fn gdextension.FunctionID, err gdextension.Returns[gdextension.CallError]) int {
-		value := reflect.ValueOf(cgoHandle(fn).Value())
-		return value.Type().NumIn()
-	}
-	gdextension.On.Callables.Validation = func(fn gdextension.FunctionID) bool {
-		return cgoHandle(fn).Value() != nil
-	}
-	gdextension.On.Callables.Compare = func(fn, other gdextension.FunctionID) bool {
-		return reflect.ValueOf(cgoHandle(fn).Value()).Pointer() == reflect.ValueOf(cgoHandle(other).Value()).Pointer()
-	}
-	gdextension.On.Callables.LessThan = func(fn, other gdextension.FunctionID) bool {
-		return reflect.ValueOf(cgoHandle(fn).Value()).Pointer() < reflect.ValueOf(cgoHandle(other).Value()).Pointer()
+			results := reflect.ValueOf(value).Call(vargs)
+			if len(results) > 0 {
+				raw, _ := pointers.End(CutVariant(results[0].Interface(), true))
+				gdmemory.Set(gdextension.Pointer(result), raw)
+			}
+			gdmemory.Set(gdextension.Pointer(call_error), CallError{})
+		},
+		Hash: func(fn gdextension.FunctionID) uint32 {
+			return uint32(reflect.ValueOf(cgoHandle(fn).Value()).Pointer())
+		},
+		Stringify: func(fn gdextension.FunctionID, err gdextension.Returns[gdextension.CallError]) gdextension.String {
+			s := NewString(reflect.ValueOf(cgoHandle(fn).Value()).String())
+			raw, _ := pointers.End(s)
+			return raw
+		},
+		ArgumentCount: func(fn gdextension.FunctionID, err gdextension.Returns[gdextension.CallError]) int {
+			value := reflect.ValueOf(cgoHandle(fn).Value())
+			return value.Type().NumIn()
+		},
+		Validation: func(fn gdextension.FunctionID) bool {
+			return cgoHandle(fn).Value() != nil
+		},
+		Compare: func(fn, other gdextension.FunctionID) bool {
+			return reflect.ValueOf(cgoHandle(fn).Value()).Pointer() == reflect.ValueOf(cgoHandle(other).Value()).Pointer()
+		},
+		LessThan: func(fn, other gdextension.FunctionID) bool {
+			return reflect.ValueOf(cgoHandle(fn).Value()).Pointer() < reflect.ValueOf(cgoHandle(other).Value()).Pointer()
+		},
+		Free: func(fn gdextension.FunctionID) {
+			cgoHandle(fn).Delete()
+		},
 	}
 }
 
