@@ -77,21 +77,9 @@ func generate() error {
 		classDB[class.Name] = mod
 	}
 	gdtype.ClassDB = classDB
-	file, err := os.Create("./classdb/objects.go")
-	if err != nil {
-		return xray.New(err)
-	}
-	defer file.Close()
-	fmt.Fprintln(file, `package classdb`)
-	fmt.Fprintln(file)
-	fmt.Fprintln(file, `import "graphics.gd/internal/gdclass"`)
-	fmt.Fprintln(file)
 	for _, class := range spec.Classes {
 		if gdtype.Name(class.Name).InCore() {
 			continue
-		}
-		if !class.IsEphemeral {
-			fmt.Fprintf(file, "type %s = [1]gdclass.%[1]s\n", class.Name)
 		}
 		if err := classDB.generateObjectPackage(class, singletons[class.Name], global_enums); err != nil {
 			return xray.New(err)
