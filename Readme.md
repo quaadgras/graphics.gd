@@ -193,8 +193,8 @@ branch. All the samples are designed to be run with `gd run` without any additio
 * Linux   (including Steam Deck)
 * Mac     (including Apple Silicon)
 * Android (including MetaQuest)
-* IOS     (should work, untested)
-* Web     (experimental) `GOOS=js GOARCH=wasm gd run`
+* IOS     (should work in theory but it's untested)
+* Web     `GOOS=js GOARCH=wasm gd run`
 
 ## Platform Restrictions
 
