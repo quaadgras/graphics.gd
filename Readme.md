@@ -74,9 +74,9 @@ the `go` command directly:
 go build -o example.so -buildmode=c-shared
 ```
 
-## More Documentation
+## Next Steps
 
-Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide)!
+Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers more topics. 
 
 ## Design Principles
 
@@ -104,16 +104,6 @@ has not been used since or the ownership of the value was transferred to the eng
 The project aims to provide as much memory safety as possible for working with the
 Engine, please open an issue if you determine there to be any issues here.
 
-## Recommendations
-
-Start with a main.go file, model your project in Go using structs to represent the
-world, space or state of your project. Go is an excellent language for textual
-representation. Use the `gd` command to launch the Engine's editor when you want to
-create visual resources for your project. The editor is excellent for importing
-media, managing assets and designing the visual and spatial aspects  of a project.
-
-**NOTE:** Don't forget to write tests!
-
 ## Where Do I Find?
 Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbol.
 ```
@@ -125,49 +115,6 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 _NOTE_ in order to avoid circular dependencies, a handful of functions have moved packages,
 for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()` (Go).
 
-## Variant Type Table
-
-| Engine Type        | Convenience Type          | Best Performance Type           |
-| ------------------ | ------------------------- | ------------------------------- |
-| Variant            | `any`                     | `variant.Any`                   |
-| bool               | `bool`                    | `bool`                          |
-| int                | `int`                     | `int64`                         |
-| float              | `Float.X`                 | `float64`                       |
-| String             | `string`                  | `String.Readable`               |
-| Vector2            | `Vector2.XY`              | `Vector2.XY`                    |
-| Vector2i           | `Vector2i.XY`             | `Vector2i.XY`                   |
-| Rect2              | `Rect2.PositionSize`      | `Rect2.PositionSize`            |
-| Rect2i             | `Rect2i.PositionSize`     | `Rect2i.PositionSize`           |
-| Vector3            | `Vector3.XYZ`             | `Vector3.XYZ`                   |
-| Vector3i           | `Vector3i.XYZ`            | `Vector3i.XYZ`                  |
-| Transform2D        | `Transform2D`             | `Transform2D`                   |
-| Vector4            | `Vector4.XYZW`            | `Vector4.XYZW`                  |
-| Vector4i           | `Vector4i.XYZW`           | `Vector4i.XYZW`                 |
-| Plane              | `Plane.NormalD`           | `Plane.NormalD`                 |
-| Quaternion         | `Quaternion.IJKL`         | `Quaternion.IJKL`               |
-| AABB               | `AABB.PositionSize`       | `AABB.PositionSize`             |
-| Basis              | `Basis.XYZ`               | `Basis.XYZ`                     |
-| Transform3D        | `Transform3D.BasisOrigin` | `Transform3D.BasisOrigin`       |
-| Projection         | `Projection.XYZW`         | `Projection.XYZW`               |
-| Color              | `Color.RGBA`              | `Color.RGBA`                    |
-| StringName         | `string`                  | `String.Name`                   |
-| NodePath           | `string`                  | `Path.ToNode`                   |
-| Signal             | `chan T`                  | `Signal.Any`                    |
-| RID                | `RID.T`                   | `RID.Any`                       |
-| Object             | `T.Instance`              | `T.Advanced`                    |
-| Callable           | `func(...T) (...T)`       | `Callable.Function`             |
-| Dictionary         | `struct/map[T]T`          | `Dictionary.Any`                |
-| Array              | `[]T`                     | `Array.Any`                     |
-| PackedByteArray    | `[]byte`                  | `Packed.Bytes`                  |
-| PackedInt32Array   | `[]int32`                 | `Packed.Array[int32]`           |
-| PackedInt64Array   | `[]int64`                 | `Packed.Array[int64]`           |
-| PackedFloat32Array | `[]float32`               | `Packed.Array[float32]`         |
-| PackedFloat64Array | `[]float64`               | `Packed.Array[float64]`         |
-| PackedStringArray  | `[]string`                | `Packed.Strings`                |
-| PackedVector2Array | `[]Vector2.XY`            | `Packed.Array[Vector2.XY]`      |
-| PackedVector3Array | `[]Vector3.XYZ`           | `Packed.Array[Vector3.XYZ]`     |
-| PackedColorArray   | `[]Color.RGBA`            | `Packed.Array[Color.RGBA]`      |
-| PackedVector4Array | `[]Vector4.XYZW`          | `Packed.Array[Vector4.XYZW]`    |
 
 ## Performance
 It's feasible to write high performance code using this module, keep to Engine types where possible and avoid
