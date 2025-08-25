@@ -211,3 +211,11 @@ var (
 	resume_main func() (bool, bool)
 	stop_main   func()
 )
+
+// AsExtension requests graphics.gd to startup the library as a GDExtension suitable for
+// inclusion in Godot engine projects. Please note that only a single Go runtime can be
+// active within an OS process, so all Go extensions within a project should be built
+// together into a single library.
+func AsExtension() {
+	Scene() // TODO: investigate anything else that should be setup for pure extensions.
+}
