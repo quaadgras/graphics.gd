@@ -572,7 +572,9 @@ func New() Instance {
 				raw, _ := pointers.End(New().AsObject()[0])
 				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
 				gd.RegisterCleanup(func() {
-					gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
+						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+					}
 				})
 			}
 		})
