@@ -168,6 +168,8 @@ func Register[T Class](exports ...any) {
 		var method_renames = make(map[uintptr]string)
 		for _, export := range exports {
 			switch export := export.(type) {
+			case Trampoline:
+
 			case map[string]string:
 				maps.Copy(documentation, export)
 			case map[string]int:
