@@ -545,11 +545,8 @@ func Lay[T Generic[T, P], P Size](ptr T) T {
 		revision revision
 		checksum P
 	})(ptr)
-	if p.revision == 0 && p.sentinal == 0 {
-		return ptr
-	}
 	if p.revision == 0 {
-		panic("cannot let a nil pointer")
+		return ptr // raw and static pointers get laid for free
 	}
 	page, addr := uint64(p.sentinal/pageSize), uint64(p.sentinal%pageSize)
 	arr := tables[len(p.checksum)].Index(page)

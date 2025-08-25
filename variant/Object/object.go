@@ -108,6 +108,20 @@ type PropertyInfo struct {
 
 // New creates a new Object instance.
 func New() Instance {
+	if !gd.Linked {
+		var placeholder Instance
+		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		gd.StartupFunctions = append(gd.StartupFunctions, func() {
+			if gd.Linked {
+				raw, _ := pointers.End(New().AsObject()[0])
+				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				gd.RegisterCleanup(func() {
+					gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+				})
+			}
+		})
+		return placeholder
+	}
 	return Instance([1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName("Object"))))})})
 }
 

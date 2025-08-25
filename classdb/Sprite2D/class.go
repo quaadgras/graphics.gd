@@ -3,35 +3,39 @@
 // Package Sprite2D provides methods for working with Sprite2D object instances.
 package Sprite2D
 
-import "unsafe"
-import "reflect"
-import "slices"
-import "graphics.gd/internal/pointers"
-import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdextension"
-import gd "graphics.gd/internal"
-import "graphics.gd/internal/gdclass"
-import "graphics.gd/variant"
-import "graphics.gd/variant/Angle"
-import "graphics.gd/variant/Euler"
-import "graphics.gd/classdb/CanvasItem"
-import "graphics.gd/classdb/Node"
-import "graphics.gd/classdb/Node2D"
-import "graphics.gd/classdb/Texture2D"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/Error"
-import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/Rect2"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/String"
-import "graphics.gd/variant/Vector2"
-import "graphics.gd/variant/Vector2i"
+import (
+	"reflect"
+	"slices"
+	"unsafe"
+
+	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/pointers"
+
+	"graphics.gd/classdb/CanvasItem"
+	"graphics.gd/classdb/Node"
+	"graphics.gd/classdb/Node2D"
+	"graphics.gd/classdb/Texture2D"
+	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdclass"
+	"graphics.gd/variant"
+	"graphics.gd/variant/Angle"
+	"graphics.gd/variant/Array"
+	"graphics.gd/variant/Callable"
+	"graphics.gd/variant/Dictionary"
+	"graphics.gd/variant/Error"
+	"graphics.gd/variant/Euler"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Object"
+	"graphics.gd/variant/Packed"
+	"graphics.gd/variant/Path"
+	"graphics.gd/variant/RID"
+	"graphics.gd/variant/Rect2"
+	"graphics.gd/variant/RefCounted"
+	"graphics.gd/variant/String"
+	"graphics.gd/variant/Vector2"
+	"graphics.gd/variant/Vector2i"
+)
 
 var _ Object.ID
 
@@ -199,6 +203,20 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
 func New() Instance {
+	if !gd.Linked {
+		var placeholder Instance
+		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		gd.StartupFunctions = append(gd.StartupFunctions, func() {
+			if gd.Linked {
+				raw, _ := pointers.End(New().AsObject()[0])
+				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				gd.RegisterCleanup(func() {
+					gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+				})
+			}
+		})
+		return placeholder
+	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Sprite2D)(unsafe.Pointer(&object))}
 	object[0].Notification(0, false)
