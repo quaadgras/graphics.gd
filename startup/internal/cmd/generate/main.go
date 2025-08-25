@@ -412,7 +412,6 @@ func main() {
 		generate_header_file(),
 		generate_startup_js(),
 		generate_startup_cgo(),
-		generate_gdextension_web_cgo(),
 		generate_gdextension_web_cgo_callbacks(),
 	); err != nil {
 		fmt.Fprintf(os.Stderr, "Error generating files: %v\n", err)

@@ -14,20 +14,6 @@ import (
 	"runtime.link/api"
 )
 
-func generate_gdextension_web_cgo() error {
-	f, err := os.Create("./internal/gdextension_web_cgo.cpp")
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-	existing, err := os.ReadFile("startup_cgo_v2.c")
-	if err != nil {
-		return err
-	}
-	f.Write(existing)
-	return nil
-}
-
 func generate_gdextension_web_cgo_callbacks() error {
 	h, err := os.Create("./internal/gdextension_web_cgo_callbacks.cpp")
 	if err != nil {
