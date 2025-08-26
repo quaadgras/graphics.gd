@@ -11,6 +11,7 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Callable"
+	"graphics.gd/variant/Dictionary"
 	"graphics.gd/variant/Float"
 )
 
@@ -218,4 +219,20 @@ var (
 // together into a single library.
 func AsExtension() {
 	Scene() // TODO: investigate anything else that should be setup for pure extensions.
+}
+
+// OnSuspend registers a function to be called when the application is suspended, the
+// dictionary populated by this function will be available to future [OnRestore] calls.
+// Individual classes can also implement their own Suspend(Dictionary.Any) method. This
+// function should not mutate any internal state and the application may continue to
+// run after this has been called.
+func OnSuspend(func(Dictionary.Any)) {
+
+}
+
+// OnRestore registers a function to be called when the application is being restored, the dictionary
+// dictionary will be sourced from a previous call to [OnSuspend] (potentially a different
+// version) Individual classes can also implement their own Restore(Dictionary.Any) method.
+func OnRestore(func(Dictionary.Any)) {
+
 }
