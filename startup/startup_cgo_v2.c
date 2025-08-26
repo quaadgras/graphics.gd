@@ -45,6 +45,12 @@
     #define UINT uint64_t
 #endif
 
+#ifdef _WIN32
+#define EXPORT __declspec(dllexport)
+#else
+#define EXPORT
+#endif
+
 #define LOAD_PROC_ADDRESS(m_name, m_type) gdextension_##m_name = (m_type)p_get_proc_address(#m_name);
 
 GDExtensionClassLibraryPtr cgo_library = NULL;
@@ -288,7 +294,7 @@ GDExtensionInterfaceRegisterMainLoopCallbacks gdextension_register_main_loop_cal
 GDExtensionInterfaceGetGodotVersion gdextension_get_godot_version = NULL;
 
 
-GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
+EXPORT GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
     LOAD_PROC_ADDRESS(mem_alloc, GDExtensionInterfaceMemAlloc);
 	LOAD_PROC_ADDRESS(mem_realloc, GDExtensionInterfaceMemRealloc);
 	LOAD_PROC_ADDRESS(mem_free, GDExtensionInterfaceMemFree);
