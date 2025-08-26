@@ -564,6 +564,16 @@ func (class classImplementation) GetVirtual(name gd.StringName) any {
 			panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s\nis %s want %s", class.Type.Name(), GoName, virtual.Type().Name(), name, method.Type, vtype))
 		}
 	}
+	if method.Type.NumOut() != vtype.NumOut() {
+		panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s\nis %s want %s", class.Type.Name(), GoName, virtual.Type().Name(), name, method.Type, vtype))
+	}
+	if method.Type.NumOut() > 0 {
+		atype := method.Type.Out(0)
+		btype := vtype.Out(0)
+		if atype != btype && !(atype.ConvertibleTo(btype) && atype.Kind() == btype.Kind()) {
+			panic(fmt.Sprintf("gdextension.RegisterClass: Method %s.%s does not match %s.%s\nis %s want %s", class.Type.Name(), GoName, virtual.Type().Name(), name, method.Type, vtype))
+		}
+	}
 	var copy = reflect.New(method.Type)
 	copy.Elem().Set(method.Func)
 	var fn = reflect.NewAt(vtype, copy.UnsafePointer()).Elem()

@@ -159,6 +159,11 @@ func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
 		}
 	case reflect.Map:
 		return TypeDictionary, true
+	case reflect.Interface:
+		if rtype == reflect.TypeFor[any]() {
+			return TypeNil, true
+		}
+		return TypeNil, false
 	case reflect.Struct:
 		switch rtype {
 		case reflect.TypeFor[VariantPkg.Any]():
