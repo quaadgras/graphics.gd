@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization);
 void gd_array_get(uintptr_t, int64_t, void*);
 void gd_array_set(uintptr_t, int64_t, uint64_t, uint64_t, uint64_t);
 uintptr_t gd_builtin_name(uintptr_t, int64_t);
