@@ -97,10 +97,6 @@ func LoadResult[T ~unsafe.Pointer](shape gdextension.Shape, result T, from gdext
 	}
 	for size > 0 {
 		switch {
-		case size >= 8:
-			*(*uint64)(unsafe.Add(data, done)) = gdextension.Host.Memory.Load.Uint64(from + gdextension.Pointer(done))
-			done += 8
-			size -= 8
 		case size >= 4:
 			*(*uint32)(unsafe.Add(data, done)) = gdextension.Host.Memory.Load.Uint32(from + gdextension.Pointer(done))
 			done += 4
@@ -168,10 +164,6 @@ func CopyBufferToGo(ptr gdextension.Pointer, buf []byte) {
 	off := 0
 	for len(buf) > 0 {
 		switch {
-		case len(buf) >= 8:
-			*(*uint64)(unsafe.Pointer(&buf[0])) = gdextension.Host.Memory.Load.Uint64(ptr + gdextension.Pointer(off))
-			buf = buf[8:]
-			off += 8
 		case len(buf) >= 4:
 			*(*uint32)(unsafe.Pointer(&buf[0])) = gdextension.Host.Memory.Load.Uint32(ptr + gdextension.Pointer(off))
 			buf = buf[4:]

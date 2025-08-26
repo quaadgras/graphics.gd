@@ -65,10 +65,14 @@ func (variant Variant) Iterator() Iterator {
 
 // Hash returns the hash value of the variant.
 func (variant Variant) Hash() Int {
-	return gdextension.Host.Variants.Hash(pointers.Get(variant))
+	var hash int64
+	gdextension.Host.Variants.Hash(pointers.Get(variant), gdextension.CallReturns[int64](&hash))
+	return hash
 }
 
 // RecursiveHash returns the hash value of the variant recursively.
 func (variant Variant) RecursiveHash(count Int) Int {
-	return gdextension.Host.Variants.Deep.Hash(pointers.Get(variant), count)
+	var hash int64
+	gdextension.Host.Variants.Deep.Hash(pointers.Get(variant), count, gdextension.CallReturns[int64](&hash))
+	return hash
 }

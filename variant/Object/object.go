@@ -145,7 +145,9 @@ func (obj Instance) CanTranslateMessages() bool {
 // ID returns the object's unique instance ID. This ID can be saved in EncodedObjectAsID, and can be used
 // to retrieve this object instance with [ID.Instance].
 func (obj Instance) ID() ID {
-	return ID(gdextension.Host.Objects.ID.Get(gdextension.Object(pointers.Get(obj[0])[0])))
+	var id gdextension.ObjectID
+	gdextension.Host.Objects.ID.Get(gdextension.Object(pointers.Get(obj[0])[0]), gdextension.CallReturns[gdextension.ObjectID](&id))
+	return ID(id)
 }
 
 // ScriptInstance returns the object's Script instance, or false if no script is attached.

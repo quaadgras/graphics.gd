@@ -91,7 +91,9 @@ func (p PackedInt32Array) Len() int { return int(p.Size()) }
 func (p PackedInt32Array) Cap() int { return int(p.Size()) }
 
 func (p PackedInt64Array) Index(idx Int) int64 {
-	return gdextension.Host.Packed.Int64s.Access(pointers.Get(p), int(idx))
+	var i64 int64
+	gdextension.Host.Packed.Int64s.Access(pointers.Get(p), int(idx), gdextension.CallReturns[int64](unsafe.Pointer(&i64)))
+	return i64
 }
 
 func (p PackedInt64Array) SetIndex(idx Int, value int64) {

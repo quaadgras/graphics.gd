@@ -46,7 +46,7 @@ type CallbacksForExtensionInstance struct {
 	Notification       func(instance ExtensionInstanceID, what int32, reverse bool)                                                                             `gd:"on_extension_instance_notification"`
 	Stringify          func(instance ExtensionInstanceID) String                                                                                                `gd:"on_extension_instance_stringify"`
 	Reference          func(instance ExtensionInstanceID, increment bool) bool                                                                                  `gd:"on_extension_instance_reference"`
-	RID                func(instance ExtensionInstanceID) uint64                                                                                                `gd:"on_extension_instance_rid"`
+	RID                func(instance ExtensionInstanceID, rid Returns[uint64])                                                                                  `gd:"on_extension_instance_rid"`
 	CheckedCall        func(instance ExtensionInstanceID, fn FunctionID, result Returns[any], args Accepts[any])                                                `gd:"on_extension_instance_checked_call"`
 	VariantCall        func(instance ExtensionInstanceID, fn FunctionID, result Returns[Variant], args Accepts[Variant])                                        `gd:"on_extension_instance_variant_call"`
 	DynamicCall        func(instance ExtensionInstanceID, fn FunctionID, result Returns[Variant], arg_count int, args Accepts[Variant], err Returns[CallError]) `gd:"on_extension_instance_dynamic_call"`

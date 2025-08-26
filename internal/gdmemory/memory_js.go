@@ -18,11 +18,6 @@ func Get[T gdextension.AnyVariant | gdextension.CallError](frame gdextension.Poi
 	var size = unsafe.Sizeof([1]T{})
 	for size > 0 {
 		switch {
-		case size >= 8:
-			*(*uint64)(unsafe.Add(unsafe.Pointer(&zero), done)) = gdextension.Host.Memory.Load.Uint64(addr)
-			addr += 8
-			done += 8
-			size -= 8
 		case size >= 4:
 			*(*uint32)(unsafe.Add(unsafe.Pointer(&zero), done)) = gdextension.Host.Memory.Load.Uint32(addr)
 			addr += 4

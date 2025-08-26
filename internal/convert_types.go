@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 	"slices"
+	"unsafe"
 
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
@@ -103,19 +104,25 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 			return reflect.ValueOf(value).Convert(rtype), nil
 		case Object:
 			if rtype.Name() == "ID" {
-				return reflect.ValueOf(gdextension.Host.Objects.ID.Get(gdextension.Object(pointers.Get(value)[0]))).Convert(rtype), nil
+				var id gdextension.ObjectID
+				gdextension.Host.Objects.ID.Get(gdextension.Object(pointers.Get(value)[0]), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+				return reflect.ValueOf(id).Convert(rtype), nil
 			}
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		case IsClass:
 			if rtype.Name() == "ID" {
-				return reflect.ValueOf(gdextension.Host.Objects.ID.Get(gdextension.Object(pointers.Get(value.AsObject()[0])[0]))).Convert(rtype), nil
+				var id gdextension.ObjectID
+				gdextension.Host.Objects.ID.Get(gdextension.Object(gdextension.Object(pointers.Get(value.AsObject()[0])[0])), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+				return reflect.ValueOf(id).Convert(rtype), nil
 			}
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 		default:
 			rvalue := reflect.ValueOf(value)
 			if rvalue.Kind() == reflect.Array && rvalue.Type().Elem().Implements(reflect.TypeFor[IsClass]()) {
 				if rtype.Name() == "ID" {
-					return reflect.ValueOf(gdextension.Host.Objects.ID.Get(gdextension.Object(pointers.Get(rvalue.Index(0).Interface().(IsClass).AsObject()[0])[0]))).Convert(rtype), nil
+					var id gdextension.ObjectID
+					gdextension.Host.Objects.ID.Get(gdextension.Object(gdextension.Object(pointers.Get(rvalue.Index(0).Interface().(IsClass).AsObject()[0])[0])), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+					return reflect.ValueOf(id).Convert(rtype), nil
 				}
 			}
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))

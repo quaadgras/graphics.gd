@@ -28,15 +28,15 @@ var Host API
 
 type API struct {
 	Version struct {
-		Major     func() uint32 `gd:"version_major"`
-		Minor     func() uint32 `gd:"version_minor"`
-		Patch     func() uint32 `gd:"version_patch"`
-		Hex       func() uint32 `gd:"version_hex"`
-		Status    func() String `gd:"version_status"`
-		Build     func() String `gd:"version_build"`
-		Hash      func() String `gd:"version_hash"`
-		Timestamp func() uint64 `gd:"version_timestamp"`
-		String    func() String `gd:"version_string"`
+		Major     func() uint32             `gd:"version_major"`
+		Minor     func() uint32             `gd:"version_minor"`
+		Patch     func() uint32             `gd:"version_patch"`
+		Hex       func() uint32             `gd:"version_hex"`
+		Status    func() String             `gd:"version_status"`
+		Build     func() String             `gd:"version_build"`
+		Hash      func() String             `gd:"version_hash"`
+		Timestamp func(CallReturns[uint64]) `gd:"version_timestamp"`
+		String    func() String             `gd:"version_string"`
 	}
 	Library struct {
 		Location func() String `gd:"library_location"`
@@ -51,7 +51,6 @@ type API struct {
 			Byte   func(addr Pointer) byte   `gd:"memory_load_byte"`
 			Uint16 func(addr Pointer) uint16 `gd:"memory_load_u16"`
 			Uint32 func(addr Pointer) uint32 `gd:"memory_load_u32"`
-			Uint64 func(addr Pointer) uint64 `gd:"memory_load_u64"`
 		}
 		Edit struct {
 			Byte   func(addr Pointer, value byte)   `gd:"memory_edit_byte"`
@@ -102,13 +101,13 @@ type API struct {
 		Copy func(v Variant, result CallReturns[Variant])                                                                                          `gd:"variant_copy"`
 		Call func(v Variant, method StringName, result CallReturns[Variant], arg_count int, args CallAccepts[Variant], err CallReturns[CallError]) `gd:"variant_call"`
 		Eval func(op VariantOperator, a, b Variant, call CallReturns[Variant]) bool                                                                `gd:"variant_eval"`
-		Hash func(v Variant) int64                                                                                                                 `gd:"variant_hash"`
+		Hash func(v Variant, hash CallReturns[int64])                                                                                              `gd:"variant_hash"`
 		Bool func(v Variant) bool                                                                                                                  `gd:"variant_bool"`
 		Text func(v Variant) String                                                                                                                `gd:"variant_text"`
 		Type func(v Variant) VariantType                                                                                                           `gd:"variant_type"`
 		Deep struct {
-			Copy func(v Variant, result CallReturns[Variant]) `gd:"variant_deep_copy"`
-			Hash func(v Variant, recursion_count int64) int64 `gd:"variant_deep_hash"`
+			Copy func(v Variant, result CallReturns[Variant])                    `gd:"variant_deep_copy"`
+			Hash func(v Variant, recursion_count int64, hash CallReturns[int64]) `gd:"variant_deep_hash"`
 		}
 		Set struct {
 			Index func(v Variant, key, val Variant) bool                                 `gd:"variant_set_index"`
@@ -196,8 +195,8 @@ type API struct {
 			Access func(p PackedArray[int32], idx int) int32 `gd:"packed_int32_array_access"`
 		}
 		Int64s struct {
-			Unsafe func(p PackedArray[int64]) Pointer        `gd:"packed_int64_array_unsafe"`
-			Access func(p PackedArray[int64], idx int) int64 `gd:"packed_int64_array_access"`
+			Unsafe func(p PackedArray[int64]) Pointer                             `gd:"packed_int64_array_unsafe"`
+			Access func(p PackedArray[int64], idx int, result CallReturns[int64]) `gd:"packed_int64_array_access"`
 		}
 		Strings struct {
 			Unsafe func(p PackedArray[String]) Pointer         `gd:"packed_string_array_unsafe"`
@@ -240,8 +239,8 @@ type API struct {
 		Cast func(obj Object, to ObjectType) Object                                                                                                     `gd:"object_cast"`
 
 		ID struct {
-			Get           func(obj Object) ObjectID `gd:"object_id"`
-			InsideVariant func(v Variant) ObjectID  `gd:"object_id_inside_variant"`
+			Get           func(obj Object, id CallReturns[ObjectID]) `gd:"object_id"`
+			InsideVariant func(v Variant, id CallReturns[ObjectID])  `gd:"object_id_inside_variant"`
 		}
 		Lookup func(id ObjectID) Object     `gd:"object_lookup"`
 		Global func(name StringName) Object `gd:"object_global"`

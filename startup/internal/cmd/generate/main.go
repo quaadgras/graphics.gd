@@ -32,7 +32,7 @@ func generate_header_file() error {
 			}
 		}
 		fmt.Fprintf(h, "%s gd_%s(", out, fn.Tags.Get("gd"))
-		for i, arg := range args_flat(fn.Type) {
+		for i, arg := range args_flat(fn.Type, false) {
 			if i > 0 {
 				fmt.Fprint(h, ", ")
 			}
@@ -223,7 +223,7 @@ func writeGoFunctionArguments(w io.Writer, fn api.Function, flat bool, typeOf fu
 		}
 	}
 	if flat {
-		for i, arg := range args_flat(fn.Type) {
+		for i, arg := range args_flat(fn.Type, false) {
 			do(i, arg)
 		}
 	} else {
@@ -290,17 +290,27 @@ func toCValue(rtype reflect.Type, value string) string {
 	}
 }
 
-func args_flat(rtype reflect.Type) iter.Seq2[int, reflect.Type] {
+func args_flat(rtype reflect.Type, x32 bool) iter.Seq2[int, reflect.Type] {
 	return func(yield func(int, reflect.Type) bool) {
 		var n int
 		for i := range rtype.NumIn() {
 			arg := rtype.In(i)
 			if arg.Kind() == reflect.Array {
 				for j := 0; j < arg.Len(); j++ {
-					if !yield(n, arg.Elem()) {
-						return
+					if x32 && (arg.Elem().Kind() == reflect.Uint64 || arg.Elem().Kind() == reflect.Int64) {
+						if !yield(n, reflect.TypeOf(uint32(0))) {
+							return
+						}
+						if !yield(n+1, reflect.TypeOf(uint32(0))) {
+							return
+						}
+						n += 2
+					} else {
+						if !yield(n, arg.Elem()) {
+							return
+						}
+						n++
 					}
-					n++
 				}
 			} else if arg.Kind() == reflect.Slice {
 				if !yield(n, arg) {
@@ -315,6 +325,14 @@ func args_flat(rtype reflect.Type) iter.Seq2[int, reflect.Type] {
 					return
 				}
 				if !yield(n+1, reflect.TypeOf(int(0))) {
+					return
+				}
+				n += 2
+			} else if x32 && (arg.Kind() == reflect.Uint64 || arg.Kind() == reflect.Int64) {
+				if !yield(n, reflect.TypeOf(uint32(0))) {
+					return
+				}
+				if !yield(n+1, reflect.TypeOf(uint32(0))) {
 					return
 				}
 				n += 2

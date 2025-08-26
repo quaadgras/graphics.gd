@@ -62,7 +62,9 @@ func PointerBorrowedTemporarily[T pointers.Generic[T, [3]uint64]](ptr gdextensio
 
 func PointerWithOwnershipTransferredToGodot[T pointers.Generic[T, [3]uint64]](ptr T) EnginePointer {
 	raw := pointers.Get(ptr)
-	pointers.Set(ptr, [3]uint64{raw[0], uint64(gdextension.Host.Objects.ID.Get(gdextension.Object(raw[0])))})
+	var id gdextension.ObjectID
+	gdextension.Host.Objects.ID.Get(gdextension.Object(raw[0]), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+	pointers.Set(ptr, [3]uint64{raw[0], uint64(id)})
 	pointers.Lay(ptr)
 	if raw[1] != 0 {
 		panic("illegal transfer of ownership from Go -> Godot")
@@ -74,7 +76,9 @@ func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uint64]](ptr gdextensi
 	if ptr == 0 {
 		return T{}
 	}
-	return pointers.Let[T]([3]uint64{uint64(ptr), uint64(gdextension.Host.Objects.ID.Get(gdextension.Object(ptr)))})
+	var id gdextension.ObjectID
+	gdextension.Host.Objects.ID.Get(gdextension.Object(ptr), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+	return pointers.Let[T]([3]uint64{uint64(ptr), uint64(id)})
 }
 
 func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uint64]](obj [1]Object, ptr gdextension.Object) T {

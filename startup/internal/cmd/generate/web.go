@@ -48,13 +48,13 @@ func generate_gdextension_web_cgo_callbacks() error {
 		} else {
 			fmt.Fprintf(h, "void go_%s(", name)
 		}
-		for i, arg := range args_flat(fn.Type) {
+		for i, arg := range args_flat(fn.Type, true) {
 			if i > 0 {
 				fmt.Fprint(h, ", ")
 			}
 			if ctype := ctypeOf(arg); ctype != "" {
-				if ctype == "int64_t" || ctype == "uint64_t" {
-					ctype = "double"
+				if ctype == "int64_t" {
+					ctype = "int32_t"
 				}
 				fmt.Fprintf(h, "%s p%d", ctype, i)
 			} else {
@@ -68,9 +68,6 @@ func generate_gdextension_web_cgo_callbacks() error {
 			}
 			if ctype := ctypeOf(returns); ctype != "" {
 				goType := ctype
-				if ctype == "int64_t" || ctype == "uint64_t" {
-					goType = "double"
-				}
 				cast := ""
 				if goType != ctype {
 					cast = fmt.Sprintf("std::__bit_cast<%s>(", ctype)
@@ -83,7 +80,7 @@ func generate_gdextension_web_cgo_callbacks() error {
 			fmt.Fprint(h, "Go.call<void")
 		}
 		fmt.Fprintf(h, ">(\"%s\"", name)
-		for i, arg := range args_flat(fn.Type) {
+		for i, arg := range args_flat(fn.Type, true) {
 			if arg.Kind() == reflect.UnsafePointer {
 				fmt.Fprintf(h, ", uintptr_t(p%d)", i)
 			} else {
@@ -93,9 +90,6 @@ func generate_gdextension_web_cgo_callbacks() error {
 		if returns != nil {
 			if ctype := ctypeOf(returns); ctype != "" {
 				goType := ctype
-				if ctype == "int64_t" || ctype == "uint64_t" {
-					goType = "double"
-				}
 				if goType != ctype {
 					fmt.Fprintf(h, ")")
 				}
@@ -121,7 +115,6 @@ func generate_startup_js() error {
 	fmt.Fprint(f, "import \"graphics.gd/internal/gdextension\"\n\n")
 	fmt.Fprintln(f, `import "graphics.gd/internal/gdmemory"`)
 	fmt.Fprint(f, "import \"syscall/js\"\n\n")
-	fmt.Fprint(f, "import \"math\"\n")
 	fmt.Fprint(f, "import \"unsafe\"\n")
 	fmt.Fprint(f, "import \"sync\"\n\n")
 
@@ -180,7 +173,13 @@ func generate_startup_js() error {
 					if j > 0 {
 						fmt.Fprint(f, ", ")
 					}
-					fmt.Fprintf(f, "%s(%s)", toGoValue(arg.Elem()), fromJS(arg.Elem(), fmt.Sprintf("args[%d]", n)))
+					switch arg.Elem().Kind() {
+					case reflect.Uint64:
+						fmt.Fprintf(f, "%s((uint64(args[%d].Int())<<32)|(uint64(args[%d].Int())))", toGoValue(arg.Elem()), n, n+1)
+						n++
+					default:
+						fmt.Fprintf(f, "%s(%s)", toGoValue(arg.Elem()), fromJS(arg.Elem(), fmt.Sprintf("args[%d]", n)))
+					}
 					n++
 				}
 				fmt.Fprint(f, "}")
@@ -252,6 +251,12 @@ func generate_startup_js() error {
 					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeColor)\n", i)
 				case reflect.TypeFor[gdextension.CallReturns[Vector4.XYZW]]():
 					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeVector4)\n", i)
+				case reflect.TypeFor[gdextension.CallReturns[uint64]]():
+					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeRID)\n", i)
+				case reflect.TypeFor[gdextension.CallReturns[int64]]():
+					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeInt)\n", i)
+				case reflect.TypeFor[gdextension.CallReturns[gdextension.ObjectID]]():
+					fmt.Fprintf(f, "\t\tmem%d := gdmemory.MakeResult(gdextension.SizeInt)\n", i)
 				case reflect.TypeFor[gdextension.CallMutates[any]]():
 					fmt.Fprintf(f, "\t\tmem%d := gdmemory.CopyReceiver(shape, p%[1]d)\n", i)
 				case reflect.TypeFor[gdextension.CallMutates[gdextension.Iterator]]():
@@ -261,10 +266,6 @@ func generate_startup_js() error {
 		}
 		if result := getReturn(fn.Type); result != nil {
 			switch result.Kind() {
-			case reflect.Uint64:
-				fmt.Fprintf(f, "\t\tresult = %s(math.Float64bits(", goTypeOf(result))
-			case reflect.Int64:
-				fmt.Fprintf(f, "\t\tresult = %s(gdmemory.Int64frombits(math.Float64bits(", goTypeOf(result))
 			case reflect.Array:
 				fmt.Fprintf(f, "\t\tresult = %s{%s(", goTypeOf(result), goTypeOf(result.Elem()))
 			default:
@@ -357,6 +358,8 @@ func generate_startup_js() error {
 					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(shape>>4, p%d, mem%[1]d)\n", i)
 				case reflect.TypeFor[gdextension.CallMutates[gdextension.Iterator]]():
 					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeVariant, p%d, mem%[1]d)\n", i)
+				case reflect.TypeFor[gdextension.CallReturns[gdextension.ObjectID]](), reflect.TypeFor[gdextension.CallReturns[uint64]](), reflect.TypeFor[gdextension.CallReturns[int64]]():
+					fmt.Fprintf(f, "\t\tgdmemory.LoadResult(gdextension.SizeInt, p%d, mem%[1]d)\n", i)
 				}
 			}
 		}
@@ -384,7 +387,7 @@ func fromJS(rtype reflect.Type, value string) string {
 	case reflect.Bool:
 		return fmt.Sprintf("%s.Bool()", value)
 	case reflect.Uint64:
-		return fmt.Sprintf("math.Float64bits(%s.Float())", value)
+		return fmt.Sprintf("%s.Int()", value)
 	case reflect.Int64:
 		return fmt.Sprintf("gdmemory.Int64frombits(math.Float64bits(%s.Float()))", value)
 	default:
@@ -404,8 +407,10 @@ func toJSValue(value string, rtype reflect.Type) string {
 		return fmt.Sprintf("%s(%s)", strings.ToLower(rtype.Kind().String()), value)
 	case reflect.Uintptr, reflect.UnsafePointer:
 		return fmt.Sprintf("uint32(%s)", value)
-	case reflect.Int64, reflect.Uint64:
-		return fmt.Sprintf("math.Float64frombits(*(*uint64)(unsafe.Pointer(&%s)))", value)
+	case reflect.Uint64:
+		return fmt.Sprintf("uint32(%s>>32), uint32(%[1]s & 0xFFFFFFFF)", value)
+	case reflect.Int64:
+		return fmt.Sprintf("uint32(*(*uint64)(unsafe.Pointer(&%s))>>32), uint32(*(*uint64)(unsafe.Pointer(&%[1]s)) & 0xFFFFFFFF)", value)
 	default:
 		return value
 	}
