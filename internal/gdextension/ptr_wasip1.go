@@ -1,10 +1,8 @@
-//go:build !js && !wasip1
+//go:build wasip1
 
 package gdextension
 
 import (
-	"unsafe"
-
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Vector2"
 	"graphics.gd/variant/Vector3"
@@ -12,8 +10,8 @@ import (
 )
 
 type Pointer = uintptr
-type Returns[T any] unsafe.Pointer
-type Accepts[T any] unsafe.Pointer
+type Returns[T any] uintptr
+type Accepts[T any] uintptr
 type PackedArray[T byte | int32 | int64 | float32 | float64 | Color.RGBA | Vector2.XY | Vector3.XYZ | Vector4.XYZW | String] [2]uint64
 
 const (

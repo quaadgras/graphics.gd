@@ -234,6 +234,26 @@ func writeGoFunctionArguments(w io.Writer, fn api.Function, flat bool, typeOf fu
 	fmt.Fprint(w, ")")
 }
 
+func writeGoFunctionResults(f io.Writer, fn api.Function, flat bool, typeOf func(reflect.Type) string) {
+	if fn.NumOut() > 0 {
+		fmt.Fprintf(f, " (")
+	}
+	for i := 0; i < fn.NumOut(); i++ {
+		if i > 0 {
+			fmt.Fprint(f, ", ")
+		}
+		result := fn.Type.Out(i)
+		if result.Size() > 0 {
+			fmt.Fprintf(f, "result %s", goTypeOf(result))
+		} else {
+			fmt.Fprintf(f, "_ %s", goTypeOf(result))
+		}
+	}
+	if fn.NumOut() > 0 {
+		fmt.Fprintf(f, " )")
+	}
+}
+
 func goTypeOf(rtype reflect.Type) string {
 	if rtype.PkgPath() != "" {
 		return fmt.Sprintf("gdextension.%s", strings.ReplaceAll(rtype.Name(), "graphics.gd/internal/", ""))
@@ -429,6 +449,7 @@ func main() {
 		generate_startup_js(),
 		generate_startup_cgo(),
 		generate_gdextension_web_cgo_callbacks(),
+		generate_startup_wasip1(),
 	); err != nil {
 		fmt.Fprintf(os.Stderr, "Error generating files: %v\n", err)
 		os.Exit(1)

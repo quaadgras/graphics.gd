@@ -1,4 +1,4 @@
-//go:build js
+//go:build js || wasip1
 
 package gdmemory
 
@@ -114,7 +114,7 @@ func LoadSlice[T gdextension.Packable](ptr gdextension.Pointer, slice []T) {
 }
 
 func IndexVariants(addr gdextension.Accepts[gdextension.Variant], len, idx int) gdextension.Variant {
-	if addr == 0 {
+	if addr == [1]gdextension.Accepts[gdextension.Variant]{}[0] {
 		panic("nil pointer dereference")
 	}
 	ptr := Get[gdextension.Object](gdextension.Pointer(addr) + gdextension.Pointer(idx)*gdextension.Pointer(unsafe.Sizeof(gdextension.Pointer(0))))
