@@ -307,7 +307,7 @@ func Cut[T Generic[T, P], P Size](ptr T, end bool) P {
 	if end {
 		raw, ok := End(ptr)
 		if !ok {
-			panic("pointer already freed")
+			panic("invalid reference (please read https://the.graphics.gd/guide/memory)")
 		}
 		return raw
 	}
@@ -346,12 +346,12 @@ func Get[T Generic[T, P], P Size](ptr T) P {
 			continue
 		}
 		if !rev.matches(p.revision) {
-			fmt.Printf("%b != %b\b", rev&0b00111111111111111111111111111111111111111111111111111111111111, p.revision&0b00111111111111111111111111111111111111111111111111111111111111)
-			panic("expired pointer")
+			//fmt.Printf("%b != %b\b", rev&0b00111111111111111111111111111111111111111111111111111111111111, p.revision&0b00111111111111111111111111111111111111111111111111111111111111)
+			panic("invalid reference (please read https://the.graphics.gd/guide/memory)")
 		}
 		if !rev.isActive() {
 			if live, ok := any(T(p)).(Liveness[P]); ok && !live.IsAlive(*(*P)(unsafe.Pointer(&ptrs))) {
-				panic("dead pointer")
+				panic("invalid reference (please read https://the.graphics.gd/guide/memory)")
 			}
 			arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active()))
 		}
@@ -381,9 +381,9 @@ func Bad[T Generic[T, P], P Size](ptr T) bool {
 		if !rev.isActive() {
 			arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active()))
 		}
-		return true
+		return false
 	}
-	return false
+	return true
 }
 
 // Add allocates a new pointer that can be mutated with [Set].
@@ -433,7 +433,7 @@ func Set[T Generic[T, P], P Size](ptr T, val P) {
 	for {
 		rev := revision(arr[addr+offsetRevision].Load())
 		if !rev.matches(p.revision) {
-			panic("expired pointer")
+			panic("invalid reference (please read https://the.graphics.gd/guide/memory)")
 		}
 		if rev != revisionLocked && arr[addr+offsetRevision].CompareAndSwap(uint64(rev), revisionLocked) {
 			var local [3]uint64
@@ -502,13 +502,13 @@ func Pin[T Generic[T, P], P Size](ptr T) T {
 		return ptr
 	}
 	if p.revision == 0 {
-		panic("cannot pin a nil pointer")
+		panic("cannot pin an invalid reference (please read https://the.graphics.gd/guide/memory)")
 	}
 	page, addr := uint64(p.sentinal/pageSize), uint64(p.sentinal%pageSize)
 	arr := tables[len(p.checksum)].Index(page)
 	rev := revision(arr[addr+offsetRevision].Load())
 	if !rev.matches(p.revision) {
-		panic("expired pointer")
+		panic("invalid reference (please read https://the.graphics.gd/guide/memory)")
 	}
 	arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.pinned()))
 	return ptr
@@ -553,7 +553,7 @@ func Lay[T Generic[T, P], P Size](ptr T) T {
 	for {
 		rev := revision(arr[addr+offsetRevision].Load())
 		if !rev.matches(p.revision) {
-			panic("expired pointer")
+			panic("invalid reference (please read https://the.graphics.gd/guide/memory)")
 		}
 		if rev != revisionLocked && arr[addr+offsetRevision].CompareAndSwap(uint64(rev), revisionLocked) {
 			arr[addr+offsetFreeFunc].Store(0)
@@ -669,12 +669,12 @@ func Ask[T Generic[T, P], P Size](ptr T) (P, Kind) {
 			continue
 		}
 		if !rev.matches(p.revision) {
-			fmt.Printf("%b != %b\b", rev&0b00111111111111111111111111111111111111111111111111111111111111, p.revision&0b00111111111111111111111111111111111111111111111111111111111111)
-			panic("expired pointer")
+			//fmt.Printf("%b != %b\b", rev&0b00111111111111111111111111111111111111111111111111111111111111, p.revision&0b00111111111111111111111111111111111111111111111111111111111111)
+			panic("invalid reference (please read https://the.graphics.gd/guide/memory)")
 		}
 		if !rev.isActive() {
 			if live, ok := any(T(p)).(Liveness[P]); ok && !live.IsAlive(*(*P)(unsafe.Pointer(&ptrs))) {
-				panic("dead pointer")
+				panic("invalid reference (please read https://the.graphics.gd/guide/memory)")
 			}
 			arr[addr+offsetRevision].CompareAndSwap(uint64(rev), uint64(rev.active()))
 		}
