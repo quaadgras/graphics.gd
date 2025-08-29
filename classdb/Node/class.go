@@ -3,32 +3,36 @@
 // Package Node provides methods for working with Node object instances.
 package Node
 
-import "unsafe"
-import "reflect"
-import "slices"
-import "graphics.gd/internal/pointers"
-import "graphics.gd/internal/callframe"
-import "graphics.gd/internal/gdextension"
-import gd "graphics.gd/internal"
-import "graphics.gd/internal/gdclass"
-import "graphics.gd/variant"
-import "graphics.gd/variant/Angle"
-import "graphics.gd/variant/Euler"
-import "graphics.gd/classdb/InputEvent"
-import "graphics.gd/classdb/MultiplayerAPI"
-import "graphics.gd/classdb/Resource"
-import "graphics.gd/classdb/Tween"
-import "graphics.gd/variant/Array"
-import "graphics.gd/variant/Callable"
-import "graphics.gd/variant/Dictionary"
-import "graphics.gd/variant/Error"
-import "graphics.gd/variant/Float"
-import "graphics.gd/variant/Object"
-import "graphics.gd/variant/Packed"
-import "graphics.gd/variant/Path"
-import "graphics.gd/variant/RID"
-import "graphics.gd/variant/RefCounted"
-import "graphics.gd/variant/String"
+import (
+	"reflect"
+	"slices"
+	"unsafe"
+
+	"graphics.gd/internal/callframe"
+	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/pointers"
+
+	"graphics.gd/classdb/InputEvent"
+	"graphics.gd/classdb/MultiplayerAPI"
+	"graphics.gd/classdb/Resource"
+	"graphics.gd/classdb/Tween"
+	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdclass"
+	"graphics.gd/variant"
+	"graphics.gd/variant/Angle"
+	"graphics.gd/variant/Array"
+	"graphics.gd/variant/Callable"
+	"graphics.gd/variant/Dictionary"
+	"graphics.gd/variant/Error"
+	"graphics.gd/variant/Euler"
+	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Object"
+	"graphics.gd/variant/Packed"
+	"graphics.gd/variant/Path"
+	"graphics.gd/variant/RID"
+	"graphics.gd/variant/RefCounted"
+	"graphics.gd/variant/String"
+)
 
 var _ Object.ID
 
@@ -2949,7 +2953,7 @@ Unlike with [method Object.free], the node is not deleted instantly, and it can 
 //go:nosplit
 func (self class) QueueFree() { //gd:Node.queue_free
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_free, 0, unsafe.Pointer(&struct{}{}))
-	pointers.End(self.AsObject()[0])
+	gd.PointerWithOwnershipTransferredToGodot(self.AsObject()[0])
 }
 
 /*

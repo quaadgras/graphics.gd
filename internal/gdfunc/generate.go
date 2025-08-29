@@ -258,7 +258,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 	}
 
 	if method.Name == "queue_free" {
-		fmt.Fprintf(w, "\tpointers.End(self.AsObject()[0])\n")
+		fmt.Fprintf(w, "\tgd.PointerWithOwnershipTransferredToGodot(self.AsObject()[0])\n")
 	}
 
 	if result != "" {
