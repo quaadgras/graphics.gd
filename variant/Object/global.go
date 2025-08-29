@@ -1,6 +1,9 @@
 package Object
 
-import gd "graphics.gd/internal"
+import (
+	gd "graphics.gd/internal"
+	"graphics.gd/internal/pointers"
+)
 
 // Any object.
 type Any interface {
@@ -42,4 +45,10 @@ func Call(object Any, method string, args ...any) any { //gd:Object.call
 		panic(err)
 	}
 	return result.Interface()
+}
+
+// InstanceIsValid returns true if the given object instance is valid (the reference has not been
+// invalidated and the object has not been freed).
+func InstanceIsValid(obj Any) bool { //gd:is_instance_valid
+	return !pointers.Bad(obj.AsObject()[0]) && Instance(obj.AsObject()).ID().Instance() != Nil
 }
