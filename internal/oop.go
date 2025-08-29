@@ -72,6 +72,14 @@ func PointerWithOwnershipTransferredToGodot[T pointers.Generic[T, [3]uint64]](pt
 	return EnginePointer(raw[0])
 }
 
+func PointerQueueFree[T pointers.Generic[T, [3]uint64]](ptr T) {
+	raw := pointers.Get(ptr)
+	var id gdextension.ObjectID
+	gdextension.Host.Objects.ID.Get(gdextension.Object(raw[0]), gdextension.CallReturns[gdextension.ObjectID](unsafe.Pointer(&id)))
+	pointers.Set(ptr, [3]uint64{raw[0], uint64(id)})
+	pointers.Lay(ptr)
+}
+
 func PointerMustAssertInstanceID[T pointers.Generic[T, [3]uint64]](ptr gdextension.Object) T {
 	if ptr == 0 {
 		return T{}
