@@ -25,6 +25,7 @@ import (
 	"path"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -344,8 +345,8 @@ func wrap() error {
 	default:
 		libraryPath += ".so"
 	}
-	if len(os.Args) == 1 {
-		os.Args = append(os.Args, "run")
+	if len(os.Args) == 1 || strings.HasPrefix(os.Args[1], "-") {
+		os.Args = append([]string{os.Args[0], "run"}, os.Args[1:]...)
 		runGodotArgs = []string{"-e"}
 	}
 	var verbose bool
@@ -353,7 +354,7 @@ func wrap() error {
 	for i, arg := range os.Args[1:] {
 		if arg == "-v" || arg == "--verbose" {
 			verbose = true
-			args[i] = "-v"
+			args = slices.Delete(args, i, i)
 		}
 	}
 	if verbose {
