@@ -348,7 +348,17 @@ func wrap() error {
 		os.Args = append(os.Args, "run")
 		runGodotArgs = []string{"-e"}
 	}
+	var verbose bool
 	args := make([]string, len(os.Args)-1)
+	for i, arg := range os.Args[1:] {
+		if arg == "-v" || arg == "--verbose" {
+			verbose = true
+			args[i] = "-v"
+		}
+	}
+	if verbose {
+		runGodotArgs = append(runGodotArgs, "--verbose")
+	}
 	builds := [][]string{}
 	switch os.Args[1] {
 	case "fix":
