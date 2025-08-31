@@ -930,7 +930,7 @@ func (self class) ForceUpdate(layer int64) { //gd:TileMap.force_update
 
 //go:nosplit
 func (self class) SetTileset(tileset [1]gdclass.TileSet) { //gd:TileMap.set_tileset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tileset, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tileset gdextension.Object }{gdextension.Object(gd.CallerIncrements(tileset[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tileset, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tileset gdextension.Object }{gdextension.Object(gd.ObjectChecked(tileset[0].AsObject()))}))
 }
 
 //go:nosplit

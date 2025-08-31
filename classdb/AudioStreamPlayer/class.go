@@ -323,7 +323,7 @@ func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) {
 
 //go:nosplit
 func (self class) SetStream(stream [1]gdclass.AudioStream) { //gd:AudioStreamPlayer.set_stream
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.CallerIncrements(stream[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
 }
 
 //go:nosplit

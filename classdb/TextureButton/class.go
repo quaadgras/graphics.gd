@@ -256,32 +256,32 @@ func (self Instance) SetFlipV(value bool) {
 
 //go:nosplit
 func (self class) SetTextureNormal(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_normal
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_normal, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_normal, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) SetTexturePressed(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_pressed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_pressed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) SetTextureHover(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_hover
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_hover, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_hover, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) SetTextureDisabled(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_disabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_disabled, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_disabled, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) SetTextureFocused(texture [1]gdclass.Texture2D) { //gd:TextureButton.set_texture_focused
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_focused, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_focused, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit
 func (self class) SetClickMask(mask [1]gdclass.BitMap) { //gd:TextureButton.set_click_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_click_mask, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mask gdextension.Object }{gdextension.Object(gd.CallerIncrements(mask[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_click_mask, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mask gdextension.Object }{gdextension.Object(gd.ObjectChecked(mask[0].AsObject()))}))
 }
 
 //go:nosplit

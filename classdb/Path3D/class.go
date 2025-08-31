@@ -162,7 +162,7 @@ func (self Instance) SetCurve(value Curve3D.Instance) {
 
 //go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve3D) { //gd:Path3D.set_curve
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.CallerIncrements(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit

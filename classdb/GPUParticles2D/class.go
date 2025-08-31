@@ -536,7 +536,7 @@ func (self class) SetInterpolate(enable bool) { //gd:GPUParticles2D.set_interpol
 
 //go:nosplit
 func (self class) SetProcessMaterial(material [1]gdclass.Material) { //gd:GPUParticles2D.set_process_material
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.CallerIncrements(material[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -689,7 +689,7 @@ func (self class) GetDrawOrder() DrawOrder { //gd:GPUParticles2D.get_draw_order
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:GPUParticles2D.set_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit

@@ -201,6 +201,7 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.OpenXRIPBinding)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].InitRef()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -239,7 +240,7 @@ func (self Instance) SetPaths(value []string) {
 
 //go:nosplit
 func (self class) SetAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRIPBinding.set_action
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action gdextension.Object }{gdextension.Object(gd.CallerIncrements(action[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action gdextension.Object }{gdextension.Object(gd.ObjectChecked(action[0].AsObject()))}))
 }
 
 //go:nosplit

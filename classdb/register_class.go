@@ -480,7 +480,7 @@ func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_
 func (class classImplementation) CreateGoInstanceFrom(value reflect.Value, notify_postinitialize bool) [1]gd.Object {
 	var super = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(class.Super)))})}
 	if class.RefCounted {
-		//fmt.Fprintln(os.Stderr, gd.RefCounted(super[0]).GetReferenceCount())
+		gd.RefCounted(super[0]).InitRef()
 	}
 	instance := class.reloadInstance(value, super)
 	gdextension.Host.Objects.Extension.Setup(gdextension.Object(pointers.Get(super[0])[0]), pointers.Get(class.Name), gdextension.ExtensionInstanceID(cgoNewHandle(instance)))

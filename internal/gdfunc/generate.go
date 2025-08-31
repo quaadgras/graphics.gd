@@ -214,11 +214,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 			case gdjson.IsTemporaryReference, gdjson.MustAssertInstanceID, gdjson.ReversesTheOwnership:
 				fmt.Fprintf(w, "\tgdextension.Object(gd.ObjectChecked(%v[0].AsObject()))", fixReserved(arg.Name))
 			case gdjson.RefCountedManagement:
-				if setter_getter {
-					fmt.Fprintf(w, "\tgdextension.Object(gd.CallerIncrements(%v[0].AsObject()))", fixReserved(arg.Name))
-				} else {
-					fmt.Fprintf(w, "\tgdextension.Object(gd.ObjectChecked(%v[0].AsObject()))", fixReserved(arg.Name))
-				}
+				fmt.Fprintf(w, "\tgdextension.Object(gd.ObjectChecked(%v[0].AsObject()))", fixReserved(arg.Name))
 			default:
 				panic("unknown ownership: " + fmt.Sprint(semantics))
 			}

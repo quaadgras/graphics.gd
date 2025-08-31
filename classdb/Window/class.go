@@ -1797,7 +1797,7 @@ func (self class) ChildControlsChanged() { //gd:Window.child_controls_changed
 
 //go:nosplit
 func (self class) SetTheme(theme [1]gdclass.Theme) { //gd:Window.set_theme
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ theme gdextension.Object }{gdextension.Object(gd.CallerIncrements(theme[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ theme gdextension.Object }{gdextension.Object(gd.ObjectChecked(theme[0].AsObject()))}))
 }
 
 //go:nosplit

@@ -189,7 +189,7 @@ func (self class) GetSize() Vector3.XYZ { //gd:GPUParticlesAttractorVectorField3
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture3D) { //gd:GPUParticlesAttractorVectorField3D.set_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit

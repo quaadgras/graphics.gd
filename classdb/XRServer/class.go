@@ -487,7 +487,7 @@ func (self class) GetPrimaryInterface() [1]gdclass.XRInterface { //gd:XRServer.g
 
 //go:nosplit
 func (self class) SetPrimaryInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.set_primary_interface
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(gd.CallerIncrements(intf[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))}))
 }
 func OnReferenceFrameChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("reference_frame_changed"), gd.NewCallable(cb), 0)

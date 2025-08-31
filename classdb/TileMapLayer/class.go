@@ -1043,7 +1043,7 @@ func (self class) IsEnabled() bool { //gd:TileMapLayer.is_enabled
 
 //go:nosplit
 func (self class) SetTileSet(tile_set [1]gdclass.TileSet) { //gd:TileMapLayer.set_tile_set
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tile_set gdextension.Object }{gdextension.Object(gd.CallerIncrements(tile_set[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tile_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(tile_set[0].AsObject()))}))
 }
 
 //go:nosplit

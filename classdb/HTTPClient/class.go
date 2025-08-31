@@ -388,6 +388,7 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.HTTPClient)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].InitRef()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -433,7 +434,7 @@ func (self class) ConnectToHost(host String.Readable, port int64, tls_options [1
 
 //go:nosplit
 func (self class) SetConnection(connection [1]gdclass.StreamPeer) { //gd:HTTPClient.set_connection
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ connection gdextension.Object }{gdextension.Object(gd.CallerIncrements(connection[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ connection gdextension.Object }{gdextension.Object(gd.ObjectChecked(connection[0].AsObject()))}))
 }
 
 //go:nosplit

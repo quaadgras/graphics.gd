@@ -349,7 +349,7 @@ func (self Instance) SetSkeleton(value string) {
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MeshInstance3D.set_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.CallerIncrements(mesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -373,7 +373,7 @@ func (self class) GetSkeletonPath() Path.ToNode { //gd:MeshInstance3D.get_skelet
 
 //go:nosplit
 func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:MeshInstance3D.set_skin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(gd.CallerIncrements(skin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))}))
 }
 
 //go:nosplit

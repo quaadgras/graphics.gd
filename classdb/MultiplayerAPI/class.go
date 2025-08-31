@@ -262,6 +262,7 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.MultiplayerAPI)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].InitRef()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -293,7 +294,7 @@ func (self class) GetMultiplayerPeer() [1]gdclass.MultiplayerPeer { //gd:Multipl
 
 //go:nosplit
 func (self class) SetMultiplayerPeer(peer [1]gdclass.MultiplayerPeer) { //gd:MultiplayerAPI.set_multiplayer_peer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer_peer, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ peer gdextension.Object }{gdextension.Object(gd.CallerIncrements(peer[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multiplayer_peer, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(peer[0].AsObject()))}))
 }
 
 /*

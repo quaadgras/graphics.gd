@@ -209,6 +209,7 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AnimationNodeOneShot)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].InitRef()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -299,7 +300,7 @@ func (self class) GetFadeinTime() float64 { //gd:AnimationNodeOneShot.get_fadein
 
 //go:nosplit
 func (self class) SetFadeinCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeOneShot.set_fadein_curve
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fadein_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.CallerIncrements(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fadein_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -323,7 +324,7 @@ func (self class) GetFadeoutTime() float64 { //gd:AnimationNodeOneShot.get_fadeo
 
 //go:nosplit
 func (self class) SetFadeoutCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeOneShot.set_fadeout_curve
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fadeout_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.CallerIncrements(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fadeout_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit

@@ -184,6 +184,7 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.FontVariation)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].InitRef()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -258,7 +259,7 @@ func (self Instance) SetBaselineOffset(value Float.X) {
 
 //go:nosplit
 func (self class) SetBaseFont(font [1]gdclass.Font) { //gd:FontVariation.set_base_font
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.CallerIncrements(font[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 //go:nosplit

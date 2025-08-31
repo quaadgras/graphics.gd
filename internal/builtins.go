@@ -639,6 +639,9 @@ func (rc RefCounted) Reference() {
 func (rc RefCounted) Unreference() bool {
 	return gdextension.Call[bool](ObjectChecked(rc.AsObject()), refcounted_methods.unreference, gdextension.SizeBool, nil)
 }
+func (rc RefCounted) InitRef() bool {
+	return gdextension.Call[bool](ObjectChecked(rc.AsObject()), refcounted_methods.init_ref, gdextension.SizeBool, nil)
+}
 
 func (rc RefCounted) GetReferenceCount() int {
 	return int(gdextension.Call[int64](ObjectChecked(rc.AsObject()), refcounted_methods.get_reference_count, gdextension.SizeInt, nil))

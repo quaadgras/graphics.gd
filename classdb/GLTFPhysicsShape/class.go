@@ -228,6 +228,7 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GLTFPhysicsShape)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].InitRef()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -429,7 +430,7 @@ func (self class) GetImporterMesh() [1]gdclass.ImporterMesh { //gd:GLTFPhysicsSh
 
 //go:nosplit
 func (self class) SetImporterMesh(importer_mesh [1]gdclass.ImporterMesh) { //gd:GLTFPhysicsShape.set_importer_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_importer_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ importer_mesh gdextension.Object }{gdextension.Object(gd.CallerIncrements(importer_mesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_importer_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ importer_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(importer_mesh[0].AsObject()))}))
 }
 func (self class) AsGLTFPhysicsShape() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGLTFPhysicsShape() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

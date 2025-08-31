@@ -964,7 +964,7 @@ func (self Instance) SetCanvasCullMask(value int) {
 
 //go:nosplit
 func (self class) SetWorld2d(world_2d [1]gdclass.World2D) { //gd:Viewport.set_world_2d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_2d, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ world_2d gdextension.Object }{gdextension.Object(gd.CallerIncrements(world_2d[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_2d, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ world_2d gdextension.Object }{gdextension.Object(gd.ObjectChecked(world_2d[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1674,7 +1674,7 @@ func (self class) GetCamera2d() [1]gdclass.Camera2D { //gd:Viewport.get_camera_2
 
 //go:nosplit
 func (self class) SetWorld3d(world_3d [1]gdclass.World3D) { //gd:Viewport.set_world_3d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_3d, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ world_3d gdextension.Object }{gdextension.Object(gd.CallerIncrements(world_3d[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_3d, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ world_3d gdextension.Object }{gdextension.Object(gd.ObjectChecked(world_3d[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1848,7 +1848,7 @@ func (self class) GetVrsUpdateMode() VRSUpdateMode { //gd:Viewport.get_vrs_updat
 
 //go:nosplit
 func (self class) SetVrsTexture(texture [1]gdclass.Texture2D) { //gd:Viewport.set_vrs_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit

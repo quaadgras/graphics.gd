@@ -231,6 +231,7 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AnimationNodeTransition)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].InitRef()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -345,7 +346,7 @@ func (self class) GetXfadeTime() float64 { //gd:AnimationNodeTransition.get_xfad
 
 //go:nosplit
 func (self class) SetXfadeCurve(curve [1]gdclass.Curve) { //gd:AnimationNodeTransition.set_xfade_curve
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xfade_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.CallerIncrements(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xfade_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
 }
 
 //go:nosplit

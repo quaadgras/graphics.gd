@@ -335,7 +335,7 @@ func (self class) SetTexture(atype DecalTexture, texture [1]gdclass.Texture2D) {
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		atype   DecalTexture
 		texture gdextension.Object
-	}{atype, gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
+	}{atype, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*

@@ -174,6 +174,7 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.BoneMap)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].InitRef()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -195,7 +196,7 @@ func (self class) GetProfile() [1]gdclass.SkeletonProfile { //gd:BoneMap.get_pro
 
 //go:nosplit
 func (self class) SetProfile(profile [1]gdclass.SkeletonProfile) { //gd:BoneMap.set_profile
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_profile, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ profile gdextension.Object }{gdextension.Object(gd.CallerIncrements(profile[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_profile, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(profile[0].AsObject()))}))
 }
 
 /*

@@ -4450,7 +4450,7 @@ func (self class) GetLineBackgroundColor(line int64) Color.RGBA { //gd:TextEdit.
 
 //go:nosplit
 func (self class) SetSyntaxHighlighter(syntax_highlighter [1]gdclass.SyntaxHighlighter) { //gd:TextEdit.set_syntax_highlighter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.CallerIncrements(syntax_highlighter[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(syntax_highlighter[0].AsObject()))}))
 }
 
 //go:nosplit

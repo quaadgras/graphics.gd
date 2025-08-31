@@ -572,7 +572,7 @@ func (self class) GetBakeMode() BakeMode { //gd:Light3D.get_bake_mode
 
 //go:nosplit
 func (self class) SetProjector(projector [1]gdclass.Texture2D) { //gd:Light3D.set_projector
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_projector, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ projector gdextension.Object }{gdextension.Object(gd.CallerIncrements(projector[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_projector, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ projector gdextension.Object }{gdextension.Object(gd.ObjectChecked(projector[0].AsObject()))}))
 }
 
 //go:nosplit

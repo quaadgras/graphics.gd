@@ -167,6 +167,7 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.OpenXRDpadBindingModifier)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].InitRef()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -245,7 +246,7 @@ func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) {
 
 //go:nosplit
 func (self class) SetActionSet(action_set [1]gdclass.OpenXRActionSet) { //gd:OpenXRDpadBindingModifier.set_action_set
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action_set gdextension.Object }{gdextension.Object(gd.CallerIncrements(action_set[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_set, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action_set gdextension.Object }{gdextension.Object(gd.ObjectChecked(action_set[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -329,7 +330,7 @@ func (self class) GetIsSticky() bool { //gd:OpenXRDpadBindingModifier.get_is_sti
 
 //go:nosplit
 func (self class) SetOnHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRDpadBindingModifier.set_on_haptic
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_on_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(gd.CallerIncrements(haptic[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_on_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(haptic[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -341,7 +342,7 @@ func (self class) GetOnHaptic() [1]gdclass.OpenXRHapticBase { //gd:OpenXRDpadBin
 
 //go:nosplit
 func (self class) SetOffHaptic(haptic [1]gdclass.OpenXRHapticBase) { //gd:OpenXRDpadBindingModifier.set_off_haptic
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_off_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(gd.CallerIncrements(haptic[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_off_haptic, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ haptic gdextension.Object }{gdextension.Object(gd.ObjectChecked(haptic[0].AsObject()))}))
 }
 
 //go:nosplit

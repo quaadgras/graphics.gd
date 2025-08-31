@@ -245,7 +245,7 @@ func (self class) GetLength() float64 { //gd:SpringArm3D.get_length
 
 //go:nosplit
 func (self class) SetShape(shape [1]gdclass.Shape3D) { //gd:SpringArm3D.set_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.CallerIncrements(shape[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
 }
 
 //go:nosplit

@@ -184,7 +184,7 @@ func (self Instance) SetCompositor(value Compositor.Instance) {
 
 //go:nosplit
 func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:WorldEnvironment.set_environment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.CallerIncrements(env[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -196,7 +196,7 @@ func (self class) GetEnvironment() [1]gdclass.Environment { //gd:WorldEnvironmen
 
 //go:nosplit
 func (self class) SetCameraAttributes(camera_attributes [1]gdclass.CameraAttributes) { //gd:WorldEnvironment.set_camera_attributes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_attributes gdextension.Object }{gdextension.Object(gd.CallerIncrements(camera_attributes[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ camera_attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(camera_attributes[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -208,7 +208,7 @@ func (self class) GetCameraAttributes() [1]gdclass.CameraAttributes { //gd:World
 
 //go:nosplit
 func (self class) SetCompositor(compositor [1]gdclass.Compositor) { //gd:WorldEnvironment.set_compositor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ compositor gdextension.Object }{gdextension.Object(gd.CallerIncrements(compositor[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ compositor gdextension.Object }{gdextension.Object(gd.ObjectChecked(compositor[0].AsObject()))}))
 }
 
 //go:nosplit

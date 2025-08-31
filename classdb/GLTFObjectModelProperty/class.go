@@ -206,6 +206,7 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GLTFObjectModelProperty)(unsafe.Pointer(&object))}
+	casted.AsRefCounted()[0].InitRef()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -296,7 +297,7 @@ func (self class) GetGltfToGodotExpression() [1]gdclass.Expression { //gd:GLTFOb
 
 //go:nosplit
 func (self class) SetGltfToGodotExpression(gltf_to_godot_expr [1]gdclass.Expression) { //gd:GLTFObjectModelProperty.set_gltf_to_godot_expression
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gltf_to_godot_expression, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gltf_to_godot_expr gdextension.Object }{gdextension.Object(gd.CallerIncrements(gltf_to_godot_expr[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gltf_to_godot_expression, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gltf_to_godot_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(gltf_to_godot_expr[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -308,7 +309,7 @@ func (self class) GetGodotToGltfExpression() [1]gdclass.Expression { //gd:GLTFOb
 
 //go:nosplit
 func (self class) SetGodotToGltfExpression(godot_to_gltf_expr [1]gdclass.Expression) { //gd:GLTFObjectModelProperty.set_godot_to_gltf_expression
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_to_gltf_expression, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(gd.CallerIncrements(godot_to_gltf_expr[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_to_gltf_expression, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(godot_to_gltf_expr[0].AsObject()))}))
 }
 
 //go:nosplit

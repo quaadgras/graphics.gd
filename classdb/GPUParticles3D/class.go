@@ -570,7 +570,7 @@ func (self class) SetInterpolate(enable bool) { //gd:GPUParticles3D.set_interpol
 
 //go:nosplit
 func (self class) SetProcessMaterial(material [1]gdclass.Material) { //gd:GPUParticles3D.set_process_material
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.CallerIncrements(material[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -749,7 +749,7 @@ func (self class) SetDrawPassMesh(pass int64, mesh [1]gdclass.Mesh) { //gd:GPUPa
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_pass_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		pass int64
 		mesh gdextension.Object
-	}{pass, gdextension.Object(gd.CallerIncrements(mesh[0].AsObject()))}))
+	}{pass, gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -771,7 +771,7 @@ func (self class) GetDrawPassMesh(pass int64) [1]gdclass.Mesh { //gd:GPUParticle
 
 //go:nosplit
 func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:GPUParticles3D.set_skin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(gd.CallerIncrements(skin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))}))
 }
 
 //go:nosplit

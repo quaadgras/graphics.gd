@@ -2650,7 +2650,7 @@ func (self class) GetVSizeFlags() SizeFlags { //gd:Control.get_v_size_flags
 
 //go:nosplit
 func (self class) SetTheme(theme [1]gdclass.Theme) { //gd:Control.set_theme
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ theme gdextension.Object }{gdextension.Object(gd.CallerIncrements(theme[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_theme, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ theme gdextension.Object }{gdextension.Object(gd.ObjectChecked(theme[0].AsObject()))}))
 }
 
 //go:nosplit

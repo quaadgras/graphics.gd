@@ -174,7 +174,7 @@ func (self Instance) SetTexture(value Texture2D.Instance) {
 
 //go:nosplit
 func (self class) SetMultimesh(multimesh [1]gdclass.MultiMesh) { //gd:MultiMeshInstance2D.set_multimesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multimesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ multimesh gdextension.Object }{gdextension.Object(gd.CallerIncrements(multimesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_multimesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ multimesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(multimesh[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -186,7 +186,7 @@ func (self class) GetMultimesh() [1]gdclass.MultiMesh { //gd:MultiMeshInstance2D
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:MultiMeshInstance2D.set_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 //go:nosplit

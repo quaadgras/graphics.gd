@@ -248,7 +248,7 @@ func (self class) GetBakeSimplificationDistance() float64 { //gd:OccluderInstanc
 
 //go:nosplit
 func (self class) SetOccluder(occluder [1]gdclass.Occluder3D) { //gd:OccluderInstance3D.set_occluder
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ occluder gdextension.Object }{gdextension.Object(gd.CallerIncrements(occluder[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ occluder gdextension.Object }{gdextension.Object(gd.ObjectChecked(occluder[0].AsObject()))}))
 }
 
 //go:nosplit

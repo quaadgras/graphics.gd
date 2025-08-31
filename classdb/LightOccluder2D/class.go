@@ -182,7 +182,7 @@ func (self Instance) SetOccluderLightMask(value int) {
 
 //go:nosplit
 func (self class) SetOccluderPolygon(polygon [1]gdclass.OccluderPolygon2D) { //gd:LightOccluder2D.set_occluder_polygon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder_polygon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ polygon gdextension.Object }{gdextension.Object(gd.CallerIncrements(polygon[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder_polygon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(polygon[0].AsObject()))}))
 }
 
 //go:nosplit
