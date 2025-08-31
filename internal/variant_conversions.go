@@ -398,11 +398,11 @@ func CutVariant(v any, cut bool) Variant {
 	default:
 		panic("gd.Variant: unsupported type " + reflect.TypeOf(v).String())
 	}
-	var variant = pointers.Raw[Variant]([3]uint64(ret))
-	if !cut {
-		variant = pointers.New[Variant]([3]uint64(ret))
+	if cut {
+		return pointers.Let[Variant]([3]uint64(ret))
+	} else {
+		return pointers.New[Variant]([3]uint64(ret))
 	}
-	return variant
 }
 
 func newDictionary(val reflect.Value) Dictionary {
