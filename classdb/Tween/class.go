@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CallbackTweener"
 import "graphics.gd/classdb/IntervalTweener"
 import "graphics.gd/classdb/SubtweenTweener"
@@ -49,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1099,16 +1101,40 @@ func (self class) InterpolateValue(initial_value variant.Any, delta_value varian
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-func (self Instance) OnStepFinished(cb func(idx int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("step_finished"), gd.NewCallable(cb), 0)
+func (self Instance) OnStepFinished(cb func(idx int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("step_finished"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnLoopFinished(cb func(loop_count int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("loop_finished"), gd.NewCallable(cb), 0)
+func (self class) StepFinished() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`StepFinished`))))
 }
 
-func (self Instance) OnFinished(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), 0)
+func (self Instance) OnLoopFinished(cb func(loop_count int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("loop_finished"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) LoopFinished() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`LoopFinished`))))
+}
+
+func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Finished() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Finished`))))
 }
 
 func (self class) AsTween() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Material"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/Texture2D"
@@ -52,6 +53,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1775,8 +1777,16 @@ func (self class) GetCollisionBounce() float64 { //gd:ParticleProcessMaterial.ge
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnEmissionShapeChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("emission_shape_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnEmissionShapeChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("emission_shape_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) EmissionShapeChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EmissionShapeChanged`))))
 }
 
 func (self class) AsParticleProcessMaterial() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }

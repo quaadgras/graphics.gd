@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -54,6 +55,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -307,12 +309,28 @@ func (self class) GetHframes() int64 { //gd:Sprite3D.get_hframes
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnFrameChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("frame_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("frame_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnTextureChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("texture_changed"), gd.NewCallable(cb), 0)
+func (self class) FrameChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FrameChanged`))))
+}
+
+func (self Instance) OnTextureChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("texture_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) TextureChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextureChanged`))))
 }
 
 func (self class) AsSprite3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

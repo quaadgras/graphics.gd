@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/GUI"
@@ -53,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1422,20 +1424,52 @@ func (self class) IsSelectAllOnFocus() bool { //gd:LineEdit.is_select_all_on_foc
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnTextChanged(cb func(new_text string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("text_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnTextChanged(cb func(new_text string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("text_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnTextChangeRejected(cb func(rejected_substring string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("text_change_rejected"), gd.NewCallable(cb), 0)
+func (self class) TextChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextChanged`))))
 }
 
-func (self Instance) OnTextSubmitted(cb func(new_text string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("text_submitted"), gd.NewCallable(cb), 0)
+func (self Instance) OnTextChangeRejected(cb func(rejected_substring string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("text_change_rejected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnEditingToggled(cb func(toggled_on bool)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("editing_toggled"), gd.NewCallable(cb), 0)
+func (self class) TextChangeRejected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextChangeRejected`))))
+}
+
+func (self Instance) OnTextSubmitted(cb func(new_text string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("text_submitted"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) TextSubmitted() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextSubmitted`))))
+}
+
+func (self Instance) OnEditingToggled(cb func(toggled_on bool), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("editing_toggled"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) EditingToggled() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditingToggled`))))
 }
 
 func (self class) AsLineEdit() Advanced                { return *((*Advanced)(unsafe.Pointer(&self))) }

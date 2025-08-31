@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/GeometryInstance3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -52,6 +53,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -450,24 +452,64 @@ func (self class) GetPlayingSpeed() float64 { //gd:AnimatedSprite3D.get_playing_
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnSpriteFramesChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("sprite_frames_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnSpriteFramesChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("sprite_frames_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnAnimationChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), 0)
+func (self class) SpriteFramesChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SpriteFramesChanged`))))
 }
 
-func (self Instance) OnFrameChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("frame_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnAnimationChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnAnimationLooped(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_looped"), gd.NewCallable(cb), 0)
+func (self class) AnimationChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationChanged`))))
 }
 
-func (self Instance) OnAnimationFinished(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_finished"), gd.NewCallable(cb), 0)
+func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("frame_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) FrameChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FrameChanged`))))
+}
+
+func (self Instance) OnAnimationLooped(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("animation_looped"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AnimationLooped() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationLooped`))))
+}
+
+func (self Instance) OnAnimationFinished(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("animation_finished"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AnimationFinished() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationFinished`))))
 }
 
 func (self class) AsAnimatedSprite3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

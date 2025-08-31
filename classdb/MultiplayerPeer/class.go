@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/PacketPeer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -47,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -419,12 +421,28 @@ func (self class) IsServerRelaySupported() bool { //gd:MultiplayerPeer.is_server
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnPeerConnected(cb func(id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("peer_connected"), gd.NewCallable(cb), 0)
+func (self Instance) OnPeerConnected(cb func(id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("peer_connected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnPeerDisconnected(cb func(id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("peer_disconnected"), gd.NewCallable(cb), 0)
+func (self class) PeerConnected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerConnected`))))
+}
+
+func (self Instance) OnPeerDisconnected(cb func(id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("peer_disconnected"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) PeerDisconnected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerDisconnected`))))
 }
 
 func (self class) AsMultiplayerPeer() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

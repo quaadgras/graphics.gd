@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -49,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -616,36 +618,100 @@ func (self class) GetVrsStrength() float64 { //gd:OpenXRInterface.get_vrs_streng
 func (self class) SetVrsStrength(strength float64) { //gd:OpenXRInterface.set_vrs_strength
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_strength, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
 }
-func (self Instance) OnSessionBegun(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_begun"), gd.NewCallable(cb), 0)
+func (self Instance) OnSessionBegun(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_begun"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnSessionStopping(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_stopping"), gd.NewCallable(cb), 0)
+func (self class) SessionBegun() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionBegun`))))
 }
 
-func (self Instance) OnSessionFocussed(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_focussed"), gd.NewCallable(cb), 0)
+func (self Instance) OnSessionStopping(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_stopping"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnSessionVisible(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_visible"), gd.NewCallable(cb), 0)
+func (self class) SessionStopping() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionStopping`))))
 }
 
-func (self Instance) OnSessionLossPending(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_loss_pending"), gd.NewCallable(cb), 0)
+func (self Instance) OnSessionFocussed(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_focussed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnInstanceExiting(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("instance_exiting"), gd.NewCallable(cb), 0)
+func (self class) SessionFocussed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionFocussed`))))
 }
 
-func (self Instance) OnPoseRecentered(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("pose_recentered"), gd.NewCallable(cb), 0)
+func (self Instance) OnSessionVisible(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_visible"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnRefreshRateChanged(cb func(refresh_rate Float.X)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("refresh_rate_changed"), gd.NewCallable(cb), 0)
+func (self class) SessionVisible() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionVisible`))))
+}
+
+func (self Instance) OnSessionLossPending(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_loss_pending"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) SessionLossPending() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionLossPending`))))
+}
+
+func (self Instance) OnInstanceExiting(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("instance_exiting"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) InstanceExiting() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InstanceExiting`))))
+}
+
+func (self Instance) OnPoseRecentered(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("pose_recentered"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) PoseRecentered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PoseRecentered`))))
+}
+
+func (self Instance) OnRefreshRateChanged(cb func(refresh_rate Float.X), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("refresh_rate_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) RefreshRateChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RefreshRateChanged`))))
 }
 
 func (self class) AsOpenXRInterface() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

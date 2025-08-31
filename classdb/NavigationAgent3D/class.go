@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/NavigationPathQueryParameters3D"
 import "graphics.gd/classdb/NavigationPathQueryResult3D"
 import "graphics.gd/classdb/Node"
@@ -51,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1139,28 +1141,76 @@ func (self class) GetDebugPathCustomPointSize() float64 { //gd:NavigationAgent3D
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnPathChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("path_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnPathChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("path_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnTargetReached(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("target_reached"), gd.NewCallable(cb), 0)
+func (self class) PathChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PathChanged`))))
 }
 
-func (self Instance) OnWaypointReached(cb func(details map[any]any)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("waypoint_reached"), gd.NewCallable(cb), 0)
+func (self Instance) OnTargetReached(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("target_reached"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnLinkReached(cb func(details map[any]any)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("link_reached"), gd.NewCallable(cb), 0)
+func (self class) TargetReached() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TargetReached`))))
 }
 
-func (self Instance) OnNavigationFinished(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("navigation_finished"), gd.NewCallable(cb), 0)
+func (self Instance) OnWaypointReached(cb func(details map[any]any), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("waypoint_reached"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnVelocityComputed(cb func(safe_velocity Vector3.XYZ)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("velocity_computed"), gd.NewCallable(cb), 0)
+func (self class) WaypointReached() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`WaypointReached`))))
+}
+
+func (self Instance) OnLinkReached(cb func(details map[any]any), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("link_reached"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) LinkReached() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`LinkReached`))))
+}
+
+func (self Instance) OnNavigationFinished(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("navigation_finished"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) NavigationFinished() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NavigationFinished`))))
+}
+
+func (self Instance) OnVelocityComputed(cb func(safe_velocity Vector3.XYZ), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("velocity_computed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) VelocityComputed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VelocityComputed`))))
 }
 
 func (self class) AsNavigationAgent3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

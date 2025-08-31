@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Input"
@@ -51,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -474,20 +476,52 @@ func (self class) GetButtonGroup() [1]gdclass.ButtonGroup { //gd:BaseButton.get_
 	var ret = [1]gdclass.ButtonGroup{gd.PointerWithOwnershipTransferredToGo[gdclass.ButtonGroup](r_ret)}
 	return ret
 }
-func (self Instance) OnPressed(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), 0)
+func (self Instance) OnPressed(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnButtonUp(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("button_up"), gd.NewCallable(cb), 0)
+func (self class) Pressed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Pressed`))))
 }
 
-func (self Instance) OnButtonDown(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("button_down"), gd.NewCallable(cb), 0)
+func (self Instance) OnButtonUp(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("button_up"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnToggled(cb func(toggled_on bool)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("toggled"), gd.NewCallable(cb), 0)
+func (self class) ButtonUp() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonUp`))))
+}
+
+func (self Instance) OnButtonDown(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("button_down"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ButtonDown() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonDown`))))
+}
+
+func (self Instance) OnToggled(cb func(toggled_on bool), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("toggled"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Toggled() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Toggled`))))
 }
 
 func (self class) AsBaseButton() Advanced              { return *((*Advanced)(unsafe.Pointer(&self))) }

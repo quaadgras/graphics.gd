@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Curve"
 import "graphics.gd/classdb/Gradient"
@@ -54,6 +55,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1284,8 +1286,16 @@ Sets this node's properties to match a given [GPUParticles2D] node with an assig
 func (self class) ConvertFromParticles(particles [1]gdclass.Node) { //gd:CPUParticles2D.convert_from_particles
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.convert_from_particles, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ particles gdextension.Object }{gdextension.Object(gd.ObjectChecked(particles[0].AsObject()))}))
 }
-func (self Instance) OnFinished(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), 0)
+func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Finished() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Finished`))))
 }
 
 func (self class) AsCPUParticles2D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

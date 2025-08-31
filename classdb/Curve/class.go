@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -48,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -656,12 +658,28 @@ func (self class) GetBakeResolution() int64 { //gd:Curve.get_bake_resolution
 func (self class) SetBakeResolution(resolution int64) { //gd:Curve.set_bake_resolution
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_resolution, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ resolution int64 }{resolution}))
 }
-func (self Instance) OnRangeChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("range_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnRangeChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("range_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnDomainChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("domain_changed"), gd.NewCallable(cb), 0)
+func (self class) RangeChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RangeChanged`))))
+}
+
+func (self Instance) OnDomainChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("domain_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) DomainChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DomainChanged`))))
 }
 
 func (self class) AsCurve() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

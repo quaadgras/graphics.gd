@@ -15,6 +15,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/GDExtension"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -48,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -241,16 +243,40 @@ func (self class) GetExtension(path String.Readable) [1]gdclass.GDExtension { //
 	var ret = [1]gdclass.GDExtension{gd.PointerWithOwnershipTransferredToGo[gdclass.GDExtension](r_ret)}
 	return ret
 }
-func OnExtensionsReloaded(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("extensions_reloaded"), gd.NewCallable(cb), 0)
+func OnExtensionsReloaded(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("extensions_reloaded"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func OnExtensionLoaded(cb func(extension GDExtension.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("extension_loaded"), gd.NewCallable(cb), 0)
+func (self class) ExtensionsReloaded() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ExtensionsReloaded`))))
 }
 
-func OnExtensionUnloading(cb func(extension GDExtension.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("extension_unloading"), gd.NewCallable(cb), 0)
+func OnExtensionLoaded(cb func(extension GDExtension.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("extension_loaded"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ExtensionLoaded() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ExtensionLoaded`))))
+}
+
+func OnExtensionUnloading(cb func(extension GDExtension.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("extension_unloading"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ExtensionUnloading() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ExtensionUnloading`))))
 }
 
 func (self class) Virtual(name string) reflect.Value {

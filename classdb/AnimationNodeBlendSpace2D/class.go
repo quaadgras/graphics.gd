@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/AnimationNode"
 import "graphics.gd/classdb/AnimationRootNode"
 import "graphics.gd/classdb/Resource"
@@ -50,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -548,8 +550,16 @@ func (self class) IsUsingSync() bool { //gd:AnimationNodeBlendSpace2D.is_using_s
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnTrianglesUpdated(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("triangles_updated"), gd.NewCallable(cb), 0)
+func (self Instance) OnTrianglesUpdated(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("triangles_updated"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) TrianglesUpdated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TrianglesUpdated`))))
 }
 
 func (self class) AsAnimationNodeBlendSpace2D() Advanced {

@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/MultiplayerPeer"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -47,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -420,24 +422,64 @@ func (self class) CreateDefaultInterface() [1]gdclass.MultiplayerAPI { //gd:Mult
 	var ret = [1]gdclass.MultiplayerAPI{gd.PointerWithOwnershipTransferredToGo[gdclass.MultiplayerAPI](r_ret)}
 	return ret
 }
-func (self Instance) OnPeerConnected(cb func(id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("peer_connected"), gd.NewCallable(cb), 0)
+func (self Instance) OnPeerConnected(cb func(id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("peer_connected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnPeerDisconnected(cb func(id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("peer_disconnected"), gd.NewCallable(cb), 0)
+func (self class) PeerConnected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerConnected`))))
 }
 
-func (self Instance) OnConnectedToServer(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("connected_to_server"), gd.NewCallable(cb), 0)
+func (self Instance) OnPeerDisconnected(cb func(id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("peer_disconnected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnConnectionFailed(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("connection_failed"), gd.NewCallable(cb), 0)
+func (self class) PeerDisconnected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerDisconnected`))))
 }
 
-func (self Instance) OnServerDisconnected(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("server_disconnected"), gd.NewCallable(cb), 0)
+func (self Instance) OnConnectedToServer(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("connected_to_server"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ConnectedToServer() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectedToServer`))))
+}
+
+func (self Instance) OnConnectionFailed(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("connection_failed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ConnectionFailed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionFailed`))))
+}
+
+func (self Instance) OnServerDisconnected(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("server_disconnected"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ServerDisconnected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ServerDisconnected`))))
 }
 
 func (self class) AsMultiplayerAPI() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

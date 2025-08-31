@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
@@ -50,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -251,8 +253,16 @@ func (self class) GetRect() Rect2.PositionSize { //gd:StatusIndicator.get_rect
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnPressed(cb func(mouse_button int, mouse_position Vector2i.XY)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), 0)
+func (self Instance) OnPressed(cb func(mouse_button int, mouse_position Vector2i.XY), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Pressed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Pressed`))))
 }
 
 func (self class) AsStatusIndicator() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

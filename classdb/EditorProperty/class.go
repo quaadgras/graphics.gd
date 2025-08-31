@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -51,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -674,52 +676,148 @@ func (self class) EmitChanged(property String.Name, value variant.Any, field Str
 		changing bool
 	}{pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value))), pointers.Get(gd.InternalStringName(field)), changing}))
 }
-func (self Instance) OnPropertyChanged(cb func(property string, value any, field string, changing bool)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("property_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnPropertyChanged(cb func(property string, value any, field string, changing bool), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnMultiplePropertiesChanged(cb func(properties []string, value []any)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("multiple_properties_changed"), gd.NewCallable(cb), 0)
+func (self class) PropertyChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyChanged`))))
 }
 
-func (self Instance) OnPropertyKeyed(cb func(property string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("property_keyed"), gd.NewCallable(cb), 0)
+func (self Instance) OnMultiplePropertiesChanged(cb func(properties []string, value []any), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("multiple_properties_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnPropertyDeleted(cb func(property string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), 0)
+func (self class) MultiplePropertiesChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MultiplePropertiesChanged`))))
 }
 
-func (self Instance) OnPropertyKeyedWithValue(cb func(property string, value any)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("property_keyed_with_value"), gd.NewCallable(cb), 0)
+func (self Instance) OnPropertyKeyed(cb func(property string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_keyed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnPropertyChecked(cb func(property string, checked bool)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("property_checked"), gd.NewCallable(cb), 0)
+func (self class) PropertyKeyed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyKeyed`))))
 }
 
-func (self Instance) OnPropertyFavorited(cb func(property string, favorited bool)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("property_favorited"), gd.NewCallable(cb), 0)
+func (self Instance) OnPropertyDeleted(cb func(property string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_deleted"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnPropertyPinned(cb func(property string, pinned bool)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("property_pinned"), gd.NewCallable(cb), 0)
+func (self class) PropertyDeleted() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyDeleted`))))
 }
 
-func (self Instance) OnPropertyCanRevertChanged(cb func(property string, can_revert bool)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("property_can_revert_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnPropertyKeyedWithValue(cb func(property string, value any), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_keyed_with_value"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnResourceSelected(cb func(path string, resource Resource.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), 0)
+func (self class) PropertyKeyedWithValue() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyKeyedWithValue`))))
 }
 
-func (self Instance) OnObjectIdSelected(cb func(property string, id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("object_id_selected"), gd.NewCallable(cb), 0)
+func (self Instance) OnPropertyChecked(cb func(property string, checked bool), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_checked"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnSelected(cb func(path string, focusable_idx int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("selected"), gd.NewCallable(cb), 0)
+func (self class) PropertyChecked() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyChecked`))))
+}
+
+func (self Instance) OnPropertyFavorited(cb func(property string, favorited bool), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_favorited"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) PropertyFavorited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyFavorited`))))
+}
+
+func (self Instance) OnPropertyPinned(cb func(property string, pinned bool), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_pinned"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) PropertyPinned() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyPinned`))))
+}
+
+func (self Instance) OnPropertyCanRevertChanged(cb func(property string, can_revert bool), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_can_revert_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) PropertyCanRevertChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyCanRevertChanged`))))
+}
+
+func (self Instance) OnResourceSelected(cb func(path string, resource Resource.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("resource_selected"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ResourceSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceSelected`))))
+}
+
+func (self Instance) OnObjectIdSelected(cb func(property string, id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("object_id_selected"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ObjectIdSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ObjectIdSelected`))))
+}
+
+func (self Instance) OnSelected(cb func(path string, focusable_idx int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("selected"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Selected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Selected`))))
 }
 
 func (self class) AsEditorProperty() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

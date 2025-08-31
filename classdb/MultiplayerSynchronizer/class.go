@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/SceneReplicationConfig"
 import "graphics.gd/variant/Array"
@@ -48,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -379,16 +381,40 @@ func (self class) GetVisibilityFor(peer int64) bool { //gd:MultiplayerSynchroniz
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnSynchronized(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("synchronized"), gd.NewCallable(cb), 0)
+func (self Instance) OnSynchronized(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("synchronized"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnDeltaSynchronized(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("delta_synchronized"), gd.NewCallable(cb), 0)
+func (self class) Synchronized() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Synchronized`))))
 }
 
-func (self Instance) OnVisibilityChanged(cb func(for_peer int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnDeltaSynchronized(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("delta_synchronized"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) DeltaSynchronized() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DeltaSynchronized`))))
+}
+
+func (self Instance) OnVisibilityChanged(cb func(for_peer int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) VisibilityChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VisibilityChanged`))))
 }
 
 func (self class) AsMultiplayerSynchronizer() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }

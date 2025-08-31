@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -48,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -535,8 +537,16 @@ Marks the passed editor setting as being changed, see [method get_changed_settin
 func (self class) MarkSettingChanged(setting String.Readable) { //gd:EditorSettings.mark_setting_changed
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mark_setting_changed, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ setting gdextension.String }{pointers.Get(gd.InternalString(setting))}))
 }
-func (self Instance) OnSettingsChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("settings_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnSettingsChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("settings_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) SettingsChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SettingsChanged`))))
 }
 
 func (self class) AsEditorSettings() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

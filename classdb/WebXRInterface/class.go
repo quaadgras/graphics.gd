@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/XRControllerTracker"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Array"
@@ -48,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -510,56 +512,160 @@ func (self class) GetAvailableDisplayRefreshRates() Array.Any { //gd:WebXRInterf
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-func (self Instance) OnSessionSupported(cb func(session_mode string, supported bool)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_supported"), gd.NewCallable(cb), 0)
+func (self Instance) OnSessionSupported(cb func(session_mode string, supported bool), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_supported"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnSessionStarted(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_started"), gd.NewCallable(cb), 0)
+func (self class) SessionSupported() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionSupported`))))
 }
 
-func (self Instance) OnSessionEnded(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_ended"), gd.NewCallable(cb), 0)
+func (self Instance) OnSessionStarted(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_started"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnSessionFailed(cb func(message string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_failed"), gd.NewCallable(cb), 0)
+func (self class) SessionStarted() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionStarted`))))
 }
 
-func (self Instance) OnSelectstart(cb func(input_source_id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("selectstart"), gd.NewCallable(cb), 0)
+func (self Instance) OnSessionEnded(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_ended"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnSelect(cb func(input_source_id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("select"), gd.NewCallable(cb), 0)
+func (self class) SessionEnded() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionEnded`))))
 }
 
-func (self Instance) OnSelectend(cb func(input_source_id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("selectend"), gd.NewCallable(cb), 0)
+func (self Instance) OnSessionFailed(cb func(message string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_failed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnSqueezestart(cb func(input_source_id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("squeezestart"), gd.NewCallable(cb), 0)
+func (self class) SessionFailed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionFailed`))))
 }
 
-func (self Instance) OnSqueeze(cb func(input_source_id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("squeeze"), gd.NewCallable(cb), 0)
+func (self Instance) OnSelectstart(cb func(input_source_id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("selectstart"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnSqueezeend(cb func(input_source_id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("squeezeend"), gd.NewCallable(cb), 0)
+func (self class) Selectstart() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Selectstart`))))
 }
 
-func (self Instance) OnVisibilityStateChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_state_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnSelect(cb func(input_source_id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("select"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnReferenceSpaceReset(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("reference_space_reset"), gd.NewCallable(cb), 0)
+func (self class) Select() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Select`))))
 }
 
-func (self Instance) OnDisplayRefreshRateChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("display_refresh_rate_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnSelectend(cb func(input_source_id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("selectend"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Selectend() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Selectend`))))
+}
+
+func (self Instance) OnSqueezestart(cb func(input_source_id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("squeezestart"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Squeezestart() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Squeezestart`))))
+}
+
+func (self Instance) OnSqueeze(cb func(input_source_id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("squeeze"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Squeeze() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Squeeze`))))
+}
+
+func (self Instance) OnSqueezeend(cb func(input_source_id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("squeezeend"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Squeezeend() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Squeezeend`))))
+}
+
+func (self Instance) OnVisibilityStateChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_state_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) VisibilityStateChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VisibilityStateChanged`))))
+}
+
+func (self Instance) OnReferenceSpaceReset(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("reference_space_reset"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ReferenceSpaceReset() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ReferenceSpaceReset`))))
+}
+
+func (self Instance) OnDisplayRefreshRateChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("display_refresh_rate_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) DisplayRefreshRateChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DisplayRefreshRateChanged`))))
 }
 
 func (self class) AsWebXRInterface() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

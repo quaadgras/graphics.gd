@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
@@ -50,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -270,12 +272,28 @@ func (self class) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSi
 		rect  Rect2.PositionSize
 	}{gdextension.Object(gd.ObjectChecked(child[0].AsObject())), rect}))
 }
-func (self Instance) OnPreSortChildren(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("pre_sort_children"), gd.NewCallable(cb), 0)
+func (self Instance) OnPreSortChildren(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("pre_sort_children"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnSortChildren(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("sort_children"), gd.NewCallable(cb), 0)
+func (self class) PreSortChildren() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PreSortChildren`))))
+}
+
+func (self Instance) OnSortChildren(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("sort_children"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) SortChildren() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SortChildren`))))
 }
 
 func (self class) AsContainer() Advanced               { return *((*Advanced)(unsafe.Pointer(&self))) }

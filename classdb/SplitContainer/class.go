@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -50,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -391,16 +393,40 @@ func (self class) GetDragAreaControl() [1]gdclass.Control { //gd:SplitContainer.
 	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret)}
 	return ret
 }
-func (self Instance) OnDragged(cb func(offset int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("dragged"), gd.NewCallable(cb), 0)
+func (self Instance) OnDragged(cb func(offset int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("dragged"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnDragStarted(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("drag_started"), gd.NewCallable(cb), 0)
+func (self class) Dragged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Dragged`))))
 }
 
-func (self Instance) OnDragEnded(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("drag_ended"), gd.NewCallable(cb), 0)
+func (self Instance) OnDragStarted(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("drag_started"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) DragStarted() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DragStarted`))))
+}
+
+func (self Instance) OnDragEnded(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("drag_ended"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) DragEnded() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DragEnded`))))
 }
 
 func (self class) AsSplitContainer() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

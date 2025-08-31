@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/BitMap"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Node"
@@ -52,6 +53,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -369,12 +371,28 @@ func (self class) IsPressed() bool { //gd:TouchScreenButton.is_pressed
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnPressed(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), 0)
+func (self Instance) OnPressed(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("pressed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnReleased(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("released"), gd.NewCallable(cb), 0)
+func (self class) Pressed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Pressed`))))
+}
+
+func (self Instance) OnReleased(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("released"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Released() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Released`))))
 }
 
 func (self class) AsTouchScreenButton() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

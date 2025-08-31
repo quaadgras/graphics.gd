@@ -15,6 +15,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Rendering"
 import "graphics.gd/classdb/RenderingDevice"
@@ -61,6 +62,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -11129,12 +11131,28 @@ func (self class) HasFeature(feature Features) bool { //gd:RenderingServer.has_f
 	var ret = r_ret
 	return ret
 }
-func OnFramePreDraw(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("frame_pre_draw"), gd.NewCallable(cb), 0)
+func OnFramePreDraw(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("frame_pre_draw"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func OnFramePostDraw(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("frame_post_draw"), gd.NewCallable(cb), 0)
+func (self class) FramePreDraw() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FramePreDraw`))))
+}
+
+func OnFramePostDraw(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("frame_post_draw"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) FramePostDraw() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FramePostDraw`))))
 }
 
 func (self class) Virtual(name string) reflect.Value {

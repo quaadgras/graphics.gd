@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasLayer"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/GUI"
@@ -61,6 +62,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -2062,20 +2064,52 @@ func (self class) GetClipChildrenMode() ClipChildrenMode { //gd:CanvasItem.get_c
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnDraw(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("draw"), gd.NewCallable(cb), 0)
+func (self Instance) OnDraw(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("draw"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnVisibilityChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), 0)
+func (self class) Draw() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Draw`))))
 }
 
-func (self Instance) OnHidden(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("hidden"), gd.NewCallable(cb), 0)
+func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnItemRectChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_rect_changed"), gd.NewCallable(cb), 0)
+func (self class) VisibilityChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VisibilityChanged`))))
+}
+
+func (self Instance) OnHidden(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("hidden"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Hidden() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Hidden`))))
+}
+
+func (self Instance) OnItemRectChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_rect_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ItemRectChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemRectChanged`))))
 }
 
 func (self class) AsCanvasItem() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -46,6 +47,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -697,8 +699,16 @@ func (self class) Undo() bool { //gd:UndoRedo.undo
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnVersionChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("version_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnVersionChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("version_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) VersionChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VersionChanged`))))
 }
 
 func (self class) AsUndoRedo() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

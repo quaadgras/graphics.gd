@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/MainLoop"
 import "graphics.gd/classdb/MultiplayerAPI"
 import "graphics.gd/classdb/Node"
@@ -53,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -993,36 +995,100 @@ func (self class) IsMultiplayerPollEnabled() bool { //gd:SceneTree.is_multiplaye
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnTreeChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tree_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnTreeChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tree_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnTreeProcessModeChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tree_process_mode_changed"), gd.NewCallable(cb), 0)
+func (self class) TreeChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeChanged`))))
 }
 
-func (self Instance) OnNodeAdded(cb func(node Node.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("node_added"), gd.NewCallable(cb), 0)
+func (self Instance) OnTreeProcessModeChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tree_process_mode_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnNodeRemoved(cb func(node Node.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("node_removed"), gd.NewCallable(cb), 0)
+func (self class) TreeProcessModeChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeProcessModeChanged`))))
 }
 
-func (self Instance) OnNodeRenamed(cb func(node Node.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("node_renamed"), gd.NewCallable(cb), 0)
+func (self Instance) OnNodeAdded(cb func(node Node.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_added"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnNodeConfigurationWarningChanged(cb func(node Node.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("node_configuration_warning_changed"), gd.NewCallable(cb), 0)
+func (self class) NodeAdded() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeAdded`))))
 }
 
-func (self Instance) OnProcessFrame(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("process_frame"), gd.NewCallable(cb), 0)
+func (self Instance) OnNodeRemoved(cb func(node Node.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_removed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnPhysicsFrame(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("physics_frame"), gd.NewCallable(cb), 0)
+func (self class) NodeRemoved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeRemoved`))))
+}
+
+func (self Instance) OnNodeRenamed(cb func(node Node.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_renamed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) NodeRenamed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeRenamed`))))
+}
+
+func (self Instance) OnNodeConfigurationWarningChanged(cb func(node Node.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_configuration_warning_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) NodeConfigurationWarningChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeConfigurationWarningChanged`))))
+}
+
+func (self Instance) OnProcessFrame(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("process_frame"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ProcessFrame() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ProcessFrame`))))
+}
+
+func (self Instance) OnPhysicsFrame(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("physics_frame"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) PhysicsFrame() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PhysicsFrame`))))
 }
 
 func (self class) AsSceneTree() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

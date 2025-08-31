@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/MultiplayerAPI"
 import "graphics.gd/classdb/Resource"
@@ -50,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -3214,48 +3216,136 @@ Similar to [method call_thread_safe], but for notifications.
 func (self class) NotifyThreadSafe(what int64) { //gd:Node.notify_thread_safe
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_thread_safe, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ what int64 }{what}))
 }
-func (self Instance) OnReady(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("ready"), gd.NewCallable(cb), 0)
+func (self Instance) OnReady(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("ready"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnRenamed(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("renamed"), gd.NewCallable(cb), 0)
+func (self class) Ready() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Ready`))))
 }
 
-func (self Instance) OnTreeEntered(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tree_entered"), gd.NewCallable(cb), 0)
+func (self Instance) OnRenamed(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("renamed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnTreeExiting(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tree_exiting"), gd.NewCallable(cb), 0)
+func (self class) Renamed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Renamed`))))
 }
 
-func (self Instance) OnTreeExited(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tree_exited"), gd.NewCallable(cb), 0)
+func (self Instance) OnTreeEntered(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tree_entered"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnChildEnteredTree(cb func(node Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("child_entered_tree"), gd.NewCallable(cb), 0)
+func (self class) TreeEntered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeEntered`))))
 }
 
-func (self Instance) OnChildExitingTree(cb func(node Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("child_exiting_tree"), gd.NewCallable(cb), 0)
+func (self Instance) OnTreeExiting(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tree_exiting"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnChildOrderChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("child_order_changed"), gd.NewCallable(cb), 0)
+func (self class) TreeExiting() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeExiting`))))
 }
 
-func (self Instance) OnReplacingBy(cb func(node Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("replacing_by"), gd.NewCallable(cb), 0)
+func (self Instance) OnTreeExited(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tree_exited"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnEditorDescriptionChanged(cb func(node Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("editor_description_changed"), gd.NewCallable(cb), 0)
+func (self class) TreeExited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeExited`))))
 }
 
-func (self Instance) OnEditorStateChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("editor_state_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnChildEnteredTree(cb func(node Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("child_entered_tree"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ChildEnteredTree() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ChildEnteredTree`))))
+}
+
+func (self Instance) OnChildExitingTree(cb func(node Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("child_exiting_tree"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ChildExitingTree() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ChildExitingTree`))))
+}
+
+func (self Instance) OnChildOrderChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("child_order_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ChildOrderChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ChildOrderChanged`))))
+}
+
+func (self Instance) OnReplacingBy(cb func(node Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("replacing_by"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ReplacingBy() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ReplacingBy`))))
+}
+
+func (self Instance) OnEditorDescriptionChanged(cb func(node Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("editor_description_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) EditorDescriptionChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditorDescriptionChanged`))))
+}
+
+func (self Instance) OnEditorStateChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("editor_state_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) EditorStateChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditorStateChanged`))))
 }
 
 func (self class) AsNode() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Curve"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -48,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -347,8 +349,16 @@ func (self class) GetAdvanceExpression() String.Readable { //gd:AnimationNodeSta
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-func (self Instance) OnAdvanceConditionChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("advance_condition_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnAdvanceConditionChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("advance_condition_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AdvanceConditionChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AdvanceConditionChanged`))))
 }
 
 func (self class) AsAnimationNodeStateMachineTransition() Advanced {

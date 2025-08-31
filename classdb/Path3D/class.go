@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Curve3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -49,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -171,8 +173,16 @@ func (self class) GetCurve() [1]gdclass.Curve3D { //gd:Path3D.get_curve
 	var ret = [1]gdclass.Curve3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve3D](r_ret)}
 	return ret
 }
-func (self Instance) OnCurveChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("curve_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnCurveChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("curve_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) CurveChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CurveChanged`))))
 }
 
 func (self class) AsPath3D() Advanced                { return *((*Advanced)(unsafe.Pointer(&self))) }

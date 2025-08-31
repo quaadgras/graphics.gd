@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -54,6 +55,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -391,12 +393,28 @@ Updates the documentation for the given [param script] if the script's documenta
 func (self class) UpdateDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.update_docs_from_script
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_docs_from_script, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))}))
 }
-func (self Instance) OnEditorScriptChanged(cb func(script Script.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("editor_script_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnEditorScriptChanged(cb func(script Script.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("editor_script_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnScriptClose(cb func(script Script.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("script_close"), gd.NewCallable(cb), 0)
+func (self class) EditorScriptChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditorScriptChanged`))))
+}
+
+func (self Instance) OnScriptClose(cb func(script Script.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("script_close"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ScriptClose() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ScriptClose`))))
 }
 
 func (self class) AsScriptEditor() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

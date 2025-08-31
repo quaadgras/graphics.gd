@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/NavigationPolygon"
 import "graphics.gd/classdb/Node"
@@ -51,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -456,12 +458,28 @@ func (self class) GetBounds() Rect2.PositionSize { //gd:NavigationRegion2D.get_b
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnNavigationPolygonChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("navigation_polygon_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnNavigationPolygonChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("navigation_polygon_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnBakeFinished(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("bake_finished"), gd.NewCallable(cb), 0)
+func (self class) NavigationPolygonChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NavigationPolygonChanged`))))
+}
+
+func (self Instance) OnBakeFinished(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("bake_finished"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) BakeFinished() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BakeFinished`))))
 }
 
 func (self class) AsNavigationRegion2D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

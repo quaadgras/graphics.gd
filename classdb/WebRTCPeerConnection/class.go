@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/WebRTCDataChannel"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -47,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -505,16 +507,40 @@ func (self class) GetSignalingState() SignalingState { //gd:WebRTCPeerConnection
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnSessionDescriptionCreated(cb func(atype string, sdp string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("session_description_created"), gd.NewCallable(cb), 0)
+func (self Instance) OnSessionDescriptionCreated(cb func(atype string, sdp string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_description_created"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnIceCandidateCreated(cb func(media string, index int, name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("ice_candidate_created"), gd.NewCallable(cb), 0)
+func (self class) SessionDescriptionCreated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionDescriptionCreated`))))
 }
 
-func (self Instance) OnDataChannelReceived(cb func(channel WebRTCDataChannel.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("data_channel_received"), gd.NewCallable(cb), 0)
+func (self Instance) OnIceCandidateCreated(cb func(media string, index int, name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("ice_candidate_created"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) IceCandidateCreated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`IceCandidateCreated`))))
+}
+
+func (self Instance) OnDataChannelReceived(cb func(channel WebRTCDataChannel.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("data_channel_received"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) DataChannelReceived() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DataChannelReceived`))))
 }
 
 func (self class) AsWebRTCPeerConnection() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

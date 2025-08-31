@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/InputEvent"
@@ -57,6 +58,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -3479,40 +3481,112 @@ func (self class) IsLocalizingNumeralSystem() bool { //gd:Control.is_localizing_
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnResized(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("resized"), gd.NewCallable(cb), 0)
+func (self Instance) OnResized(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("resized"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnGuiInput(cb func(event InputEvent.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("gui_input"), gd.NewCallable(cb), 0)
+func (self class) Resized() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Resized`))))
 }
 
-func (self Instance) OnMouseEntered(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), 0)
+func (self Instance) OnGuiInput(cb func(event InputEvent.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("gui_input"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnMouseExited(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), 0)
+func (self class) GuiInput() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GuiInput`))))
 }
 
-func (self Instance) OnFocusEntered(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("focus_entered"), gd.NewCallable(cb), 0)
+func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnFocusExited(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("focus_exited"), gd.NewCallable(cb), 0)
+func (self class) MouseEntered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseEntered`))))
 }
 
-func (self Instance) OnSizeFlagsChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("size_flags_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnMinimumSizeChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("minimum_size_changed"), gd.NewCallable(cb), 0)
+func (self class) MouseExited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseExited`))))
 }
 
-func (self Instance) OnThemeChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("theme_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnFocusEntered(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("focus_entered"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) FocusEntered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FocusEntered`))))
+}
+
+func (self Instance) OnFocusExited(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("focus_exited"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) FocusExited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FocusExited`))))
+}
+
+func (self Instance) OnSizeFlagsChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("size_flags_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) SizeFlagsChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SizeFlagsChanged`))))
+}
+
+func (self Instance) OnMinimumSizeChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("minimum_size_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) MinimumSizeChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MinimumSizeChanged`))))
+}
+
+func (self Instance) OnThemeChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("theme_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ThemeChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ThemeChanged`))))
 }
 
 func (self class) AsControl() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

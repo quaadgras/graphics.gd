@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/classdb/SkeletonProfile"
 import "graphics.gd/variant/Array"
@@ -48,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -232,12 +234,28 @@ func (self class) FindProfileBoneName(skeleton_bone_name String.Name) String.Nam
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
-func (self Instance) OnBoneMapUpdated(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("bone_map_updated"), gd.NewCallable(cb), 0)
+func (self Instance) OnBoneMapUpdated(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("bone_map_updated"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnProfileUpdated(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("profile_updated"), gd.NewCallable(cb), 0)
+func (self class) BoneMapUpdated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BoneMapUpdated`))))
+}
+
+func (self Instance) OnProfileUpdated(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("profile_updated"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ProfileUpdated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ProfileUpdated`))))
 }
 
 func (self class) AsBoneMap() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

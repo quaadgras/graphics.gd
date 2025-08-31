@@ -15,6 +15,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/AudioBusLayout"
 import "graphics.gd/classdb/AudioEffect"
 import "graphics.gd/classdb/AudioEffectInstance"
@@ -51,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1135,12 +1137,28 @@ Forces the registration of a stream as a sample.
 func (self class) RegisterStreamAsSample(stream [1]gdclass.AudioStream) { //gd:AudioServer.register_stream_as_sample
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_stream_as_sample, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
 }
-func OnBusLayoutChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("bus_layout_changed"), gd.NewCallable(cb), 0)
+func OnBusLayoutChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("bus_layout_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func OnBusRenamed(cb func(bus_index int, old_name string, new_name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("bus_renamed"), gd.NewCallable(cb), 0)
+func (self class) BusLayoutChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BusLayoutChanged`))))
+}
+
+func OnBusRenamed(cb func(bus_index int, old_name string, new_name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("bus_renamed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) BusRenamed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BusRenamed`))))
 }
 
 func (self class) Virtual(name string) reflect.Value {

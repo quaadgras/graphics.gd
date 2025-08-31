@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/AudioListener2D"
 import "graphics.gd/classdb/AudioListener3D"
 import "graphics.gd/classdb/Camera2D"
@@ -60,6 +61,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1857,12 +1859,28 @@ func (self class) GetVrsTexture() [1]gdclass.Texture2D { //gd:Viewport.get_vrs_t
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
-func (self Instance) OnSizeChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("size_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnSizeChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("size_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnGuiFocusChanged(cb func(node Control.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("gui_focus_changed"), gd.NewCallable(cb), 0)
+func (self class) SizeChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SizeChanged`))))
+}
+
+func (self Instance) OnGuiFocusChanged(cb func(node Control.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("gui_focus_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) GuiFocusChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GuiFocusChanged`))))
 }
 
 func (self class) AsViewport() Advanced          { return *((*Advanced)(unsafe.Pointer(&self))) }

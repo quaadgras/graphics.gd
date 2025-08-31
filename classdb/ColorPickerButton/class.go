@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/BaseButton"
 import "graphics.gd/classdb/Button"
 import "graphics.gd/classdb/CanvasItem"
@@ -54,6 +55,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -239,16 +241,40 @@ func (self class) IsEditingAlpha() bool { //gd:ColorPickerButton.is_editing_alph
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnColorChanged(cb func(color Color.RGBA)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("color_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnColorChanged(cb func(color Color.RGBA), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("color_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnPopupClosed(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("popup_closed"), gd.NewCallable(cb), 0)
+func (self class) ColorChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ColorChanged`))))
 }
 
-func (self Instance) OnPickerCreated(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("picker_created"), gd.NewCallable(cb), 0)
+func (self Instance) OnPopupClosed(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("popup_closed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) PopupClosed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PopupClosed`))))
+}
+
+func (self Instance) OnPickerCreated(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("picker_created"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) PickerCreated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PickerCreated`))))
 }
 
 func (self class) AsColorPickerButton() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

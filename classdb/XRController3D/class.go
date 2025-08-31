@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/XRNode3D"
@@ -51,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -243,24 +245,64 @@ func (self class) GetTrackerHand() XRPositionalTracker.TrackerHand { //gd:XRCont
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnButtonPressed(cb func(name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("button_pressed"), gd.NewCallable(cb), 0)
+func (self Instance) OnButtonPressed(cb func(name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("button_pressed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnButtonReleased(cb func(name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("button_released"), gd.NewCallable(cb), 0)
+func (self class) ButtonPressed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonPressed`))))
 }
 
-func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("input_float_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnButtonReleased(cb func(name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("button_released"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnInputVector2Changed(cb func(name string, value Vector2.XY)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("input_vector2_changed"), gd.NewCallable(cb), 0)
+func (self class) ButtonReleased() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonReleased`))))
 }
 
-func (self Instance) OnProfileChanged(cb func(role string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("profile_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("input_float_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) InputFloatChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputFloatChanged`))))
+}
+
+func (self Instance) OnInputVector2Changed(cb func(name string, value Vector2.XY), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("input_vector2_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) InputVector2Changed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputVector2Changed`))))
+}
+
+func (self Instance) OnProfileChanged(cb func(role string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("profile_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ProfileChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ProfileChanged`))))
 }
 
 func (self class) AsXRController3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

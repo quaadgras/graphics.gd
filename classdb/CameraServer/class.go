@@ -15,6 +15,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CameraFeed"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -48,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -217,12 +219,28 @@ Removes the specified camera [param feed].
 func (self class) RemoveFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.remove_feed
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_feed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(feed[0].AsObject()))}))
 }
-func OnCameraFeedAdded(cb func(id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("camera_feed_added"), gd.NewCallable(cb), 0)
+func OnCameraFeedAdded(cb func(id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("camera_feed_added"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func OnCameraFeedRemoved(cb func(id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("camera_feed_removed"), gd.NewCallable(cb), 0)
+func (self class) CameraFeedAdded() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CameraFeedAdded`))))
+}
+
+func OnCameraFeedRemoved(cb func(id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("camera_feed_removed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) CameraFeedRemoved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CameraFeedRemoved`))))
 }
 
 func (self class) Virtual(name string) reflect.Value {

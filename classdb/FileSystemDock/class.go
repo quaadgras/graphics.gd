@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
@@ -54,6 +55,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -202,40 +204,112 @@ Removes an [EditorResourceTooltipPlugin]. Fails if the plugin wasn't previously 
 func (self class) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.remove_resource_tooltip_plugin
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
 }
-func (self Instance) OnInherit(cb func(file string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("inherit"), gd.NewCallable(cb), 0)
+func (self Instance) OnInherit(cb func(file string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("inherit"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnInstantiate(cb func(files []string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("instantiate"), gd.NewCallable(cb), 0)
+func (self class) Inherit() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Inherit`))))
 }
 
-func (self Instance) OnResourceRemoved(cb func(resource Resource.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("resource_removed"), gd.NewCallable(cb), 0)
+func (self Instance) OnInstantiate(cb func(files []string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("instantiate"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnFileRemoved(cb func(file string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("file_removed"), gd.NewCallable(cb), 0)
+func (self class) Instantiate() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Instantiate`))))
 }
 
-func (self Instance) OnFolderRemoved(cb func(folder string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("folder_removed"), gd.NewCallable(cb), 0)
+func (self Instance) OnResourceRemoved(cb func(resource Resource.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("resource_removed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnFilesMoved(cb func(old_file string, new_file string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("files_moved"), gd.NewCallable(cb), 0)
+func (self class) ResourceRemoved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceRemoved`))))
 }
 
-func (self Instance) OnFolderMoved(cb func(old_folder string, new_folder string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("folder_moved"), gd.NewCallable(cb), 0)
+func (self Instance) OnFileRemoved(cb func(file string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("file_removed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnFolderColorChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("folder_color_changed"), gd.NewCallable(cb), 0)
+func (self class) FileRemoved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FileRemoved`))))
 }
 
-func (self Instance) OnDisplayModeChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("display_mode_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnFolderRemoved(cb func(folder string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("folder_removed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) FolderRemoved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FolderRemoved`))))
+}
+
+func (self Instance) OnFilesMoved(cb func(old_file string, new_file string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("files_moved"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) FilesMoved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FilesMoved`))))
+}
+
+func (self Instance) OnFolderMoved(cb func(old_folder string, new_folder string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("folder_moved"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) FolderMoved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FolderMoved`))))
+}
+
+func (self Instance) OnFolderColorChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("folder_color_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) FolderColorChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FolderColorChanged`))))
+}
+
+func (self Instance) OnDisplayModeChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("display_mode_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) DisplayModeChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DisplayModeChanged`))))
 }
 
 func (self class) AsFileSystemDock() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

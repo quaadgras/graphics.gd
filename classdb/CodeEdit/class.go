@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
@@ -53,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -2034,24 +2036,64 @@ Duplicates all lines currently selected with any caret. Duplicates the entire li
 func (self class) DuplicateLines() { //gd:CodeEdit.duplicate_lines
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.duplicate_lines, 0, unsafe.Pointer(&struct{}{}))
 }
-func (self Instance) OnBreakpointToggled(cb func(line int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("breakpoint_toggled"), gd.NewCallable(cb), 0)
+func (self Instance) OnBreakpointToggled(cb func(line int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("breakpoint_toggled"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnCodeCompletionRequested(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("code_completion_requested"), gd.NewCallable(cb), 0)
+func (self class) BreakpointToggled() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BreakpointToggled`))))
 }
 
-func (self Instance) OnSymbolLookup(cb func(symbol string, line int, column int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_lookup"), gd.NewCallable(cb), 0)
+func (self Instance) OnCodeCompletionRequested(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("code_completion_requested"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnSymbolValidate(cb func(symbol string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_validate"), gd.NewCallable(cb), 0)
+func (self class) CodeCompletionRequested() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CodeCompletionRequested`))))
 }
 
-func (self Instance) OnSymbolHovered(cb func(symbol string, line int, column int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_hovered"), gd.NewCallable(cb), 0)
+func (self Instance) OnSymbolLookup(cb func(symbol string, line int, column int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_lookup"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) SymbolLookup() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SymbolLookup`))))
+}
+
+func (self Instance) OnSymbolValidate(cb func(symbol string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_validate"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) SymbolValidate() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SymbolValidate`))))
+}
+
+func (self Instance) OnSymbolHovered(cb func(symbol string, line int, column int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("symbol_hovered"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) SymbolHovered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SymbolHovered`))))
 }
 
 func (self class) AsCodeEdit() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

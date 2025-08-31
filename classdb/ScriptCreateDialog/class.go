@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/Node"
@@ -52,6 +53,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -203,8 +205,16 @@ func (self class) Config(inherits String.Readable, path String.Readable, built_i
 		load_enabled     bool
 	}{pointers.Get(gd.InternalString(inherits)), pointers.Get(gd.InternalString(path)), built_in_enabled, load_enabled}))
 }
-func (self Instance) OnScriptCreated(cb func(script Script.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("script_created"), gd.NewCallable(cb), 0)
+func (self Instance) OnScriptCreated(cb func(script Script.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("script_created"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ScriptCreated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ScriptCreated`))))
 }
 
 func (self class) AsScriptCreateDialog() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

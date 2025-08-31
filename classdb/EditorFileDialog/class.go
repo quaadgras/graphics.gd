@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/AcceptDialog"
 import "graphics.gd/classdb/ConfirmationDialog"
 import "graphics.gd/classdb/Control"
@@ -54,6 +55,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -725,20 +727,52 @@ Notify the [EditorFileDialog] that its view of the data is no longer accurate. U
 func (self class) Invalidate() { //gd:EditorFileDialog.invalidate
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.invalidate, 0, unsafe.Pointer(&struct{}{}))
 }
-func (self Instance) OnFileSelected(cb func(path string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("file_selected"), gd.NewCallable(cb), 0)
+func (self Instance) OnFileSelected(cb func(path string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("file_selected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnFilesSelected(cb func(paths []string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("files_selected"), gd.NewCallable(cb), 0)
+func (self class) FileSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FileSelected`))))
 }
 
-func (self Instance) OnDirSelected(cb func(dir string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("dir_selected"), gd.NewCallable(cb), 0)
+func (self Instance) OnFilesSelected(cb func(paths []string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("files_selected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnFilenameFilterChanged(cb func(filter string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("filename_filter_changed"), gd.NewCallable(cb), 0)
+func (self class) FilesSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FilesSelected`))))
+}
+
+func (self Instance) OnDirSelected(cb func(dir string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("dir_selected"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) DirSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DirSelected`))))
+}
+
+func (self Instance) OnFilenameFilterChanged(cb func(filter string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("filename_filter_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) FilenameFilterChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FilenameFilterChanged`))))
 }
 
 func (self class) AsEditorFileDialog() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

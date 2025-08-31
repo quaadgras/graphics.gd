@@ -15,6 +15,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/classdb/XRTracker"
 import "graphics.gd/variant/Array"
@@ -50,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -489,28 +491,76 @@ func (self class) GetPrimaryInterface() [1]gdclass.XRInterface { //gd:XRServer.g
 func (self class) SetPrimaryInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.set_primary_interface
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))}))
 }
-func OnReferenceFrameChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("reference_frame_changed"), gd.NewCallable(cb), 0)
+func OnReferenceFrameChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("reference_frame_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func OnInterfaceAdded(cb func(interface_name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("interface_added"), gd.NewCallable(cb), 0)
+func (self class) ReferenceFrameChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ReferenceFrameChanged`))))
 }
 
-func OnInterfaceRemoved(cb func(interface_name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("interface_removed"), gd.NewCallable(cb), 0)
+func OnInterfaceAdded(cb func(interface_name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("interface_added"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func OnTrackerAdded(cb func(tracker_name string, atype int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tracker_added"), gd.NewCallable(cb), 0)
+func (self class) InterfaceAdded() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InterfaceAdded`))))
 }
 
-func OnTrackerUpdated(cb func(tracker_name string, atype int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tracker_updated"), gd.NewCallable(cb), 0)
+func OnInterfaceRemoved(cb func(interface_name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("interface_removed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func OnTrackerRemoved(cb func(tracker_name string, atype int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tracker_removed"), gd.NewCallable(cb), 0)
+func (self class) InterfaceRemoved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InterfaceRemoved`))))
+}
+
+func OnTrackerAdded(cb func(tracker_name string, atype int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tracker_added"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) TrackerAdded() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TrackerAdded`))))
+}
+
+func OnTrackerUpdated(cb func(tracker_name string, atype int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tracker_updated"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) TrackerUpdated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TrackerUpdated`))))
+}
+
+func OnTrackerRemoved(cb func(tracker_name string, atype int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tracker_removed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) TrackerRemoved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TrackerRemoved`))))
 }
 
 func (self class) Virtual(name string) reflect.Value {

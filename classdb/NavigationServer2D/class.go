@@ -15,6 +15,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/NavigationMeshSourceGeometryData2D"
 import "graphics.gd/classdb/NavigationPathQueryParameters2D"
 import "graphics.gd/classdb/NavigationPathQueryResult2D"
@@ -55,6 +56,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -2754,12 +2756,28 @@ func (self class) GetDebugEnabled() bool { //gd:NavigationServer2D.get_debug_ena
 	var ret = r_ret
 	return ret
 }
-func OnMapChanged(cb func(map_ RID.Any)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("map_changed"), gd.NewCallable(cb), 0)
+func OnMapChanged(cb func(map_ RID.Any), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("map_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func OnNavigationDebugChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("navigation_debug_changed"), gd.NewCallable(cb), 0)
+func (self class) MapChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MapChanged`))))
+}
+
+func OnNavigationDebugChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("navigation_debug_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) NavigationDebugChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NavigationDebugChanged`))))
 }
 
 func (self class) Virtual(name string) reflect.Value {

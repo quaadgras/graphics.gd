@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -47,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -312,12 +314,28 @@ func (self class) GetSpawnFunction() Callable.Function { //gd:MultiplayerSpawner
 func (self class) SetSpawnFunction(spawn_function Callable.Function) { //gd:MultiplayerSpawner.set_spawn_function
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spawn_function, 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ spawn_function gdextension.Callable }{pointers.Get(gd.InternalCallable(spawn_function))}))
 }
-func (self Instance) OnDespawned(cb func(node Node.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("despawned"), gd.NewCallable(cb), 0)
+func (self Instance) OnDespawned(cb func(node Node.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("despawned"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnSpawned(cb func(node Node.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("spawned"), gd.NewCallable(cb), 0)
+func (self class) Despawned() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Despawned`))))
+}
+
+func (self Instance) OnSpawned(cb func(node Node.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("spawned"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Spawned() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Spawned`))))
 }
 
 func (self class) AsMultiplayerSpawner() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
@@ -52,6 +53,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1008,36 +1010,100 @@ Clears all tabs.
 func (self class) ClearTabs() { //gd:TabBar.clear_tabs
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_tabs, 0, unsafe.Pointer(&struct{}{}))
 }
-func (self Instance) OnTabSelected(cb func(tab int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tab_selected"), gd.NewCallable(cb), 0)
+func (self Instance) OnTabSelected(cb func(tab int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tab_selected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnTabChanged(cb func(tab int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tab_changed"), gd.NewCallable(cb), 0)
+func (self class) TabSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabSelected`))))
 }
 
-func (self Instance) OnTabClicked(cb func(tab int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tab_clicked"), gd.NewCallable(cb), 0)
+func (self Instance) OnTabChanged(cb func(tab int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tab_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnTabRmbClicked(cb func(tab int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tab_rmb_clicked"), gd.NewCallable(cb), 0)
+func (self class) TabChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabChanged`))))
 }
 
-func (self Instance) OnTabClosePressed(cb func(tab int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tab_close_pressed"), gd.NewCallable(cb), 0)
+func (self Instance) OnTabClicked(cb func(tab int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tab_clicked"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnTabButtonPressed(cb func(tab int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tab_button_pressed"), gd.NewCallable(cb), 0)
+func (self class) TabClicked() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabClicked`))))
 }
 
-func (self Instance) OnTabHovered(cb func(tab int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tab_hovered"), gd.NewCallable(cb), 0)
+func (self Instance) OnTabRmbClicked(cb func(tab int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tab_rmb_clicked"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnActiveTabRearranged(cb func(idx_to int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("active_tab_rearranged"), gd.NewCallable(cb), 0)
+func (self class) TabRmbClicked() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabRmbClicked`))))
+}
+
+func (self Instance) OnTabClosePressed(cb func(tab int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tab_close_pressed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) TabClosePressed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabClosePressed`))))
+}
+
+func (self Instance) OnTabButtonPressed(cb func(tab int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tab_button_pressed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) TabButtonPressed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabButtonPressed`))))
+}
+
+func (self Instance) OnTabHovered(cb func(tab int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tab_hovered"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) TabHovered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabHovered`))))
+}
+
+func (self Instance) OnActiveTabRearranged(cb func(idx_to int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("active_tab_rearranged"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ActiveTabRearranged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ActiveTabRearranged`))))
 }
 
 func (self class) AsTabBar() Advanced                  { return *((*Advanced)(unsafe.Pointer(&self))) }

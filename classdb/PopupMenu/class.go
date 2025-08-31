@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Input"
 import "graphics.gd/classdb/InputEvent"
@@ -57,6 +58,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1951,20 +1953,52 @@ func (self class) GetSystemMenu() NativeMenu.SystemMenus { //gd:PopupMenu.get_sy
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnIdPressed(cb func(id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("id_pressed"), gd.NewCallable(cb), 0)
+func (self Instance) OnIdPressed(cb func(id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("id_pressed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnIdFocused(cb func(id int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("id_focused"), gd.NewCallable(cb), 0)
+func (self class) IdPressed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`IdPressed`))))
 }
 
-func (self Instance) OnIndexPressed(cb func(index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("index_pressed"), gd.NewCallable(cb), 0)
+func (self Instance) OnIdFocused(cb func(id int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("id_focused"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnMenuChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("menu_changed"), gd.NewCallable(cb), 0)
+func (self class) IdFocused() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`IdFocused`))))
+}
+
+func (self Instance) OnIndexPressed(cb func(index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("index_pressed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) IndexPressed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`IndexPressed`))))
+}
+
+func (self Instance) OnMenuChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("menu_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) MenuChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MenuChanged`))))
 }
 
 func (self class) AsPopupMenu() Advanced             { return *((*Advanced)(unsafe.Pointer(&self))) }

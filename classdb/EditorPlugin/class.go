@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Button"
 import "graphics.gd/classdb/Camera3D"
 import "graphics.gd/classdb/ConfigFile"
@@ -71,6 +72,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -2615,28 +2617,76 @@ func (self class) GetPluginVersion() String.Readable { //gd:EditorPlugin.get_plu
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-func (self Instance) OnSceneChanged(cb func(scene_root Node.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("scene_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnSceneChanged(cb func(scene_root Node.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("scene_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnSceneClosed(cb func(filepath string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("scene_closed"), gd.NewCallable(cb), 0)
+func (self class) SceneChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SceneChanged`))))
 }
 
-func (self Instance) OnMainScreenChanged(cb func(screen_name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("main_screen_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnSceneClosed(cb func(filepath string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("scene_closed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnResourceSaved(cb func(resource Resource.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("resource_saved"), gd.NewCallable(cb), 0)
+func (self class) SceneClosed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SceneClosed`))))
 }
 
-func (self Instance) OnSceneSaved(cb func(filepath string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("scene_saved"), gd.NewCallable(cb), 0)
+func (self Instance) OnMainScreenChanged(cb func(screen_name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("main_screen_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnProjectSettingsChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("project_settings_changed"), gd.NewCallable(cb), 0)
+func (self class) MainScreenChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MainScreenChanged`))))
+}
+
+func (self Instance) OnResourceSaved(cb func(resource Resource.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("resource_saved"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ResourceSaved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceSaved`))))
+}
+
+func (self Instance) OnSceneSaved(cb func(filepath string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("scene_saved"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) SceneSaved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SceneSaved`))))
+}
+
+func (self Instance) OnProjectSettingsChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("project_settings_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ProjectSettingsChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ProjectSettingsChanged`))))
 }
 
 func (self class) AsEditorPlugin() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

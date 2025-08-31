@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/AnimationMixer"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Tween"
@@ -49,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1121,12 +1123,28 @@ func (self class) GetRoot() Path.ToNode { //gd:AnimationPlayer.get_root
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-func (self Instance) OnCurrentAnimationChanged(cb func(name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("current_animation_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnCurrentAnimationChanged(cb func(name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("current_animation_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnAnimationChanged(cb func(old_name string, new_name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), 0)
+func (self class) CurrentAnimationChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CurrentAnimationChanged`))))
+}
+
+func (self Instance) OnAnimationChanged(cb func(old_name string, new_name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AnimationChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationChanged`))))
 }
 
 func (self class) AsAnimationPlayer() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/GUI"
@@ -53,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1259,64 +1261,184 @@ func (self class) IsAutoTooltipEnabled() bool { //gd:Tree.is_auto_tooltip_enable
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnItemSelected(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), 0)
+func (self Instance) OnItemSelected(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnCellSelected(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("cell_selected"), gd.NewCallable(cb), 0)
+func (self class) ItemSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemSelected`))))
 }
 
-func (self Instance) OnMultiSelected(cb func(item TreeItem.Instance, column int, selected bool)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), 0)
+func (self Instance) OnCellSelected(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("cell_selected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnItemMouseSelected(cb func(mouse_position Vector2.XY, mouse_button_index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_mouse_selected"), gd.NewCallable(cb), 0)
+func (self class) CellSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CellSelected`))))
 }
 
-func (self Instance) OnEmptyClicked(cb func(click_position Vector2.XY, mouse_button_index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), 0)
+func (self Instance) OnMultiSelected(cb func(item TreeItem.Instance, column int, selected bool), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnItemEdited(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_edited"), gd.NewCallable(cb), 0)
+func (self class) MultiSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MultiSelected`))))
 }
 
-func (self Instance) OnCustomItemClicked(cb func(mouse_button_index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("custom_item_clicked"), gd.NewCallable(cb), 0)
+func (self Instance) OnItemMouseSelected(cb func(mouse_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_mouse_selected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnItemIconDoubleClicked(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_icon_double_clicked"), gd.NewCallable(cb), 0)
+func (self class) ItemMouseSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemMouseSelected`))))
 }
 
-func (self Instance) OnItemCollapsed(cb func(item TreeItem.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_collapsed"), gd.NewCallable(cb), 0)
+func (self Instance) OnEmptyClicked(cb func(click_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnCheckPropagatedToItem(cb func(item TreeItem.Instance, column int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("check_propagated_to_item"), gd.NewCallable(cb), 0)
+func (self class) EmptyClicked() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EmptyClicked`))))
 }
 
-func (self Instance) OnButtonClicked(cb func(item TreeItem.Instance, column int, id int, mouse_button_index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("button_clicked"), gd.NewCallable(cb), 0)
+func (self Instance) OnItemEdited(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_edited"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnCustomPopupEdited(cb func(arrow_clicked bool)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("custom_popup_edited"), gd.NewCallable(cb), 0)
+func (self class) ItemEdited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemEdited`))))
 }
 
-func (self Instance) OnItemActivated(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_activated"), gd.NewCallable(cb), 0)
+func (self Instance) OnCustomItemClicked(cb func(mouse_button_index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("custom_item_clicked"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnColumnTitleClicked(cb func(column int, mouse_button_index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("column_title_clicked"), gd.NewCallable(cb), 0)
+func (self class) CustomItemClicked() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CustomItemClicked`))))
 }
 
-func (self Instance) OnNothingSelected(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("nothing_selected"), gd.NewCallable(cb), 0)
+func (self Instance) OnItemIconDoubleClicked(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_icon_double_clicked"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ItemIconDoubleClicked() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemIconDoubleClicked`))))
+}
+
+func (self Instance) OnItemCollapsed(cb func(item TreeItem.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_collapsed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ItemCollapsed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemCollapsed`))))
+}
+
+func (self Instance) OnCheckPropagatedToItem(cb func(item TreeItem.Instance, column int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("check_propagated_to_item"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) CheckPropagatedToItem() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CheckPropagatedToItem`))))
+}
+
+func (self Instance) OnButtonClicked(cb func(item TreeItem.Instance, column int, id int, mouse_button_index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("button_clicked"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ButtonClicked() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonClicked`))))
+}
+
+func (self Instance) OnCustomPopupEdited(cb func(arrow_clicked bool), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("custom_popup_edited"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) CustomPopupEdited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CustomPopupEdited`))))
+}
+
+func (self Instance) OnItemActivated(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_activated"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ItemActivated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemActivated`))))
+}
+
+func (self Instance) OnColumnTitleClicked(cb func(column int, mouse_button_index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("column_title_clicked"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ColumnTitleClicked() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ColumnTitleClicked`))))
+}
+
+func (self Instance) OnNothingSelected(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("nothing_selected"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) NothingSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NothingSelected`))))
 }
 
 func (self class) AsTree() Advanced                    { return *((*Advanced)(unsafe.Pointer(&self))) }

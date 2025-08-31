@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/GraphFrame"
@@ -53,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1510,80 +1512,232 @@ Sets the specified [param node] as the one selected.
 func (self class) SetSelected(node [1]gdclass.Node) { //gd:GraphEdit.set_selected
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
 }
-func (self Instance) OnConnectionRequest(cb func(from_node string, from_port int, to_node string, to_port int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("connection_request"), gd.NewCallable(cb), 0)
+func (self Instance) OnConnectionRequest(cb func(from_node string, from_port int, to_node string, to_port int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("connection_request"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnDisconnectionRequest(cb func(from_node string, from_port int, to_node string, to_port int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("disconnection_request"), gd.NewCallable(cb), 0)
+func (self class) ConnectionRequest() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionRequest`))))
 }
 
-func (self Instance) OnConnectionToEmpty(cb func(from_node string, from_port int, release_position Vector2.XY)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("connection_to_empty"), gd.NewCallable(cb), 0)
+func (self Instance) OnDisconnectionRequest(cb func(from_node string, from_port int, to_node string, to_port int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("disconnection_request"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnConnectionFromEmpty(cb func(to_node string, to_port int, release_position Vector2.XY)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("connection_from_empty"), gd.NewCallable(cb), 0)
+func (self class) DisconnectionRequest() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DisconnectionRequest`))))
 }
 
-func (self Instance) OnConnectionDragStarted(cb func(from_node string, from_port int, is_output bool)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("connection_drag_started"), gd.NewCallable(cb), 0)
+func (self Instance) OnConnectionToEmpty(cb func(from_node string, from_port int, release_position Vector2.XY), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("connection_to_empty"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnConnectionDragEnded(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("connection_drag_ended"), gd.NewCallable(cb), 0)
+func (self class) ConnectionToEmpty() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionToEmpty`))))
 }
 
-func (self Instance) OnCopyNodesRequest(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("copy_nodes_request"), gd.NewCallable(cb), 0)
+func (self Instance) OnConnectionFromEmpty(cb func(to_node string, to_port int, release_position Vector2.XY), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("connection_from_empty"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnCutNodesRequest(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("cut_nodes_request"), gd.NewCallable(cb), 0)
+func (self class) ConnectionFromEmpty() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionFromEmpty`))))
 }
 
-func (self Instance) OnPasteNodesRequest(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("paste_nodes_request"), gd.NewCallable(cb), 0)
+func (self Instance) OnConnectionDragStarted(cb func(from_node string, from_port int, is_output bool), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("connection_drag_started"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnDuplicateNodesRequest(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("duplicate_nodes_request"), gd.NewCallable(cb), 0)
+func (self class) ConnectionDragStarted() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionDragStarted`))))
 }
 
-func (self Instance) OnDeleteNodesRequest(cb func(nodes []string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("delete_nodes_request"), gd.NewCallable(cb), 0)
+func (self Instance) OnConnectionDragEnded(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("connection_drag_ended"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnNodeSelected(cb func(node Node.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("node_selected"), gd.NewCallable(cb), 0)
+func (self class) ConnectionDragEnded() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionDragEnded`))))
 }
 
-func (self Instance) OnNodeDeselected(cb func(node Node.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), 0)
+func (self Instance) OnCopyNodesRequest(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("copy_nodes_request"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnFrameRectChanged(cb func(frame_ GraphFrame.Instance, new_rect Rect2.PositionSize)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("frame_rect_changed"), gd.NewCallable(cb), 0)
+func (self class) CopyNodesRequest() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CopyNodesRequest`))))
 }
 
-func (self Instance) OnPopupRequest(cb func(at_position Vector2.XY)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("popup_request"), gd.NewCallable(cb), 0)
+func (self Instance) OnCutNodesRequest(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("cut_nodes_request"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnBeginNodeMove(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("begin_node_move"), gd.NewCallable(cb), 0)
+func (self class) CutNodesRequest() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CutNodesRequest`))))
 }
 
-func (self Instance) OnEndNodeMove(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("end_node_move"), gd.NewCallable(cb), 0)
+func (self Instance) OnPasteNodesRequest(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("paste_nodes_request"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnGraphElementsLinkedToFrameRequest(cb func(elements []any, frame_ string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("graph_elements_linked_to_frame_request"), gd.NewCallable(cb), 0)
+func (self class) PasteNodesRequest() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PasteNodesRequest`))))
 }
 
-func (self Instance) OnScrollOffsetChanged(cb func(offset Vector2.XY)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_offset_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnDuplicateNodesRequest(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("duplicate_nodes_request"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) DuplicateNodesRequest() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DuplicateNodesRequest`))))
+}
+
+func (self Instance) OnDeleteNodesRequest(cb func(nodes []string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("delete_nodes_request"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) DeleteNodesRequest() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DeleteNodesRequest`))))
+}
+
+func (self Instance) OnNodeSelected(cb func(node Node.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_selected"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) NodeSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeSelected`))))
+}
+
+func (self Instance) OnNodeDeselected(cb func(node Node.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) NodeDeselected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeDeselected`))))
+}
+
+func (self Instance) OnFrameRectChanged(cb func(frame_ GraphFrame.Instance, new_rect Rect2.PositionSize), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("frame_rect_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) FrameRectChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FrameRectChanged`))))
+}
+
+func (self Instance) OnPopupRequest(cb func(at_position Vector2.XY), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("popup_request"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) PopupRequest() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PopupRequest`))))
+}
+
+func (self Instance) OnBeginNodeMove(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("begin_node_move"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) BeginNodeMove() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BeginNodeMove`))))
+}
+
+func (self Instance) OnEndNodeMove(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("end_node_move"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) EndNodeMove() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EndNodeMove`))))
+}
+
+func (self Instance) OnGraphElementsLinkedToFrameRequest(cb func(elements []any, frame_ string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("graph_elements_linked_to_frame_request"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) GraphElementsLinkedToFrameRequest() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GraphElementsLinkedToFrameRequest`))))
+}
+
+func (self Instance) OnScrollOffsetChanged(cb func(offset Vector2.XY), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_offset_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ScrollOffsetChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ScrollOffsetChanged`))))
 }
 
 func (self class) AsGraphEdit() Advanced               { return *((*Advanced)(unsafe.Pointer(&self))) }

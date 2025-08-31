@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -47,6 +48,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -309,20 +311,52 @@ func (self class) SetBreakpoint(path String.Readable, line int64, enabled bool) 
 		enabled bool
 	}{pointers.Get(gd.InternalString(path)), line, enabled}))
 }
-func (self Instance) OnStarted(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("started"), gd.NewCallable(cb), 0)
+func (self Instance) OnStarted(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("started"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnStopped(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("stopped"), gd.NewCallable(cb), 0)
+func (self class) Started() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Started`))))
 }
 
-func (self Instance) OnBreaked(cb func(can_debug bool)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("breaked"), gd.NewCallable(cb), 0)
+func (self Instance) OnStopped(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("stopped"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnContinued(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("continued"), gd.NewCallable(cb), 0)
+func (self class) Stopped() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Stopped`))))
+}
+
+func (self Instance) OnBreaked(cb func(can_debug bool), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("breaked"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Breaked() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Breaked`))))
+}
+
+func (self Instance) OnContinued(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("continued"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Continued() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Continued`))))
 }
 
 func (self class) AsEditorDebuggerSession() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

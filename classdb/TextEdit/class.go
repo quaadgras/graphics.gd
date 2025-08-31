@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/HScrollBar"
@@ -59,6 +60,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -4631,32 +4633,88 @@ func (self class) GetSelectionColumn(caret_index int64) int64 { //gd:TextEdit.ge
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnTextSet(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("text_set"), gd.NewCallable(cb), 0)
+func (self Instance) OnTextSet(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("text_set"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnTextChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("text_changed"), gd.NewCallable(cb), 0)
+func (self class) TextSet() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextSet`))))
 }
 
-func (self Instance) OnLinesEditedFrom(cb func(from_line int, to_line int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("lines_edited_from"), gd.NewCallable(cb), 0)
+func (self Instance) OnTextChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("text_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnCaretChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("caret_changed"), gd.NewCallable(cb), 0)
+func (self class) TextChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextChanged`))))
 }
 
-func (self Instance) OnGutterClicked(cb func(line int, gutter int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("gutter_clicked"), gd.NewCallable(cb), 0)
+func (self Instance) OnLinesEditedFrom(cb func(from_line int, to_line int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("lines_edited_from"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnGutterAdded(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("gutter_added"), gd.NewCallable(cb), 0)
+func (self class) LinesEditedFrom() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`LinesEditedFrom`))))
 }
 
-func (self Instance) OnGutterRemoved(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("gutter_removed"), gd.NewCallable(cb), 0)
+func (self Instance) OnCaretChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("caret_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) CaretChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CaretChanged`))))
+}
+
+func (self Instance) OnGutterClicked(cb func(line int, gutter int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("gutter_clicked"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) GutterClicked() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GutterClicked`))))
+}
+
+func (self Instance) OnGutterAdded(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("gutter_added"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) GutterAdded() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GutterAdded`))))
+}
+
+func (self Instance) OnGutterRemoved(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("gutter_removed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) GutterRemoved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GutterRemoved`))))
 }
 
 func (self class) AsTextEdit() Advanced                { return *((*Advanced)(unsafe.Pointer(&self))) }

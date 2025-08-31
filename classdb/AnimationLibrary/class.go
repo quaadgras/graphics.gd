@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Animation"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -48,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -276,20 +278,52 @@ func (self class) GetAnimationListSize() int64 { //gd:AnimationLibrary.get_anima
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnAnimationAdded(cb func(name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_added"), gd.NewCallable(cb), 0)
+func (self Instance) OnAnimationAdded(cb func(name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("animation_added"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnAnimationRemoved(cb func(name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_removed"), gd.NewCallable(cb), 0)
+func (self class) AnimationAdded() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationAdded`))))
 }
 
-func (self Instance) OnAnimationRenamed(cb func(name string, to_name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_renamed"), gd.NewCallable(cb), 0)
+func (self Instance) OnAnimationRemoved(cb func(name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("animation_removed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnAnimationChanged(cb func(name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), 0)
+func (self class) AnimationRemoved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationRemoved`))))
+}
+
+func (self Instance) OnAnimationRenamed(cb func(name string, to_name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("animation_renamed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AnimationRenamed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationRenamed`))))
+}
+
+func (self Instance) OnAnimationChanged(cb func(name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("animation_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AnimationChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationChanged`))))
 }
 
 func (self class) AsAnimationLibrary() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

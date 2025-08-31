@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Animation"
 import "graphics.gd/classdb/Resource"
 import "graphics.gd/variant/Array"
@@ -48,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -792,16 +794,40 @@ func (self class) GetParameter(name String.Name) variant.Any { //gd:AnimationNod
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
-func (self Instance) OnTreeChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("tree_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnTreeChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("tree_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnAnimationNodeRenamed(cb func(object_id int, old_name string, new_name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_node_renamed"), gd.NewCallable(cb), 0)
+func (self class) TreeChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeChanged`))))
 }
 
-func (self Instance) OnAnimationNodeRemoved(cb func(object_id int, name string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("animation_node_removed"), gd.NewCallable(cb), 0)
+func (self Instance) OnAnimationNodeRenamed(cb func(object_id int, old_name string, new_name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("animation_node_renamed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AnimationNodeRenamed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationNodeRenamed`))))
+}
+
+func (self Instance) OnAnimationNodeRemoved(cb func(object_id int, name string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("animation_node_removed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AnimationNodeRemoved() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationNodeRemoved`))))
 }
 
 func (self class) AsAnimationNode() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

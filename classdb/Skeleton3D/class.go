@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/Skin"
@@ -53,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1131,28 +1133,76 @@ Works just like the [RigidBody3D] node.
 func (self class) PhysicalBonesRemoveCollisionException(exception RID.Any) { //gd:Skeleton3D.physical_bones_remove_collision_exception
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_remove_collision_exception, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ exception RID.Any }{exception}))
 }
-func (self Instance) OnRestUpdated(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("rest_updated"), gd.NewCallable(cb), 0)
+func (self Instance) OnRestUpdated(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("rest_updated"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnPoseUpdated(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("pose_updated"), gd.NewCallable(cb), 0)
+func (self class) RestUpdated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RestUpdated`))))
 }
 
-func (self Instance) OnSkeletonUpdated(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("skeleton_updated"), gd.NewCallable(cb), 0)
+func (self Instance) OnPoseUpdated(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("pose_updated"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnBoneEnabledChanged(cb func(bone_idx int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("bone_enabled_changed"), gd.NewCallable(cb), 0)
+func (self class) PoseUpdated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PoseUpdated`))))
 }
 
-func (self Instance) OnBoneListChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("bone_list_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnSkeletonUpdated(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("skeleton_updated"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnShowRestOnlyChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("show_rest_only_changed"), gd.NewCallable(cb), 0)
+func (self class) SkeletonUpdated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SkeletonUpdated`))))
+}
+
+func (self Instance) OnBoneEnabledChanged(cb func(bone_idx int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("bone_enabled_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) BoneEnabledChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BoneEnabledChanged`))))
+}
+
+func (self Instance) OnBoneListChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("bone_list_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) BoneListChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BoneListChanged`))))
+}
+
+func (self Instance) OnShowRestOnlyChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("show_rest_only_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ShowRestOnlyChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ShowRestOnlyChanged`))))
 }
 
 func (self class) AsSkeleton3D() Advanced            { return *((*Advanced)(unsafe.Pointer(&self))) }

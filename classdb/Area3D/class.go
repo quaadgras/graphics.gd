@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CollisionObject3D"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
@@ -50,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -758,36 +760,100 @@ func (self class) GetReverbUniformity() float64 { //gd:Area3D.get_reverb_uniform
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node3D.Instance, body_shape_index int, local_shape_index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), 0)
+func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node3D.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node3D.Instance, body_shape_index int, local_shape_index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), 0)
+func (self class) BodyShapeEntered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyShapeEntered`))))
 }
 
-func (self Instance) OnBodyEntered(cb func(body Node3D.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("body_entered"), gd.NewCallable(cb), 0)
+func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node3D.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnBodyExited(cb func(body Node3D.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), 0)
+func (self class) BodyShapeExited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyShapeExited`))))
 }
 
-func (self Instance) OnAreaShapeEntered(cb func(area_rid RID.Any, area Instance, area_shape_index int, local_shape_index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("area_shape_entered"), gd.NewCallable(cb), 0)
+func (self Instance) OnBodyEntered(cb func(body Node3D.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_entered"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnAreaShapeExited(cb func(area_rid RID.Any, area Instance, area_shape_index int, local_shape_index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("area_shape_exited"), gd.NewCallable(cb), 0)
+func (self class) BodyEntered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyEntered`))))
 }
 
-func (self Instance) OnAreaEntered(cb func(area Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("area_entered"), gd.NewCallable(cb), 0)
+func (self Instance) OnBodyExited(cb func(body Node3D.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnAreaExited(cb func(area Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("area_exited"), gd.NewCallable(cb), 0)
+func (self class) BodyExited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyExited`))))
+}
+
+func (self Instance) OnAreaShapeEntered(cb func(area_rid RID.Any, area Instance, area_shape_index int, local_shape_index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("area_shape_entered"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AreaShapeEntered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AreaShapeEntered`))))
+}
+
+func (self Instance) OnAreaShapeExited(cb func(area_rid RID.Any, area Instance, area_shape_index int, local_shape_index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("area_shape_exited"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AreaShapeExited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AreaShapeExited`))))
+}
+
+func (self Instance) OnAreaEntered(cb func(area Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("area_entered"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AreaEntered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AreaEntered`))))
+}
+
+func (self Instance) OnAreaExited(cb func(area Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("area_exited"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AreaExited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AreaExited`))))
 }
 
 func (self class) AsArea3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

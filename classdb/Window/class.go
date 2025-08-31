@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/DisplayServer"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/InputEvent"
@@ -58,6 +59,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -2371,60 +2373,172 @@ func (self class) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node, minsi
 		fallback_ratio float64
 	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), minsize, fallback_ratio}))
 }
-func (self Instance) OnWindowInput(cb func(event InputEvent.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("window_input"), gd.NewCallable(cb), 0)
+func (self Instance) OnWindowInput(cb func(event InputEvent.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("window_input"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnFilesDropped(cb func(files []string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("files_dropped"), gd.NewCallable(cb), 0)
+func (self class) WindowInput() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`WindowInput`))))
 }
 
-func (self Instance) OnMouseEntered(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), 0)
+func (self Instance) OnFilesDropped(cb func(files []string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("files_dropped"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnMouseExited(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), 0)
+func (self class) FilesDropped() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FilesDropped`))))
 }
 
-func (self Instance) OnFocusEntered(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("focus_entered"), gd.NewCallable(cb), 0)
+func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnFocusExited(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("focus_exited"), gd.NewCallable(cb), 0)
+func (self class) MouseEntered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseEntered`))))
 }
 
-func (self Instance) OnCloseRequested(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("close_requested"), gd.NewCallable(cb), 0)
+func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnGoBackRequested(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("go_back_requested"), gd.NewCallable(cb), 0)
+func (self class) MouseExited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseExited`))))
 }
 
-func (self Instance) OnVisibilityChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnFocusEntered(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("focus_entered"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnAboutToPopup(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("about_to_popup"), gd.NewCallable(cb), 0)
+func (self class) FocusEntered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FocusEntered`))))
 }
 
-func (self Instance) OnThemeChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("theme_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnFocusExited(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("focus_exited"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnDpiChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("dpi_changed"), gd.NewCallable(cb), 0)
+func (self class) FocusExited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FocusExited`))))
 }
 
-func (self Instance) OnTitlebarChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("titlebar_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnCloseRequested(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("close_requested"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnTitleChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("title_changed"), gd.NewCallable(cb), 0)
+func (self class) CloseRequested() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CloseRequested`))))
+}
+
+func (self Instance) OnGoBackRequested(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("go_back_requested"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) GoBackRequested() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GoBackRequested`))))
+}
+
+func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("visibility_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) VisibilityChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VisibilityChanged`))))
+}
+
+func (self Instance) OnAboutToPopup(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("about_to_popup"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AboutToPopup() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AboutToPopup`))))
+}
+
+func (self Instance) OnThemeChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("theme_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ThemeChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ThemeChanged`))))
+}
+
+func (self Instance) OnDpiChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("dpi_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) DpiChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DpiChanged`))))
+}
+
+func (self Instance) OnTitlebarChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("titlebar_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) TitlebarChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TitlebarChanged`))))
+}
+
+func (self Instance) OnTitleChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("title_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) TitleChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TitleChanged`))))
 }
 
 func (self class) AsWindow() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

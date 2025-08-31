@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -51,6 +52,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -260,36 +262,100 @@ func (self class) GetPositionOffset() Vector2.XY { //gd:GraphElement.get_positio
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnNodeSelected(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("node_selected"), gd.NewCallable(cb), 0)
+func (self Instance) OnNodeSelected(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_selected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnNodeDeselected(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), 0)
+func (self class) NodeSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeSelected`))))
 }
 
-func (self Instance) OnRaiseRequest(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("raise_request"), gd.NewCallable(cb), 0)
+func (self Instance) OnNodeDeselected(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("node_deselected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnDeleteRequest(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("delete_request"), gd.NewCallable(cb), 0)
+func (self class) NodeDeselected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeDeselected`))))
 }
 
-func (self Instance) OnResizeRequest(cb func(new_size Vector2.XY)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("resize_request"), gd.NewCallable(cb), 0)
+func (self Instance) OnRaiseRequest(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("raise_request"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnResizeEnd(cb func(new_size Vector2.XY)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("resize_end"), gd.NewCallable(cb), 0)
+func (self class) RaiseRequest() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RaiseRequest`))))
 }
 
-func (self Instance) OnDragged(cb func(from Vector2.XY, to Vector2.XY)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("dragged"), gd.NewCallable(cb), 0)
+func (self Instance) OnDeleteRequest(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("delete_request"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnPositionOffsetChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("position_offset_changed"), gd.NewCallable(cb), 0)
+func (self class) DeleteRequest() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DeleteRequest`))))
+}
+
+func (self Instance) OnResizeRequest(cb func(new_size Vector2.XY), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("resize_request"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ResizeRequest() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResizeRequest`))))
+}
+
+func (self Instance) OnResizeEnd(cb func(new_size Vector2.XY), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("resize_end"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ResizeEnd() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResizeEnd`))))
+}
+
+func (self Instance) OnDragged(cb func(from Vector2.XY, to Vector2.XY), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("dragged"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Dragged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Dragged`))))
+}
+
+func (self Instance) OnPositionOffsetChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("position_offset_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) PositionOffsetChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PositionOffsetChanged`))))
 }
 
 func (self class) AsGraphElement() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

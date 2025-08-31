@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Font"
@@ -60,6 +61,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -2331,20 +2333,52 @@ Executes a given action as defined in the [enum MenuItems] enum.
 func (self class) MenuOption(option int64) { //gd:RichTextLabel.menu_option
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.menu_option, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ option int64 }{option}))
 }
-func (self Instance) OnMetaClicked(cb func(meta any)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("meta_clicked"), gd.NewCallable(cb), 0)
+func (self Instance) OnMetaClicked(cb func(meta any), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("meta_clicked"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnMetaHoverStarted(cb func(meta any)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("meta_hover_started"), gd.NewCallable(cb), 0)
+func (self class) MetaClicked() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MetaClicked`))))
 }
 
-func (self Instance) OnMetaHoverEnded(cb func(meta any)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("meta_hover_ended"), gd.NewCallable(cb), 0)
+func (self Instance) OnMetaHoverStarted(cb func(meta any), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("meta_hover_started"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnFinished(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), 0)
+func (self class) MetaHoverStarted() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MetaHoverStarted`))))
+}
+
+func (self Instance) OnMetaHoverEnded(cb func(meta any), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("meta_hover_ended"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) MetaHoverEnded() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MetaHoverEnded`))))
+}
+
+func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("finished"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Finished() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Finished`))))
 }
 
 func (self class) AsRichTextLabel() Advanced           { return *((*Advanced)(unsafe.Pointer(&self))) }

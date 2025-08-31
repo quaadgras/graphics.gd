@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/BaseButton"
 import "graphics.gd/classdb/Button"
 import "graphics.gd/classdb/CanvasItem"
@@ -53,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -755,12 +757,28 @@ If [code]true[/code], shortcuts are disabled and cannot be used to trigger the b
 func (self class) SetDisableShortcuts(disabled bool) { //gd:OptionButton.set_disable_shortcuts
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_shortcuts, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ disabled bool }{disabled}))
 }
-func (self Instance) OnItemSelected(cb func(index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), 0)
+func (self Instance) OnItemSelected(cb func(index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnItemFocused(cb func(index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_focused"), gd.NewCallable(cb), 0)
+func (self class) ItemSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemSelected`))))
+}
+
+func (self Instance) OnItemFocused(cb func(index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_focused"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ItemFocused() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemFocused`))))
 }
 
 func (self class) AsOptionButton() Advanced          { return *((*Advanced)(unsafe.Pointer(&self))) }

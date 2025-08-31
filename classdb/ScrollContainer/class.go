@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
 import "graphics.gd/classdb/Control"
@@ -52,6 +53,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -417,12 +419,28 @@ func (self class) GetDrawFocusBorder() bool { //gd:ScrollContainer.get_draw_focu
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnScrollStarted(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_started"), gd.NewCallable(cb), 0)
+func (self Instance) OnScrollStarted(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_started"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnScrollEnded(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_ended"), gd.NewCallable(cb), 0)
+func (self class) ScrollStarted() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ScrollStarted`))))
+}
+
+func (self Instance) OnScrollEnded(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("scroll_ended"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ScrollEnded() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ScrollEnded`))))
 }
 
 func (self class) AsScrollContainer() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

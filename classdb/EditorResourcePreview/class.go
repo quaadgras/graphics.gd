@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/EditorResourcePreviewGenerator"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Resource"
@@ -49,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -243,8 +245,16 @@ Check if the resource changed, if so, it will be invalidated and the correspondi
 func (self class) CheckForInvalidation(path String.Readable) { //gd:EditorResourcePreview.check_for_invalidation
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.check_for_invalidation, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
 }
-func (self Instance) OnPreviewInvalidated(cb func(path string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("preview_invalidated"), gd.NewCallable(cb), 0)
+func (self Instance) OnPreviewInvalidated(cb func(path string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("preview_invalidated"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) PreviewInvalidated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PreviewInvalidated`))))
 }
 
 func (self class) AsEditorResourcePreview() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }

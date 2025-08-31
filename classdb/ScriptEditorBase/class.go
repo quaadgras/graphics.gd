@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/BoxContainer"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Container"
@@ -53,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -186,44 +188,124 @@ Adds a [EditorSyntaxHighlighter] to the open script.
 func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(highlighter[0].AsObject()))}))
 }
-func (self Instance) OnNameChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("name_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnNameChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("name_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnEditedScriptChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("edited_script_changed"), gd.NewCallable(cb), 0)
+func (self class) NameChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NameChanged`))))
 }
 
-func (self Instance) OnRequestHelp(cb func(topic string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("request_help"), gd.NewCallable(cb), 0)
+func (self Instance) OnEditedScriptChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("edited_script_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnRequestOpenScriptAtLine(cb func(script Object.Instance, line int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("request_open_script_at_line"), gd.NewCallable(cb), 0)
+func (self class) EditedScriptChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditedScriptChanged`))))
 }
 
-func (self Instance) OnRequestSaveHistory(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("request_save_history"), gd.NewCallable(cb), 0)
+func (self Instance) OnRequestHelp(cb func(topic string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("request_help"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnRequestSavePreviousState(cb func(state map[any]any)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("request_save_previous_state"), gd.NewCallable(cb), 0)
+func (self class) RequestHelp() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RequestHelp`))))
 }
 
-func (self Instance) OnGoToHelp(cb func(what string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("go_to_help"), gd.NewCallable(cb), 0)
+func (self Instance) OnRequestOpenScriptAtLine(cb func(script Object.Instance, line int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("request_open_script_at_line"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnSearchInFilesRequested(cb func(text string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("search_in_files_requested"), gd.NewCallable(cb), 0)
+func (self class) RequestOpenScriptAtLine() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RequestOpenScriptAtLine`))))
 }
 
-func (self Instance) OnReplaceInFilesRequested(cb func(text string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("replace_in_files_requested"), gd.NewCallable(cb), 0)
+func (self Instance) OnRequestSaveHistory(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("request_save_history"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnGoToMethod(cb func(script Object.Instance, method string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("go_to_method"), gd.NewCallable(cb), 0)
+func (self class) RequestSaveHistory() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RequestSaveHistory`))))
+}
+
+func (self Instance) OnRequestSavePreviousState(cb func(state map[any]any), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("request_save_previous_state"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) RequestSavePreviousState() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RequestSavePreviousState`))))
+}
+
+func (self Instance) OnGoToHelp(cb func(what string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("go_to_help"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) GoToHelp() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GoToHelp`))))
+}
+
+func (self Instance) OnSearchInFilesRequested(cb func(text string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("search_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) SearchInFilesRequested() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SearchInFilesRequested`))))
+}
+
+func (self Instance) OnReplaceInFilesRequested(cb func(text string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("replace_in_files_requested"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ReplaceInFilesRequested() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ReplaceInFilesRequested`))))
+}
+
+func (self Instance) OnGoToMethod(cb func(script Object.Instance, method string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("go_to_method"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) GoToMethod() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GoToMethod`))))
 }
 
 func (self class) AsScriptEditorBase() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

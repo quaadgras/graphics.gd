@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Camera3D"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Node"
@@ -53,6 +54,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -755,16 +757,40 @@ func (self class) ShapeFindOwner(shape_index int64) int64 { //gd:CollisionObject
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnInputEvent(cb func(camera Node.Instance, event InputEvent.Instance, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("input_event"), gd.NewCallable(cb), 0)
+func (self Instance) OnInputEvent(cb func(camera Node.Instance, event InputEvent.Instance, event_position Vector3.XYZ, normal Vector3.XYZ, shape_idx int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("input_event"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnMouseEntered(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), 0)
+func (self class) InputEvent() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputEvent`))))
 }
 
-func (self Instance) OnMouseExited(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), 0)
+func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_entered"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) MouseEntered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseEntered`))))
+}
+
+func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("mouse_exited"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) MouseExited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseExited`))))
 }
 
 func (self class) AsCollisionObject3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

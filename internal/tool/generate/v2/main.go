@@ -143,6 +143,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, `import "graphics.gd/variant"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/Angle"`)
 	fmt.Fprintln(file, `import "graphics.gd/variant/Euler"`)
+	fmt.Fprintln(file, `import "graphics.gd/variant/Signal"`)
 	if class.Inherits != "" {
 		super := classDB[class.Inherits]
 		for super.Name != "" && super.Name != "Object" && super.Name != "RefCounted" && !classDB[super.Name].IsSingleton {
@@ -171,6 +172,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, "var _ Packed.Bytes")
 	fmt.Fprintln(file, "var _ Error.Code")
 	fmt.Fprintln(file, "var _ Float.X")
+	fmt.Fprintln(file, "var _ Signal.Any")
 	fmt.Fprintln(file, "var _ Angle.Radians")
 	fmt.Fprintln(file, "var _ Euler.Radians")
 	fmt.Fprintln(file, "var _ gdextension.Object")

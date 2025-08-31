@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
@@ -50,6 +51,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -282,24 +284,64 @@ func (self class) IsEditingInteger() bool { //gd:EditorSpinSlider.is_editing_int
 	var ret = r_ret
 	return ret
 }
-func (self Instance) OnGrabbed(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("grabbed"), gd.NewCallable(cb), 0)
+func (self Instance) OnGrabbed(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("grabbed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnUngrabbed(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("ungrabbed"), gd.NewCallable(cb), 0)
+func (self class) Grabbed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Grabbed`))))
 }
 
-func (self Instance) OnUpdownPressed(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("updown_pressed"), gd.NewCallable(cb), 0)
+func (self Instance) OnUngrabbed(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("ungrabbed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnValueFocusEntered(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("value_focus_entered"), gd.NewCallable(cb), 0)
+func (self class) Ungrabbed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Ungrabbed`))))
 }
 
-func (self Instance) OnValueFocusExited(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("value_focus_exited"), gd.NewCallable(cb), 0)
+func (self Instance) OnUpdownPressed(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("updown_pressed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) UpdownPressed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`UpdownPressed`))))
+}
+
+func (self Instance) OnValueFocusEntered(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("value_focus_entered"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ValueFocusEntered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ValueFocusEntered`))))
+}
+
+func (self Instance) OnValueFocusExited(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("value_focus_exited"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ValueFocusExited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ValueFocusExited`))))
 }
 
 func (self class) AsEditorSpinSlider() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

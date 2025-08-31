@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Button"
 import "graphics.gd/classdb/Label"
 import "graphics.gd/classdb/LineEdit"
@@ -52,6 +53,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -390,16 +392,40 @@ func (self class) GetOkButtonText() String.Readable { //gd:AcceptDialog.get_ok_b
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
-func (self Instance) OnConfirmed(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("confirmed"), gd.NewCallable(cb), 0)
+func (self Instance) OnConfirmed(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("confirmed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnCanceled(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("canceled"), gd.NewCallable(cb), 0)
+func (self class) Confirmed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Confirmed`))))
 }
 
-func (self Instance) OnCustomAction(cb func(action string)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("custom_action"), gd.NewCallable(cb), 0)
+func (self Instance) OnCanceled(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("canceled"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Canceled() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Canceled`))))
+}
+
+func (self Instance) OnCustomAction(cb func(action string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("custom_action"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) CustomAction() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CustomAction`))))
 }
 
 func (self class) AsAcceptDialog() Advanced          { return *((*Advanced)(unsafe.Pointer(&self))) }

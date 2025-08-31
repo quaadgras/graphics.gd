@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/Node"
@@ -49,6 +50,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -451,12 +453,28 @@ Stops the [Range] from sharing its member variables with any other.
 func (self class) Unshare() { //gd:Range.unshare
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unshare, 0, unsafe.Pointer(&struct{}{}))
 }
-func (self Instance) OnValueChanged(cb func(value Float.X)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("value_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnValueChanged(cb func(value Float.X), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("value_changed"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), 0)
+func (self class) ValueChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ValueChanged`))))
+}
+
+func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) Changed() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Changed`))))
 }
 
 func (self class) AsRange() Advanced                   { return *((*Advanced)(unsafe.Pointer(&self))) }

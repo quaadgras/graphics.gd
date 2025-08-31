@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/CollisionObject2D"
 import "graphics.gd/classdb/Node"
@@ -54,6 +55,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -969,24 +971,64 @@ func (self class) GetCollidingBodies() Array.Contains[[1]gdclass.Node2D] { //gd:
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node2D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
-func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node.Instance, body_shape_index int, local_shape_index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), 0)
+func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_entered"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node.Instance, body_shape_index int, local_shape_index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), 0)
+func (self class) BodyShapeEntered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyShapeEntered`))))
 }
 
-func (self Instance) OnBodyEntered(cb func(body Node.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("body_entered"), gd.NewCallable(cb), 0)
+func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_shape_exited"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnBodyExited(cb func(body Node.Instance)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), 0)
+func (self class) BodyShapeExited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyShapeExited`))))
 }
 
-func (self Instance) OnSleepingStateChanged(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("sleeping_state_changed"), gd.NewCallable(cb), 0)
+func (self Instance) OnBodyEntered(cb func(body Node.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_entered"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) BodyEntered() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyEntered`))))
+}
+
+func (self Instance) OnBodyExited(cb func(body Node.Instance), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("body_exited"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) BodyExited() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyExited`))))
+}
+
+func (self Instance) OnSleepingStateChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("sleeping_state_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) SleepingStateChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SleepingStateChanged`))))
 }
 
 func (self class) AsRigidBody2D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }

@@ -15,6 +15,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/JavaScriptObject"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -48,6 +49,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -367,8 +369,16 @@ Force synchronization of the persistent file system (when enabled).
 func (self class) ForceFsSync() { //gd:JavaScriptBridge.force_fs_sync
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_fs_sync, 0, unsafe.Pointer(&struct{}{}))
 }
-func OnPwaUpdateAvailable(cb func()) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("pwa_update_available"), gd.NewCallable(cb), 0)
+func OnPwaUpdateAvailable(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("pwa_update_available"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) PwaUpdateAvailable() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PwaUpdateAvailable`))))
 }
 
 func (self class) Virtual(name string) reflect.Value {

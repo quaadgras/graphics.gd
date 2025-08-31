@@ -14,6 +14,7 @@ import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
+import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
 import "graphics.gd/classdb/Control"
 import "graphics.gd/classdb/HScrollBar"
@@ -57,6 +58,7 @@ var _ Path.ToNode
 var _ Packed.Bytes
 var _ Error.Code
 var _ Float.X
+var _ Signal.Any
 var _ Angle.Radians
 var _ Euler.Radians
 var _ gdextension.Object
@@ -1455,24 +1457,64 @@ Forces an update to the list size based on its items. This happens automatically
 func (self class) ForceUpdateListSize() { //gd:ItemList.force_update_list_size
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update_list_size, 0, unsafe.Pointer(&struct{}{}))
 }
-func (self Instance) OnItemSelected(cb func(index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), 0)
+func (self Instance) OnItemSelected(cb func(index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_selected"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnEmptyClicked(cb func(at_position Vector2.XY, mouse_button_index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), 0)
+func (self class) ItemSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemSelected`))))
 }
 
-func (self Instance) OnItemClicked(cb func(index int, at_position Vector2.XY, mouse_button_index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_clicked"), gd.NewCallable(cb), 0)
+func (self Instance) OnEmptyClicked(cb func(at_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("empty_clicked"), gd.NewCallable(cb), int64(flags_together))
 }
 
-func (self Instance) OnMultiSelected(cb func(index int, selected bool)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), 0)
+func (self class) EmptyClicked() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EmptyClicked`))))
 }
 
-func (self Instance) OnItemActivated(cb func(index int)) {
-	self[0].AsObject()[0].Connect(gd.NewStringName("item_activated"), gd.NewCallable(cb), 0)
+func (self Instance) OnItemClicked(cb func(index int, at_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_clicked"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ItemClicked() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemClicked`))))
+}
+
+func (self Instance) OnMultiSelected(cb func(index int, selected bool), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("multi_selected"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) MultiSelected() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MultiSelected`))))
+}
+
+func (self Instance) OnItemActivated(cb func(index int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("item_activated"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) ItemActivated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemActivated`))))
 }
 
 func (self class) AsItemList() Advanced                { return *((*Advanced)(unsafe.Pointer(&self))) }
