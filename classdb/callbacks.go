@@ -38,7 +38,7 @@ func init() {
 		},
 		Instance: gdextension.CallbacksForExtensionInstance{
 			Set: func(instance gdextension.ExtensionInstanceID, field gdextension.StringName, value gdextension.Variant) bool {
-				return cgoHandle(instance).Value().(*instanceImplementation).Set(pointers.Let[gd.StringName](field), pointers.Let[gd.Variant](value))
+				return cgoHandle(instance).Value().(*instanceImplementation).Set(pointers.Let[gd.StringName](field), pointers.Let[gd.Variant](value).Copy())
 			},
 			Get: func(instance gdextension.ExtensionInstanceID, field gdextension.StringName, result gdextension.Returns[gdextension.Variant]) bool {
 				v, ok := cgoHandle(instance).Value().(*instanceImplementation).Get(pointers.Let[gd.StringName](field))

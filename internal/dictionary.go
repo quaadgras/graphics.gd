@@ -18,7 +18,7 @@ func (d Dictionary) Index(key Variant) Variant {
 }
 
 func (d Dictionary) SetIndex(key Variant, value Variant) {
-	gdextension.Host.Dictionaries.Set(pointers.Get(d), pointers.Get(key), pointers.Get(value))
+	gdextension.Host.Dictionaries.Set(pointers.Get(d), pointers.Get(key), pointers.Cut(value.Copy(), true))
 }
 
 func (d Dictionary) Free() {
