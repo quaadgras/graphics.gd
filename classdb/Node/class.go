@@ -3106,7 +3106,11 @@ May return [constant OK] if the call is successful, [constant ERR_INVALID_PARAME
 //go:nosplit
 func (self class) Rpc(method String.Name, args ...gd.Variant) Error.Code { //gd:Node.rpc
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := methods.rpc.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	var dynamic []gdextension.Variant
+	for _, arg := range args {
+		dynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))
+	}
+	ret, err := methods.rpc.Call(gd.ObjectChecked(self.AsObject()), append(fixed[:], dynamic...)...)
 	if err != nil {
 		panic(err)
 	}
@@ -3120,7 +3124,11 @@ May return [constant OK] if the call is successful, [constant ERR_INVALID_PARAME
 //go:nosplit
 func (self class) RpcId(peer_id int64, method String.Name, args ...gd.Variant) Error.Code { //gd:Node.rpc_id
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(peer_id))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := methods.rpc_id.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	var dynamic []gdextension.Variant
+	for _, arg := range args {
+		dynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))
+	}
+	ret, err := methods.rpc_id.Call(gd.ObjectChecked(self.AsObject()), append(fixed[:], dynamic...)...)
 	if err != nil {
 		panic(err)
 	}
@@ -3141,7 +3149,11 @@ This function is similar to [method Object.call_deferred] except that the call w
 //go:nosplit
 func (self class) CallDeferredThreadGroup(method String.Name, args ...gd.Variant) variant.Any { //gd:Node.call_deferred_thread_group
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := methods.call_deferred_thread_group.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	var dynamic []gdextension.Variant
+	for _, arg := range args {
+		dynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))
+	}
+	ret, err := methods.call_deferred_thread_group.Call(gd.ObjectChecked(self.AsObject()), append(fixed[:], dynamic...)...)
 	if err != nil {
 		panic(err)
 	}
@@ -3173,7 +3185,11 @@ This function ensures that the calling of this function will succeed, no matter 
 //go:nosplit
 func (self class) CallThreadSafe(method String.Name, args ...gd.Variant) variant.Any { //gd:Node.call_thread_safe
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := methods.call_thread_safe.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	var dynamic []gdextension.Variant
+	for _, arg := range args {
+		dynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))
+	}
+	ret, err := methods.call_thread_safe.Call(gd.ObjectChecked(self.AsObject()), append(fixed[:], dynamic...)...)
 	if err != nil {
 		panic(err)
 	}

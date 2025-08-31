@@ -27,6 +27,7 @@ import (
 
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Path"
+	"graphics.gd/variant/RefCounted"
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
 
@@ -681,11 +682,15 @@ func (instance *instanceImplementation) Free() {
 		if field.Type.Implements(nodeType) || reflect.PointerTo(field.Type).Implements(nodeType) {
 			continue
 		}
-		if field.Type.Implements(reflect.TypeFor[interface{ Free() }]()) {
-			rvalue.FieldByIndex(field.Index).Interface().(interface{ Free() }).Free()
-		}
-		if field.Type.Kind() == reflect.Array && field.Type.Len() == 1 && field.Type.Elem().Implements(reflect.TypeFor[interface{ Free() }]()) {
-			rvalue.FieldByIndex(field.Index).Index(0).Interface().(interface{ Free() }).Free()
+		// we need to unreference any pinned resources (pinned here means that the engine `set` them).
+		if field.Type.Implements(reflect.TypeFor[RefCounted.Any]()) {
+			ref := rvalue.FieldByIndex(field.Index).Interface().(RefCounted.Any).AsRefCounted()[0]
+			raw, kind := pointers.Ask(gd.Object(ref))
+			if kind == pointers.Pinned {
+				if ref.Unreference() {
+					gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+				}
+			}
 		}
 	}
 	gd.ExtensionInstances.Delete(instance.object)

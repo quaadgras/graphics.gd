@@ -109,6 +109,10 @@ func registerSignals(class gd.StringName, rtype reflect.Type) {
 				}
 				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), args)
 				gdextension.Host.ClassDB.PropertyList.Free(args)
+			} else {
+				var args = gdextension.Host.ClassDB.PropertyList.Make(0)
+				gdextension.Host.ClassDB.Register.Signal(pointers.Get(class), pointers.Get(signalName), args)
+				gdextension.Host.ClassDB.PropertyList.Free(args)
 			}
 		}
 	}

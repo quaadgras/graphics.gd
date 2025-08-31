@@ -737,7 +737,11 @@ Calls a static method on a class.
 //go:nosplit
 func (self class) ClassCallStatic(class_ String.Name, method String.Name, args ...gd.Variant) variant.Any { //gd:ClassDB.class_call_static
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(class_))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := methods.class_call_static.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	var dynamic []gdextension.Variant
+	for _, arg := range args {
+		dynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))
+	}
+	ret, err := methods.class_call_static.Call(gd.ObjectChecked(self.AsObject()), append(fixed[:], dynamic...)...)
 	if err != nil {
 		panic(err)
 	}

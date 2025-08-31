@@ -790,7 +790,11 @@ get_tree().call_group_flags(
 //go:nosplit
 func (self class) CallGroupFlags(flags int64, group String.Name, method String.Name, args ...gd.Variant) { //gd:SceneTree.call_group_flags
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(flags))), gdextension.Variant(pointers.Get(gd.NewVariant(group))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := methods.call_group_flags.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	var dynamic []gdextension.Variant
+	for _, arg := range args {
+		dynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))
+	}
+	ret, err := methods.call_group_flags.Call(gd.ObjectChecked(self.AsObject()), append(fixed[:], dynamic...)...)
 	if err != nil {
 		panic(err)
 	}
@@ -831,7 +835,11 @@ Calls [param method] on each node inside this tree added to the given [param gro
 //go:nosplit
 func (self class) CallGroup(group String.Name, method String.Name, args ...gd.Variant) { //gd:SceneTree.call_group
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(group))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := methods.call_group.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	var dynamic []gdextension.Variant
+	for _, arg := range args {
+		dynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))
+	}
+	ret, err := methods.call_group.Call(gd.ObjectChecked(self.AsObject()), append(fixed[:], dynamic...)...)
 	if err != nil {
 		panic(err)
 	}

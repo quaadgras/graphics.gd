@@ -1672,13 +1672,29 @@ uint32_t gd_version_major() {return cgo_cached_godot_version.major;};
 uint32_t gd_version_minor() {return cgo_cached_godot_version.minor;};
 uint32_t gd_version_patch() {return cgo_cached_godot_version.patch;};
 uint32_t gd_version_hex() {return cgo_cached_godot_version.hex;};
-uintptr_t gd_version_status() {return (uintptr_t)cgo_cached_godot_version.status;};
-uintptr_t gd_version_build() {return (uintptr_t)cgo_cached_godot_version.build;};
-uintptr_t gd_version_hash() {return (uintptr_t)cgo_cached_godot_version.hash;};
+uintptr_t gd_version_status() {
+    uintptr_t s;
+    gdextension_string_new_with_latin1_chars(&s, cgo_cached_godot_version.status);
+    return s;
+};
+uintptr_t gd_version_build() {
+    uintptr_t s;
+    gdextension_string_new_with_latin1_chars(&s, cgo_cached_godot_version.build);
+    return s;
+};
+uintptr_t gd_version_hash() {
+    uintptr_t s;
+    gdextension_string_new_with_latin1_chars(&s, cgo_cached_godot_version.hash);
+    return s;
+};
 void gd_version_timestamp(ANY time) {
     *(uint64_t*)time = cgo_cached_godot_version.timestamp;
 };
-uintptr_t gd_version_string() {return (uintptr_t)cgo_cached_godot_version.string;};
+uintptr_t gd_version_string() {
+    uintptr_t s;
+    gdextension_string_new_with_latin1_chars(&s, cgo_cached_godot_version.string);
+    return s;
+};
 
 #ifdef __EMSCRIPTEN__
 using namespace emscripten;

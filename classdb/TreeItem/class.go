@@ -2340,7 +2340,11 @@ Calls the [param method] on the actual TreeItem and its children recursively. Pa
 //go:nosplit
 func (self class) CallRecursive(method String.Name, args ...gd.Variant) { //gd:TreeItem.call_recursive
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := methods.call_recursive.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	var dynamic []gdextension.Variant
+	for _, arg := range args {
+		dynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))
+	}
+	ret, err := methods.call_recursive.Call(gd.ObjectChecked(self.AsObject()), append(fixed[:], dynamic...)...)
 	if err != nil {
 		panic(err)
 	}

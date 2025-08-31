@@ -8,6 +8,10 @@ import (
 	"graphics.gd/internal/gdclass"
 )
 
+type Any interface {
+	AsRefCounted() [1]gd.RefCounted
+}
+
 type Instance [1]gd.RefCounted
 
 func (obj Instance) AsObject() [1]gd.Object          { return obj[0].AsObject() }

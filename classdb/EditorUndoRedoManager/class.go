@@ -366,7 +366,11 @@ If this is the first operation, the [param object] will be used to deduce target
 //go:nosplit
 func (self class) AddDoMethod(obj [1]gd.Object, method String.Name, args ...gd.Variant) { //gd:EditorUndoRedoManager.add_do_method
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(obj))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := methods.add_do_method.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	var dynamic []gdextension.Variant
+	for _, arg := range args {
+		dynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))
+	}
+	ret, err := methods.add_do_method.Call(gd.ObjectChecked(self.AsObject()), append(fixed[:], dynamic...)...)
 	if err != nil {
 		panic(err)
 	}
@@ -380,7 +384,11 @@ If this is the first operation, the [param object] will be used to deduce target
 //go:nosplit
 func (self class) AddUndoMethod(obj [1]gd.Object, method String.Name, args ...gd.Variant) { //gd:EditorUndoRedoManager.add_undo_method
 	var fixed = [...]gdextension.Variant{gdextension.Variant(pointers.Get(gd.NewVariant(obj))), gdextension.Variant(pointers.Get(gd.NewVariant(method)))}
-	ret, err := methods.add_undo_method.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	var dynamic []gdextension.Variant
+	for _, arg := range args {
+		dynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))
+	}
+	ret, err := methods.add_undo_method.Call(gd.ObjectChecked(self.AsObject()), append(fixed[:], dynamic...)...)
 	if err != nil {
 		panic(err)
 	}

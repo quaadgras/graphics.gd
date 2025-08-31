@@ -27,6 +27,10 @@ func TestVariantStrings(t *testing.T) {
 	if gd.VariantAs[string](str) != "Hello, Variant!" {
 		t.Fail()
 	}
+	var str_name = gd.NewVariant(gd.NewStringName("Hello, StringName!"))
+	if gd.VariantAs[string](str_name) != "Hello, StringName!" {
+		t.Fail()
+	}
 }
 
 func TestStringNames(t *testing.T) {

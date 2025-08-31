@@ -179,7 +179,11 @@ print(instance.get_script() == MyClass) # Prints true
 //go:nosplit
 func (self class) New(args ...gd.Variant) variant.Any { //gd:GDScript.new
 	var fixed = [...]gdextension.Variant{}
-	ret, err := methods.new.Call(gd.ObjectChecked(self.AsObject()), fixed[:]...)
+	var dynamic []gdextension.Variant
+	for _, arg := range args {
+		dynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))
+	}
+	ret, err := methods.new.Call(gd.ObjectChecked(self.AsObject()), append(fixed[:], dynamic...)...)
 	if err != nil {
 		panic(err)
 	}

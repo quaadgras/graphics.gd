@@ -176,7 +176,11 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 			fmt.Fprintf(w, "gdextension.Variant(pointers.Get(gd.NewVariant(%s)))", fixReserved(arg.Name))
 		}
 		fmt.Fprint(w, "}\n")
-		fmt.Fprintf(w, "\tret, err := methods.%v.Call%s(%s fixed[:]...)\n", method.Name, static, self)
+		fmt.Fprintln(w, "var dynamic []gdextension.Variant")
+		fmt.Fprintln(w, "for _, arg := range args {")
+		fmt.Fprintln(w, "\tdynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))")
+		fmt.Fprintln(w, "}")
+		fmt.Fprintf(w, "\tret, err := methods.%v.Call%s(%s append(fixed[:], dynamic...)...)\n", method.Name, static, self)
 		fmt.Fprintf(w, "\tif err != nil {\n")
 		fmt.Fprintf(w, "\t\tpanic(err)\n")
 		fmt.Fprintf(w, "\t}\n")
