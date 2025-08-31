@@ -254,3 +254,17 @@ func (obj Instance) IsConnected(signal string, callable any) bool {
 
 // Use keeps an object alive, preventing it from being garbage collected until the next frame.
 func Use(obj interface{ AsObject() [1]gdclass.Object }) { variant.Use(obj.AsObject()[0]) }
+
+// Signal returns the signal with the given name, or a nil signal if it does not exist.
+func (obj Instance) Signal(name string) Signal.Any {
+	signal := gd.NewSignalOf(obj, gd.NewStringName(name))
+	if signal == (gd.Signal{}) {
+		return Signal.Nil
+	}
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(signal))
+}
+
+// HasMethod returns true if the object has a method with the given name.
+func (obj Instance) HasMethod(name string) bool {
+	return obj[0].HasMethod(gd.NewStringName(name))
+}
