@@ -102,7 +102,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -414,7 +414,7 @@ func (self class) AddResourceFormatLoader(format_loader [1]gdclass.ResourceForma
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_format_loader, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		format_loader gdextension.Object
 		at_front      bool
-	}{gdextension.Object(gd.ObjectChecked(format_loader[0].AsObject())), at_front}))
+	}{gdextension.Object(gd.CallerIncrements(format_loader[0].AsObject())), at_front}))
 }
 
 /*
@@ -422,7 +422,7 @@ Unregisters the given [ResourceFormatLoader].
 */
 //go:nosplit
 func (self class) RemoveResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader) { //gd:ResourceLoader.remove_resource_format_loader
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_format_loader, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ format_loader gdextension.Object }{gdextension.Object(gd.ObjectChecked(format_loader[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_format_loader, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ format_loader gdextension.Object }{gdextension.Object(gd.CallerIncrements(format_loader[0].AsObject()))}))
 }
 
 /*

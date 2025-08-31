@@ -91,7 +91,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -187,7 +187,7 @@ func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, binding_modifier 
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action_map       gdextension.Object
 		binding_modifier gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(action_map[0].AsObject())), gdextension.Object(gd.ObjectChecked(binding_modifier[0].AsObject()))}))
+	}{gdextension.Object(gd.CallerIncrements(action_map[0].AsObject())), gdextension.Object(gd.CallerIncrements(binding_modifier[0].AsObject()))}))
 }
 func (self Instance) OnBindingModifierRemoved(cb func(binding_modifier_editor Object.Instance)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("binding_modifier_removed"), gd.NewCallable(cb), 0)

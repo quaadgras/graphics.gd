@@ -96,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -156,7 +156,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.World3D)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -224,7 +223,7 @@ func (self class) GetScenario() RID.Any { //gd:World3D.get_scenario
 
 //go:nosplit
 func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:World3D.set_environment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.CallerIncrements(env[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -236,7 +235,7 @@ func (self class) GetEnvironment() [1]gdclass.Environment { //gd:World3D.get_env
 
 //go:nosplit
 func (self class) SetFallbackEnvironment(env [1]gdclass.Environment) { //gd:World3D.set_fallback_environment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.CallerIncrements(env[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -248,7 +247,7 @@ func (self class) GetFallbackEnvironment() [1]gdclass.Environment { //gd:World3D
 
 //go:nosplit
 func (self class) SetCameraAttributes(attributes [1]gdclass.CameraAttributes) { //gd:World3D.set_camera_attributes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ attributes gdextension.Object }{gdextension.Object(gd.ObjectChecked(attributes[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ attributes gdextension.Object }{gdextension.Object(gd.CallerIncrements(attributes[0].AsObject()))}))
 }
 
 //go:nosplit

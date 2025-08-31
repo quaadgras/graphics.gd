@@ -30,7 +30,7 @@ func (classDB ClassDB) new(file io.Writer, class gdjson.Class) {
 	fmt.Fprintf(file, "\tobject := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}\n")
 	fmt.Fprintf(file, "\tcasted := Instance{*(*gdclass.%v)(unsafe.Pointer(&object))}\n", class.Name)
 	if class.IsRefcounted {
-		fmt.Fprintf(file, "\tcasted.AsRefCounted()[0].Reference()\n")
+		//fmt.Fprintf(file, "\tcasted.AsRefCounted()[0].Reference()\n")
 	}
 	fmt.Fprintf(file, "\tobject[0].Notification(0, false)\n")
 	fmt.Fprintf(file, "\treturn casted\n")

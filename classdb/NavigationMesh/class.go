@@ -144,7 +144,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -261,7 +261,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.NavigationMesh)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -839,7 +838,7 @@ Initializes the navigation mesh by setting the vertices and indices according to
 */
 //go:nosplit
 func (self class) CreateFromMesh(mesh [1]gdclass.Mesh) { //gd:NavigationMesh.create_from_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.CallerIncrements(mesh[0].AsObject()))}))
 }
 
 /*

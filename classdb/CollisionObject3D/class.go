@@ -124,7 +124,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -688,7 +688,7 @@ func (self class) ShapeOwnerAddShape(owner_id int64, shape [1]gdclass.Shape3D) {
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_add_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		owner_id int64
 		shape    gdextension.Object
-	}{owner_id, gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
+	}{owner_id, gdextension.Object(gd.CallerIncrements(shape[0].AsObject()))}))
 }
 
 /*

@@ -131,7 +131,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -645,7 +645,7 @@ func (self class) AddAnimationLibrary(name String.Name, library [1]gdclass.Anima
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_animation_library, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name    gdextension.StringName
 		library gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(library[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.CallerIncrements(library[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1063,7 +1063,7 @@ Returns the key of [param animation] or an empty [StringName] if not found.
 */
 //go:nosplit
 func (self class) FindAnimation(animation [1]gdclass.Animation) String.Name { //gd:AnimationMixer.find_animation
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation, gdextension.SizeStringName|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(animation[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation, gdextension.SizeStringName|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation gdextension.Object }{gdextension.Object(gd.CallerIncrements(animation[0].AsObject()))}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -1073,7 +1073,7 @@ Returns the key for the [AnimationLibrary] that contains [param animation] or an
 */
 //go:nosplit
 func (self class) FindAnimationLibrary(animation [1]gdclass.Animation) String.Name { //gd:AnimationMixer.find_animation_library
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation_library, gdextension.SizeStringName|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation gdextension.Object }{gdextension.Object(gd.ObjectChecked(animation[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_animation_library, gdextension.SizeStringName|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ animation gdextension.Object }{gdextension.Object(gd.CallerIncrements(animation[0].AsObject()))}))
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

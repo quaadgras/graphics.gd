@@ -39,7 +39,7 @@ func GetObject(class Interface) [1]gd.Object {
 var Registered sync.Map
 
 type Constructor interface {
-	CreateInstanceFrom(reflect.Value, bool) [1]gd.Object
+	CreateGoInstanceFrom(reflect.Value, bool) [1]gd.Object
 }
 
 type Extension[T Interface, S gd.IsClass] struct {
@@ -74,7 +74,7 @@ func (class *Extension[T, S]) AsObject() [1]gd.Object {
 		impl, ok := Registered.Load(reflect.TypeFor[T]())
 		if ok {
 			instancer := impl.(Constructor)
-			obj = instancer.CreateInstanceFrom(reflect.NewAt(reflect.TypeFor[T](), unsafe.Pointer(class)), true)
+			obj = instancer.CreateGoInstanceFrom(reflect.NewAt(reflect.TypeFor[T](), unsafe.Pointer(class)), true)
 			class.setObject(obj)
 		}
 	}

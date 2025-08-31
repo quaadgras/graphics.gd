@@ -116,7 +116,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -310,7 +310,7 @@ func (self Instance) SetTintProgress(value Color.RGBA) {
 
 //go:nosplit
 func (self class) SetUnderTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_under_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_under_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(tex[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_under_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tex gdextension.Object }{gdextension.Object(gd.CallerIncrements(tex[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -322,7 +322,7 @@ func (self class) GetUnderTexture() [1]gdclass.Texture2D { //gd:TextureProgressB
 
 //go:nosplit
 func (self class) SetProgressTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_progress_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(tex[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tex gdextension.Object }{gdextension.Object(gd.CallerIncrements(tex[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -334,7 +334,7 @@ func (self class) GetProgressTexture() [1]gdclass.Texture2D { //gd:TextureProgre
 
 //go:nosplit
 func (self class) SetOverTexture(tex [1]gdclass.Texture2D) { //gd:TextureProgressBar.set_over_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_over_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tex gdextension.Object }{gdextension.Object(gd.ObjectChecked(tex[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_over_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tex gdextension.Object }{gdextension.Object(gd.CallerIncrements(tex[0].AsObject()))}))
 }
 
 //go:nosplit

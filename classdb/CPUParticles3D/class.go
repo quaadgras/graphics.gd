@@ -183,7 +183,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -1073,7 +1073,7 @@ func (self class) GetDrawOrder() DrawOrder { //gd:CPUParticles3D.get_draw_order
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:CPUParticles3D.set_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.CallerIncrements(mesh[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1221,7 +1221,7 @@ func (self class) SetParamCurve(param Parameter, curve [1]gdclass.Curve) { //gd:
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_curve, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		param Parameter
 		curve gdextension.Object
-	}{param, gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
+	}{param, gdextension.Object(gd.CallerIncrements(curve[0].AsObject()))}))
 }
 
 /*
@@ -1248,7 +1248,7 @@ func (self class) GetColor() Color.RGBA { //gd:CPUParticles3D.get_color
 
 //go:nosplit
 func (self class) SetColorRamp(ramp [1]gdclass.Gradient) { //gd:CPUParticles3D.set_color_ramp
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(ramp[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ramp gdextension.Object }{gdextension.Object(gd.CallerIncrements(ramp[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1260,7 +1260,7 @@ func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:CPUParticles3D.get_c
 
 //go:nosplit
 func (self class) SetColorInitialRamp(ramp [1]gdclass.Gradient) { //gd:CPUParticles3D.set_color_initial_ramp
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_initial_ramp, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ramp gdextension.Object }{gdextension.Object(gd.ObjectChecked(ramp[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_initial_ramp, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ramp gdextension.Object }{gdextension.Object(gd.CallerIncrements(ramp[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1462,7 +1462,7 @@ func (self class) GetScaleCurveX() [1]gdclass.Curve { //gd:CPUParticles3D.get_sc
 
 //go:nosplit
 func (self class) SetScaleCurveX(scale_curve [1]gdclass.Curve) { //gd:CPUParticles3D.set_scale_curve_x
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_x, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(scale_curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_x, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scale_curve gdextension.Object }{gdextension.Object(gd.CallerIncrements(scale_curve[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1474,7 +1474,7 @@ func (self class) GetScaleCurveY() [1]gdclass.Curve { //gd:CPUParticles3D.get_sc
 
 //go:nosplit
 func (self class) SetScaleCurveY(scale_curve [1]gdclass.Curve) { //gd:CPUParticles3D.set_scale_curve_y
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_y, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(scale_curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_y, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scale_curve gdextension.Object }{gdextension.Object(gd.CallerIncrements(scale_curve[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1486,7 +1486,7 @@ func (self class) GetScaleCurveZ() [1]gdclass.Curve { //gd:CPUParticles3D.get_sc
 
 //go:nosplit
 func (self class) SetScaleCurveZ(scale_curve [1]gdclass.Curve) { //gd:CPUParticles3D.set_scale_curve_z
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_z, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scale_curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(scale_curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale_curve_z, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scale_curve gdextension.Object }{gdextension.Object(gd.CallerIncrements(scale_curve[0].AsObject()))}))
 }
 
 /*

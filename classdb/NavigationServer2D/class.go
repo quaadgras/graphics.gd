@@ -227,7 +227,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -1635,7 +1635,7 @@ func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters2
 		parameters gdextension.Object
 		result     gdextension.Object
 		callback   gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), gdextension.Object(gd.ObjectChecked(result[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
+	}{gdextension.Object(gd.CallerIncrements(parameters[0].AsObject())), gdextension.Object(gd.CallerIncrements(result[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -1839,7 +1839,7 @@ func (self class) RegionSetNavigationPolygon(region RID.Any, navigation_polygon 
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_set_navigation_polygon, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		region             RID.Any
 		navigation_polygon gdextension.Object
-	}{region, gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject()))}))
+	}{region, gdextension.Object(gd.CallerIncrements(navigation_polygon[0].AsObject()))}))
 }
 
 /*
@@ -2654,7 +2654,7 @@ func (self class) ParseSourceGeometryData(navigation_polygon [1]gdclass.Navigati
 		source_geometry_data gdextension.Object
 		root_node            gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
+	}{gdextension.Object(gd.CallerIncrements(navigation_polygon[0].AsObject())), gdextension.Object(gd.CallerIncrements(source_geometry_data[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -2666,7 +2666,7 @@ func (self class) BakeFromSourceGeometryData(navigation_polygon [1]gdclass.Navig
 		navigation_polygon   gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
+	}{gdextension.Object(gd.CallerIncrements(navigation_polygon[0].AsObject())), gdextension.Object(gd.CallerIncrements(source_geometry_data[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -2678,7 +2678,7 @@ func (self class) BakeFromSourceGeometryDataAsync(navigation_polygon [1]gdclass.
 		navigation_polygon   gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
+	}{gdextension.Object(gd.CallerIncrements(navigation_polygon[0].AsObject())), gdextension.Object(gd.CallerIncrements(source_geometry_data[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -2686,7 +2686,7 @@ Returns [code]true[/code] when the provided navigation polygon is being baked on
 */
 //go:nosplit
 func (self class) IsBakingNavigationPolygon(navigation_polygon [1]gdclass.NavigationPolygon) bool { //gd:NavigationServer2D.is_baking_navigation_polygon
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_baking_navigation_polygon, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject()))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_baking_navigation_polygon, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_polygon gdextension.Object }{gdextension.Object(gd.CallerIncrements(navigation_polygon[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

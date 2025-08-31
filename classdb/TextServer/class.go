@@ -318,7 +318,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -2200,7 +2200,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.TextServer)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -3122,7 +3121,7 @@ func (self class) FontSetTextureImage(font_rid RID.Any, size Vector2i.XY, textur
 		size          Vector2i.XY
 		texture_index int64
 		image         gdextension.Object
-	}{font_rid, size, texture_index, gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
+	}{font_rid, size, texture_index, gdextension.Object(gd.CallerIncrements(image[0].AsObject()))}))
 }
 
 /*

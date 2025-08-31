@@ -237,7 +237,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -312,7 +312,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.DTLSServer)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -322,7 +321,7 @@ Setup the DTLS server to use the given [param server_options]. See [method TLSOp
 */
 //go:nosplit
 func (self class) Setup(server_options [1]gdclass.TLSOptions) Error.Code { //gd:DTLSServer.setup
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.setup, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(server_options[0].AsObject()))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.setup, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ server_options gdextension.Object }{gdextension.Object(gd.CallerIncrements(server_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -333,7 +332,7 @@ Try to initiate the DTLS handshake with the given [param udp_peer] which must be
 */
 //go:nosplit
 func (self class) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS { //gd:DTLSServer.take_connection
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ udp_peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(udp_peer[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ udp_peer gdextension.Object }{gdextension.Object(gd.CallerIncrements(udp_peer[0].AsObject()))}))
 	var ret = [1]gdclass.PacketPeerDTLS{gd.PointerWithOwnershipTransferredToGo[gdclass.PacketPeerDTLS](r_ret)}
 	return ret
 }

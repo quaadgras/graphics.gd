@@ -114,7 +114,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -310,7 +310,7 @@ func (self class) GetRid() RID.Any { //gd:NavigationRegion2D.get_rid
 
 //go:nosplit
 func (self class) SetNavigationPolygon(navigation_polygon [1]gdclass.NavigationPolygon) { //gd:NavigationRegion2D.set_navigation_polygon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_polygon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_polygon gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_polygon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_polygon gdextension.Object }{gdextension.Object(gd.CallerIncrements(navigation_polygon[0].AsObject()))}))
 }
 
 //go:nosplit

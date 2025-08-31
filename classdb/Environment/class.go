@@ -275,7 +275,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -349,7 +349,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Environment)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -1096,7 +1095,7 @@ func (self class) GetBackground() BGMode { //gd:Environment.get_background
 
 //go:nosplit
 func (self class) SetSky(sky [1]gdclass.Sky) { //gd:Environment.set_sky
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sky gdextension.Object }{gdextension.Object(gd.ObjectChecked(sky[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sky, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ sky gdextension.Object }{gdextension.Object(gd.CallerIncrements(sky[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -1813,7 +1812,7 @@ func (self class) GetGlowMapStrength() float64 { //gd:Environment.get_glow_map_s
 
 //go:nosplit
 func (self class) SetGlowMap(mode [1]gdclass.Texture) { //gd:Environment.set_glow_map
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_glow_map, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mode gdextension.Object }{gdextension.Object(gd.ObjectChecked(mode[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_glow_map, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mode gdextension.Object }{gdextension.Object(gd.CallerIncrements(mode[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -2185,7 +2184,7 @@ func (self class) GetAdjustmentSaturation() float64 { //gd:Environment.get_adjus
 
 //go:nosplit
 func (self class) SetAdjustmentColorCorrection(color_correction [1]gdclass.Texture) { //gd:Environment.set_adjustment_color_correction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_adjustment_color_correction, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ color_correction gdextension.Object }{gdextension.Object(gd.ObjectChecked(color_correction[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_adjustment_color_correction, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ color_correction gdextension.Object }{gdextension.Object(gd.CallerIncrements(color_correction[0].AsObject()))}))
 }
 
 //go:nosplit

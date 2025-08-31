@@ -225,7 +225,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "\t\tgd.LinkMethods(sname, &methods, %v)\n", class.APIType == "editor")
 		fmt.Fprintf(file, "\t\t})\n")
 		fmt.Fprintf(file, "\tgd.RegisterCleanup(func() {\n")
-		fmt.Fprintf(file, "\t\tpointers.Raw[gd.StringName](sname).Free()\n")
+		fmt.Fprintf(file, "\t\tgdextension.Free(gdextension.TypeStringName, &sname)\n")
 		fmt.Fprintf(file, "\t})\n")
 		fmt.Fprintf(file, "}\n")
 

@@ -96,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -248,7 +248,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.WebRTCMultiplayerPeer)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -301,7 +300,7 @@ func (self class) AddPeer(peer [1]gdclass.WebRTCPeerConnection, peer_id int64, u
 		peer                gdextension.Object
 		peer_id             int64
 		unreliable_lifetime int64
-	}{gdextension.Object(gd.ObjectChecked(peer[0].AsObject())), peer_id, unreliable_lifetime}))
+	}{gdextension.Object(gd.CallerIncrements(peer[0].AsObject())), peer_id, unreliable_lifetime}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

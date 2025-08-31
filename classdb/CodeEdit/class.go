@@ -203,7 +203,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -1832,7 +1832,7 @@ func (self class) AddCodeCompletionOption(atype CodeCompletionKind, display_text
 		icon         gdextension.Object
 		value        gdextension.Variant
 		location     int64
-	}{atype, pointers.Get(gd.InternalString(display_text)), pointers.Get(gd.InternalString(insert_text)), text_color, gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), gdextension.Variant(pointers.Get(gd.InternalVariant(value))), location}))
+	}{atype, pointers.Get(gd.InternalString(display_text)), pointers.Get(gd.InternalString(insert_text)), text_color, gdextension.Object(gd.CallerIncrements(icon[0].AsObject())), gdextension.Variant(pointers.Get(gd.InternalVariant(value))), location}))
 }
 
 /*

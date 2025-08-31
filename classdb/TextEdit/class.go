@@ -339,7 +339,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -4361,7 +4361,7 @@ func (self class) SetLineGutterIcon(line int64, gutter int64, icon [1]gdclass.Te
 		line   int64
 		gutter int64
 		icon   gdextension.Object
-	}{line, gutter, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
+	}{line, gutter, gdextension.Object(gd.CallerIncrements(icon[0].AsObject()))}))
 }
 
 /*
@@ -4450,7 +4450,7 @@ func (self class) GetLineBackgroundColor(line int64) Color.RGBA { //gd:TextEdit.
 
 //go:nosplit
 func (self class) SetSyntaxHighlighter(syntax_highlighter [1]gdclass.SyntaxHighlighter) { //gd:TextEdit.set_syntax_highlighter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(syntax_highlighter[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.CallerIncrements(syntax_highlighter[0].AsObject()))}))
 }
 
 //go:nosplit

@@ -104,7 +104,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -217,7 +217,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.WebSocketMultiplayerPeer)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -279,7 +278,7 @@ func (self class) CreateClient(url String.Readable, tls_client_options [1]gdclas
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_client, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		url                gdextension.String
 		tls_client_options gdextension.Object
-	}{pointers.Get(gd.InternalString(url)), gdextension.Object(gd.ObjectChecked(tls_client_options[0].AsObject()))}))
+	}{pointers.Get(gd.InternalString(url)), gdextension.Object(gd.CallerIncrements(tls_client_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -293,7 +292,7 @@ func (self class) CreateServer(port int64, bind_address String.Readable, tls_ser
 		port               int64
 		bind_address       gdextension.String
 		tls_server_options gdextension.Object
-	}{port, pointers.Get(gd.InternalString(bind_address)), gdextension.Object(gd.ObjectChecked(tls_server_options[0].AsObject()))}))
+	}{port, pointers.Get(gd.InternalString(bind_address)), gdextension.Object(gd.CallerIncrements(tls_server_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

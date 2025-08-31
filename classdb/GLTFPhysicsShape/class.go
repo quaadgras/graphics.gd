@@ -107,7 +107,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -228,7 +228,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GLTFPhysicsShape)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -314,7 +313,7 @@ Creates a new GLTFPhysicsShape instance from the given Godot [Shape3D] resource.
 */
 //go:nosplit
 func (self class) FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_resource
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_resource, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape_resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape_resource[0].AsObject()))}))
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_resource, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape_resource gdextension.Object }{gdextension.Object(gd.CallerIncrements(shape_resource[0].AsObject()))}))
 	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret)}
 	return ret
 }
@@ -430,7 +429,7 @@ func (self class) GetImporterMesh() [1]gdclass.ImporterMesh { //gd:GLTFPhysicsSh
 
 //go:nosplit
 func (self class) SetImporterMesh(importer_mesh [1]gdclass.ImporterMesh) { //gd:GLTFPhysicsShape.set_importer_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_importer_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ importer_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(importer_mesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_importer_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ importer_mesh gdextension.Object }{gdextension.Object(gd.CallerIncrements(importer_mesh[0].AsObject()))}))
 }
 func (self class) AsGLTFPhysicsShape() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsGLTFPhysicsShape() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

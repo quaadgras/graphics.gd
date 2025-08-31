@@ -1239,7 +1239,10 @@ func init() {
 		G float32
 		B float32
 		A float32
-	}]) (result gdextension.Pointer) { result = gdextension.Pointer(gd_packed_color_array_unsafe(uint64(p0[0]), uint64(p0[1]))); return }
+	}]) (result gdextension.Pointer) {
+		result = gdextension.Pointer(gd_packed_color_array_unsafe(uint64(p0[0]), uint64(p0[1])))
+		return
+	}
 	gdextension.Host.Packed.Colors.Access = func(p0 gdextension.PackedArray[struct {
 		R float32
 		G float32
@@ -1250,7 +1253,12 @@ func init() {
 		G float32
 		B float32
 		A float32
-	}]) { mem2 := gdmemory.MakeResult(gdextension.SizeColor); gd_packed_color_array_access(uint64(p0[0]), uint64(p0[1]), int32(p1), uintptr(mem2)); gdmemory.LoadResult(gdextension.SizeColor, p2, mem2); return }
+	}]) {
+		mem2 := gdmemory.MakeResult(gdextension.SizeColor)
+		gd_packed_color_array_access(uint64(p0[0]), uint64(p0[1]), int32(p1), uintptr(mem2))
+		gdmemory.LoadResult(gdextension.SizeColor, p2, mem2)
+		return
+	}
 	gdextension.Host.Packed.Float32s.Unsafe = func(p0 gdextension.PackedArray[float32]) (result gdextension.Pointer) {
 		result = gdextension.Pointer(gd_packed_float32_array_unsafe(uint64(p0[0]), uint64(p0[1])))
 		return
@@ -1296,19 +1304,30 @@ func init() {
 	gdextension.Host.Packed.Vector2s.Unsafe = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
-	}]) (result gdextension.Pointer) { result = gdextension.Pointer(gd_packed_vector2_array_unsafe(uint64(p0[0]), uint64(p0[1]))); return }
+	}]) (result gdextension.Pointer) {
+		result = gdextension.Pointer(gd_packed_vector2_array_unsafe(uint64(p0[0]), uint64(p0[1])))
+		return
+	}
 	gdextension.Host.Packed.Vector2s.Access = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
 	}], p1 int, p2 gdextension.CallReturns[struct {
 		X float32
 		Y float32
-	}]) { mem2 := gdmemory.MakeResult(gdextension.SizeVector2); gd_packed_vector2_array_access(uint64(p0[0]), uint64(p0[1]), int32(p1), uintptr(mem2)); gdmemory.LoadResult(gdextension.SizeVector2, p2, mem2); return }
+	}]) {
+		mem2 := gdmemory.MakeResult(gdextension.SizeVector2)
+		gd_packed_vector2_array_access(uint64(p0[0]), uint64(p0[1]), int32(p1), uintptr(mem2))
+		gdmemory.LoadResult(gdextension.SizeVector2, p2, mem2)
+		return
+	}
 	gdextension.Host.Packed.Vector3s.Unsafe = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
 		Z float32
-	}]) (result gdextension.Pointer) { result = gdextension.Pointer(gd_packed_vector3_array_unsafe(uint64(p0[0]), uint64(p0[1]))); return }
+	}]) (result gdextension.Pointer) {
+		result = gdextension.Pointer(gd_packed_vector3_array_unsafe(uint64(p0[0]), uint64(p0[1])))
+		return
+	}
 	gdextension.Host.Packed.Vector3s.Access = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
@@ -1317,13 +1336,21 @@ func init() {
 		X float32
 		Y float32
 		Z float32
-	}]) { mem2 := gdmemory.MakeResult(gdextension.SizeVariant); gd_packed_vector3_array_access(uint64(p0[0]), uint64(p0[1]), int32(p1), uintptr(mem2)); gdmemory.LoadResult(gdextension.SizeVector3, p2, mem2); return }
+	}]) {
+		mem2 := gdmemory.MakeResult(gdextension.SizeVariant)
+		gd_packed_vector3_array_access(uint64(p0[0]), uint64(p0[1]), int32(p1), uintptr(mem2))
+		gdmemory.LoadResult(gdextension.SizeVector3, p2, mem2)
+		return
+	}
 	gdextension.Host.Packed.Vector4s.Unsafe = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
 		Z float32
 		W float32
-	}]) (result gdextension.Pointer) { result = gdextension.Pointer(gd_packed_vector4_array_unsafe(uint64(p0[0]), uint64(p0[1]))); return }
+	}]) (result gdextension.Pointer) {
+		result = gdextension.Pointer(gd_packed_vector4_array_unsafe(uint64(p0[0]), uint64(p0[1])))
+		return
+	}
 	gdextension.Host.Packed.Vector4s.Access = func(p0 gdextension.PackedArray[struct {
 		X float32
 		Y float32
@@ -1334,7 +1361,12 @@ func init() {
 		Y float32
 		Z float32
 		W float32
-	}]) { mem2 := gdmemory.MakeResult(gdextension.SizeVector4); gd_packed_vector4_array_access(uint64(p0[0]), uint64(p0[1]), int32(p1), uintptr(mem2)); gdmemory.LoadResult(gdextension.SizeVector4, p2, mem2); return }
+	}]) {
+		mem2 := gdmemory.MakeResult(gdextension.SizeVector4)
+		gd_packed_vector4_array_access(uint64(p0[0]), uint64(p0[1]), int32(p1), uintptr(mem2))
+		gdmemory.LoadResult(gdextension.SizeVector4, p2, mem2)
+		return
+	}
 	gdextension.Host.RefCounted.Get = func(p0 gdextension.RefCounted) (result gdextension.Object) {
 		result = gdextension.Object(gd_ref_get_object(uintptr(p0)))
 		return

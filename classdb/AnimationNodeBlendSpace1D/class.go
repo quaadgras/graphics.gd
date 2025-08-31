@@ -106,7 +106,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -224,7 +224,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AnimationNodeBlendSpace1D)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -286,7 +285,7 @@ func (self class) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos float64, 
 		node     gdextension.Object
 		pos      float64
 		at_index int64
-	}{gdextension.Object(gd.ObjectChecked(node[0].AsObject())), pos, at_index}))
+	}{gdextension.Object(gd.CallerIncrements(node[0].AsObject())), pos, at_index}))
 }
 
 /*
@@ -318,7 +317,7 @@ func (self class) SetBlendPointNode(point int64, node [1]gdclass.AnimationRootNo
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_point_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		point int64
 		node  gdextension.Object
-	}{point, gdextension.Object(gd.ObjectChecked(node[0].AsObject()))}))
+	}{point, gdextension.Object(gd.CallerIncrements(node[0].AsObject()))}))
 }
 
 /*

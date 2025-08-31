@@ -95,7 +95,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -289,7 +289,7 @@ Returns [code]true[/code] if the given [param javascript_object] is of type [url
 */
 //go:nosplit
 func (self class) IsJsBuffer(javascript_object [1]gdclass.JavaScriptObject) bool { //gd:JavaScriptBridge.is_js_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_js_buffer, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ javascript_object gdextension.Object }{gdextension.Object(gd.ObjectChecked(javascript_object[0].AsObject()))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_js_buffer, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ javascript_object gdextension.Object }{gdextension.Object(gd.CallerIncrements(javascript_object[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -299,7 +299,7 @@ Returns a copy of [param javascript_buffer]'s contents as a [PackedByteArray]. S
 */
 //go:nosplit
 func (self class) JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScriptObject) Packed.Bytes { //gd:JavaScriptBridge.js_buffer_to_packed_byte_array
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.js_buffer_to_packed_byte_array, gdextension.SizePackedArray|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ javascript_buffer gdextension.Object }{gdextension.Object(gd.ObjectChecked(javascript_buffer[0].AsObject()))}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.js_buffer_to_packed_byte_array, gdextension.SizePackedArray|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ javascript_buffer gdextension.Object }{gdextension.Object(gd.CallerIncrements(javascript_buffer[0].AsObject()))}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }

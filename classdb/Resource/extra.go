@@ -106,7 +106,7 @@ func init() {
 		gd.LinkMethods(loader_sname, &loader_methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](loader_sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &loader_sname)
 	})
 }
 

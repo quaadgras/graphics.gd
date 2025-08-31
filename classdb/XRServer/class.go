@@ -108,7 +108,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -391,7 +391,7 @@ Registers an [XRInterface] object.
 */
 //go:nosplit
 func (self class) AddInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.add_interface
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(gd.CallerIncrements(intf[0].AsObject()))}))
 }
 
 /*
@@ -409,7 +409,7 @@ Removes this [param interface].
 */
 //go:nosplit
 func (self class) RemoveInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.remove_interface
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(gd.CallerIncrements(intf[0].AsObject()))}))
 }
 
 /*
@@ -447,7 +447,7 @@ Registers a new [XRTracker] that tracks a physical object.
 */
 //go:nosplit
 func (self class) AddTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.add_tracker
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tracker, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tracker gdextension.Object }{gdextension.Object(gd.ObjectChecked(tracker[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tracker, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tracker gdextension.Object }{gdextension.Object(gd.CallerIncrements(tracker[0].AsObject()))}))
 }
 
 /*
@@ -455,7 +455,7 @@ Removes this [param tracker].
 */
 //go:nosplit
 func (self class) RemoveTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.remove_tracker
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_tracker, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tracker gdextension.Object }{gdextension.Object(gd.ObjectChecked(tracker[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_tracker, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ tracker gdextension.Object }{gdextension.Object(gd.CallerIncrements(tracker[0].AsObject()))}))
 }
 
 /*
@@ -487,7 +487,7 @@ func (self class) GetPrimaryInterface() [1]gdclass.XRInterface { //gd:XRServer.g
 
 //go:nosplit
 func (self class) SetPrimaryInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.set_primary_interface
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ intf gdextension.Object }{gdextension.Object(gd.CallerIncrements(intf[0].AsObject()))}))
 }
 func OnReferenceFrameChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("reference_frame_changed"), gd.NewCallable(cb), 0)

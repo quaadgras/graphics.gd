@@ -112,7 +112,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -344,7 +344,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.MeshLibrary)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -378,7 +377,7 @@ func (self class) SetItemMesh(id int64, mesh [1]gdclass.Mesh) { //gd:MeshLibrary
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		id   int64
 		mesh gdextension.Object
-	}{id, gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
+	}{id, gdextension.Object(gd.CallerIncrements(mesh[0].AsObject()))}))
 }
 
 /*
@@ -411,7 +410,7 @@ func (self class) SetItemNavigationMesh(id int64, navigation_mesh [1]gdclass.Nav
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_navigation_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		id              int64
 		navigation_mesh gdextension.Object
-	}{id, gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))}))
+	}{id, gdextension.Object(gd.CallerIncrements(navigation_mesh[0].AsObject()))}))
 }
 
 /*
@@ -456,7 +455,7 @@ func (self class) SetItemPreview(id int64, texture [1]gdclass.Texture2D) { //gd:
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_preview, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		id      int64
 		texture gdextension.Object
-	}{id, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	}{id, gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
 }
 
 /*

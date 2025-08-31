@@ -108,7 +108,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -191,7 +191,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.HeightMapShape3D)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -289,7 +288,7 @@ func (self class) UpdateMapDataFromImage(image [1]gdclass.Image, height_min floa
 		image      gdextension.Object
 		height_min float64
 		height_max float64
-	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), height_min, height_max}))
+	}{gdextension.Object(gd.CallerIncrements(image[0].AsObject())), height_min, height_max}))
 }
 func (self class) AsHeightMapShape3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsHeightMapShape3D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

@@ -97,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -261,7 +261,7 @@ Sets the [SkeletonModificationStack2D] attached to this skeleton.
 */
 //go:nosplit
 func (self class) SetModificationStack(modification_stack [1]gdclass.SkeletonModificationStack2D) { //gd:Skeleton2D.set_modification_stack
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification_stack, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ modification_stack gdextension.Object }{gdextension.Object(gd.ObjectChecked(modification_stack[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification_stack, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ modification_stack gdextension.Object }{gdextension.Object(gd.CallerIncrements(modification_stack[0].AsObject()))}))
 }
 
 /*

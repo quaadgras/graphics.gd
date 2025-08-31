@@ -211,8 +211,10 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 			switch semantics := gdjson.ClassMethodOwnership[class.Name][method.Name][arg.Name]; semantics {
 			case gdjson.OwnershipTransferred, gdjson.LifetimeBoundToClass:
 				fmt.Fprintf(w, "\tgdextension.Object(gd.PointerWithOwnershipTransferredToGodot(%v[0].AsObject()[0]))", fixReserved(arg.Name))
-			case gdjson.RefCountedManagement, gdjson.IsTemporaryReference, gdjson.MustAssertInstanceID, gdjson.ReversesTheOwnership:
+			case gdjson.IsTemporaryReference, gdjson.MustAssertInstanceID, gdjson.ReversesTheOwnership:
 				fmt.Fprintf(w, "\tgdextension.Object(gd.ObjectChecked(%v[0].AsObject()))", fixReserved(arg.Name))
+			case gdjson.RefCountedManagement:
+				fmt.Fprintf(w, "\tgdextension.Object(gd.CallerIncrements(%v[0].AsObject()))", fixReserved(arg.Name))
 			default:
 				panic("unknown ownership: " + fmt.Sprint(semantics))
 			}

@@ -4,7 +4,6 @@ package gd
 
 import (
 	"reflect"
-	"runtime"
 	"strings"
 	"sync"
 	"unsafe"
@@ -30,26 +29,6 @@ func PointerWithOwnershipTransferredToGo[T pointers.Generic[T, [3]uint64]](ptr g
 	if ptr == 0 {
 		return T{}
 	}
-	if runtime.GOOS == "js" {
-		// See https://github.com/quaadgras/graphics.gd/issues/103
-		// in some cases, objects will crash on free after calling
-		// certain methods if we don't call a known-safe method on
-		// them first. Probably has something to do with complex
-		// cross-language call stacks, ie.
-		//
-		// 	C -> JS -> Go -> JS -> C -> JS -> GsPointerWithOwnershipTransferredToGoo
-		//
-		// Maybe emscripten needs a chance to properly allocate the
-		// object or something? or there could be a serious memory
-		// corruption bug somewhere.
-		pointers.Raw[Object]([3]uint64{uint64(ptr), 0}).IsBlockingSignals()
-	}
-
-	ref := gdextension.Host.Objects.Cast(ptr, Global.refCountedClassTag)
-	if ref != 0 {
-		RefCounted(pointers.Raw[Object]([3]uint64{uint64(ptr)})).Reference()
-	}
-
 	return pointers.New[T]([3]uint64{uint64(ptr)})
 }
 
@@ -94,6 +73,11 @@ func PointerLifetimeBoundTo[T pointers.Generic[T, [3]uint64]](obj [1]Object, ptr
 		return T{}
 	}
 	return pointers.Let[T]([3]uint64{uint64(ptr), 0})
+}
+
+func CallerIncrements(obj [1]Object) gdextension.Object {
+	RefCounted(obj[0]).Reference()
+	return ObjectChecked([1]Object{Object(obj[0])})
 }
 
 func ObjectChecked(obj [1]Object) gdextension.Object {
@@ -150,16 +134,16 @@ func (self Object) Free() {
 	//fmt.Println(raw)
 	//fmt.Fprintln(os.Stderr, "FREE ", pointers.Trio[Object](self), pointers.Raw[Object](raw).GetClass().String())
 	//fmt.Println(runtime.Caller(2))
-	// Important that we don't destroy RefCounted objects, instead
-	// they should be unreferenced instead.
 	ref := gdextension.Host.Objects.Cast(gdextension.Object(raw[0]), Global.refCountedClassTag)
 	if ref != 0 {
-		if RefCounted(pointers.Raw[Object](raw)).Unreference() {
-			gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
+		// Important that we don't destroy RefCounted objects, instead
+		// they should be unreferenced instead.
+		if last := RefCounted(pointers.Raw[Object]([3]uint64{uint64(ref)})).Unreference(); !last {
+			//fmt.Println("not last reference, not freeing")
+			return
 		}
-	} else {
-		gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
 	}
+	gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
 }
 
 type Class[T any, S IsClass] struct {

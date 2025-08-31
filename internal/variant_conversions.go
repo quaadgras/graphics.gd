@@ -399,10 +399,8 @@ func CutVariant(v any, cut bool) Variant {
 		panic("gd.Variant: unsupported type " + reflect.TypeOf(v).String())
 	}
 	var variant = pointers.Raw[Variant]([3]uint64(ret))
-	if variant.Type() == TypeObject {
+	if !cut {
 		variant = pointers.New[Variant]([3]uint64(ret))
-	} else {
-		variant = variant.Copy()
 	}
 	return variant
 }

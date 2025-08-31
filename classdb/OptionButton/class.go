@@ -126,7 +126,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -462,7 +462,7 @@ func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readabl
 		texture gdextension.Object
 		label   gdextension.String
 		id      int64
-	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), pointers.Get(gd.InternalString(label)), id}))
+	}{gdextension.Object(gd.CallerIncrements(texture[0].AsObject())), pointers.Get(gd.InternalString(label)), id}))
 }
 
 /*
@@ -484,7 +484,7 @@ func (self class) SetItemIcon(idx int64, texture [1]gdclass.Texture2D) { //gd:Op
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		idx     int64
 		texture gdextension.Object
-	}{idx, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	}{idx, gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
 }
 
 /*

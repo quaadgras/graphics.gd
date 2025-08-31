@@ -91,7 +91,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -200,7 +200,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AnimationLibrary)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -213,7 +212,7 @@ func (self class) AddAnimation(name String.Name, animation [1]gdclass.Animation)
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_animation, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name      gdextension.StringName
 		animation gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(animation[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.CallerIncrements(animation[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

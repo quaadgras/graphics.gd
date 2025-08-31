@@ -141,7 +141,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -741,7 +741,7 @@ func (self class) GetCullMask() int64 { //gd:Camera3D.get_cull_mask
 
 //go:nosplit
 func (self class) SetEnvironment(env [1]gdclass.Environment) { //gd:Camera3D.set_environment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_environment, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.CallerIncrements(env[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -753,7 +753,7 @@ func (self class) GetEnvironment() [1]gdclass.Environment { //gd:Camera3D.get_en
 
 //go:nosplit
 func (self class) SetAttributes(env [1]gdclass.CameraAttributes) { //gd:Camera3D.set_attributes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.ObjectChecked(env[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attributes, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ env gdextension.Object }{gdextension.Object(gd.CallerIncrements(env[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -765,7 +765,7 @@ func (self class) GetAttributes() [1]gdclass.CameraAttributes { //gd:Camera3D.ge
 
 //go:nosplit
 func (self class) SetCompositor(compositor [1]gdclass.Compositor) { //gd:Camera3D.set_compositor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ compositor gdextension.Object }{gdextension.Object(gd.ObjectChecked(compositor[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compositor, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ compositor gdextension.Object }{gdextension.Object(gd.CallerIncrements(compositor[0].AsObject()))}))
 }
 
 //go:nosplit

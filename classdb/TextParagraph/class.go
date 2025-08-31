@@ -147,7 +147,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -504,7 +504,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.TextParagraph)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -701,7 +700,7 @@ func (self class) SetDropcap(text String.Readable, font [1]gdclass.Font, font_si
 		font_size       int64
 		dropcap_margins Rect2.PositionSize
 		language        gdextension.String
-	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size, dropcap_margins, pointers.Get(gd.InternalString(language))}))
+	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gd.CallerIncrements(font[0].AsObject())), font_size, dropcap_margins, pointers.Get(gd.InternalString(language))}))
 	var ret = r_ret
 	return ret
 }
@@ -725,7 +724,7 @@ func (self class) AddString(text String.Readable, font [1]gdclass.Font, font_siz
 		font_size int64
 		language  gdextension.String
 		meta      gdextension.Variant
-	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size, pointers.Get(gd.InternalString(language)), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))}))
+	}{pointers.Get(gd.InternalString(text)), gdextension.Object(gd.CallerIncrements(font[0].AsObject())), font_size, pointers.Get(gd.InternalString(language)), gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))}))
 	var ret = r_ret
 	return ret
 }

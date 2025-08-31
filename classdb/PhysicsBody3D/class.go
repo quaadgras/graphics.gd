@@ -98,7 +98,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -326,7 +326,7 @@ func (self class) TestMove(from Transform3D.BasisOrigin, motion Vector3.XYZ, col
 		safe_margin           float64
 		recovery_as_collision bool
 		max_collisions        int64
-	}{gd.Transposed(from), motion, gdextension.Object(gd.ObjectChecked(collision[0].AsObject())), safe_margin, recovery_as_collision, max_collisions}))
+	}{gd.Transposed(from), motion, gdextension.Object(gd.CallerIncrements(collision[0].AsObject())), safe_margin, recovery_as_collision, max_collisions}))
 	var ret = r_ret
 	return ret
 }

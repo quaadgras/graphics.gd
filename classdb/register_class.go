@@ -27,7 +27,6 @@ import (
 
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/Path"
-	"graphics.gd/variant/RefCounted"
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/String"
 
@@ -468,10 +467,21 @@ func (class classImplementation) CreateInstance(notify_postinitialize bool) [1]g
 
 func (class classImplementation) CreateInstanceFrom(value reflect.Value, notify_postinitialize bool) [1]gd.Object {
 	var super = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(class.Super)))})}
-	if class.RefCounted {
-		Object.To[RefCounted.Instance](super[0])[0].Reference()
-	}
 	super = [1]gd.Object{pointers.Pin(super[0])}
+	instance := class.reloadInstance(value, super)
+	gdextension.Host.Objects.Extension.Setup(gdextension.Object(pointers.Get(super[0])[0]), pointers.Get(class.Name), gdextension.ExtensionInstanceID(cgoNewHandle(instance)))
+	if notify_postinitialize {
+		super[0].Notification(0, false)
+	}
+	instance.OnCreate(value)
+	return super
+}
+
+func (class classImplementation) CreateGoInstanceFrom(value reflect.Value, notify_postinitialize bool) [1]gd.Object {
+	var super = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(class.Super)))})}
+	if class.RefCounted {
+		//fmt.Fprintln(os.Stderr, gd.RefCounted(super[0]).GetReferenceCount())
+	}
 	instance := class.reloadInstance(value, super)
 	gdextension.Host.Objects.Extension.Setup(gdextension.Object(pointers.Get(super[0])[0]), pointers.Get(class.Name), gdextension.ExtensionInstanceID(cgoNewHandle(instance)))
 	if notify_postinitialize {

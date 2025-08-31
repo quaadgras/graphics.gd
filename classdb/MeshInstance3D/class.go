@@ -113,7 +113,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -349,7 +349,7 @@ func (self Instance) SetSkeleton(value string) {
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MeshInstance3D.set_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.CallerIncrements(mesh[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -373,7 +373,7 @@ func (self class) GetSkeletonPath() Path.ToNode { //gd:MeshInstance3D.get_skelet
 
 //go:nosplit
 func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:MeshInstance3D.set_skin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(gd.CallerIncrements(skin[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -412,7 +412,7 @@ func (self class) SetSurfaceOverrideMaterial(surface int64, material [1]gdclass.
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_override_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		surface  int64
 		material gdextension.Object
-	}{surface, gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
+	}{surface, gdextension.Object(gd.CallerIncrements(material[0].AsObject()))}))
 }
 
 /*
@@ -463,7 +463,7 @@ This helper creates a [StaticBody3D] child node with multiple [ConvexPolygonShap
 */
 //go:nosplit
 func (self class) CreateMultipleConvexCollisions(settings [1]gdclass.MeshConvexDecompositionSettings) { //gd:MeshInstance3D.create_multiple_convex_collisions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_multiple_convex_collisions, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ settings gdextension.Object }{gdextension.Object(gd.ObjectChecked(settings[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_multiple_convex_collisions, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ settings gdextension.Object }{gdextension.Object(gd.CallerIncrements(settings[0].AsObject()))}))
 }
 
 /*
@@ -521,7 +521,7 @@ Takes a snapshot from the current [ArrayMesh] with all blend shapes applied acco
 */
 //go:nosplit
 func (self class) BakeMeshFromCurrentBlendShapeMix(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_blend_shape_mix
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_mesh_from_current_blend_shape_mix, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ existing gdextension.Object }{gdextension.Object(gd.ObjectChecked(existing[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_mesh_from_current_blend_shape_mix, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ existing gdextension.Object }{gdextension.Object(gd.CallerIncrements(existing[0].AsObject()))}))
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }
@@ -532,7 +532,7 @@ Takes a snapshot of the current animated skeleton pose of the skinned mesh and b
 */
 //go:nosplit
 func (self class) BakeMeshFromCurrentSkeletonPose(existing [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:MeshInstance3D.bake_mesh_from_current_skeleton_pose
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_mesh_from_current_skeleton_pose, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ existing gdextension.Object }{gdextension.Object(gd.ObjectChecked(existing[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_mesh_from_current_skeleton_pose, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ existing gdextension.Object }{gdextension.Object(gd.CallerIncrements(existing[0].AsObject()))}))
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }

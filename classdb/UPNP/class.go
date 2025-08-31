@@ -154,7 +154,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -328,7 +328,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.UPNP)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -382,7 +381,7 @@ Adds the given [UPNPDevice] to the list of discovered devices.
 */
 //go:nosplit
 func (self class) AddDevice(device [1]gdclass.UPNPDevice) { //gd:UPNP.add_device
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_device, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ device gdextension.Object }{gdextension.Object(gd.ObjectChecked(device[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_device, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ device gdextension.Object }{gdextension.Object(gd.CallerIncrements(device[0].AsObject()))}))
 }
 
 /*
@@ -393,7 +392,7 @@ func (self class) SetDevice(index int64, device [1]gdclass.UPNPDevice) { //gd:UP
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_device, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index  int64
 		device gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(device[0].AsObject()))}))
+	}{index, gdextension.Object(gd.CallerIncrements(device[0].AsObject()))}))
 }
 
 /*

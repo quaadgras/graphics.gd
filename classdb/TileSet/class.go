@@ -182,7 +182,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -883,7 +883,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.TileSet)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -948,7 +947,7 @@ func (self class) AddSource(source [1]gdclass.TileSetSource, atlas_source_id_ove
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_source, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		source                   gdextension.Object
 		atlas_source_id_override int64
-	}{gdextension.Object(gd.ObjectChecked(source[0].AsObject())), atlas_source_id_override}))
+	}{gdextension.Object(gd.CallerIncrements(source[0].AsObject())), atlas_source_id_override}))
 	var ret = r_ret
 	return ret
 }
@@ -1261,7 +1260,7 @@ func (self class) SetPhysicsLayerPhysicsMaterial(layer_index int64, physics_mate
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_layer_physics_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		layer_index      int64
 		physics_material gdextension.Object
-	}{layer_index, gdextension.Object(gd.ObjectChecked(physics_material[0].AsObject()))}))
+	}{layer_index, gdextension.Object(gd.CallerIncrements(physics_material[0].AsObject()))}))
 }
 
 /*
@@ -1803,7 +1802,7 @@ func (self class) AddPattern(pattern [1]gdclass.TileMapPattern, index int64) int
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_pattern, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		pattern gdextension.Object
 		index   int64
-	}{gdextension.Object(gd.ObjectChecked(pattern[0].AsObject())), index}))
+	}{gdextension.Object(gd.CallerIncrements(pattern[0].AsObject())), index}))
 	var ret = r_ret
 	return ret
 }

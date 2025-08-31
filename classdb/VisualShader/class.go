@@ -108,7 +108,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -308,7 +308,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.VisualShader)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -339,7 +338,7 @@ func (self class) AddNode(atype Type, node [1]gdclass.VisualShaderNode, position
 		node     gdextension.Object
 		position Vector2.XY
 		id       int64
-	}{atype, gdextension.Object(gd.ObjectChecked(node[0].AsObject())), position, id}))
+	}{atype, gdextension.Object(gd.CallerIncrements(node[0].AsObject())), position, id}))
 }
 
 /*

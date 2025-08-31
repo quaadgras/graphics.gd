@@ -100,7 +100,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -628,7 +628,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.EditorNode3DGizmoPlugin)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -958,7 +957,7 @@ func (self class) CreateIconMaterial(name String.Readable, texture [1]gdclass.Te
 		texture gdextension.Object
 		on_top  bool
 		color   Color.RGBA
-	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), on_top, color}))
+	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.CallerIncrements(texture[0].AsObject())), on_top, color}))
 }
 
 /*
@@ -971,7 +970,7 @@ func (self class) CreateHandleMaterial(name String.Readable, billboard bool, tex
 		name      gdextension.String
 		billboard bool
 		texture   gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), billboard, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	}{pointers.Get(gd.InternalString(name)), billboard, gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
 }
 
 /*
@@ -982,7 +981,7 @@ func (self class) AddMaterial(name String.Readable, material [1]gdclass.Standard
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_material, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name     gdextension.String
 		material gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
+	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.CallerIncrements(material[0].AsObject()))}))
 }
 
 /*
@@ -993,7 +992,7 @@ func (self class) GetMaterial(name String.Readable, gizmo [1]gdclass.EditorNode3
 	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name  gdextension.String
 		gizmo gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.ObjectChecked(gizmo[0].AsObject()))}))
+	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.CallerIncrements(gizmo[0].AsObject()))}))
 	var ret = [1]gdclass.StandardMaterial3D{gd.PointerWithOwnershipTransferredToGo[gdclass.StandardMaterial3D](r_ret)}
 	return ret
 }

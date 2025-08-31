@@ -99,7 +99,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -217,7 +217,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioStreamRandomizer)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -263,7 +262,7 @@ func (self class) AddStream(index int64, stream [1]gdclass.AudioStream, weight f
 		index  int64
 		stream gdextension.Object
 		weight float64
-	}{index, gdextension.Object(gd.ObjectChecked(stream[0].AsObject())), weight}))
+	}{index, gdextension.Object(gd.CallerIncrements(stream[0].AsObject())), weight}))
 }
 
 /*
@@ -293,7 +292,7 @@ func (self class) SetStream(index int64, stream [1]gdclass.AudioStream) { //gd:A
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		index  int64
 		stream gdextension.Object
-	}{index, gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
+	}{index, gdextension.Object(gd.CallerIncrements(stream[0].AsObject()))}))
 }
 
 /*

@@ -91,7 +91,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -184,7 +184,7 @@ Adds a [EditorSyntaxHighlighter] to the open script.
 */
 //go:nosplit
 func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(highlighter[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ highlighter gdextension.Object }{gdextension.Object(gd.CallerIncrements(highlighter[0].AsObject()))}))
 }
 func (self Instance) OnNameChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("name_changed"), gd.NewCallable(cb), 0)

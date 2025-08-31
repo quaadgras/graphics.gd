@@ -115,7 +115,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -388,7 +388,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.HTTPClient)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -427,14 +426,14 @@ func (self class) ConnectToHost(host String.Readable, port int64, tls_options [1
 		host        gdextension.String
 		port        int64
 		tls_options gdextension.Object
-	}{pointers.Get(gd.InternalString(host)), port, gdextension.Object(gd.ObjectChecked(tls_options[0].AsObject()))}))
+	}{pointers.Get(gd.InternalString(host)), port, gdextension.Object(gd.CallerIncrements(tls_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetConnection(connection [1]gdclass.StreamPeer) { //gd:HTTPClient.set_connection
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ connection gdextension.Object }{gdextension.Object(gd.ObjectChecked(connection[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ connection gdextension.Object }{gdextension.Object(gd.CallerIncrements(connection[0].AsObject()))}))
 }
 
 //go:nosplit

@@ -90,7 +90,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -178,7 +178,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.AudioStreamSynchronized)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -211,7 +210,7 @@ func (self class) SetSyncStream(stream_index int64, audio_stream [1]gdclass.Audi
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sync_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		stream_index int64
 		audio_stream gdextension.Object
-	}{stream_index, gdextension.Object(gd.ObjectChecked(audio_stream[0].AsObject()))}))
+	}{stream_index, gdextension.Object(gd.CallerIncrements(audio_stream[0].AsObject()))}))
 }
 
 /*

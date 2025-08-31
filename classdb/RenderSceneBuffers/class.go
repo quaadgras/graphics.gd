@@ -85,7 +85,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -152,7 +152,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.RenderSceneBuffers)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -162,7 +161,7 @@ This method is called by the rendering server when the associated viewports conf
 */
 //go:nosplit
 func (self class) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { //gd:RenderSceneBuffers.configure
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.configure, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(config[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.configure, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ config gdextension.Object }{gdextension.Object(gd.CallerIncrements(config[0].AsObject()))}))
 }
 func (self class) AsRenderSceneBuffers() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsRenderSceneBuffers() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

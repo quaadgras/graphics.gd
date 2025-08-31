@@ -96,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -206,7 +206,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.Shape2D)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -241,7 +240,7 @@ func (self class) Collide(local_xform Transform2D.OriginXY, with_shape [1]gdclas
 		local_xform Transform2D.OriginXY
 		with_shape  gdextension.Object
 		shape_xform Transform2D.OriginXY
-	}{local_xform, gdextension.Object(gd.ObjectChecked(with_shape[0].AsObject())), shape_xform}))
+	}{local_xform, gdextension.Object(gd.CallerIncrements(with_shape[0].AsObject())), shape_xform}))
 	var ret = r_ret
 	return ret
 }
@@ -258,7 +257,7 @@ func (self class) CollideWithMotion(local_xform Transform2D.OriginXY, local_moti
 		with_shape   gdextension.Object
 		shape_xform  Transform2D.OriginXY
 		shape_motion Vector2.XY
-	}{local_xform, local_motion, gdextension.Object(gd.ObjectChecked(with_shape[0].AsObject())), shape_xform, shape_motion}))
+	}{local_xform, local_motion, gdextension.Object(gd.CallerIncrements(with_shape[0].AsObject())), shape_xform, shape_motion}))
 	var ret = r_ret
 	return ret
 }
@@ -275,7 +274,7 @@ func (self class) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_s
 		local_xform Transform2D.OriginXY
 		with_shape  gdextension.Object
 		shape_xform Transform2D.OriginXY
-	}{local_xform, gdextension.Object(gd.ObjectChecked(with_shape[0].AsObject())), shape_xform}))
+	}{local_xform, gdextension.Object(gd.CallerIncrements(with_shape[0].AsObject())), shape_xform}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -294,7 +293,7 @@ func (self class) CollideWithMotionAndGetContacts(local_xform Transform2D.Origin
 		with_shape   gdextension.Object
 		shape_xform  Transform2D.OriginXY
 		shape_motion Vector2.XY
-	}{local_xform, local_motion, gdextension.Object(gd.ObjectChecked(with_shape[0].AsObject())), shape_xform, shape_motion}))
+	}{local_xform, local_motion, gdextension.Object(gd.CallerIncrements(with_shape[0].AsObject())), shape_xform, shape_motion}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

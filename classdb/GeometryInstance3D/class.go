@@ -121,7 +121,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -332,7 +332,7 @@ func (self Instance) SetVisibilityRangeFadeMode(value VisibilityRangeFadeMode) {
 
 //go:nosplit
 func (self class) SetMaterialOverride(material [1]gdclass.Material) { //gd:GeometryInstance3D.set_material_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material_override, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material_override, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.CallerIncrements(material[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -344,7 +344,7 @@ func (self class) GetMaterialOverride() [1]gdclass.Material { //gd:GeometryInsta
 
 //go:nosplit
 func (self class) SetMaterialOverlay(material [1]gdclass.Material) { //gd:GeometryInstance3D.set_material_overlay
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material_overlay, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material_overlay, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.CallerIncrements(material[0].AsObject()))}))
 }
 
 //go:nosplit

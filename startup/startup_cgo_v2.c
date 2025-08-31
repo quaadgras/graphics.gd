@@ -116,7 +116,7 @@ GDExtensionBool cgo_instance_binding_reference_func(void *p_token, void *p_bindi
 GDExtensionInstanceBindingCallbacks instance_binding_callbacks = {
     .create_callback = cgo_instance_binding_create_func,
     .free_callback = cgo_instance_binding_free_func,
-    .reference_callback = cgo_instance_binding_reference_func
+   // .reference_callback = cgo_instance_binding_reference_func
 };
 
 GDExtensionTypeFromVariantConstructorFunc type_from_variant_constructors[GDEXTENSION_VARIANT_TYPE_VARIANT_MAX];
@@ -1159,8 +1159,8 @@ uintptr_t gd_object_script_make(uintptr_t instance) {
         .call_func = (GDExtensionScriptInstanceCall)cgo_method_call_func,
         .notification_func = (GDExtensionClassNotification2)go_on_extension_instance_notification,
         .to_string_func = cgo_class_to_string_func,
-        .refcount_incremented_func = cgo_class_reference_func,
-        .refcount_decremented_func = cgo_class_unreference_func,
+        //.refcount_incremented_func = cgo_class_reference_func,
+        //.refcount_decremented_func = cgo_class_unreference_func,
         .get_script_func = cgo_class_get_script_func,
         .is_placeholder_func = cgo_class_is_placeholder_func,
         .get_language_func = cgo_class_get_language_func,

@@ -116,7 +116,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -329,7 +329,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.SkeletonProfile)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -441,7 +440,7 @@ func (self class) SetTexture(group_idx int64, texture [1]gdclass.Texture2D) { //
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		group_idx int64
 		texture   gdextension.Object
-	}{group_idx, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	}{group_idx, gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
 }
 
 //go:nosplit

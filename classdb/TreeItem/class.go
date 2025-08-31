@@ -208,7 +208,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -1447,7 +1447,7 @@ func (self class) SetIcon(column int64, texture [1]gdclass.Texture2D) { //gd:Tre
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		column  int64
 		texture gdextension.Object
-	}{column, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	}{column, gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
 }
 
 /*
@@ -1468,7 +1468,7 @@ func (self class) SetIconOverlay(column int64, texture [1]gdclass.Texture2D) { /
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon_overlay, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		column  int64
 		texture gdextension.Object
-	}{column, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	}{column, gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
 }
 
 /*
@@ -1824,7 +1824,7 @@ func (self class) SetCustomFont(column int64, font [1]gdclass.Font) { //gd:TreeI
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_font, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		column int64
 		font   gdextension.Object
-	}{column, gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
+	}{column, gdextension.Object(gd.CallerIncrements(font[0].AsObject()))}))
 }
 
 /*
@@ -1928,7 +1928,7 @@ func (self class) AddButton(column int64, button [1]gdclass.Texture2D, id int64,
 		id           int64
 		disabled     bool
 		tooltip_text gdextension.String
-	}{column, gdextension.Object(gd.ObjectChecked(button[0].AsObject())), id, disabled, pointers.Get(gd.InternalString(tooltip_text))}))
+	}{column, gdextension.Object(gd.CallerIncrements(button[0].AsObject())), id, disabled, pointers.Get(gd.InternalString(tooltip_text))}))
 }
 
 /*
@@ -2027,7 +2027,7 @@ func (self class) SetButton(column int64, button_index int64, button [1]gdclass.
 		column       int64
 		button_index int64
 		button       gdextension.Object
-	}{column, button_index, gdextension.Object(gd.ObjectChecked(button[0].AsObject()))}))
+	}{column, button_index, gdextension.Object(gd.CallerIncrements(button[0].AsObject()))}))
 }
 
 /*

@@ -117,7 +117,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -335,7 +335,7 @@ func (self class) SetTexture(atype DecalTexture, texture [1]gdclass.Texture2D) {
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		atype   DecalTexture
 		texture gdextension.Object
-	}{atype, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	}{atype, gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
 }
 
 /*

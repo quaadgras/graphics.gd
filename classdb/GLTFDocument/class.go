@@ -106,7 +106,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -296,7 +296,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.GLTFDocument)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -372,7 +371,7 @@ func (self class) AppendFromFile(path String.Readable, state [1]gdclass.GLTFStat
 		state     gdextension.Object
 		flags     int64
 		base_path gdextension.String
-	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.ObjectChecked(state[0].AsObject())), flags, pointers.Get(gd.InternalString(base_path))}))
+	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.CallerIncrements(state[0].AsObject())), flags, pointers.Get(gd.InternalString(base_path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -388,7 +387,7 @@ func (self class) AppendFromBuffer(bytes Packed.Bytes, base_path String.Readable
 		base_path gdextension.String
 		state     gdextension.Object
 		flags     int64
-	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes))), pointers.Get(gd.InternalString(base_path)), gdextension.Object(gd.ObjectChecked(state[0].AsObject())), flags}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes))), pointers.Get(gd.InternalString(base_path)), gdextension.Object(gd.CallerIncrements(state[0].AsObject())), flags}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -402,7 +401,7 @@ func (self class) AppendFromScene(node [1]gdclass.Node, state [1]gdclass.GLTFSta
 		node  gdextension.Object
 		state gdextension.Object
 		flags int64
-	}{gdextension.Object(gd.ObjectChecked(node[0].AsObject())), gdextension.Object(gd.ObjectChecked(state[0].AsObject())), flags}))
+	}{gdextension.Object(gd.ObjectChecked(node[0].AsObject())), gdextension.Object(gd.CallerIncrements(state[0].AsObject())), flags}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -418,7 +417,7 @@ func (self class) GenerateScene(state [1]gdclass.GLTFState, bake_fps float64, tr
 		bake_fps                float64
 		trimming                bool
 		remove_immutable_tracks bool
-	}{gdextension.Object(gd.ObjectChecked(state[0].AsObject())), bake_fps, trimming, remove_immutable_tracks}))
+	}{gdextension.Object(gd.CallerIncrements(state[0].AsObject())), bake_fps, trimming, remove_immutable_tracks}))
 	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret)}
 	return ret
 }
@@ -428,7 +427,7 @@ Takes a [GLTFState] object through the [param state] parameter and returns a glT
 */
 //go:nosplit
 func (self class) GenerateBuffer(state [1]gdclass.GLTFState) Packed.Bytes { //gd:GLTFDocument.generate_buffer
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_buffer, gdextension.SizePackedArray|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(state[0].AsObject()))}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_buffer, gdextension.SizePackedArray|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ state gdextension.Object }{gdextension.Object(gd.CallerIncrements(state[0].AsObject()))}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -442,7 +441,7 @@ func (self class) WriteToFilesystem(state [1]gdclass.GLTFState, path String.Read
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.write_to_filesystem, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		state gdextension.Object
 		path  gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(state[0].AsObject())), pointers.Get(gd.InternalString(path))}))
+	}{gdextension.Object(gd.CallerIncrements(state[0].AsObject())), pointers.Get(gd.InternalString(path))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -455,7 +454,7 @@ func (self class) ImportObjectModelProperty(state [1]gdclass.GLTFState, json_poi
 	var r_ret = gdextension.CallStatic[gdextension.Object](methods.import_object_model_property, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		state        gdextension.Object
 		json_pointer gdextension.String
-	}{gdextension.Object(gd.ObjectChecked(state[0].AsObject())), pointers.Get(gd.InternalString(json_pointer))}))
+	}{gdextension.Object(gd.CallerIncrements(state[0].AsObject())), pointers.Get(gd.InternalString(json_pointer))}))
 	var ret = [1]gdclass.GLTFObjectModelProperty{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFObjectModelProperty](r_ret)}
 	return ret
 }
@@ -470,7 +469,7 @@ func (self class) ExportObjectModelProperty(state [1]gdclass.GLTFState, node_pat
 		node_path       gdextension.NodePath
 		godot_node      gdextension.Object
 		gltf_node_index int64
-	}{gdextension.Object(gd.ObjectChecked(state[0].AsObject())), pointers.Get(gd.InternalNodePath(node_path)), gdextension.Object(gd.ObjectChecked(godot_node[0].AsObject())), gltf_node_index}))
+	}{gdextension.Object(gd.CallerIncrements(state[0].AsObject())), pointers.Get(gd.InternalNodePath(node_path)), gdextension.Object(gd.ObjectChecked(godot_node[0].AsObject())), gltf_node_index}))
 	var ret = [1]gdclass.GLTFObjectModelProperty{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFObjectModelProperty](r_ret)}
 	return ret
 }
@@ -484,7 +483,7 @@ func (self class) RegisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumen
 	gdextension.CallStatic[struct{}](methods.register_gltf_document_extension, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		extension      gdextension.Object
 		first_priority bool
-	}{gdextension.Object(gd.ObjectChecked(extension[0].AsObject())), first_priority}))
+	}{gdextension.Object(gd.CallerIncrements(extension[0].AsObject())), first_priority}))
 }
 
 /*
@@ -492,7 +491,7 @@ Unregisters the given [GLTFDocumentExtension] instance.
 */
 //go:nosplit
 func (self class) UnregisterGltfDocumentExtension(extension [1]gdclass.GLTFDocumentExtension) { //gd:GLTFDocument.unregister_gltf_document_extension
-	gdextension.CallStatic[struct{}](methods.unregister_gltf_document_extension, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(extension[0].AsObject()))}))
+	gdextension.CallStatic[struct{}](methods.unregister_gltf_document_extension, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ extension gdextension.Object }{gdextension.Object(gd.CallerIncrements(extension[0].AsObject()))}))
 }
 
 /*

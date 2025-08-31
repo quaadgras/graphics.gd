@@ -100,7 +100,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -243,7 +243,7 @@ func (self class) GetFallbackBaseScale() float64 { //gd:ThemeDB.get_fallback_bas
 
 //go:nosplit
 func (self class) SetFallbackFont(font [1]gdclass.Font) { //gd:ThemeDB.set_fallback_font
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.CallerIncrements(font[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -267,7 +267,7 @@ func (self class) GetFallbackFontSize() int64 { //gd:ThemeDB.get_fallback_font_s
 
 //go:nosplit
 func (self class) SetFallbackIcon(icon [1]gdclass.Texture2D) { //gd:ThemeDB.set_fallback_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ icon gdextension.Object }{gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ icon gdextension.Object }{gdextension.Object(gd.CallerIncrements(icon[0].AsObject()))}))
 }
 
 //go:nosplit
@@ -279,7 +279,7 @@ func (self class) GetFallbackIcon() [1]gdclass.Texture2D { //gd:ThemeDB.get_fall
 
 //go:nosplit
 func (self class) SetFallbackStylebox(stylebox [1]gdclass.StyleBox) { //gd:ThemeDB.set_fallback_stylebox
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_stylebox, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stylebox gdextension.Object }{gdextension.Object(gd.ObjectChecked(stylebox[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_stylebox, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stylebox gdextension.Object }{gdextension.Object(gd.CallerIncrements(stylebox[0].AsObject()))}))
 }
 
 //go:nosplit

@@ -100,7 +100,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		pointers.Raw[gd.StringName](sname).Free()
+		gdextension.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -277,7 +277,6 @@ func New() Instance {
 	}
 	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
 	casted := Instance{*(*gdclass.BitMap)(unsafe.Pointer(&object))}
-	casted.AsRefCounted()[0].Reference()
 	object[0].Notification(0, false)
 	return casted
 }
@@ -298,7 +297,7 @@ func (self class) CreateFromImageAlpha(image [1]gdclass.Image, threshold float64
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_image_alpha, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		image     gdextension.Object
 		threshold float64
-	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), threshold}))
+	}{gdextension.Object(gd.CallerIncrements(image[0].AsObject())), threshold}))
 }
 
 /*
