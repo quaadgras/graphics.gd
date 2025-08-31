@@ -399,7 +399,7 @@ Sets RGB image for this feed.
 */
 //go:nosplit
 func (self class) SetRgbImage(rgb_image [1]gdclass.Image) { //gd:CameraFeed.set_rgb_image
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rgb_image, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ rgb_image gdextension.Object }{gdextension.Object(gd.CallerIncrements(rgb_image[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rgb_image, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ rgb_image gdextension.Object }{gdextension.Object(gd.ObjectChecked(rgb_image[0].AsObject()))}))
 }
 
 /*
@@ -407,7 +407,7 @@ Sets YCbCr image for this feed.
 */
 //go:nosplit
 func (self class) SetYcbcrImage(ycbcr_image [1]gdclass.Image) { //gd:CameraFeed.set_ycbcr_image
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ycbcr_image, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ycbcr_image gdextension.Object }{gdextension.Object(gd.CallerIncrements(ycbcr_image[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ycbcr_image, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ ycbcr_image gdextension.Object }{gdextension.Object(gd.ObjectChecked(ycbcr_image[0].AsObject()))}))
 }
 
 /*

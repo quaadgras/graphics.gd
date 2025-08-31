@@ -297,7 +297,7 @@ func (self class) CreateFromImageAlpha(image [1]gdclass.Image, threshold float64
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_image_alpha, 0|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
 		image     gdextension.Object
 		threshold float64
-	}{gdextension.Object(gd.CallerIncrements(image[0].AsObject())), threshold}))
+	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), threshold}))
 }
 
 /*

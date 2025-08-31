@@ -332,7 +332,7 @@ func (self class) ActionAddEvent(action String.Name, event [1]gdclass.InputEvent
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_add_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action gdextension.StringName
 		event  gdextension.Object
-	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.CallerIncrements(event[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
 }
 
 /*
@@ -343,7 +343,7 @@ func (self class) ActionHasEvent(action String.Name, event [1]gdclass.InputEvent
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.action_has_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action gdextension.StringName
 		event  gdextension.Object
-	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.CallerIncrements(event[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -356,7 +356,7 @@ func (self class) ActionEraseEvent(action String.Name, event [1]gdclass.InputEve
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_erase_event, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action gdextension.StringName
 		event  gdextension.Object
-	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.CallerIncrements(event[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
 }
 
 /*
@@ -388,7 +388,7 @@ func (self class) EventIsAction(event [1]gdclass.InputEvent, action String.Name,
 		event       gdextension.Object
 		action      gdextension.StringName
 		exact_match bool
-	}{gdextension.Object(gd.CallerIncrements(event[0].AsObject())), pointers.Get(gd.InternalStringName(action)), exact_match}))
+	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), pointers.Get(gd.InternalStringName(action)), exact_match}))
 	var ret = r_ret
 	return ret
 }

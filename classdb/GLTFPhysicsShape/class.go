@@ -313,7 +313,7 @@ Creates a new GLTFPhysicsShape instance from the given Godot [Shape3D] resource.
 */
 //go:nosplit
 func (self class) FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_resource
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_resource, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape_resource gdextension.Object }{gdextension.Object(gd.CallerIncrements(shape_resource[0].AsObject()))}))
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_resource, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ shape_resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape_resource[0].AsObject()))}))
 	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret)}
 	return ret
 }

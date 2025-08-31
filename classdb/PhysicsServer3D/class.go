@@ -2792,7 +2792,7 @@ func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTest
 		body       RID.Any
 		parameters gdextension.Object
 		result     gdextension.Object
-	}{body, gdextension.Object(gd.CallerIncrements(parameters[0].AsObject())), gdextension.Object(gd.CallerIncrements(result[0].AsObject()))}))
+	}{body, gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), gdextension.Object(gd.ObjectChecked(result[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

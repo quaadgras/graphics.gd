@@ -3,39 +3,35 @@
 // Package Sprite2D provides methods for working with Sprite2D object instances.
 package Sprite2D
 
-import (
-	"reflect"
-	"slices"
-	"unsafe"
-
-	"graphics.gd/internal/callframe"
-	"graphics.gd/internal/gdextension"
-	"graphics.gd/internal/pointers"
-
-	"graphics.gd/classdb/CanvasItem"
-	"graphics.gd/classdb/Node"
-	"graphics.gd/classdb/Node2D"
-	"graphics.gd/classdb/Texture2D"
-	gd "graphics.gd/internal"
-	"graphics.gd/internal/gdclass"
-	"graphics.gd/variant"
-	"graphics.gd/variant/Angle"
-	"graphics.gd/variant/Array"
-	"graphics.gd/variant/Callable"
-	"graphics.gd/variant/Dictionary"
-	"graphics.gd/variant/Error"
-	"graphics.gd/variant/Euler"
-	"graphics.gd/variant/Float"
-	"graphics.gd/variant/Object"
-	"graphics.gd/variant/Packed"
-	"graphics.gd/variant/Path"
-	"graphics.gd/variant/RID"
-	"graphics.gd/variant/Rect2"
-	"graphics.gd/variant/RefCounted"
-	"graphics.gd/variant/String"
-	"graphics.gd/variant/Vector2"
-	"graphics.gd/variant/Vector2i"
-)
+import "unsafe"
+import "reflect"
+import "slices"
+import "graphics.gd/internal/pointers"
+import "graphics.gd/internal/callframe"
+import "graphics.gd/internal/gdextension"
+import gd "graphics.gd/internal"
+import "graphics.gd/internal/gdclass"
+import "graphics.gd/variant"
+import "graphics.gd/variant/Angle"
+import "graphics.gd/variant/Euler"
+import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/Node"
+import "graphics.gd/classdb/Node2D"
+import "graphics.gd/classdb/Texture2D"
+import "graphics.gd/variant/Array"
+import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Dictionary"
+import "graphics.gd/variant/Error"
+import "graphics.gd/variant/Float"
+import "graphics.gd/variant/Object"
+import "graphics.gd/variant/Packed"
+import "graphics.gd/variant/Path"
+import "graphics.gd/variant/RID"
+import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/RefCounted"
+import "graphics.gd/variant/String"
+import "graphics.gd/variant/Vector2"
+import "graphics.gd/variant/Vector2i"
 
 var _ Object.ID
 
@@ -324,7 +320,7 @@ func (self Instance) SetRegionFilterClipEnabled(value bool) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:Sprite2D.set_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
 }
 
 //go:nosplit

@@ -456,7 +456,7 @@ func (self class) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { 
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_match, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		event       gdextension.Object
 		exact_match bool
-	}{gdextension.Object(gd.CallerIncrements(event[0].AsObject())), exact_match}))
+	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), exact_match}))
 	var ret = r_ret
 	return ret
 }
@@ -477,7 +477,7 @@ The given input event's position, global position and speed will be copied. The 
 */
 //go:nosplit
 func (self class) Accumulate(with_event [1]gdclass.InputEvent) bool { //gd:InputEvent.accumulate
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accumulate, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ with_event gdextension.Object }{gdextension.Object(gd.CallerIncrements(with_event[0].AsObject()))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accumulate, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ with_event gdextension.Object }{gdextension.Object(gd.ObjectChecked(with_event[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

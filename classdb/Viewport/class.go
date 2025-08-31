@@ -1259,7 +1259,7 @@ func (self class) PushInput(event [1]gdclass.InputEvent, in_local_coords bool) {
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_input, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		event           gdextension.Object
 		in_local_coords bool
-	}{gdextension.Object(gd.CallerIncrements(event[0].AsObject())), in_local_coords}))
+	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), in_local_coords}))
 }
 
 /*
@@ -1278,7 +1278,7 @@ func (self class) PushUnhandledInput(event [1]gdclass.InputEvent, in_local_coord
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_unhandled_input, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		event           gdextension.Object
 		in_local_coords bool
-	}{gdextension.Object(gd.CallerIncrements(event[0].AsObject())), in_local_coords}))
+	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), in_local_coords}))
 }
 
 /*

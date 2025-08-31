@@ -422,7 +422,7 @@ func (self class) AddFrame(anim String.Name, texture [1]gdclass.Texture2D, durat
 		texture     gdextension.Object
 		duration    float64
 		at_position int64
-	}{pointers.Get(gd.InternalStringName(anim)), gdextension.Object(gd.CallerIncrements(texture[0].AsObject())), duration, at_position}))
+	}{pointers.Get(gd.InternalStringName(anim)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), duration, at_position}))
 }
 
 /*
@@ -435,7 +435,7 @@ func (self class) SetFrame(anim String.Name, idx int64, texture [1]gdclass.Textu
 		idx      int64
 		texture  gdextension.Object
 		duration float64
-	}{pointers.Get(gd.InternalStringName(anim)), idx, gdextension.Object(gd.CallerIncrements(texture[0].AsObject())), duration}))
+	}{pointers.Get(gd.InternalStringName(anim)), idx, gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), duration}))
 }
 
 /*

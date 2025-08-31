@@ -535,7 +535,7 @@ func (self class) SetSlot(slot_index int64, enable_left_port bool, type_left int
 		custom_icon_left  gdextension.Object
 		custom_icon_right gdextension.Object
 		draw_stylebox     bool
-	}{slot_index, enable_left_port, type_left, color_left, enable_right_port, type_right, color_right, gdextension.Object(gd.CallerIncrements(custom_icon_left[0].AsObject())), gdextension.Object(gd.CallerIncrements(custom_icon_right[0].AsObject())), draw_stylebox}))
+	}{slot_index, enable_left_port, type_left, color_left, enable_right_port, type_right, color_right, gdextension.Object(gd.ObjectChecked(custom_icon_left[0].AsObject())), gdextension.Object(gd.ObjectChecked(custom_icon_right[0].AsObject())), draw_stylebox}))
 }
 
 /*
@@ -625,7 +625,7 @@ func (self class) SetSlotCustomIconLeft(slot_index int64, custom_icon [1]gdclass
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_custom_icon_left, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		slot_index  int64
 		custom_icon gdextension.Object
-	}{slot_index, gdextension.Object(gd.CallerIncrements(custom_icon[0].AsObject()))}))
+	}{slot_index, gdextension.Object(gd.ObjectChecked(custom_icon[0].AsObject()))}))
 }
 
 /*
@@ -709,7 +709,7 @@ func (self class) SetSlotCustomIconRight(slot_index int64, custom_icon [1]gdclas
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slot_custom_icon_right, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		slot_index  int64
 		custom_icon gdextension.Object
-	}{slot_index, gdextension.Object(gd.CallerIncrements(custom_icon[0].AsObject()))}))
+	}{slot_index, gdextension.Object(gd.ObjectChecked(custom_icon[0].AsObject()))}))
 }
 
 /*

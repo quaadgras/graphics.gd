@@ -693,7 +693,7 @@ func (self class) SetOccluderPolygon(layer_id int64, polygon_index int64, polygo
 		layer_id      int64
 		polygon_index int64
 		polygon       gdextension.Object
-	}{layer_id, polygon_index, gdextension.Object(gd.CallerIncrements(polygon[0].AsObject()))}))
+	}{layer_id, polygon_index, gdextension.Object(gd.ObjectChecked(polygon[0].AsObject()))}))
 }
 
 /*
@@ -721,7 +721,7 @@ func (self class) SetOccluder(layer_id int64, occluder_polygon [1]gdclass.Occlud
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		layer_id         int64
 		occluder_polygon gdextension.Object
-	}{layer_id, gdextension.Object(gd.CallerIncrements(occluder_polygon[0].AsObject()))}))
+	}{layer_id, gdextension.Object(gd.ObjectChecked(occluder_polygon[0].AsObject()))}))
 }
 
 /*
@@ -960,7 +960,7 @@ func (self class) SetNavigationPolygon(layer_id int64, navigation_polygon [1]gdc
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_polygon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		layer_id           int64
 		navigation_polygon gdextension.Object
-	}{layer_id, gdextension.Object(gd.CallerIncrements(navigation_polygon[0].AsObject()))}))
+	}{layer_id, gdextension.Object(gd.ObjectChecked(navigation_polygon[0].AsObject()))}))
 }
 
 /*

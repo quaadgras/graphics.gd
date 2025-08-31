@@ -729,7 +729,7 @@ Sets [Material] to be used by the [Mesh] you are constructing.
 */
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:SurfaceTool.set_material
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.CallerIncrements(material[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 /*
@@ -758,7 +758,7 @@ func (self class) CreateFrom(existing [1]gdclass.Mesh, surface int64) { //gd:Sur
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		existing gdextension.Object
 		surface  int64
-	}{gdextension.Object(gd.CallerIncrements(existing[0].AsObject())), surface}))
+	}{gdextension.Object(gd.ObjectChecked(existing[0].AsObject())), surface}))
 }
 
 /*
@@ -781,7 +781,7 @@ func (self class) CreateFromBlendShape(existing [1]gdclass.Mesh, surface int64, 
 		existing    gdextension.Object
 		surface     int64
 		blend_shape gdextension.String
-	}{gdextension.Object(gd.CallerIncrements(existing[0].AsObject())), surface, pointers.Get(gd.InternalString(blend_shape))}))
+	}{gdextension.Object(gd.ObjectChecked(existing[0].AsObject())), surface, pointers.Get(gd.InternalString(blend_shape))}))
 }
 
 /*
@@ -793,7 +793,7 @@ func (self class) AppendFrom(existing [1]gdclass.Mesh, surface int64, transform 
 		existing  gdextension.Object
 		surface   int64
 		transform Transform3D.BasisOrigin
-	}{gdextension.Object(gd.CallerIncrements(existing[0].AsObject())), surface, gd.Transposed(transform)}))
+	}{gdextension.Object(gd.ObjectChecked(existing[0].AsObject())), surface, gd.Transposed(transform)}))
 }
 
 /*
@@ -805,7 +805,7 @@ func (self class) Commit(existing [1]gdclass.ArrayMesh, flags int64) [1]gdclass.
 	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.commit, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		existing gdextension.Object
 		flags    int64
-	}{gdextension.Object(gd.CallerIncrements(existing[0].AsObject())), flags}))
+	}{gdextension.Object(gd.ObjectChecked(existing[0].AsObject())), flags}))
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }

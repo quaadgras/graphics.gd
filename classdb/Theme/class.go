@@ -734,7 +734,7 @@ func (self class) SetIcon(name String.Name, theme_type String.Name, texture [1]g
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 		texture    gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*
@@ -819,7 +819,7 @@ func (self class) SetStylebox(name String.Name, theme_type String.Name, texture 
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 		texture    gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*
@@ -904,7 +904,7 @@ func (self class) SetFont(name String.Name, theme_type String.Name, font [1]gdcl
 		name       gdextension.StringName
 		theme_type gdextension.StringName
 		font       gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.CallerIncrements(font[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(theme_type)), gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 /*
@@ -1495,7 +1495,7 @@ Adds missing and overrides existing definitions with values from the [param othe
 */
 //go:nosplit
 func (self class) MergeWith(other [1]gdclass.Theme) { //gd:Theme.merge_with
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ other gdextension.Object }{gdextension.Object(gd.CallerIncrements(other[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ other gdextension.Object }{gdextension.Object(gd.ObjectChecked(other[0].AsObject()))}))
 }
 
 /*

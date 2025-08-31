@@ -397,7 +397,7 @@ func (self class) SetClipStream(clip_index int64, stream [1]gdclass.AudioStream)
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		clip_index int64
 		stream     gdextension.Object
-	}{clip_index, gdextension.Object(gd.CallerIncrements(stream[0].AsObject()))}))
+	}{clip_index, gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
 }
 
 /*

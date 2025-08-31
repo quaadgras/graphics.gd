@@ -412,7 +412,7 @@ This method does nothing.
 */
 //go:nosplit
 func (self class) ResourceChanged(resource [1]gdclass.Resource) { //gd:ShapeCast3D.resource_changed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.CallerIncrements(resource[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.resource_changed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
 }
 
 //go:nosplit

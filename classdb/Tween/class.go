@@ -805,7 +805,7 @@ tween.tween_property(self, "position:x", 300, 2.0)
 */
 //go:nosplit
 func (self class) TweenSubtween(subtween [1]gdclass.Tween) [1]gdclass.SubtweenTweener { //gd:Tween.tween_subtween
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_subtween, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ subtween gdextension.Object }{gdextension.Object(gd.CallerIncrements(subtween[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.tween_subtween, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ subtween gdextension.Object }{gdextension.Object(gd.ObjectChecked(subtween[0].AsObject()))}))
 	var ret = [1]gdclass.SubtweenTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.SubtweenTweener](r_ret)}
 	return ret
 }

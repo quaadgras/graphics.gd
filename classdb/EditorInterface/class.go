@@ -1370,7 +1370,7 @@ Edits the given [Resource]. If the resource is a [Script] you can also edit it w
 */
 //go:nosplit
 func (self class) EditResource(resource [1]gdclass.Resource) { //gd:EditorInterface.edit_resource
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit_resource, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.CallerIncrements(resource[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit_resource, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
 }
 
 /*
@@ -1391,7 +1391,7 @@ func (self class) EditScript(script [1]gdclass.Script, line int64, column int64,
 		line       int64
 		column     int64
 		grab_focus bool
-	}{gdextension.Object(gd.CallerIncrements(script[0].AsObject())), line, column, grab_focus}))
+	}{gdextension.Object(gd.ObjectChecked(script[0].AsObject())), line, column, grab_focus}))
 }
 
 /*

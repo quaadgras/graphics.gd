@@ -1445,7 +1445,7 @@ func (self class) ComputeImageMetrics(compared_image [1]gdclass.Image, use_luma 
 	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.compute_image_metrics, gdextension.SizeDictionary|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		compared_image gdextension.Object
 		use_luma       bool
-	}{gdextension.Object(gd.CallerIncrements(compared_image[0].AsObject())), use_luma}))
+	}{gdextension.Object(gd.ObjectChecked(compared_image[0].AsObject())), use_luma}))
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -1460,7 +1460,7 @@ func (self class) BlitRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, d
 		src      gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(gd.CallerIncrements(src[0].AsObject())), src_rect, dst}))
+	}{gdextension.Object(gd.ObjectChecked(src[0].AsObject())), src_rect, dst}))
 }
 
 /*
@@ -1473,7 +1473,7 @@ func (self class) BlitRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src_
 		mask     gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(gd.CallerIncrements(src[0].AsObject())), gdextension.Object(gd.CallerIncrements(mask[0].AsObject())), src_rect, dst}))
+	}{gdextension.Object(gd.ObjectChecked(src[0].AsObject())), gdextension.Object(gd.ObjectChecked(mask[0].AsObject())), src_rect, dst}))
 }
 
 /*
@@ -1485,7 +1485,7 @@ func (self class) BlendRect(src [1]gdclass.Image, src_rect Rect2i.PositionSize, 
 		src      gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(gd.CallerIncrements(src[0].AsObject())), src_rect, dst}))
+	}{gdextension.Object(gd.ObjectChecked(src[0].AsObject())), src_rect, dst}))
 }
 
 /*
@@ -1498,7 +1498,7 @@ func (self class) BlendRectMask(src [1]gdclass.Image, mask [1]gdclass.Image, src
 		mask     gdextension.Object
 		src_rect Rect2i.PositionSize
 		dst      Vector2i.XY
-	}{gdextension.Object(gd.CallerIncrements(src[0].AsObject())), gdextension.Object(gd.CallerIncrements(mask[0].AsObject())), src_rect, dst}))
+	}{gdextension.Object(gd.ObjectChecked(src[0].AsObject())), gdextension.Object(gd.ObjectChecked(mask[0].AsObject())), src_rect, dst}))
 }
 
 /*
@@ -1545,7 +1545,7 @@ Copies [param src] image to this image.
 */
 //go:nosplit
 func (self class) CopyFrom(src [1]gdclass.Image) { //gd:Image.copy_from
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.copy_from, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ src gdextension.Object }{gdextension.Object(gd.CallerIncrements(src[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.copy_from, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ src gdextension.Object }{gdextension.Object(gd.ObjectChecked(src[0].AsObject()))}))
 }
 
 /*

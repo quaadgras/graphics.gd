@@ -787,7 +787,7 @@ func (self class) SurfaceSetMaterial(surf_idx int64, material [1]gdclass.Materia
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		surf_idx int64
 		material gdextension.Object
-	}{surf_idx, gdextension.Object(gd.CallerIncrements(material[0].AsObject()))}))
+	}{surf_idx, gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 /*

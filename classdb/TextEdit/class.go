@@ -4361,7 +4361,7 @@ func (self class) SetLineGutterIcon(line int64, gutter int64, icon [1]gdclass.Te
 		line   int64
 		gutter int64
 		icon   gdextension.Object
-	}{line, gutter, gdextension.Object(gd.CallerIncrements(icon[0].AsObject()))}))
+	}{line, gutter, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*

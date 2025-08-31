@@ -55,7 +55,7 @@ func fixReserved(name string) string {
 	}
 }
 
-func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gdjson.Class, method gdjson.Method, ctype Type) {
+func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gdjson.Class, method gdjson.Method, ctype Type, setter_getter bool) {
 	if ctype == TypeDefault && method.IsVararg {
 		ctype = TypeVarargs
 	}
@@ -214,7 +214,11 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 			case gdjson.IsTemporaryReference, gdjson.MustAssertInstanceID, gdjson.ReversesTheOwnership:
 				fmt.Fprintf(w, "\tgdextension.Object(gd.ObjectChecked(%v[0].AsObject()))", fixReserved(arg.Name))
 			case gdjson.RefCountedManagement:
-				fmt.Fprintf(w, "\tgdextension.Object(gd.CallerIncrements(%v[0].AsObject()))", fixReserved(arg.Name))
+				if setter_getter {
+					fmt.Fprintf(w, "\tgdextension.Object(gd.CallerIncrements(%v[0].AsObject()))", fixReserved(arg.Name))
+				} else {
+					fmt.Fprintf(w, "\tgdextension.Object(gd.ObjectChecked(%v[0].AsObject()))", fixReserved(arg.Name))
+				}
 			default:
 				panic("unknown ownership: " + fmt.Sprint(semantics))
 			}

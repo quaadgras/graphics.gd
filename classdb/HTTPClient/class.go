@@ -426,7 +426,7 @@ func (self class) ConnectToHost(host String.Readable, port int64, tls_options [1
 		host        gdextension.String
 		port        int64
 		tls_options gdextension.Object
-	}{pointers.Get(gd.InternalString(host)), port, gdextension.Object(gd.CallerIncrements(tls_options[0].AsObject()))}))
+	}{pointers.Get(gd.InternalString(host)), port, gdextension.Object(gd.ObjectChecked(tls_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

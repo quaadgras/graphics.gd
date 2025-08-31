@@ -338,7 +338,7 @@ func (self class) AddNode(atype Type, node [1]gdclass.VisualShaderNode, position
 		node     gdextension.Object
 		position Vector2.XY
 		id       int64
-	}{atype, gdextension.Object(gd.CallerIncrements(node[0].AsObject())), position, id}))
+	}{atype, gdextension.Object(gd.ObjectChecked(node[0].AsObject())), position, id}))
 }
 
 /*

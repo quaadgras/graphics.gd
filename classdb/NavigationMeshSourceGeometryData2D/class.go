@@ -354,7 +354,7 @@ Adds the geometry data of another [NavigationMeshSourceGeometryData2D] to the na
 */
 //go:nosplit
 func (self class) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryData2D) { //gd:NavigationMeshSourceGeometryData2D.merge
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ other_geometry gdextension.Object }{gdextension.Object(gd.CallerIncrements(other_geometry[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ other_geometry gdextension.Object }{gdextension.Object(gd.ObjectChecked(other_geometry[0].AsObject()))}))
 }
 
 /*

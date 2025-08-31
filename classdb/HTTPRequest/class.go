@@ -523,7 +523,7 @@ Sets the [TLSOptions] to be used when connecting to an HTTPS server. See [method
 */
 //go:nosplit
 func (self class) SetTlsOptions(client_options [1]gdclass.TLSOptions) { //gd:HTTPRequest.set_tls_options
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tls_options, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ client_options gdextension.Object }{gdextension.Object(gd.CallerIncrements(client_options[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tls_options, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ client_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(client_options[0].AsObject()))}))
 }
 
 /*

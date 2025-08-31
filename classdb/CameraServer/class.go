@@ -207,7 +207,7 @@ Adds the camera [param feed] to the camera server.
 */
 //go:nosplit
 func (self class) AddFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.add_feed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_feed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ feed gdextension.Object }{gdextension.Object(gd.CallerIncrements(feed[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_feed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(feed[0].AsObject()))}))
 }
 
 /*
@@ -215,7 +215,7 @@ Removes the specified camera [param feed].
 */
 //go:nosplit
 func (self class) RemoveFeed(feed [1]gdclass.CameraFeed) { //gd:CameraServer.remove_feed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_feed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ feed gdextension.Object }{gdextension.Object(gd.CallerIncrements(feed[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_feed, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ feed gdextension.Object }{gdextension.Object(gd.ObjectChecked(feed[0].AsObject()))}))
 }
 func OnCameraFeedAdded(cb func(id int)) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("camera_feed_added"), gd.NewCallable(cb), 0)

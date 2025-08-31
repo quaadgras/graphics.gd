@@ -251,7 +251,7 @@ func (self class) AddNode(name String.Name, node [1]gdclass.AnimationNode, posit
 		name     gdextension.StringName
 		node     gdextension.Object
 		position Vector2.XY
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.CallerIncrements(node[0].AsObject())), position}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(node[0].AsObject())), position}))
 }
 
 /*

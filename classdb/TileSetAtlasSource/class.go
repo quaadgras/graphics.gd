@@ -631,7 +631,7 @@ func (self class) GetTilesToBeRemovedOnChange(texture [1]gdclass.Texture2D, marg
 		margins             Vector2i.XY
 		separation          Vector2i.XY
 		texture_region_size Vector2i.XY
-	}{gdextension.Object(gd.CallerIncrements(texture[0].AsObject())), margins, separation, texture_region_size}))
+	}{gdextension.Object(gd.ObjectChecked(texture[0].AsObject())), margins, separation, texture_region_size}))
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

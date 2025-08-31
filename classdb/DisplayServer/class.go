@@ -3109,7 +3109,7 @@ func (self class) GlobalMenuAddIconItem(menu_root String.Readable, icon [1]gdcla
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Object(gd.CallerIncrements(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
+	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
 	var ret = r_ret
 	return ret
 }
@@ -3140,7 +3140,7 @@ func (self class) GlobalMenuAddIconCheckItem(menu_root String.Readable, icon [1]
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Object(gd.CallerIncrements(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
+	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
 	var ret = r_ret
 	return ret
 }
@@ -3203,7 +3203,7 @@ func (self class) GlobalMenuAddIconRadioCheckItem(menu_root String.Readable, ico
 		tag          gdextension.Variant
 		accelerator  Input.Key
 		index        int64
-	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Object(gd.CallerIncrements(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
+	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalCallable(callback)), pointers.Get(gd.InternalCallable(key_callback)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag))), accelerator, index}))
 	var ret = r_ret
 	return ret
 }
@@ -3730,7 +3730,7 @@ func (self class) GlobalMenuSetItemIcon(menu_root String.Readable, idx int64, ic
 		menu_root gdextension.String
 		idx       int64
 		icon      gdextension.Object
-	}{pointers.Get(gd.InternalString(menu_root)), idx, gdextension.Object(gd.CallerIncrements(icon[0].AsObject()))}))
+	}{pointers.Get(gd.InternalString(menu_root)), idx, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*
@@ -5025,7 +5025,7 @@ func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape CursorS
 		cursor  gdextension.Object
 		shape   CursorShape
 		hotspot Vector2.XY
-	}{gdextension.Object(gd.CallerIncrements(cursor[0].AsObject())), shape, hotspot}))
+	}{gdextension.Object(gd.ObjectChecked(cursor[0].AsObject())), shape, hotspot}))
 }
 
 /*
@@ -5263,7 +5263,7 @@ Sets the window icon (usually displayed in the top-left corner) with an [Image].
 */
 //go:nosplit
 func (self class) SetIcon(image [1]gdclass.Image) { //gd:DisplayServer.set_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.CallerIncrements(image[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 }
 
 /*
@@ -5276,7 +5276,7 @@ func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip Strin
 		icon     gdextension.Object
 		tooltip  gdextension.String
 		callback gdextension.Callable
-	}{gdextension.Object(gd.CallerIncrements(icon[0].AsObject())), pointers.Get(gd.InternalString(tooltip)), pointers.Get(gd.InternalCallable(callback))}))
+	}{gdextension.Object(gd.ObjectChecked(icon[0].AsObject())), pointers.Get(gd.InternalString(tooltip)), pointers.Get(gd.InternalCallable(callback))}))
 	var ret = r_ret
 	return ret
 }
@@ -5290,7 +5290,7 @@ func (self class) StatusIndicatorSetIcon(id int64, icon [1]gdclass.Texture2D) { 
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		id   int64
 		icon gdextension.Object
-	}{id, gdextension.Object(gd.CallerIncrements(icon[0].AsObject()))}))
+	}{id, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
 }
 
 /*

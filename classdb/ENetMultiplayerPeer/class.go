@@ -273,7 +273,7 @@ func (self class) AddMeshPeer(peer_id int64, host [1]gdclass.ENetConnection) Err
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_mesh_peer, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		peer_id int64
 		host    gdextension.Object
-	}{peer_id, gdextension.Object(gd.CallerIncrements(host[0].AsObject()))}))
+	}{peer_id, gdextension.Object(gd.ObjectChecked(host[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

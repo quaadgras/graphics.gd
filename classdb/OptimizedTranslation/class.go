@@ -163,7 +163,7 @@ Generates and sets an optimized translation from the given [Translation] resourc
 */
 //go:nosplit
 func (self class) Generate(from [1]gdclass.Translation) { //gd:OptimizedTranslation.generate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ from gdextension.Object }{gdextension.Object(gd.CallerIncrements(from[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(from[0].AsObject()))}))
 }
 func (self class) AsOptimizedTranslation() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsOptimizedTranslation() Instance { return *((*Instance)(unsafe.Pointer(&self))) }

@@ -929,7 +929,7 @@ Attach an editor gizmo to this [Node3D].
 */
 //go:nosplit
 func (self class) AddGizmo(gizmo [1]gdclass.Node3DGizmo) { //gd:Node3D.add_gizmo
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_gizmo, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gizmo gdextension.Object }{gdextension.Object(gd.CallerIncrements(gizmo[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_gizmo, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ gizmo gdextension.Object }{gdextension.Object(gd.ObjectChecked(gizmo[0].AsObject()))}))
 }
 
 /*
@@ -960,7 +960,7 @@ func (self class) SetSubgizmoSelection(gizmo [1]gdclass.Node3DGizmo, id int64, t
 		gizmo     gdextension.Object
 		id        int64
 		transform Transform3D.BasisOrigin
-	}{gdextension.Object(gd.CallerIncrements(gizmo[0].AsObject())), id, gd.Transposed(transform)}))
+	}{gdextension.Object(gd.ObjectChecked(gizmo[0].AsObject())), id, gd.Transposed(transform)}))
 }
 
 /*

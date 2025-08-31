@@ -210,7 +210,7 @@ func (self class) SetSyncStream(stream_index int64, audio_stream [1]gdclass.Audi
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sync_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		stream_index int64
 		audio_stream gdextension.Object
-	}{stream_index, gdextension.Object(gd.CallerIncrements(audio_stream[0].AsObject()))}))
+	}{stream_index, gdextension.Object(gd.ObjectChecked(audio_stream[0].AsObject()))}))
 }
 
 /*

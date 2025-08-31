@@ -830,7 +830,7 @@ func (self class) AddBusEffect(bus_idx int64, effect [1]gdclass.AudioEffect, at_
 		bus_idx     int64
 		effect      gdextension.Object
 		at_position int64
-	}{bus_idx, gdextension.Object(gd.CallerIncrements(effect[0].AsObject())), at_position}))
+	}{bus_idx, gdextension.Object(gd.ObjectChecked(effect[0].AsObject())), at_position}))
 }
 
 /*
@@ -1094,7 +1094,7 @@ Overwrites the currently used [AudioBusLayout].
 */
 //go:nosplit
 func (self class) SetBusLayout(bus_layout [1]gdclass.AudioBusLayout) { //gd:AudioServer.set_bus_layout
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bus_layout, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ bus_layout gdextension.Object }{gdextension.Object(gd.CallerIncrements(bus_layout[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bus_layout, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ bus_layout gdextension.Object }{gdextension.Object(gd.ObjectChecked(bus_layout[0].AsObject()))}))
 }
 
 /*
@@ -1122,7 +1122,7 @@ If [code]false[/code], the stream will have to be registered before playing it. 
 */
 //go:nosplit
 func (self class) IsStreamRegisteredAsSample(stream [1]gdclass.AudioStream) bool { //gd:AudioServer.is_stream_registered_as_sample
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stream_registered_as_sample, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.CallerIncrements(stream[0].AsObject()))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stream_registered_as_sample, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -1133,7 +1133,7 @@ Forces the registration of a stream as a sample.
 */
 //go:nosplit
 func (self class) RegisterStreamAsSample(stream [1]gdclass.AudioStream) { //gd:AudioServer.register_stream_as_sample
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_stream_as_sample, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.CallerIncrements(stream[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_stream_as_sample, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
 }
 func OnBusLayoutChanged(cb func()) {
 	self[0].AsObject()[0].Connect(gd.NewStringName("bus_layout_changed"), gd.NewCallable(cb), 0)

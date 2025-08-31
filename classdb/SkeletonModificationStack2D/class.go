@@ -267,7 +267,7 @@ Adds the passed-in [SkeletonModification2D] to the stack.
 */
 //go:nosplit
 func (self class) AddModification(modification [1]gdclass.SkeletonModification2D) { //gd:SkeletonModificationStack2D.add_modification
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_modification, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ modification gdextension.Object }{gdextension.Object(gd.CallerIncrements(modification[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_modification, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ modification gdextension.Object }{gdextension.Object(gd.ObjectChecked(modification[0].AsObject()))}))
 }
 
 /*
@@ -286,7 +286,7 @@ func (self class) SetModification(mod_idx int64, modification [1]gdclass.Skeleto
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modification, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		mod_idx      int64
 		modification gdextension.Object
-	}{mod_idx, gdextension.Object(gd.CallerIncrements(modification[0].AsObject()))}))
+	}{mod_idx, gdextension.Object(gd.ObjectChecked(modification[0].AsObject()))}))
 }
 
 //go:nosplit

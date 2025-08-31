@@ -212,7 +212,7 @@ func (self class) AddAnimation(name String.Name, animation [1]gdclass.Animation)
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_animation, gdextension.SizeInt|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name      gdextension.StringName
 		animation gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.CallerIncrements(animation[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(animation[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

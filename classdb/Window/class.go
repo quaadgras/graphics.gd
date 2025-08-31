@@ -1844,7 +1844,7 @@ func (self class) AddThemeIconOverride(name String.Name, texture [1]gdclass.Text
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_icon_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name    gdextension.StringName
 		texture gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.CallerIncrements(texture[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
 }
 
 /*
@@ -1856,7 +1856,7 @@ func (self class) AddThemeStyleboxOverride(name String.Name, stylebox [1]gdclass
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_stylebox_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name     gdextension.StringName
 		stylebox gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.CallerIncrements(stylebox[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(stylebox[0].AsObject()))}))
 }
 
 /*
@@ -1868,7 +1868,7 @@ func (self class) AddThemeFontOverride(name String.Name, font [1]gdclass.Font) {
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_theme_font_override, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		name gdextension.StringName
 		font gdextension.Object
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.CallerIncrements(font[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
 }
 
 /*

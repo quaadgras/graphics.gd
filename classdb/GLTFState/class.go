@@ -601,7 +601,7 @@ func (self class) AppendGltfNode(gltf_node [1]gdclass.GLTFNode, godot_scene_node
 		gltf_node         gdextension.Object
 		godot_scene_node  gdextension.Object
 		parent_node_index int64
-	}{gdextension.Object(gd.CallerIncrements(gltf_node[0].AsObject())), gdextension.Object(gd.ObjectChecked(godot_scene_node[0].AsObject())), parent_node_index}))
+	}{gdextension.Object(gd.ObjectChecked(gltf_node[0].AsObject())), gdextension.Object(gd.ObjectChecked(godot_scene_node[0].AsObject())), parent_node_index}))
 	var ret = r_ret
 	return ret
 }

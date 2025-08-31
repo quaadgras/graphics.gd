@@ -5187,7 +5187,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 //go:nosplit
 func (self class) Texture2dCreate(image [1]gdclass.Image) RID.Any { //gd:RenderingServer.texture_2d_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_2d_create, gdextension.SizeRID|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.CallerIncrements(image[0].AsObject()))}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_2d_create, gdextension.SizeRID|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -5264,7 +5264,7 @@ func (self class) Texture2dUpdate(texture RID.Any, image [1]gdclass.Image, layer
 		texture RID.Any
 		image   gdextension.Object
 		layer   int64
-	}{texture, gdextension.Object(gd.CallerIncrements(image[0].AsObject())), layer}))
+	}{texture, gdextension.Object(gd.ObjectChecked(image[0].AsObject())), layer}))
 }
 
 /*
@@ -10999,7 +10999,7 @@ func (self class) SetBootImage(image [1]gdclass.Image, color Color.RGBA, scale b
 		color      Color.RGBA
 		scale      bool
 		use_filter bool
-	}{gdextension.Object(gd.CallerIncrements(image[0].AsObject())), color, scale, use_filter}))
+	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), color, scale, use_filter}))
 }
 
 /*

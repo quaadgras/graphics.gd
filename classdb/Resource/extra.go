@@ -82,6 +82,9 @@ func Load[T Any, P string | Path.ToResource](path_to_resource P) T {
 				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
 			}
 		})
+		gd.RegisterCleanup(func() {
+			placeholder.AsObject()[0].Free()
+		})
 		return placeholder
 	}
 	resource := Instance(load(String.Readable(path), String.New(""), 1))

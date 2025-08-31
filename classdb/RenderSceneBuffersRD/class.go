@@ -470,7 +470,7 @@ func (self class) CreateTextureFromFormat(context String.Name, name String.Name,
 		format  gdextension.Object
 		view    gdextension.Object
 		unique  bool
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.CallerIncrements(format[0].AsObject())), gdextension.Object(gd.CallerIncrements(view[0].AsObject())), unique}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(format[0].AsObject())), gdextension.Object(gd.ObjectChecked(view[0].AsObject())), unique}))
 	var ret = r_ret
 	return ret
 }
@@ -485,7 +485,7 @@ func (self class) CreateTextureView(context String.Name, name String.Name, view_
 		name      gdextension.StringName
 		view_name gdextension.StringName
 		view      gdextension.Object
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(view_name)), gdextension.Object(gd.CallerIncrements(view[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(view_name)), gdextension.Object(gd.ObjectChecked(view[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -546,7 +546,7 @@ func (self class) GetTextureSliceView(context String.Name, name String.Name, lay
 		layers  int64
 		mipmaps int64
 		view    gdextension.Object
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), layer, mipmap, layers, mipmaps, gdextension.Object(gd.CallerIncrements(view[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), layer, mipmap, layers, mipmaps, gdextension.Object(gd.ObjectChecked(view[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

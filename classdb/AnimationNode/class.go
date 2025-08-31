@@ -747,7 +747,7 @@ func (self class) BlendNode(name String.Name, node [1]gdclass.AnimationNode, tim
 		filter              FilterAction
 		sync                bool
 		test_only           bool
-	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.CallerIncrements(node[0].AsObject())), time, seek, is_external_seeking, blend, filter, sync, test_only}))
+	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(node[0].AsObject())), time, seek, is_external_seeking, blend, filter, sync, test_only}))
 	var ret = r_ret
 	return ret
 }

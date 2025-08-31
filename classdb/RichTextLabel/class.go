@@ -1246,7 +1246,7 @@ func (self class) AddImage(image [1]gdclass.Texture2D, width int64, height int64
 		pad             bool
 		tooltip         gdextension.String
 		size_in_percent bool
-	}{gdextension.Object(gd.CallerIncrements(image[0].AsObject())), width, height, color, inline_align, region, gdextension.Variant(pointers.Get(gd.InternalVariant(key))), pad, pointers.Get(gd.InternalString(tooltip)), size_in_percent}))
+	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), width, height, color, inline_align, region, gdextension.Variant(pointers.Get(gd.InternalVariant(key))), pad, pointers.Get(gd.InternalString(tooltip)), size_in_percent}))
 }
 
 /*
@@ -1266,7 +1266,7 @@ func (self class) UpdateImage(key variant.Any, mask ImageUpdateMask, image [1]gd
 		pad             bool
 		tooltip         gdextension.String
 		size_in_percent bool
-	}{gdextension.Variant(pointers.Get(gd.InternalVariant(key))), mask, gdextension.Object(gd.CallerIncrements(image[0].AsObject())), width, height, color, inline_align, region, pad, pointers.Get(gd.InternalString(tooltip)), size_in_percent}))
+	}{gdextension.Variant(pointers.Get(gd.InternalVariant(key))), mask, gdextension.Object(gd.ObjectChecked(image[0].AsObject())), width, height, color, inline_align, region, pad, pointers.Get(gd.InternalString(tooltip)), size_in_percent}))
 }
 
 /*
@@ -1311,7 +1311,7 @@ func (self class) PushFont(font [1]gdclass.Font, font_size int64) { //gd:RichTex
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_font, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
 		font      gdextension.Object
 		font_size int64
-	}{gdextension.Object(gd.CallerIncrements(font[0].AsObject())), font_size}))
+	}{gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size}))
 }
 
 /*
@@ -1493,7 +1493,7 @@ func (self class) PushDropcap(s String.Readable, font [1]gdclass.Font, size int6
 		color           Color.RGBA
 		outline_size    int64
 		outline_color   Color.RGBA
-	}{pointers.Get(gd.InternalString(s)), gdextension.Object(gd.CallerIncrements(font[0].AsObject())), size, dropcap_margins, color, outline_size, outline_color}))
+	}{pointers.Get(gd.InternalString(s)), gdextension.Object(gd.ObjectChecked(font[0].AsObject())), size, dropcap_margins, color, outline_size, outline_color}))
 }
 
 /*
@@ -1581,7 +1581,7 @@ func (self class) PushCustomfx(effect [1]gdclass.RichTextEffect, env Dictionary.
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_customfx, 0|(gdextension.SizeObject<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
 		effect gdextension.Object
 		env    gdextension.Dictionary
-	}{gdextension.Object(gd.CallerIncrements(effect[0].AsObject())), pointers.Get(gd.InternalDictionary(env))}))
+	}{gdextension.Object(gd.ObjectChecked(effect[0].AsObject())), pointers.Get(gd.InternalDictionary(env))}))
 }
 
 /*

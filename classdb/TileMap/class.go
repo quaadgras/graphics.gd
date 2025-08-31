@@ -1402,7 +1402,7 @@ func (self class) MapPattern(position_in_tilemap Vector2i.XY, coords_in_pattern 
 		position_in_tilemap Vector2i.XY
 		coords_in_pattern   Vector2i.XY
 		pattern             gdextension.Object
-	}{position_in_tilemap, coords_in_pattern, gdextension.Object(gd.CallerIncrements(pattern[0].AsObject()))}))
+	}{position_in_tilemap, coords_in_pattern, gdextension.Object(gd.ObjectChecked(pattern[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -1417,7 +1417,7 @@ func (self class) SetPattern(layer int64, position Vector2i.XY, pattern [1]gdcla
 		layer    int64
 		position Vector2i.XY
 		pattern  gdextension.Object
-	}{layer, position, gdextension.Object(gd.CallerIncrements(pattern[0].AsObject()))}))
+	}{layer, position, gdextension.Object(gd.ObjectChecked(pattern[0].AsObject()))}))
 }
 
 /*

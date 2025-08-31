@@ -217,7 +217,7 @@ func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, recei
 		receiver      gdextension.Object
 		receiver_func gdextension.StringName
 		userdata      gdextension.Variant
-	}{gdextension.Object(gd.CallerIncrements(resource[0].AsObject())), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
+	}{gdextension.Object(gd.ObjectChecked(resource[0].AsObject())), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
 }
 
 /*
@@ -225,7 +225,7 @@ Create an own, custom preview generator.
 */
 //go:nosplit
 func (self class) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.add_preview_generator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preview_generator, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(gd.CallerIncrements(generator[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preview_generator, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))}))
 }
 
 /*
@@ -233,7 +233,7 @@ Removes a custom preview generator.
 */
 //go:nosplit
 func (self class) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.remove_preview_generator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_preview_generator, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(gd.CallerIncrements(generator[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_preview_generator, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))}))
 }
 
 /*

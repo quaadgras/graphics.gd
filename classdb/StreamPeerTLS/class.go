@@ -222,7 +222,7 @@ func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]g
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accept_stream, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		stream         gdextension.Object
 		server_options gdextension.Object
-	}{gdextension.Object(gd.CallerIncrements(stream[0].AsObject())), gdextension.Object(gd.CallerIncrements(server_options[0].AsObject()))}))
+	}{gdextension.Object(gd.ObjectChecked(stream[0].AsObject())), gdextension.Object(gd.ObjectChecked(server_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -236,7 +236,7 @@ func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name Stri
 		stream         gdextension.Object
 		common_name    gdextension.String
 		client_options gdextension.Object
-	}{gdextension.Object(gd.CallerIncrements(stream[0].AsObject())), pointers.Get(gd.InternalString(common_name)), gdextension.Object(gd.CallerIncrements(client_options[0].AsObject()))}))
+	}{gdextension.Object(gd.ObjectChecked(stream[0].AsObject())), pointers.Get(gd.InternalString(common_name)), gdextension.Object(gd.ObjectChecked(client_options[0].AsObject()))}))
 	var ret = Error.Code(r_ret)
 	return ret
 }

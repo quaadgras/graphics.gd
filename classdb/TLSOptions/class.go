@@ -269,7 +269,7 @@ func (self class) Client(trusted_chain [1]gdclass.X509Certificate, common_name_o
 	var r_ret = gdextension.CallStatic[gdextension.Object](methods.client, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
 		trusted_chain        gdextension.Object
 		common_name_override gdextension.String
-	}{gdextension.Object(gd.CallerIncrements(trusted_chain[0].AsObject())), pointers.Get(gd.InternalString(common_name_override))}))
+	}{gdextension.Object(gd.ObjectChecked(trusted_chain[0].AsObject())), pointers.Get(gd.InternalString(common_name_override))}))
 	var ret = [1]gdclass.TLSOptions{gd.PointerWithOwnershipTransferredToGo[gdclass.TLSOptions](r_ret)}
 	return ret
 }
@@ -280,7 +280,7 @@ Creates an [b]unsafe[/b] TLS client configuration where certificate validation i
 */
 //go:nosplit
 func (self class) ClientUnsafe(trusted_chain [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.client_unsafe
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.client_unsafe, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ trusted_chain gdextension.Object }{gdextension.Object(gd.CallerIncrements(trusted_chain[0].AsObject()))}))
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.client_unsafe, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ trusted_chain gdextension.Object }{gdextension.Object(gd.ObjectChecked(trusted_chain[0].AsObject()))}))
 	var ret = [1]gdclass.TLSOptions{gd.PointerWithOwnershipTransferredToGo[gdclass.TLSOptions](r_ret)}
 	return ret
 }
@@ -294,7 +294,7 @@ func (self class) Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Ce
 	var r_ret = gdextension.CallStatic[gdextension.Object](methods.server, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		key         gdextension.Object
 		certificate gdextension.Object
-	}{gdextension.Object(gd.CallerIncrements(key[0].AsObject())), gdextension.Object(gd.CallerIncrements(certificate[0].AsObject()))}))
+	}{gdextension.Object(gd.ObjectChecked(key[0].AsObject())), gdextension.Object(gd.ObjectChecked(certificate[0].AsObject()))}))
 	var ret = [1]gdclass.TLSOptions{gd.PointerWithOwnershipTransferredToGo[gdclass.TLSOptions](r_ret)}
 	return ret
 }

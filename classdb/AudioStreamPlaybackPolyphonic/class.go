@@ -219,7 +219,7 @@ func (self class) PlayStream(stream [1]gdclass.AudioStream, from_offset float64,
 		pitch_scale   float64
 		playback_type AudioServer.PlaybackType
 		bus           gdextension.StringName
-	}{gdextension.Object(gd.CallerIncrements(stream[0].AsObject())), from_offset, volume_db, pitch_scale, playback_type, pointers.Get(gd.InternalStringName(bus))}))
+	}{gdextension.Object(gd.ObjectChecked(stream[0].AsObject())), from_offset, volume_db, pitch_scale, playback_type, pointers.Get(gd.InternalStringName(bus))}))
 	var ret = r_ret
 	return ret
 }

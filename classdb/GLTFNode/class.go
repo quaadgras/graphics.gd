@@ -508,7 +508,7 @@ func (self class) GetSceneNodePath(gltf_state [1]gdclass.GLTFState, handle_skele
 	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_scene_node_path, gdextension.SizeNodePath|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
 		gltf_state       gdextension.Object
 		handle_skeletons bool
-	}{gdextension.Object(gd.CallerIncrements(gltf_state[0].AsObject())), handle_skeletons}))
+	}{gdextension.Object(gd.ObjectChecked(gltf_state[0].AsObject())), handle_skeletons}))
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

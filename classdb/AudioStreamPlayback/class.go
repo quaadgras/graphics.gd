@@ -528,7 +528,7 @@ Associates [AudioSamplePlayback] to this [AudioStreamPlayback] for playing back 
 */
 //go:nosplit
 func (self class) SetSamplePlayback(playback_sample [1]gdclass.AudioSamplePlayback) { //gd:AudioStreamPlayback.set_sample_playback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sample_playback, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ playback_sample gdextension.Object }{gdextension.Object(gd.CallerIncrements(playback_sample[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sample_playback, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ playback_sample gdextension.Object }{gdextension.Object(gd.ObjectChecked(playback_sample[0].AsObject()))}))
 }
 
 /*

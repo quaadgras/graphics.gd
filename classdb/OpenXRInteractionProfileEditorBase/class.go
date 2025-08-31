@@ -170,7 +170,7 @@ func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, interaction_profi
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		action_map          gdextension.Object
 		interaction_profile gdextension.Object
-	}{gdextension.Object(gd.CallerIncrements(action_map[0].AsObject())), gdextension.Object(gd.CallerIncrements(interaction_profile[0].AsObject()))}))
+	}{gdextension.Object(gd.ObjectChecked(action_map[0].AsObject())), gdextension.Object(gd.ObjectChecked(interaction_profile[0].AsObject()))}))
 }
 func (self class) AsOpenXRInteractionProfileEditorBase() Advanced {
 	return *((*Advanced)(unsafe.Pointer(&self)))

@@ -381,7 +381,7 @@ func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer
 		issuer_name gdextension.String
 		not_before  gdextension.String
 		not_after   gdextension.String
-	}{gdextension.Object(gd.CallerIncrements(key[0].AsObject())), pointers.Get(gd.InternalString(issuer_name)), pointers.Get(gd.InternalString(not_before)), pointers.Get(gd.InternalString(not_after))}))
+	}{gdextension.Object(gd.ObjectChecked(key[0].AsObject())), pointers.Get(gd.InternalString(issuer_name)), pointers.Get(gd.InternalString(not_before)), pointers.Get(gd.InternalString(not_after))}))
 	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret)}
 	return ret
 }
@@ -395,7 +395,7 @@ func (self class) Sign(hash_type HashingContext.HashType, hash Packed.Bytes, key
 		hash_type HashingContext.HashType
 		hash      gdextension.PackedArray[byte]
 		key       gdextension.Object
-	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash))), gdextension.Object(gd.CallerIncrements(key[0].AsObject()))}))
+	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash))), gdextension.Object(gd.ObjectChecked(key[0].AsObject()))}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -410,7 +410,7 @@ func (self class) Verify(hash_type HashingContext.HashType, hash Packed.Bytes, s
 		hash      gdextension.PackedArray[byte]
 		signature gdextension.PackedArray[byte]
 		key       gdextension.Object
-	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](signature))), gdextension.Object(gd.CallerIncrements(key[0].AsObject()))}))
+	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](hash))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](signature))), gdextension.Object(gd.ObjectChecked(key[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }
@@ -424,7 +424,7 @@ func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext Packed.Bytes) Pack
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.encrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		key       gdextension.Object
 		plaintext gdextension.PackedArray[byte]
-	}{gdextension.Object(gd.CallerIncrements(key[0].AsObject())), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](plaintext)))}))
+	}{gdextension.Object(gd.ObjectChecked(key[0].AsObject())), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](plaintext)))}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -438,7 +438,7 @@ func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext Packed.Bytes) Pac
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.decrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
 		key        gdextension.Object
 		ciphertext gdextension.PackedArray[byte]
-	}{gdextension.Object(gd.CallerIncrements(key[0].AsObject())), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ciphertext)))}))
+	}{gdextension.Object(gd.ObjectChecked(key[0].AsObject())), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ciphertext)))}))
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }

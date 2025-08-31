@@ -1939,7 +1939,7 @@ func (self class) QueryPath(parameters [1]gdclass.NavigationPathQueryParameters3
 		parameters gdextension.Object
 		result     gdextension.Object
 		callback   gdextension.Callable
-	}{gdextension.Object(gd.CallerIncrements(parameters[0].AsObject())), gdextension.Object(gd.CallerIncrements(result[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
+	}{gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), gdextension.Object(gd.ObjectChecked(result[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -2143,7 +2143,7 @@ func (self class) RegionSetNavigationMesh(region RID.Any, navigation_mesh [1]gdc
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_set_navigation_mesh, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		region          RID.Any
 		navigation_mesh gdextension.Object
-	}{region, gdextension.Object(gd.CallerIncrements(navigation_mesh[0].AsObject()))}))
+	}{region, gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))}))
 }
 
 /*
@@ -2154,7 +2154,7 @@ func (self class) RegionBakeNavigationMesh(navigation_mesh [1]gdclass.Navigation
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_bake_navigation_mesh, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		navigation_mesh gdextension.Object
 		root_node       gdextension.Object
-	}{gdextension.Object(gd.CallerIncrements(navigation_mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject()))}))
+	}{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject()))}))
 }
 
 /*
@@ -3084,7 +3084,7 @@ func (self class) ParseSourceGeometryData(navigation_mesh [1]gdclass.NavigationM
 		source_geometry_data gdextension.Object
 		root_node            gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.CallerIncrements(navigation_mesh[0].AsObject())), gdextension.Object(gd.CallerIncrements(source_geometry_data[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
+	}{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), gdextension.Object(gd.ObjectChecked(root_node[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -3096,7 +3096,7 @@ func (self class) BakeFromSourceGeometryData(navigation_mesh [1]gdclass.Navigati
 		navigation_mesh      gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.CallerIncrements(navigation_mesh[0].AsObject())), gdextension.Object(gd.CallerIncrements(source_geometry_data[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
+	}{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -3108,7 +3108,7 @@ func (self class) BakeFromSourceGeometryDataAsync(navigation_mesh [1]gdclass.Nav
 		navigation_mesh      gdextension.Object
 		source_geometry_data gdextension.Object
 		callback             gdextension.Callable
-	}{gdextension.Object(gd.CallerIncrements(navigation_mesh[0].AsObject())), gdextension.Object(gd.CallerIncrements(source_geometry_data[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
+	}{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject())), gdextension.Object(gd.ObjectChecked(source_geometry_data[0].AsObject())), pointers.Get(gd.InternalCallable(callback))}))
 }
 
 /*
@@ -3116,7 +3116,7 @@ Returns [code]true[/code] when the provided navigation mesh is being baked on a 
 */
 //go:nosplit
 func (self class) IsBakingNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh) bool { //gd:NavigationServer3D.is_baking_navigation_mesh
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_baking_navigation_mesh, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.CallerIncrements(navigation_mesh[0].AsObject()))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_baking_navigation_mesh, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))}))
 	var ret = r_ret
 	return ret
 }

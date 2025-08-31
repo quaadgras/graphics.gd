@@ -254,7 +254,7 @@ Add an action to this action set.
 */
 //go:nosplit
 func (self class) AddAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.add_action
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_action, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action gdextension.Object }{gdextension.Object(gd.CallerIncrements(action[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_action, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action gdextension.Object }{gdextension.Object(gd.ObjectChecked(action[0].AsObject()))}))
 }
 
 /*
@@ -262,7 +262,7 @@ Remove an action from this action set.
 */
 //go:nosplit
 func (self class) RemoveAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.remove_action
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_action, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action gdextension.Object }{gdextension.Object(gd.CallerIncrements(action[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_action, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ action gdextension.Object }{gdextension.Object(gd.ObjectChecked(action[0].AsObject()))}))
 }
 func (self class) AsOpenXRActionSet() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
 func (self Instance) AsOpenXRActionSet() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }

@@ -267,7 +267,7 @@ func (self class) TestMove(from Transform2D.OriginXY, motion Vector2.XY, collisi
 		collision             gdextension.Object
 		safe_margin           float64
 		recovery_as_collision bool
-	}{from, motion, gdextension.Object(gd.CallerIncrements(collision[0].AsObject())), safe_margin, recovery_as_collision}))
+	}{from, motion, gdextension.Object(gd.ObjectChecked(collision[0].AsObject())), safe_margin, recovery_as_collision}))
 	var ret = r_ret
 	return ret
 }

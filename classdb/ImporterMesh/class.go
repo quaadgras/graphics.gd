@@ -437,7 +437,7 @@ func (self class) AddSurface(primitive Mesh.PrimitiveType, arrays Array.Any, ble
 		material     gdextension.Object
 		name         gdextension.String
 		flags        int64
-	}{primitive, pointers.Get(gd.InternalArray(arrays)), pointers.Get(gd.InternalArray(blend_shapes)), pointers.Get(gd.InternalDictionary(lods)), gdextension.Object(gd.CallerIncrements(material[0].AsObject())), pointers.Get(gd.InternalString(name)), flags}))
+	}{primitive, pointers.Get(gd.InternalArray(arrays)), pointers.Get(gd.InternalArray(blend_shapes)), pointers.Get(gd.InternalDictionary(lods)), gdextension.Object(gd.ObjectChecked(material[0].AsObject())), pointers.Get(gd.InternalString(name)), flags}))
 }
 
 /*
@@ -568,7 +568,7 @@ func (self class) SetSurfaceMaterial(surface_idx int64, material [1]gdclass.Mate
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_surface_material, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
 		surface_idx int64
 		material    gdextension.Object
-	}{surface_idx, gdextension.Object(gd.CallerIncrements(material[0].AsObject()))}))
+	}{surface_idx, gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
 }
 
 /*
@@ -594,7 +594,7 @@ If not yet cached and [param base_mesh] is provided, [param base_mesh] will be u
 */
 //go:nosplit
 func (self class) GetMesh(base_mesh [1]gdclass.ArrayMesh) [1]gdclass.ArrayMesh { //gd:ImporterMesh.get_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ base_mesh gdextension.Object }{gdextension.Object(gd.CallerIncrements(base_mesh[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ base_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(base_mesh[0].AsObject()))}))
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }

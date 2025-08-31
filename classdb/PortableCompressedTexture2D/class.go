@@ -242,7 +242,7 @@ func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode Compr
 		compression_mode CompressionMode
 		normal_map       bool
 		lossy_quality    float64
-	}{gdextension.Object(gd.CallerIncrements(image[0].AsObject())), compression_mode, normal_map, lossy_quality}))
+	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), compression_mode, normal_map, lossy_quality}))
 }
 
 /*
