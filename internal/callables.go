@@ -67,7 +67,7 @@ func init() {
 			gdmemory.Set(gdextension.Pointer(call_error), CallError{})
 		},
 		Hash: func(fn gdextension.FunctionID) uint32 {
-			return uint32(reflect.ValueOf(cgoHandle(fn).Value()).Pointer())
+			return uint32(cgoHandle(fn))
 		},
 		Stringify: func(fn gdextension.FunctionID, err gdextension.Returns[gdextension.CallError]) gdextension.String {
 			s := NewString(reflect.ValueOf(cgoHandle(fn).Value()).String())
@@ -82,10 +82,10 @@ func init() {
 			return cgoHandle(fn).Value() != nil
 		},
 		Compare: func(fn, other gdextension.FunctionID) bool {
-			return reflect.ValueOf(cgoHandle(fn).Value()).Pointer() == reflect.ValueOf(cgoHandle(other).Value()).Pointer()
+			return cgoHandle(fn) == cgoHandle(other)
 		},
 		LessThan: func(fn, other gdextension.FunctionID) bool {
-			return reflect.ValueOf(cgoHandle(fn).Value()).Pointer() < reflect.ValueOf(cgoHandle(other).Value()).Pointer()
+			return cgoHandle(fn) < cgoHandle(other)
 		},
 		Free: func(fn gdextension.FunctionID) {
 			cgoHandle(fn).Delete()
