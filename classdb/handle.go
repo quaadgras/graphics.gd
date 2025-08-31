@@ -22,7 +22,7 @@ func cgoNewHandle(v any) cgoHandle {
 func (h cgoHandle) Value() any {
 	v, ok := handles.Load(uintptr(h))
 	if !ok {
-		return nil
+		panic("runtime/cgo: misuse of an invalid Handle")
 	}
 	return v
 }
