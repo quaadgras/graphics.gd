@@ -54,15 +54,18 @@ func TestAliasFreed(t *testing.T) {
 	}
 }
 
-func TestGetSet(t *testing.T) {
-	type MyObject struct {
-		Object.Extension[MyObject]
+type MyObject struct {
+	Object.Extension[MyObject]
 
-		Field1 string
-		Field2 int
-	}
+	Field1 string
+	Field2 int
+}
+
+func init() {
 	classdb.Register[MyObject]()
+}
 
+func TestGetSet(t *testing.T) {
 	var basis_test string = `extends Object
 
 func set_fields(testing: MyObject):
@@ -81,5 +84,16 @@ func set_fields(testing: MyObject):
 
 	if myobject.Field1 != "Hello" || myobject.Field2 != 42 {
 		t.Errorf("Expected Field1='Hello', Field2=42, got %v, %v", myobject.Field1, myobject.Field2)
+	}
+}
+
+func TestObjectAsGoClass(t *testing.T) {
+	var object = new(MyObject)
+	ptr, ok := Object.As[*MyObject](Object.Instance(object.AsObject()))
+	if !ok {
+		t.Error("Expected to convert Object to *MyObject")
+	}
+	if ptr != object {
+		t.Error("Expected to get the same pointer back")
 	}
 }

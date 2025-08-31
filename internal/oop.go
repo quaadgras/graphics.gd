@@ -5,23 +5,13 @@ package gd
 import (
 	"reflect"
 	"strings"
-	"sync"
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 )
 
-var ExtensionInstances sync.Map
-
-func init() {
-	RegisterCleanup(func() {
-		ExtensionInstances.Range(func(key, value any) bool {
-			pointers.Raw[Object]([3]uint64{key.(uint64)}).Free()
-			return true
-		})
-	})
-}
+var ExtensionInstanceLookup func(gdextension.Object) any
 
 type NotificationType int32
 

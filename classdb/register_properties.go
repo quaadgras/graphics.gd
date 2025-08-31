@@ -164,8 +164,8 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	var converted reflect.Value
 	if value.Type() == gd.TypeObject {
 		obj := gd.VariantAsObject(value)
-		ext, ok := gd.ExtensionInstances.Load(pointers.Get(obj)[0])
-		if ok {
+		ext := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(obj)[0]))
+		if ext != nil {
 			converted = reflect.ValueOf(ext)
 			isExtensionClass = true
 		}

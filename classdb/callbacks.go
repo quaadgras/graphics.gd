@@ -8,6 +8,22 @@ import (
 )
 
 func init() {
+	gd.ExtensionInstanceLookup = func(obj gdextension.Object) any {
+		val, ok := handles.Load(uintptr(gdextension.Host.Objects.Extension.Fetch(obj)))
+		if !ok {
+			return nil
+		}
+		return val.(*instanceImplementation).Value
+	}
+	gd.RegisterCleanup(func() {
+		handles.Range(func(key any, value any) bool {
+			if instance, ok := value.(*instanceImplementation); ok {
+				instance.Free()
+			}
+			return true
+		})
+	})
+
 	gdextension.On.Extension = gdextension.CallbacksForExtension{
 		Binding: gdextension.CallbacksForExtensionBinding{
 			Created: func(instance gdextension.ExtensionInstanceID) gdextension.ExtensionBindingID {

@@ -499,8 +499,6 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 	extensionClass := value.Interface().(gdclass.Pointer)
 	gdclass.SetObject(extensionClass, super)
 
-	gd.ExtensionInstances.Store(pointers.Get(super[0])[0], extensionClass)
-
 	value = value.Elem()
 
 	// TODO cache this check
@@ -600,7 +598,7 @@ type instanceImplementation struct {
 	signals []signalChan
 
 	// FIXME use a bitfield for these booleans.
-	isEditor bool
+	isEditor, freed bool
 }
 
 var lastGC int
@@ -664,6 +662,9 @@ func (instance *instanceImplementation) GetRID() gd.RID {
 }
 
 func (instance *instanceImplementation) Free() {
+	if instance.freed {
+		return
+	}
 	for _, signal := range instance.signals {
 		if signal.rvalue.IsValid() {
 			signal.rvalue.Close()
@@ -693,11 +694,11 @@ func (instance *instanceImplementation) Free() {
 			}
 		}
 	}
-	gd.ExtensionInstances.Delete(instance.object)
 	switch onfree := instance.Value.(type) {
 	case interface{ OnFree() }:
 		onfree.OnFree()
 	}
+	instance.freed = true
 }
 
 // ready is responsible for asserting the scene tree for struct members that implement
@@ -771,8 +772,8 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		child := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(pointers.Get(gd.NewStringName(nameOf(field.Type)))))})}
 		child[0].Notification(0, false)
 		defer pointers.End(child[0])
-		native, ok := gd.ExtensionInstances.Load(pointers.Get(child[0])[0])
-		if ok {
+		native := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(child[0])[0]))
+		if native != nil {
 			rvalue.Elem().Set(reflect.ValueOf(native))
 			class = native.(isNode)
 		} else {
@@ -793,13 +794,13 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		return
 	}
 	var node = NodeClass.Advanced(parent).GetNode(path)
-	ref, native := gd.ExtensionInstances.Load(pointers.Get(node[0])[0])
-	if native {
-		if reflect.ValueOf(ref).Type() != rvalue.Elem().Type() {
+	native := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(node[0])[0]))
+	if native != nil {
+		if reflect.ValueOf(native).Type() != rvalue.Elem().Type() {
 			fmt.Printf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name)
 			panic(fmt.Sprintf("gd.Register: Node %s.%s is not of type %s (%s)", rvalue.Type().Name(), field.Name, field.Type.Name(), name))
 		}
-		rvalue.Elem().Set(reflect.ValueOf(ref))
+		rvalue.Elem().Set(reflect.ValueOf(native))
 		pointers.End(node[0])
 	} else {
 		if !class.(gd.IsClassCastable).SetObject([1]gd.Object{pointers.Raw[gd.Object](pointers.Get(node[0]))}) {

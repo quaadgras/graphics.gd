@@ -2,6 +2,7 @@ package Object
 
 import (
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 )
 
@@ -28,12 +29,10 @@ func As[T gd.IsClass](value gd.IsClass) (T, bool) {
 		var zero T
 		return zero, false
 	}
-	ext, ok := gd.ExtensionInstances.Load(pointers.Get(value.AsObject()[0])[0])
+	ext, ok := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(value.AsObject()[0])[0])).(T)
 	if ok {
-		if ref, ok := ext.(T); ok {
-			pointers.Lay(value.AsObject()[0])
-			return ref, true
-		}
+		pointers.Lay(value.AsObject()[0])
+		return ext, true
 	}
 	var zero T
 	castable, ok := any(&zero).(gd.IsClassCastable)

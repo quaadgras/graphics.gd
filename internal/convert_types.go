@@ -172,8 +172,8 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 				if !ok {
 					return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
 				}
-				native, ok := ExtensionInstances.Load(pointers.Get(object.AsObject()[0])[0])
-				if ok {
+				native := ExtensionInstanceLookup(gdextension.Object(pointers.Get(object.AsObject()[0])[0]))
+				if native != nil {
 					return reflect.ValueOf(native), nil
 				}
 				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to %s", value, rtype))
