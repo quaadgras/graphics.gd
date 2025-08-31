@@ -202,8 +202,8 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 			if ok {
 				ref.Reference()
 			}
-			pointers.Pin(obj.AsObject()[0])
 		}
+		pointers.Pin(obj.AsObject()[0])
 	}
 	field.Set(converted)
 	if impl, ok := instance.Value.(interface {
