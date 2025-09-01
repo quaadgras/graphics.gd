@@ -673,7 +673,7 @@ func (instance *instanceImplementation) Free() {
 	}
 	rvalue := reflect.ValueOf(instance.Value).Elem()
 	for _, field := range reflect.VisibleFields(rvalue.Type()) {
-		if !field.IsExported() || field.Name == "Extension" {
+		if !field.IsExported() || field.Name == "Extension" || rvalue.FieldByIndex(field.Index).IsZero() {
 			continue
 		}
 		type isNode interface {
