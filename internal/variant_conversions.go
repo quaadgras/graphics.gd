@@ -159,15 +159,15 @@ func CutVariant(v any, cut bool) Variant {
 		switch rtype {
 		case reflect.TypeFor[Path.ToNode]():
 			var s = NewString(value.String()).NodePath()
-			var arg = pointers.Cut(s, cut)
+			var arg = pointers.Cut(s, true)
 			ret.LoadNative(TypeNodePath, gdextension.SizeNodePath, unsafe.Pointer(&arg))
 		case reflect.TypeFor[StringType.Name]():
 			var s = NewStringName(value.String())
-			var arg = pointers.Cut(s, cut)
+			var arg = pointers.Cut(s, true)
 			ret.LoadNative(TypeStringName, gdextension.SizeStringName, unsafe.Pointer(&arg))
 		case reflect.TypeFor[StringType.Readable]():
 			var s = NewString(value.String())
-			var arg = pointers.Cut(s, cut)
+			var arg = pointers.Cut(s, true)
 			ret.LoadNative(TypeString, gdextension.SizeString, unsafe.Pointer(&arg))
 		default:
 			var s = NewString(value.String())
