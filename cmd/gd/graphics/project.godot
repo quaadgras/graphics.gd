@@ -12,3 +12,6 @@ config_version=5
 config/name="%v"
 run/main_scene="res://main.tscn"
 run/main_loop_type="GoMainLoop"
+
+[rendering]
+textures/vram_compression/import_etc2_astc=true

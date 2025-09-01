@@ -68,6 +68,9 @@ var (
 	//go:embed internal/macos
 	macos_sdk embed.FS
 
+	//go:embed internal/android
+	android_sdk embed.FS
+
 	//go:embed internal/ios/Info.plist
 	info_plist string
 )
@@ -233,7 +236,7 @@ func wrap() error {
 		}
 	}
 	graphics := "./graphics"
-	if GOOS == "android" {
+	if runtime.GOOS == "android" {
 		graphics = "/sdcard/gd/" + filepath.Base(wd)
 	}
 	setup := func() error {
@@ -339,7 +342,7 @@ func wrap() error {
 		libraryPath = filepath.Join(graphics, "..", "releases", "js", "wasm", "library.wasm")
 		runGodotArgs = []string{"--headless", "--export-release", "Web"}
 	case "android":
-		libraryPath = "lib" + libraryPath + ".so"
+		libraryPath = path.Dir(libraryPath) + "/lib" + path.Base(libraryPath) + ".so"
 	case "ios":
 		libraryPath += ".a"
 	default:
@@ -521,6 +524,16 @@ func wrap() error {
 				case "arm64":
 					golang.Env = append(golang.Env, "CC=zig cc -target aarch64-linux-gnu")
 				}
+			case "android":
+				setupFiles(android_sdk, "internal/android", graphics+"/../releases/android/sdk")
+				ANDROID_SDK, err := filepath.Abs(graphics + "/../releases/android/sdk")
+				if err != nil {
+					return xray.New(err)
+				}
+				switch arches[i] {
+				case "arm64":
+					golang.Env = append(golang.Env, "CC=zig cc -target aarch64-linux-android -nostdlib -I"+ANDROID_SDK+"/usr/include -L"+ANDROID_SDK+"/usr/lib")
+				}
 			case "ios":
 				setupFiles(macos_sdk, "internal/macos", graphics+"/../releases/darwin/sdk")
 				MACOS_SDK, err := filepath.Abs(graphics + "/../releases/darwin/sdk")
@@ -612,7 +625,7 @@ func wrap() error {
 		}
 		return nil
 	case "build":
-		if _, err := exec.LookPath("upx"); err == nil {
+		if _, err := exec.LookPath("upx"); err == nil && GOOS != "android" {
 			os.Chmod(libraryPath, 0o755)
 			upx.CMD.Compress(libraryPath)
 		}
@@ -645,7 +658,7 @@ func wrap() error {
 		case "android":
 			switch GOARCH {
 			case "arm64":
-				runGodotArgs = []string{"--headless", "--export-release", "Android"}
+				runGodotArgs = []string{"--headless", "--export-debug", "Android"}
 			}
 		case "js":
 			switch GOARCH {
