@@ -469,6 +469,10 @@ func wrap() error {
 		builds = append(builds, missingArgs)
 		arches = append(arches, missingArch)
 	}
+	zig, err := exec.LookPath("zig")
+	if err != nil {
+		zig = ""
+	}
 	for i, commandArgs := range builds {
 		var undefinedSymbols []string
 		var parsingDone = make(chan struct{})
@@ -493,6 +497,9 @@ func wrap() error {
 		golang.Env = os.Environ()
 		if GOOS != "js" {
 			golang.Env = append(os.Environ(), "CGO_ENABLED=1")
+		}
+		if zig != "" {
+			golang.Env = append(golang.Env, "CC=zig cc")
 		}
 		golang.Env = append(golang.Env, "GOARCH="+arches[i])
 		if GOOS != runtime.GOOS {
