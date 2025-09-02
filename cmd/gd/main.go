@@ -498,14 +498,16 @@ func wrap() error {
 		if GOOS != "js" {
 			golang.Env = append(os.Environ(), "CGO_ENABLED=1")
 		}
-		if zig != "" {
+		if zig != "" && os.Getenv("CC") == "" {
 			golang.Env = append(golang.Env, "CC=zig cc")
 		}
 		golang.Env = append(golang.Env, "GOARCH="+arches[i])
 		if GOOS != runtime.GOOS {
-			_, err := exec.LookPath("zig")
-			if err != nil {
-				return fmt.Errorf("gd requires zig to be installed and available in your PATH for cross-compilation: %w", err)
+			if GOOS != "js" {
+				_, err := exec.LookPath("zig")
+				if err != nil {
+					return fmt.Errorf("gd requires zig to be installed and available in your PATH for cross-compilation: %w", err)
+				}
 			}
 			switch GOOS {
 			case "windows":
