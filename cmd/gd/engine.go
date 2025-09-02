@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	version   = "4.4"
+	version   = "4.4.1"
 	engineCmd = "godot"
 )
 
@@ -27,6 +27,11 @@ func installEngine(gobin string) (string, error) {
 			return "", fmt.Errorf("gd: failed to 'brew install godot': %w", err)
 		}
 		return "godot", nil
+	case "windows":
+		var arch = "win64"
+		fmt.Println("gd: downloading Godot v" + version + " stable for windows/" + arch)
+		return download(filepath.Join(gobin, engineCmd+"-"+version), "Godot_v"+version+"-stable_"+arch+".exe",
+			"https://github.com/godotengine/godot-builds/releases/download/"+version+"-stable/Godot_v"+version+"-stable_"+arch+".zip")
 	case "linux":
 		var arch = "x86_64"
 		switch runtime.GOARCH {

@@ -142,7 +142,6 @@ func useEngine() (string, error) {
 		if !errors.Is(err, fs.ErrNotExist) {
 			return "", xray.New(err)
 		}
-		fmt.Println(engineBin)
 		engine, err := installEngine(gobin)
 		if err != nil {
 			return "", xray.New(err)
