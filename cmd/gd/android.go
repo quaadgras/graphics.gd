@@ -30,16 +30,19 @@ func adb() (string, error) {
 	if gobin == "" {
 		gobin = filepath.Join(gopath, "bin")
 	}
-	var unzip = ""
-	if runtime.GOOS == "windows" && runtime.GOARCH == "amd64" {
-		unzip = "adb.windows.amd64"
-	}
 	var arch = runtime.GOARCH
 	if runtime.GOOS == "darwin" {
 		arch = "universal"
 	}
+	if _, err = os.Stat(filepath.Join(gobin, "adb")); err == nil {
+		return filepath.Join(gobin, "adb"), nil
+	}
+	var unzip = ""
+	if runtime.GOOS == "windows" && runtime.GOARCH == "amd64" {
+		unzip = "adb.windows.amd64"
+	}
 	fmt.Println("gd: downloading https://release.graphics.gd/adb." + runtime.GOOS + "." + arch)
-	adb, err = download(gobin, unzip, "https://release.graphics.gd/adb."+runtime.GOOS+"."+arch)
+	adb, err = download(filepath.Join(gobin, "adb"), unzip, "https://release.graphics.gd/adb."+runtime.GOOS+"."+arch)
 	if err != nil {
 		return "", fmt.Errorf("unable to download adb for your platform, please ensure adb is installed (and in your path) to launch your app on an Android device: %w", err)
 	}
@@ -47,7 +50,7 @@ func adb() (string, error) {
 }
 
 func android_safe_package_name(name string) string {
-	return strings.Replace(name, "-", "_", -1)
+	return strings.ReplaceAll(name, "-", "_")
 }
 
 func (a Android) run() error {

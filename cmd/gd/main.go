@@ -157,7 +157,7 @@ func useEngine() (string, error) {
 	return filepath.Join(gobin, engine+"-"+version), nil
 }
 
-func download(gobin, unzip, url string) (string, error) {
+func download(dest, unzip, url string) (string, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return "", xray.New(err)
@@ -184,8 +184,7 @@ func download(gobin, unzip, url string) (string, error) {
 		body = inZip
 	}
 	//executable
-	binPath := filepath.Join(gobin, engineCmd+"-"+version)
-	file, err := os.OpenFile(binPath, os.O_CREATE|os.O_WRONLY, 0755)
+	file, err := os.OpenFile(dest, os.O_CREATE|os.O_WRONLY, 0755)
 	if err != nil {
 		return "", xray.New(err)
 	}
@@ -193,7 +192,7 @@ func download(gobin, unzip, url string) (string, error) {
 	if _, err = io.Copy(file, body); err != nil {
 		return "", xray.New(err)
 	}
-	return binPath, nil
+	return dest, nil
 }
 
 type WebServer struct {
