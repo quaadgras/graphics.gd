@@ -166,19 +166,23 @@ func download(gobin, unzip, url string) (string, error) {
 	if resp.StatusCode != 200 {
 		return "", xray.New(err)
 	}
-	data, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", xray.New(err)
+	var body = resp.Body
+	if unzip != "" {
+		data, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return "", xray.New(err)
+		}
+		archive, err := zip.NewReader(bytes.NewReader(data), int64(len(data)))
+		if err != nil {
+			return "", xray.New(err)
+		}
+		inZip, err := archive.Open(unzip)
+		if err != nil {
+			return "", xray.New(err)
+		}
+		defer inZip.Close()
+		body = inZip
 	}
-	archive, err := zip.NewReader(bytes.NewReader(data), int64(len(data)))
-	if err != nil {
-		return "", xray.New(err)
-	}
-	inZip, err := archive.Open(unzip)
-	if err != nil {
-		return "", xray.New(err)
-	}
-	defer inZip.Close()
 	//executable
 	binPath := filepath.Join(gobin, engineCmd+"-"+version)
 	file, err := os.OpenFile(binPath, os.O_CREATE|os.O_WRONLY, 0755)
@@ -186,7 +190,7 @@ func download(gobin, unzip, url string) (string, error) {
 		return "", xray.New(err)
 	}
 	defer file.Close()
-	if _, err = io.Copy(file, inZip); err != nil {
+	if _, err = io.Copy(file, body); err != nil {
 		return "", xray.New(err)
 	}
 	return binPath, nil
@@ -301,7 +305,7 @@ func wrap() error {
 		if err := setupFile(false, graphics+"/project.godot", project_godot, filepath.Base(wd)); err != nil {
 			return xray.New(err)
 		}
-		if err := setupFile(false, graphics+"/export_presets.cfg", export_presets_cfg, filepath.Base(wd)); err != nil {
+		if err := setupFile(false, graphics+"/export_presets.cfg", export_presets_cfg, filepath.Base(wd), android_safe_package_name(filepath.Base(wd))); err != nil {
 			return xray.New(err)
 		}
 		if err := setupFile(false, graphics+"/.gitignore", gitignore); err != nil {
@@ -343,6 +347,7 @@ func wrap() error {
 		runGodotArgs = []string{"--headless", "--export-release", "Web"}
 	case "android":
 		libraryPath = path.Dir(libraryPath) + "/lib" + path.Base(libraryPath) + ".so"
+		runGodotArgs = []string{"--headless", "--export-debug", "Android"}
 	case "ios":
 		libraryPath += ".a"
 	default:
@@ -575,7 +580,7 @@ func wrap() error {
 	}
 	switch os.Args[1] {
 	case "run":
-		if GOOS == "js" {
+		if GOOS == "js" || GOOS == "android" {
 			if err := os.MkdirAll(graphics+"/../releases/"+GOOS+"/"+GOARCH, 0755); err != nil {
 				return xray.New(err)
 			}
@@ -587,6 +592,11 @@ func wrap() error {
 		godot.Stdin = os.Stdin
 		if err := godot.Run(); err != nil {
 			return xray.New(err)
+		}
+		if GOOS == "android" {
+			return Android{
+				graphics: graphics,
+			}.run()
 		}
 		if GOOS == "js" {
 			PORT := os.Getenv("PORT")
