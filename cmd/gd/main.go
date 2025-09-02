@@ -499,7 +499,11 @@ func wrap() error {
 			golang.Env = append(os.Environ(), "CGO_ENABLED=1")
 		}
 		if zig != "" && os.Getenv("CC") == "" {
-			golang.Env = append(golang.Env, "CC=zig cc")
+			if runtime.GOOS == "darwin" {
+				golang.Env = append(golang.Env, "CC=clang")
+			} else {
+				golang.Env = append(golang.Env, "CC=zig cc")
+			}
 		}
 		golang.Env = append(golang.Env, "GOARCH="+arches[i])
 		if GOOS != runtime.GOOS {
