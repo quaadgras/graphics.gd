@@ -40,8 +40,8 @@ int atoi(const char* _Nonnull __s) __attribute_pure__;
 
 __BIONIC_GET_DEVICE_API_LEVEL_INLINE int android_get_device_api_level() {
   char value[92] = { 0 };
-  if (__system_property_get("ro.build.version.sdk", value) < 1) return -1;
   int api_level = atoi(value);
+  if (__system_property_get("ro.build.version.sdk", value) < 1) return -1;
   return (api_level > 0) ? api_level : -1;
 }
 
