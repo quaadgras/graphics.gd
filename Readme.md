@@ -11,6 +11,7 @@ _Why use graphics.gd?_
 * General-purpose pure-Go 'variant' packages, reuse them in any Go project.
 * After the first build, recompile quickly, with an experience similar to a scripting language.
 * Cross-compile builds targeting windows/linux/macos from any platform.
+* Develop, build and launch native Android apps without the Android SDK/NDK!
 
 Not just a wrapper! graphics.gd has been holistically designed and curated from the ground up to provide a
 cohesive way to interface with the underlying engine.
@@ -76,7 +77,7 @@ go build -o example.so -buildmode=c-shared
 
 ## Next Steps
 
-Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers more topics. 
+Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers more topics.
 
 ## Design Principles
 
@@ -136,11 +137,11 @@ branch. All the samples are designed to be run with `gd run` without any additio
 
 ## Supported Platforms
 
-* Windows
-* Linux   (including Steam Deck)
-* Mac     (including Apple Silicon)
-* Android (including MetaQuest)
-* IOS     (should work in theory but it's untested)
+* Windows `GOOS=windows gd build`
+* Linux   `GOOS=linux gd build`
+* Mac     `GOOS=darwin gd build`
+* Android `GOOS=android GOARCH=arm64 gd run`
+* IOS     (no `gd` tooling support for this target)
 * Web     `GOOS=js GOARCH=wasm gd run`
 
 ## Platform Restrictions
