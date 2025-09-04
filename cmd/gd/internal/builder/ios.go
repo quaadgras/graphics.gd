@@ -47,12 +47,12 @@ func (IOS) Build(args ...string) error {
 	if err := golang.Build(args, "-buildmode=c-archive", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("darwin_%v.a", GOARCH))); err != nil {
 		return xray.New(err)
 	}
-	if err := os.MkdirAll(filepath.Join(project.GraphicsDirectory, "go.xcframework", "ios_arm64"), 0755); err != nil {
+	if err := os.MkdirAll(filepath.Join(project.GraphicsDirectory, "go.xcframework", "ios-arm64"), 0755); err != nil {
 		return xray.New(err)
 	}
 	if err := os.Rename(
-		filepath.Join(project.GraphicsDirectory, "/ios_arm64.a"),
-		filepath.Join(project.GraphicsDirectory, "go.xcframework", "ios_arm64", "libgo.a"),
+		filepath.Join(project.GraphicsDirectory, "/darwin_arm64.a"),
+		filepath.Join(project.GraphicsDirectory, "go.xcframework", "ios-arm64", "libgo.a"),
 	); err != nil {
 		return xray.New(err)
 	}

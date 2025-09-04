@@ -30,6 +30,12 @@ var (
 type MacOS struct{}
 
 func (MacOS) Build(args ...string) error {
+	if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, "darwin", "universal"), 0755); err != nil {
+		return xray.New(err)
+	}
+	if err := os.Setenv("CGO_ENABLED", "1"); err != nil {
+		return xray.New(err)
+	}
 	if runtime.GOOS != "darwin" {
 		if err := zig.Assert(); err != nil {
 			return xray.New(err)
@@ -61,7 +67,7 @@ func (MacOS) Build(args ...string) error {
 			return xray.New(err)
 		}
 	}
-	if err := os.Setenv("GOARCH", "x86_64"); err != nil {
+	if err := os.Setenv("GOARCH", "amd64"); err != nil {
 		return xray.New(err)
 	}
 	if err := golang.Build(args, "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, "darwin_amd64.dylib")); err != nil {

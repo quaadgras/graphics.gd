@@ -48,6 +48,10 @@ func AndroidSafePackageName(name string) string {
 	return strings.ReplaceAll(name, "-", "_")
 }
 
+func AppleSafePackageName(name string) string {
+	return strings.ReplaceAll(name, "_", "-")
+}
+
 func Setup() error {
 	if err := setupGoMod(); err != nil {
 		return xray.New(err)
@@ -68,7 +72,7 @@ func Setup() error {
 	if err := SetupFile(false, filepath.Join(GraphicsDirectory, "project.godot"), project_godot, filepath.Base(wd)); err != nil {
 		return xray.New(err)
 	}
-	if err := SetupFile(false, filepath.Join(GraphicsDirectory, "export_presets.cfg"), export_presets_cfg, filepath.Base(wd), AndroidSafePackageName(filepath.Base(wd))); err != nil {
+	if err := SetupFile(false, filepath.Join(GraphicsDirectory, "export_presets.cfg"), export_presets_cfg, filepath.Base(wd), AndroidSafePackageName(filepath.Base(wd)), AppleSafePackageName(filepath.Base(wd))); err != nil {
 		return xray.New(err)
 	}
 	if err := SetupFile(false, filepath.Join(GraphicsDirectory, ".gitignore"), gitignore); err != nil {
