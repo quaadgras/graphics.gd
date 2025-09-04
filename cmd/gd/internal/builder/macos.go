@@ -99,7 +99,7 @@ func (macos MacOS) Run(args ...string) error {
 	if runtime.GOOS != "darwin" {
 		return fmt.Errorf("gd run: cannot run darwin/universal executable on %v/%v", runtime.GOOS, runtime.GOARCH)
 	}
-	if err := golang.Test(args, "-c", "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("darwin_%v.dylib", runtime.GOARCH))); err != nil {
+	if err := golang.Build(args, "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("darwin_%v.dylib", runtime.GOARCH))); err != nil {
 		return xray.New(err)
 	}
 	err := lipo.Execute(os.Stdout, os.Stderr,
