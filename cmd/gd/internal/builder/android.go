@@ -1,6 +1,7 @@
-package main
+package builder
 
 import (
+	"embed"
 	"fmt"
 	"go/build"
 	"os"
@@ -8,13 +9,19 @@ import (
 	"path"
 	"path/filepath"
 	"runtime"
-	"strings"
 
+	"graphics.gd/cmd/gd/internal/project"
+	"graphics.gd/cmd/gd/internal/tooling"
 	"runtime.link/api/xray"
 )
 
+var (
+	//go:embed bundled/android
+	android_sdk embed.FS
+)
+
 type Android struct {
-	graphics string
+	Graphics string
 }
 
 func adb() (string, error) {
@@ -42,18 +49,22 @@ func adb() (string, error) {
 		unzip = "adb.windows.amd64"
 	}
 	fmt.Println("gd: downloading https://release.graphics.gd/adb." + runtime.GOOS + "." + arch)
-	adb, err = download(filepath.Join(gobin, "adb"), unzip, "https://release.graphics.gd/adb."+runtime.GOOS+"."+arch)
+	adb, err = tooling.Download(filepath.Join(gobin, "adb"), unzip, "https://release.graphics.gd/adb."+runtime.GOOS+"."+arch)
 	if err != nil {
 		return "", fmt.Errorf("unable to download adb for your platform, please ensure adb is installed (and in your path) to launch your app on an Android device: %w", err)
 	}
 	return adb, nil
 }
 
-func android_safe_package_name(name string) string {
-	return strings.ReplaceAll(name, "-", "_")
+func (Android) Build(args ...string) error {
+	return nil
 }
 
-func (a Android) run() error {
+func (Android) BuildMain(...string) error {
+	return nil
+}
+
+func (Android) Run(args ...string) error {
 	wd, err := os.Getwd()
 	if err != nil {
 		return xray.New(err)
@@ -68,7 +79,7 @@ func (a Android) run() error {
 	if err := cmd.Run(); err != nil {
 		return xray.New(err)
 	}
-	cmd = exec.Command(adb, "shell", "monkey", "-p", "com.example."+android_safe_package_name(path.Base(wd)), "-c", "android.intent.category.LAUNCHER", "1")
+	cmd = exec.Command(adb, "shell", "monkey", "-p", "com.example."+project.AndroidSafePackageName(path.Base(wd)), "-c", "android.intent.category.LAUNCHER", "1")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
@@ -76,7 +87,7 @@ func (a Android) run() error {
 	}
 	var pid []byte
 	for range 3 {
-		pid, err = exec.Command(adb, "shell", "pidof", "com.example."+android_safe_package_name(path.Base(wd))).Output()
+		pid, err = exec.Command(adb, "shell", "pidof", "com.example."+project.AndroidSafePackageName(path.Base(wd))).Output()
 		if err != nil {
 			continue
 		}
@@ -91,5 +102,9 @@ func (a Android) run() error {
 	if err := cmd.Run(); err != nil {
 		return xray.New(err)
 	}
+	return nil
+}
+
+func (Android) Test(args ...string) error {
 	return nil
 }
