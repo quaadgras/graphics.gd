@@ -61,8 +61,6 @@ func Test(args ...string) error {
 	return godot.Run()
 }
 
-var Executable string
-
 func Assert() error {
 	if Executable != "" {
 		return nil
