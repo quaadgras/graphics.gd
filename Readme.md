@@ -1,19 +1,17 @@
 # graphics.gd [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd)
 
-A safe performant way to work with graphics and game development in Go by
-building on top of any Open Source, actively maintained GDExtension hosts (ie. Godot 4.4).
+A cross platform graphics runtime for Go suitable for building native mobile apps, gdextensions, multimedia applications, games and more!
 
 _Why use graphics.gd?_
 
 * [Write shaders in Go!](./shaders/Readme.md)
-* Unlike with other options, RIDs, callables and dictionary arguments are all distinctly typed.
+* Unlike other native Godot languages, RIDs, callables and dictionary arguments are all distinctly typed.
 * A good balance of performance and convenience.
-* General-purpose pure-Go 'variant' packages, reuse them in any Go project.
+* General purpose pure-Go 'variant' packages, reuse them in any Go project.
 * After the first build, recompile quickly, with an experience similar to a scripting language.
-* Cross-compile builds targeting windows/linux/macos from any platform.
+* Easily cross-compile for windows/macos/android/linux on any host platform.
 
-Not just a wrapper! graphics.gd has been holistically designed and curated from the ground up to provide a
-cohesive way to interface with the underlying engine.
+Not just a wrapper! graphics.gd is designed from the ground up to provide a cohesive curated graphics runtime on top of gdextension.
 
 We would love you to take part in our [active discussions](https://github.com/quaadgras/graphics.gd/discussions)
 section with any questions, comments or feedback you may have. Show us what you're building!
@@ -49,7 +47,7 @@ You can help fund the project, motivate development and prioritise issues [here]
 
 ## Getting Started
 The module includes a drop-in replacement for the go command called `gd` that
-makes it easy to work with projects that run alongside a graphics/game engine.
+makes it easy to work with projects that run within the runtime.
 It enables you to start developing a new project from a single `main.go` file,
 to install it, make sure that your `$GOPATH/bin` is in your `$PATH` and run:
 
@@ -61,9 +59,9 @@ Now when you can run `gd run`, `gd test` on the main package in your project's
 directory, things will work as expected. The tool will create a "graphics"
 subdirectory where you can manage your assets via the Engine's Editor.
 
-Running the command without any arguments will startup the Engine's Editor.
+Running the command without any arguments will startup the editor.
 
-**NOTE** On linux (and macos if you have brew), `gd` will download an engine for you automatically!
+**NOTE** On linux (and macos if you have brew), `gd` will download the engine for you automatically!
 **HINT**  On Windows, you'll want to
 [setup CGO](https://github.com/go101/go101/wiki/CGO-Environment-Setup).
 
@@ -80,7 +78,7 @@ Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which cover
 
 ## Design Principles
 
-Each engine class is available as its own package under `classdb`. To import the
+Each graphics class is available as a package under `classdb`. To import the
 `Node` class you can import `"graphics.gd/classdb/Node"` There's no inheritance,
 so to access a 'super' class, you need to call `Super()` on an Extension 'Class'.
 All engine classes have methods to cast to any sub-classes they extend for example
@@ -91,18 +89,6 @@ underscores, methods are named as PascalCase. Keep this in mind when
 referring to the Engine documentation.
 
 https://docs.godotengine.org/en/latest/index.html
-
-## Frame-Based Memory Management
-
-Engine references must be 'used' every frame in order to remain alive, otherwise
-they will automatically be garbage collected each frame. You shouldn't have to
-worry about any memory management as long as you keep Engine references inside an
-extension class and don't hold onto references across frames. If you get an
-"expired pointer" error, it means either the reference has outlived its frame and
-has not been used since or the ownership of the value was transferred to the engine.
-
-The project aims to provide as much memory safety as possible for working with the
-Engine, please open an issue if you determine there to be any issues here.
 
 ## Where Do I Find?
 Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbol.
@@ -115,20 +101,12 @@ Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbo
 _NOTE_ in order to avoid circular dependencies, a handful of functions have moved packages,
 for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()` (Go).
 
-
 ## Performance
 It's feasible to write high performance code using this module, keep to Engine types where possible and avoid
 allocating memory on the heap in frequently called functions. `Advanced` instances are available for each class
 which allow more fine-grained control over memory allocations.
 
 Benchmarking shows `Advanced` method calls from Go -> Engine do not allocate in practice.
-
-Allocations are currently unavoidable for any Script -> Go calls (but not
-for `Advanced` class virtual method overrides such as `Ready` or `Process`,
-which do not allocate in practice).
-
-We've got some ideas to reduce allocations for Script -> Go calls, when
-arguments fit entirely within registers. TBA.
 
 ## Examples
 There are a number of examples in the [samples](https://github.com/quaadgras/graphics.gd/tree/samples)
@@ -145,9 +123,9 @@ branch. All the samples are designed to be run with `gd run` without any additio
 
 ## Platform Restrictions
 
-* No support for Go 'scripts'.
+* Go is not available as a 'scripting' language within the editor.
 * 64bit only (arm64 && amd64).
-* No support for video game consoles, may be achieved in the future with WASM.
+* No support for video game consoles (this may be achieved in the future with WASM).
 
 ## Contributing
 
@@ -168,6 +146,8 @@ guarantee that graphics.gd won't break on you is to contribute tests that cover 
 you need!
 
 To run the go tests for graphics.gd, cd into the repo and run `cd internal && gd test`.
+
+Note, we are looking for somebody to create benchmarks for the project.
 
 Lastly, spread the word and let people know about graphics.gd!
 
