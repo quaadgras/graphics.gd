@@ -1,9 +1,19 @@
+// The 'gd' command is designed as a drop-in replacement of the 'go' command when working
+// with Godot-based projects. It will automatically download and install the supported
+// version of Godot and ensure all go commands behave as expected (go build, go run, etc).
+//
+// The 'gd' command assumes that the Go module lives at the root of the project, an empty
+// godot project will be created under a 'graphics' directory, this is where the user can
+// keep the graphical representation of their project and manage their assets. Running the
+// command without any command line arguments will launch the Godot editor for managing
+// the assets in this directory.
 package main
 
 import (
 	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"runtime"
 
@@ -79,6 +89,25 @@ func gd(args ...string) error {
 		return xray.New(err)
 	}
 	var platform = builderFor(GOOS)
+	if goos := os.Getenv("GOOS"); goos != "" {
+		GOOS = goos
+	}
+	if GOOS != "js" {
+		if err := os.Setenv("CGO_ENABLED", "1"); err != nil {
+			return xray.New(err)
+		}
+	}
+	if zig, _ := exec.LookPath("zig"); zig != "" && os.Getenv("CC") == "" {
+		if runtime.GOOS == "darwin" {
+			if err := os.Setenv("CC", "clang"); err != nil {
+				return xray.New(err)
+			}
+		} else {
+			if err := os.Setenv("CC", "zig cc"); err != nil {
+				return xray.New(err)
+			}
+		}
+	}
 	switch len(args) {
 	case 1:
 		if err := platform.Build(); err != nil {

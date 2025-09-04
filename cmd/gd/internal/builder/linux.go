@@ -27,11 +27,11 @@ func (Linux) Build(args ...string) error {
 		}
 		switch GOARCH {
 		case "amd64":
-			if err := os.Setenv("CC", zig.Executable+"cc -target x86_64-linux-gnu"); err != nil {
+			if err := os.Setenv("CC", zig.Executable+" cc -target x86_64-linux-gnu"); err != nil {
 				return xray.New(err)
 			}
 		case "arm64":
-			if err := os.Setenv("CC", zig.Executable+"cc -target aarch64-linux-gnu"); err != nil {
+			if err := os.Setenv("CC", zig.Executable+" cc -target aarch64-linux-gnu"); err != nil {
 				return xray.New(err)
 			}
 		default:

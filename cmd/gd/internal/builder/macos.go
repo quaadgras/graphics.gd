@@ -40,12 +40,12 @@ func (MacOS) Build(args ...string) error {
 		if err := zig.Assert(); err != nil {
 			return xray.New(err)
 		}
-		project.SetupFiles(macos_sdk, "internal/macos", filepath.Join(project.ReleasesDirectory, "darwin", "sdk"))
+		project.SetupFiles(macos_sdk, "bundled/macos", filepath.Join(project.ReleasesDirectory, "darwin", "sdk"))
 		DARWIN_SDK, err := filepath.Abs(filepath.Join(project.ReleasesDirectory, "darwin", "sdk"))
 		if err != nil {
 			return xray.New(err)
 		}
-		if err := os.Setenv("CC", zig.Executable+"cc -target aarch64-macos -F "+DARWIN_SDK+"/Frameworks -L"+DARWIN_SDK+"/lib -I"+DARWIN_SDK+"/include"); err != nil {
+		if err := os.Setenv("CC", zig.Executable+" cc -target aarch64-macos -F "+DARWIN_SDK+"/Frameworks -L"+DARWIN_SDK+"/lib -I"+DARWIN_SDK+"/include"); err != nil {
 			return xray.New(err)
 		}
 	}
@@ -63,7 +63,7 @@ func (MacOS) Build(args ...string) error {
 		if err != nil {
 			return xray.New(err)
 		}
-		if err := os.Setenv("CC", zig.Executable+"cc -target x86_64-macos -F "+DARWIN_SDK+"/Frameworks -L"+DARWIN_SDK+"/lib -I"+DARWIN_SDK+"/include"); err != nil {
+		if err := os.Setenv("CC", zig.Executable+" cc -target x86_64-macos -F "+DARWIN_SDK+"/Frameworks -L"+DARWIN_SDK+"/lib -I"+DARWIN_SDK+"/include"); err != nil {
 			return xray.New(err)
 		}
 	}

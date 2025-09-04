@@ -2,9 +2,12 @@
 package startup
 
 import (
+	"go/build"
 	"iter"
+	"os"
 
 	"graphics.gd/classdb"
+	"graphics.gd/classdb/EditorInterface"
 	EngineClass "graphics.gd/classdb/Engine"
 	MainLoopClass "graphics.gd/classdb/MainLoop"
 	"graphics.gd/classdb/SceneTree"
@@ -13,6 +16,7 @@ import (
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Dictionary"
 	"graphics.gd/variant/Float"
+	"graphics.gd/variant/String"
 )
 
 var mainloop MainLoopClass.Interface
@@ -25,6 +29,7 @@ var shutdown = make(chan struct{})
 func MainLoop(loop MainLoopClass.Interface) {
 	if pause_main != nil {
 		if EngineClass.IsEditorHint() {
+			setup_editor()
 			stop_main()
 		}
 		theMainFunctionIsWaitingForTheEngineToShutDown = true
@@ -80,6 +85,7 @@ func LoadingScene() {
 		}).CallDeferred()
 		pause_main(false)
 		if EngineClass.IsEditorHint() {
+			setup_editor()
 			stop_main()
 		}
 	} else {
@@ -177,6 +183,7 @@ func Rendering() iter.Seq[Float.X] {
 	classdb.Register[goMainLoop]()
 	if pause_main != nil {
 		if EngineClass.IsEditorHint() {
+			setup_editor()
 			stop_main()
 		}
 		pause_main(false) // We pause here until the engine has fully started up.
@@ -235,4 +242,15 @@ func OnSuspend(func(Dictionary.Any)) {
 // version) Individual classes can also implement their own Restore(Dictionary.Any) method.
 func OnRestore(func(Dictionary.Any)) {
 
+}
+
+func setup_editor() {
+	settings := EditorInterface.GetEditorSettings()
+	if settings.GetSetting("export/android/java_sdk_path").(String.Readable).String() == "" {
+		GOPATH := os.Getenv("GOPATH")
+		if GOPATH == "" {
+			GOPATH = build.Default.GOPATH
+		}
+		settings.SetSetting("export/android/java_sdk_path", GOPATH)
+	}
 }
