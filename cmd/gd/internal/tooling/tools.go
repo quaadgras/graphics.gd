@@ -11,6 +11,10 @@ var Godot = toolchain{
 	DownloadARCH:  map[string]string{"amd64": "x86_64", "arm64": "arm64"},
 	Unzip:         "Godot_v$(VERSION)-stable_$(OS)",
 	RequiredFor:   "graphics",
+
+	ConvertArguments: map[string]string{
+		"-v": "--verbose",
+	},
 }
 
 var Zig = toolchain{
@@ -32,6 +36,10 @@ var Go = toolchain{
 	DownloadHint:  "https://go.dev/dl/",
 	VersionPrefix: "go version go1.25.",
 	RequiredFor:   "compiling",
+
+	ConvertArguments: map[string]string{
+		"--verbose": "-v",
+	},
 }
 
 var Velopack = toolchain{

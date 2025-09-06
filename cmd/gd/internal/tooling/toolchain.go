@@ -33,6 +33,8 @@ type toolchain struct {
 
 	RequiredFor string // description of why gd needs this toolchain dependency
 
+	ConvertArguments map[string]string
+
 	path string // cached by [toolchain.Lookup]
 }
 
@@ -41,6 +43,11 @@ func (exe toolchain) PathToCommand() string {
 }
 
 func (exe toolchain) Exec(args ...string) error {
+	for i, arg := range args {
+		if newarg, ok := exe.ConvertArguments[arg]; ok {
+			args[i] = newarg
+		}
+	}
 	path, err := exe.Lookup()
 	if err != nil {
 		return xray.New(err)
@@ -53,6 +60,16 @@ func (exe toolchain) Exec(args ...string) error {
 }
 
 func (exe toolchain) Action(name string, suffix []string, args ...string) error {
+	for i, arg := range args {
+		if newarg, ok := exe.ConvertArguments[arg]; ok {
+			args[i] = newarg
+		}
+	}
+	for i, arg := range suffix {
+		if newarg, ok := exe.ConvertArguments[arg]; ok {
+			suffix[i] = newarg
+		}
+	}
 	path, err := exe.Lookup()
 	if err != nil {
 		return xray.New(err)
