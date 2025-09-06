@@ -26,6 +26,44 @@ type Android struct {
 }
 
 func (Android) Build(args ...string) error {
+	HOME, err := os.UserHomeDir()
+	if err != nil {
+		return xray.New(err)
+	}
+	var GDPATH = os.Getenv("GDPATH")
+	if GDPATH == "" {
+		GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
+	}
+	var default_sdk_path string
+	switch runtime.GOOS {
+	case "linux":
+		default_sdk_path = filepath.Join(HOME, "Android", "Sdk")
+	case "windows":
+		default_sdk_path = filepath.Join(os.Getenv("LOCALAPPDATA"), "Android", "Sdk")
+	case "darwin":
+		default_sdk_path = filepath.Join(HOME, "Library", "Android", "Sdk")
+	}
+	if default_sdk_path != "" {
+		if _, err := os.Stat(default_sdk_path); os.IsNotExist(err) {
+			if err := os.MkdirAll(filepath.Join(default_sdk_path, "platform-tools"), 0755); err != nil {
+				return xray.New(err)
+			}
+			if err := os.MkdirAll(filepath.Join(default_sdk_path, "build-tools", "35"), 0755); err != nil {
+				return xray.New(err)
+			}
+			if err := os.Symlink(filepath.Join(GDPATH, "bin", "adb"), filepath.Join(default_sdk_path, "platform-tools", "adb")); err != nil {
+				return xray.New(err)
+			}
+			var suffix = ""
+			if runtime.GOOS == "windows" {
+				suffix = ".bat"
+			}
+			if err := os.Symlink(filepath.Join(GDPATH, "bin", "apksigner"), filepath.Join(default_sdk_path, "build-tools", "35", "apksigner"+suffix)); err != nil {
+				return xray.New(err)
+			}
+		}
+	}
+
 	var GOARCH = "arm64"
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch
@@ -119,7 +157,7 @@ func (android Android) Run(args ...string) error {
 		if err != nil {
 			continue
 		}
-		time.Sleep(time.Millisecond)
+		time.Sleep(time.Second / 3)
 	}
 	if pid == nil {
 		return nil

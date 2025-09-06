@@ -55,11 +55,6 @@ var AndroidPackageSigner = toolchain{
 	Version:     "0.9",
 	VersionFlag: "--version",
 	DownloadURL: "https://release.graphics.gd/apksigner.$(GOOS).$(GOARCH)",
-	Installations: map[string]string{
-		"linux":   "$(HOME)/Android/Sdk/build-tools/35",
-		"windows": "$(HOME)/AppData/Local/Android/Sdk/build-tools/35",
-		"darwin":  "$(HOME)/Library/Android/sdk/build-tools/35",
-	},
 	RequiredFor: "building the .apk",
 }
 
@@ -69,12 +64,7 @@ var AndroidDebugBridge = toolchain{
 	VersionFlag:   "--version",
 	VersionPrefix: "Android Debug Bridge version 1.0.41",
 	DownloadURL:   "https://release.graphics.gd/adb.$(GOOS).$(GOARCH)",
-	Installations: map[string]string{
-		"linux":   "$(HOME)/Android/Sdk/platform-tools",
-		"windows": "$(HOME)/AppData/Local/Android/Sdk/platform-tools",
-		"darwin":  "$(HOME)/Library/Android/sdk/platform-tools",
-	},
-	RequiredFor: "launching the project on a connected android device",
+	RequiredFor:   "launching the project on a connected android device",
 }
 
 var UltimatePackerForExecutables = toolchain{
