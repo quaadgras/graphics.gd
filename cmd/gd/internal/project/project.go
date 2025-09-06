@@ -66,8 +66,11 @@ func Setup() error {
 	if runtime.GOOS == "android" {
 		GraphicsDirectory = "/sdcard/gd/" + filepath.Base(wd) // Godot project needs to be in an accessible location
 	}
-	if err := SetupFile(false, filepath.Join(GraphicsDirectory, "main.tscn"), main_tscn); err != nil {
-		return xray.New(err)
+	if _, err := os.Stat(filepath.Join(GraphicsDirectory, "project.godot")); os.IsNotExist(err) {
+		// only create the main scene if the project.godot file doesn't exist yet
+		if err := SetupFile(false, filepath.Join(GraphicsDirectory, "main.tscn"), main_tscn); err != nil {
+			return xray.New(err)
+		}
 	}
 	if err := SetupFile(false, filepath.Join(GraphicsDirectory, "project.godot"), project_godot, filepath.Base(wd)); err != nil {
 		return xray.New(err)
