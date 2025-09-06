@@ -29,7 +29,6 @@ var shutdown = make(chan struct{})
 func MainLoop(loop MainLoopClass.Interface) {
 	if pause_main != nil {
 		if EngineClass.IsEditorHint() {
-			setup_editor()
 			stop_main()
 		}
 		theMainFunctionIsWaitingForTheEngineToShutDown = true
@@ -85,7 +84,6 @@ func LoadingScene() {
 		}).CallDeferred()
 		pause_main(false)
 		if EngineClass.IsEditorHint() {
-			setup_editor()
 			stop_main()
 		}
 	} else {
@@ -183,7 +181,6 @@ func Rendering() iter.Seq[Float.X] {
 	classdb.Register[goMainLoop]()
 	if pause_main != nil {
 		if EngineClass.IsEditorHint() {
-			setup_editor()
 			stop_main()
 		}
 		pause_main(false) // We pause here until the engine has fully started up.
@@ -244,13 +241,17 @@ func OnRestore(func(Dictionary.Any)) {
 
 }
 
-func setup_editor() {
-	settings := EditorInterface.GetEditorSettings()
-	if settings.GetSetting("export/android/java_sdk_path").(String.Readable).String() == "" {
-		GDPATH := os.Getenv("GDPATH")
-		if GDPATH == "" {
-			GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
-		}
-		settings.SetSetting("export/android/java_sdk_path", GDPATH)
-	}
+func init() {
+	gd.EditorStartupFunctions = append(gd.EditorStartupFunctions, func() {
+		gd.NewCallable(func() {
+			settings := EditorInterface.GetEditorSettings()
+			if settings.GetSetting("export/android/java_sdk_path").(String.Readable).String() == "" {
+				GDPATH := os.Getenv("GDPATH")
+				if GDPATH == "" {
+					GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
+				}
+				settings.SetSetting("export/android/java_sdk_path", GDPATH)
+			}
+		}).CallDeferred()
+	})
 }
