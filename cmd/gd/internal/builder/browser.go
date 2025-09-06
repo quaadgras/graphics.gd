@@ -107,7 +107,7 @@ func (Browser) AssertExportTemplate() error {
 		return xray.New(err)
 	}
 	path := filepath.Join(project.GraphicsDirectory, "..", "releases", "js", "wasm", "wasm_exec.js")
-	GOROOT, err := tooling.Go.Output("env GOROOT")
+	GOROOT, err := tooling.Go.Output("env", "GOROOT")
 	if err != nil {
 		return xray.New(err)
 	}

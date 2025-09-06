@@ -90,7 +90,7 @@ func (exe toolchain) Output(args ...string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return string(out), nil
+	return strings.TrimSpace(string(out)), nil
 }
 
 func (exe *toolchain) Lookup() (string, error) {
