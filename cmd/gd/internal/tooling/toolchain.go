@@ -29,7 +29,8 @@ type toolchain struct {
 	DownloadEXT   map[string]string            // to map GOOS to download file extension.
 	DownloadHint  string                       // where to get it
 	Unzip         string                       // rename the binary named this inside the zip to Name
-	Installations map[string]string            // expected installations for specific GOOS (with $(HOME) variable)
+	IsApp         bool
+	Installations map[string]string // expected installations for specific GOOS (with $(HOME) variable)
 
 	RequiredFor string // description of why gd needs this toolchain dependency
 
@@ -39,7 +40,13 @@ type toolchain struct {
 }
 
 func (exe toolchain) PathToCommand() string {
-	return exe.Name
+	if exe.path == "" {
+		panic("toolchain.PathToCommand: toolchain not yet looked up")
+	}
+	if exe.IsApp && runtime.GOOS == "darwin" {
+		return filepath.Join(exe.path, "Contents", "MacOS", exe.Name)
+	}
+	return exe.path
 }
 
 func (exe toolchain) Exec(args ...string) error {
@@ -137,14 +144,21 @@ func (exe *toolchain) Lookup() (string, error) {
 	if runtime.GOOS == "windows" {
 		install_path += ".exe"
 	}
+	if exe.IsApp && runtime.GOOS == "darwin" {
+		install_path += ".app"
+	}
 	// always prefer the GDPATH-installed version if it matches the expected version.
 	if _, err := os.Stat(install_path); err == nil {
-		version, err := exec.Command(install_path, exe.VersionFlag).CombinedOutput()
+		var exe_path = install_path
+		if exe.IsApp && runtime.GOOS == "darwin" {
+			exe_path = filepath.Join(install_path, "Contents", "MacOS", exe.Name)
+		}
+		version, err := exec.Command(exe_path, exe.VersionFlag).CombinedOutput()
 		version = bytes.TrimSpace(version)
 		if err == nil {
 			if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) {
 				exe.path = install_path
-				return exe.path, nil
+				return exe.PathToCommand(), nil
 			}
 		}
 	}
@@ -159,7 +173,7 @@ func (exe *toolchain) Lookup() (string, error) {
 			)
 		}
 		exe.path = path
-		return exe.path, nil
+		return exe.PathToCommand(), nil
 	}
 	// if the expected version of the tool is already installed in $PATH, then we can
 	// just use it.
@@ -168,7 +182,7 @@ func (exe *toolchain) Lookup() (string, error) {
 		if err == nil {
 			if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) {
 				exe.path = path
-				return exe.path, nil
+				return exe.PathToCommand(), nil
 			}
 		}
 	}
@@ -234,9 +248,12 @@ func (exe *toolchain) Lookup() (string, error) {
 		}
 	}
 	var unzip = variables.Replace(exe.Unzip)
+	if exe.IsApp && runtime.GOOS == "darwin" {
+		unzip = ""
+	}
 	switch {
 	case strings.HasSuffix(url, ".zip"):
-		if err := ExtractArchive(dest, install_dir, "zip", unzip, true); err != nil {
+		if err := ExtractArchive(dest, install_dir, "zip", unzip, runtime.GOOS != "darwin" || !exe.IsApp); err != nil {
 			return "", xray.New(err)
 		}
 		if err := os.Remove(dest); err != nil {
@@ -267,5 +284,5 @@ func (exe *toolchain) Lookup() (string, error) {
 		}
 	}
 	exe.path = install_path
-	return exe.path, nil
+	return exe.PathToCommand(), nil
 }

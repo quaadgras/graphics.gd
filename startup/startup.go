@@ -243,15 +243,17 @@ func OnRestore(func(Dictionary.Any)) {
 
 func init() {
 	gd.EditorStartupFunctions = append(gd.EditorStartupFunctions, func() {
-		gd.NewCallable(func() {
-			settings := EditorInterface.GetEditorSettings()
-			if settings.GetSetting("export/android/java_sdk_path").(String.Readable).String() == "" {
-				GDPATH := os.Getenv("GDPATH")
-				if GDPATH == "" {
-					GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
+		if EngineClass.IsEditorHint() {
+			gd.NewCallable(func() {
+				settings := EditorInterface.GetEditorSettings()
+				if settings.GetSetting("export/android/java_sdk_path").(String.Readable).String() == "" {
+					GDPATH := os.Getenv("GDPATH")
+					if GDPATH == "" {
+						GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
+					}
+					settings.SetSetting("export/android/java_sdk_path", GDPATH)
 				}
-				settings.SetSetting("export/android/java_sdk_path", GDPATH)
-			}
-		}).CallDeferred()
+			}).CallDeferred()
+		}
 	})
 }
