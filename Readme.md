@@ -1,6 +1,7 @@
 # graphics.gd [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd)
 
-A cross platform graphics runtime for Go suitable for building native mobile apps, gdextensions, multimedia applications, games and more!
+A cross platform 2D/3D graphics runtime for Go suitable for building native mobile apps, gdextensions,
+multimedia applications, games and more!
 
 _Why use graphics.gd?_
 
