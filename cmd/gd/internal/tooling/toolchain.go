@@ -233,28 +233,24 @@ func (exe *toolchain) Lookup() (string, error) {
 			return "", xray.New(err)
 		}
 	}
+	var unzip = variables.Replace(exe.Unzip)
 	switch {
 	case strings.HasSuffix(url, ".zip"):
-		if err := ExtractArchive(dest, install_dir, "zip", true); err != nil {
+		if err := ExtractArchive(dest, install_dir, "zip", unzip, true); err != nil {
 			return "", xray.New(err)
-		}
-		if exe.Unzip != "" {
-			if err := os.Rename(filepath.Join(install_dir, variables.Replace(exe.Unzip)), filepath.Join(install_dir, exe.Name)); err != nil {
-				return "", xray.New(err)
-			}
 		}
 		if err := os.Remove(dest); err != nil {
 			return "", xray.New(err)
 		}
 	case strings.HasSuffix(url, ".tar.gz"):
-		if err := ExtractArchive(dest, install_dir, "tar.gz", true); err != nil {
+		if err := ExtractArchive(dest, install_dir, "tar.gz", unzip, true); err != nil {
 			return "", xray.New(err)
 		}
 		if err := os.Remove(dest); err != nil {
 			return "", xray.New(err)
 		}
 	case strings.HasSuffix(url, ".tar.xz"):
-		if err := ExtractArchive(dest, install_dir, "tar.xz", true); err != nil {
+		if err := ExtractArchive(dest, install_dir, "tar.xz", unzip, true); err != nil {
 			return "", xray.New(err)
 		}
 		if err := os.Remove(dest); err != nil {
@@ -262,6 +258,11 @@ func (exe *toolchain) Lookup() (string, error) {
 		}
 	default:
 		if err := os.Rename(dest, install_path); err != nil {
+			return "", xray.New(err)
+		}
+	}
+	if unzip != "" {
+		if err := os.Rename(filepath.Join(install_dir, unzip), install_path); err != nil {
 			return "", xray.New(err)
 		}
 	}

@@ -3,6 +3,7 @@ package tooling
 import (
 	"archive/tar"
 	"archive/zip"
+	"bytes"
 	"compress/gzip"
 	"fmt"
 	"io"
@@ -14,30 +15,32 @@ import (
 )
 
 // detectTopDirForTar scans a tar archive to detect a single top-level directory
-func detectTopDirForTar(src, archiveType string) (string, error) {
+func detectTopDirForTar(src, archiveType string) (string, *tar.Reader, error) {
 	file, err := os.Open(src)
 	if err != nil {
-		return "", fmt.Errorf("failed to open source file: %w", err)
+		return "", nil, fmt.Errorf("failed to open source file: %w", err)
 	}
 	defer file.Close()
 
 	var tr *tar.Reader
+	var buf = new(bytes.Buffer)
+
 	switch archiveType {
 	case "tar.gz":
 		gz, err := gzip.NewReader(file)
 		if err != nil {
-			return "", fmt.Errorf("failed to create gzip reader: %w", err)
+			return "", nil, fmt.Errorf("failed to create gzip reader: %w", err)
 		}
 		defer gz.Close()
-		tr = tar.NewReader(gz)
+		tr = tar.NewReader(io.TeeReader(gz, buf))
 	case "tar.xz":
 		xzReader, err := xz.NewReader(file)
 		if err != nil {
-			return "", fmt.Errorf("failed to create xz reader: %w", err)
+			return "", nil, fmt.Errorf("failed to create xz reader: %w", err)
 		}
-		tr = tar.NewReader(xzReader)
+		tr = tar.NewReader(io.TeeReader(xzReader, buf))
 	default:
-		return "", fmt.Errorf("unsupported tar compression: %s", archiveType)
+		return "", nil, fmt.Errorf("unsupported tar compression: %s", archiveType)
 	}
 
 	var topDir string
@@ -48,7 +51,7 @@ func detectTopDirForTar(src, archiveType string) (string, error) {
 			break
 		}
 		if err != nil {
-			return "", fmt.Errorf("failed to read tar archive: %w", err)
+			return "", nil, fmt.Errorf("failed to read tar archive: %w", err)
 		}
 
 		name := header.Name
@@ -56,6 +59,8 @@ func detectTopDirForTar(src, archiveType string) (string, error) {
 			firstSlash := strings.Index(name, string(filepath.Separator))
 			if firstSlash > 0 {
 				topDir = name[:firstSlash]
+			} else {
+				topDir = name
 			}
 			first = false
 		} else if topDir != "" {
@@ -65,7 +70,7 @@ func detectTopDirForTar(src, archiveType string) (string, error) {
 		}
 	}
 
-	return topDir, nil
+	return topDir, tar.NewReader(buf), nil
 }
 
 // detectTopDirForZip scans a zip archive to detect a single top-level directory
@@ -95,8 +100,8 @@ func detectTopDirForZip(src string) (string, error) {
 	return topDir, nil
 }
 
-// extractZip extracts a .zip file to the destination directory
-func extractZip(src, dest, topDir string) error {
+// extractZip extracts a specific file or all files from a .zip file to the destination directory
+func extractZip(src, dest, targetFile, topDir string) error {
 	r, err := zip.OpenReader(src)
 	if err != nil {
 		return fmt.Errorf("failed to open zip file: %w", err)
@@ -108,6 +113,7 @@ func extractZip(src, dest, topDir string) error {
 		return fmt.Errorf("failed to create destination directory: %w", err)
 	}
 
+	foundTarget := false
 	for _, f := range r.File {
 		// Adjust path if stripping top-level directory
 		targetName := f.Name
@@ -118,10 +124,20 @@ func extractZip(src, dest, topDir string) error {
 			continue // Skip top-level directory itself
 		}
 
+		// If targetFile is specified, only process that file and its parent directories
+		// targetFile is relative to the archive root after topDir stripping
+		if targetFile != "" {
+			if targetName == targetFile {
+				foundTarget = true
+			} else if !strings.HasPrefix(targetFile, targetName+string(filepath.Separator)) {
+				continue // Skip files that aren't the target or its parent directories
+			}
+		}
+
 		target := filepath.Join(dest, targetName)
 
 		// Check for ZipSlip vulnerability
-		if !filepath.HasPrefix(target, filepath.Clean(dest)) {
+		if !strings.HasPrefix(target, filepath.Clean(dest)+string(filepath.Separator)) {
 			return fmt.Errorf("invalid file path: %s", target)
 		}
 
@@ -160,41 +176,21 @@ func extractZip(src, dest, topDir string) error {
 		dstFile.Close()
 	}
 
+	// Return error if targetFile was specified but not found
+	if targetFile != "" && !foundTarget {
+		return fmt.Errorf("target file %s not found in archive", targetFile)
+	}
+
 	return nil
 }
 
-// extractTar extracts a tar-based archive (.tar.gz or .tar.xz) to the destination directory
-func extractTar(src, dest, archiveType, topDir string) error {
-	file, err := os.Open(src)
-	if err != nil {
-		return fmt.Errorf("failed to open source file: %w", err)
-	}
-	defer file.Close()
-
-	var tr *tar.Reader
-	switch archiveType {
-	case "tar.gz":
-		gz, err := gzip.NewReader(file)
-		if err != nil {
-			return fmt.Errorf("failed to create gzip reader: %w", err)
-		}
-		defer gz.Close()
-		tr = tar.NewReader(gz)
-	case "tar.xz":
-		xzReader, err := xz.NewReader(file)
-		if err != nil {
-			return fmt.Errorf("failed to create xz reader: %w", err)
-		}
-		tr = tar.NewReader(xzReader)
-	default:
-		return fmt.Errorf("unsupported tar compression: %s", archiveType)
-	}
-
+// extractTar extracts a specific file or all files from a tar-based archive to the destination directory
+func extractTar(dest, targetFile, topDir string, tr *tar.Reader) error {
 	// Ensure destination directory exists
 	if err := os.MkdirAll(dest, 0755); err != nil {
 		return fmt.Errorf("failed to create destination directory: %w", err)
 	}
-
+	foundTarget := false
 	for {
 		header, err := tr.Next()
 		if err == io.EOF {
@@ -213,10 +209,20 @@ func extractTar(src, dest, archiveType, topDir string) error {
 			continue // Skip top-level directory itself
 		}
 
+		// If targetFile is specified, only process that file and its parent directories
+		// targetFile is relative to the archive root after topDir stripping
+		if targetFile != "" {
+			if targetName == targetFile {
+				foundTarget = true
+			} else if !strings.HasPrefix(targetFile, targetName+string(filepath.Separator)) {
+				continue // Skip files that aren't the target or its parent directories
+			}
+		}
+
 		target := filepath.Join(dest, targetName)
 
 		// Check for path traversal vulnerability
-		if !filepath.HasPrefix(target, filepath.Clean(dest)) {
+		if !strings.HasPrefix(target, filepath.Clean(dest)+string(filepath.Separator)) {
 			return fmt.Errorf("invalid file path: %s", target)
 		}
 
@@ -250,12 +256,18 @@ func extractTar(src, dest, archiveType, topDir string) error {
 		}
 	}
 
+	// Return error if targetFile was specified but not found
+	if targetFile != "" && !foundTarget {
+		return fmt.Errorf("target file %s not found in archive", targetFile)
+	}
+
 	return nil
 }
 
 // ExtractArchive is the main entry point for extracting archives
-func ExtractArchive(src, dest, archiveType string, stripTopDir bool) error {
+func ExtractArchive(src, dest, archiveType, targetFile string, stripTopDir bool) error {
 	var topDir string
+	var tz *tar.Reader
 	if stripTopDir {
 		// Detect top-level directory
 		switch archiveType {
@@ -267,7 +279,7 @@ func ExtractArchive(src, dest, archiveType string, stripTopDir bool) error {
 			}
 		case "tar.gz", "tar.xz":
 			var err error
-			topDir, err = detectTopDirForTar(src, archiveType)
+			topDir, tz, err = detectTopDirForTar(src, archiveType)
 			if err != nil {
 				return err
 			}
@@ -279,9 +291,9 @@ func ExtractArchive(src, dest, archiveType string, stripTopDir bool) error {
 	// Extract based on archive type
 	switch archiveType {
 	case "zip":
-		return extractZip(src, dest, topDir)
+		return extractZip(src, dest, targetFile, topDir)
 	case "tar.gz", "tar.xz":
-		return extractTar(src, dest, archiveType, topDir)
+		return extractTar(dest, targetFile, topDir, tz)
 	default:
 		return fmt.Errorf("unsupported archive type: %s", archiveType)
 	}
