@@ -8,6 +8,7 @@ import (
 	"path"
 	"path/filepath"
 	"runtime"
+	"time"
 
 	"graphics.gd/cmd/gd/internal/project"
 	"graphics.gd/cmd/gd/internal/tooling"
@@ -25,7 +26,7 @@ type Android struct {
 }
 
 func (Android) Build(args ...string) error {
-	var GOARCH = runtime.GOARCH
+	var GOARCH = "arm64"
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch
 	}
@@ -46,8 +47,11 @@ func (Android) Build(args ...string) error {
 			if err := os.Setenv("CC", zig+" cc -target aarch64-linux-android -nostdlib -I"+ANDROID_SDK+"/usr/include -L"+ANDROID_SDK+"/usr/lib"); err != nil {
 				return xray.New(err)
 			}
+			if err := os.Setenv("GOARCH", "arm64"); err != nil {
+				return xray.New(err)
+			}
 		default:
-			return fmt.Errorf("gd build: cannot cross-compile linux %v on %v", GOARCH, runtime.GOOS)
+			return fmt.Errorf("gd build: cannot cross-compile android/%v on %v", GOARCH, runtime.GOOS)
 		}
 	}
 	return tooling.Go.Action("build", args, "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("libandroid_%v.so", GOARCH)))
@@ -55,9 +59,6 @@ func (Android) Build(args ...string) error {
 
 func (android Android) BuildMain(...string) error {
 	if err := android.Build(); err != nil {
-		return xray.New(err)
-	}
-	if _, err := tooling.AndroidDebugBridge.Lookup(); err != nil {
 		return xray.New(err)
 	}
 	if _, err := tooling.AndroidPackageSigner.Lookup(); err != nil {
@@ -85,6 +86,9 @@ func (android Android) Run(args ...string) error {
 	}
 	adb, err := tooling.AndroidDebugBridge.Lookup()
 	if err != nil {
+		return xray.New(err)
+	}
+	if _, err := tooling.AndroidPackageSigner.Lookup(); err != nil {
 		return xray.New(err)
 	}
 	if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, "android", "arm64"), 0755); err != nil {
@@ -115,6 +119,7 @@ func (android Android) Run(args ...string) error {
 		if err != nil {
 			continue
 		}
+		time.Sleep(time.Millisecond)
 	}
 	if pid == nil {
 		return nil

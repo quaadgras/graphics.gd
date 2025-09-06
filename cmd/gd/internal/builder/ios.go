@@ -21,7 +21,7 @@ var (
 type IOS struct{}
 
 func (IOS) Build(args ...string) error {
-	var GOARCH = runtime.GOARCH
+	var GOARCH = "arm64"
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch
 	}
@@ -38,6 +38,9 @@ func (IOS) Build(args ...string) error {
 		switch GOARCH {
 		case "arm64":
 			if err := os.Setenv("CC", zig+" cc -target aarch64-macos -F "+DARWIN_SDK+"/Frameworks -L"+DARWIN_SDK+"/lib -I"+DARWIN_SDK+"/include"); err != nil {
+				return xray.New(err)
+			}
+			if err := os.Setenv("GOARCH", "arm64"); err != nil {
 				return xray.New(err)
 			}
 		default:

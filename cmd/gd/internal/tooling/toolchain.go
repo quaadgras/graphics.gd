@@ -1,6 +1,7 @@
 package tooling
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"net/http"
@@ -56,7 +57,7 @@ func (exe toolchain) Action(name string, suffix []string, args ...string) error 
 	if err != nil {
 		return xray.New(err)
 	}
-	cmd := exec.Command(path, append(append([]string{name}, args...), args...)...)
+	cmd := exec.Command(path, append(append([]string{name}, args...), suffix...)...)
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
 	cmd.Stdin = os.Stdin
@@ -88,12 +89,36 @@ func (exe *toolchain) Lookup() (string, error) {
 	if GDPATH == "" && HOME != "" {
 		GDPATH = filepath.Join(HOME, "gd")
 	}
+	const (
+		GOARCH = runtime.GOARCH
+		GOOS   = runtime.GOOS
+	)
+	ARCH := exe.DownloadARCH[GOARCH]
+	if ARCH == "" {
+		ARCH = "$(MISSING)"
+	}
+	OS := strings.ReplaceAll(exe.DownloadOS[GOOS], "$(ARCH)", ARCH)
+	if OS == "" {
+		OS = "$(MISSING)"
+	}
+	EXT := exe.DownloadEXT[GOOS]
+	if EXT == "" {
+		EXT = "$(MISSING)"
+	}
+	var variables = strings.NewReplacer(
+		"$(VERSION)", exe.Version, "$(ARCH)", ARCH, "$(OS)", OS, "$(GOARCH)", GOARCH, "$(GOOS)", GOOS, "$(HOME)", HOME, "$(GDPATH)", GDPATH, "$(EXT)", EXT,
+	)
+	var install_dir = filepath.Join(GDPATH, "bin")
+	if dir, ok := exe.Installations[GOOS]; ok {
+		install_dir = variables.Replace(dir)
+	}
 	// always prefer the GDPATH-installed version if it matches the expected version.
-	if _, err := os.Stat(filepath.Join(GDPATH, "bin", exe.Name)); err == nil {
-		version, err := exec.Command(filepath.Join(GDPATH, "bin", exe.Name), exe.VersionFlag).CombinedOutput()
+	if _, err := os.Stat(filepath.Join(install_dir, exe.Name)); err == nil {
+		version, err := exec.Command(filepath.Join(install_dir, exe.Name), exe.VersionFlag).CombinedOutput()
+		version = bytes.TrimSpace(version)
 		if err == nil {
-			if exe.Version != "" && string(version) == exe.Version || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) {
-				exe.path = filepath.Join(GDPATH, "bin", exe.Name)
+			if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) {
+				exe.path = filepath.Join(install_dir, exe.Name)
 				return exe.path, nil
 			}
 		}
@@ -116,32 +141,13 @@ func (exe *toolchain) Lookup() (string, error) {
 	if path, err := exec.LookPath(exe.Name); err == nil {
 		version, err := exec.Command(path, exe.VersionFlag).CombinedOutput()
 		if err == nil {
-			if exe.Version != "" && string(version) == exe.Version || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) {
+			if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) {
 				exe.path = path
 				return exe.path, nil
 			}
 		}
 	}
 	// attempt to automatically download and install the toolchain.
-	const (
-		GOARCH = runtime.GOARCH
-		GOOS   = runtime.GOOS
-	)
-	ARCH := exe.DownloadARCH[GOARCH]
-	if ARCH == "" {
-		ARCH = "$(MISSING)"
-	}
-	OS := strings.ReplaceAll(exe.DownloadOS[GOOS], "$(ARCH)", ARCH)
-	if OS == "" {
-		OS = "$(MISSING)"
-	}
-	EXT := exe.DownloadEXT[GOOS]
-	if EXT == "" {
-		EXT = "$(MISSING)"
-	}
-	var variables = strings.NewReplacer(
-		"$(VERSION)", exe.Version, "$(ARCH)", ARCH, "$(OS)", OS, "$(GOARCH)", GOARCH, "$(GOOS)", GOOS, "$(HOME)", HOME, "$(GDPATH)", GDPATH, "$(EXT)", EXT,
-	)
 	url, ok := exe.Downloads[GOOS][GOARCH]
 	if !ok {
 		url = variables.Replace(exe.DownloadURL)
@@ -153,10 +159,6 @@ func (exe *toolchain) Lookup() (string, error) {
 		)
 	}
 	fmt.Printf("gd: downloading %s v%s\n", exe.Name, exe.Version)
-	var install_dir = filepath.Join(GDPATH, "bin")
-	if dir, ok := exe.Installations[GOOS]; ok {
-		install_dir = variables.Replace(dir)
-	}
 	if err := os.MkdirAll(install_dir, 0755); err != nil {
 		return "", xray.New(err)
 	}
@@ -216,21 +218,27 @@ func (exe *toolchain) Lookup() (string, error) {
 				return "", xray.New(err)
 			}
 		}
+		if err := os.Remove(dest); err != nil {
+			return "", xray.New(err)
+		}
 	case strings.HasSuffix(url, ".tar.gz"):
 		if err := ExtractArchive(dest, install_dir, "tar.gz", true); err != nil {
+			return "", xray.New(err)
+		}
+		if err := os.Remove(dest); err != nil {
 			return "", xray.New(err)
 		}
 	case strings.HasSuffix(url, ".tar.xz"):
 		if err := ExtractArchive(dest, install_dir, "tar.xz", true); err != nil {
 			return "", xray.New(err)
 		}
+		if err := os.Remove(dest); err != nil {
+			return "", xray.New(err)
+		}
 	default:
 		if err := os.Rename(dest, filepath.Join(install_dir, exe.Name)); err != nil {
 			return "", xray.New(err)
 		}
-	}
-	if err := os.Remove(dest); err != nil {
-		return "", xray.New(err)
 	}
 	exe.path = filepath.Join(install_dir, exe.Name)
 	return exe.path, nil
