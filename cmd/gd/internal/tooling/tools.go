@@ -63,7 +63,8 @@ var AndroidDebugBridge = toolchain{
 	Version:       "1.0.41",
 	VersionFlag:   "--version",
 	VersionPrefix: "Android Debug Bridge version 1.0.41",
-	DownloadURL:   "https://release.graphics.gd/adb.$(GOOS).$(GOARCH)",
+	DownloadURL:   "https://release.graphics.gd/adb.$(GOOS).$(GOARCH)$(EXT)",
+	DownloadEXT:   map[string]string{"linux": "", "windows": ".zip", "darwin": ""},
 	RequiredFor:   "launching the project on a connected android device",
 }
 

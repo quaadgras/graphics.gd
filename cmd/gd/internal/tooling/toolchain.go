@@ -129,13 +129,17 @@ func (exe *toolchain) Lookup() (string, error) {
 	if dir, ok := exe.Installations[GOOS]; ok {
 		install_dir = variables.Replace(dir)
 	}
+	var install_path = filepath.Join(install_dir, exe.Name)
+	if runtime.GOOS == "windows" {
+		install_path += ".exe"
+	}
 	// always prefer the GDPATH-installed version if it matches the expected version.
-	if _, err := os.Stat(filepath.Join(install_dir, exe.Name)); err == nil {
-		version, err := exec.Command(filepath.Join(install_dir, exe.Name), exe.VersionFlag).CombinedOutput()
+	if _, err := os.Stat(install_path); err == nil {
+		version, err := exec.Command(install_path, exe.VersionFlag).CombinedOutput()
 		version = bytes.TrimSpace(version)
 		if err == nil {
 			if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) {
-				exe.path = filepath.Join(install_dir, exe.Name)
+				exe.path = install_path
 				return exe.path, nil
 			}
 		}
@@ -179,7 +183,7 @@ func (exe *toolchain) Lookup() (string, error) {
 	if err := os.MkdirAll(install_dir, 0755); err != nil {
 		return "", xray.New(err)
 	}
-	var dest = filepath.Join(install_dir, exe.Name)
+	var dest = install_path
 	dest += "." + exe.Version + ".download"
 	out, err := os.OpenFile(dest, os.O_CREATE|os.O_WRONLY, 0755)
 	if err != nil {
@@ -253,10 +257,10 @@ func (exe *toolchain) Lookup() (string, error) {
 			return "", xray.New(err)
 		}
 	default:
-		if err := os.Rename(dest, filepath.Join(install_dir, exe.Name)); err != nil {
+		if err := os.Rename(dest, install_path); err != nil {
 			return "", xray.New(err)
 		}
 	}
-	exe.path = filepath.Join(install_dir, exe.Name)
+	exe.path = install_path
 	return exe.path, nil
 }
