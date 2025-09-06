@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
 
-	"graphics.gd/cmd/gd/internal/tooling/godot"
+	"graphics.gd/cmd/gd/internal/tooling"
+
 	"runtime.link/api/xray"
 )
 
@@ -78,20 +78,26 @@ func Setup() error {
 	if err := SetupFile(false, filepath.Join(GraphicsDirectory, ".gitignore"), gitignore); err != nil {
 		return xray.New(err)
 	}
-	var gdextension_version = godot.Version
-	if godot.Name == "blazium" {
+	gdextension_version, err := tooling.Godot.Output(tooling.Godot.VersionFlag)
+	if err != nil {
+		return xray.New(err)
+	}
+	if tooling.Godot.Name == "blazium" {
 		gdextension_version = "4.1.0"
 	}
 	if err := SetupFile(true, filepath.Join(GraphicsDirectory, "library.gdextension"), library_gdextension, gdextension_version); err != nil {
 		return xray.New(err)
 	}
 	if _, err := os.Stat(filepath.Join(GraphicsDirectory, ".godot")); os.IsNotExist(err) {
-		engine := exec.Command(godot.Executable, "--import", "--headless")
-		engine.Dir = GraphicsDirectory
-		engine.Stderr = os.Stderr
-		engine.Stdout = os.Stdout
-		engine.Stdin = os.Stdin
-		return xray.New(engine.Run())
+		if err := os.Chdir(GraphicsDirectory); err != nil {
+			return xray.New(err)
+		}
+		if err := tooling.Godot.Exec("--import", "--headless"); err != nil {
+			return xray.New(err)
+		}
+		if err := os.Chdir(Directory); err != nil {
+			return xray.New(err)
+		}
 	}
 	if err := SetupFile(false, filepath.Join(GraphicsDirectory, ".godot", "extension_list.cfg"), extension_list_cfg); err != nil {
 		return xray.New(err)

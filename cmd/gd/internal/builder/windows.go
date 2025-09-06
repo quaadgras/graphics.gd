@@ -7,9 +7,8 @@ import (
 	"runtime"
 
 	"graphics.gd/cmd/gd/internal/project"
-	"graphics.gd/cmd/gd/internal/tooling/godot"
-	"graphics.gd/cmd/gd/internal/tooling/golang"
-	"graphics.gd/cmd/gd/internal/tooling/zig"
+	"graphics.gd/cmd/gd/internal/tooling"
+
 	"runtime.link/api/xray"
 )
 
@@ -21,23 +20,24 @@ func (Windows) Build(args ...string) error {
 		GOARCH = goarch
 	}
 	if runtime.GOOS != "windows" || runtime.GOARCH != GOARCH {
-		if err := zig.Assert(); err != nil {
+		zig, err := tooling.Zig.Lookup()
+		if err != nil {
 			return xray.New(err)
 		}
 		switch GOARCH {
 		case "amd64":
-			if err := os.Setenv("CC", zig.Executable+" cc -target x86_64-windows-gnu"); err != nil {
+			if err := os.Setenv("CC", zig+" cc -target x86_64-windows-gnu"); err != nil {
 				return xray.New(err)
 			}
 		case "arm64":
-			if err := os.Setenv("CC", zig.Executable+" cc -target aarch64-windows-gnu"); err != nil {
+			if err := os.Setenv("CC", zig+" cc -target aarch64-windows-gnu"); err != nil {
 				return xray.New(err)
 			}
 		default:
 			return fmt.Errorf("gd build: cannot cross-compile windows %v on %v", GOARCH, runtime.GOOS)
 		}
 	}
-	return golang.Build(args, "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("windows_%v.dll", GOARCH)))
+	return tooling.Go.Action("build", args, "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("windows_%v.dll", GOARCH)))
 }
 
 func (windows Windows) BuildMain(args ...string) error {
@@ -60,7 +60,7 @@ func (windows Windows) BuildMain(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	if err := godot.Run(export...); err != nil {
+	if err := tooling.Godot.Exec(export...); err != nil {
 		return xray.New(err)
 	}
 	return nil
@@ -80,7 +80,7 @@ func (windows Windows) Run(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	return godot.Run()
+	return tooling.Godot.Exec()
 }
 
 func (Windows) Test(args ...string) error {
@@ -91,11 +91,11 @@ func (Windows) Test(args ...string) error {
 	if runtime.GOOS != "windows" || runtime.GOARCH != GOARCH {
 		return fmt.Errorf("gd test: cannot run windows/%v tests on %v/%v", GOARCH, runtime.GOOS, runtime.GOARCH)
 	}
-	if err := golang.Test(args, "-c", "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("windows_%v.so", GOARCH))); err != nil {
+	if err := tooling.Go.Action("build", args, "-c", "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("windows_%v.so", GOARCH))); err != nil {
 		return xray.New(err)
 	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	return godot.Test(args...)
+	return tooling.Godot.Exec(args...)
 }

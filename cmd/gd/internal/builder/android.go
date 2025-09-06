@@ -3,7 +3,6 @@ package builder
 import (
 	"embed"
 	"fmt"
-	"go/build"
 	"os"
 	"os/exec"
 	"path"
@@ -12,9 +11,6 @@ import (
 
 	"graphics.gd/cmd/gd/internal/project"
 	"graphics.gd/cmd/gd/internal/tooling"
-	"graphics.gd/cmd/gd/internal/tooling/godot"
-	"graphics.gd/cmd/gd/internal/tooling/golang"
-	"graphics.gd/cmd/gd/internal/tooling/zig"
 
 	"runtime.link/api/xray"
 )
@@ -28,52 +24,14 @@ type Android struct {
 	Graphics string
 }
 
-func adb() (string, error) {
-	GOPATH := os.Getenv("GOPATH")
-	if GOPATH == "" {
-		GOPATH = build.Default.GOPATH
-	}
-	// create dummy java so that godot stops complaining.
-	os.WriteFile(filepath.Join(GOPATH, "bin", "java"), []byte("stub java so that godot stops complaining"), 0o664)
-
-	adb, err := exec.LookPath("adb")
-	if err == nil {
-		return adb, nil
-	}
-	gopath := os.Getenv("GOPATH")
-	if gopath == "" {
-		gopath = build.Default.GOPATH
-	}
-	gobin := os.Getenv("GOBIN")
-	if gobin == "" {
-		gobin = filepath.Join(gopath, "bin")
-	}
-	var arch = runtime.GOARCH
-	if runtime.GOOS == "darwin" {
-		arch = "universal"
-	}
-	if _, err = os.Stat(filepath.Join(gobin, "adb")); err == nil {
-		return filepath.Join(gobin, "adb"), nil
-	}
-	var unzip = ""
-	if runtime.GOOS == "windows" && runtime.GOARCH == "amd64" {
-		unzip = "adb.windows.amd64"
-	}
-	fmt.Println("gd: downloading https://release.graphics.gd/adb." + runtime.GOOS + "." + arch)
-	adb, err = tooling.Download(filepath.Join(gobin, "adb"), unzip, "https://release.graphics.gd/adb."+runtime.GOOS+"."+arch)
-	if err != nil {
-		return "", fmt.Errorf("unable to download adb for your platform, please ensure adb is installed (and in your path) to launch your app on an Android device: %w", err)
-	}
-	return adb, nil
-}
-
 func (Android) Build(args ...string) error {
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch
 	}
 	if runtime.GOOS != "android" || runtime.GOARCH != GOARCH {
-		if err := zig.Assert(); err != nil {
+		zig, err := tooling.Zig.Lookup()
+		if err != nil {
 			return xray.New(err)
 		}
 		if err := project.SetupFiles(android_sdk, "bundled/android", filepath.Join(project.ReleasesDirectory, "android", "sdk")); err != nil {
@@ -85,14 +43,14 @@ func (Android) Build(args ...string) error {
 		}
 		switch GOARCH {
 		case "arm64":
-			if err := os.Setenv("CC", zig.Executable+" cc -target aarch64-linux-android -nostdlib -I"+ANDROID_SDK+"/usr/include -L"+ANDROID_SDK+"/usr/lib"); err != nil {
+			if err := os.Setenv("CC", zig+" cc -target aarch64-linux-android -nostdlib -I"+ANDROID_SDK+"/usr/include -L"+ANDROID_SDK+"/usr/lib"); err != nil {
 				return xray.New(err)
 			}
 		default:
 			return fmt.Errorf("gd build: cannot cross-compile linux %v on %v", GOARCH, runtime.GOOS)
 		}
 	}
-	return golang.Build(args, "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("libandroid_%v.so", GOARCH)))
+	return tooling.Go.Action("build", args, "-buildmode=c-shared", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("libandroid_%v.so", GOARCH)))
 }
 
 func (android Android) BuildMain(...string) error {
@@ -102,7 +60,7 @@ func (android Android) BuildMain(...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	if err := godot.Run("--headless", "--export-release", "Android"); err != nil {
+	if err := tooling.Godot.Exec("--headless", "--export-release", "Android"); err != nil {
 		return xray.New(err)
 	}
 	return nil
@@ -112,7 +70,7 @@ func (android Android) Run(args ...string) error {
 	if err := android.Build(args...); err != nil {
 		return xray.New(err)
 	}
-	adb, err := adb()
+	adb, err := tooling.AndroidDebugBridge.Lookup()
 	if err != nil {
 		return xray.New(err)
 	}
@@ -122,7 +80,7 @@ func (android Android) Run(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	if err := godot.Run("--headless", "--export-debug", "Android"); err != nil {
+	if err := tooling.Godot.Exec("--headless", "--export-debug", "Android"); err != nil {
 		return xray.New(err)
 	}
 	//  adb shell monkey -p com.example.original -c android.intent.category.LAUNCHER 1; adb logcat --pid=$(adb shell pidof com.example.original) > dump.txt

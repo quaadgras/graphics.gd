@@ -16,11 +16,12 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strings"
 
 	"graphics.gd/cmd/gd/internal/builder"
 	"graphics.gd/cmd/gd/internal/project"
-	"graphics.gd/cmd/gd/internal/tooling/godot"
-	"graphics.gd/cmd/gd/internal/tooling/golang"
+	"graphics.gd/cmd/gd/internal/tooling"
+
 	"graphics.gd/internal/docgen"
 
 	"runtime.link/api/xray"
@@ -79,11 +80,8 @@ func gd(args ...string) error {
 	if GOARCH != "amd64" && GOARCH != "arm64" && GOARCH != "wasm" {
 		return errors.New("gd requires an amd64, wasm, or arm64 GOARCH")
 	}
-	if err := godot.Assert(); err != nil {
-		return xray.New(err)
-	}
 	if err := project.Setup(); err != nil {
-		return xray.New(err)
+		return err
 	}
 	if err := docgen.Process(project.Directory); err != nil {
 		return xray.New(err)
@@ -116,7 +114,7 @@ func gd(args ...string) error {
 		if err := os.Chdir("./graphics"); err != nil {
 			return xray.New(err)
 		}
-		return godot.Editor()
+		return tooling.Godot.Exec("-e")
 	default:
 		switch args[1] {
 		case "build":
@@ -127,9 +125,25 @@ func gd(args ...string) error {
 		case "run":
 			return platform.Run(args[2:]...)
 		case "test":
-			return platform.Test(args[2:]...)
+			converted := []string{}
+			for _, arg := range os.Args[2:] {
+				switch arg {
+				case "-bench", "-benchmem", "-benchtime", "blockprofile",
+					"-blockprofilerate", "-count", "-coverprofile", "-cpu",
+					"-cpuprofile", "-failfast", "-fullpath", "-fuzz", "-fuzzcachedir",
+					"-fuzzminimizetime", "-fuzztime", "-fuzzworker", "-gocoverdir",
+					"-list", "-memprofile", "-memprofilerate", "-mutexprofile",
+					"-mutexprofilefraction", "-outputdir", "-paniconexit0",
+					"-parallel", "-run", "-short", "-shuffle", "-skip", "-testlogfile",
+					"-timeout", "-trace", "-v":
+					converted = append(converted, "-test."+strings.TrimPrefix(arg, "-"))
+				default:
+					converted = append(converted, arg)
+				}
+			}
+			return platform.Test(converted...)
 		default:
-			return golang.Forwarded(args...)
+			return tooling.Go.Exec(args...)
 		}
 	}
 }

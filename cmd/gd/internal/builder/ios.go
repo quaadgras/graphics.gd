@@ -8,9 +8,8 @@ import (
 	"runtime"
 
 	"graphics.gd/cmd/gd/internal/project"
-	"graphics.gd/cmd/gd/internal/tooling/godot"
-	"graphics.gd/cmd/gd/internal/tooling/golang"
-	"graphics.gd/cmd/gd/internal/tooling/zig"
+	"graphics.gd/cmd/gd/internal/tooling"
+
 	"runtime.link/api/xray"
 )
 
@@ -27,7 +26,8 @@ func (IOS) Build(args ...string) error {
 		GOARCH = goarch
 	}
 	if runtime.GOOS != "darwin" {
-		if err := zig.Assert(); err != nil {
+		zig, err := tooling.Zig.Lookup()
+		if err != nil {
 			return xray.New(err)
 		}
 		project.SetupFiles(macos_sdk, "bundled/macos", filepath.Join(project.ReleasesDirectory, "darwin", "sdk"))
@@ -37,14 +37,14 @@ func (IOS) Build(args ...string) error {
 		}
 		switch GOARCH {
 		case "arm64":
-			if err := os.Setenv("CC", zig.Executable+" cc -target aarch64-macos -F "+DARWIN_SDK+"/Frameworks -L"+DARWIN_SDK+"/lib -I"+DARWIN_SDK+"/include"); err != nil {
+			if err := os.Setenv("CC", zig+" cc -target aarch64-macos -F "+DARWIN_SDK+"/Frameworks -L"+DARWIN_SDK+"/lib -I"+DARWIN_SDK+"/include"); err != nil {
 				return xray.New(err)
 			}
 		default:
 			return fmt.Errorf("gd build: cannot cross-compile linux %v on %v", GOARCH, runtime.GOOS)
 		}
 	}
-	if err := golang.Build(args, "-buildmode=c-archive", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("darwin_%v.a", GOARCH))); err != nil {
+	if err := tooling.Go.Action("build", args, "-buildmode=c-archive", "-o", filepath.Join(project.GraphicsDirectory, fmt.Sprintf("darwin_%v.a", GOARCH))); err != nil {
 		return xray.New(err)
 	}
 	if err := os.MkdirAll(filepath.Join(project.GraphicsDirectory, "go.xcframework", "ios-arm64"), 0755); err != nil {
@@ -69,7 +69,7 @@ func (ios IOS) BuildMain(...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	if err := godot.Run("--headless", "--export-release", "iOS"); err != nil {
+	if err := tooling.Godot.Exec("--headless", "--export-release", "iOS"); err != nil {
 		return xray.New(err)
 	}
 	return nil

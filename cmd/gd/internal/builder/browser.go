@@ -13,8 +13,7 @@ import (
 	"time"
 
 	"graphics.gd/cmd/gd/internal/project"
-	"graphics.gd/cmd/gd/internal/tooling/godot"
-	"graphics.gd/cmd/gd/internal/tooling/golang"
+	"graphics.gd/cmd/gd/internal/tooling"
 
 	"runtime.link/api/xray"
 )
@@ -38,9 +37,9 @@ func (browser Browser) Build(args ...string) error {
 		return xray.New(err)
 	}
 	if browser.testing {
-		return golang.Test(args, "-c", "-o", filepath.Join(project.ReleasesDirectory, "js", "wasm", "library.wasm"))
+		return tooling.Go.Action("test", args, "-c", "-o", filepath.Join(project.ReleasesDirectory, "js", "wasm", "library.wasm"))
 	}
-	return golang.Build(args, "-o", filepath.Join(project.ReleasesDirectory, "js", "wasm", "library.wasm"))
+	return tooling.Go.Action("build", args, "-o", filepath.Join(project.ReleasesDirectory, "js", "wasm", "library.wasm"))
 }
 
 func (browser Browser) Run(args ...string) error {
@@ -50,7 +49,7 @@ func (browser Browser) Run(args ...string) error {
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
-	if err := godot.Run("--headless", "--export-release", "Web"); err != nil {
+	if err := tooling.Godot.Exec("--headless", "--export-release", "Web"); err != nil {
 		return xray.New(err)
 	}
 	PORT := os.Getenv("PORT")
@@ -76,7 +75,7 @@ func (browser Browser) BuildMain(args ...string) error {
 	if err := browser.Build(args...); err != nil {
 		return xray.New(err)
 	}
-	return godot.Run("--headless", "--export-release", "Web")
+	return tooling.Godot.Exec("--headless", "--export-release", "Web")
 }
 
 func (browser Browser) Test(args ...string) error {
@@ -108,7 +107,10 @@ func (Browser) AssertExportTemplate() error {
 		return xray.New(err)
 	}
 	path := filepath.Join(project.GraphicsDirectory, "..", "releases", "js", "wasm", "wasm_exec.js")
-	GOROOT := golang.CMD.Env.GOROOT()
+	GOROOT, err := tooling.Go.Output("env GOROOT")
+	if err != nil {
+		return xray.New(err)
+	}
 	wasm_exec, err := os.Open(filepath.Join(GOROOT, "lib", "wasm", "wasm_exec.js"))
 	if err != nil && !os.IsNotExist(err) {
 		return xray.New(err)
