@@ -27,6 +27,7 @@ var Zig = toolchain{
 	DownloadARCH: map[string]string{"amd64": "x86_64", "arm64": "aarch64"},
 	DownloadEXT:  map[string]string{"windows": ".zip", "darwin": ".tar.xz", "linux": ".tar.xz"},
 	RequiredFor:  "cross-compiling",
+	Unzip:        "zig$(EXE)",
 }
 
 var Go = toolchain{

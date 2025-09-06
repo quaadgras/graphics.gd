@@ -122,8 +122,12 @@ func (exe *toolchain) Lookup() (string, error) {
 	if EXT == "" {
 		EXT = "$(MISSING)"
 	}
+	EXE := ""
+	if runtime.GOOS == "windows" {
+		EXE = ".exe"
+	}
 	var variables = strings.NewReplacer(
-		"$(VERSION)", exe.Version, "$(ARCH)", ARCH, "$(OS)", OS, "$(GOARCH)", GOARCH, "$(GOOS)", GOOS, "$(HOME)", HOME, "$(GDPATH)", GDPATH, "$(EXT)", EXT,
+		"$(VERSION)", exe.Version, "$(ARCH)", ARCH, "$(OS)", OS, "$(GOARCH)", GOARCH, "$(GOOS)", GOOS, "$(HOME)", HOME, "$(GDPATH)", GDPATH, "$(EXT)", EXT, "$(EXE)", EXE,
 	)
 	var install_dir = filepath.Join(GDPATH, "bin")
 	if dir, ok := exe.Installations[GOOS]; ok {
