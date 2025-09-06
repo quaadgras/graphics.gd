@@ -2,9 +2,9 @@
 package startup
 
 import (
-	"go/build"
 	"iter"
 	"os"
+	"path/filepath"
 
 	"graphics.gd/classdb"
 	"graphics.gd/classdb/EditorInterface"
@@ -247,10 +247,10 @@ func OnRestore(func(Dictionary.Any)) {
 func setup_editor() {
 	settings := EditorInterface.GetEditorSettings()
 	if settings.GetSetting("export/android/java_sdk_path").(String.Readable).String() == "" {
-		GOPATH := os.Getenv("GOPATH")
-		if GOPATH == "" {
-			GOPATH = build.Default.GOPATH
+		GDPATH := os.Getenv("GDPATH")
+		if GDPATH == "" {
+			GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
 		}
-		settings.SetSetting("export/android/java_sdk_path", GOPATH)
+		settings.SetSetting("export/android/java_sdk_path", GDPATH)
 	}
 }

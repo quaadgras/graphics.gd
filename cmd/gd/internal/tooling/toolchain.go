@@ -153,10 +153,14 @@ func (exe *toolchain) Lookup() (string, error) {
 		)
 	}
 	fmt.Printf("gd: downloading %s v%s\n", exe.Name, exe.Version)
-	if err := os.MkdirAll(filepath.Join(GDPATH, "bin"), 0755); err != nil {
+	var install_dir = filepath.Join(GDPATH, "bin")
+	if dir, ok := exe.Installations[GOOS]; ok {
+		install_dir = variables.Replace(dir)
+	}
+	if err := os.MkdirAll(install_dir, 0755); err != nil {
 		return "", xray.New(err)
 	}
-	var dest = filepath.Join(GDPATH, "bin", exe.Name)
+	var dest = filepath.Join(install_dir, exe.Name)
 	dest += "." + exe.Version + ".download"
 	out, err := os.OpenFile(dest, os.O_CREATE|os.O_WRONLY, 0755)
 	if err != nil {
@@ -204,30 +208,30 @@ func (exe *toolchain) Lookup() (string, error) {
 	}
 	switch {
 	case strings.HasSuffix(url, ".zip"):
-		if err := ExtractArchive(dest, filepath.Join(GDPATH, "bin"), "zip", true); err != nil {
+		if err := ExtractArchive(dest, install_dir, "zip", true); err != nil {
 			return "", xray.New(err)
 		}
 		if exe.Unzip != "" {
-			if err := os.Rename(filepath.Join(GDPATH, "bin", variables.Replace(exe.Unzip)), filepath.Join(GDPATH, "bin", exe.Name)); err != nil {
+			if err := os.Rename(filepath.Join(install_dir, variables.Replace(exe.Unzip)), filepath.Join(install_dir, exe.Name)); err != nil {
 				return "", xray.New(err)
 			}
 		}
 	case strings.HasSuffix(url, ".tar.gz"):
-		if err := ExtractArchive(dest, filepath.Join(GDPATH, "bin"), "tar.gz", true); err != nil {
+		if err := ExtractArchive(dest, install_dir, "tar.gz", true); err != nil {
 			return "", xray.New(err)
 		}
 	case strings.HasSuffix(url, ".tar.xz"):
-		if err := ExtractArchive(dest, filepath.Join(GDPATH, "bin"), "tar.xz", true); err != nil {
+		if err := ExtractArchive(dest, install_dir, "tar.xz", true); err != nil {
 			return "", xray.New(err)
 		}
 	default:
-		if err := os.Rename(dest, filepath.Join(GDPATH, "bin", exe.Name)); err != nil {
+		if err := os.Rename(dest, filepath.Join(install_dir, exe.Name)); err != nil {
 			return "", xray.New(err)
 		}
 	}
 	if err := os.Remove(dest); err != nil {
 		return "", xray.New(err)
 	}
-	exe.path = filepath.Join(GDPATH, "bin", exe.Name)
+	exe.path = filepath.Join(install_dir, exe.Name)
 	return exe.path, nil
 }

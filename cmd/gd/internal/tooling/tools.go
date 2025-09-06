@@ -50,6 +50,7 @@ var AndroidPackageSigner = toolchain{
 	Installations: map[string]string{
 		"linux":   "$(HOME)/Android/Sdk/build-tools/35",
 		"windows": "$(HOME)/AppData/Local/Android/Sdk/build-tools/35",
+		"darwin":  "$(HOME)/Library/Android/sdk/build-tools/35",
 	},
 	RequiredFor: "building the .apk",
 }
@@ -63,6 +64,7 @@ var AndroidDebugBridge = toolchain{
 	Installations: map[string]string{
 		"linux":   "$(HOME)/Android/Sdk/platform-tools",
 		"windows": "$(HOME)/AppData/Local/Android/Sdk/platform-tools",
+		"darwin":  "$(HOME)/Library/Android/sdk/platform-tools",
 	},
 	RequiredFor: "launching the project on a connected android device",
 }

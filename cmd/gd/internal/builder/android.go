@@ -57,6 +57,19 @@ func (android Android) BuildMain(...string) error {
 	if err := android.Build(); err != nil {
 		return xray.New(err)
 	}
+	if _, err := tooling.AndroidDebugBridge.Lookup(); err != nil {
+		return xray.New(err)
+	}
+	if _, err := tooling.AndroidPackageSigner.Lookup(); err != nil {
+		return xray.New(err)
+	}
+	GDPATH := os.Getenv("GDPATH")
+	if GDPATH == "" {
+		GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
+	}
+	if err := os.WriteFile(filepath.Join(GDPATH, "bin", "java"), []byte("java stub"), 0755); err != nil {
+		return xray.New(err)
+	}
 	if err := os.Chdir(project.GraphicsDirectory); err != nil {
 		return xray.New(err)
 	}
