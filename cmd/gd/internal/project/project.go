@@ -71,9 +71,9 @@ func Setup() error {
 		if err := SetupFile(false, filepath.Join(GraphicsDirectory, "main.tscn"), main_tscn); err != nil {
 			return xray.New(err)
 		}
-	}
-	if err := SetupFile(false, filepath.Join(GraphicsDirectory, "project.godot"), project_godot, filepath.Base(wd)); err != nil {
-		return xray.New(err)
+		if err := SetupFile(false, filepath.Join(GraphicsDirectory, "project.godot"), project_godot, filepath.Base(wd)); err != nil {
+			return xray.New(err)
+		}
 	}
 	if err := SetupFile(false, filepath.Join(GraphicsDirectory, "export_presets.cfg"), export_presets_cfg, filepath.Base(wd), AndroidSafePackageName(filepath.Base(wd)), AppleSafePackageName(filepath.Base(wd))); err != nil {
 		return xray.New(err)
