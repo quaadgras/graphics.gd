@@ -10,7 +10,6 @@ import (
 
 	float "graphics.gd/variant/Float"
 	rid "graphics.gd/variant/RID"
-	gdVector3 "graphics.gd/variant/Vector3"
 )
 
 type (
@@ -186,60 +185,3 @@ func variantTypeFromName(s string) (gdextension.VariantType, reflect.Type) {
 		panic("gdextension.variantTypeFromName: unknown type " + s)
 	}
 }
-
-func operatoTypeFromName(name string) gdextension.VariantOperator {
-	switch name {
-	case "Equals":
-		return gdextension.Equal
-	case "NotEqual":
-		return gdextension.NotEqual
-	case "Less":
-		return gdextension.Less
-	case "LessEqual":
-		return gdextension.LessEqual
-	case "Greater":
-		return gdextension.Greater
-	case "GreaterEqual":
-		return gdextension.GreaterEqual
-	case "Add":
-		return gdextension.Add
-	case "Subtract":
-		return gdextension.Subtract
-	case "Multiply":
-		return gdextension.Multiply
-	case "Divide":
-		return gdextension.Divide
-	case "Negate":
-		return gdextension.Negate
-	case "Module":
-		return gdextension.Module
-	case "Power":
-		return gdextension.Power
-	case "ShiftLeft":
-		return gdextension.ShiftLeft
-	case "ShiftRight":
-		return gdextension.ShiftRight
-	case "BitAnd":
-		return gdextension.BitAnd
-	case "BitOr":
-		return gdextension.BitOr
-	case "BitXor":
-		return gdextension.BitXor
-	case "BitNegate":
-		return gdextension.BitNegate
-	case "And":
-		return gdextension.LogicalAnd
-	case "Or":
-		return gdextension.LogicalOr
-	case "Xor":
-		return gdextension.LogicalXor
-	case "Not":
-		return gdextension.LogicalNegate
-	case "In":
-		return gdextension.In
-	default:
-		panic("gdextension.operatoTypeFromName: unknown operator " + name)
-	}
-}
-
-type Vector3Axis = gdVector3.Axis
