@@ -10,6 +10,7 @@ _Why use graphics.gd?_
 * General purpose pure-Go 'variant' packages, reuse them in any Go project.
 * After the first build, recompile quickly, with an experience similar to a scripting language.
 * Easily cross-compile for windows/macos/android/linux on any host platform.
+* Build and launch native apps on connected Android devices, no Java nor Android SDK needed.
 
 Not just a wrapper! graphics.gd is designed from the ground up to provide a cohesive curated graphics runtime on top of gdextension.
 
