@@ -103,6 +103,10 @@ func (android Android) BuildMain(...string) error {
 	if err := android.Build(); err != nil {
 		return xray.New(err)
 	}
+	_, err := tooling.AndroidDebugBridge.Lookup()
+	if err != nil {
+		return xray.New(err)
+	}
 	if _, err := tooling.AndroidPackageSigner.Lookup(); err != nil {
 		return xray.New(err)
 	}
