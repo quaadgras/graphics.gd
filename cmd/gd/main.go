@@ -30,6 +30,7 @@ import (
 func main() {
 	if err := gd(os.Args...); err != nil {
 		fmt.Fprintln(os.Stderr, err)
+		fmt.Fprintln(os.Stderr, "\nis this error unexpected? open an issue! https://github.com/quaadgras/graphics.gd/issues/new/choose")
 		os.Exit(1)
 	}
 }
