@@ -100,9 +100,11 @@ func init() {
 				cgoHandle(instance).Value().(*instanceImplementation).Notification(what, reverse)
 			},
 			CheckedCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[any], args gdextension.Accepts[any]) {
+				defer gd.Recover()
 				cgoHandle(fn).Value().(*methodImplementation).checked(cgoHandle(instance).Value(), gdextension.Pointer(args), gdextension.Pointer(result))
 			},
 			VariantCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], args gdextension.Accepts[gdextension.Variant]) {
+				defer gd.Recover()
 				method := cgoHandle(fn).Value().(*methodImplementation)
 				var variants = make([]gd.Variant, method.arg_count)
 				for i := range method.arg_count {
@@ -117,6 +119,7 @@ func init() {
 				}
 			},
 			DynamicCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], arg_count int, args gdextension.Accepts[gdextension.Variant], call_err gdextension.Returns[gdextension.CallError]) {
+				defer gd.Recover()
 				var variants = make([]gd.Variant, arg_count)
 				for i := range arg_count {
 					variants[i] = pointers.Let[gd.Variant](gdmemory.IndexVariants(args, arg_count, i))

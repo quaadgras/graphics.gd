@@ -30,10 +30,6 @@ func (a Array) SetIndex(index int64, value Variant) {
 	gdextension.Host.Array.Set(pointers.Get(a), int(index), raw)
 }
 
-func (a Array) isArray() {}
-
-func (a Array) end() { pointers.End(a) }
-
 func (a Array) Free() {
 	if ptr, ok := pointers.End(a); ok {
 		gdextension.Free(gdextension.TypeArray, &ptr)
