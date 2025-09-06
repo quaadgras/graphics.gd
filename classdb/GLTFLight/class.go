@@ -3,7 +3,6 @@
 // Package GLTFLight provides methods for working with GLTFLight object instances.
 package GLTFLight
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -250,7 +248,7 @@ Create a new GLTFLight instance from the given Godot [Light3D] node.
 */
 //go:nosplit
 func (self class) FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight { //gd:GLTFLight.from_node
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ light_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(light_node[0].AsObject()))}))
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ light_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(light_node[0].AsObject()))})
 	var ret = [1]gdclass.GLTFLight{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFLight](r_ret)}
 	return ret
 }
@@ -260,7 +258,7 @@ Converts this GLTFLight instance into a Godot [Light3D] node.
 */
 //go:nosplit
 func (self class) ToNode() [1]gdclass.Light3D { //gd:GLTFLight.to_node
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_node, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_node, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Light3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Light3D](r_ret)}
 	return ret
 }
@@ -270,7 +268,7 @@ Creates a new GLTFLight instance by parsing the given [Dictionary].
 */
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFLight { //gd:GLTFLight.from_dictionary
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_dictionary, gdextension.SizeObject|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))}))
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_dictionary, gdextension.SizeObject|(gdextension.SizeDictionary<<4), &struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))})
 	var ret = [1]gdclass.GLTFLight{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFLight](r_ret)}
 	return ret
 }
@@ -280,96 +278,96 @@ Serializes this GLTFLight instance into a [Dictionary].
 */
 //go:nosplit
 func (self class) ToDictionary() Dictionary.Any { //gd:GLTFLight.to_dictionary
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.to_dictionary, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.to_dictionary, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetColor() Color.RGBA { //gd:GLTFLight.get_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColor(color Color.RGBA) { //gd:GLTFLight.set_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetIntensity() float64 { //gd:GLTFLight.get_intensity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_intensity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_intensity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIntensity(intensity float64) { //gd:GLTFLight.set_intensity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_intensity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ intensity float64 }{intensity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_intensity, 0|(gdextension.SizeFloat<<4), &struct{ intensity float64 }{intensity})
 }
 
 //go:nosplit
 func (self class) GetLightType() String.Readable { //gd:GLTFLight.get_light_type
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_light_type, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_light_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLightType(light_type String.Readable) { //gd:GLTFLight.set_light_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_type, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ light_type gdextension.String }{pointers.Get(gd.InternalString(light_type))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_type, 0|(gdextension.SizeString<<4), &struct{ light_type gdextension.String }{pointers.Get(gd.InternalString(light_type))})
 }
 
 //go:nosplit
 func (self class) GetRange() float64 { //gd:GLTFLight.get_range
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRange(arange float64) { //gd:GLTFLight.set_range
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ arange float64 }{arange}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range, 0|(gdextension.SizeFloat<<4), &struct{ arange float64 }{arange})
 }
 
 //go:nosplit
 func (self class) GetInnerConeAngle() float64 { //gd:GLTFLight.get_inner_cone_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inner_cone_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inner_cone_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInnerConeAngle(inner_cone_angle float64) { //gd:GLTFLight.set_inner_cone_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inner_cone_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ inner_cone_angle float64 }{inner_cone_angle}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inner_cone_angle, 0|(gdextension.SizeFloat<<4), &struct{ inner_cone_angle float64 }{inner_cone_angle})
 }
 
 //go:nosplit
 func (self class) GetOuterConeAngle() float64 { //gd:GLTFLight.get_outer_cone_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_outer_cone_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_outer_cone_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOuterConeAngle(outer_cone_angle float64) { //gd:GLTFLight.set_outer_cone_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outer_cone_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ outer_cone_angle float64 }{outer_cone_angle}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outer_cone_angle, 0|(gdextension.SizeFloat<<4), &struct{ outer_cone_angle float64 }{outer_cone_angle})
 }
 
 //go:nosplit
 func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //gd:GLTFLight.get_additional_data
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_additional_data, gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ extension_name gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_name))}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_additional_data, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ extension_name gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAdditionalData(extension_name String.Name, additional_data variant.Any) { //gd:GLTFLight.set_additional_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_additional_data, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_additional_data, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
 		extension_name  gdextension.StringName
 		additional_data gdextension.Variant
-	}{pointers.Get(gd.InternalStringName(extension_name)), gdextension.Variant(pointers.Get(gd.InternalVariant(additional_data)))}))
+	}{pointers.Get(gd.InternalStringName(extension_name)), gdextension.Variant(pointers.Get(gd.InternalVariant(additional_data)))})
 }
 func (self class) AsGLTFLight() Advanced { return Advanced{pointers.AsA[gdclass.GLTFLight](self[0])} }
 func (self Instance) AsGLTFLight() Instance {

@@ -3,7 +3,6 @@
 // Package AudioStreamWAV provides methods for working with AudioStreamWAV object instances.
 package AudioStreamWAV
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -302,10 +300,10 @@ The keys and values of [param options] match the properties of [ResourceImporter
 */
 //go:nosplit
 func (self class) LoadFromBuffer(stream_data Packed.Bytes, options Dictionary.Any) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_buffer
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4)|(gdextension.SizeDictionary<<8), &struct {
 		stream_data gdextension.PackedArray[byte]
 		options     gdextension.Dictionary
-	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data))), pointers.Get(gd.InternalDictionary(options))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data))), pointers.Get(gd.InternalDictionary(options))})
 	var ret = [1]gdclass.AudioStreamWAV{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamWAV](r_ret)}
 	return ret
 }
@@ -331,94 +329,94 @@ func _on_files_dropped(files):
 */
 //go:nosplit
 func (self class) LoadFromFile(path String.Readable, options Dictionary.Any) [1]gdclass.AudioStreamWAV { //gd:AudioStreamWAV.load_from_file
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_file, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_file, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8), &struct {
 		path    gdextension.String
 		options gdextension.Dictionary
-	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalDictionary(options))}))
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalDictionary(options))})
 	var ret = [1]gdclass.AudioStreamWAV{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamWAV](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetData(data Packed.Bytes) { //gd:AudioStreamWAV.set_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
 }
 
 //go:nosplit
 func (self class) GetData() Packed.Bytes { //gd:AudioStreamWAV.get_data
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFormat(format Format) { //gd:AudioStreamWAV.set_format
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ format Format }{format}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ format Format }{format})
 }
 
 //go:nosplit
 func (self class) GetFormat() Format { //gd:AudioStreamWAV.get_format
-	var r_ret = gdextension.Call[Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoopMode(loop_mode LoopMode) { //gd:AudioStreamWAV.set_loop_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ loop_mode LoopMode }{loop_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_mode, 0|(gdextension.SizeInt<<4), &struct{ loop_mode LoopMode }{loop_mode})
 }
 
 //go:nosplit
 func (self class) GetLoopMode() LoopMode { //gd:AudioStreamWAV.get_loop_mode
-	var r_ret = gdextension.Call[LoopMode](gd.ObjectChecked(self.AsObject()), methods.get_loop_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[LoopMode](gd.ObjectChecked(self.AsObject()), methods.get_loop_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoopBegin(loop_begin int64) { //gd:AudioStreamWAV.set_loop_begin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_begin, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ loop_begin int64 }{loop_begin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_begin, 0|(gdextension.SizeInt<<4), &struct{ loop_begin int64 }{loop_begin})
 }
 
 //go:nosplit
 func (self class) GetLoopBegin() int64 { //gd:AudioStreamWAV.get_loop_begin
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_loop_begin, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_loop_begin, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoopEnd(loop_end int64) { //gd:AudioStreamWAV.set_loop_end
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_end, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ loop_end int64 }{loop_end}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_end, 0|(gdextension.SizeInt<<4), &struct{ loop_end int64 }{loop_end})
 }
 
 //go:nosplit
 func (self class) GetLoopEnd() int64 { //gd:AudioStreamWAV.get_loop_end
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_loop_end, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_loop_end, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMixRate(mix_rate int64) { //gd:AudioStreamWAV.set_mix_rate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_rate, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mix_rate int64 }{mix_rate}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mix_rate, 0|(gdextension.SizeInt<<4), &struct{ mix_rate int64 }{mix_rate})
 }
 
 //go:nosplit
 func (self class) GetMixRate() int64 { //gd:AudioStreamWAV.get_mix_rate
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mix_rate, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mix_rate, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStereo(stereo bool) { //gd:AudioStreamWAV.set_stereo
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stereo, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ stereo bool }{stereo}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stereo, 0|(gdextension.SizeBool<<4), &struct{ stereo bool }{stereo})
 }
 
 //go:nosplit
 func (self class) IsStereo() bool { //gd:AudioStreamWAV.is_stereo
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stereo, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stereo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -429,7 +427,7 @@ Saves the AudioStreamWAV as a WAV file to [param path]. Samples with IMA ADPCM o
 */
 //go:nosplit
 func (self class) SaveToWav(path String.Readable) Error.Code { //gd:AudioStreamWAV.save_to_wav
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_to_wav, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_to_wav, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

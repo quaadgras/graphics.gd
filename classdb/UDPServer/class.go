@@ -3,7 +3,6 @@
 // Package UDPServer provides methods for working with UDPServer object instances.
 package UDPServer
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -347,10 +345,10 @@ Starts the server by opening a UDP socket listening on the given [param port]. Y
 */
 //go:nosplit
 func (self class) Listen(port int64, bind_address String.Readable) Error.Code { //gd:UDPServer.listen
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.listen, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.listen, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		port         int64
 		bind_address gdextension.String
-	}{port, pointers.Get(gd.InternalString(bind_address))}))
+	}{port, pointers.Get(gd.InternalString(bind_address))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -360,7 +358,7 @@ Call this method at regular intervals (e.g. inside [method Node._process]) to pr
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:UDPServer.poll
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -370,7 +368,7 @@ Returns [code]true[/code] if a packet with a new address/port combination was re
 */
 //go:nosplit
 func (self class) IsConnectionAvailable() bool { //gd:UDPServer.is_connection_available
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_connection_available, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_connection_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -380,7 +378,7 @@ Returns the local port this server is listening to.
 */
 //go:nosplit
 func (self class) GetLocalPort() int64 { //gd:UDPServer.get_local_port
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -390,7 +388,7 @@ Returns [code]true[/code] if the socket is open and listening on a port.
 */
 //go:nosplit
 func (self class) IsListening() bool { //gd:UDPServer.is_listening
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_listening, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_listening, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -400,7 +398,7 @@ Returns the first pending connection (connected to the appropriate address/port)
 */
 //go:nosplit
 func (self class) TakeConnection() [1]gdclass.PacketPeerUDP { //gd:UDPServer.take_connection
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PacketPeerUDP{gd.PointerWithOwnershipTransferredToGo[gdclass.PacketPeerUDP](r_ret)}
 	return ret
 }
@@ -410,17 +408,17 @@ Stops the server, closing the UDP socket if open. Will close all connected [Pack
 */
 //go:nosplit
 func (self class) Stop() { //gd:UDPServer.stop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetMaxPendingConnections(max_pending_connections int64) { //gd:UDPServer.set_max_pending_connections
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_pending_connections, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_pending_connections int64 }{max_pending_connections}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_pending_connections, 0|(gdextension.SizeInt<<4), &struct{ max_pending_connections int64 }{max_pending_connections})
 }
 
 //go:nosplit
 func (self class) GetMaxPendingConnections() int64 { //gd:UDPServer.get_max_pending_connections
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_pending_connections, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_pending_connections, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

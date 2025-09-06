@@ -3,7 +3,6 @@
 // Package EditorResourcePreview provides methods for working with EditorResourcePreview object instances.
 package EditorResourcePreview
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -191,12 +189,12 @@ Queue a resource file located at [param path] for preview. Once the preview is r
 */
 //go:nosplit
 func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_resource_preview
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_resource_preview, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_resource_preview, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), &struct {
 		path          gdextension.String
 		receiver      gdextension.Object
 		receiver_func gdextension.StringName
 		userdata      gdextension.Variant
-	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
+	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))})
 }
 
 /*
@@ -205,12 +203,12 @@ Queue the [param resource] being edited for preview. Once the preview is ready, 
 */
 //go:nosplit
 func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver [1]gd.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_edited_resource_preview
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_edited_resource_preview, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_edited_resource_preview, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), &struct {
 		resource      gdextension.Object
 		receiver      gdextension.Object
 		receiver_func gdextension.StringName
 		userdata      gdextension.Variant
-	}{gdextension.Object(gd.ObjectChecked(resource[0].AsObject())), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
+	}{gdextension.Object(gd.ObjectChecked(resource[0].AsObject())), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(receiver[0].AsObject()[0])), pointers.Get(gd.InternalStringName(receiver_func)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))})
 }
 
 /*
@@ -218,7 +216,7 @@ Create an own, custom preview generator.
 */
 //go:nosplit
 func (self class) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.add_preview_generator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preview_generator, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))})
 }
 
 /*
@@ -226,7 +224,7 @@ Removes a custom preview generator.
 */
 //go:nosplit
 func (self class) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.remove_preview_generator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_preview_generator, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))})
 }
 
 /*
@@ -234,7 +232,7 @@ Check if the resource changed, if so, it will be invalidated and the correspondi
 */
 //go:nosplit
 func (self class) CheckForInvalidation(path String.Readable) { //gd:EditorResourcePreview.check_for_invalidation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.check_for_invalidation, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.check_for_invalidation, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 func (self Instance) OnPreviewInvalidated(cb func(path string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

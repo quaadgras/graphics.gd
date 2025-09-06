@@ -3,7 +3,6 @@
 // Package OpenXRAction provides methods for working with OpenXRAction object instances.
 package OpenXRAction
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -176,38 +174,38 @@ func (self Instance) SetToplevelPaths(value []string) {
 
 //go:nosplit
 func (self class) SetLocalizedName(localized_name String.Readable) { //gd:OpenXRAction.set_localized_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_localized_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ localized_name gdextension.String }{pointers.Get(gd.InternalString(localized_name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_localized_name, 0|(gdextension.SizeString<<4), &struct{ localized_name gdextension.String }{pointers.Get(gd.InternalString(localized_name))})
 }
 
 //go:nosplit
 func (self class) GetLocalizedName() String.Readable { //gd:OpenXRAction.get_localized_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_localized_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_localized_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetActionType(action_type ActionType) { //gd:OpenXRAction.set_action_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ action_type ActionType }{action_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_type, 0|(gdextension.SizeInt<<4), &struct{ action_type ActionType }{action_type})
 }
 
 //go:nosplit
 func (self class) GetActionType() ActionType { //gd:OpenXRAction.get_action_type
-	var r_ret = gdextension.Call[ActionType](gd.ObjectChecked(self.AsObject()), methods.get_action_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ActionType](gd.ObjectChecked(self.AsObject()), methods.get_action_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetToplevelPaths(toplevel_paths Packed.Strings) { //gd:OpenXRAction.set_toplevel_paths
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toplevel_paths, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toplevel_paths, 0|(gdextension.SizePackedArray<<4), &struct {
 		toplevel_paths gdextension.PackedArray[gdextension.String]
-	}{pointers.Get(gd.InternalPackedStrings(toplevel_paths))}))
+	}{pointers.Get(gd.InternalPackedStrings(toplevel_paths))})
 }
 
 //go:nosplit
 func (self class) GetToplevelPaths() Packed.Strings { //gd:OpenXRAction.get_toplevel_paths
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_toplevel_paths, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_toplevel_paths, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

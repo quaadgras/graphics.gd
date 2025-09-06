@@ -3,7 +3,6 @@
 // Package VisualShaderNodeTransformConstant provides methods for working with VisualShaderNodeTransformConstant object instances.
 package VisualShaderNodeTransformConstant
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -156,12 +154,12 @@ func (self Instance) SetConstant(value Transform3D.BasisOrigin) {
 
 //go:nosplit
 func (self class) SetConstant(constant Transform3D.BasisOrigin) { //gd:VisualShaderNodeTransformConstant.set_constant
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ constant Transform3D.BasisOrigin }{gd.Transposed(constant)}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeTransform3D<<4), &struct{ constant Transform3D.BasisOrigin }{gd.Transposed(constant)})
 }
 
 //go:nosplit
 func (self class) GetConstant() Transform3D.BasisOrigin { //gd:VisualShaderNodeTransformConstant.get_constant
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }

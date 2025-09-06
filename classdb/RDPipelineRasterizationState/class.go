@@ -3,7 +3,6 @@
 // Package RDPipelineRasterizationState provides methods for working with RDPipelineRasterizationState object instances.
 package RDPipelineRasterizationState
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -253,132 +251,132 @@ func (self Instance) SetPatchControlPoints(value int) {
 
 //go:nosplit
 func (self class) SetEnableDepthClamp(p_member bool) { //gd:RDPipelineRasterizationState.set_enable_depth_clamp
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_depth_clamp, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_depth_clamp, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
 
 //go:nosplit
 func (self class) GetEnableDepthClamp() bool { //gd:RDPipelineRasterizationState.get_enable_depth_clamp
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_depth_clamp, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_depth_clamp, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDiscardPrimitives(p_member bool) { //gd:RDPipelineRasterizationState.set_discard_primitives
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_discard_primitives, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_discard_primitives, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
 
 //go:nosplit
 func (self class) GetDiscardPrimitives() bool { //gd:RDPipelineRasterizationState.get_discard_primitives
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_discard_primitives, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_discard_primitives, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWireframe(p_member bool) { //gd:RDPipelineRasterizationState.set_wireframe
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wireframe, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wireframe, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
 
 //go:nosplit
 func (self class) GetWireframe() bool { //gd:RDPipelineRasterizationState.get_wireframe
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_wireframe, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_wireframe, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCullMode(p_member Rendering.PolygonCullMode) { //gd:RDPipelineRasterizationState.set_cull_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.PolygonCullMode }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mode, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.PolygonCullMode }{p_member})
 }
 
 //go:nosplit
 func (self class) GetCullMode() Rendering.PolygonCullMode { //gd:RDPipelineRasterizationState.get_cull_mode
-	var r_ret = gdextension.Call[Rendering.PolygonCullMode](gd.ObjectChecked(self.AsObject()), methods.get_cull_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.PolygonCullMode](gd.ObjectChecked(self.AsObject()), methods.get_cull_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrontFace(p_member Rendering.PolygonFrontFace) { //gd:RDPipelineRasterizationState.set_front_face
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_front_face, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.PolygonFrontFace }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_front_face, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.PolygonFrontFace }{p_member})
 }
 
 //go:nosplit
 func (self class) GetFrontFace() Rendering.PolygonFrontFace { //gd:RDPipelineRasterizationState.get_front_face
-	var r_ret = gdextension.Call[Rendering.PolygonFrontFace](gd.ObjectChecked(self.AsObject()), methods.get_front_face, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.PolygonFrontFace](gd.ObjectChecked(self.AsObject()), methods.get_front_face, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepthBiasEnabled(p_member bool) { //gd:RDPipelineRasterizationState.set_depth_bias_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_bias_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_bias_enabled, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
 
 //go:nosplit
 func (self class) GetDepthBiasEnabled() bool { //gd:RDPipelineRasterizationState.get_depth_bias_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_depth_bias_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_depth_bias_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepthBiasConstantFactor(p_member float64) { //gd:RDPipelineRasterizationState.set_depth_bias_constant_factor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_bias_constant_factor, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_bias_constant_factor, 0|(gdextension.SizeFloat<<4), &struct{ p_member float64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetDepthBiasConstantFactor() float64 { //gd:RDPipelineRasterizationState.get_depth_bias_constant_factor
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_bias_constant_factor, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_bias_constant_factor, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepthBiasClamp(p_member float64) { //gd:RDPipelineRasterizationState.set_depth_bias_clamp
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_bias_clamp, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_bias_clamp, 0|(gdextension.SizeFloat<<4), &struct{ p_member float64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetDepthBiasClamp() float64 { //gd:RDPipelineRasterizationState.get_depth_bias_clamp
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_bias_clamp, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_bias_clamp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepthBiasSlopeFactor(p_member float64) { //gd:RDPipelineRasterizationState.set_depth_bias_slope_factor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_bias_slope_factor, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_bias_slope_factor, 0|(gdextension.SizeFloat<<4), &struct{ p_member float64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetDepthBiasSlopeFactor() float64 { //gd:RDPipelineRasterizationState.get_depth_bias_slope_factor
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_bias_slope_factor, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth_bias_slope_factor, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLineWidth(p_member float64) { //gd:RDPipelineRasterizationState.set_line_width
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_width, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_width, 0|(gdextension.SizeFloat<<4), &struct{ p_member float64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetLineWidth() float64 { //gd:RDPipelineRasterizationState.get_line_width
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_width, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_width, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPatchControlPoints(p_member int64) { //gd:RDPipelineRasterizationState.set_patch_control_points
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_patch_control_points, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_patch_control_points, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetPatchControlPoints() int64 { //gd:RDPipelineRasterizationState.get_patch_control_points
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_patch_control_points, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_patch_control_points, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

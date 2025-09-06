@@ -3,7 +3,6 @@
 // Package ZIPPacker provides methods for working with ZIPPacker object instances.
 package ZIPPacker
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -216,10 +214,10 @@ This must be called before everything else.
 */
 //go:nosplit
 func (self class) Open(path String.Readable, append ZipAppend) Error.Code { //gd:ZIPPacker.open
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		path   gdextension.String
 		append ZipAppend
-	}{pointers.Get(gd.InternalString(path)), append}))
+	}{pointers.Get(gd.InternalString(path)), append})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -230,7 +228,7 @@ Must be called after [method open].
 */
 //go:nosplit
 func (self class) StartFile(path String.Readable) Error.Code { //gd:ZIPPacker.start_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_file, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_file, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -241,7 +239,7 @@ Needs to be called after [method start_file].
 */
 //go:nosplit
 func (self class) WriteFile(data Packed.Bytes) Error.Code { //gd:ZIPPacker.write_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.write_file, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.write_file, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -252,7 +250,7 @@ It will fail if there is no open file.
 */
 //go:nosplit
 func (self class) CloseFile() Error.Code { //gd:ZIPPacker.close_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close_file, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close_file, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -262,7 +260,7 @@ Closes the underlying resources used by this instance.
 */
 //go:nosplit
 func (self class) Close() Error.Code { //gd:ZIPPacker.close
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }

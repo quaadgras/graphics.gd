@@ -3,7 +3,6 @@
 // Package StaticBody3D provides methods for working with StaticBody3D object instances.
 package StaticBody3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -39,7 +38,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -179,36 +177,36 @@ func (self Instance) SetConstantAngularVelocity(value Vector3.XYZ) {
 
 //go:nosplit
 func (self class) SetConstantLinearVelocity(vel Vector3.XYZ) { //gd:StaticBody3D.set_constant_linear_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_linear_velocity, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ vel Vector3.XYZ }{vel}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_linear_velocity, 0|(gdextension.SizeVector3<<4), &struct{ vel Vector3.XYZ }{vel})
 }
 
 //go:nosplit
 func (self class) SetConstantAngularVelocity(vel Vector3.XYZ) { //gd:StaticBody3D.set_constant_angular_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_angular_velocity, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ vel Vector3.XYZ }{vel}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_angular_velocity, 0|(gdextension.SizeVector3<<4), &struct{ vel Vector3.XYZ }{vel})
 }
 
 //go:nosplit
 func (self class) GetConstantLinearVelocity() Vector3.XYZ { //gd:StaticBody3D.get_constant_linear_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_constant_linear_velocity, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_constant_linear_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetConstantAngularVelocity() Vector3.XYZ { //gd:StaticBody3D.get_constant_angular_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_constant_angular_velocity, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_constant_angular_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicsMaterialOverride(physics_material_override [1]gdclass.PhysicsMaterial) { //gd:StaticBody3D.set_physics_material_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material_override, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(physics_material_override[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_material_override, 0|(gdextension.SizeObject<<4), &struct{ physics_material_override gdextension.Object }{gdextension.Object(gd.ObjectChecked(physics_material_override[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetPhysicsMaterialOverride() [1]gdclass.PhysicsMaterial { //gd:StaticBody3D.get_physics_material_override
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material_override, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_physics_material_override, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PhysicsMaterial{gd.PointerWithOwnershipTransferredToGo[gdclass.PhysicsMaterial](r_ret)}
 	return ret
 }

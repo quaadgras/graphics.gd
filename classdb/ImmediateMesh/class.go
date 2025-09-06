@@ -3,7 +3,6 @@
 // Package ImmediateMesh provides methods for working with ImmediateMesh object instances.
 package ImmediateMesh
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -40,7 +39,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -261,10 +259,10 @@ Begin a new surface.
 */
 //go:nosplit
 func (self class) SurfaceBegin(primitive Mesh.PrimitiveType, material [1]gdclass.Material) { //gd:ImmediateMesh.surface_begin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_begin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_begin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		primitive Mesh.PrimitiveType
 		material  gdextension.Object
-	}{primitive, gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
+	}{primitive, gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
 }
 
 /*
@@ -272,7 +270,7 @@ Set the color attribute that will be pushed with the next vertex.
 */
 //go:nosplit
 func (self class) SurfaceSetColor(color Color.RGBA) { //gd:ImmediateMesh.surface_set_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 /*
@@ -280,7 +278,7 @@ Set the normal attribute that will be pushed with the next vertex.
 */
 //go:nosplit
 func (self class) SurfaceSetNormal(normal Vector3.XYZ) { //gd:ImmediateMesh.surface_set_normal
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_normal, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ normal Vector3.XYZ }{normal}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_normal, 0|(gdextension.SizeVector3<<4), &struct{ normal Vector3.XYZ }{normal})
 }
 
 /*
@@ -288,7 +286,7 @@ Set the tangent attribute that will be pushed with the next vertex.
 */
 //go:nosplit
 func (self class) SurfaceSetTangent(tangent Plane.NormalD) { //gd:ImmediateMesh.surface_set_tangent
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_tangent, 0|(gdextension.SizePlane<<4), unsafe.Pointer(&struct{ tangent Plane.NormalD }{tangent}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_tangent, 0|(gdextension.SizePlane<<4), &struct{ tangent Plane.NormalD }{tangent})
 }
 
 /*
@@ -296,7 +294,7 @@ Set the UV attribute that will be pushed with the next vertex.
 */
 //go:nosplit
 func (self class) SurfaceSetUv(uv Vector2.XY) { //gd:ImmediateMesh.surface_set_uv
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_uv, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ uv Vector2.XY }{uv}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_uv, 0|(gdextension.SizeVector2<<4), &struct{ uv Vector2.XY }{uv})
 }
 
 /*
@@ -304,7 +302,7 @@ Set the UV2 attribute that will be pushed with the next vertex.
 */
 //go:nosplit
 func (self class) SurfaceSetUv2(uv2 Vector2.XY) { //gd:ImmediateMesh.surface_set_uv2
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_uv2, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ uv2 Vector2.XY }{uv2}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_uv2, 0|(gdextension.SizeVector2<<4), &struct{ uv2 Vector2.XY }{uv2})
 }
 
 /*
@@ -312,7 +310,7 @@ Add a 3D vertex using the current attributes previously set.
 */
 //go:nosplit
 func (self class) SurfaceAddVertex(vertex Vector3.XYZ) { //gd:ImmediateMesh.surface_add_vertex
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_add_vertex, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ vertex Vector3.XYZ }{vertex}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_add_vertex, 0|(gdextension.SizeVector3<<4), &struct{ vertex Vector3.XYZ }{vertex})
 }
 
 /*
@@ -320,7 +318,7 @@ Add a 2D vertex using the current attributes previously set.
 */
 //go:nosplit
 func (self class) SurfaceAddVertex2d(vertex Vector2.XY) { //gd:ImmediateMesh.surface_add_vertex_2d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_add_vertex_2d, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ vertex Vector2.XY }{vertex}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_add_vertex_2d, 0|(gdextension.SizeVector2<<4), &struct{ vertex Vector2.XY }{vertex})
 }
 
 /*
@@ -328,7 +326,7 @@ End and commit current surface. Note that surface being created will not be visi
 */
 //go:nosplit
 func (self class) SurfaceEnd() { //gd:ImmediateMesh.surface_end
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_end, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_end, 0, &struct{}{})
 }
 
 /*
@@ -336,7 +334,7 @@ Clear all surfaces.
 */
 //go:nosplit
 func (self class) ClearSurfaces() { //gd:ImmediateMesh.clear_surfaces
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_surfaces, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_surfaces, 0, &struct{}{})
 }
 func (self class) AsImmediateMesh() Advanced {
 	return Advanced{pointers.AsA[gdclass.ImmediateMesh](self[0])}

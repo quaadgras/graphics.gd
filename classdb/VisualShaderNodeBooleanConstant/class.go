@@ -3,7 +3,6 @@
 // Package VisualShaderNodeBooleanConstant provides methods for working with VisualShaderNodeBooleanConstant object instances.
 package VisualShaderNodeBooleanConstant
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -156,12 +154,12 @@ func (self Instance) SetConstant(value bool) {
 
 //go:nosplit
 func (self class) SetConstant(constant bool) { //gd:VisualShaderNodeBooleanConstant.set_constant
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ constant bool }{constant}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeBool<<4), &struct{ constant bool }{constant})
 }
 
 //go:nosplit
 func (self class) GetConstant() bool { //gd:VisualShaderNodeBooleanConstant.get_constant
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

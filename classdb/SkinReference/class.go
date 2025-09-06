@@ -3,7 +3,6 @@
 // Package SkinReference provides methods for working with SkinReference object instances.
 package SkinReference
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -167,7 +165,7 @@ Returns the [RID] owned by this SkinReference, as returned by [method RenderingS
 */
 //go:nosplit
 func (self class) GetSkeleton() RID.Any { //gd:SkinReference.get_skeleton
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -178,7 +176,7 @@ Note that a single [Skin] may have more than one [SkinReference] in the case tha
 */
 //go:nosplit
 func (self class) GetSkin() [1]gdclass.Skin { //gd:SkinReference.get_skin
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret)}
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package PacketPeerUDP provides methods for working with PacketPeerUDP object instances.
 package PacketPeerUDP
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -336,11 +334,11 @@ If [param bind_address] is set to any valid address (e.g. [code]"192.168.1.101"[
 */
 //go:nosplit
 func (self class) Bind(port int64, bind_address String.Readable, recv_buf_size int64) Error.Code { //gd:PacketPeerUDP.bind
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.bind, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.bind, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
 		port          int64
 		bind_address  gdextension.String
 		recv_buf_size int64
-	}{port, pointers.Get(gd.InternalString(bind_address)), recv_buf_size}))
+	}{port, pointers.Get(gd.InternalString(bind_address)), recv_buf_size})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -350,7 +348,7 @@ Closes the [PacketPeerUDP]'s underlying UDP socket.
 */
 //go:nosplit
 func (self class) Close() { //gd:PacketPeerUDP.close
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, &struct{}{})
 }
 
 /*
@@ -389,7 +387,7 @@ while (socket.Wait() == OK)
 */
 //go:nosplit
 func (self class) Wait() Error.Code { //gd:PacketPeerUDP.wait
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.wait, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.wait, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -399,7 +397,7 @@ Returns whether this [PacketPeerUDP] is bound to an address and can receive pack
 */
 //go:nosplit
 func (self class) IsBound() bool { //gd:PacketPeerUDP.is_bound
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_bound, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_bound, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -410,10 +408,10 @@ Calling this method connects this UDP peer to the given [param host]/[param port
 */
 //go:nosplit
 func (self class) ConnectToHost(host String.Readable, port int64) Error.Code { //gd:PacketPeerUDP.connect_to_host
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host gdextension.String
 		port int64
-	}{pointers.Get(gd.InternalString(host)), port}))
+	}{pointers.Get(gd.InternalString(host)), port})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -423,7 +421,7 @@ Returns [code]true[/code] if the UDP socket is open and has been connected to a 
 */
 //go:nosplit
 func (self class) IsSocketConnected() bool { //gd:PacketPeerUDP.is_socket_connected
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_socket_connected, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_socket_connected, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -433,7 +431,7 @@ Returns the IP of the remote peer that sent the last packet(that was received wi
 */
 //go:nosplit
 func (self class) GetPacketIp() String.Readable { //gd:PacketPeerUDP.get_packet_ip
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_packet_ip, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_packet_ip, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -443,7 +441,7 @@ Returns the port of the remote peer that sent the last packet(that was received 
 */
 //go:nosplit
 func (self class) GetPacketPort() int64 { //gd:PacketPeerUDP.get_packet_port
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_packet_port, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_packet_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -453,7 +451,7 @@ Returns the local port to which this peer is bound.
 */
 //go:nosplit
 func (self class) GetLocalPort() int64 { //gd:PacketPeerUDP.get_local_port
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -464,10 +462,10 @@ Sets the destination address and port for sending packets and variables. A hostn
 */
 //go:nosplit
 func (self class) SetDestAddress(host String.Readable, port int64) Error.Code { //gd:PacketPeerUDP.set_dest_address
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_dest_address, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_dest_address, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host gdextension.String
 		port int64
-	}{pointers.Get(gd.InternalString(host)), port}))
+	}{pointers.Get(gd.InternalString(host)), port})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -478,7 +476,7 @@ Enable or disable sending of broadcast packets (e.g. [code]set_dest_address("255
 */
 //go:nosplit
 func (self class) SetBroadcastEnabled(enabled bool) { //gd:PacketPeerUDP.set_broadcast_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_broadcast_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_broadcast_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 /*
@@ -488,10 +486,10 @@ You can join the same multicast group with multiple interfaces. Use [method IP.g
 */
 //go:nosplit
 func (self class) JoinMulticastGroup(multicast_address String.Readable, interface_name String.Readable) Error.Code { //gd:PacketPeerUDP.join_multicast_group
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.join_multicast_group, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.join_multicast_group, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		multicast_address gdextension.String
 		interface_name    gdextension.String
-	}{pointers.Get(gd.InternalString(multicast_address)), pointers.Get(gd.InternalString(interface_name))}))
+	}{pointers.Get(gd.InternalString(multicast_address)), pointers.Get(gd.InternalString(interface_name))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -501,10 +499,10 @@ Removes the interface identified by [param interface_name] from the multicast gr
 */
 //go:nosplit
 func (self class) LeaveMulticastGroup(multicast_address String.Readable, interface_name String.Readable) Error.Code { //gd:PacketPeerUDP.leave_multicast_group
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.leave_multicast_group, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.leave_multicast_group, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		multicast_address gdextension.String
 		interface_name    gdextension.String
-	}{pointers.Get(gd.InternalString(multicast_address)), pointers.Get(gd.InternalString(interface_name))}))
+	}{pointers.Get(gd.InternalString(multicast_address)), pointers.Get(gd.InternalString(interface_name))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

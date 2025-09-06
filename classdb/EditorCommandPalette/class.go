@@ -3,7 +3,6 @@
 // Package EditorCommandPalette provides methods for working with EditorCommandPalette object instances.
 package EditorCommandPalette
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -38,7 +37,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -203,12 +201,12 @@ Adds a custom command to EditorCommandPalette.
 */
 //go:nosplit
 func (self class) AddCommand(command_name String.Readable, key_name String.Readable, binded_callable Callable.Function, shortcut_text String.Readable) { //gd:EditorCommandPalette.add_command
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_command, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeString<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_command, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeString<<16), &struct {
 		command_name    gdextension.String
 		key_name        gdextension.String
 		binded_callable gdextension.Callable
 		shortcut_text   gdextension.String
-	}{pointers.Get(gd.InternalString(command_name)), pointers.Get(gd.InternalString(key_name)), pointers.Get(gd.InternalCallable(binded_callable)), pointers.Get(gd.InternalString(shortcut_text))}))
+	}{pointers.Get(gd.InternalString(command_name)), pointers.Get(gd.InternalString(key_name)), pointers.Get(gd.InternalCallable(binded_callable)), pointers.Get(gd.InternalString(shortcut_text))})
 }
 
 /*
@@ -217,7 +215,7 @@ Removes the custom command from EditorCommandPalette.
 */
 //go:nosplit
 func (self class) RemoveCommand(key_name String.Readable) { //gd:EditorCommandPalette.remove_command
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_command, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ key_name gdextension.String }{pointers.Get(gd.InternalString(key_name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_command, 0|(gdextension.SizeString<<4), &struct{ key_name gdextension.String }{pointers.Get(gd.InternalString(key_name))})
 }
 func (self class) AsEditorCommandPalette() Advanced {
 	return Advanced{pointers.AsA[gdclass.EditorCommandPalette](self[0])}

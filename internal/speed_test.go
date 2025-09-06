@@ -30,6 +30,13 @@ func BenchmarkMethodBindCall(B *testing.B) {
 	}
 }
 
+func BenchmarkMethodBindCallWithArgument(B *testing.B) {
+	B.ReportAllocs()
+	for i := 0; i < B.N; i++ {
+		Engine.SetMaxFps(60)
+	}
+}
+
 func BenchmarkScriptCall(B *testing.B) {
 	B.ReportAllocs()
 	var script = GDScript.New().AsScript()

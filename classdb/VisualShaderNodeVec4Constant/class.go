@@ -3,7 +3,6 @@
 // Package VisualShaderNodeVec4Constant provides methods for working with VisualShaderNodeVec4Constant object instances.
 package VisualShaderNodeVec4Constant
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -156,12 +154,12 @@ func (self Instance) SetConstant(value Quaternion.IJKX) {
 
 //go:nosplit
 func (self class) SetConstant(constant Quaternion.IJKX) { //gd:VisualShaderNodeVec4Constant.set_constant
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeQuaternion<<4), unsafe.Pointer(&struct{ constant Quaternion.IJKX }{constant}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeQuaternion<<4), &struct{ constant Quaternion.IJKX }{constant})
 }
 
 //go:nosplit
 func (self class) GetConstant() Quaternion.IJKX { //gd:VisualShaderNodeVec4Constant.get_constant
-	var r_ret = gdextension.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeQuaternion, &struct{}{})
 	var ret = r_ret
 	return ret
 }

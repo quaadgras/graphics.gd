@@ -3,7 +3,6 @@
 // Package WebRTCDataChannelExtension provides methods for working with WebRTCDataChannelExtension object instances.
 package WebRTCDataChannelExtension
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -95,8 +93,8 @@ type Any interface {
 	AsWebRTCDataChannelExtension() Instance
 }
 type Interface interface {
-	GetPacket(r_buffer unsafe.Pointer, r_buffer_size *int32) error
-	PutPacket(p_buffer unsafe.Pointer, p_buffer_size int) error
+	GetPacket(r_buffer gdextension.Pointer, r_buffer_size *int32) error
+	PutPacket(p_buffer gdextension.Pointer, p_buffer_size int) error
 	GetAvailablePacketCount() int
 	GetMaxPacketSize() int
 	Poll() error
@@ -120,29 +118,33 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetPacket(r_buffer unsafe.Pointer, r_buffer_size *int32) (_ error) { return }
-func (self implementation) PutPacket(p_buffer unsafe.Pointer, p_buffer_size int) (_ error)    { return }
-func (self implementation) GetAvailablePacketCount() (_ int)                                  { return }
-func (self implementation) GetMaxPacketSize() (_ int)                                         { return }
-func (self implementation) Poll() (_ error)                                                   { return }
-func (self implementation) Close()                                                            { return }
-func (self implementation) SetWriteMode(p_write_mode WebRTCDataChannel.WriteMode)             { return }
-func (self implementation) GetWriteMode() (_ WebRTCDataChannel.WriteMode)                     { return }
-func (self implementation) WasStringPacket() (_ bool)                                         { return }
-func (self implementation) GetReadyState() (_ WebRTCDataChannel.ChannelState)                 { return }
-func (self implementation) GetLabel() (_ string)                                              { return }
-func (self implementation) IsOrdered() (_ bool)                                               { return }
-func (self implementation) GetId() (_ int)                                                    { return }
-func (self implementation) GetMaxPacketLifeTime() (_ int)                                     { return }
-func (self implementation) GetMaxRetransmits() (_ int)                                        { return }
-func (self implementation) GetProtocol() (_ string)                                           { return }
-func (self implementation) IsNegotiated() (_ bool)                                            { return }
-func (self implementation) GetBufferedAmount() (_ int)                                        { return }
-func (Instance) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (self implementation) GetPacket(r_buffer gdextension.Pointer, r_buffer_size *int32) (_ error) {
+	return
+}
+func (self implementation) PutPacket(p_buffer gdextension.Pointer, p_buffer_size int) (_ error) {
+	return
+}
+func (self implementation) GetAvailablePacketCount() (_ int)                      { return }
+func (self implementation) GetMaxPacketSize() (_ int)                             { return }
+func (self implementation) Poll() (_ error)                                       { return }
+func (self implementation) Close()                                                { return }
+func (self implementation) SetWriteMode(p_write_mode WebRTCDataChannel.WriteMode) { return }
+func (self implementation) GetWriteMode() (_ WebRTCDataChannel.WriteMode)         { return }
+func (self implementation) WasStringPacket() (_ bool)                             { return }
+func (self implementation) GetReadyState() (_ WebRTCDataChannel.ChannelState)     { return }
+func (self implementation) GetLabel() (_ string)                                  { return }
+func (self implementation) IsOrdered() (_ bool)                                   { return }
+func (self implementation) GetId() (_ int)                                        { return }
+func (self implementation) GetMaxPacketLifeTime() (_ int)                         { return }
+func (self implementation) GetMaxRetransmits() (_ int)                            { return }
+func (self implementation) GetProtocol() (_ string)                               { return }
+func (self implementation) IsNegotiated() (_ bool)                                { return }
+func (self implementation) GetBufferedAmount() (_ int)                            { return }
+func (Instance) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, r_buffer, r_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -152,11 +154,11 @@ func (Instance) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointe
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size int) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension.Pointer, p_buffer_size int) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var p_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_buffer, int(p_buffer_size))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -166,23 +168,23 @@ func (Instance) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointe
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_available_packet_count(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_available_packet_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
-func (Instance) _get_max_packet_size(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_max_packet_size(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
-func (Instance) _poll(impl func(ptr unsafe.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _poll(impl func(ptr gdclass.Receiver) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -192,43 +194,43 @@ func (Instance) _poll(impl func(ptr unsafe.Pointer) error) (cb gd.ExtensionClass
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _close(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _close(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
-func (Instance) _set_write_mode(impl func(ptr unsafe.Pointer, p_write_mode WebRTCDataChannel.WriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_write_mode(impl func(ptr gdclass.Receiver, p_write_mode WebRTCDataChannel.WriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_write_mode = gd.UnsafeGet[WebRTCDataChannel.WriteMode](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, p_write_mode)
 	}
 }
-func (Instance) _get_write_mode(impl func(ptr unsafe.Pointer) WebRTCDataChannel.WriteMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_write_mode(impl func(ptr gdclass.Receiver) WebRTCDataChannel.WriteMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _was_string_packet(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _was_string_packet(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_ready_state(impl func(ptr unsafe.Pointer) WebRTCDataChannel.ChannelState) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_ready_state(impl func(ptr gdclass.Receiver) WebRTCDataChannel.ChannelState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_label(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_label(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -238,37 +240,37 @@ func (Instance) _get_label(impl func(ptr unsafe.Pointer) string) (cb gd.Extensio
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _is_ordered(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_ordered(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_id(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_id(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
-func (Instance) _get_max_packet_life_time(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_max_packet_life_time(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
-func (Instance) _get_max_retransmits(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_max_retransmits(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
-func (Instance) _get_protocol(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_protocol(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -278,16 +280,16 @@ func (Instance) _get_protocol(impl func(ptr unsafe.Pointer) string) (cb gd.Exten
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _is_negotiated(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_negotiated(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_buffered_amount(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_buffered_amount(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -336,11 +338,11 @@ func New() Instance {
 	return casted
 }
 
-func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_buffer_size *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, r_buffer, r_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -351,11 +353,11 @@ func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, 
 	}
 }
 
-func (class) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension.Pointer, p_buffer_size int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var p_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_buffer, p_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -366,25 +368,25 @@ func (class) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, 
 	}
 }
 
-func (class) _get_available_packet_count(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_available_packet_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _get_max_packet_size(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_max_packet_size(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _poll(impl func(ptr unsafe.Pointer) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _poll(impl func(ptr gdclass.Receiver) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -395,48 +397,48 @@ func (class) _poll(impl func(ptr unsafe.Pointer) Error.Code) (cb gd.ExtensionCla
 	}
 }
 
-func (class) _close(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _close(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
 
-func (class) _set_write_mode(impl func(ptr unsafe.Pointer, p_write_mode WebRTCDataChannel.WriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_write_mode(impl func(ptr gdclass.Receiver, p_write_mode WebRTCDataChannel.WriteMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_write_mode = gd.UnsafeGet[WebRTCDataChannel.WriteMode](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, p_write_mode)
 	}
 }
 
-func (class) _get_write_mode(impl func(ptr unsafe.Pointer) WebRTCDataChannel.WriteMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_write_mode(impl func(ptr gdclass.Receiver) WebRTCDataChannel.WriteMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _was_string_packet(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _was_string_packet(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _get_ready_state(impl func(ptr unsafe.Pointer) WebRTCDataChannel.ChannelState) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_ready_state(impl func(ptr gdclass.Receiver) WebRTCDataChannel.ChannelState) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _get_label(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_label(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -447,41 +449,41 @@ func (class) _get_label(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.Ex
 	}
 }
 
-func (class) _is_ordered(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_ordered(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _get_id(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_id(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _get_max_packet_life_time(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_max_packet_life_time(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _get_max_retransmits(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_max_retransmits(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _get_protocol(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_protocol(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -492,17 +494,17 @@ func (class) _get_protocol(impl func(ptr unsafe.Pointer) String.Readable) (cb gd
 	}
 }
 
-func (class) _is_negotiated(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_negotiated(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _get_buffered_amount(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_buffered_amount(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}

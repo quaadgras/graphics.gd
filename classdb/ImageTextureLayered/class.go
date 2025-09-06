@@ -3,7 +3,6 @@
 // Package ImageTextureLayered provides methods for working with ImageTextureLayered object instances.
 package ImageTextureLayered
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -237,7 +235,7 @@ ResourceSaver.save(cubemap_array, "res://cubemap_array.res", ResourceSaver.FLAG_
 */
 //go:nosplit
 func (self class) CreateFromImages(images Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTextureLayered.create_from_images
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_from_images, gdextension.SizeInt|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ images gdextension.Array }{pointers.Get(gd.InternalArray(images))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_from_images, gdextension.SizeInt|(gdextension.SizeArray<<4), &struct{ images gdextension.Array }{pointers.Get(gd.InternalArray(images))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -250,10 +248,10 @@ The update is immediate: it's synchronized with drawing.
 */
 //go:nosplit
 func (self class) UpdateLayer(image [1]gdclass.Image, layer int64) { //gd:ImageTextureLayered.update_layer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_layer, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_layer, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		image gdextension.Object
 		layer int64
-	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), layer}))
+	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), layer})
 }
 func (self class) AsImageTextureLayered() Advanced {
 	return Advanced{pointers.AsA[gdclass.ImageTextureLayered](self[0])}

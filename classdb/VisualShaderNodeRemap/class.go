@@ -3,7 +3,6 @@
 // Package VisualShaderNodeRemap provides methods for working with VisualShaderNodeRemap object instances.
 package VisualShaderNodeRemap
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -154,12 +152,12 @@ func (self Instance) SetOpType(value OpType) {
 
 //go:nosplit
 func (self class) SetOpType(op_type OpType) { //gd:VisualShaderNodeRemap.set_op_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_op_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ op_type OpType }{op_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_op_type, 0|(gdextension.SizeInt<<4), &struct{ op_type OpType }{op_type})
 }
 
 //go:nosplit
 func (self class) GetOpType() OpType { //gd:VisualShaderNodeRemap.get_op_type
-	var r_ret = gdextension.Call[OpType](gd.ObjectChecked(self.AsObject()), methods.get_op_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[OpType](gd.ObjectChecked(self.AsObject()), methods.get_op_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

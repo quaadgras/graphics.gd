@@ -3,7 +3,6 @@
 // Package ConvexPolygonShape3D provides methods for working with ConvexPolygonShape3D object instances.
 package ConvexPolygonShape3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -158,14 +156,14 @@ func (self Instance) SetPoints(value []Vector3.XYZ) {
 
 //go:nosplit
 func (self class) SetPoints(points Packed.Array[Vector3.XYZ]) { //gd:ConvexPolygonShape3D.set_points
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_points, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_points, 0|(gdextension.SizePackedArray<<4), &struct {
 		points gdextension.PackedArray[Vector3.XYZ]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points))})
 }
 
 //go:nosplit
 func (self class) GetPoints() Packed.Array[Vector3.XYZ] { //gd:ConvexPolygonShape3D.get_points
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_points, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_points, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

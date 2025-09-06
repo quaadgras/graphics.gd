@@ -3,7 +3,6 @@
 // Package FontVariation provides methods for working with FontVariation object instances.
 package FontVariation
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -252,67 +250,67 @@ func (self Instance) SetBaselineOffset(value Float.X) {
 
 //go:nosplit
 func (self class) SetBaseFont(font [1]gdclass.Font) { //gd:FontVariation.set_base_font
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_font, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_font, 0|(gdextension.SizeObject<<4), &struct{ font gdextension.Object }{gdextension.Object(gd.ObjectChecked(font[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetBaseFont() [1]gdclass.Font { //gd:FontVariation.get_base_font
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_font, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_font, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Font{gd.PointerWithOwnershipTransferredToGo[gdclass.Font](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVariationOpentype(coords Dictionary.Any) { //gd:FontVariation.set_variation_opentype
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_opentype, 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ coords gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(coords))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_opentype, 0|(gdextension.SizeDictionary<<4), &struct{ coords gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(coords))})
 }
 
 //go:nosplit
 func (self class) GetVariationOpentype() Dictionary.Any { //gd:FontVariation.get_variation_opentype
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_variation_opentype, gdextension.SizeDictionary, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_variation_opentype, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVariationEmbolden(strength float64) { //gd:FontVariation.set_variation_embolden
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_embolden, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_embolden, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
 
 //go:nosplit
 func (self class) GetVariationEmbolden() float64 { //gd:FontVariation.get_variation_embolden
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_variation_embolden, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_variation_embolden, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVariationFaceIndex(face_index int64) { //gd:FontVariation.set_variation_face_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_face_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ face_index int64 }{face_index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_face_index, 0|(gdextension.SizeInt<<4), &struct{ face_index int64 }{face_index})
 }
 
 //go:nosplit
 func (self class) GetVariationFaceIndex() int64 { //gd:FontVariation.get_variation_face_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_variation_face_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_variation_face_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVariationTransform(transform Transform2D.OriginXY) { //gd:FontVariation.set_variation_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_transform, 0|(gdextension.SizeTransform2D<<4), unsafe.Pointer(&struct{ transform Transform2D.OriginXY }{transform}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variation_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ transform Transform2D.OriginXY }{transform})
 }
 
 //go:nosplit
 func (self class) GetVariationTransform() Transform2D.OriginXY { //gd:FontVariation.get_variation_transform
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_variation_transform, gdextension.SizeTransform2D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_variation_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOpentypeFeatures(features Dictionary.Any) { //gd:FontVariation.set_opentype_features
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_opentype_features, 0|(gdextension.SizeDictionary<<4), unsafe.Pointer(&struct{ features gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(features))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_opentype_features, 0|(gdextension.SizeDictionary<<4), &struct{ features gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(features))})
 }
 
 /*
@@ -320,20 +318,20 @@ Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [par
 */
 //go:nosplit
 func (self class) SetSpacing(spacing TextServer.SpacingType, value int64) { //gd:FontVariation.set_spacing
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spacing, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spacing, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		spacing TextServer.SpacingType
 		value   int64
-	}{spacing, value}))
+	}{spacing, value})
 }
 
 //go:nosplit
 func (self class) SetBaselineOffset(baseline_offset float64) { //gd:FontVariation.set_baseline_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_baseline_offset, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ baseline_offset float64 }{baseline_offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_baseline_offset, 0|(gdextension.SizeFloat<<4), &struct{ baseline_offset float64 }{baseline_offset})
 }
 
 //go:nosplit
 func (self class) GetBaselineOffset() float64 { //gd:FontVariation.get_baseline_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_baseline_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_baseline_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

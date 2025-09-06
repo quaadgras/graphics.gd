@@ -3,7 +3,6 @@
 // Package EditorFileSystemImportFormatSupportQuery provides methods for working with EditorFileSystemImportFormatSupportQuery object instances.
 package EditorFileSystemImportFormatSupportQuery
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -119,9 +117,9 @@ func (self implementation) Query() (_ bool)                 { return }
 /*
 Return whether this importer is active.
 */
-func (Instance) _is_active(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_active(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -130,9 +128,9 @@ func (Instance) _is_active(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionC
 /*
 Return the file extensions supported.
 */
-func (Instance) _get_file_extensions(impl func(ptr unsafe.Pointer) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_file_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -146,9 +144,9 @@ func (Instance) _get_file_extensions(impl func(ptr unsafe.Pointer) []string) (cb
 /*
 Query support. Return [code]false[/code] if import must not continue.
 */
-func (Instance) _query(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _query(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -200,9 +198,9 @@ func New() Instance {
 /*
 Return whether this importer is active.
 */
-func (class) _is_active(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_active(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -211,9 +209,9 @@ func (class) _is_active(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClas
 /*
 Return the file extensions supported.
 */
-func (class) _get_file_extensions(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_file_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -227,9 +225,9 @@ func (class) _get_file_extensions(impl func(ptr unsafe.Pointer) Packed.Strings) 
 /*
 Query support. Return [code]false[/code] if import must not continue.
 */
-func (class) _query(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _query(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}

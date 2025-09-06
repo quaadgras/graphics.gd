@@ -3,7 +3,6 @@
 // Package CryptoKey provides methods for working with CryptoKey object instances.
 package CryptoKey
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -222,10 +220,10 @@ Saves a key to the given [param path]. If [param public_only] is [code]true[/cod
 */
 //go:nosplit
 func (self class) Save(path String.Readable, public_only bool) Error.Code { //gd:CryptoKey.save
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path        gdextension.String
 		public_only bool
-	}{pointers.Get(gd.InternalString(path)), public_only}))
+	}{pointers.Get(gd.InternalString(path)), public_only})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -236,10 +234,10 @@ Loads a key from [param path]. If [param public_only] is [code]true[/code], only
 */
 //go:nosplit
 func (self class) Load(path String.Readable, public_only bool) Error.Code { //gd:CryptoKey.load
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path        gdextension.String
 		public_only bool
-	}{pointers.Get(gd.InternalString(path)), public_only}))
+	}{pointers.Get(gd.InternalString(path)), public_only})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -249,7 +247,7 @@ Returns [code]true[/code] if this CryptoKey only has the public part, and not th
 */
 //go:nosplit
 func (self class) IsPublicOnly() bool { //gd:CryptoKey.is_public_only
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_public_only, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_public_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -259,7 +257,7 @@ Returns a string containing the key in PEM format. If [param public_only] is [co
 */
 //go:nosplit
 func (self class) SaveToString(public_only bool) String.Readable { //gd:CryptoKey.save_to_string
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.save_to_string, gdextension.SizeString|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ public_only bool }{public_only}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.save_to_string, gdextension.SizeString|(gdextension.SizeBool<<4), &struct{ public_only bool }{public_only})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -269,10 +267,10 @@ Loads a key from the given [param string_key]. If [param public_only] is [code]t
 */
 //go:nosplit
 func (self class) LoadFromString(string_key String.Readable, public_only bool) Error.Code { //gd:CryptoKey.load_from_string
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_from_string, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_from_string, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		string_key  gdextension.String
 		public_only bool
-	}{pointers.Get(gd.InternalString(string_key)), public_only}))
+	}{pointers.Get(gd.InternalString(string_key)), public_only})
 	var ret = Error.Code(r_ret)
 	return ret
 }

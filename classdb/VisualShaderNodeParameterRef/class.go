@@ -3,7 +3,6 @@
 // Package VisualShaderNodeParameterRef provides methods for working with VisualShaderNodeParameterRef object instances.
 package VisualShaderNodeParameterRef
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -154,12 +152,12 @@ func (self Instance) SetParameterName(value string) {
 
 //go:nosplit
 func (self class) SetParameterName(name String.Readable) { //gd:VisualShaderNodeParameterRef.set_parameter_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parameter_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parameter_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 
 //go:nosplit
 func (self class) GetParameterName() String.Readable { //gd:VisualShaderNodeParameterRef.get_parameter_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_parameter_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_parameter_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

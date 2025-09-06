@@ -3,7 +3,6 @@
 // Package AnimationNodeStateMachinePlayback provides methods for working with AnimationNodeStateMachinePlayback object instances.
 package AnimationNodeStateMachinePlayback
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -262,10 +260,10 @@ If [param reset_on_teleport] is [code]true[/code], the animation is played from 
 */
 //go:nosplit
 func (self class) Travel(to_node String.Name, reset_on_teleport bool) { //gd:AnimationNodeStateMachinePlayback.travel
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.travel, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.travel, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		to_node           gdextension.StringName
 		reset_on_teleport bool
-	}{pointers.Get(gd.InternalStringName(to_node)), reset_on_teleport}))
+	}{pointers.Get(gd.InternalStringName(to_node)), reset_on_teleport})
 }
 
 /*
@@ -274,10 +272,10 @@ If [param reset] is [code]true[/code], the animation is played from the beginnin
 */
 //go:nosplit
 func (self class) Start(node String.Name, reset bool) { //gd:AnimationNodeStateMachinePlayback.start
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		node  gdextension.StringName
 		reset bool
-	}{pointers.Get(gd.InternalStringName(node)), reset}))
+	}{pointers.Get(gd.InternalStringName(node)), reset})
 }
 
 /*
@@ -285,7 +283,7 @@ If there is a next path by travel or auto advance, immediately transitions from 
 */
 //go:nosplit
 func (self class) Next() { //gd:AnimationNodeStateMachinePlayback.next
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.next, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.next, 0, &struct{}{})
 }
 
 /*
@@ -293,7 +291,7 @@ Stops the currently playing animation.
 */
 //go:nosplit
 func (self class) Stop() { //gd:AnimationNodeStateMachinePlayback.stop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }
 
 /*
@@ -301,7 +299,7 @@ Returns [code]true[/code] if an animation is playing.
 */
 //go:nosplit
 func (self class) IsPlaying() bool { //gd:AnimationNodeStateMachinePlayback.is_playing
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -312,7 +310,7 @@ Returns the currently playing animation state.
 */
 //go:nosplit
 func (self class) GetCurrentNode() String.Name { //gd:AnimationNodeStateMachinePlayback.get_current_node
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_current_node, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_current_node, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -322,7 +320,7 @@ Returns the playback position within the current animation state.
 */
 //go:nosplit
 func (self class) GetCurrentPlayPosition() float64 { //gd:AnimationNodeStateMachinePlayback.get_current_play_position
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_play_position, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_play_position, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -333,7 +331,7 @@ Returns the current state length.
 */
 //go:nosplit
 func (self class) GetCurrentLength() float64 { //gd:AnimationNodeStateMachinePlayback.get_current_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -343,7 +341,7 @@ Returns the starting state of currently fading animation.
 */
 //go:nosplit
 func (self class) GetFadingFromNode() String.Name { //gd:AnimationNodeStateMachinePlayback.get_fading_from_node
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_fading_from_node, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_fading_from_node, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -353,7 +351,7 @@ Returns the current travel path as computed internally by the A* algorithm.
 */
 //go:nosplit
 func (self class) GetTravelPath() Array.Contains[String.Name] { //gd:AnimationNodeStateMachinePlayback.get_travel_path
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_travel_path, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_travel_path, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

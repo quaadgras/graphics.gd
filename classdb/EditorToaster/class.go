@@ -3,7 +3,6 @@
 // Package EditorToaster provides methods for working with EditorToaster object instances.
 package EditorToaster
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -39,7 +38,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -168,11 +166,11 @@ Pushes a toast notification to the editor for display.
 */
 //go:nosplit
 func (self class) PushToast(message String.Readable, severity Severity, tooltip String.Readable) { //gd:EditorToaster.push_toast
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_toast, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_toast, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		message  gdextension.String
 		severity Severity
 		tooltip  gdextension.String
-	}{pointers.Get(gd.InternalString(message)), severity, pointers.Get(gd.InternalString(tooltip))}))
+	}{pointers.Get(gd.InternalString(message)), severity, pointers.Get(gd.InternalString(tooltip))})
 }
 func (self class) AsEditorToaster() Advanced {
 	return Advanced{pointers.AsA[gdclass.EditorToaster](self[0])}

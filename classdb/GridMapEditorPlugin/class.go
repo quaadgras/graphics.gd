@@ -3,7 +3,6 @@
 // Package GridMapEditorPlugin provides methods for working with GridMapEditorPlugin object instances.
 package GridMapEditorPlugin
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -38,7 +37,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -215,7 +213,7 @@ Returns the [GridMap] node currently edited by the grid map editor.
 */
 //go:nosplit
 func (self class) GetCurrentGridMap() [1]gdclass.GridMap { //gd:GridMapEditorPlugin.get_current_grid_map
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_grid_map, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_grid_map, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.GridMap{gd.PointerMustAssertInstanceID[gdclass.GridMap](r_ret)}
 	return ret
 }
@@ -225,10 +223,10 @@ Selects the cells inside the given bounds from [param begin] to [param end].
 */
 //go:nosplit
 func (self class) SetSelection(begin Vector3i.XYZ, end Vector3i.XYZ) { //gd:GridMapEditorPlugin.set_selection
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selection, 0|(gdextension.SizeVector3i<<4)|(gdextension.SizeVector3i<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selection, 0|(gdextension.SizeVector3i<<4)|(gdextension.SizeVector3i<<8), &struct {
 		begin Vector3i.XYZ
 		end   Vector3i.XYZ
-	}{begin, end}))
+	}{begin, end})
 }
 
 /*
@@ -236,7 +234,7 @@ Deselects any currently selected cells.
 */
 //go:nosplit
 func (self class) ClearSelection() { //gd:GridMapEditorPlugin.clear_selection
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_selection, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_selection, 0, &struct{}{})
 }
 
 /*
@@ -244,7 +242,7 @@ Returns the cell coordinate bounds of the current selection. Use [method has_sel
 */
 //go:nosplit
 func (self class) GetSelection() AABB.PositionSize { //gd:GridMapEditorPlugin.get_selection
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_selection, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_selection, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -254,7 +252,7 @@ Returns [code]true[/code] if there are selected cells.
 */
 //go:nosplit
 func (self class) HasSelection() bool { //gd:GridMapEditorPlugin.has_selection
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_selection, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_selection, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -264,7 +262,7 @@ Returns an array of [Vector3i]s with the selected cells' coordinates.
 */
 //go:nosplit
 func (self class) GetSelectedCells() Array.Any { //gd:GridMapEditorPlugin.get_selected_cells
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_selected_cells, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_selected_cells, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -275,7 +273,7 @@ Selects the [MeshLibrary] item with the given index in the grid map editor's pal
 */
 //go:nosplit
 func (self class) SetSelectedPaletteItem(item int64) { //gd:GridMapEditorPlugin.set_selected_palette_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected_palette_item, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ item int64 }{item}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected_palette_item, 0|(gdextension.SizeInt<<4), &struct{ item int64 }{item})
 }
 
 /*
@@ -284,7 +282,7 @@ Returns the index of the selected [MeshLibrary] item in the grid map editor's pa
 */
 //go:nosplit
 func (self class) GetSelectedPaletteItem() int64 { //gd:GridMapEditorPlugin.get_selected_palette_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected_palette_item, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected_palette_item, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

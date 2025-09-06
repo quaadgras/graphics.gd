@@ -3,7 +3,6 @@
 // Package RDPipelineMultisampleState provides methods for working with RDPipelineMultisampleState object instances.
 package RDPipelineMultisampleState
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -203,72 +201,72 @@ func (self Instance) SetSampleMasks(value []int) {
 
 //go:nosplit
 func (self class) SetSampleCount(p_member Rendering.TextureSamples) { //gd:RDPipelineMultisampleState.set_sample_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sample_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSamples }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sample_count, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureSamples }{p_member})
 }
 
 //go:nosplit
 func (self class) GetSampleCount() Rendering.TextureSamples { //gd:RDPipelineMultisampleState.get_sample_count
-	var r_ret = gdextension.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.get_sample_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.get_sample_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableSampleShading(p_member bool) { //gd:RDPipelineMultisampleState.set_enable_sample_shading
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_sample_shading, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_sample_shading, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
 
 //go:nosplit
 func (self class) GetEnableSampleShading() bool { //gd:RDPipelineMultisampleState.get_enable_sample_shading
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_sample_shading, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_sample_shading, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinSampleShading(p_member float64) { //gd:RDPipelineMultisampleState.set_min_sample_shading
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_sample_shading, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_member float64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_sample_shading, 0|(gdextension.SizeFloat<<4), &struct{ p_member float64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetMinSampleShading() float64 { //gd:RDPipelineMultisampleState.get_min_sample_shading
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_sample_shading, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min_sample_shading, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableAlphaToCoverage(p_member bool) { //gd:RDPipelineMultisampleState.set_enable_alpha_to_coverage
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_alpha_to_coverage, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_alpha_to_coverage, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
 
 //go:nosplit
 func (self class) GetEnableAlphaToCoverage() bool { //gd:RDPipelineMultisampleState.get_enable_alpha_to_coverage
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_alpha_to_coverage, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_alpha_to_coverage, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableAlphaToOne(p_member bool) { //gd:RDPipelineMultisampleState.set_enable_alpha_to_one
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_alpha_to_one, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_alpha_to_one, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
 
 //go:nosplit
 func (self class) GetEnableAlphaToOne() bool { //gd:RDPipelineMultisampleState.get_enable_alpha_to_one
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_alpha_to_one, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_alpha_to_one, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSampleMasks(masks Array.Contains[int64]) { //gd:RDPipelineMultisampleState.set_sample_masks
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sample_masks, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ masks gdextension.Array }{pointers.Get(gd.InternalArray(masks))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sample_masks, 0|(gdextension.SizeArray<<4), &struct{ masks gdextension.Array }{pointers.Get(gd.InternalArray(masks))})
 }
 
 //go:nosplit
 func (self class) GetSampleMasks() Array.Contains[int64] { //gd:RDPipelineMultisampleState.get_sample_masks
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_sample_masks, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_sample_masks, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

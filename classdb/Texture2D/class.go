@@ -3,7 +3,6 @@
 // Package Texture2D provides methods for working with Texture2D object instances.
 package Texture2D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -39,7 +38,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -160,9 +158,9 @@ func (self implementation) DrawRectRegion(to_canvas_item RID.Any, rect Rect2.Pos
 /*
 Called when the [Texture2D]'s width is queried.
 */
-func (Instance) _get_width(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_width(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -171,9 +169,9 @@ func (Instance) _get_width(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionCl
 /*
 Called when the [Texture2D]'s height is queried.
 */
-func (Instance) _get_height(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_height(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -182,11 +180,11 @@ func (Instance) _get_height(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionC
 /*
 Called when a pixel's opaque state in the [Texture2D] is queried at the specified [code](x, y)[/code] position.
 */
-func (Instance) _is_pixel_opaque(impl func(ptr unsafe.Pointer, x int, y int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_pixel_opaque(impl func(ptr gdclass.Receiver, x int, y int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var x = gd.UnsafeGet[int64](p_args, 0)
 		var y = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(x), int(y))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -195,9 +193,9 @@ func (Instance) _is_pixel_opaque(impl func(ptr unsafe.Pointer, x int, y int) boo
 /*
 Called when the presence of an alpha channel in the [Texture2D] is queried.
 */
-func (Instance) _has_alpha(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _has_alpha(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -207,13 +205,13 @@ func (Instance) _has_alpha(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionC
 Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem], with the top-left offset specified in [param pos]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
-func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, pos Vector2.XY, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, pos Vector2.XY, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[Vector2.XY](p_args, 1)
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 2)
 		var transpose = gd.UnsafeGet[bool](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, to_canvas_item, pos, modulate, transpose)
 	}
 }
@@ -222,14 +220,14 @@ func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, pos 
 Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
-func (Instance) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw_rect(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
 		var tile = gd.UnsafeGet[bool](p_args, 2)
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 3)
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, to_canvas_item, rect, tile, modulate, transpose)
 	}
 }
@@ -238,7 +236,7 @@ func (Instance) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any,
 Called when a part of the [Texture2D] specified by [param src_rect]'s coordinates is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
-func (Instance) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw_rect_region(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
@@ -246,7 +244,7 @@ func (Instance) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item R
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 3)
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
 		var clip_uv = gd.UnsafeGet[bool](p_args, 5)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, to_canvas_item, rect, src_rect, modulate, transpose, clip_uv)
 	}
 }
@@ -383,9 +381,9 @@ func New() Instance {
 /*
 Called when the [Texture2D]'s width is queried.
 */
-func (class) _get_width(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_width(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -394,9 +392,9 @@ func (class) _get_width(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionCla
 /*
 Called when the [Texture2D]'s height is queried.
 */
-func (class) _get_height(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_height(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -405,11 +403,11 @@ func (class) _get_height(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionCl
 /*
 Called when a pixel's opaque state in the [Texture2D] is queried at the specified [code](x, y)[/code] position.
 */
-func (class) _is_pixel_opaque(impl func(ptr unsafe.Pointer, x int64, y int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_pixel_opaque(impl func(ptr gdclass.Receiver, x int64, y int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var x = gd.UnsafeGet[int64](p_args, 0)
 		var y = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, x, y)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -418,9 +416,9 @@ func (class) _is_pixel_opaque(impl func(ptr unsafe.Pointer, x int64, y int64) bo
 /*
 Called when the presence of an alpha channel in the [Texture2D] is queried.
 */
-func (class) _has_alpha(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _has_alpha(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -430,13 +428,13 @@ func (class) _has_alpha(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClas
 Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem], with the top-left offset specified in [param pos]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
-func (class) _draw(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, pos Vector2.XY, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, pos Vector2.XY, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[Vector2.XY](p_args, 1)
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 2)
 		var transpose = gd.UnsafeGet[bool](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, to_canvas_item, pos, modulate, transpose)
 	}
 }
@@ -445,14 +443,14 @@ func (class) _draw(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, pos Vec
 Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
-func (class) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _draw_rect(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
 		var tile = gd.UnsafeGet[bool](p_args, 2)
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 3)
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, to_canvas_item, rect, tile, modulate, transpose)
 	}
 }
@@ -461,7 +459,7 @@ func (class) _draw_rect(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, re
 Called when a part of the [Texture2D] specified by [param src_rect]'s coordinates is requested to be drawn onto [CanvasItem]'s specified [param rect]. [param modulate] specifies a multiplier for the colors being drawn, while [param transpose] specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
-func (class) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _draw_rect_region(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
@@ -469,7 +467,7 @@ func (class) _draw_rect_region(impl func(ptr unsafe.Pointer, to_canvas_item RID.
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 3)
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
 		var clip_uv = gd.UnsafeGet[bool](p_args, 5)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, to_canvas_item, rect, src_rect, modulate, transpose, clip_uv)
 	}
 }
@@ -479,7 +477,7 @@ Returns the texture width in pixels.
 */
 //go:nosplit
 func (self class) GetWidth() int64 { //gd:Texture2D.get_width
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -489,7 +487,7 @@ Returns the texture height in pixels.
 */
 //go:nosplit
 func (self class) GetHeight() int64 { //gd:Texture2D.get_height
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -499,7 +497,7 @@ Returns the texture size in pixels.
 */
 //go:nosplit
 func (self class) GetSize() Vector2.XY { //gd:Texture2D.get_size
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -509,7 +507,7 @@ Returns [code]true[/code] if this [Texture2D] has an alpha channel.
 */
 //go:nosplit
 func (self class) HasAlpha() bool { //gd:Texture2D.has_alpha
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_alpha, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_alpha, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -519,12 +517,12 @@ Draws the texture using a [CanvasItem] with the [RenderingServer] API at the spe
 */
 //go:nosplit
 func (self class) Draw(canvas_item RID.Any, position Vector2.XY, modulate Color.RGBA, transpose bool) { //gd:Texture2D.draw
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeBool<<16), &struct {
 		canvas_item RID.Any
 		position    Vector2.XY
 		modulate    Color.RGBA
 		transpose   bool
-	}{canvas_item, position, modulate, transpose}))
+	}{canvas_item, position, modulate, transpose})
 }
 
 /*
@@ -532,13 +530,13 @@ Draws the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 //go:nosplit
 func (self class) DrawRect(canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) { //gd:Texture2D.draw_rect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_rect, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_rect, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20), &struct {
 		canvas_item RID.Any
 		rect        Rect2.PositionSize
 		tile        bool
 		modulate    Color.RGBA
 		transpose   bool
-	}{canvas_item, rect, tile, modulate, transpose}))
+	}{canvas_item, rect, tile, modulate, transpose})
 }
 
 /*
@@ -546,14 +544,14 @@ Draws a part of the texture using a [CanvasItem] with the [RenderingServer] API.
 */
 //go:nosplit
 func (self class) DrawRectRegion(canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:Texture2D.draw_rect_region
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_rect_region, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_rect_region, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), &struct {
 		canvas_item RID.Any
 		rect        Rect2.PositionSize
 		src_rect    Rect2.PositionSize
 		modulate    Color.RGBA
 		transpose   bool
 		clip_uv     bool
-	}{canvas_item, rect, src_rect, modulate, transpose, clip_uv}))
+	}{canvas_item, rect, src_rect, modulate, transpose, clip_uv})
 }
 
 /*
@@ -563,7 +561,7 @@ Returns an [Image] that is a copy of data from this [Texture2D] (a new [Image] i
 */
 //go:nosplit
 func (self class) GetImage() [1]gdclass.Image { //gd:Texture2D.get_image
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_image, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_image, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
@@ -573,7 +571,7 @@ Creates a placeholder version of this resource ([PlaceholderTexture2D]).
 */
 //go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture2D.create_placeholder
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }

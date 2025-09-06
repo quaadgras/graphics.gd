@@ -3,7 +3,6 @@
 // Package VisualShaderNodeVectorFunc provides methods for working with VisualShaderNodeVectorFunc object instances.
 package VisualShaderNodeVectorFunc
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -155,12 +153,12 @@ func (self Instance) SetFunction(value Function) {
 
 //go:nosplit
 func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeVectorFunc.set_function
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn Function }{fn}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function, 0|(gdextension.SizeInt<<4), &struct{ fn Function }{fn})
 }
 
 //go:nosplit
 func (self class) GetFunction() Function { //gd:VisualShaderNodeVectorFunc.get_function
-	var r_ret = gdextension.Call[Function](gd.ObjectChecked(self.AsObject()), methods.get_function, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Function](gd.ObjectChecked(self.AsObject()), methods.get_function, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

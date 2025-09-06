@@ -3,7 +3,6 @@
 // Package VisualShaderNodeCompare provides methods for working with VisualShaderNodeCompare object instances.
 package VisualShaderNodeCompare
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -174,36 +172,36 @@ func (self Instance) SetCondition(value Condition) {
 
 //go:nosplit
 func (self class) SetComparisonType(atype ComparisonType) { //gd:VisualShaderNodeCompare.set_comparison_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_comparison_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype ComparisonType }{atype}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_comparison_type, 0|(gdextension.SizeInt<<4), &struct{ atype ComparisonType }{atype})
 }
 
 //go:nosplit
 func (self class) GetComparisonType() ComparisonType { //gd:VisualShaderNodeCompare.get_comparison_type
-	var r_ret = gdextension.Call[ComparisonType](gd.ObjectChecked(self.AsObject()), methods.get_comparison_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ComparisonType](gd.ObjectChecked(self.AsObject()), methods.get_comparison_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFunction(fn Function) { //gd:VisualShaderNodeCompare.set_function
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fn Function }{fn}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function, 0|(gdextension.SizeInt<<4), &struct{ fn Function }{fn})
 }
 
 //go:nosplit
 func (self class) GetFunction() Function { //gd:VisualShaderNodeCompare.get_function
-	var r_ret = gdextension.Call[Function](gd.ObjectChecked(self.AsObject()), methods.get_function, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Function](gd.ObjectChecked(self.AsObject()), methods.get_function, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCondition(condition Condition) { //gd:VisualShaderNodeCompare.set_condition
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_condition, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ condition Condition }{condition}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_condition, 0|(gdextension.SizeInt<<4), &struct{ condition Condition }{condition})
 }
 
 //go:nosplit
 func (self class) GetCondition() Condition { //gd:VisualShaderNodeCompare.get_condition
-	var r_ret = gdextension.Call[Condition](gd.ObjectChecked(self.AsObject()), methods.get_condition, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Condition](gd.ObjectChecked(self.AsObject()), methods.get_condition, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package StyleBox provides methods for working with StyleBox object instances.
 package StyleBox
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -129,18 +127,18 @@ func (self implementation) Draw(to_canvas_item RID.Any, rect Rect2.PositionSize)
 func (self implementation) GetDrawRect(rect Rect2.PositionSize) (_ Rect2.PositionSize)  { return }
 func (self implementation) GetMinimumSize() (_ Vector2.XY)                              { return }
 func (self implementation) TestMask(point Vector2.XY, rect Rect2.PositionSize) (_ bool) { return }
-func (Instance) _draw(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, to_canvas_item, rect)
 	}
 }
-func (Instance) _get_draw_rect(impl func(ptr unsafe.Pointer, rect Rect2.PositionSize) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_draw_rect(impl func(ptr gdclass.Receiver, rect Rect2.PositionSize) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, rect)
 		gd.UnsafeSet(p_back, Rect2.PositionSize(ret))
 	}
@@ -149,18 +147,18 @@ func (Instance) _get_draw_rect(impl func(ptr unsafe.Pointer, rect Rect2.Position
 /*
 Virtual method to be implemented by the user. Returns a custom minimum size that the stylebox must respect when drawing. By default [method get_minimum_size] only takes content margins into account. This method can be overridden to add another size restriction. A combination of the default behavior and the output of this method will be used, to account for both sizes.
 */
-func (Instance) _get_minimum_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
 }
-func (Instance) _test_mask(impl func(ptr unsafe.Pointer, point Vector2.XY, rect Rect2.PositionSize) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _test_mask(impl func(ptr gdclass.Receiver, point Vector2.XY, rect Rect2.PositionSize) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, point, rect)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -291,19 +289,19 @@ func (self Instance) SetContentMarginBottom(value Float.X) {
 	class(self).SetContentMargin(3, float64(value))
 }
 
-func (class) _draw(impl func(ptr unsafe.Pointer, to_canvas_item RID.Any, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, to_canvas_item, rect)
 	}
 }
 
-func (class) _get_draw_rect(impl func(ptr unsafe.Pointer, rect Rect2.PositionSize) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_draw_rect(impl func(ptr gdclass.Receiver, rect Rect2.PositionSize) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, rect)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -312,19 +310,19 @@ func (class) _get_draw_rect(impl func(ptr unsafe.Pointer, rect Rect2.PositionSiz
 /*
 Virtual method to be implemented by the user. Returns a custom minimum size that the stylebox must respect when drawing. By default [method get_minimum_size] only takes content margins into account. This method can be overridden to add another size restriction. A combination of the default behavior and the output of this method will be used, to account for both sizes.
 */
-func (class) _get_minimum_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _test_mask(impl func(ptr unsafe.Pointer, point Vector2.XY, rect Rect2.PositionSize) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _test_mask(impl func(ptr gdclass.Receiver, point Vector2.XY, rect Rect2.PositionSize) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, point, rect)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -335,7 +333,7 @@ Returns the minimum size that this stylebox can be shrunk to.
 */
 //go:nosplit
 func (self class) GetMinimumSize() Vector2.XY { //gd:StyleBox.get_minimum_size
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_minimum_size, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_minimum_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -345,10 +343,10 @@ Sets the default value of the specified [enum Side] to [param offset] pixels.
 */
 //go:nosplit
 func (self class) SetContentMargin(margin Rect2.Side, offset float64) { //gd:StyleBox.set_content_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_content_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_content_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		margin Rect2.Side
 		offset float64
-	}{margin, offset}))
+	}{margin, offset})
 }
 
 /*
@@ -356,7 +354,7 @@ Sets the default margin to [param offset] pixels for all sides.
 */
 //go:nosplit
 func (self class) SetContentMarginAll(offset float64) { //gd:StyleBox.set_content_margin_all
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_content_margin_all, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_content_margin_all, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 
 /*
@@ -364,7 +362,7 @@ Returns the default margin of the specified [enum Side].
 */
 //go:nosplit
 func (self class) GetContentMargin(margin Rect2.Side) float64 { //gd:StyleBox.get_content_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_content_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_content_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ margin Rect2.Side }{margin})
 	var ret = r_ret
 	return ret
 }
@@ -375,7 +373,7 @@ Positive values reduce size inwards, unlike [Control]'s margin values.
 */
 //go:nosplit
 func (self class) GetMargin(margin Rect2.Side) float64 { //gd:StyleBox.get_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ margin Rect2.Side }{margin})
 	var ret = r_ret
 	return ret
 }
@@ -385,7 +383,7 @@ Returns the "offset" of a stylebox. This helper function returns a value equival
 */
 //go:nosplit
 func (self class) GetOffset() Vector2.XY { //gd:StyleBox.get_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -396,10 +394,10 @@ The [RID] value can either be the result of [method CanvasItem.get_canvas_item] 
 */
 //go:nosplit
 func (self class) Draw(canvas_item RID.Any, rect Rect2.PositionSize) { //gd:StyleBox.draw
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8), &struct {
 		canvas_item RID.Any
 		rect        Rect2.PositionSize
-	}{canvas_item, rect}))
+	}{canvas_item, rect})
 }
 
 /*
@@ -407,7 +405,7 @@ Returns the [CanvasItem] that handles its [constant CanvasItem.NOTIFICATION_DRAW
 */
 //go:nosplit
 func (self class) GetCurrentItemDrawn() [1]gdclass.CanvasItem { //gd:StyleBox.get_current_item_drawn
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_item_drawn, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_item_drawn, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CanvasItem{gd.PointerMustAssertInstanceID[gdclass.CanvasItem](r_ret)}
 	return ret
 }
@@ -417,10 +415,10 @@ Test a position in a rectangle, return whether it passes the mask test.
 */
 //go:nosplit
 func (self class) TestMask(point Vector2.XY, rect Rect2.PositionSize) bool { //gd:StyleBox.test_mask
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.test_mask, gdextension.SizeBool|(gdextension.SizeVector2<<4)|(gdextension.SizeRect2<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.test_mask, gdextension.SizeBool|(gdextension.SizeVector2<<4)|(gdextension.SizeRect2<<8), &struct {
 		point Vector2.XY
 		rect  Rect2.PositionSize
-	}{point, rect}))
+	}{point, rect})
 	var ret = r_ret
 	return ret
 }

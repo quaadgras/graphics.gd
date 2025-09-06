@@ -3,7 +3,6 @@
 // Package CollisionObject2D provides methods for working with CollisionObject2D object instances.
 package CollisionObject2D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -40,7 +39,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -171,7 +169,7 @@ func (self implementation) MouseShapeExit(shape_idx int)  { return }
 Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the clicked [Shape2D]. Connect to [signal input_event] to easily pick up these events.
 [b]Note:[/b] [method _input_event] requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
 */
-func (Instance) _input_event(impl func(ptr unsafe.Pointer, viewport Viewport.Instance, event InputEvent.Instance, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _input_event(impl func(ptr gdclass.Receiver, viewport Viewport.Instance, event InputEvent.Instance, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport = [1]gdclass.Viewport{pointers.New[gdclass.Viewport]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
@@ -180,7 +178,7 @@ func (Instance) _input_event(impl func(ptr unsafe.Pointer, viewport Viewport.Ins
 
 		defer pointers.End(event[0])
 		var shape_idx = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport, event, int(shape_idx))
 	}
 }
@@ -188,9 +186,9 @@ func (Instance) _input_event(impl func(ptr unsafe.Pointer, viewport Viewport.Ins
 /*
 Called when the mouse pointer enters any of this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
 */
-func (Instance) _mouse_enter(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _mouse_enter(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -198,9 +196,9 @@ func (Instance) _mouse_enter(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClas
 /*
 Called when the mouse pointer exits all this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
 */
-func (Instance) _mouse_exit(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _mouse_exit(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -208,10 +206,10 @@ func (Instance) _mouse_exit(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClass
 /*
 Called when the mouse pointer enters any of this object's shapes or moves from one shape to another. [param shape_idx] is the child index of the newly entered [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
 */
-func (Instance) _mouse_shape_enter(impl func(ptr unsafe.Pointer, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _mouse_shape_enter(impl func(ptr gdclass.Receiver, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(shape_idx))
 	}
 }
@@ -219,10 +217,10 @@ func (Instance) _mouse_shape_enter(impl func(ptr unsafe.Pointer, shape_idx int))
 /*
 Called when the mouse pointer exits any of this object's shapes. [param shape_idx] is the child index of the exited [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
 */
-func (Instance) _mouse_shape_exit(impl func(ptr unsafe.Pointer, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _mouse_shape_exit(impl func(ptr gdclass.Receiver, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(shape_idx))
 	}
 }
@@ -481,7 +479,7 @@ func (self Instance) SetInputPickable(value bool) {
 Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the clicked [Shape2D]. Connect to [signal input_event] to easily pick up these events.
 [b]Note:[/b] [method _input_event] requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
 */
-func (class) _input_event(impl func(ptr unsafe.Pointer, viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _input_event(impl func(ptr gdclass.Receiver, viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport = [1]gdclass.Viewport{pointers.New[gdclass.Viewport]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
@@ -490,7 +488,7 @@ func (class) _input_event(impl func(ptr unsafe.Pointer, viewport [1]gdclass.View
 
 		defer pointers.End(event[0])
 		var shape_idx = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport, event, shape_idx)
 	}
 }
@@ -498,9 +496,9 @@ func (class) _input_event(impl func(ptr unsafe.Pointer, viewport [1]gdclass.View
 /*
 Called when the mouse pointer enters any of this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
 */
-func (class) _mouse_enter(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _mouse_enter(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -508,9 +506,9 @@ func (class) _mouse_enter(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCa
 /*
 Called when the mouse pointer exits all this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
 */
-func (class) _mouse_exit(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _mouse_exit(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -518,10 +516,10 @@ func (class) _mouse_exit(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCal
 /*
 Called when the mouse pointer enters any of this object's shapes or moves from one shape to another. [param shape_idx] is the child index of the newly entered [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
 */
-func (class) _mouse_shape_enter(impl func(ptr unsafe.Pointer, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _mouse_shape_enter(impl func(ptr gdclass.Receiver, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shape_idx)
 	}
 }
@@ -529,10 +527,10 @@ func (class) _mouse_shape_enter(impl func(ptr unsafe.Pointer, shape_idx int64)) 
 /*
 Called when the mouse pointer exits any of this object's shapes. [param shape_idx] is the child index of the exited [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
 */
-func (class) _mouse_shape_exit(impl func(ptr unsafe.Pointer, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _mouse_shape_exit(impl func(ptr gdclass.Receiver, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shape_idx)
 	}
 }
@@ -542,31 +540,31 @@ Returns the object's [RID].
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:CollisionObject2D.get_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionLayer(layer int64) { //gd:CollisionObject2D.set_collision_layer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer int64 }{layer}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 
 //go:nosplit
 func (self class) GetCollisionLayer() int64 { //gd:CollisionObject2D.get_collision_layer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:CollisionObject2D.set_collision_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:CollisionObject2D.get_collision_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -576,10 +574,10 @@ Based on [param value], enables or disables the specified layer in the [member c
 */
 //go:nosplit
 func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:CollisionObject2D.set_collision_layer_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
-	}{layer_number, value}))
+	}{layer_number, value})
 }
 
 /*
@@ -587,7 +585,7 @@ Returns whether or not the specified layer of the [member collision_layer] is en
 */
 //go:nosplit
 func (self class) GetCollisionLayerValue(layer_number int64) bool { //gd:CollisionObject2D.get_collision_layer_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
@@ -597,10 +595,10 @@ Based on [param value], enables or disables the specified layer in the [member c
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:CollisionObject2D.set_collision_mask_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
-	}{layer_number, value}))
+	}{layer_number, value})
 }
 
 /*
@@ -608,43 +606,43 @@ Returns whether or not the specified layer of the [member collision_mask] is ena
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:CollisionObject2D.get_collision_mask_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionPriority(priority float64) { //gd:CollisionObject2D.set_collision_priority
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_priority, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ priority float64 }{priority}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_priority, 0|(gdextension.SizeFloat<<4), &struct{ priority float64 }{priority})
 }
 
 //go:nosplit
 func (self class) GetCollisionPriority() float64 { //gd:CollisionObject2D.get_collision_priority
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisableMode(mode DisableMode) { //gd:CollisionObject2D.set_disable_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode DisableMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DisableMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetDisableMode() DisableMode { //gd:CollisionObject2D.get_disable_mode
-	var r_ret = gdextension.Call[DisableMode](gd.ObjectChecked(self.AsObject()), methods.get_disable_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DisableMode](gd.ObjectChecked(self.AsObject()), methods.get_disable_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPickable(enabled bool) { //gd:CollisionObject2D.set_pickable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pickable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pickable, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsPickable() bool { //gd:CollisionObject2D.is_pickable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pickable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pickable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -654,7 +652,7 @@ Creates a new shape owner for the given object. Returns [code]owner_id[/code] of
 */
 //go:nosplit
 func (self class) CreateShapeOwner(owner [1]gd.Object) int64 { //gd:CollisionObject2D.create_shape_owner
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_shape_owner, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ owner gdextension.Object }{gdextension.Object(gd.ObjectChecked(owner[0].AsObject()))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_shape_owner, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ owner gdextension.Object }{gdextension.Object(gd.ObjectChecked(owner[0].AsObject()))})
 	var ret = r_ret
 	return ret
 }
@@ -664,7 +662,7 @@ Removes the given shape owner.
 */
 //go:nosplit
 func (self class) RemoveShapeOwner(owner_id int64) { //gd:CollisionObject2D.remove_shape_owner
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_shape_owner, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_shape_owner, 0|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 }
 
 /*
@@ -672,7 +670,7 @@ Returns an [Array] of [code]owner_id[/code] identifiers. You can use these ids i
 */
 //go:nosplit
 func (self class) GetShapeOwners() Packed.Array[int32] { //gd:CollisionObject2D.get_shape_owners
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_shape_owners, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_shape_owners, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -682,10 +680,10 @@ Sets the [Transform2D] of the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerSetTransform(owner_id int64, transform Transform2D.OriginXY) { //gd:CollisionObject2D.shape_owner_set_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_set_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform2D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_set_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform2D<<8), &struct {
 		owner_id  int64
 		transform Transform2D.OriginXY
-	}{owner_id, transform}))
+	}{owner_id, transform})
 }
 
 /*
@@ -693,7 +691,7 @@ Returns the shape owner's [Transform2D].
 */
 //go:nosplit
 func (self class) ShapeOwnerGetTransform(owner_id int64) Transform2D.OriginXY { //gd:CollisionObject2D.shape_owner_get_transform
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_transform, gdextension.SizeTransform2D|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_transform, gdextension.SizeTransform2D|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 	var ret = r_ret
 	return ret
 }
@@ -703,7 +701,7 @@ Returns the parent object of the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerGetOwner(owner_id int64) [1]gd.Object { //gd:CollisionObject2D.shape_owner_get_owner
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_owner, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_owner, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -713,10 +711,10 @@ If [code]true[/code], disables the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerSetDisabled(owner_id int64, disabled bool) { //gd:CollisionObject2D.shape_owner_set_disabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_set_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_set_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		owner_id int64
 		disabled bool
-	}{owner_id, disabled}))
+	}{owner_id, disabled})
 }
 
 /*
@@ -724,7 +722,7 @@ If [code]true[/code], the shape owner and its shapes are disabled.
 */
 //go:nosplit
 func (self class) IsShapeOwnerDisabled(owner_id int64) bool { //gd:CollisionObject2D.is_shape_owner_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shape_owner_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shape_owner_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 	var ret = r_ret
 	return ret
 }
@@ -734,10 +732,10 @@ If [param enable] is [code]true[/code], collisions for the shape owner originati
 */
 //go:nosplit
 func (self class) ShapeOwnerSetOneWayCollision(owner_id int64, enable bool) { //gd:CollisionObject2D.shape_owner_set_one_way_collision
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_set_one_way_collision, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_set_one_way_collision, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		owner_id int64
 		enable   bool
-	}{owner_id, enable}))
+	}{owner_id, enable})
 }
 
 /*
@@ -745,7 +743,7 @@ Returns [code]true[/code] if collisions for the shape owner originating from thi
 */
 //go:nosplit
 func (self class) IsShapeOwnerOneWayCollisionEnabled(owner_id int64) bool { //gd:CollisionObject2D.is_shape_owner_one_way_collision_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shape_owner_one_way_collision_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shape_owner_one_way_collision_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 	var ret = r_ret
 	return ret
 }
@@ -755,10 +753,10 @@ Sets the [code]one_way_collision_margin[/code] of the shape owner identified by 
 */
 //go:nosplit
 func (self class) ShapeOwnerSetOneWayCollisionMargin(owner_id int64, margin float64) { //gd:CollisionObject2D.shape_owner_set_one_way_collision_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_set_one_way_collision_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_set_one_way_collision_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		owner_id int64
 		margin   float64
-	}{owner_id, margin}))
+	}{owner_id, margin})
 }
 
 /*
@@ -766,7 +764,7 @@ Returns the [code]one_way_collision_margin[/code] of the shape owner identified 
 */
 //go:nosplit
 func (self class) GetShapeOwnerOneWayCollisionMargin(owner_id int64) float64 { //gd:CollisionObject2D.get_shape_owner_one_way_collision_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_shape_owner_one_way_collision_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_shape_owner_one_way_collision_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 	var ret = r_ret
 	return ret
 }
@@ -776,10 +774,10 @@ Adds a [Shape2D] to the shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerAddShape(owner_id int64, shape [1]gdclass.Shape2D) { //gd:CollisionObject2D.shape_owner_add_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_add_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_add_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		owner_id int64
 		shape    gdextension.Object
-	}{owner_id, gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))}))
+	}{owner_id, gdextension.Object(gd.ObjectChecked(shape[0].AsObject()))})
 }
 
 /*
@@ -787,7 +785,7 @@ Returns the number of shapes the given shape owner contains.
 */
 //go:nosplit
 func (self class) ShapeOwnerGetShapeCount(owner_id int64) int64 { //gd:CollisionObject2D.shape_owner_get_shape_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_shape_count, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_shape_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 	var ret = r_ret
 	return ret
 }
@@ -797,10 +795,10 @@ Returns the [Shape2D] with the given ID from the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerGetShape(owner_id int64, shape_id int64) [1]gdclass.Shape2D { //gd:CollisionObject2D.shape_owner_get_shape
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_shape, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_shape, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		owner_id int64
 		shape_id int64
-	}{owner_id, shape_id}))
+	}{owner_id, shape_id})
 	var ret = [1]gdclass.Shape2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape2D](r_ret)}
 	return ret
 }
@@ -810,10 +808,10 @@ Returns the child index of the [Shape2D] with the given ID from the given shape 
 */
 //go:nosplit
 func (self class) ShapeOwnerGetShapeIndex(owner_id int64, shape_id int64) int64 { //gd:CollisionObject2D.shape_owner_get_shape_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_shape_index, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shape_owner_get_shape_index, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		owner_id int64
 		shape_id int64
-	}{owner_id, shape_id}))
+	}{owner_id, shape_id})
 	var ret = r_ret
 	return ret
 }
@@ -823,10 +821,10 @@ Removes a shape from the given shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerRemoveShape(owner_id int64, shape_id int64) { //gd:CollisionObject2D.shape_owner_remove_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_remove_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_remove_shape, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		owner_id int64
 		shape_id int64
-	}{owner_id, shape_id}))
+	}{owner_id, shape_id})
 }
 
 /*
@@ -834,7 +832,7 @@ Removes all shapes from the shape owner.
 */
 //go:nosplit
 func (self class) ShapeOwnerClearShapes(owner_id int64) { //gd:CollisionObject2D.shape_owner_clear_shapes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_clear_shapes, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ owner_id int64 }{owner_id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_owner_clear_shapes, 0|(gdextension.SizeInt<<4), &struct{ owner_id int64 }{owner_id})
 }
 
 /*
@@ -842,7 +840,7 @@ Returns the [code]owner_id[/code] of the given shape.
 */
 //go:nosplit
 func (self class) ShapeFindOwner(shape_index int64) int64 { //gd:CollisionObject2D.shape_find_owner
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shape_find_owner, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shape_index int64 }{shape_index}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shape_find_owner, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ shape_index int64 }{shape_index})
 	var ret = r_ret
 	return ret
 }

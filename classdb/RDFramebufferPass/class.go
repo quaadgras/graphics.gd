@@ -3,7 +3,6 @@
 // Package RDFramebufferPass provides methods for working with RDFramebufferPass object instances.
 package RDFramebufferPass
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -194,68 +192,68 @@ func (self Instance) SetDepthAttachment(value int) {
 
 //go:nosplit
 func (self class) SetColorAttachments(p_member Packed.Array[int32]) { //gd:RDFramebufferPass.set_color_attachments
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_attachments, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_attachments, 0|(gdextension.SizePackedArray<<4), &struct {
 		p_member gdextension.PackedArray[int32]
-	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](p_member))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](p_member))})
 }
 
 //go:nosplit
 func (self class) GetColorAttachments() Packed.Array[int32] { //gd:RDFramebufferPass.get_color_attachments
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_color_attachments, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_color_attachments, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInputAttachments(p_member Packed.Array[int32]) { //gd:RDFramebufferPass.set_input_attachments
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_attachments, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_attachments, 0|(gdextension.SizePackedArray<<4), &struct {
 		p_member gdextension.PackedArray[int32]
-	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](p_member))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](p_member))})
 }
 
 //go:nosplit
 func (self class) GetInputAttachments() Packed.Array[int32] { //gd:RDFramebufferPass.get_input_attachments
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_input_attachments, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_input_attachments, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetResolveAttachments(p_member Packed.Array[int32]) { //gd:RDFramebufferPass.set_resolve_attachments
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resolve_attachments, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resolve_attachments, 0|(gdextension.SizePackedArray<<4), &struct {
 		p_member gdextension.PackedArray[int32]
-	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](p_member))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](p_member))})
 }
 
 //go:nosplit
 func (self class) GetResolveAttachments() Packed.Array[int32] { //gd:RDFramebufferPass.get_resolve_attachments
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_resolve_attachments, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_resolve_attachments, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPreserveAttachments(p_member Packed.Array[int32]) { //gd:RDFramebufferPass.set_preserve_attachments
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_preserve_attachments, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_preserve_attachments, 0|(gdextension.SizePackedArray<<4), &struct {
 		p_member gdextension.PackedArray[int32]
-	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](p_member))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](p_member))})
 }
 
 //go:nosplit
 func (self class) GetPreserveAttachments() Packed.Array[int32] { //gd:RDFramebufferPass.get_preserve_attachments
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_preserve_attachments, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_preserve_attachments, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepthAttachment(p_member int64) { //gd:RDFramebufferPass.set_depth_attachment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_attachment, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_attachment, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetDepthAttachment() int64 { //gd:RDFramebufferPass.get_depth_attachment
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_depth_attachment, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_depth_attachment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

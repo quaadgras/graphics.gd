@@ -3,7 +3,6 @@
 // Package VisibleOnScreenNotifier3D provides methods for working with VisibleOnScreenNotifier3D object instances.
 package VisibleOnScreenNotifier3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -161,7 +159,7 @@ func (self Instance) SetAabb(value AABB.PositionSize) {
 
 //go:nosplit
 func (self class) SetAabb(rect AABB.PositionSize) { //gd:VisibleOnScreenNotifier3D.set_aabb
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aabb, 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ rect AABB.PositionSize }{rect}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aabb, 0|(gdextension.SizeAABB<<4), &struct{ rect AABB.PositionSize }{rect})
 }
 
 /*
@@ -170,7 +168,7 @@ Returns [code]true[/code] if the bounding box is on the screen.
 */
 //go:nosplit
 func (self class) IsOnScreen() bool { //gd:VisibleOnScreenNotifier3D.is_on_screen
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_screen, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_screen, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

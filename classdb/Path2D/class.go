@@ -3,7 +3,6 @@
 // Package Path2D provides methods for working with Path2D object instances.
 package Path2D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -156,12 +154,12 @@ func (self Instance) SetCurve(value Curve2D.Instance) {
 
 //go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve2D) { //gd:Path2D.set_curve
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetCurve() [1]gdclass.Curve2D { //gd:Path2D.get_curve
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve2D](r_ret)}
 	return ret
 }

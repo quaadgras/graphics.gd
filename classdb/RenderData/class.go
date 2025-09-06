@@ -3,7 +3,6 @@
 // Package RenderData provides methods for working with RenderData object instances.
 package RenderData
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -179,7 +177,7 @@ Returns the [RenderSceneBuffers] object managing the scene buffers for rendering
 */
 //go:nosplit
 func (self class) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers { //gd:RenderData.get_render_scene_buffers
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_buffers, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_buffers, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.RenderSceneBuffers{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderSceneBuffers](r_ret)}
 	return ret
 }
@@ -189,7 +187,7 @@ Returns the [RenderSceneData] object managing this frames scene data.
 */
 //go:nosplit
 func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:RenderData.get_render_scene_data
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_data, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_data, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.RenderSceneData{gd.PointerBorrowedTemporarily[gdclass.RenderSceneData](r_ret)}
 	return ret
 }
@@ -199,7 +197,7 @@ Returns the [RID] of the environment object in the [RenderingServer] being used 
 */
 //go:nosplit
 func (self class) GetEnvironment() RID.Any { //gd:RenderData.get_environment
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_environment, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -209,7 +207,7 @@ Returns the [RID] of the camera attributes object in the [RenderingServer] being
 */
 //go:nosplit
 func (self class) GetCameraAttributes() RID.Any { //gd:RenderData.get_camera_attributes
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_camera_attributes, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }

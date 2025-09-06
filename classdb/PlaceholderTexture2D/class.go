@@ -3,7 +3,6 @@
 // Package PlaceholderTexture2D provides methods for working with PlaceholderTexture2D object instances.
 package PlaceholderTexture2D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -154,7 +152,7 @@ func (self Instance) SetSize(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2.XY) { //gd:PlaceholderTexture2D.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
 }
 func (self class) AsPlaceholderTexture2D() Advanced {
 	return Advanced{pointers.AsA[gdclass.PlaceholderTexture2D](self[0])}

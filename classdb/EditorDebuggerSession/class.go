@@ -3,7 +3,6 @@
 // Package EditorDebuggerSession provides methods for working with EditorDebuggerSession object instances.
 package EditorDebuggerSession
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -227,10 +225,10 @@ Sends the given [param message] to the attached remote instance, optionally pass
 */
 //go:nosplit
 func (self class) SendMessage(message String.Readable, data Array.Any) { //gd:EditorDebuggerSession.send_message
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.send_message, 0|(gdextension.SizeString<<4)|(gdextension.SizeArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.send_message, 0|(gdextension.SizeString<<4)|(gdextension.SizeArray<<8), &struct {
 		message gdextension.String
 		data    gdextension.Array
-	}{pointers.Get(gd.InternalString(message)), pointers.Get(gd.InternalArray(data))}))
+	}{pointers.Get(gd.InternalString(message)), pointers.Get(gd.InternalArray(data))})
 }
 
 /*
@@ -238,11 +236,11 @@ Toggle the given [param profiler] on the attached remote instance, optionally pa
 */
 //go:nosplit
 func (self class) ToggleProfiler(profiler String.Readable, enable bool, data Array.Any) { //gd:EditorDebuggerSession.toggle_profiler
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.toggle_profiler, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeArray<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.toggle_profiler, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeArray<<12), &struct {
 		profiler gdextension.String
 		enable   bool
 		data     gdextension.Array
-	}{pointers.Get(gd.InternalString(profiler)), enable, pointers.Get(gd.InternalArray(data))}))
+	}{pointers.Get(gd.InternalString(profiler)), enable, pointers.Get(gd.InternalArray(data))})
 }
 
 /*
@@ -250,7 +248,7 @@ Returns [code]true[/code] if the attached remote instance is currently in the de
 */
 //go:nosplit
 func (self class) IsBreaked() bool { //gd:EditorDebuggerSession.is_breaked
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_breaked, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_breaked, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -260,7 +258,7 @@ Returns [code]true[/code] if the attached remote instance can be debugged.
 */
 //go:nosplit
 func (self class) IsDebuggable() bool { //gd:EditorDebuggerSession.is_debuggable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_debuggable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_debuggable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -270,7 +268,7 @@ Returns [code]true[/code] if the debug session is currently attached to a remote
 */
 //go:nosplit
 func (self class) IsActive() bool { //gd:EditorDebuggerSession.is_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -280,7 +278,7 @@ Adds the given [param control] to the debug session UI in the debugger bottom pa
 */
 //go:nosplit
 func (self class) AddSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.add_session_tab
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_session_tab, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_session_tab, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))})
 }
 
 /*
@@ -288,7 +286,7 @@ Removes the given [param control] from the debug session UI in the debugger bott
 */
 //go:nosplit
 func (self class) RemoveSessionTab(control [1]gdclass.Control) { //gd:EditorDebuggerSession.remove_session_tab
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_session_tab, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_session_tab, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))})
 }
 
 /*
@@ -296,11 +294,11 @@ Enables or disables a specific breakpoint based on [param enabled], updating the
 */
 //go:nosplit
 func (self class) SetBreakpoint(path String.Readable, line int64, enabled bool) { //gd:EditorDebuggerSession.set_breakpoint
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_breakpoint, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_breakpoint, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		path    gdextension.String
 		line    int64
 		enabled bool
-	}{pointers.Get(gd.InternalString(path)), line, enabled}))
+	}{pointers.Get(gd.InternalString(path)), line, enabled})
 }
 func (self Instance) OnStarted(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

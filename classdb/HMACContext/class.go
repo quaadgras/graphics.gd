@@ -3,7 +3,6 @@
 // Package HMACContext provides methods for working with HMACContext object instances.
 package HMACContext
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -217,10 +215,10 @@ Initializes the HMACContext. This method cannot be called again on the same HMAC
 */
 //go:nosplit
 func (self class) Start(hash_type HashingContext.HashType, key Packed.Bytes) Error.Code { //gd:HMACContext.start
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
 		hash_type HashingContext.HashType
 		key       gdextension.PackedArray[byte]
-	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key)))}))
+	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -230,7 +228,7 @@ Updates the message to be HMACed. This can be called multiple times before [meth
 */
 //go:nosplit
 func (self class) Update(data Packed.Bytes) Error.Code { //gd:HMACContext.update
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -240,7 +238,7 @@ Returns the resulting HMAC. If the HMAC failed, an empty [PackedByteArray] is re
 */
 //go:nosplit
 func (self class) Finish() Packed.Bytes { //gd:HMACContext.finish
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }

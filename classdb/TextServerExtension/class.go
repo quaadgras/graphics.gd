@@ -3,7 +3,6 @@
 // Package TextServerExtension provides methods for working with TextServerExtension object instances.
 package TextServerExtension
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -42,7 +41,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -158,7 +156,7 @@ type Interface interface {
 	FontSetData(font_rid RID.Any, data []byte)
 	//[b]Optional.[/b]
 	//Sets pointer to the font source data, e.g contents of the dynamic font source file.
-	FontSetDataPtr(font_rid RID.Any, data_ptr unsafe.Pointer, data_size int)
+	FontSetDataPtr(font_rid RID.Any, data_ptr gdextension.Pointer, data_size int)
 	//[b]Optional.[/b]
 	//Sets an active face index in the TrueType / OpenType collection.
 	FontSetFaceIndex(font_rid RID.Any, face_index int)
@@ -791,7 +789,7 @@ func (self implementation) TagToName(tag int) (_ string)                        
 func (self implementation) CreateFont() (_ RID.Any)                                { return }
 func (self implementation) CreateFontLinkedVariation(font_rid RID.Any) (_ RID.Any) { return }
 func (self implementation) FontSetData(font_rid RID.Any, data []byte)              { return }
-func (self implementation) FontSetDataPtr(font_rid RID.Any, data_ptr unsafe.Pointer, data_size int) {
+func (self implementation) FontSetDataPtr(font_rid RID.Any, data_ptr gdextension.Pointer, data_size int) {
 	return
 }
 func (self implementation) FontSetFaceIndex(font_rid RID.Any, face_index int)         { return }
@@ -1155,10 +1153,10 @@ func (self implementation) Cleanup() { return }
 [b]Required.[/b]
 Returns [code]true[/code] if the server supports a feature.
 */
-func (Instance) _has_feature(impl func(ptr unsafe.Pointer, feature TextServer.Feature) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _has_feature(impl func(ptr gdclass.Receiver, feature TextServer.Feature) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var feature = gd.UnsafeGet[TextServer.Feature](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, feature)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1168,9 +1166,9 @@ func (Instance) _has_feature(impl func(ptr unsafe.Pointer, feature TextServer.Fe
 [b]Required.[/b]
 Returns the name of the server interface.
 */
-func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -1185,9 +1183,9 @@ func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.Extension
 [b]Required.[/b]
 Returns text server features, see [enum TextServer.Feature].
 */
-func (Instance) _get_features(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_features(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -1197,10 +1195,10 @@ func (Instance) _get_features(impl func(ptr unsafe.Pointer) int) (cb gd.Extensio
 [b]Required.[/b]
 Frees an object created by this [TextServer].
 */
-func (Instance) _free_rid(impl func(ptr unsafe.Pointer, rid RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _free_rid(impl func(ptr gdclass.Receiver, rid RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, rid)
 	}
 }
@@ -1209,10 +1207,10 @@ func (Instance) _free_rid(impl func(ptr unsafe.Pointer, rid RID.Any)) (cb gd.Ext
 [b]Required.[/b]
 Returns [code]true[/code] if [param rid] is valid resource owned by this text server.
 */
-func (Instance) _has(impl func(ptr unsafe.Pointer, rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _has(impl func(ptr gdclass.Receiver, rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1222,11 +1220,11 @@ func (Instance) _has(impl func(ptr unsafe.Pointer, rid RID.Any) bool) (cb gd.Ext
 [b]Optional.[/b]
 Loads optional TextServer database (e.g. ICU break iterators and dictionaries).
 */
-func (Instance) _load_support_data(impl func(ptr unsafe.Pointer, filename string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _load_support_data(impl func(ptr gdclass.Receiver, filename string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var filename = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(filename))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, filename.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1236,9 +1234,9 @@ func (Instance) _load_support_data(impl func(ptr unsafe.Pointer, filename string
 [b]Optional.[/b]
 Returns default TextServer database (e.g. ICU break iterators and dictionaries) filename.
 */
-func (Instance) _get_support_data_filename(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_support_data_filename(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -1253,9 +1251,9 @@ func (Instance) _get_support_data_filename(impl func(ptr unsafe.Pointer) string)
 [b]Optional.[/b]
 Returns TextServer database (e.g. ICU break iterators and dictionaries) description.
 */
-func (Instance) _get_support_data_info(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_support_data_info(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -1270,11 +1268,11 @@ func (Instance) _get_support_data_info(impl func(ptr unsafe.Pointer) string) (cb
 [b]Optional.[/b]
 Saves optional TextServer database (e.g. ICU break iterators and dictionaries) to the file.
 */
-func (Instance) _save_support_data(impl func(ptr unsafe.Pointer, filename string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _save_support_data(impl func(ptr gdclass.Receiver, filename string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var filename = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(filename))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, filename.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1284,9 +1282,9 @@ func (Instance) _save_support_data(impl func(ptr unsafe.Pointer, filename string
 [b]Optional.[/b]
 Returns default TextServer database (e.g. ICU break iterators and dictionaries).
 */
-func (Instance) _get_support_data(impl func(ptr unsafe.Pointer) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_support_data(impl func(ptr gdclass.Receiver) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.Bytes(Packed.New(ret...)))))
 
@@ -1301,11 +1299,11 @@ func (Instance) _get_support_data(impl func(ptr unsafe.Pointer) []byte) (cb gd.E
 [b]Required.[/b]
 Returns [code]true[/code] if locale is right-to-left.
 */
-func (Instance) _is_locale_right_to_left(impl func(ptr unsafe.Pointer, locale string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_locale_right_to_left(impl func(ptr gdclass.Receiver, locale string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var locale = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(locale))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, locale.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1315,11 +1313,11 @@ func (Instance) _is_locale_right_to_left(impl func(ptr unsafe.Pointer, locale st
 [b]Optional.[/b]
 Converts readable feature, variation, script, or language name to OpenType tag.
 */
-func (Instance) _name_to_tag(impl func(ptr unsafe.Pointer, name string) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _name_to_tag(impl func(ptr gdclass.Receiver, name string) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(name))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, name.String())
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -1329,10 +1327,10 @@ func (Instance) _name_to_tag(impl func(ptr unsafe.Pointer, name string) int) (cb
 [b]Optional.[/b]
 Converts OpenType tag to readable feature, variation, script, or language name.
 */
-func (Instance) _tag_to_name(impl func(ptr unsafe.Pointer, tag int) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _tag_to_name(impl func(ptr gdclass.Receiver, tag int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var tag = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(tag))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -1347,9 +1345,9 @@ func (Instance) _tag_to_name(impl func(ptr unsafe.Pointer, tag int) string) (cb 
 [b]Required.[/b]
 Creates a new, empty font cache entry resource.
 */
-func (Instance) _create_font(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _create_font(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -1359,10 +1357,10 @@ func (Instance) _create_font(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.Exten
 Optional, implement if font supports extra spacing or baseline offset.
 Creates a new variation existing font which is reusing the same glyph cache and font data.
 */
-func (Instance) _create_font_linked_variation(impl func(ptr unsafe.Pointer, font_rid RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _create_font_linked_variation(impl func(ptr gdclass.Receiver, font_rid RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -1372,12 +1370,12 @@ func (Instance) _create_font_linked_variation(impl func(ptr unsafe.Pointer, font
 [b]Optional.[/b]
 Sets font source data, e.g contents of the dynamic font source file.
 */
-func (Instance) _font_set_data(impl func(ptr unsafe.Pointer, font_rid RID.Any, data []byte)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_data(impl func(ptr gdclass.Receiver, font_rid RID.Any, data []byte)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var data = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, data.Bytes())
 	}
 }
@@ -1386,12 +1384,12 @@ func (Instance) _font_set_data(impl func(ptr unsafe.Pointer, font_rid RID.Any, d
 [b]Optional.[/b]
 Sets pointer to the font source data, e.g contents of the dynamic font source file.
 */
-func (Instance) _font_set_data_ptr(impl func(ptr unsafe.Pointer, font_rid RID.Any, data_ptr unsafe.Pointer, data_size int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_data_ptr(impl func(ptr gdclass.Receiver, font_rid RID.Any, data_ptr gdextension.Pointer, data_size int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		var data_ptr = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
+		var data_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
 		var data_size = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, data_ptr, int(data_size))
 	}
 }
@@ -1400,11 +1398,11 @@ func (Instance) _font_set_data_ptr(impl func(ptr unsafe.Pointer, font_rid RID.An
 [b]Optional.[/b]
 Sets an active face index in the TrueType / OpenType collection.
 */
-func (Instance) _font_set_face_index(impl func(ptr unsafe.Pointer, font_rid RID.Any, face_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_face_index(impl func(ptr gdclass.Receiver, font_rid RID.Any, face_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var face_index = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(face_index))
 	}
 }
@@ -1413,10 +1411,10 @@ func (Instance) _font_set_face_index(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Optional.[/b]
 Returns an active face index in the TrueType / OpenType collection.
 */
-func (Instance) _font_get_face_index(impl func(ptr unsafe.Pointer, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_face_index(impl func(ptr gdclass.Receiver, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -1426,10 +1424,10 @@ func (Instance) _font_get_face_index(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Optional.[/b]
 Returns number of faces in the TrueType / OpenType collection.
 */
-func (Instance) _font_get_face_count(impl func(ptr unsafe.Pointer, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_face_count(impl func(ptr gdclass.Receiver, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -1439,11 +1437,11 @@ func (Instance) _font_get_face_count(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Optional.[/b]
 Sets the font style flags, see [enum TextServer.FontStyle].
 */
-func (Instance) _font_set_style(impl func(ptr unsafe.Pointer, font_rid RID.Any, style TextServer.FontStyle)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_style(impl func(ptr gdclass.Receiver, font_rid RID.Any, style TextServer.FontStyle)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var style = gd.UnsafeGet[TextServer.FontStyle](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, style)
 	}
 }
@@ -1452,10 +1450,10 @@ func (Instance) _font_set_style(impl func(ptr unsafe.Pointer, font_rid RID.Any, 
 [b]Optional.[/b]
 Returns font style flags, see [enum TextServer.FontStyle].
 */
-func (Instance) _font_get_style(impl func(ptr unsafe.Pointer, font_rid RID.Any) TextServer.FontStyle) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_style(impl func(ptr gdclass.Receiver, font_rid RID.Any) TextServer.FontStyle) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1465,12 +1463,12 @@ func (Instance) _font_get_style(impl func(ptr unsafe.Pointer, font_rid RID.Any) 
 [b]Optional.[/b]
 Sets the font family name.
 */
-func (Instance) _font_set_name(impl func(ptr unsafe.Pointer, font_rid RID.Any, name string)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_name(impl func(ptr gdclass.Receiver, font_rid RID.Any, name string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(name))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, name.String())
 	}
 }
@@ -1479,10 +1477,10 @@ func (Instance) _font_set_name(impl func(ptr unsafe.Pointer, font_rid RID.Any, n
 [b]Optional.[/b]
 Returns font family name.
 */
-func (Instance) _font_get_name(impl func(ptr unsafe.Pointer, font_rid RID.Any) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_name(impl func(ptr gdclass.Receiver, font_rid RID.Any) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -1497,10 +1495,10 @@ func (Instance) _font_get_name(impl func(ptr unsafe.Pointer, font_rid RID.Any) s
 [b]Optional.[/b]
 Returns [Dictionary] with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
 */
-func (Instance) _font_get_ot_name_strings(impl func(ptr unsafe.Pointer, font_rid RID.Any) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_ot_name_strings(impl func(ptr gdclass.Receiver, font_rid RID.Any) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -1515,12 +1513,12 @@ func (Instance) _font_get_ot_name_strings(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Sets the font style name.
 */
-func (Instance) _font_set_style_name(impl func(ptr unsafe.Pointer, font_rid RID.Any, name_style string)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_style_name(impl func(ptr gdclass.Receiver, font_rid RID.Any, name_style string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var name_style = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(name_style))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, name_style.String())
 	}
 }
@@ -1529,10 +1527,10 @@ func (Instance) _font_set_style_name(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Optional.[/b]
 Returns font style name.
 */
-func (Instance) _font_get_style_name(impl func(ptr unsafe.Pointer, font_rid RID.Any) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_style_name(impl func(ptr gdclass.Receiver, font_rid RID.Any) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -1547,11 +1545,11 @@ func (Instance) _font_get_style_name(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Optional.[/b]
 Sets weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
 */
-func (Instance) _font_set_weight(impl func(ptr unsafe.Pointer, font_rid RID.Any, weight int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_weight(impl func(ptr gdclass.Receiver, font_rid RID.Any, weight int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var weight = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(weight))
 	}
 }
@@ -1560,10 +1558,10 @@ func (Instance) _font_set_weight(impl func(ptr unsafe.Pointer, font_rid RID.Any,
 [b]Optional.[/b]
 Returns weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
 */
-func (Instance) _font_get_weight(impl func(ptr unsafe.Pointer, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_weight(impl func(ptr gdclass.Receiver, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -1573,11 +1571,11 @@ func (Instance) _font_get_weight(impl func(ptr unsafe.Pointer, font_rid RID.Any)
 [b]Optional.[/b]
 Sets font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
 */
-func (Instance) _font_set_stretch(impl func(ptr unsafe.Pointer, font_rid RID.Any, stretch int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_stretch(impl func(ptr gdclass.Receiver, font_rid RID.Any, stretch int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var stretch = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(stretch))
 	}
 }
@@ -1586,10 +1584,10 @@ func (Instance) _font_set_stretch(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Optional.[/b]
 Returns font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
 */
-func (Instance) _font_get_stretch(impl func(ptr unsafe.Pointer, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_stretch(impl func(ptr gdclass.Receiver, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -1599,11 +1597,11 @@ func (Instance) _font_get_stretch(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Optional.[/b]
 Sets font anti-aliasing mode.
 */
-func (Instance) _font_set_antialiasing(impl func(ptr unsafe.Pointer, font_rid RID.Any, antialiasing TextServer.FontAntialiasing)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_antialiasing(impl func(ptr gdclass.Receiver, font_rid RID.Any, antialiasing TextServer.FontAntialiasing)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var antialiasing = gd.UnsafeGet[TextServer.FontAntialiasing](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, antialiasing)
 	}
 }
@@ -1612,10 +1610,10 @@ func (Instance) _font_set_antialiasing(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Optional.[/b]
 Returns font anti-aliasing mode.
 */
-func (Instance) _font_get_antialiasing(impl func(ptr unsafe.Pointer, font_rid RID.Any) TextServer.FontAntialiasing) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_antialiasing(impl func(ptr gdclass.Receiver, font_rid RID.Any) TextServer.FontAntialiasing) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1625,11 +1623,11 @@ func (Instance) _font_get_antialiasing(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Optional.[/b]
 If set to [code]true[/code], embedded font bitmap loading is disabled.
 */
-func (Instance) _font_set_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer, font_rid RID.Any, disable_embedded_bitmaps bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_disable_embedded_bitmaps(impl func(ptr gdclass.Receiver, font_rid RID.Any, disable_embedded_bitmaps bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var disable_embedded_bitmaps = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, disable_embedded_bitmaps)
 	}
 }
@@ -1638,10 +1636,10 @@ func (Instance) _font_set_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer,
 [b]Optional.[/b]
 Returns whether the font's embedded bitmap loading is disabled.
 */
-func (Instance) _font_get_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_disable_embedded_bitmaps(impl func(ptr gdclass.Receiver, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1651,11 +1649,11 @@ func (Instance) _font_get_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer,
 [b]Optional.[/b]
 If set to [code]true[/code] font texture mipmap generation is enabled.
 */
-func (Instance) _font_set_generate_mipmaps(impl func(ptr unsafe.Pointer, font_rid RID.Any, generate_mipmaps bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_generate_mipmaps(impl func(ptr gdclass.Receiver, font_rid RID.Any, generate_mipmaps bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var generate_mipmaps = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, generate_mipmaps)
 	}
 }
@@ -1664,10 +1662,10 @@ func (Instance) _font_set_generate_mipmaps(impl func(ptr unsafe.Pointer, font_ri
 [b]Optional.[/b]
 Returns [code]true[/code] if font texture mipmap generation is enabled.
 */
-func (Instance) _font_get_generate_mipmaps(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_generate_mipmaps(impl func(ptr gdclass.Receiver, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1677,11 +1675,11 @@ func (Instance) _font_get_generate_mipmaps(impl func(ptr unsafe.Pointer, font_ri
 [b]Optional.[/b]
 If set to [code]true[/code], glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data. MSDF rendering allows displaying the font at any scaling factor without blurriness, and without incurring a CPU cost when the font size changes (since the font no longer needs to be rasterized on the CPU). As a downside, font hinting is not available with MSDF. The lack of font hinting may result in less crisp and less readable fonts at small sizes.
 */
-func (Instance) _font_set_multichannel_signed_distance_field(impl func(ptr unsafe.Pointer, font_rid RID.Any, msdf bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_multichannel_signed_distance_field(impl func(ptr gdclass.Receiver, font_rid RID.Any, msdf bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var msdf = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, msdf)
 	}
 }
@@ -1690,10 +1688,10 @@ func (Instance) _font_set_multichannel_signed_distance_field(impl func(ptr unsaf
 [b]Optional.[/b]
 Returns [code]true[/code] if glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data.
 */
-func (Instance) _font_is_multichannel_signed_distance_field(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_is_multichannel_signed_distance_field(impl func(ptr gdclass.Receiver, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1703,11 +1701,11 @@ func (Instance) _font_is_multichannel_signed_distance_field(impl func(ptr unsafe
 [b]Optional.[/b]
 Sets the width of the range around the shape between the minimum and maximum representable signed distance.
 */
-func (Instance) _font_set_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_rid RID.Any, msdf_pixel_range int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_msdf_pixel_range(impl func(ptr gdclass.Receiver, font_rid RID.Any, msdf_pixel_range int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var msdf_pixel_range = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(msdf_pixel_range))
 	}
 }
@@ -1716,10 +1714,10 @@ func (Instance) _font_set_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_ri
 [b]Optional.[/b]
 Returns the width of the range around the shape between the minimum and maximum representable signed distance.
 */
-func (Instance) _font_get_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_msdf_pixel_range(impl func(ptr gdclass.Receiver, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -1729,11 +1727,11 @@ func (Instance) _font_get_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_ri
 [b]Optional.[/b]
 Sets source font size used to generate MSDF textures.
 */
-func (Instance) _font_set_msdf_size(impl func(ptr unsafe.Pointer, font_rid RID.Any, msdf_size int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_msdf_size(impl func(ptr gdclass.Receiver, font_rid RID.Any, msdf_size int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var msdf_size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(msdf_size))
 	}
 }
@@ -1742,10 +1740,10 @@ func (Instance) _font_set_msdf_size(impl func(ptr unsafe.Pointer, font_rid RID.A
 [b]Optional.[/b]
 Returns source font size used to generate MSDF textures.
 */
-func (Instance) _font_get_msdf_size(impl func(ptr unsafe.Pointer, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_msdf_size(impl func(ptr gdclass.Receiver, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -1755,11 +1753,11 @@ func (Instance) _font_get_msdf_size(impl func(ptr unsafe.Pointer, font_rid RID.A
 [b]Required.[/b]
 Sets bitmap font fixed size. If set to value greater than zero, same cache entry will be used for all font sizes.
 */
-func (Instance) _font_set_fixed_size(impl func(ptr unsafe.Pointer, font_rid RID.Any, fixed_size int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_fixed_size(impl func(ptr gdclass.Receiver, font_rid RID.Any, fixed_size int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var fixed_size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(fixed_size))
 	}
 }
@@ -1768,10 +1766,10 @@ func (Instance) _font_set_fixed_size(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Returns bitmap font fixed size.
 */
-func (Instance) _font_get_fixed_size(impl func(ptr unsafe.Pointer, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_fixed_size(impl func(ptr gdclass.Receiver, font_rid RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -1781,11 +1779,11 @@ func (Instance) _font_get_fixed_size(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Sets bitmap font scaling mode. This property is used only if [code]fixed_size[/code] is greater than zero.
 */
-func (Instance) _font_set_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, font_rid RID.Any, fixed_size_scale_mode TextServer.FixedSizeScaleMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_fixed_size_scale_mode(impl func(ptr gdclass.Receiver, font_rid RID.Any, fixed_size_scale_mode TextServer.FixedSizeScaleMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var fixed_size_scale_mode = gd.UnsafeGet[TextServer.FixedSizeScaleMode](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, fixed_size_scale_mode)
 	}
 }
@@ -1794,10 +1792,10 @@ func (Instance) _font_set_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, fo
 [b]Required.[/b]
 Returns bitmap font scaling mode.
 */
-func (Instance) _font_get_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, font_rid RID.Any) TextServer.FixedSizeScaleMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_fixed_size_scale_mode(impl func(ptr gdclass.Receiver, font_rid RID.Any) TextServer.FixedSizeScaleMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1807,11 +1805,11 @@ func (Instance) _font_get_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, fo
 [b]Optional.[/b]
 If set to [code]true[/code], system fonts can be automatically used as fallbacks.
 */
-func (Instance) _font_set_allow_system_fallback(impl func(ptr unsafe.Pointer, font_rid RID.Any, allow_system_fallback bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_allow_system_fallback(impl func(ptr gdclass.Receiver, font_rid RID.Any, allow_system_fallback bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var allow_system_fallback = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, allow_system_fallback)
 	}
 }
@@ -1820,10 +1818,10 @@ func (Instance) _font_set_allow_system_fallback(impl func(ptr unsafe.Pointer, fo
 [b]Optional.[/b]
 Returns [code]true[/code] if system fonts can be automatically used as fallbacks.
 */
-func (Instance) _font_is_allow_system_fallback(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_is_allow_system_fallback(impl func(ptr gdclass.Receiver, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1833,11 +1831,11 @@ func (Instance) _font_is_allow_system_fallback(impl func(ptr unsafe.Pointer, fon
 [b]Optional.[/b]
 If set to [code]true[/code] auto-hinting is preferred over font built-in hinting.
 */
-func (Instance) _font_set_force_autohinter(impl func(ptr unsafe.Pointer, font_rid RID.Any, force_autohinter bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_force_autohinter(impl func(ptr gdclass.Receiver, font_rid RID.Any, force_autohinter bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var force_autohinter = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, force_autohinter)
 	}
 }
@@ -1846,10 +1844,10 @@ func (Instance) _font_set_force_autohinter(impl func(ptr unsafe.Pointer, font_ri
 [b]Optional.[/b]
 Returns [code]true[/code] if auto-hinting is supported and preferred over font built-in hinting.
 */
-func (Instance) _font_is_force_autohinter(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_is_force_autohinter(impl func(ptr gdclass.Receiver, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1859,11 +1857,11 @@ func (Instance) _font_is_force_autohinter(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Sets font hinting mode. Used by dynamic fonts only.
 */
-func (Instance) _font_set_hinting(impl func(ptr unsafe.Pointer, font_rid RID.Any, hinting TextServer.Hinting)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_hinting(impl func(ptr gdclass.Receiver, font_rid RID.Any, hinting TextServer.Hinting)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var hinting = gd.UnsafeGet[TextServer.Hinting](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, hinting)
 	}
 }
@@ -1872,10 +1870,10 @@ func (Instance) _font_set_hinting(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Optional.[/b]
 Returns the font hinting mode. Used by dynamic fonts only.
 */
-func (Instance) _font_get_hinting(impl func(ptr unsafe.Pointer, font_rid RID.Any) TextServer.Hinting) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_hinting(impl func(ptr gdclass.Receiver, font_rid RID.Any) TextServer.Hinting) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1885,11 +1883,11 @@ func (Instance) _font_get_hinting(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Optional.[/b]
 Sets font subpixel glyph positioning mode.
 */
-func (Instance) _font_set_subpixel_positioning(impl func(ptr unsafe.Pointer, font_rid RID.Any, subpixel_positioning TextServer.SubpixelPositioning)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_subpixel_positioning(impl func(ptr gdclass.Receiver, font_rid RID.Any, subpixel_positioning TextServer.SubpixelPositioning)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var subpixel_positioning = gd.UnsafeGet[TextServer.SubpixelPositioning](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, subpixel_positioning)
 	}
 }
@@ -1898,10 +1896,10 @@ func (Instance) _font_set_subpixel_positioning(impl func(ptr unsafe.Pointer, fon
 [b]Optional.[/b]
 Returns font subpixel glyph positioning mode.
 */
-func (Instance) _font_get_subpixel_positioning(impl func(ptr unsafe.Pointer, font_rid RID.Any) TextServer.SubpixelPositioning) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_subpixel_positioning(impl func(ptr gdclass.Receiver, font_rid RID.Any) TextServer.SubpixelPositioning) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1911,11 +1909,11 @@ func (Instance) _font_get_subpixel_positioning(impl func(ptr unsafe.Pointer, fon
 [b]Optional.[/b]
 Sets glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
 */
-func (Instance) _font_set_keep_rounding_remainders(impl func(ptr unsafe.Pointer, font_rid RID.Any, keep_rounding_remainders bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_keep_rounding_remainders(impl func(ptr gdclass.Receiver, font_rid RID.Any, keep_rounding_remainders bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var keep_rounding_remainders = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, keep_rounding_remainders)
 	}
 }
@@ -1924,10 +1922,10 @@ func (Instance) _font_set_keep_rounding_remainders(impl func(ptr unsafe.Pointer,
 [b]Optional.[/b]
 Returns glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
 */
-func (Instance) _font_get_keep_rounding_remainders(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_keep_rounding_remainders(impl func(ptr gdclass.Receiver, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1936,11 +1934,11 @@ func (Instance) _font_get_keep_rounding_remainders(impl func(ptr unsafe.Pointer,
 /*
 Sets font embolden strength. If [param strength] is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
 */
-func (Instance) _font_set_embolden(impl func(ptr unsafe.Pointer, font_rid RID.Any, strength Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_embolden(impl func(ptr gdclass.Receiver, font_rid RID.Any, strength Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var strength = gd.UnsafeGet[float64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, Float.X(strength))
 	}
 }
@@ -1949,10 +1947,10 @@ func (Instance) _font_set_embolden(impl func(ptr unsafe.Pointer, font_rid RID.An
 [b]Optional.[/b]
 Returns font embolden strength.
 */
-func (Instance) _font_get_embolden(impl func(ptr unsafe.Pointer, font_rid RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_embolden(impl func(ptr gdclass.Receiver, font_rid RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -1962,12 +1960,12 @@ func (Instance) _font_get_embolden(impl func(ptr unsafe.Pointer, font_rid RID.An
 [b]Optional.[/b]
 Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [param value] in pixels (not relative to the font size).
 */
-func (Instance) _font_set_spacing(impl func(ptr unsafe.Pointer, font_rid RID.Any, spacing TextServer.SpacingType, value int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_spacing(impl func(ptr gdclass.Receiver, font_rid RID.Any, spacing TextServer.SpacingType, value int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var spacing = gd.UnsafeGet[TextServer.SpacingType](p_args, 1)
 		var value = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, spacing, int(value))
 	}
 }
@@ -1976,11 +1974,11 @@ func (Instance) _font_set_spacing(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Optional.[/b]
 Returns the spacing for [param spacing] (see [enum TextServer.SpacingType]) in pixels (not relative to the font size).
 */
-func (Instance) _font_get_spacing(impl func(ptr unsafe.Pointer, font_rid RID.Any, spacing TextServer.SpacingType) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_spacing(impl func(ptr gdclass.Receiver, font_rid RID.Any, spacing TextServer.SpacingType) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var spacing = gd.UnsafeGet[TextServer.SpacingType](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, spacing)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -1990,11 +1988,11 @@ func (Instance) _font_get_spacing(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Optional.[/b]
 Sets extra baseline offset (as a fraction of font height).
 */
-func (Instance) _font_set_baseline_offset(impl func(ptr unsafe.Pointer, font_rid RID.Any, baseline_offset Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_baseline_offset(impl func(ptr gdclass.Receiver, font_rid RID.Any, baseline_offset Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var baseline_offset = gd.UnsafeGet[float64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, Float.X(baseline_offset))
 	}
 }
@@ -2003,10 +2001,10 @@ func (Instance) _font_set_baseline_offset(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Returns extra baseline offset (as a fraction of font height).
 */
-func (Instance) _font_get_baseline_offset(impl func(ptr unsafe.Pointer, font_rid RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_baseline_offset(impl func(ptr gdclass.Receiver, font_rid RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -2016,11 +2014,11 @@ func (Instance) _font_get_baseline_offset(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Sets 2D transform, applied to the font outlines, can be used for slanting, flipping, and rotating glyphs.
 */
-func (Instance) _font_set_transform(impl func(ptr unsafe.Pointer, font_rid RID.Any, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_transform(impl func(ptr gdclass.Receiver, font_rid RID.Any, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, transform)
 	}
 }
@@ -2029,10 +2027,10 @@ func (Instance) _font_set_transform(impl func(ptr unsafe.Pointer, font_rid RID.A
 [b]Optional.[/b]
 Returns 2D transform applied to the font outlines.
 */
-func (Instance) _font_get_transform(impl func(ptr unsafe.Pointer, font_rid RID.Any) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_transform(impl func(ptr gdclass.Receiver, font_rid RID.Any) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, Transform2D.OriginXY(ret))
 	}
@@ -2042,12 +2040,12 @@ func (Instance) _font_get_transform(impl func(ptr unsafe.Pointer, font_rid RID.A
 [b]Optional.[/b]
 Sets variation coordinates for the specified font cache entry.
 */
-func (Instance) _font_set_variation_coordinates(impl func(ptr unsafe.Pointer, font_rid RID.Any, variation_coordinates map[any]any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_variation_coordinates(impl func(ptr gdclass.Receiver, font_rid RID.Any, variation_coordinates map[any]any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var variation_coordinates = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(variation_coordinates))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, gd.DictionaryAs[map[any]any](variation_coordinates))
 	}
 }
@@ -2056,10 +2054,10 @@ func (Instance) _font_set_variation_coordinates(impl func(ptr unsafe.Pointer, fo
 [b]Optional.[/b]
 Returns variation coordinates for the specified font cache entry.
 */
-func (Instance) _font_get_variation_coordinates(impl func(ptr unsafe.Pointer, font_rid RID.Any) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_variation_coordinates(impl func(ptr gdclass.Receiver, font_rid RID.Any) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -2074,11 +2072,11 @@ func (Instance) _font_get_variation_coordinates(impl func(ptr unsafe.Pointer, fo
 [b]Optional.[/b]
 Sets font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
 */
-func (Instance) _font_set_oversampling(impl func(ptr unsafe.Pointer, font_rid RID.Any, oversampling Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_oversampling(impl func(ptr gdclass.Receiver, font_rid RID.Any, oversampling Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var oversampling = gd.UnsafeGet[float64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, Float.X(oversampling))
 	}
 }
@@ -2087,10 +2085,10 @@ func (Instance) _font_set_oversampling(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Optional.[/b]
 Returns font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
 */
-func (Instance) _font_get_oversampling(impl func(ptr unsafe.Pointer, font_rid RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_oversampling(impl func(ptr gdclass.Receiver, font_rid RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -2100,10 +2098,10 @@ func (Instance) _font_get_oversampling(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Required.[/b]
 Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
 */
-func (Instance) _font_get_size_cache_list(impl func(ptr unsafe.Pointer, font_rid RID.Any) []Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_size_cache_list(impl func(ptr gdclass.Receiver, font_rid RID.Any) []Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](ret)))
 
@@ -2118,10 +2116,10 @@ func (Instance) _font_get_size_cache_list(impl func(ptr unsafe.Pointer, font_rid
 [b]Required.[/b]
 Removes all font sizes from the cache entry.
 */
-func (Instance) _font_clear_size_cache(impl func(ptr unsafe.Pointer, font_rid RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_clear_size_cache(impl func(ptr gdclass.Receiver, font_rid RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid)
 	}
 }
@@ -2130,11 +2128,11 @@ func (Instance) _font_clear_size_cache(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Required.[/b]
 Removes specified font size from the cache entry.
 */
-func (Instance) _font_remove_size_cache(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_remove_size_cache(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size)
 	}
 }
@@ -2143,12 +2141,12 @@ func (Instance) _font_remove_size_cache(impl func(ptr unsafe.Pointer, font_rid R
 [b]Required.[/b]
 Sets the font ascent (number of pixels above the baseline).
 */
-func (Instance) _font_set_ascent(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int, ascent Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_ascent(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int, ascent Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var ascent = gd.UnsafeGet[float64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(size), Float.X(ascent))
 	}
 }
@@ -2157,11 +2155,11 @@ func (Instance) _font_set_ascent(impl func(ptr unsafe.Pointer, font_rid RID.Any,
 [b]Required.[/b]
 Returns the font ascent (number of pixels above the baseline).
 */
-func (Instance) _font_get_ascent(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_ascent(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, int(size))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -2171,12 +2169,12 @@ func (Instance) _font_get_ascent(impl func(ptr unsafe.Pointer, font_rid RID.Any,
 [b]Required.[/b]
 Sets the font descent (number of pixels below the baseline).
 */
-func (Instance) _font_set_descent(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int, descent Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_descent(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int, descent Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var descent = gd.UnsafeGet[float64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(size), Float.X(descent))
 	}
 }
@@ -2185,11 +2183,11 @@ func (Instance) _font_set_descent(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Required.[/b]
 Returns the font descent (number of pixels below the baseline).
 */
-func (Instance) _font_get_descent(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_descent(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, int(size))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -2199,12 +2197,12 @@ func (Instance) _font_get_descent(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Required.[/b]
 Sets pixel offset of the underline below the baseline.
 */
-func (Instance) _font_set_underline_position(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int, underline_position Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_underline_position(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int, underline_position Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var underline_position = gd.UnsafeGet[float64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(size), Float.X(underline_position))
 	}
 }
@@ -2213,11 +2211,11 @@ func (Instance) _font_set_underline_position(impl func(ptr unsafe.Pointer, font_
 [b]Required.[/b]
 Returns pixel offset of the underline below the baseline.
 */
-func (Instance) _font_get_underline_position(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_underline_position(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, int(size))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -2227,12 +2225,12 @@ func (Instance) _font_get_underline_position(impl func(ptr unsafe.Pointer, font_
 [b]Required.[/b]
 Sets thickness of the underline in pixels.
 */
-func (Instance) _font_set_underline_thickness(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int, underline_thickness Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_underline_thickness(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int, underline_thickness Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var underline_thickness = gd.UnsafeGet[float64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(size), Float.X(underline_thickness))
 	}
 }
@@ -2241,11 +2239,11 @@ func (Instance) _font_set_underline_thickness(impl func(ptr unsafe.Pointer, font
 [b]Required.[/b]
 Returns thickness of the underline in pixels.
 */
-func (Instance) _font_get_underline_thickness(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_underline_thickness(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, int(size))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -2255,12 +2253,12 @@ func (Instance) _font_get_underline_thickness(impl func(ptr unsafe.Pointer, font
 [b]Required.[/b]
 Sets scaling factor of the color bitmap font.
 */
-func (Instance) _font_set_scale(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int, scale Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_scale(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int, scale Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var scale = gd.UnsafeGet[float64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(size), Float.X(scale))
 	}
 }
@@ -2269,11 +2267,11 @@ func (Instance) _font_set_scale(impl func(ptr unsafe.Pointer, font_rid RID.Any, 
 [b]Required.[/b]
 Returns scaling factor of the color bitmap font.
 */
-func (Instance) _font_get_scale(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_scale(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, int(size))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -2283,11 +2281,11 @@ func (Instance) _font_get_scale(impl func(ptr unsafe.Pointer, font_rid RID.Any, 
 [b]Required.[/b]
 Returns number of textures used by font cache entry.
 */
-func (Instance) _font_get_texture_count(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_texture_count(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -2297,11 +2295,11 @@ func (Instance) _font_get_texture_count(impl func(ptr unsafe.Pointer, font_rid R
 [b]Required.[/b]
 Removes all textures from font cache entry.
 */
-func (Instance) _font_clear_textures(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_clear_textures(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size)
 	}
 }
@@ -2310,12 +2308,12 @@ func (Instance) _font_clear_textures(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Removes specified texture from the cache entry.
 */
-func (Instance) _font_remove_texture(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_remove_texture(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, texture_index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var texture_index = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, int(texture_index))
 	}
 }
@@ -2324,7 +2322,7 @@ func (Instance) _font_remove_texture(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Sets font cache texture image data.
 */
-func (Instance) _font_set_texture_image(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int, image Image.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_texture_image(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, texture_index int, image Image.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
@@ -2332,7 +2330,7 @@ func (Instance) _font_set_texture_image(impl func(ptr unsafe.Pointer, font_rid R
 		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))})}
 
 		defer pointers.End(image[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, int(texture_index), image)
 	}
 }
@@ -2341,12 +2339,12 @@ func (Instance) _font_set_texture_image(impl func(ptr unsafe.Pointer, font_rid R
 [b]Required.[/b]
 Returns font cache texture image data.
 */
-func (Instance) _font_get_texture_image(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int) Image.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_texture_image(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, texture_index int) Image.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var texture_index = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, int(texture_index))
 		ptr, ok := pointers.End(ret[0])
 
@@ -2361,14 +2359,14 @@ func (Instance) _font_get_texture_image(impl func(ptr unsafe.Pointer, font_rid R
 [b]Optional.[/b]
 Sets array containing glyph packing data.
 */
-func (Instance) _font_set_texture_offsets(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int, offset []int32)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_texture_offsets(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, texture_index int, offset []int32)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var texture_index = gd.UnsafeGet[int64](p_args, 2)
 		var offset = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](offset))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, int(texture_index), slices.Collect(offset.Values()))
 	}
 }
@@ -2377,12 +2375,12 @@ func (Instance) _font_set_texture_offsets(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Returns array containing glyph packing data.
 */
-func (Instance) _font_get_texture_offsets(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_texture_offsets(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, texture_index int) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var texture_index = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, int(texture_index))
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
@@ -2397,11 +2395,11 @@ func (Instance) _font_get_texture_offsets(impl func(ptr unsafe.Pointer, font_rid
 [b]Required.[/b]
 Returns list of rendered glyphs in the cache entry.
 */
-func (Instance) _font_get_glyph_list(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_list(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
@@ -2416,11 +2414,11 @@ func (Instance) _font_get_glyph_list(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Removes all rendered glyph information from the cache entry.
 */
-func (Instance) _font_clear_glyphs(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_clear_glyphs(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size)
 	}
 }
@@ -2429,12 +2427,12 @@ func (Instance) _font_clear_glyphs(impl func(ptr unsafe.Pointer, font_rid RID.An
 [b]Required.[/b]
 Removes specified rendered glyph information from the cache entry.
 */
-func (Instance) _font_remove_glyph(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_remove_glyph(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, int(glyph))
 	}
 }
@@ -2443,12 +2441,12 @@ func (Instance) _font_remove_glyph(impl func(ptr unsafe.Pointer, font_rid RID.An
 [b]Required.[/b]
 Returns glyph advance (offset of the next glyph).
 */
-func (Instance) _font_get_glyph_advance(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int, glyph int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_advance(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int, glyph int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, int(size), int(glyph))
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
@@ -2458,13 +2456,13 @@ func (Instance) _font_get_glyph_advance(impl func(ptr unsafe.Pointer, font_rid R
 [b]Required.[/b]
 Sets glyph advance (offset of the next glyph).
 */
-func (Instance) _font_set_glyph_advance(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int, glyph int, advance Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_glyph_advance(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int, glyph int, advance Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var advance = gd.UnsafeGet[Vector2.XY](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(size), int(glyph), advance)
 	}
 }
@@ -2473,12 +2471,12 @@ func (Instance) _font_set_glyph_advance(impl func(ptr unsafe.Pointer, font_rid R
 [b]Required.[/b]
 Returns glyph offset from the baseline.
 */
-func (Instance) _font_get_glyph_offset(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_offset(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, int(glyph))
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
@@ -2488,13 +2486,13 @@ func (Instance) _font_get_glyph_offset(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Required.[/b]
 Sets glyph offset from the baseline.
 */
-func (Instance) _font_set_glyph_offset(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int, offset Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_glyph_offset(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int, offset Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var offset = gd.UnsafeGet[Vector2.XY](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, int(glyph), offset)
 	}
 }
@@ -2503,12 +2501,12 @@ func (Instance) _font_set_glyph_offset(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Required.[/b]
 Returns size of the glyph.
 */
-func (Instance) _font_get_glyph_size(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_size(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, int(glyph))
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
@@ -2518,13 +2516,13 @@ func (Instance) _font_get_glyph_size(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Sets size of the glyph.
 */
-func (Instance) _font_set_glyph_size(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int, gl_size Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_glyph_size(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int, gl_size Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var gl_size = gd.UnsafeGet[Vector2.XY](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, int(glyph), gl_size)
 	}
 }
@@ -2533,12 +2531,12 @@ func (Instance) _font_set_glyph_size(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Returns rectangle in the cache texture containing the glyph.
 */
-func (Instance) _font_get_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_uv_rect(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, int(glyph))
 		gd.UnsafeSet(p_back, Rect2.PositionSize(ret))
 	}
@@ -2548,13 +2546,13 @@ func (Instance) _font_get_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid R
 [b]Required.[/b]
 Sets rectangle in the cache texture containing the glyph.
 */
-func (Instance) _font_set_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int, uv_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_glyph_uv_rect(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int, uv_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var uv_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, int(glyph), uv_rect)
 	}
 }
@@ -2563,12 +2561,12 @@ func (Instance) _font_set_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid R
 [b]Required.[/b]
 Returns index of the cache texture containing the glyph.
 */
-func (Instance) _font_get_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_texture_idx(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, int(glyph))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -2578,13 +2576,13 @@ func (Instance) _font_get_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_r
 [b]Required.[/b]
 Sets index of the cache texture containing the glyph.
 */
-func (Instance) _font_set_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int, texture_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_glyph_texture_idx(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int, texture_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var texture_idx = gd.UnsafeGet[int64](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, int(glyph), int(texture_idx))
 	}
 }
@@ -2593,12 +2591,12 @@ func (Instance) _font_set_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_r
 [b]Required.[/b]
 Returns resource ID of the cache texture containing the glyph.
 */
-func (Instance) _font_get_glyph_texture_rid(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_texture_rid(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, int(glyph))
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -2608,12 +2606,12 @@ func (Instance) _font_get_glyph_texture_rid(impl func(ptr unsafe.Pointer, font_r
 [b]Required.[/b]
 Returns size of the cache texture containing the glyph.
 */
-func (Instance) _font_get_glyph_texture_size(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_texture_size(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, int(glyph))
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
@@ -2623,12 +2621,12 @@ func (Instance) _font_get_glyph_texture_size(impl func(ptr unsafe.Pointer, font_
 [b]Optional.[/b]
 Returns outline contours of the glyph.
 */
-func (Instance) _font_get_glyph_contours(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int, index int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_contours(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int, index int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var index = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, int(size), int(index))
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -2643,11 +2641,11 @@ func (Instance) _font_get_glyph_contours(impl func(ptr unsafe.Pointer, font_rid 
 [b]Optional.[/b]
 Returns list of the kerning overrides.
 */
-func (Instance) _font_get_kerning_list(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int) []Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_kerning_list(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int) []Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, int(size))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](ret)))
 
@@ -2662,11 +2660,11 @@ func (Instance) _font_get_kerning_list(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Optional.[/b]
 Removes all kerning overrides.
 */
-func (Instance) _font_clear_kerning_map(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_clear_kerning_map(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(size))
 	}
 }
@@ -2675,12 +2673,12 @@ func (Instance) _font_clear_kerning_map(impl func(ptr unsafe.Pointer, font_rid R
 [b]Optional.[/b]
 Removes kerning override for the pair of glyphs.
 */
-func (Instance) _font_remove_kerning(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int, glyph_pair Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_remove_kerning(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int, glyph_pair Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph_pair = gd.UnsafeGet[Vector2i.XY](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(size), glyph_pair)
 	}
 }
@@ -2689,13 +2687,13 @@ func (Instance) _font_remove_kerning(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Optional.[/b]
 Sets kerning for the pair of glyphs.
 */
-func (Instance) _font_set_kerning(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int, glyph_pair Vector2i.XY, kerning Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_kerning(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int, glyph_pair Vector2i.XY, kerning Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph_pair = gd.UnsafeGet[Vector2i.XY](p_args, 2)
 		var kerning = gd.UnsafeGet[Vector2.XY](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, int(size), glyph_pair, kerning)
 	}
 }
@@ -2704,12 +2702,12 @@ func (Instance) _font_set_kerning(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Optional.[/b]
 Returns kerning for the pair of glyphs.
 */
-func (Instance) _font_get_kerning(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int, glyph_pair Vector2i.XY) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_kerning(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int, glyph_pair Vector2i.XY) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph_pair = gd.UnsafeGet[Vector2i.XY](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, int(size), glyph_pair)
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
@@ -2719,13 +2717,13 @@ func (Instance) _font_get_kerning(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Required.[/b]
 Returns the glyph index of a [param char], optionally modified by the [param variation_selector].
 */
-func (Instance) _font_get_glyph_index(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int, char int, variation_selector int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_glyph_index(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int, char int, variation_selector int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var char = gd.UnsafeGet[int64](p_args, 2)
 		var variation_selector = gd.UnsafeGet[int64](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, int(size), int(char), int(variation_selector))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -2735,12 +2733,12 @@ func (Instance) _font_get_glyph_index(impl func(ptr unsafe.Pointer, font_rid RID
 [b]Required.[/b]
 Returns character code associated with [param glyph_index], or [code]0[/code] if [param glyph_index] is invalid.
 */
-func (Instance) _font_get_char_from_glyph_index(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int, glyph_index int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_char_from_glyph_index(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int, glyph_index int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph_index = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, int(size), int(glyph_index))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -2750,11 +2748,11 @@ func (Instance) _font_get_char_from_glyph_index(impl func(ptr unsafe.Pointer, fo
 [b]Required.[/b]
 Returns [code]true[/code] if a Unicode [param char] is available in the font.
 */
-func (Instance) _font_has_char(impl func(ptr unsafe.Pointer, font_rid RID.Any, char int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_has_char(impl func(ptr gdclass.Receiver, font_rid RID.Any, char int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var char = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, int(char))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -2764,10 +2762,10 @@ func (Instance) _font_has_char(impl func(ptr unsafe.Pointer, font_rid RID.Any, c
 [b]Required.[/b]
 Returns a string containing all the characters available in the font.
 */
-func (Instance) _font_get_supported_chars(impl func(ptr unsafe.Pointer, font_rid RID.Any) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_supported_chars(impl func(ptr gdclass.Receiver, font_rid RID.Any) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -2782,10 +2780,10 @@ func (Instance) _font_get_supported_chars(impl func(ptr unsafe.Pointer, font_rid
 [b]Required.[/b]
 Returns an array containing all glyph indices in the font.
 */
-func (Instance) _font_get_supported_glyphs(impl func(ptr unsafe.Pointer, font_rid RID.Any) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_supported_glyphs(impl func(ptr gdclass.Receiver, font_rid RID.Any) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
@@ -2800,13 +2798,13 @@ func (Instance) _font_get_supported_glyphs(impl func(ptr unsafe.Pointer, font_ri
 [b]Optional.[/b]
 Renders the range of characters to the font cache texture.
 */
-func (Instance) _font_render_range(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, start int, end int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_render_range(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, start int, end int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var start = gd.UnsafeGet[int64](p_args, 2)
 		var end = gd.UnsafeGet[int64](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, int(start), int(end))
 	}
 }
@@ -2815,12 +2813,12 @@ func (Instance) _font_render_range(impl func(ptr unsafe.Pointer, font_rid RID.An
 [b]Optional.[/b]
 Renders specified glyph to the font cache texture.
 */
-func (Instance) _font_render_glyph(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, index int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_render_glyph(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, index int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var index = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, int(index))
 	}
 }
@@ -2829,7 +2827,7 @@ func (Instance) _font_render_glyph(impl func(ptr unsafe.Pointer, font_rid RID.An
 [b]Required.[/b]
 Draws single glyph into a canvas item at the position, using [param font_rid] at the size [param size].
 */
-func (Instance) _font_draw_glyph(impl func(ptr unsafe.Pointer, font_rid RID.Any, canvas RID.Any, size int, pos Vector2.XY, index int, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_draw_glyph(impl func(ptr gdclass.Receiver, font_rid RID.Any, canvas RID.Any, size int, pos Vector2.XY, index int, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var canvas = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -2837,7 +2835,7 @@ func (Instance) _font_draw_glyph(impl func(ptr unsafe.Pointer, font_rid RID.Any,
 		var pos = gd.UnsafeGet[Vector2.XY](p_args, 3)
 		var index = gd.UnsafeGet[int64](p_args, 4)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 5)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, canvas, int(size), pos, int(index), color)
 	}
 }
@@ -2846,7 +2844,7 @@ func (Instance) _font_draw_glyph(impl func(ptr unsafe.Pointer, font_rid RID.Any,
 [b]Required.[/b]
 Draws single glyph outline of size [param outline_size] into a canvas item at the position, using [param font_rid] at the size [param size].
 */
-func (Instance) _font_draw_glyph_outline(impl func(ptr unsafe.Pointer, font_rid RID.Any, canvas RID.Any, size int, outline_size int, pos Vector2.XY, index int, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_draw_glyph_outline(impl func(ptr gdclass.Receiver, font_rid RID.Any, canvas RID.Any, size int, outline_size int, pos Vector2.XY, index int, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var canvas = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -2855,7 +2853,7 @@ func (Instance) _font_draw_glyph_outline(impl func(ptr unsafe.Pointer, font_rid 
 		var pos = gd.UnsafeGet[Vector2.XY](p_args, 4)
 		var index = gd.UnsafeGet[int64](p_args, 5)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 6)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, canvas, int(size), int(outline_size), pos, int(index), color)
 	}
 }
@@ -2864,12 +2862,12 @@ func (Instance) _font_draw_glyph_outline(impl func(ptr unsafe.Pointer, font_rid 
 [b]Optional.[/b]
 Returns [code]true[/code], if font supports given language ([url=https://en.wikipedia.org/wiki/ISO_639-1]ISO 639[/url] code).
 */
-func (Instance) _font_is_language_supported(impl func(ptr unsafe.Pointer, font_rid RID.Any, language string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_is_language_supported(impl func(ptr gdclass.Receiver, font_rid RID.Any, language string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, language.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -2879,13 +2877,13 @@ func (Instance) _font_is_language_supported(impl func(ptr unsafe.Pointer, font_r
 [b]Optional.[/b]
 Adds override for [method _font_is_language_supported].
 */
-func (Instance) _font_set_language_support_override(impl func(ptr unsafe.Pointer, font_rid RID.Any, language string, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_language_support_override(impl func(ptr gdclass.Receiver, font_rid RID.Any, language string, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
 		var supported = gd.UnsafeGet[bool](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, language.String(), supported)
 	}
 }
@@ -2894,12 +2892,12 @@ func (Instance) _font_set_language_support_override(impl func(ptr unsafe.Pointer
 [b]Optional.[/b]
 Returns [code]true[/code] if support override is enabled for the [param language].
 */
-func (Instance) _font_get_language_support_override(impl func(ptr unsafe.Pointer, font_rid RID.Any, language string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_language_support_override(impl func(ptr gdclass.Receiver, font_rid RID.Any, language string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, language.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -2909,12 +2907,12 @@ func (Instance) _font_get_language_support_override(impl func(ptr unsafe.Pointer
 [b]Optional.[/b]
 Remove language support override.
 */
-func (Instance) _font_remove_language_support_override(impl func(ptr unsafe.Pointer, font_rid RID.Any, language string)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_remove_language_support_override(impl func(ptr gdclass.Receiver, font_rid RID.Any, language string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, language.String())
 	}
 }
@@ -2923,10 +2921,10 @@ func (Instance) _font_remove_language_support_override(impl func(ptr unsafe.Poin
 [b]Optional.[/b]
 Returns list of language support overrides.
 */
-func (Instance) _font_get_language_support_overrides(impl func(ptr unsafe.Pointer, font_rid RID.Any) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_language_support_overrides(impl func(ptr gdclass.Receiver, font_rid RID.Any) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -2941,12 +2939,12 @@ func (Instance) _font_get_language_support_overrides(impl func(ptr unsafe.Pointe
 [b]Optional.[/b]
 Returns [code]true[/code], if font supports given script (ISO 15924 code).
 */
-func (Instance) _font_is_script_supported(impl func(ptr unsafe.Pointer, font_rid RID.Any, script string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_is_script_supported(impl func(ptr gdclass.Receiver, font_rid RID.Any, script string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(script))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, script.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -2956,13 +2954,13 @@ func (Instance) _font_is_script_supported(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Adds override for [method _font_is_script_supported].
 */
-func (Instance) _font_set_script_support_override(impl func(ptr unsafe.Pointer, font_rid RID.Any, script string, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_script_support_override(impl func(ptr gdclass.Receiver, font_rid RID.Any, script string, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(script))
 		var supported = gd.UnsafeGet[bool](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, script.String(), supported)
 	}
 }
@@ -2971,12 +2969,12 @@ func (Instance) _font_set_script_support_override(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns [code]true[/code] if support override is enabled for the [param script].
 */
-func (Instance) _font_get_script_support_override(impl func(ptr unsafe.Pointer, font_rid RID.Any, script string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_script_support_override(impl func(ptr gdclass.Receiver, font_rid RID.Any, script string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(script))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, script.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -2986,12 +2984,12 @@ func (Instance) _font_get_script_support_override(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Removes script support override.
 */
-func (Instance) _font_remove_script_support_override(impl func(ptr unsafe.Pointer, font_rid RID.Any, script string)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_remove_script_support_override(impl func(ptr gdclass.Receiver, font_rid RID.Any, script string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(script))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, script.String())
 	}
 }
@@ -3000,10 +2998,10 @@ func (Instance) _font_remove_script_support_override(impl func(ptr unsafe.Pointe
 [b]Optional.[/b]
 Returns list of script support overrides.
 */
-func (Instance) _font_get_script_support_overrides(impl func(ptr unsafe.Pointer, font_rid RID.Any) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_script_support_overrides(impl func(ptr gdclass.Receiver, font_rid RID.Any) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -3018,12 +3016,12 @@ func (Instance) _font_get_script_support_overrides(impl func(ptr unsafe.Pointer,
 [b]Optional.[/b]
 Sets font OpenType feature set override.
 */
-func (Instance) _font_set_opentype_feature_overrides(impl func(ptr unsafe.Pointer, font_rid RID.Any, overrides map[any]any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_opentype_feature_overrides(impl func(ptr gdclass.Receiver, font_rid RID.Any, overrides map[any]any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var overrides = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(overrides))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, gd.DictionaryAs[map[any]any](overrides))
 	}
 }
@@ -3032,10 +3030,10 @@ func (Instance) _font_set_opentype_feature_overrides(impl func(ptr unsafe.Pointe
 [b]Optional.[/b]
 Returns font OpenType feature set override.
 */
-func (Instance) _font_get_opentype_feature_overrides(impl func(ptr unsafe.Pointer, font_rid RID.Any) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_opentype_feature_overrides(impl func(ptr gdclass.Receiver, font_rid RID.Any) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -3050,10 +3048,10 @@ func (Instance) _font_get_opentype_feature_overrides(impl func(ptr unsafe.Pointe
 [b]Optional.[/b]
 Returns the dictionary of the supported OpenType features.
 */
-func (Instance) _font_supported_feature_list(impl func(ptr unsafe.Pointer, font_rid RID.Any) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_supported_feature_list(impl func(ptr gdclass.Receiver, font_rid RID.Any) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -3068,10 +3066,10 @@ func (Instance) _font_supported_feature_list(impl func(ptr unsafe.Pointer, font_
 [b]Optional.[/b]
 Returns the dictionary of the supported OpenType variation coordinates.
 */
-func (Instance) _font_supported_variation_list(impl func(ptr unsafe.Pointer, font_rid RID.Any) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_supported_variation_list(impl func(ptr gdclass.Receiver, font_rid RID.Any) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -3086,9 +3084,9 @@ func (Instance) _font_supported_variation_list(impl func(ptr unsafe.Pointer, fon
 [b]Optional.[/b]
 Returns the font oversampling factor, shared by all fonts in the TextServer.
 */
-func (Instance) _font_get_global_oversampling(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_get_global_oversampling(impl func(ptr gdclass.Receiver) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -3098,10 +3096,10 @@ func (Instance) _font_get_global_oversampling(impl func(ptr unsafe.Pointer) Floa
 [b]Optional.[/b]
 Sets oversampling factor, shared by all font in the TextServer.
 */
-func (Instance) _font_set_global_oversampling(impl func(ptr unsafe.Pointer, oversampling Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _font_set_global_oversampling(impl func(ptr gdclass.Receiver, oversampling Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var oversampling = gd.UnsafeGet[float64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, Float.X(oversampling))
 	}
 }
@@ -3110,11 +3108,11 @@ func (Instance) _font_set_global_oversampling(impl func(ptr unsafe.Pointer, over
 [b]Optional.[/b]
 Returns size of the replacement character (box with character hexadecimal code that is drawn in place of invalid characters).
 */
-func (Instance) _get_hex_code_box_size(impl func(ptr unsafe.Pointer, size int, index int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_hex_code_box_size(impl func(ptr gdclass.Receiver, size int, index int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var size = gd.UnsafeGet[int64](p_args, 0)
 		var index = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(size), int(index))
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
@@ -3124,14 +3122,14 @@ func (Instance) _get_hex_code_box_size(impl func(ptr unsafe.Pointer, size int, i
 [b]Optional.[/b]
 Draws box displaying character hexadecimal code.
 */
-func (Instance) _draw_hex_code_box(impl func(ptr unsafe.Pointer, canvas RID.Any, size int, pos Vector2.XY, index int, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw_hex_code_box(impl func(ptr gdclass.Receiver, canvas RID.Any, size int, pos Vector2.XY, index int, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var canvas = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var pos = gd.UnsafeGet[Vector2.XY](p_args, 2)
 		var index = gd.UnsafeGet[int64](p_args, 3)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 4)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, canvas, int(size), pos, int(index), color)
 	}
 }
@@ -3140,11 +3138,11 @@ func (Instance) _draw_hex_code_box(impl func(ptr unsafe.Pointer, canvas RID.Any,
 [b]Required.[/b]
 Creates a new buffer for complex text layout, with the given [param direction] and [param orientation].
 */
-func (Instance) _create_shaped_text(impl func(ptr unsafe.Pointer, direction TextServer.Direction, orientation TextServer.Orientation) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _create_shaped_text(impl func(ptr gdclass.Receiver, direction TextServer.Direction, orientation TextServer.Orientation) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var direction = gd.UnsafeGet[TextServer.Direction](p_args, 0)
 		var orientation = gd.UnsafeGet[TextServer.Orientation](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, direction, orientation)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -3154,10 +3152,10 @@ func (Instance) _create_shaped_text(impl func(ptr unsafe.Pointer, direction Text
 [b]Required.[/b]
 Clears text buffer (removes text and inline objects).
 */
-func (Instance) _shaped_text_clear(impl func(ptr unsafe.Pointer, shaped RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_clear(impl func(ptr gdclass.Receiver, shaped RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped)
 	}
 }
@@ -3166,11 +3164,11 @@ func (Instance) _shaped_text_clear(impl func(ptr unsafe.Pointer, shaped RID.Any)
 [b]Optional.[/b]
 Sets desired text direction. If set to [constant TextServer.DIRECTION_AUTO], direction will be detected based on the buffer contents and current locale.
 */
-func (Instance) _shaped_text_set_direction(impl func(ptr unsafe.Pointer, shaped RID.Any, direction TextServer.Direction)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_direction(impl func(ptr gdclass.Receiver, shaped RID.Any, direction TextServer.Direction)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var direction = gd.UnsafeGet[TextServer.Direction](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, direction)
 	}
 }
@@ -3179,10 +3177,10 @@ func (Instance) _shaped_text_set_direction(impl func(ptr unsafe.Pointer, shaped 
 [b]Optional.[/b]
 Returns direction of the text.
 */
-func (Instance) _shaped_text_get_direction(impl func(ptr unsafe.Pointer, shaped RID.Any) TextServer.Direction) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_direction(impl func(ptr gdclass.Receiver, shaped RID.Any) TextServer.Direction) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3192,10 +3190,10 @@ func (Instance) _shaped_text_get_direction(impl func(ptr unsafe.Pointer, shaped 
 [b]Optional.[/b]
 Returns direction of the text, inferred by the BiDi algorithm.
 */
-func (Instance) _shaped_text_get_inferred_direction(impl func(ptr unsafe.Pointer, shaped RID.Any) TextServer.Direction) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_inferred_direction(impl func(ptr gdclass.Receiver, shaped RID.Any) TextServer.Direction) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3205,12 +3203,12 @@ func (Instance) _shaped_text_get_inferred_direction(impl func(ptr unsafe.Pointer
 [b]Optional.[/b]
 Overrides BiDi for the structured text.
 */
-func (Instance) _shaped_text_set_bidi_override(impl func(ptr unsafe.Pointer, shaped RID.Any, override []any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_bidi_override(impl func(ptr gdclass.Receiver, shaped RID.Any, override []any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var override = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(override))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, gd.ArrayAs[[]any](gd.InternalArray(override)))
 	}
 }
@@ -3219,12 +3217,12 @@ func (Instance) _shaped_text_set_bidi_override(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Sets custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
-func (Instance) _shaped_text_set_custom_punctuation(impl func(ptr unsafe.Pointer, shaped RID.Any, punct string)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_custom_punctuation(impl func(ptr gdclass.Receiver, shaped RID.Any, punct string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var punct = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(punct))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, punct.String())
 	}
 }
@@ -3233,10 +3231,10 @@ func (Instance) _shaped_text_set_custom_punctuation(impl func(ptr unsafe.Pointer
 [b]Optional.[/b]
 Returns custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
-func (Instance) _shaped_text_get_custom_punctuation(impl func(ptr unsafe.Pointer, shaped RID.Any) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_custom_punctuation(impl func(ptr gdclass.Receiver, shaped RID.Any) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -3251,11 +3249,11 @@ func (Instance) _shaped_text_get_custom_punctuation(impl func(ptr unsafe.Pointer
 [b]Optional.[/b]
 Sets ellipsis character used for text clipping.
 */
-func (Instance) _shaped_text_set_custom_ellipsis(impl func(ptr unsafe.Pointer, shaped RID.Any, char int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_custom_ellipsis(impl func(ptr gdclass.Receiver, shaped RID.Any, char int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var char = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, int(char))
 	}
 }
@@ -3264,10 +3262,10 @@ func (Instance) _shaped_text_set_custom_ellipsis(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Returns ellipsis character used for text clipping.
 */
-func (Instance) _shaped_text_get_custom_ellipsis(impl func(ptr unsafe.Pointer, shaped RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_custom_ellipsis(impl func(ptr gdclass.Receiver, shaped RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -3277,11 +3275,11 @@ func (Instance) _shaped_text_get_custom_ellipsis(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Sets desired text orientation.
 */
-func (Instance) _shaped_text_set_orientation(impl func(ptr unsafe.Pointer, shaped RID.Any, orientation TextServer.Orientation)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_orientation(impl func(ptr gdclass.Receiver, shaped RID.Any, orientation TextServer.Orientation)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var orientation = gd.UnsafeGet[TextServer.Orientation](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, orientation)
 	}
 }
@@ -3290,10 +3288,10 @@ func (Instance) _shaped_text_set_orientation(impl func(ptr unsafe.Pointer, shape
 [b]Optional.[/b]
 Returns text orientation.
 */
-func (Instance) _shaped_text_get_orientation(impl func(ptr unsafe.Pointer, shaped RID.Any) TextServer.Orientation) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_orientation(impl func(ptr gdclass.Receiver, shaped RID.Any) TextServer.Orientation) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3303,11 +3301,11 @@ func (Instance) _shaped_text_get_orientation(impl func(ptr unsafe.Pointer, shape
 [b]Optional.[/b]
 If set to [code]true[/code] text buffer will display invalid characters as hexadecimal codes, otherwise nothing is displayed.
 */
-func (Instance) _shaped_text_set_preserve_invalid(impl func(ptr unsafe.Pointer, shaped RID.Any, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_preserve_invalid(impl func(ptr gdclass.Receiver, shaped RID.Any, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var enabled = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, enabled)
 	}
 }
@@ -3316,10 +3314,10 @@ func (Instance) _shaped_text_set_preserve_invalid(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns [code]true[/code] if text buffer is configured to display hexadecimal codes in place of invalid characters.
 */
-func (Instance) _shaped_text_get_preserve_invalid(impl func(ptr unsafe.Pointer, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_preserve_invalid(impl func(ptr gdclass.Receiver, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3329,11 +3327,11 @@ func (Instance) _shaped_text_get_preserve_invalid(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 If set to [code]true[/code] text buffer will display control characters.
 */
-func (Instance) _shaped_text_set_preserve_control(impl func(ptr unsafe.Pointer, shaped RID.Any, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_preserve_control(impl func(ptr gdclass.Receiver, shaped RID.Any, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var enabled = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, enabled)
 	}
 }
@@ -3342,10 +3340,10 @@ func (Instance) _shaped_text_set_preserve_control(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns [code]true[/code] if text buffer is configured to display control characters.
 */
-func (Instance) _shaped_text_get_preserve_control(impl func(ptr unsafe.Pointer, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_preserve_control(impl func(ptr gdclass.Receiver, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3355,12 +3353,12 @@ func (Instance) _shaped_text_get_preserve_control(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Sets extra spacing added between glyphs or lines in pixels.
 */
-func (Instance) _shaped_text_set_spacing(impl func(ptr unsafe.Pointer, shaped RID.Any, spacing TextServer.SpacingType, value int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_set_spacing(impl func(ptr gdclass.Receiver, shaped RID.Any, spacing TextServer.SpacingType, value int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var spacing = gd.UnsafeGet[TextServer.SpacingType](p_args, 1)
 		var value = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, spacing, int(value))
 	}
 }
@@ -3369,11 +3367,11 @@ func (Instance) _shaped_text_set_spacing(impl func(ptr unsafe.Pointer, shaped RI
 [b]Optional.[/b]
 Returns extra spacing added between glyphs or lines in pixels.
 */
-func (Instance) _shaped_text_get_spacing(impl func(ptr unsafe.Pointer, shaped RID.Any, spacing TextServer.SpacingType) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_spacing(impl func(ptr gdclass.Receiver, shaped RID.Any, spacing TextServer.SpacingType) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var spacing = gd.UnsafeGet[TextServer.SpacingType](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, spacing)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -3383,7 +3381,7 @@ func (Instance) _shaped_text_get_spacing(impl func(ptr unsafe.Pointer, shaped RI
 [b]Required.[/b]
 Adds text span and font to draw it to the text buffer.
 */
-func (Instance) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped RID.Any, text string, fonts []RID.Any, size int, opentype_features map[any]any, language string, meta any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_add_string(impl func(ptr gdclass.Receiver, shaped RID.Any, text string, fonts []RID.Any, size int, opentype_features map[any]any, language string, meta any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
@@ -3397,7 +3395,7 @@ func (Instance) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped RID
 		defer pointers.End(gd.InternalString(language))
 		var meta = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 6))))
 		defer pointers.End(gd.InternalVariant(meta))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, text.String(), gd.ArrayAs[[]RID.Any](gd.InternalArray(fonts)), int(size), gd.DictionaryAs[map[any]any](opentype_features), language.String(), meta.Interface())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3407,7 +3405,7 @@ func (Instance) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped RID
 [b]Required.[/b]
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
-func (Instance) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped RID.Any, key any, size Vector2.XY, inline_align GUI.InlineAlignment, length int, baseline Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_add_object(impl func(ptr gdclass.Receiver, shaped RID.Any, key any, size Vector2.XY, inline_align GUI.InlineAlignment, length int, baseline Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
@@ -3416,7 +3414,7 @@ func (Instance) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped RID
 		var inline_align = gd.UnsafeGet[GUI.InlineAlignment](p_args, 3)
 		var length = gd.UnsafeGet[int64](p_args, 4)
 		var baseline = gd.UnsafeGet[float64](p_args, 5)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, key.Interface(), size, inline_align, int(length), Float.X(baseline))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3426,7 +3424,7 @@ func (Instance) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped RID
 [b]Required.[/b]
 Sets new size and alignment of embedded object.
 */
-func (Instance) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped RID.Any, key any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_resize_object(impl func(ptr gdclass.Receiver, shaped RID.Any, key any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
@@ -3434,7 +3432,7 @@ func (Instance) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped 
 		var size = gd.UnsafeGet[Vector2.XY](p_args, 2)
 		var inline_align = gd.UnsafeGet[GUI.InlineAlignment](p_args, 3)
 		var baseline = gd.UnsafeGet[float64](p_args, 4)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, key.Interface(), size, inline_align, Float.X(baseline))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3444,10 +3442,10 @@ func (Instance) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped 
 [b]Required.[/b]
 Returns number of text spans added using [method _shaped_text_add_string] or [method _shaped_text_add_object].
 */
-func (Instance) _shaped_get_span_count(impl func(ptr unsafe.Pointer, shaped RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_get_span_count(impl func(ptr gdclass.Receiver, shaped RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -3457,11 +3455,11 @@ func (Instance) _shaped_get_span_count(impl func(ptr unsafe.Pointer, shaped RID.
 [b]Required.[/b]
 Returns text span metadata.
 */
-func (Instance) _shaped_get_span_meta(impl func(ptr unsafe.Pointer, shaped RID.Any, index int) any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_get_span_meta(impl func(ptr gdclass.Receiver, shaped RID.Any, index int) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var index = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, int(index))
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
@@ -3476,11 +3474,11 @@ func (Instance) _shaped_get_span_meta(impl func(ptr unsafe.Pointer, shaped RID.A
 [b]Required.[/b]
 Returns text embedded object key.
 */
-func (Instance) _shaped_get_span_embedded_object(impl func(ptr unsafe.Pointer, shaped RID.Any, index int) any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_get_span_embedded_object(impl func(ptr gdclass.Receiver, shaped RID.Any, index int) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var index = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, int(index))
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
@@ -3495,7 +3493,7 @@ func (Instance) _shaped_get_span_embedded_object(impl func(ptr unsafe.Pointer, s
 [b]Required.[/b]
 Changes text span font, font size, and OpenType features, without changing the text.
 */
-func (Instance) _shaped_set_span_update_font(impl func(ptr unsafe.Pointer, shaped RID.Any, index int, fonts []RID.Any, size int, opentype_features map[any]any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_set_span_update_font(impl func(ptr gdclass.Receiver, shaped RID.Any, index int, fonts []RID.Any, size int, opentype_features map[any]any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var index = gd.UnsafeGet[int64](p_args, 1)
@@ -3504,7 +3502,7 @@ func (Instance) _shaped_set_span_update_font(impl func(ptr unsafe.Pointer, shape
 		var size = gd.UnsafeGet[int64](p_args, 3)
 		var opentype_features = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 4))))
 		defer pointers.End(gd.InternalDictionary(opentype_features))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, int(index), gd.ArrayAs[[]RID.Any](gd.InternalArray(fonts)), int(size), gd.DictionaryAs[map[any]any](opentype_features))
 	}
 }
@@ -3513,12 +3511,12 @@ func (Instance) _shaped_set_span_update_font(impl func(ptr unsafe.Pointer, shape
 [b]Required.[/b]
 Returns text buffer for the substring of the text in the [param shaped] text buffer (including inline objects).
 */
-func (Instance) _shaped_text_substr(impl func(ptr unsafe.Pointer, shaped RID.Any, start int, length int) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_substr(impl func(ptr gdclass.Receiver, shaped RID.Any, start int, length int) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var start = gd.UnsafeGet[int64](p_args, 1)
 		var length = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, int(start), int(length))
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -3528,10 +3526,10 @@ func (Instance) _shaped_text_substr(impl func(ptr unsafe.Pointer, shaped RID.Any
 [b]Required.[/b]
 Returns the parent buffer from which the substring originates.
 */
-func (Instance) _shaped_text_get_parent(impl func(ptr unsafe.Pointer, shaped RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_parent(impl func(ptr gdclass.Receiver, shaped RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -3541,12 +3539,12 @@ func (Instance) _shaped_text_get_parent(impl func(ptr unsafe.Pointer, shaped RID
 [b]Optional.[/b]
 Adjusts text width to fit to specified width, returns new text width.
 */
-func (Instance) _shaped_text_fit_to_width(impl func(ptr unsafe.Pointer, shaped RID.Any, width Float.X, justification_flags TextServer.JustificationFlag) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_fit_to_width(impl func(ptr gdclass.Receiver, shaped RID.Any, width Float.X, justification_flags TextServer.JustificationFlag) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var width = gd.UnsafeGet[float64](p_args, 1)
 		var justification_flags = gd.UnsafeGet[TextServer.JustificationFlag](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, Float.X(width), justification_flags)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -3556,12 +3554,12 @@ func (Instance) _shaped_text_fit_to_width(impl func(ptr unsafe.Pointer, shaped R
 [b]Optional.[/b]
 Aligns shaped text to the given tab-stops.
 */
-func (Instance) _shaped_text_tab_align(impl func(ptr unsafe.Pointer, shaped RID.Any, tab_stops []float32) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_tab_align(impl func(ptr gdclass.Receiver, shaped RID.Any, tab_stops []float32) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var tab_stops = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, slices.Collect(tab_stops.Values()))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -3571,10 +3569,10 @@ func (Instance) _shaped_text_tab_align(impl func(ptr unsafe.Pointer, shaped RID.
 [b]Required.[/b]
 Shapes buffer if it's not shaped. Returns [code]true[/code] if the string is shaped successfully.
 */
-func (Instance) _shaped_text_shape(impl func(ptr unsafe.Pointer, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_shape(impl func(ptr gdclass.Receiver, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3584,10 +3582,10 @@ func (Instance) _shaped_text_shape(impl func(ptr unsafe.Pointer, shaped RID.Any)
 [b]Optional.[/b]
 Updates break points in the shaped text. This method is called by default implementation of text breaking functions.
 */
-func (Instance) _shaped_text_update_breaks(impl func(ptr unsafe.Pointer, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_update_breaks(impl func(ptr gdclass.Receiver, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3597,10 +3595,10 @@ func (Instance) _shaped_text_update_breaks(impl func(ptr unsafe.Pointer, shaped 
 [b]Optional.[/b]
 Updates justification points in the shaped text. This method is called by default implementation of text justification functions.
 */
-func (Instance) _shaped_text_update_justification_ops(impl func(ptr unsafe.Pointer, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_update_justification_ops(impl func(ptr gdclass.Receiver, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3610,10 +3608,10 @@ func (Instance) _shaped_text_update_justification_ops(impl func(ptr unsafe.Point
 [b]Required.[/b]
 Returns [code]true[/code] if buffer is successfully shaped.
 */
-func (Instance) _shaped_text_is_ready(impl func(ptr unsafe.Pointer, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_is_ready(impl func(ptr gdclass.Receiver, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3623,10 +3621,10 @@ func (Instance) _shaped_text_is_ready(impl func(ptr unsafe.Pointer, shaped RID.A
 [b]Required.[/b]
 Returns an array of glyphs in the visual order.
 */
-func (Instance) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_glyphs(impl func(ptr gdclass.Receiver, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3636,10 +3634,10 @@ func (Instance) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped RID
 [b]Required.[/b]
 Returns text glyphs in the logical order.
 */
-func (Instance) _shaped_text_sort_logical(impl func(ptr unsafe.Pointer, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_sort_logical(impl func(ptr gdclass.Receiver, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3649,10 +3647,10 @@ func (Instance) _shaped_text_sort_logical(impl func(ptr unsafe.Pointer, shaped R
 [b]Required.[/b]
 Returns number of glyphs in the buffer.
 */
-func (Instance) _shaped_text_get_glyph_count(impl func(ptr unsafe.Pointer, shaped RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_glyph_count(impl func(ptr gdclass.Receiver, shaped RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -3662,10 +3660,10 @@ func (Instance) _shaped_text_get_glyph_count(impl func(ptr unsafe.Pointer, shape
 [b]Required.[/b]
 Returns substring buffer character range in the parent buffer.
 */
-func (Instance) _shaped_text_get_range(impl func(ptr unsafe.Pointer, shaped RID.Any) Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_range(impl func(ptr gdclass.Receiver, shaped RID.Any) Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, Vector2i.XY(ret))
 	}
@@ -3675,7 +3673,7 @@ func (Instance) _shaped_text_get_range(impl func(ptr unsafe.Pointer, shaped RID.
 [b]Optional.[/b]
 Breaks text to the lines and columns. Returns character ranges for each segment.
 */
-func (Instance) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, shaped RID.Any, width []float32, start int, once bool, break_flags TextServer.LineBreakFlag) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_line_breaks_adv(impl func(ptr gdclass.Receiver, shaped RID.Any, width []float32, start int, once bool, break_flags TextServer.LineBreakFlag) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var width = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
@@ -3683,7 +3681,7 @@ func (Instance) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, s
 		var start = gd.UnsafeGet[int64](p_args, 2)
 		var once = gd.UnsafeGet[bool](p_args, 3)
 		var break_flags = gd.UnsafeGet[TextServer.LineBreakFlag](p_args, 4)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, slices.Collect(width.Values()), int(start), once, break_flags)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
@@ -3698,13 +3696,13 @@ func (Instance) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Breaks text to the lines and returns character ranges for each line.
 */
-func (Instance) _shaped_text_get_line_breaks(impl func(ptr unsafe.Pointer, shaped RID.Any, width Float.X, start int, break_flags TextServer.LineBreakFlag) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_line_breaks(impl func(ptr gdclass.Receiver, shaped RID.Any, width Float.X, start int, break_flags TextServer.LineBreakFlag) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var width = gd.UnsafeGet[float64](p_args, 1)
 		var start = gd.UnsafeGet[int64](p_args, 2)
 		var break_flags = gd.UnsafeGet[TextServer.LineBreakFlag](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, Float.X(width), int(start), break_flags)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
@@ -3719,12 +3717,12 @@ func (Instance) _shaped_text_get_line_breaks(impl func(ptr unsafe.Pointer, shape
 [b]Optional.[/b]
 Breaks text into words and returns array of character ranges. Use [param grapheme_flags] to set what characters are used for breaking (see [enum TextServer.GraphemeFlag]).
 */
-func (Instance) _shaped_text_get_word_breaks(impl func(ptr unsafe.Pointer, shaped RID.Any, grapheme_flags TextServer.GraphemeFlag, skip_grapheme_flags TextServer.GraphemeFlag) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_word_breaks(impl func(ptr gdclass.Receiver, shaped RID.Any, grapheme_flags TextServer.GraphemeFlag, skip_grapheme_flags TextServer.GraphemeFlag) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var grapheme_flags = gd.UnsafeGet[TextServer.GraphemeFlag](p_args, 1)
 		var skip_grapheme_flags = gd.UnsafeGet[TextServer.GraphemeFlag](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, grapheme_flags, skip_grapheme_flags)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
@@ -3739,10 +3737,10 @@ func (Instance) _shaped_text_get_word_breaks(impl func(ptr unsafe.Pointer, shape
 [b]Required.[/b]
 Returns the position of the overrun trim.
 */
-func (Instance) _shaped_text_get_trim_pos(impl func(ptr unsafe.Pointer, shaped RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_trim_pos(impl func(ptr gdclass.Receiver, shaped RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -3752,10 +3750,10 @@ func (Instance) _shaped_text_get_trim_pos(impl func(ptr unsafe.Pointer, shaped R
 [b]Required.[/b]
 Returns position of the ellipsis.
 */
-func (Instance) _shaped_text_get_ellipsis_pos(impl func(ptr unsafe.Pointer, shaped RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_ellipsis_pos(impl func(ptr gdclass.Receiver, shaped RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -3765,10 +3763,10 @@ func (Instance) _shaped_text_get_ellipsis_pos(impl func(ptr unsafe.Pointer, shap
 [b]Required.[/b]
 Returns number of glyphs in the ellipsis.
 */
-func (Instance) _shaped_text_get_ellipsis_glyph_count(impl func(ptr unsafe.Pointer, shaped RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_ellipsis_glyph_count(impl func(ptr gdclass.Receiver, shaped RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -3778,10 +3776,10 @@ func (Instance) _shaped_text_get_ellipsis_glyph_count(impl func(ptr unsafe.Point
 [b]Required.[/b]
 Returns array of the glyphs in the ellipsis.
 */
-func (Instance) _shaped_text_get_ellipsis_glyphs(impl func(ptr unsafe.Pointer, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_ellipsis_glyphs(impl func(ptr gdclass.Receiver, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -3791,12 +3789,12 @@ func (Instance) _shaped_text_get_ellipsis_glyphs(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Trims text if it exceeds the given width.
 */
-func (Instance) _shaped_text_overrun_trim_to_width(impl func(ptr unsafe.Pointer, shaped RID.Any, width Float.X, trim_flags TextServer.TextOverrunFlag)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_overrun_trim_to_width(impl func(ptr gdclass.Receiver, shaped RID.Any, width Float.X, trim_flags TextServer.TextOverrunFlag)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var width = gd.UnsafeGet[float64](p_args, 1)
 		var trim_flags = gd.UnsafeGet[TextServer.TextOverrunFlag](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, Float.X(width), trim_flags)
 	}
 }
@@ -3805,10 +3803,10 @@ func (Instance) _shaped_text_overrun_trim_to_width(impl func(ptr unsafe.Pointer,
 [b]Required.[/b]
 Returns array of inline objects.
 */
-func (Instance) _shaped_text_get_objects(impl func(ptr unsafe.Pointer, shaped RID.Any) []any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_objects(impl func(ptr gdclass.Receiver, shaped RID.Any) []any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		ptr, ok := pointers.End(gd.InternalArray(gd.EngineArrayFromSlice(ret)))
 
@@ -3823,12 +3821,12 @@ func (Instance) _shaped_text_get_objects(impl func(ptr unsafe.Pointer, shaped RI
 [b]Required.[/b]
 Returns bounding rectangle of the inline object.
 */
-func (Instance) _shaped_text_get_object_rect(impl func(ptr unsafe.Pointer, shaped RID.Any, key any) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_object_rect(impl func(ptr gdclass.Receiver, shaped RID.Any, key any) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, key.Interface())
 		gd.UnsafeSet(p_back, Rect2.PositionSize(ret))
 	}
@@ -3838,12 +3836,12 @@ func (Instance) _shaped_text_get_object_rect(impl func(ptr unsafe.Pointer, shape
 [b]Required.[/b]
 Returns the character range of the inline object.
 */
-func (Instance) _shaped_text_get_object_range(impl func(ptr unsafe.Pointer, shaped RID.Any, key any) Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_object_range(impl func(ptr gdclass.Receiver, shaped RID.Any, key any) Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, key.Interface())
 		gd.UnsafeSet(p_back, Vector2i.XY(ret))
 	}
@@ -3853,12 +3851,12 @@ func (Instance) _shaped_text_get_object_range(impl func(ptr unsafe.Pointer, shap
 [b]Required.[/b]
 Returns the glyph index of the inline object.
 */
-func (Instance) _shaped_text_get_object_glyph(impl func(ptr unsafe.Pointer, shaped RID.Any, key any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_object_glyph(impl func(ptr gdclass.Receiver, shaped RID.Any, key any) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, key.Interface())
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -3868,10 +3866,10 @@ func (Instance) _shaped_text_get_object_glyph(impl func(ptr unsafe.Pointer, shap
 [b]Required.[/b]
 Returns size of the text.
 */
-func (Instance) _shaped_text_get_size(impl func(ptr unsafe.Pointer, shaped RID.Any) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_size(impl func(ptr gdclass.Receiver, shaped RID.Any) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
@@ -3881,10 +3879,10 @@ func (Instance) _shaped_text_get_size(impl func(ptr unsafe.Pointer, shaped RID.A
 [b]Required.[/b]
 Returns the text ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
 */
-func (Instance) _shaped_text_get_ascent(impl func(ptr unsafe.Pointer, shaped RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_ascent(impl func(ptr gdclass.Receiver, shaped RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -3894,10 +3892,10 @@ func (Instance) _shaped_text_get_ascent(impl func(ptr unsafe.Pointer, shaped RID
 [b]Required.[/b]
 Returns the text descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
 */
-func (Instance) _shaped_text_get_descent(impl func(ptr unsafe.Pointer, shaped RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_descent(impl func(ptr gdclass.Receiver, shaped RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -3907,10 +3905,10 @@ func (Instance) _shaped_text_get_descent(impl func(ptr unsafe.Pointer, shaped RI
 [b]Required.[/b]
 Returns width (for horizontal layout) or height (for vertical) of the text.
 */
-func (Instance) _shaped_text_get_width(impl func(ptr unsafe.Pointer, shaped RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_width(impl func(ptr gdclass.Receiver, shaped RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -3920,10 +3918,10 @@ func (Instance) _shaped_text_get_width(impl func(ptr unsafe.Pointer, shaped RID.
 [b]Required.[/b]
 Returns pixel offset of the underline below the baseline.
 */
-func (Instance) _shaped_text_get_underline_position(impl func(ptr unsafe.Pointer, shaped RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_underline_position(impl func(ptr gdclass.Receiver, shaped RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -3933,10 +3931,10 @@ func (Instance) _shaped_text_get_underline_position(impl func(ptr unsafe.Pointer
 [b]Required.[/b]
 Returns thickness of the underline.
 */
-func (Instance) _shaped_text_get_underline_thickness(impl func(ptr unsafe.Pointer, shaped RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_underline_thickness(impl func(ptr gdclass.Receiver, shaped RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -3946,12 +3944,12 @@ func (Instance) _shaped_text_get_underline_thickness(impl func(ptr unsafe.Pointe
 [b]Optional.[/b]
 Returns dominant direction of in the range of text.
 */
-func (Instance) _shaped_text_get_dominant_direction_in_range(impl func(ptr unsafe.Pointer, shaped RID.Any, start int, end int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_dominant_direction_in_range(impl func(ptr gdclass.Receiver, shaped RID.Any, start int, end int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var start = gd.UnsafeGet[int64](p_args, 1)
 		var end = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, int(start), int(end))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -3961,12 +3959,12 @@ func (Instance) _shaped_text_get_dominant_direction_in_range(impl func(ptr unsaf
 [b]Optional.[/b]
 Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
 */
-func (Instance) _shaped_text_get_carets(impl func(ptr unsafe.Pointer, shaped RID.Any, position int, caret *CaretInfo)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_carets(impl func(ptr gdclass.Receiver, shaped RID.Any, position int, caret *CaretInfo)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var position = gd.UnsafeGet[int64](p_args, 1)
 		var caret = gd.UnsafeGet[*CaretInfo](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, int(position), caret)
 	}
 }
@@ -3975,12 +3973,12 @@ func (Instance) _shaped_text_get_carets(impl func(ptr unsafe.Pointer, shaped RID
 [b]Optional.[/b]
 Returns selection rectangles for the specified character range.
 */
-func (Instance) _shaped_text_get_selection(impl func(ptr unsafe.Pointer, shaped RID.Any, start int, end int) []Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_selection(impl func(ptr gdclass.Receiver, shaped RID.Any, start int, end int) []Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var start = gd.UnsafeGet[int64](p_args, 1)
 		var end = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, int(start), int(end))
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](Packed.New(ret...)))
 
@@ -3995,11 +3993,11 @@ func (Instance) _shaped_text_get_selection(impl func(ptr unsafe.Pointer, shaped 
 [b]Optional.[/b]
 Returns grapheme index at the specified pixel offset at the baseline, or [code]-1[/code] if none is found.
 */
-func (Instance) _shaped_text_hit_test_grapheme(impl func(ptr unsafe.Pointer, shaped RID.Any, coord Float.X) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_hit_test_grapheme(impl func(ptr gdclass.Receiver, shaped RID.Any, coord Float.X) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var coord = gd.UnsafeGet[float64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, Float.X(coord))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -4009,11 +4007,11 @@ func (Instance) _shaped_text_hit_test_grapheme(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
 */
-func (Instance) _shaped_text_hit_test_position(impl func(ptr unsafe.Pointer, shaped RID.Any, coord Float.X) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_hit_test_position(impl func(ptr gdclass.Receiver, shaped RID.Any, coord Float.X) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var coord = gd.UnsafeGet[float64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, Float.X(coord))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -4023,7 +4021,7 @@ func (Instance) _shaped_text_hit_test_position(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Draw shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
 */
-func (Instance) _shaped_text_draw(impl func(ptr unsafe.Pointer, shaped RID.Any, canvas RID.Any, pos Vector2.XY, clip_l Float.X, clip_r Float.X, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_draw(impl func(ptr gdclass.Receiver, shaped RID.Any, canvas RID.Any, pos Vector2.XY, clip_l Float.X, clip_r Float.X, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var canvas = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -4031,7 +4029,7 @@ func (Instance) _shaped_text_draw(impl func(ptr unsafe.Pointer, shaped RID.Any, 
 		var clip_l = gd.UnsafeGet[float64](p_args, 3)
 		var clip_r = gd.UnsafeGet[float64](p_args, 4)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 5)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, canvas, pos, Float.X(clip_l), Float.X(clip_r), color)
 	}
 }
@@ -4040,7 +4038,7 @@ func (Instance) _shaped_text_draw(impl func(ptr unsafe.Pointer, shaped RID.Any, 
 [b]Optional.[/b]
 Draw the outline of the shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
 */
-func (Instance) _shaped_text_draw_outline(impl func(ptr unsafe.Pointer, shaped RID.Any, canvas RID.Any, pos Vector2.XY, clip_l Float.X, clip_r Float.X, outline_size int, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_draw_outline(impl func(ptr gdclass.Receiver, shaped RID.Any, canvas RID.Any, pos Vector2.XY, clip_l Float.X, clip_r Float.X, outline_size int, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var canvas = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -4049,7 +4047,7 @@ func (Instance) _shaped_text_draw_outline(impl func(ptr unsafe.Pointer, shaped R
 		var clip_r = gd.UnsafeGet[float64](p_args, 4)
 		var outline_size = gd.UnsafeGet[int64](p_args, 5)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 6)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, canvas, pos, Float.X(clip_l), Float.X(clip_r), int(outline_size), color)
 	}
 }
@@ -4058,11 +4056,11 @@ func (Instance) _shaped_text_draw_outline(impl func(ptr unsafe.Pointer, shaped R
 [b]Optional.[/b]
 Returns composite character's bounds as offsets from the start of the line.
 */
-func (Instance) _shaped_text_get_grapheme_bounds(impl func(ptr unsafe.Pointer, shaped RID.Any, pos int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_grapheme_bounds(impl func(ptr gdclass.Receiver, shaped RID.Any, pos int) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, int(pos))
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
@@ -4072,11 +4070,11 @@ func (Instance) _shaped_text_get_grapheme_bounds(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Returns grapheme end position closest to the [param pos].
 */
-func (Instance) _shaped_text_next_grapheme_pos(impl func(ptr unsafe.Pointer, shaped RID.Any, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_next_grapheme_pos(impl func(ptr gdclass.Receiver, shaped RID.Any, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, int(pos))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -4086,11 +4084,11 @@ func (Instance) _shaped_text_next_grapheme_pos(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Returns grapheme start position closest to the [param pos].
 */
-func (Instance) _shaped_text_prev_grapheme_pos(impl func(ptr unsafe.Pointer, shaped RID.Any, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_prev_grapheme_pos(impl func(ptr gdclass.Receiver, shaped RID.Any, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, int(pos))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -4100,10 +4098,10 @@ func (Instance) _shaped_text_prev_grapheme_pos(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Returns array of the composite character boundaries.
 */
-func (Instance) _shaped_text_get_character_breaks(impl func(ptr unsafe.Pointer, shaped RID.Any) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_get_character_breaks(impl func(ptr gdclass.Receiver, shaped RID.Any) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
@@ -4118,11 +4116,11 @@ func (Instance) _shaped_text_get_character_breaks(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns composite character end position closest to the [param pos].
 */
-func (Instance) _shaped_text_next_character_pos(impl func(ptr unsafe.Pointer, shaped RID.Any, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_next_character_pos(impl func(ptr gdclass.Receiver, shaped RID.Any, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, int(pos))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -4132,11 +4130,11 @@ func (Instance) _shaped_text_next_character_pos(impl func(ptr unsafe.Pointer, sh
 [b]Optional.[/b]
 Returns composite character start position closest to the [param pos].
 */
-func (Instance) _shaped_text_prev_character_pos(impl func(ptr unsafe.Pointer, shaped RID.Any, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_prev_character_pos(impl func(ptr gdclass.Receiver, shaped RID.Any, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, int(pos))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -4146,11 +4144,11 @@ func (Instance) _shaped_text_prev_character_pos(impl func(ptr unsafe.Pointer, sh
 [b]Optional.[/b]
 Returns composite character position closest to the [param pos].
 */
-func (Instance) _shaped_text_closest_character_pos(impl func(ptr unsafe.Pointer, shaped RID.Any, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shaped_text_closest_character_pos(impl func(ptr gdclass.Receiver, shaped RID.Any, pos int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, int(pos))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -4160,13 +4158,13 @@ func (Instance) _shaped_text_closest_character_pos(impl func(ptr unsafe.Pointer,
 [b]Optional.[/b]
 Converts a number from the Western Arabic (0..9) to the numeral systems used in [param language].
 */
-func (Instance) _format_number(impl func(ptr unsafe.Pointer, number string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _format_number(impl func(ptr gdclass.Receiver, number string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var number = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(number))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, number.String(), language.String())
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -4181,13 +4179,13 @@ func (Instance) _format_number(impl func(ptr unsafe.Pointer, number string, lang
 [b]Optional.[/b]
 Converts [param number] from the numeral systems used in [param language] to Western Arabic (0..9).
 */
-func (Instance) _parse_number(impl func(ptr unsafe.Pointer, number string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _parse_number(impl func(ptr gdclass.Receiver, number string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var number = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(number))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, number.String(), language.String())
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -4202,11 +4200,11 @@ func (Instance) _parse_number(impl func(ptr unsafe.Pointer, number string, langu
 [b]Optional.[/b]
 Returns percent sign used in the [param language].
 */
-func (Instance) _percent_sign(impl func(ptr unsafe.Pointer, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _percent_sign(impl func(ptr gdclass.Receiver, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, language.String())
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -4221,11 +4219,11 @@ func (Instance) _percent_sign(impl func(ptr unsafe.Pointer, language string) str
 [b]Optional.[/b]
 Strips diacritics from the string.
 */
-func (Instance) _strip_diacritics(impl func(ptr unsafe.Pointer, s string) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _strip_diacritics(impl func(ptr gdclass.Receiver, s string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s.String())
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -4240,19 +4238,19 @@ func (Instance) _strip_diacritics(impl func(ptr unsafe.Pointer, s string) string
 [b]Optional.[/b]
 Returns [code]true[/code] if [param string] is a valid identifier.
 */
-func (Instance) _is_valid_identifier(impl func(ptr unsafe.Pointer, s string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_valid_identifier(impl func(ptr gdclass.Receiver, s string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s.String())
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _is_valid_letter(impl func(ptr unsafe.Pointer, unicode int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_valid_letter(impl func(ptr gdclass.Receiver, unicode int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var unicode = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(unicode))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4262,14 +4260,14 @@ func (Instance) _is_valid_letter(impl func(ptr unsafe.Pointer, unicode int) bool
 [b]Optional.[/b]
 Returns an array of the word break boundaries. Elements in the returned array are the offsets of the start and end of words. Therefore the length of the array is always even.
 */
-func (Instance) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s string, language string, chars_per_line int) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _string_get_word_breaks(impl func(ptr gdclass.Receiver, s string, language string, chars_per_line int) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
 		var chars_per_line = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s.String(), language.String(), int(chars_per_line))
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
@@ -4284,13 +4282,13 @@ func (Instance) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s string, 
 [b]Optional.[/b]
 Returns array of the composite character boundaries.
 */
-func (Instance) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s string, language string) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _string_get_character_breaks(impl func(ptr gdclass.Receiver, s string, language string) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s.String(), language.String())
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
@@ -4305,13 +4303,13 @@ func (Instance) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s str
 [b]Optional.[/b]
 Returns index of the first string in [param dict] which is visually confusable with the [param string], or [code]-1[/code] if none is found.
 */
-func (Instance) _is_confusable(impl func(ptr unsafe.Pointer, s string, dict []string) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_confusable(impl func(ptr gdclass.Receiver, s string, dict []string) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
 		var dict = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPackedStrings(dict))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s.String(), dict.Strings())
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -4321,11 +4319,11 @@ func (Instance) _is_confusable(impl func(ptr unsafe.Pointer, s string, dict []st
 [b]Optional.[/b]
 Returns [code]true[/code] if [param string] is likely to be an attempt at confusing the reader.
 */
-func (Instance) _spoof_check(impl func(ptr unsafe.Pointer, s string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _spoof_check(impl func(ptr gdclass.Receiver, s string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4335,13 +4333,13 @@ func (Instance) _spoof_check(impl func(ptr unsafe.Pointer, s string) bool) (cb g
 [b]Optional.[/b]
 Returns the string converted to uppercase.
 */
-func (Instance) _string_to_upper(impl func(ptr unsafe.Pointer, s string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _string_to_upper(impl func(ptr gdclass.Receiver, s string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s.String(), language.String())
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -4356,13 +4354,13 @@ func (Instance) _string_to_upper(impl func(ptr unsafe.Pointer, s string, languag
 [b]Optional.[/b]
 Returns the string converted to lowercase.
 */
-func (Instance) _string_to_lower(impl func(ptr unsafe.Pointer, s string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _string_to_lower(impl func(ptr gdclass.Receiver, s string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s.String(), language.String())
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -4377,13 +4375,13 @@ func (Instance) _string_to_lower(impl func(ptr unsafe.Pointer, s string, languag
 [b]Optional.[/b]
 Returns the string converted to title case.
 */
-func (Instance) _string_to_title(impl func(ptr unsafe.Pointer, s string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _string_to_title(impl func(ptr gdclass.Receiver, s string, language string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s.String(), language.String())
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -4398,14 +4396,14 @@ func (Instance) _string_to_title(impl func(ptr unsafe.Pointer, s string, languag
 [b]Optional.[/b]
 Default implementation of the BiDi algorithm override function. See [enum TextServer.StructuredTextParser] for more info.
 */
-func (Instance) _parse_structured_text(impl func(ptr unsafe.Pointer, parser_type TextServer.StructuredTextParser, args []any, text string) []Vector3i.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _parse_structured_text(impl func(ptr gdclass.Receiver, parser_type TextServer.StructuredTextParser, args []any, text string) []Vector3i.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var parser_type = gd.UnsafeGet[TextServer.StructuredTextParser](p_args, 0)
 		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(args))
 		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(text))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, parser_type, gd.ArrayAs[[]any](gd.InternalArray(args)), text.String())
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Vector3i.XYZ]](ret)))
 
@@ -4420,9 +4418,9 @@ func (Instance) _parse_structured_text(impl func(ptr unsafe.Pointer, parser_type
 [b]Optional.[/b]
 This method is called before text server is unregistered.
 */
-func (Instance) _cleanup(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _cleanup(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -4474,10 +4472,10 @@ func New() Instance {
 [b]Required.[/b]
 Returns [code]true[/code] if the server supports a feature.
 */
-func (class) _has_feature(impl func(ptr unsafe.Pointer, feature TextServer.Feature) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _has_feature(impl func(ptr gdclass.Receiver, feature TextServer.Feature) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var feature = gd.UnsafeGet[TextServer.Feature](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, feature)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4487,9 +4485,9 @@ func (class) _has_feature(impl func(ptr unsafe.Pointer, feature TextServer.Featu
 [b]Required.[/b]
 Returns the name of the server interface.
 */
-func (class) _get_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -4504,9 +4502,9 @@ func (class) _get_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.Ext
 [b]Required.[/b]
 Returns text server features, see [enum TextServer.Feature].
 */
-func (class) _get_features(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_features(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4516,10 +4514,10 @@ func (class) _get_features(impl func(ptr unsafe.Pointer) int64) (cb gd.Extension
 [b]Required.[/b]
 Frees an object created by this [TextServer].
 */
-func (class) _free_rid(impl func(ptr unsafe.Pointer, rid RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _free_rid(impl func(ptr gdclass.Receiver, rid RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, rid)
 	}
 }
@@ -4528,10 +4526,10 @@ func (class) _free_rid(impl func(ptr unsafe.Pointer, rid RID.Any)) (cb gd.Extens
 [b]Required.[/b]
 Returns [code]true[/code] if [param rid] is valid resource owned by this text server.
 */
-func (class) _has(impl func(ptr unsafe.Pointer, rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _has(impl func(ptr gdclass.Receiver, rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4541,11 +4539,11 @@ func (class) _has(impl func(ptr unsafe.Pointer, rid RID.Any) bool) (cb gd.Extens
 [b]Optional.[/b]
 Loads optional TextServer database (e.g. ICU break iterators and dictionaries).
 */
-func (class) _load_support_data(impl func(ptr unsafe.Pointer, filename String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _load_support_data(impl func(ptr gdclass.Receiver, filename String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var filename = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(filename))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, filename)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4555,9 +4553,9 @@ func (class) _load_support_data(impl func(ptr unsafe.Pointer, filename String.Re
 [b]Optional.[/b]
 Returns default TextServer database (e.g. ICU break iterators and dictionaries) filename.
 */
-func (class) _get_support_data_filename(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_support_data_filename(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -4572,9 +4570,9 @@ func (class) _get_support_data_filename(impl func(ptr unsafe.Pointer) String.Rea
 [b]Optional.[/b]
 Returns TextServer database (e.g. ICU break iterators and dictionaries) description.
 */
-func (class) _get_support_data_info(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_support_data_info(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -4589,11 +4587,11 @@ func (class) _get_support_data_info(impl func(ptr unsafe.Pointer) String.Readabl
 [b]Optional.[/b]
 Saves optional TextServer database (e.g. ICU break iterators and dictionaries) to the file.
 */
-func (class) _save_support_data(impl func(ptr unsafe.Pointer, filename String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _save_support_data(impl func(ptr gdclass.Receiver, filename String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var filename = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(filename))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, filename)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4603,9 +4601,9 @@ func (class) _save_support_data(impl func(ptr unsafe.Pointer, filename String.Re
 [b]Optional.[/b]
 Returns default TextServer database (e.g. ICU break iterators and dictionaries).
 */
-func (class) _get_support_data(impl func(ptr unsafe.Pointer) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_support_data(impl func(ptr gdclass.Receiver) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret)))
 
@@ -4620,11 +4618,11 @@ func (class) _get_support_data(impl func(ptr unsafe.Pointer) Packed.Bytes) (cb g
 [b]Required.[/b]
 Returns [code]true[/code] if locale is right-to-left.
 */
-func (class) _is_locale_right_to_left(impl func(ptr unsafe.Pointer, locale String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_locale_right_to_left(impl func(ptr gdclass.Receiver, locale String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var locale = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(locale))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, locale)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4634,11 +4632,11 @@ func (class) _is_locale_right_to_left(impl func(ptr unsafe.Pointer, locale Strin
 [b]Optional.[/b]
 Converts readable feature, variation, script, or language name to OpenType tag.
 */
-func (class) _name_to_tag(impl func(ptr unsafe.Pointer, name String.Readable) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _name_to_tag(impl func(ptr gdclass.Receiver, name String.Readable) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(name))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, name)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4648,10 +4646,10 @@ func (class) _name_to_tag(impl func(ptr unsafe.Pointer, name String.Readable) in
 [b]Optional.[/b]
 Converts OpenType tag to readable feature, variation, script, or language name.
 */
-func (class) _tag_to_name(impl func(ptr unsafe.Pointer, tag int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _tag_to_name(impl func(ptr gdclass.Receiver, tag int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var tag = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, tag)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -4666,9 +4664,9 @@ func (class) _tag_to_name(impl func(ptr unsafe.Pointer, tag int64) String.Readab
 [b]Required.[/b]
 Creates a new, empty font cache entry resource.
 */
-func (class) _create_font(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _create_font(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4678,10 +4676,10 @@ func (class) _create_font(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.Extensio
 Optional, implement if font supports extra spacing or baseline offset.
 Creates a new variation existing font which is reusing the same glyph cache and font data.
 */
-func (class) _create_font_linked_variation(impl func(ptr unsafe.Pointer, font_rid RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _create_font_linked_variation(impl func(ptr gdclass.Receiver, font_rid RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4691,12 +4689,12 @@ func (class) _create_font_linked_variation(impl func(ptr unsafe.Pointer, font_ri
 [b]Optional.[/b]
 Sets font source data, e.g contents of the dynamic font source file.
 */
-func (class) _font_set_data(impl func(ptr unsafe.Pointer, font_rid RID.Any, data Packed.Bytes)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_data(impl func(ptr gdclass.Receiver, font_rid RID.Any, data Packed.Bytes)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var data = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, data)
 	}
 }
@@ -4705,12 +4703,12 @@ func (class) _font_set_data(impl func(ptr unsafe.Pointer, font_rid RID.Any, data
 [b]Optional.[/b]
 Sets pointer to the font source data, e.g contents of the dynamic font source file.
 */
-func (class) _font_set_data_ptr(impl func(ptr unsafe.Pointer, font_rid RID.Any, data_ptr unsafe.Pointer, data_size int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_data_ptr(impl func(ptr gdclass.Receiver, font_rid RID.Any, data_ptr gdextension.Pointer, data_size int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		var data_ptr = gd.UnsafeGet[unsafe.Pointer](p_args, 1)
+		var data_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
 		var data_size = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, data_ptr, data_size)
 	}
 }
@@ -4719,11 +4717,11 @@ func (class) _font_set_data_ptr(impl func(ptr unsafe.Pointer, font_rid RID.Any, 
 [b]Optional.[/b]
 Sets an active face index in the TrueType / OpenType collection.
 */
-func (class) _font_set_face_index(impl func(ptr unsafe.Pointer, font_rid RID.Any, face_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_face_index(impl func(ptr gdclass.Receiver, font_rid RID.Any, face_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var face_index = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, face_index)
 	}
 }
@@ -4732,10 +4730,10 @@ func (class) _font_set_face_index(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Optional.[/b]
 Returns an active face index in the TrueType / OpenType collection.
 */
-func (class) _font_get_face_index(impl func(ptr unsafe.Pointer, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_face_index(impl func(ptr gdclass.Receiver, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4745,10 +4743,10 @@ func (class) _font_get_face_index(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Optional.[/b]
 Returns number of faces in the TrueType / OpenType collection.
 */
-func (class) _font_get_face_count(impl func(ptr unsafe.Pointer, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_face_count(impl func(ptr gdclass.Receiver, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4758,11 +4756,11 @@ func (class) _font_get_face_count(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Optional.[/b]
 Sets the font style flags, see [enum TextServer.FontStyle].
 */
-func (class) _font_set_style(impl func(ptr unsafe.Pointer, font_rid RID.Any, style TextServer.FontStyle)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_style(impl func(ptr gdclass.Receiver, font_rid RID.Any, style TextServer.FontStyle)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var style = gd.UnsafeGet[TextServer.FontStyle](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, style)
 	}
 }
@@ -4771,10 +4769,10 @@ func (class) _font_set_style(impl func(ptr unsafe.Pointer, font_rid RID.Any, sty
 [b]Optional.[/b]
 Returns font style flags, see [enum TextServer.FontStyle].
 */
-func (class) _font_get_style(impl func(ptr unsafe.Pointer, font_rid RID.Any) TextServer.FontStyle) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_style(impl func(ptr gdclass.Receiver, font_rid RID.Any) TextServer.FontStyle) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4784,12 +4782,12 @@ func (class) _font_get_style(impl func(ptr unsafe.Pointer, font_rid RID.Any) Tex
 [b]Optional.[/b]
 Sets the font family name.
 */
-func (class) _font_set_name(impl func(ptr unsafe.Pointer, font_rid RID.Any, name String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_name(impl func(ptr gdclass.Receiver, font_rid RID.Any, name String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(name))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, name)
 	}
 }
@@ -4798,10 +4796,10 @@ func (class) _font_set_name(impl func(ptr unsafe.Pointer, font_rid RID.Any, name
 [b]Optional.[/b]
 Returns font family name.
 */
-func (class) _font_get_name(impl func(ptr unsafe.Pointer, font_rid RID.Any) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_name(impl func(ptr gdclass.Receiver, font_rid RID.Any) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -4816,10 +4814,10 @@ func (class) _font_get_name(impl func(ptr unsafe.Pointer, font_rid RID.Any) Stri
 [b]Optional.[/b]
 Returns [Dictionary] with OpenType font name strings (localized font names, version, description, license information, sample text, etc.).
 */
-func (class) _font_get_ot_name_strings(impl func(ptr unsafe.Pointer, font_rid RID.Any) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_ot_name_strings(impl func(ptr gdclass.Receiver, font_rid RID.Any) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -4834,12 +4832,12 @@ func (class) _font_get_ot_name_strings(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Optional.[/b]
 Sets the font style name.
 */
-func (class) _font_set_style_name(impl func(ptr unsafe.Pointer, font_rid RID.Any, name_style String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_style_name(impl func(ptr gdclass.Receiver, font_rid RID.Any, name_style String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var name_style = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(name_style))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, name_style)
 	}
 }
@@ -4848,10 +4846,10 @@ func (class) _font_set_style_name(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Optional.[/b]
 Returns font style name.
 */
-func (class) _font_get_style_name(impl func(ptr unsafe.Pointer, font_rid RID.Any) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_style_name(impl func(ptr gdclass.Receiver, font_rid RID.Any) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -4866,11 +4864,11 @@ func (class) _font_get_style_name(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Optional.[/b]
 Sets weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
 */
-func (class) _font_set_weight(impl func(ptr unsafe.Pointer, font_rid RID.Any, weight int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_weight(impl func(ptr gdclass.Receiver, font_rid RID.Any, weight int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var weight = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, weight)
 	}
 }
@@ -4879,10 +4877,10 @@ func (class) _font_set_weight(impl func(ptr unsafe.Pointer, font_rid RID.Any, we
 [b]Optional.[/b]
 Returns weight (boldness) of the font. A value in the [code]100...999[/code] range, normal font weight is [code]400[/code], bold font weight is [code]700[/code].
 */
-func (class) _font_get_weight(impl func(ptr unsafe.Pointer, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_weight(impl func(ptr gdclass.Receiver, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4892,11 +4890,11 @@ func (class) _font_get_weight(impl func(ptr unsafe.Pointer, font_rid RID.Any) in
 [b]Optional.[/b]
 Sets font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
 */
-func (class) _font_set_stretch(impl func(ptr unsafe.Pointer, font_rid RID.Any, stretch int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_stretch(impl func(ptr gdclass.Receiver, font_rid RID.Any, stretch int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var stretch = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, stretch)
 	}
 }
@@ -4905,10 +4903,10 @@ func (class) _font_set_stretch(impl func(ptr unsafe.Pointer, font_rid RID.Any, s
 [b]Optional.[/b]
 Returns font stretch amount, compared to a normal width. A percentage value between [code]50%[/code] and [code]200%[/code].
 */
-func (class) _font_get_stretch(impl func(ptr unsafe.Pointer, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_stretch(impl func(ptr gdclass.Receiver, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4918,11 +4916,11 @@ func (class) _font_get_stretch(impl func(ptr unsafe.Pointer, font_rid RID.Any) i
 [b]Optional.[/b]
 Sets font anti-aliasing mode.
 */
-func (class) _font_set_antialiasing(impl func(ptr unsafe.Pointer, font_rid RID.Any, antialiasing TextServer.FontAntialiasing)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_antialiasing(impl func(ptr gdclass.Receiver, font_rid RID.Any, antialiasing TextServer.FontAntialiasing)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var antialiasing = gd.UnsafeGet[TextServer.FontAntialiasing](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, antialiasing)
 	}
 }
@@ -4931,10 +4929,10 @@ func (class) _font_set_antialiasing(impl func(ptr unsafe.Pointer, font_rid RID.A
 [b]Optional.[/b]
 Returns font anti-aliasing mode.
 */
-func (class) _font_get_antialiasing(impl func(ptr unsafe.Pointer, font_rid RID.Any) TextServer.FontAntialiasing) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_antialiasing(impl func(ptr gdclass.Receiver, font_rid RID.Any) TextServer.FontAntialiasing) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4944,11 +4942,11 @@ func (class) _font_get_antialiasing(impl func(ptr unsafe.Pointer, font_rid RID.A
 [b]Optional.[/b]
 If set to [code]true[/code], embedded font bitmap loading is disabled.
 */
-func (class) _font_set_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer, font_rid RID.Any, disable_embedded_bitmaps bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_disable_embedded_bitmaps(impl func(ptr gdclass.Receiver, font_rid RID.Any, disable_embedded_bitmaps bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var disable_embedded_bitmaps = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, disable_embedded_bitmaps)
 	}
 }
@@ -4957,10 +4955,10 @@ func (class) _font_set_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer, fo
 [b]Optional.[/b]
 Returns whether the font's embedded bitmap loading is disabled.
 */
-func (class) _font_get_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_disable_embedded_bitmaps(impl func(ptr gdclass.Receiver, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4970,11 +4968,11 @@ func (class) _font_get_disable_embedded_bitmaps(impl func(ptr unsafe.Pointer, fo
 [b]Optional.[/b]
 If set to [code]true[/code] font texture mipmap generation is enabled.
 */
-func (class) _font_set_generate_mipmaps(impl func(ptr unsafe.Pointer, font_rid RID.Any, generate_mipmaps bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_generate_mipmaps(impl func(ptr gdclass.Receiver, font_rid RID.Any, generate_mipmaps bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var generate_mipmaps = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, generate_mipmaps)
 	}
 }
@@ -4983,10 +4981,10 @@ func (class) _font_set_generate_mipmaps(impl func(ptr unsafe.Pointer, font_rid R
 [b]Optional.[/b]
 Returns [code]true[/code] if font texture mipmap generation is enabled.
 */
-func (class) _font_get_generate_mipmaps(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_generate_mipmaps(impl func(ptr gdclass.Receiver, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -4996,11 +4994,11 @@ func (class) _font_get_generate_mipmaps(impl func(ptr unsafe.Pointer, font_rid R
 [b]Optional.[/b]
 If set to [code]true[/code], glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data. MSDF rendering allows displaying the font at any scaling factor without blurriness, and without incurring a CPU cost when the font size changes (since the font no longer needs to be rasterized on the CPU). As a downside, font hinting is not available with MSDF. The lack of font hinting may result in less crisp and less readable fonts at small sizes.
 */
-func (class) _font_set_multichannel_signed_distance_field(impl func(ptr unsafe.Pointer, font_rid RID.Any, msdf bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_multichannel_signed_distance_field(impl func(ptr gdclass.Receiver, font_rid RID.Any, msdf bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var msdf = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, msdf)
 	}
 }
@@ -5009,10 +5007,10 @@ func (class) _font_set_multichannel_signed_distance_field(impl func(ptr unsafe.P
 [b]Optional.[/b]
 Returns [code]true[/code] if glyphs of all sizes are rendered using single multichannel signed distance field generated from the dynamic font vector data.
 */
-func (class) _font_is_multichannel_signed_distance_field(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_is_multichannel_signed_distance_field(impl func(ptr gdclass.Receiver, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5022,11 +5020,11 @@ func (class) _font_is_multichannel_signed_distance_field(impl func(ptr unsafe.Po
 [b]Optional.[/b]
 Sets the width of the range around the shape between the minimum and maximum representable signed distance.
 */
-func (class) _font_set_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_rid RID.Any, msdf_pixel_range int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_msdf_pixel_range(impl func(ptr gdclass.Receiver, font_rid RID.Any, msdf_pixel_range int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var msdf_pixel_range = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, msdf_pixel_range)
 	}
 }
@@ -5035,10 +5033,10 @@ func (class) _font_set_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_rid R
 [b]Optional.[/b]
 Returns the width of the range around the shape between the minimum and maximum representable signed distance.
 */
-func (class) _font_get_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_msdf_pixel_range(impl func(ptr gdclass.Receiver, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5048,11 +5046,11 @@ func (class) _font_get_msdf_pixel_range(impl func(ptr unsafe.Pointer, font_rid R
 [b]Optional.[/b]
 Sets source font size used to generate MSDF textures.
 */
-func (class) _font_set_msdf_size(impl func(ptr unsafe.Pointer, font_rid RID.Any, msdf_size int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_msdf_size(impl func(ptr gdclass.Receiver, font_rid RID.Any, msdf_size int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var msdf_size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, msdf_size)
 	}
 }
@@ -5061,10 +5059,10 @@ func (class) _font_set_msdf_size(impl func(ptr unsafe.Pointer, font_rid RID.Any,
 [b]Optional.[/b]
 Returns source font size used to generate MSDF textures.
 */
-func (class) _font_get_msdf_size(impl func(ptr unsafe.Pointer, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_msdf_size(impl func(ptr gdclass.Receiver, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5074,11 +5072,11 @@ func (class) _font_get_msdf_size(impl func(ptr unsafe.Pointer, font_rid RID.Any)
 [b]Required.[/b]
 Sets bitmap font fixed size. If set to value greater than zero, same cache entry will be used for all font sizes.
 */
-func (class) _font_set_fixed_size(impl func(ptr unsafe.Pointer, font_rid RID.Any, fixed_size int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_fixed_size(impl func(ptr gdclass.Receiver, font_rid RID.Any, fixed_size int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var fixed_size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, fixed_size)
 	}
 }
@@ -5087,10 +5085,10 @@ func (class) _font_set_fixed_size(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Required.[/b]
 Returns bitmap font fixed size.
 */
-func (class) _font_get_fixed_size(impl func(ptr unsafe.Pointer, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_fixed_size(impl func(ptr gdclass.Receiver, font_rid RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5100,11 +5098,11 @@ func (class) _font_get_fixed_size(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Required.[/b]
 Sets bitmap font scaling mode. This property is used only if [code]fixed_size[/code] is greater than zero.
 */
-func (class) _font_set_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, font_rid RID.Any, fixed_size_scale_mode TextServer.FixedSizeScaleMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_fixed_size_scale_mode(impl func(ptr gdclass.Receiver, font_rid RID.Any, fixed_size_scale_mode TextServer.FixedSizeScaleMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var fixed_size_scale_mode = gd.UnsafeGet[TextServer.FixedSizeScaleMode](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, fixed_size_scale_mode)
 	}
 }
@@ -5113,10 +5111,10 @@ func (class) _font_set_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, font_
 [b]Required.[/b]
 Returns bitmap font scaling mode.
 */
-func (class) _font_get_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, font_rid RID.Any) TextServer.FixedSizeScaleMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_fixed_size_scale_mode(impl func(ptr gdclass.Receiver, font_rid RID.Any) TextServer.FixedSizeScaleMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5126,11 +5124,11 @@ func (class) _font_get_fixed_size_scale_mode(impl func(ptr unsafe.Pointer, font_
 [b]Optional.[/b]
 If set to [code]true[/code], system fonts can be automatically used as fallbacks.
 */
-func (class) _font_set_allow_system_fallback(impl func(ptr unsafe.Pointer, font_rid RID.Any, allow_system_fallback bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_allow_system_fallback(impl func(ptr gdclass.Receiver, font_rid RID.Any, allow_system_fallback bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var allow_system_fallback = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, allow_system_fallback)
 	}
 }
@@ -5139,10 +5137,10 @@ func (class) _font_set_allow_system_fallback(impl func(ptr unsafe.Pointer, font_
 [b]Optional.[/b]
 Returns [code]true[/code] if system fonts can be automatically used as fallbacks.
 */
-func (class) _font_is_allow_system_fallback(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_is_allow_system_fallback(impl func(ptr gdclass.Receiver, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5152,11 +5150,11 @@ func (class) _font_is_allow_system_fallback(impl func(ptr unsafe.Pointer, font_r
 [b]Optional.[/b]
 If set to [code]true[/code] auto-hinting is preferred over font built-in hinting.
 */
-func (class) _font_set_force_autohinter(impl func(ptr unsafe.Pointer, font_rid RID.Any, force_autohinter bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_force_autohinter(impl func(ptr gdclass.Receiver, font_rid RID.Any, force_autohinter bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var force_autohinter = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, force_autohinter)
 	}
 }
@@ -5165,10 +5163,10 @@ func (class) _font_set_force_autohinter(impl func(ptr unsafe.Pointer, font_rid R
 [b]Optional.[/b]
 Returns [code]true[/code] if auto-hinting is supported and preferred over font built-in hinting.
 */
-func (class) _font_is_force_autohinter(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_is_force_autohinter(impl func(ptr gdclass.Receiver, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5178,11 +5176,11 @@ func (class) _font_is_force_autohinter(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Optional.[/b]
 Sets font hinting mode. Used by dynamic fonts only.
 */
-func (class) _font_set_hinting(impl func(ptr unsafe.Pointer, font_rid RID.Any, hinting TextServer.Hinting)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_hinting(impl func(ptr gdclass.Receiver, font_rid RID.Any, hinting TextServer.Hinting)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var hinting = gd.UnsafeGet[TextServer.Hinting](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, hinting)
 	}
 }
@@ -5191,10 +5189,10 @@ func (class) _font_set_hinting(impl func(ptr unsafe.Pointer, font_rid RID.Any, h
 [b]Optional.[/b]
 Returns the font hinting mode. Used by dynamic fonts only.
 */
-func (class) _font_get_hinting(impl func(ptr unsafe.Pointer, font_rid RID.Any) TextServer.Hinting) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_hinting(impl func(ptr gdclass.Receiver, font_rid RID.Any) TextServer.Hinting) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5204,11 +5202,11 @@ func (class) _font_get_hinting(impl func(ptr unsafe.Pointer, font_rid RID.Any) T
 [b]Optional.[/b]
 Sets font subpixel glyph positioning mode.
 */
-func (class) _font_set_subpixel_positioning(impl func(ptr unsafe.Pointer, font_rid RID.Any, subpixel_positioning TextServer.SubpixelPositioning)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_subpixel_positioning(impl func(ptr gdclass.Receiver, font_rid RID.Any, subpixel_positioning TextServer.SubpixelPositioning)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var subpixel_positioning = gd.UnsafeGet[TextServer.SubpixelPositioning](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, subpixel_positioning)
 	}
 }
@@ -5217,10 +5215,10 @@ func (class) _font_set_subpixel_positioning(impl func(ptr unsafe.Pointer, font_r
 [b]Optional.[/b]
 Returns font subpixel glyph positioning mode.
 */
-func (class) _font_get_subpixel_positioning(impl func(ptr unsafe.Pointer, font_rid RID.Any) TextServer.SubpixelPositioning) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_subpixel_positioning(impl func(ptr gdclass.Receiver, font_rid RID.Any) TextServer.SubpixelPositioning) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5230,11 +5228,11 @@ func (class) _font_get_subpixel_positioning(impl func(ptr unsafe.Pointer, font_r
 [b]Optional.[/b]
 Sets glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
 */
-func (class) _font_set_keep_rounding_remainders(impl func(ptr unsafe.Pointer, font_rid RID.Any, keep_rounding_remainders bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_keep_rounding_remainders(impl func(ptr gdclass.Receiver, font_rid RID.Any, keep_rounding_remainders bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var keep_rounding_remainders = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, keep_rounding_remainders)
 	}
 }
@@ -5243,10 +5241,10 @@ func (class) _font_set_keep_rounding_remainders(impl func(ptr unsafe.Pointer, fo
 [b]Optional.[/b]
 Returns glyph position rounding behavior. If set to [code]true[/code], when aligning glyphs to the pixel boundaries rounding remainders are accumulated to ensure more uniform glyph distribution. This setting has no effect if subpixel positioning is enabled.
 */
-func (class) _font_get_keep_rounding_remainders(impl func(ptr unsafe.Pointer, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_keep_rounding_remainders(impl func(ptr gdclass.Receiver, font_rid RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5255,11 +5253,11 @@ func (class) _font_get_keep_rounding_remainders(impl func(ptr unsafe.Pointer, fo
 /*
 Sets font embolden strength. If [param strength] is not equal to zero, emboldens the font outlines. Negative values reduce the outline thickness.
 */
-func (class) _font_set_embolden(impl func(ptr unsafe.Pointer, font_rid RID.Any, strength float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_embolden(impl func(ptr gdclass.Receiver, font_rid RID.Any, strength float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var strength = gd.UnsafeGet[float64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, strength)
 	}
 }
@@ -5268,10 +5266,10 @@ func (class) _font_set_embolden(impl func(ptr unsafe.Pointer, font_rid RID.Any, 
 [b]Optional.[/b]
 Returns font embolden strength.
 */
-func (class) _font_get_embolden(impl func(ptr unsafe.Pointer, font_rid RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_embolden(impl func(ptr gdclass.Receiver, font_rid RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5281,12 +5279,12 @@ func (class) _font_get_embolden(impl func(ptr unsafe.Pointer, font_rid RID.Any) 
 [b]Optional.[/b]
 Sets the spacing for [param spacing] (see [enum TextServer.SpacingType]) to [param value] in pixels (not relative to the font size).
 */
-func (class) _font_set_spacing(impl func(ptr unsafe.Pointer, font_rid RID.Any, spacing TextServer.SpacingType, value int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_spacing(impl func(ptr gdclass.Receiver, font_rid RID.Any, spacing TextServer.SpacingType, value int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var spacing = gd.UnsafeGet[TextServer.SpacingType](p_args, 1)
 		var value = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, spacing, value)
 	}
 }
@@ -5295,11 +5293,11 @@ func (class) _font_set_spacing(impl func(ptr unsafe.Pointer, font_rid RID.Any, s
 [b]Optional.[/b]
 Returns the spacing for [param spacing] (see [enum TextServer.SpacingType]) in pixels (not relative to the font size).
 */
-func (class) _font_get_spacing(impl func(ptr unsafe.Pointer, font_rid RID.Any, spacing TextServer.SpacingType) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_spacing(impl func(ptr gdclass.Receiver, font_rid RID.Any, spacing TextServer.SpacingType) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var spacing = gd.UnsafeGet[TextServer.SpacingType](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, spacing)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5309,11 +5307,11 @@ func (class) _font_get_spacing(impl func(ptr unsafe.Pointer, font_rid RID.Any, s
 [b]Optional.[/b]
 Sets extra baseline offset (as a fraction of font height).
 */
-func (class) _font_set_baseline_offset(impl func(ptr unsafe.Pointer, font_rid RID.Any, baseline_offset float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_baseline_offset(impl func(ptr gdclass.Receiver, font_rid RID.Any, baseline_offset float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var baseline_offset = gd.UnsafeGet[float64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, baseline_offset)
 	}
 }
@@ -5322,10 +5320,10 @@ func (class) _font_set_baseline_offset(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Optional.[/b]
 Returns extra baseline offset (as a fraction of font height).
 */
-func (class) _font_get_baseline_offset(impl func(ptr unsafe.Pointer, font_rid RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_baseline_offset(impl func(ptr gdclass.Receiver, font_rid RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5335,11 +5333,11 @@ func (class) _font_get_baseline_offset(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Optional.[/b]
 Sets 2D transform, applied to the font outlines, can be used for slanting, flipping, and rotating glyphs.
 */
-func (class) _font_set_transform(impl func(ptr unsafe.Pointer, font_rid RID.Any, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_transform(impl func(ptr gdclass.Receiver, font_rid RID.Any, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, transform)
 	}
 }
@@ -5348,10 +5346,10 @@ func (class) _font_set_transform(impl func(ptr unsafe.Pointer, font_rid RID.Any,
 [b]Optional.[/b]
 Returns 2D transform applied to the font outlines.
 */
-func (class) _font_get_transform(impl func(ptr unsafe.Pointer, font_rid RID.Any) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_transform(impl func(ptr gdclass.Receiver, font_rid RID.Any) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5361,12 +5359,12 @@ func (class) _font_get_transform(impl func(ptr unsafe.Pointer, font_rid RID.Any)
 [b]Optional.[/b]
 Sets variation coordinates for the specified font cache entry.
 */
-func (class) _font_set_variation_coordinates(impl func(ptr unsafe.Pointer, font_rid RID.Any, variation_coordinates Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_variation_coordinates(impl func(ptr gdclass.Receiver, font_rid RID.Any, variation_coordinates Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var variation_coordinates = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(variation_coordinates))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, variation_coordinates)
 	}
 }
@@ -5375,10 +5373,10 @@ func (class) _font_set_variation_coordinates(impl func(ptr unsafe.Pointer, font_
 [b]Optional.[/b]
 Returns variation coordinates for the specified font cache entry.
 */
-func (class) _font_get_variation_coordinates(impl func(ptr unsafe.Pointer, font_rid RID.Any) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_variation_coordinates(impl func(ptr gdclass.Receiver, font_rid RID.Any) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -5393,11 +5391,11 @@ func (class) _font_get_variation_coordinates(impl func(ptr unsafe.Pointer, font_
 [b]Optional.[/b]
 Sets font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
 */
-func (class) _font_set_oversampling(impl func(ptr unsafe.Pointer, font_rid RID.Any, oversampling float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_oversampling(impl func(ptr gdclass.Receiver, font_rid RID.Any, oversampling float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var oversampling = gd.UnsafeGet[float64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, oversampling)
 	}
 }
@@ -5406,10 +5404,10 @@ func (class) _font_set_oversampling(impl func(ptr unsafe.Pointer, font_rid RID.A
 [b]Optional.[/b]
 Returns font oversampling factor, if set to [code]0.0[/code] global oversampling factor is used instead. Used by dynamic fonts only.
 */
-func (class) _font_get_oversampling(impl func(ptr unsafe.Pointer, font_rid RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_oversampling(impl func(ptr gdclass.Receiver, font_rid RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5419,10 +5417,10 @@ func (class) _font_get_oversampling(impl func(ptr unsafe.Pointer, font_rid RID.A
 [b]Required.[/b]
 Returns list of the font sizes in the cache. Each size is [Vector2i] with font size and outline size.
 */
-func (class) _font_get_size_cache_list(impl func(ptr unsafe.Pointer, font_rid RID.Any) Array.Contains[Vector2i.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_size_cache_list(impl func(ptr gdclass.Receiver, font_rid RID.Any) Array.Contains[Vector2i.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -5437,10 +5435,10 @@ func (class) _font_get_size_cache_list(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Required.[/b]
 Removes all font sizes from the cache entry.
 */
-func (class) _font_clear_size_cache(impl func(ptr unsafe.Pointer, font_rid RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_clear_size_cache(impl func(ptr gdclass.Receiver, font_rid RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid)
 	}
 }
@@ -5449,11 +5447,11 @@ func (class) _font_clear_size_cache(impl func(ptr unsafe.Pointer, font_rid RID.A
 [b]Required.[/b]
 Removes specified font size from the cache entry.
 */
-func (class) _font_remove_size_cache(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_remove_size_cache(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size)
 	}
 }
@@ -5462,12 +5460,12 @@ func (class) _font_remove_size_cache(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Sets the font ascent (number of pixels above the baseline).
 */
-func (class) _font_set_ascent(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64, ascent float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_ascent(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, ascent float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var ascent = gd.UnsafeGet[float64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, ascent)
 	}
 }
@@ -5476,11 +5474,11 @@ func (class) _font_set_ascent(impl func(ptr unsafe.Pointer, font_rid RID.Any, si
 [b]Required.[/b]
 Returns the font ascent (number of pixels above the baseline).
 */
-func (class) _font_get_ascent(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_ascent(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5490,12 +5488,12 @@ func (class) _font_get_ascent(impl func(ptr unsafe.Pointer, font_rid RID.Any, si
 [b]Required.[/b]
 Sets the font descent (number of pixels below the baseline).
 */
-func (class) _font_set_descent(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64, descent float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_descent(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, descent float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var descent = gd.UnsafeGet[float64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, descent)
 	}
 }
@@ -5504,11 +5502,11 @@ func (class) _font_set_descent(impl func(ptr unsafe.Pointer, font_rid RID.Any, s
 [b]Required.[/b]
 Returns the font descent (number of pixels below the baseline).
 */
-func (class) _font_get_descent(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_descent(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5518,12 +5516,12 @@ func (class) _font_get_descent(impl func(ptr unsafe.Pointer, font_rid RID.Any, s
 [b]Required.[/b]
 Sets pixel offset of the underline below the baseline.
 */
-func (class) _font_set_underline_position(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64, underline_position float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_underline_position(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, underline_position float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var underline_position = gd.UnsafeGet[float64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, underline_position)
 	}
 }
@@ -5532,11 +5530,11 @@ func (class) _font_set_underline_position(impl func(ptr unsafe.Pointer, font_rid
 [b]Required.[/b]
 Returns pixel offset of the underline below the baseline.
 */
-func (class) _font_get_underline_position(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_underline_position(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5546,12 +5544,12 @@ func (class) _font_get_underline_position(impl func(ptr unsafe.Pointer, font_rid
 [b]Required.[/b]
 Sets thickness of the underline in pixels.
 */
-func (class) _font_set_underline_thickness(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64, underline_thickness float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_underline_thickness(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, underline_thickness float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var underline_thickness = gd.UnsafeGet[float64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, underline_thickness)
 	}
 }
@@ -5560,11 +5558,11 @@ func (class) _font_set_underline_thickness(impl func(ptr unsafe.Pointer, font_ri
 [b]Required.[/b]
 Returns thickness of the underline in pixels.
 */
-func (class) _font_get_underline_thickness(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_underline_thickness(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5574,12 +5572,12 @@ func (class) _font_get_underline_thickness(impl func(ptr unsafe.Pointer, font_ri
 [b]Required.[/b]
 Sets scaling factor of the color bitmap font.
 */
-func (class) _font_set_scale(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64, scale float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_scale(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, scale float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var scale = gd.UnsafeGet[float64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, scale)
 	}
 }
@@ -5588,11 +5586,11 @@ func (class) _font_set_scale(impl func(ptr unsafe.Pointer, font_rid RID.Any, siz
 [b]Required.[/b]
 Returns scaling factor of the color bitmap font.
 */
-func (class) _font_get_scale(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_scale(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5602,11 +5600,11 @@ func (class) _font_get_scale(impl func(ptr unsafe.Pointer, font_rid RID.Any, siz
 [b]Required.[/b]
 Returns number of textures used by font cache entry.
 */
-func (class) _font_get_texture_count(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_texture_count(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5616,11 +5614,11 @@ func (class) _font_get_texture_count(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Removes all textures from font cache entry.
 */
-func (class) _font_clear_textures(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_clear_textures(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size)
 	}
 }
@@ -5629,12 +5627,12 @@ func (class) _font_clear_textures(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Required.[/b]
 Removes specified texture from the cache entry.
 */
-func (class) _font_remove_texture(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_remove_texture(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, texture_index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var texture_index = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, texture_index)
 	}
 }
@@ -5643,7 +5641,7 @@ func (class) _font_remove_texture(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Required.[/b]
 Sets font cache texture image data.
 */
-func (class) _font_set_texture_image(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int64, image [1]gdclass.Image)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_texture_image(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, texture_index int64, image [1]gdclass.Image)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
@@ -5651,7 +5649,7 @@ func (class) _font_set_texture_image(impl func(ptr unsafe.Pointer, font_rid RID.
 		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))})}
 
 		defer pointers.End(image[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, texture_index, image)
 	}
 }
@@ -5660,12 +5658,12 @@ func (class) _font_set_texture_image(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Returns font cache texture image data.
 */
-func (class) _font_get_texture_image(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int64) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_texture_image(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, texture_index int64) [1]gdclass.Image) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var texture_index = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, texture_index)
 		ptr, ok := pointers.End(ret[0])
 
@@ -5680,14 +5678,14 @@ func (class) _font_get_texture_image(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Optional.[/b]
 Sets array containing glyph packing data.
 */
-func (class) _font_set_texture_offsets(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int64, offset Packed.Array[int32])) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_texture_offsets(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, texture_index int64, offset Packed.Array[int32])) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var texture_index = gd.UnsafeGet[int64](p_args, 2)
 		var offset = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](offset))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, texture_index, offset)
 	}
 }
@@ -5696,12 +5694,12 @@ func (class) _font_set_texture_offsets(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Optional.[/b]
 Returns array containing glyph packing data.
 */
-func (class) _font_get_texture_offsets(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, texture_index int64) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_texture_offsets(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, texture_index int64) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var texture_index = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, texture_index)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
@@ -5716,11 +5714,11 @@ func (class) _font_get_texture_offsets(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Required.[/b]
 Returns list of rendered glyphs in the cache entry.
 */
-func (class) _font_get_glyph_list(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_glyph_list(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
@@ -5735,11 +5733,11 @@ func (class) _font_get_glyph_list(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Required.[/b]
 Removes all rendered glyph information from the cache entry.
 */
-func (class) _font_clear_glyphs(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_clear_glyphs(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size)
 	}
 }
@@ -5748,12 +5746,12 @@ func (class) _font_clear_glyphs(impl func(ptr unsafe.Pointer, font_rid RID.Any, 
 [b]Required.[/b]
 Removes specified rendered glyph information from the cache entry.
 */
-func (class) _font_remove_glyph(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_remove_glyph(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, glyph)
 	}
 }
@@ -5762,12 +5760,12 @@ func (class) _font_remove_glyph(impl func(ptr unsafe.Pointer, font_rid RID.Any, 
 [b]Required.[/b]
 Returns glyph advance (offset of the next glyph).
 */
-func (class) _font_get_glyph_advance(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64, glyph int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_glyph_advance(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, glyph int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, glyph)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5777,13 +5775,13 @@ func (class) _font_get_glyph_advance(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Sets glyph advance (offset of the next glyph).
 */
-func (class) _font_set_glyph_advance(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64, glyph int64, advance Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_glyph_advance(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, glyph int64, advance Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var advance = gd.UnsafeGet[Vector2.XY](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, glyph, advance)
 	}
 }
@@ -5792,12 +5790,12 @@ func (class) _font_set_glyph_advance(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Returns glyph offset from the baseline.
 */
-func (class) _font_get_glyph_offset(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_glyph_offset(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, glyph)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5807,13 +5805,13 @@ func (class) _font_get_glyph_offset(impl func(ptr unsafe.Pointer, font_rid RID.A
 [b]Required.[/b]
 Sets glyph offset from the baseline.
 */
-func (class) _font_set_glyph_offset(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int64, offset Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_glyph_offset(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int64, offset Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var offset = gd.UnsafeGet[Vector2.XY](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, glyph, offset)
 	}
 }
@@ -5822,12 +5820,12 @@ func (class) _font_set_glyph_offset(impl func(ptr unsafe.Pointer, font_rid RID.A
 [b]Required.[/b]
 Returns size of the glyph.
 */
-func (class) _font_get_glyph_size(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_glyph_size(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, glyph)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5837,13 +5835,13 @@ func (class) _font_get_glyph_size(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Required.[/b]
 Sets size of the glyph.
 */
-func (class) _font_set_glyph_size(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int64, gl_size Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_glyph_size(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int64, gl_size Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var gl_size = gd.UnsafeGet[Vector2.XY](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, glyph, gl_size)
 	}
 }
@@ -5852,12 +5850,12 @@ func (class) _font_set_glyph_size(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Required.[/b]
 Returns rectangle in the cache texture containing the glyph.
 */
-func (class) _font_get_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int64) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_glyph_uv_rect(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int64) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, glyph)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5867,13 +5865,13 @@ func (class) _font_get_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Sets rectangle in the cache texture containing the glyph.
 */
-func (class) _font_set_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int64, uv_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_glyph_uv_rect(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int64, uv_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var uv_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, glyph, uv_rect)
 	}
 }
@@ -5882,12 +5880,12 @@ func (class) _font_set_glyph_uv_rect(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Required.[/b]
 Returns index of the cache texture containing the glyph.
 */
-func (class) _font_get_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_glyph_texture_idx(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, glyph)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5897,13 +5895,13 @@ func (class) _font_get_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_rid 
 [b]Required.[/b]
 Sets index of the cache texture containing the glyph.
 */
-func (class) _font_set_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int64, texture_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_glyph_texture_idx(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int64, texture_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var texture_idx = gd.UnsafeGet[int64](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, glyph, texture_idx)
 	}
 }
@@ -5912,12 +5910,12 @@ func (class) _font_set_glyph_texture_idx(impl func(ptr unsafe.Pointer, font_rid 
 [b]Required.[/b]
 Returns resource ID of the cache texture containing the glyph.
 */
-func (class) _font_get_glyph_texture_rid(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int64) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_glyph_texture_rid(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int64) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, glyph)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5927,12 +5925,12 @@ func (class) _font_get_glyph_texture_rid(impl func(ptr unsafe.Pointer, font_rid 
 [b]Required.[/b]
 Returns size of the cache texture containing the glyph.
 */
-func (class) _font_get_glyph_texture_size(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, glyph int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_glyph_texture_size(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, glyph int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, glyph)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -5942,12 +5940,12 @@ func (class) _font_get_glyph_texture_size(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Returns outline contours of the glyph.
 */
-func (class) _font_get_glyph_contours(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64, index int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_glyph_contours(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, index int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var index = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, index)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -5962,11 +5960,11 @@ func (class) _font_get_glyph_contours(impl func(ptr unsafe.Pointer, font_rid RID
 [b]Optional.[/b]
 Returns list of the kerning overrides.
 */
-func (class) _font_get_kerning_list(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64) Array.Contains[Vector2i.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_kerning_list(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64) Array.Contains[Vector2i.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -5981,11 +5979,11 @@ func (class) _font_get_kerning_list(impl func(ptr unsafe.Pointer, font_rid RID.A
 [b]Optional.[/b]
 Removes all kerning overrides.
 */
-func (class) _font_clear_kerning_map(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_clear_kerning_map(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size)
 	}
 }
@@ -5994,12 +5992,12 @@ func (class) _font_clear_kerning_map(impl func(ptr unsafe.Pointer, font_rid RID.
 [b]Optional.[/b]
 Removes kerning override for the pair of glyphs.
 */
-func (class) _font_remove_kerning(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64, glyph_pair Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_remove_kerning(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, glyph_pair Vector2i.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph_pair = gd.UnsafeGet[Vector2i.XY](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, glyph_pair)
 	}
 }
@@ -6008,13 +6006,13 @@ func (class) _font_remove_kerning(impl func(ptr unsafe.Pointer, font_rid RID.Any
 [b]Optional.[/b]
 Sets kerning for the pair of glyphs.
 */
-func (class) _font_set_kerning(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64, glyph_pair Vector2i.XY, kerning Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_kerning(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, glyph_pair Vector2i.XY, kerning Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph_pair = gd.UnsafeGet[Vector2i.XY](p_args, 2)
 		var kerning = gd.UnsafeGet[Vector2.XY](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, glyph_pair, kerning)
 	}
 }
@@ -6023,12 +6021,12 @@ func (class) _font_set_kerning(impl func(ptr unsafe.Pointer, font_rid RID.Any, s
 [b]Optional.[/b]
 Returns kerning for the pair of glyphs.
 */
-func (class) _font_get_kerning(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64, glyph_pair Vector2i.XY) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_kerning(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, glyph_pair Vector2i.XY) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph_pair = gd.UnsafeGet[Vector2i.XY](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, glyph_pair)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6038,13 +6036,13 @@ func (class) _font_get_kerning(impl func(ptr unsafe.Pointer, font_rid RID.Any, s
 [b]Required.[/b]
 Returns the glyph index of a [param char], optionally modified by the [param variation_selector].
 */
-func (class) _font_get_glyph_index(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64, char int64, variation_selector int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_glyph_index(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, char int64, variation_selector int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var char = gd.UnsafeGet[int64](p_args, 2)
 		var variation_selector = gd.UnsafeGet[int64](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, char, variation_selector)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6054,12 +6052,12 @@ func (class) _font_get_glyph_index(impl func(ptr unsafe.Pointer, font_rid RID.An
 [b]Required.[/b]
 Returns character code associated with [param glyph_index], or [code]0[/code] if [param glyph_index] is invalid.
 */
-func (class) _font_get_char_from_glyph_index(impl func(ptr unsafe.Pointer, font_rid RID.Any, size int64, glyph_index int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_char_from_glyph_index(impl func(ptr gdclass.Receiver, font_rid RID.Any, size int64, glyph_index int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph_index = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, size, glyph_index)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6069,11 +6067,11 @@ func (class) _font_get_char_from_glyph_index(impl func(ptr unsafe.Pointer, font_
 [b]Required.[/b]
 Returns [code]true[/code] if a Unicode [param char] is available in the font.
 */
-func (class) _font_has_char(impl func(ptr unsafe.Pointer, font_rid RID.Any, char int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_has_char(impl func(ptr gdclass.Receiver, font_rid RID.Any, char int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var char = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, char)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6083,10 +6081,10 @@ func (class) _font_has_char(impl func(ptr unsafe.Pointer, font_rid RID.Any, char
 [b]Required.[/b]
 Returns a string containing all the characters available in the font.
 */
-func (class) _font_get_supported_chars(impl func(ptr unsafe.Pointer, font_rid RID.Any) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_supported_chars(impl func(ptr gdclass.Receiver, font_rid RID.Any) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -6101,10 +6099,10 @@ func (class) _font_get_supported_chars(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Required.[/b]
 Returns an array containing all glyph indices in the font.
 */
-func (class) _font_get_supported_glyphs(impl func(ptr unsafe.Pointer, font_rid RID.Any) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_supported_glyphs(impl func(ptr gdclass.Receiver, font_rid RID.Any) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
@@ -6119,13 +6117,13 @@ func (class) _font_get_supported_glyphs(impl func(ptr unsafe.Pointer, font_rid R
 [b]Optional.[/b]
 Renders the range of characters to the font cache texture.
 */
-func (class) _font_render_range(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, start int64, end int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_render_range(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, start int64, end int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var start = gd.UnsafeGet[int64](p_args, 2)
 		var end = gd.UnsafeGet[int64](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, start, end)
 	}
 }
@@ -6134,12 +6132,12 @@ func (class) _font_render_range(impl func(ptr unsafe.Pointer, font_rid RID.Any, 
 [b]Optional.[/b]
 Renders specified glyph to the font cache texture.
 */
-func (class) _font_render_glyph(impl func(ptr unsafe.Pointer, font_rid RID.Any, size Vector2i.XY, index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_render_glyph(impl func(ptr gdclass.Receiver, font_rid RID.Any, size Vector2i.XY, index int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var index = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, size, index)
 	}
 }
@@ -6148,7 +6146,7 @@ func (class) _font_render_glyph(impl func(ptr unsafe.Pointer, font_rid RID.Any, 
 [b]Required.[/b]
 Draws single glyph into a canvas item at the position, using [param font_rid] at the size [param size].
 */
-func (class) _font_draw_glyph(impl func(ptr unsafe.Pointer, font_rid RID.Any, canvas RID.Any, size int64, pos Vector2.XY, index int64, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_draw_glyph(impl func(ptr gdclass.Receiver, font_rid RID.Any, canvas RID.Any, size int64, pos Vector2.XY, index int64, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var canvas = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -6156,7 +6154,7 @@ func (class) _font_draw_glyph(impl func(ptr unsafe.Pointer, font_rid RID.Any, ca
 		var pos = gd.UnsafeGet[Vector2.XY](p_args, 3)
 		var index = gd.UnsafeGet[int64](p_args, 4)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 5)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, canvas, size, pos, index, color)
 	}
 }
@@ -6165,7 +6163,7 @@ func (class) _font_draw_glyph(impl func(ptr unsafe.Pointer, font_rid RID.Any, ca
 [b]Required.[/b]
 Draws single glyph outline of size [param outline_size] into a canvas item at the position, using [param font_rid] at the size [param size].
 */
-func (class) _font_draw_glyph_outline(impl func(ptr unsafe.Pointer, font_rid RID.Any, canvas RID.Any, size int64, outline_size int64, pos Vector2.XY, index int64, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_draw_glyph_outline(impl func(ptr gdclass.Receiver, font_rid RID.Any, canvas RID.Any, size int64, outline_size int64, pos Vector2.XY, index int64, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var canvas = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -6174,7 +6172,7 @@ func (class) _font_draw_glyph_outline(impl func(ptr unsafe.Pointer, font_rid RID
 		var pos = gd.UnsafeGet[Vector2.XY](p_args, 4)
 		var index = gd.UnsafeGet[int64](p_args, 5)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 6)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, canvas, size, outline_size, pos, index, color)
 	}
 }
@@ -6183,12 +6181,12 @@ func (class) _font_draw_glyph_outline(impl func(ptr unsafe.Pointer, font_rid RID
 [b]Optional.[/b]
 Returns [code]true[/code], if font supports given language ([url=https://en.wikipedia.org/wiki/ISO_639-1]ISO 639[/url] code).
 */
-func (class) _font_is_language_supported(impl func(ptr unsafe.Pointer, font_rid RID.Any, language String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_is_language_supported(impl func(ptr gdclass.Receiver, font_rid RID.Any, language String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, language)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6198,13 +6196,13 @@ func (class) _font_is_language_supported(impl func(ptr unsafe.Pointer, font_rid 
 [b]Optional.[/b]
 Adds override for [method _font_is_language_supported].
 */
-func (class) _font_set_language_support_override(impl func(ptr unsafe.Pointer, font_rid RID.Any, language String.Readable, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_language_support_override(impl func(ptr gdclass.Receiver, font_rid RID.Any, language String.Readable, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
 		var supported = gd.UnsafeGet[bool](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, language, supported)
 	}
 }
@@ -6213,12 +6211,12 @@ func (class) _font_set_language_support_override(impl func(ptr unsafe.Pointer, f
 [b]Optional.[/b]
 Returns [code]true[/code] if support override is enabled for the [param language].
 */
-func (class) _font_get_language_support_override(impl func(ptr unsafe.Pointer, font_rid RID.Any, language String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_language_support_override(impl func(ptr gdclass.Receiver, font_rid RID.Any, language String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, language)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6228,12 +6226,12 @@ func (class) _font_get_language_support_override(impl func(ptr unsafe.Pointer, f
 [b]Optional.[/b]
 Remove language support override.
 */
-func (class) _font_remove_language_support_override(impl func(ptr unsafe.Pointer, font_rid RID.Any, language String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_remove_language_support_override(impl func(ptr gdclass.Receiver, font_rid RID.Any, language String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, language)
 	}
 }
@@ -6242,10 +6240,10 @@ func (class) _font_remove_language_support_override(impl func(ptr unsafe.Pointer
 [b]Optional.[/b]
 Returns list of language support overrides.
 */
-func (class) _font_get_language_support_overrides(impl func(ptr unsafe.Pointer, font_rid RID.Any) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_language_support_overrides(impl func(ptr gdclass.Receiver, font_rid RID.Any) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -6260,12 +6258,12 @@ func (class) _font_get_language_support_overrides(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns [code]true[/code], if font supports given script (ISO 15924 code).
 */
-func (class) _font_is_script_supported(impl func(ptr unsafe.Pointer, font_rid RID.Any, script String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_is_script_supported(impl func(ptr gdclass.Receiver, font_rid RID.Any, script String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(script))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, script)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6275,13 +6273,13 @@ func (class) _font_is_script_supported(impl func(ptr unsafe.Pointer, font_rid RI
 [b]Optional.[/b]
 Adds override for [method _font_is_script_supported].
 */
-func (class) _font_set_script_support_override(impl func(ptr unsafe.Pointer, font_rid RID.Any, script String.Readable, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_script_support_override(impl func(ptr gdclass.Receiver, font_rid RID.Any, script String.Readable, supported bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(script))
 		var supported = gd.UnsafeGet[bool](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, script, supported)
 	}
 }
@@ -6290,12 +6288,12 @@ func (class) _font_set_script_support_override(impl func(ptr unsafe.Pointer, fon
 [b]Optional.[/b]
 Returns [code]true[/code] if support override is enabled for the [param script].
 */
-func (class) _font_get_script_support_override(impl func(ptr unsafe.Pointer, font_rid RID.Any, script String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_script_support_override(impl func(ptr gdclass.Receiver, font_rid RID.Any, script String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(script))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid, script)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6305,12 +6303,12 @@ func (class) _font_get_script_support_override(impl func(ptr unsafe.Pointer, fon
 [b]Optional.[/b]
 Removes script support override.
 */
-func (class) _font_remove_script_support_override(impl func(ptr unsafe.Pointer, font_rid RID.Any, script String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_remove_script_support_override(impl func(ptr gdclass.Receiver, font_rid RID.Any, script String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(script))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, script)
 	}
 }
@@ -6319,10 +6317,10 @@ func (class) _font_remove_script_support_override(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns list of script support overrides.
 */
-func (class) _font_get_script_support_overrides(impl func(ptr unsafe.Pointer, font_rid RID.Any) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_script_support_overrides(impl func(ptr gdclass.Receiver, font_rid RID.Any) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -6337,12 +6335,12 @@ func (class) _font_get_script_support_overrides(impl func(ptr unsafe.Pointer, fo
 [b]Optional.[/b]
 Sets font OpenType feature set override.
 */
-func (class) _font_set_opentype_feature_overrides(impl func(ptr unsafe.Pointer, font_rid RID.Any, overrides Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_opentype_feature_overrides(impl func(ptr gdclass.Receiver, font_rid RID.Any, overrides Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var overrides = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(overrides))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, font_rid, overrides)
 	}
 }
@@ -6351,10 +6349,10 @@ func (class) _font_set_opentype_feature_overrides(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns font OpenType feature set override.
 */
-func (class) _font_get_opentype_feature_overrides(impl func(ptr unsafe.Pointer, font_rid RID.Any) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_opentype_feature_overrides(impl func(ptr gdclass.Receiver, font_rid RID.Any) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -6369,10 +6367,10 @@ func (class) _font_get_opentype_feature_overrides(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns the dictionary of the supported OpenType features.
 */
-func (class) _font_supported_feature_list(impl func(ptr unsafe.Pointer, font_rid RID.Any) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_supported_feature_list(impl func(ptr gdclass.Receiver, font_rid RID.Any) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -6387,10 +6385,10 @@ func (class) _font_supported_feature_list(impl func(ptr unsafe.Pointer, font_rid
 [b]Optional.[/b]
 Returns the dictionary of the supported OpenType variation coordinates.
 */
-func (class) _font_supported_variation_list(impl func(ptr unsafe.Pointer, font_rid RID.Any) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_supported_variation_list(impl func(ptr gdclass.Receiver, font_rid RID.Any) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, font_rid)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -6405,9 +6403,9 @@ func (class) _font_supported_variation_list(impl func(ptr unsafe.Pointer, font_r
 [b]Optional.[/b]
 Returns the font oversampling factor, shared by all fonts in the TextServer.
 */
-func (class) _font_get_global_oversampling(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_get_global_oversampling(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6417,10 +6415,10 @@ func (class) _font_get_global_oversampling(impl func(ptr unsafe.Pointer) float64
 [b]Optional.[/b]
 Sets oversampling factor, shared by all font in the TextServer.
 */
-func (class) _font_set_global_oversampling(impl func(ptr unsafe.Pointer, oversampling float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _font_set_global_oversampling(impl func(ptr gdclass.Receiver, oversampling float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var oversampling = gd.UnsafeGet[float64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, oversampling)
 	}
 }
@@ -6429,11 +6427,11 @@ func (class) _font_set_global_oversampling(impl func(ptr unsafe.Pointer, oversam
 [b]Optional.[/b]
 Returns size of the replacement character (box with character hexadecimal code that is drawn in place of invalid characters).
 */
-func (class) _get_hex_code_box_size(impl func(ptr unsafe.Pointer, size int64, index int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_hex_code_box_size(impl func(ptr gdclass.Receiver, size int64, index int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var size = gd.UnsafeGet[int64](p_args, 0)
 		var index = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, size, index)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6443,14 +6441,14 @@ func (class) _get_hex_code_box_size(impl func(ptr unsafe.Pointer, size int64, in
 [b]Optional.[/b]
 Draws box displaying character hexadecimal code.
 */
-func (class) _draw_hex_code_box(impl func(ptr unsafe.Pointer, canvas RID.Any, size int64, pos Vector2.XY, index int64, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _draw_hex_code_box(impl func(ptr gdclass.Receiver, canvas RID.Any, size int64, pos Vector2.XY, index int64, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var canvas = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var pos = gd.UnsafeGet[Vector2.XY](p_args, 2)
 		var index = gd.UnsafeGet[int64](p_args, 3)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 4)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, canvas, size, pos, index, color)
 	}
 }
@@ -6459,11 +6457,11 @@ func (class) _draw_hex_code_box(impl func(ptr unsafe.Pointer, canvas RID.Any, si
 [b]Required.[/b]
 Creates a new buffer for complex text layout, with the given [param direction] and [param orientation].
 */
-func (class) _create_shaped_text(impl func(ptr unsafe.Pointer, direction TextServer.Direction, orientation TextServer.Orientation) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _create_shaped_text(impl func(ptr gdclass.Receiver, direction TextServer.Direction, orientation TextServer.Orientation) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var direction = gd.UnsafeGet[TextServer.Direction](p_args, 0)
 		var orientation = gd.UnsafeGet[TextServer.Orientation](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, direction, orientation)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6473,10 +6471,10 @@ func (class) _create_shaped_text(impl func(ptr unsafe.Pointer, direction TextSer
 [b]Required.[/b]
 Clears text buffer (removes text and inline objects).
 */
-func (class) _shaped_text_clear(impl func(ptr unsafe.Pointer, shaped RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_clear(impl func(ptr gdclass.Receiver, shaped RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped)
 	}
 }
@@ -6485,11 +6483,11 @@ func (class) _shaped_text_clear(impl func(ptr unsafe.Pointer, shaped RID.Any)) (
 [b]Optional.[/b]
 Sets desired text direction. If set to [constant TextServer.DIRECTION_AUTO], direction will be detected based on the buffer contents and current locale.
 */
-func (class) _shaped_text_set_direction(impl func(ptr unsafe.Pointer, shaped RID.Any, direction TextServer.Direction)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_set_direction(impl func(ptr gdclass.Receiver, shaped RID.Any, direction TextServer.Direction)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var direction = gd.UnsafeGet[TextServer.Direction](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, direction)
 	}
 }
@@ -6498,10 +6496,10 @@ func (class) _shaped_text_set_direction(impl func(ptr unsafe.Pointer, shaped RID
 [b]Optional.[/b]
 Returns direction of the text.
 */
-func (class) _shaped_text_get_direction(impl func(ptr unsafe.Pointer, shaped RID.Any) TextServer.Direction) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_direction(impl func(ptr gdclass.Receiver, shaped RID.Any) TextServer.Direction) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6511,10 +6509,10 @@ func (class) _shaped_text_get_direction(impl func(ptr unsafe.Pointer, shaped RID
 [b]Optional.[/b]
 Returns direction of the text, inferred by the BiDi algorithm.
 */
-func (class) _shaped_text_get_inferred_direction(impl func(ptr unsafe.Pointer, shaped RID.Any) TextServer.Direction) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_inferred_direction(impl func(ptr gdclass.Receiver, shaped RID.Any) TextServer.Direction) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6524,12 +6522,12 @@ func (class) _shaped_text_get_inferred_direction(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Overrides BiDi for the structured text.
 */
-func (class) _shaped_text_set_bidi_override(impl func(ptr unsafe.Pointer, shaped RID.Any, override Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_set_bidi_override(impl func(ptr gdclass.Receiver, shaped RID.Any, override Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var override = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(override))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, override)
 	}
 }
@@ -6538,12 +6536,12 @@ func (class) _shaped_text_set_bidi_override(impl func(ptr unsafe.Pointer, shaped
 [b]Optional.[/b]
 Sets custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
-func (class) _shaped_text_set_custom_punctuation(impl func(ptr unsafe.Pointer, shaped RID.Any, punct String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_set_custom_punctuation(impl func(ptr gdclass.Receiver, shaped RID.Any, punct String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var punct = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(punct))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, punct)
 	}
 }
@@ -6552,10 +6550,10 @@ func (class) _shaped_text_set_custom_punctuation(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Returns custom punctuation character list, used for word breaking. If set to empty string, server defaults are used.
 */
-func (class) _shaped_text_get_custom_punctuation(impl func(ptr unsafe.Pointer, shaped RID.Any) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_custom_punctuation(impl func(ptr gdclass.Receiver, shaped RID.Any) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -6570,11 +6568,11 @@ func (class) _shaped_text_get_custom_punctuation(impl func(ptr unsafe.Pointer, s
 [b]Optional.[/b]
 Sets ellipsis character used for text clipping.
 */
-func (class) _shaped_text_set_custom_ellipsis(impl func(ptr unsafe.Pointer, shaped RID.Any, char int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_set_custom_ellipsis(impl func(ptr gdclass.Receiver, shaped RID.Any, char int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var char = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, char)
 	}
 }
@@ -6583,10 +6581,10 @@ func (class) _shaped_text_set_custom_ellipsis(impl func(ptr unsafe.Pointer, shap
 [b]Optional.[/b]
 Returns ellipsis character used for text clipping.
 */
-func (class) _shaped_text_get_custom_ellipsis(impl func(ptr unsafe.Pointer, shaped RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_custom_ellipsis(impl func(ptr gdclass.Receiver, shaped RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6596,11 +6594,11 @@ func (class) _shaped_text_get_custom_ellipsis(impl func(ptr unsafe.Pointer, shap
 [b]Optional.[/b]
 Sets desired text orientation.
 */
-func (class) _shaped_text_set_orientation(impl func(ptr unsafe.Pointer, shaped RID.Any, orientation TextServer.Orientation)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_set_orientation(impl func(ptr gdclass.Receiver, shaped RID.Any, orientation TextServer.Orientation)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var orientation = gd.UnsafeGet[TextServer.Orientation](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, orientation)
 	}
 }
@@ -6609,10 +6607,10 @@ func (class) _shaped_text_set_orientation(impl func(ptr unsafe.Pointer, shaped R
 [b]Optional.[/b]
 Returns text orientation.
 */
-func (class) _shaped_text_get_orientation(impl func(ptr unsafe.Pointer, shaped RID.Any) TextServer.Orientation) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_orientation(impl func(ptr gdclass.Receiver, shaped RID.Any) TextServer.Orientation) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6622,11 +6620,11 @@ func (class) _shaped_text_get_orientation(impl func(ptr unsafe.Pointer, shaped R
 [b]Optional.[/b]
 If set to [code]true[/code] text buffer will display invalid characters as hexadecimal codes, otherwise nothing is displayed.
 */
-func (class) _shaped_text_set_preserve_invalid(impl func(ptr unsafe.Pointer, shaped RID.Any, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_set_preserve_invalid(impl func(ptr gdclass.Receiver, shaped RID.Any, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var enabled = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, enabled)
 	}
 }
@@ -6635,10 +6633,10 @@ func (class) _shaped_text_set_preserve_invalid(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Returns [code]true[/code] if text buffer is configured to display hexadecimal codes in place of invalid characters.
 */
-func (class) _shaped_text_get_preserve_invalid(impl func(ptr unsafe.Pointer, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_preserve_invalid(impl func(ptr gdclass.Receiver, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6648,11 +6646,11 @@ func (class) _shaped_text_get_preserve_invalid(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 If set to [code]true[/code] text buffer will display control characters.
 */
-func (class) _shaped_text_set_preserve_control(impl func(ptr unsafe.Pointer, shaped RID.Any, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_set_preserve_control(impl func(ptr gdclass.Receiver, shaped RID.Any, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var enabled = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, enabled)
 	}
 }
@@ -6661,10 +6659,10 @@ func (class) _shaped_text_set_preserve_control(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Returns [code]true[/code] if text buffer is configured to display control characters.
 */
-func (class) _shaped_text_get_preserve_control(impl func(ptr unsafe.Pointer, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_preserve_control(impl func(ptr gdclass.Receiver, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6674,12 +6672,12 @@ func (class) _shaped_text_get_preserve_control(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Sets extra spacing added between glyphs or lines in pixels.
 */
-func (class) _shaped_text_set_spacing(impl func(ptr unsafe.Pointer, shaped RID.Any, spacing TextServer.SpacingType, value int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_set_spacing(impl func(ptr gdclass.Receiver, shaped RID.Any, spacing TextServer.SpacingType, value int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var spacing = gd.UnsafeGet[TextServer.SpacingType](p_args, 1)
 		var value = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, spacing, value)
 	}
 }
@@ -6688,11 +6686,11 @@ func (class) _shaped_text_set_spacing(impl func(ptr unsafe.Pointer, shaped RID.A
 [b]Optional.[/b]
 Returns extra spacing added between glyphs or lines in pixels.
 */
-func (class) _shaped_text_get_spacing(impl func(ptr unsafe.Pointer, shaped RID.Any, spacing TextServer.SpacingType) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_spacing(impl func(ptr gdclass.Receiver, shaped RID.Any, spacing TextServer.SpacingType) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var spacing = gd.UnsafeGet[TextServer.SpacingType](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, spacing)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6702,7 +6700,7 @@ func (class) _shaped_text_get_spacing(impl func(ptr unsafe.Pointer, shaped RID.A
 [b]Required.[/b]
 Adds text span and font to draw it to the text buffer.
 */
-func (class) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped RID.Any, text String.Readable, fonts Array.Contains[RID.Any], size int64, opentype_features Dictionary.Any, language String.Readable, meta variant.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_add_string(impl func(ptr gdclass.Receiver, shaped RID.Any, text String.Readable, fonts Array.Contains[RID.Any], size int64, opentype_features Dictionary.Any, language String.Readable, meta variant.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
@@ -6716,7 +6714,7 @@ func (class) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped RID.An
 		defer pointers.End(gd.InternalString(language))
 		var meta = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 6))))
 		defer pointers.End(gd.InternalVariant(meta))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, text, fonts, size, opentype_features, language, meta)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6726,7 +6724,7 @@ func (class) _shaped_text_add_string(impl func(ptr unsafe.Pointer, shaped RID.An
 [b]Required.[/b]
 Adds inline object to the text buffer, [param key] must be unique. In the text, object is represented as [param length] object replacement characters.
 */
-func (class) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped RID.Any, key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, length int64, baseline float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_add_object(impl func(ptr gdclass.Receiver, shaped RID.Any, key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, length int64, baseline float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
@@ -6735,7 +6733,7 @@ func (class) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped RID.An
 		var inline_align = gd.UnsafeGet[GUI.InlineAlignment](p_args, 3)
 		var length = gd.UnsafeGet[int64](p_args, 4)
 		var baseline = gd.UnsafeGet[float64](p_args, 5)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, key, size, inline_align, length, baseline)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6745,7 +6743,7 @@ func (class) _shaped_text_add_object(impl func(ptr unsafe.Pointer, shaped RID.An
 [b]Required.[/b]
 Sets new size and alignment of embedded object.
 */
-func (class) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped RID.Any, key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_resize_object(impl func(ptr gdclass.Receiver, shaped RID.Any, key variant.Any, size Vector2.XY, inline_align GUI.InlineAlignment, baseline float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
@@ -6753,7 +6751,7 @@ func (class) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped RID
 		var size = gd.UnsafeGet[Vector2.XY](p_args, 2)
 		var inline_align = gd.UnsafeGet[GUI.InlineAlignment](p_args, 3)
 		var baseline = gd.UnsafeGet[float64](p_args, 4)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, key, size, inline_align, baseline)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6763,10 +6761,10 @@ func (class) _shaped_text_resize_object(impl func(ptr unsafe.Pointer, shaped RID
 [b]Required.[/b]
 Returns number of text spans added using [method _shaped_text_add_string] or [method _shaped_text_add_object].
 */
-func (class) _shaped_get_span_count(impl func(ptr unsafe.Pointer, shaped RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_get_span_count(impl func(ptr gdclass.Receiver, shaped RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6776,11 +6774,11 @@ func (class) _shaped_get_span_count(impl func(ptr unsafe.Pointer, shaped RID.Any
 [b]Required.[/b]
 Returns text span metadata.
 */
-func (class) _shaped_get_span_meta(impl func(ptr unsafe.Pointer, shaped RID.Any, index int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_get_span_meta(impl func(ptr gdclass.Receiver, shaped RID.Any, index int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var index = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, index)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
@@ -6795,11 +6793,11 @@ func (class) _shaped_get_span_meta(impl func(ptr unsafe.Pointer, shaped RID.Any,
 [b]Required.[/b]
 Returns text embedded object key.
 */
-func (class) _shaped_get_span_embedded_object(impl func(ptr unsafe.Pointer, shaped RID.Any, index int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_get_span_embedded_object(impl func(ptr gdclass.Receiver, shaped RID.Any, index int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var index = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, index)
 		ptr, ok := pointers.End(gd.InternalVariant(ret))
 
@@ -6814,7 +6812,7 @@ func (class) _shaped_get_span_embedded_object(impl func(ptr unsafe.Pointer, shap
 [b]Required.[/b]
 Changes text span font, font size, and OpenType features, without changing the text.
 */
-func (class) _shaped_set_span_update_font(impl func(ptr unsafe.Pointer, shaped RID.Any, index int64, fonts Array.Contains[RID.Any], size int64, opentype_features Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_set_span_update_font(impl func(ptr gdclass.Receiver, shaped RID.Any, index int64, fonts Array.Contains[RID.Any], size int64, opentype_features Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var index = gd.UnsafeGet[int64](p_args, 1)
@@ -6823,7 +6821,7 @@ func (class) _shaped_set_span_update_font(impl func(ptr unsafe.Pointer, shaped R
 		var size = gd.UnsafeGet[int64](p_args, 3)
 		var opentype_features = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 4))))
 		defer pointers.End(gd.InternalDictionary(opentype_features))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, index, fonts, size, opentype_features)
 	}
 }
@@ -6832,12 +6830,12 @@ func (class) _shaped_set_span_update_font(impl func(ptr unsafe.Pointer, shaped R
 [b]Required.[/b]
 Returns text buffer for the substring of the text in the [param shaped] text buffer (including inline objects).
 */
-func (class) _shaped_text_substr(impl func(ptr unsafe.Pointer, shaped RID.Any, start int64, length int64) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_substr(impl func(ptr gdclass.Receiver, shaped RID.Any, start int64, length int64) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var start = gd.UnsafeGet[int64](p_args, 1)
 		var length = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, start, length)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6847,10 +6845,10 @@ func (class) _shaped_text_substr(impl func(ptr unsafe.Pointer, shaped RID.Any, s
 [b]Required.[/b]
 Returns the parent buffer from which the substring originates.
 */
-func (class) _shaped_text_get_parent(impl func(ptr unsafe.Pointer, shaped RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_parent(impl func(ptr gdclass.Receiver, shaped RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6860,12 +6858,12 @@ func (class) _shaped_text_get_parent(impl func(ptr unsafe.Pointer, shaped RID.An
 [b]Optional.[/b]
 Adjusts text width to fit to specified width, returns new text width.
 */
-func (class) _shaped_text_fit_to_width(impl func(ptr unsafe.Pointer, shaped RID.Any, width float64, justification_flags TextServer.JustificationFlag) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_fit_to_width(impl func(ptr gdclass.Receiver, shaped RID.Any, width float64, justification_flags TextServer.JustificationFlag) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var width = gd.UnsafeGet[float64](p_args, 1)
 		var justification_flags = gd.UnsafeGet[TextServer.JustificationFlag](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, width, justification_flags)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6875,12 +6873,12 @@ func (class) _shaped_text_fit_to_width(impl func(ptr unsafe.Pointer, shaped RID.
 [b]Optional.[/b]
 Aligns shaped text to the given tab-stops.
 */
-func (class) _shaped_text_tab_align(impl func(ptr unsafe.Pointer, shaped RID.Any, tab_stops Packed.Array[float32]) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_tab_align(impl func(ptr gdclass.Receiver, shaped RID.Any, tab_stops Packed.Array[float32]) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var tab_stops = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, tab_stops)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6890,10 +6888,10 @@ func (class) _shaped_text_tab_align(impl func(ptr unsafe.Pointer, shaped RID.Any
 [b]Required.[/b]
 Shapes buffer if it's not shaped. Returns [code]true[/code] if the string is shaped successfully.
 */
-func (class) _shaped_text_shape(impl func(ptr unsafe.Pointer, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_shape(impl func(ptr gdclass.Receiver, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6903,10 +6901,10 @@ func (class) _shaped_text_shape(impl func(ptr unsafe.Pointer, shaped RID.Any) bo
 [b]Optional.[/b]
 Updates break points in the shaped text. This method is called by default implementation of text breaking functions.
 */
-func (class) _shaped_text_update_breaks(impl func(ptr unsafe.Pointer, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_update_breaks(impl func(ptr gdclass.Receiver, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6916,10 +6914,10 @@ func (class) _shaped_text_update_breaks(impl func(ptr unsafe.Pointer, shaped RID
 [b]Optional.[/b]
 Updates justification points in the shaped text. This method is called by default implementation of text justification functions.
 */
-func (class) _shaped_text_update_justification_ops(impl func(ptr unsafe.Pointer, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_update_justification_ops(impl func(ptr gdclass.Receiver, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6929,10 +6927,10 @@ func (class) _shaped_text_update_justification_ops(impl func(ptr unsafe.Pointer,
 [b]Required.[/b]
 Returns [code]true[/code] if buffer is successfully shaped.
 */
-func (class) _shaped_text_is_ready(impl func(ptr unsafe.Pointer, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_is_ready(impl func(ptr gdclass.Receiver, shaped RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6942,10 +6940,10 @@ func (class) _shaped_text_is_ready(impl func(ptr unsafe.Pointer, shaped RID.Any)
 [b]Required.[/b]
 Returns an array of glyphs in the visual order.
 */
-func (class) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_glyphs(impl func(ptr gdclass.Receiver, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6955,10 +6953,10 @@ func (class) _shaped_text_get_glyphs(impl func(ptr unsafe.Pointer, shaped RID.An
 [b]Required.[/b]
 Returns text glyphs in the logical order.
 */
-func (class) _shaped_text_sort_logical(impl func(ptr unsafe.Pointer, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_sort_logical(impl func(ptr gdclass.Receiver, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6968,10 +6966,10 @@ func (class) _shaped_text_sort_logical(impl func(ptr unsafe.Pointer, shaped RID.
 [b]Required.[/b]
 Returns number of glyphs in the buffer.
 */
-func (class) _shaped_text_get_glyph_count(impl func(ptr unsafe.Pointer, shaped RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_glyph_count(impl func(ptr gdclass.Receiver, shaped RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6981,10 +6979,10 @@ func (class) _shaped_text_get_glyph_count(impl func(ptr unsafe.Pointer, shaped R
 [b]Required.[/b]
 Returns substring buffer character range in the parent buffer.
 */
-func (class) _shaped_text_get_range(impl func(ptr unsafe.Pointer, shaped RID.Any) Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_range(impl func(ptr gdclass.Receiver, shaped RID.Any) Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -6994,7 +6992,7 @@ func (class) _shaped_text_get_range(impl func(ptr unsafe.Pointer, shaped RID.Any
 [b]Optional.[/b]
 Breaks text to the lines and columns. Returns character ranges for each segment.
 */
-func (class) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, shaped RID.Any, width Packed.Array[float32], start int64, once bool, break_flags TextServer.LineBreakFlag) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_line_breaks_adv(impl func(ptr gdclass.Receiver, shaped RID.Any, width Packed.Array[float32], start int64, once bool, break_flags TextServer.LineBreakFlag) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var width = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
@@ -7002,7 +7000,7 @@ func (class) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, shap
 		var start = gd.UnsafeGet[int64](p_args, 2)
 		var once = gd.UnsafeGet[bool](p_args, 3)
 		var break_flags = gd.UnsafeGet[TextServer.LineBreakFlag](p_args, 4)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, width, start, once, break_flags)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
@@ -7017,13 +7015,13 @@ func (class) _shaped_text_get_line_breaks_adv(impl func(ptr unsafe.Pointer, shap
 [b]Optional.[/b]
 Breaks text to the lines and returns character ranges for each line.
 */
-func (class) _shaped_text_get_line_breaks(impl func(ptr unsafe.Pointer, shaped RID.Any, width float64, start int64, break_flags TextServer.LineBreakFlag) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_line_breaks(impl func(ptr gdclass.Receiver, shaped RID.Any, width float64, start int64, break_flags TextServer.LineBreakFlag) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var width = gd.UnsafeGet[float64](p_args, 1)
 		var start = gd.UnsafeGet[int64](p_args, 2)
 		var break_flags = gd.UnsafeGet[TextServer.LineBreakFlag](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, width, start, break_flags)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
@@ -7038,12 +7036,12 @@ func (class) _shaped_text_get_line_breaks(impl func(ptr unsafe.Pointer, shaped R
 [b]Optional.[/b]
 Breaks text into words and returns array of character ranges. Use [param grapheme_flags] to set what characters are used for breaking (see [enum TextServer.GraphemeFlag]).
 */
-func (class) _shaped_text_get_word_breaks(impl func(ptr unsafe.Pointer, shaped RID.Any, grapheme_flags TextServer.GraphemeFlag, skip_grapheme_flags TextServer.GraphemeFlag) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_word_breaks(impl func(ptr gdclass.Receiver, shaped RID.Any, grapheme_flags TextServer.GraphemeFlag, skip_grapheme_flags TextServer.GraphemeFlag) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var grapheme_flags = gd.UnsafeGet[TextServer.GraphemeFlag](p_args, 1)
 		var skip_grapheme_flags = gd.UnsafeGet[TextServer.GraphemeFlag](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, grapheme_flags, skip_grapheme_flags)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
@@ -7058,10 +7056,10 @@ func (class) _shaped_text_get_word_breaks(impl func(ptr unsafe.Pointer, shaped R
 [b]Required.[/b]
 Returns the position of the overrun trim.
 */
-func (class) _shaped_text_get_trim_pos(impl func(ptr unsafe.Pointer, shaped RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_trim_pos(impl func(ptr gdclass.Receiver, shaped RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7071,10 +7069,10 @@ func (class) _shaped_text_get_trim_pos(impl func(ptr unsafe.Pointer, shaped RID.
 [b]Required.[/b]
 Returns position of the ellipsis.
 */
-func (class) _shaped_text_get_ellipsis_pos(impl func(ptr unsafe.Pointer, shaped RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_ellipsis_pos(impl func(ptr gdclass.Receiver, shaped RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7084,10 +7082,10 @@ func (class) _shaped_text_get_ellipsis_pos(impl func(ptr unsafe.Pointer, shaped 
 [b]Required.[/b]
 Returns number of glyphs in the ellipsis.
 */
-func (class) _shaped_text_get_ellipsis_glyph_count(impl func(ptr unsafe.Pointer, shaped RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_ellipsis_glyph_count(impl func(ptr gdclass.Receiver, shaped RID.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7097,10 +7095,10 @@ func (class) _shaped_text_get_ellipsis_glyph_count(impl func(ptr unsafe.Pointer,
 [b]Required.[/b]
 Returns array of the glyphs in the ellipsis.
 */
-func (class) _shaped_text_get_ellipsis_glyphs(impl func(ptr unsafe.Pointer, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_ellipsis_glyphs(impl func(ptr gdclass.Receiver, shaped RID.Any) *Glyph) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7110,12 +7108,12 @@ func (class) _shaped_text_get_ellipsis_glyphs(impl func(ptr unsafe.Pointer, shap
 [b]Optional.[/b]
 Trims text if it exceeds the given width.
 */
-func (class) _shaped_text_overrun_trim_to_width(impl func(ptr unsafe.Pointer, shaped RID.Any, width float64, trim_flags TextServer.TextOverrunFlag)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_overrun_trim_to_width(impl func(ptr gdclass.Receiver, shaped RID.Any, width float64, trim_flags TextServer.TextOverrunFlag)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var width = gd.UnsafeGet[float64](p_args, 1)
 		var trim_flags = gd.UnsafeGet[TextServer.TextOverrunFlag](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, width, trim_flags)
 	}
 }
@@ -7124,10 +7122,10 @@ func (class) _shaped_text_overrun_trim_to_width(impl func(ptr unsafe.Pointer, sh
 [b]Required.[/b]
 Returns array of inline objects.
 */
-func (class) _shaped_text_get_objects(impl func(ptr unsafe.Pointer, shaped RID.Any) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_objects(impl func(ptr gdclass.Receiver, shaped RID.Any) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -7142,12 +7140,12 @@ func (class) _shaped_text_get_objects(impl func(ptr unsafe.Pointer, shaped RID.A
 [b]Required.[/b]
 Returns bounding rectangle of the inline object.
 */
-func (class) _shaped_text_get_object_rect(impl func(ptr unsafe.Pointer, shaped RID.Any, key variant.Any) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_object_rect(impl func(ptr gdclass.Receiver, shaped RID.Any, key variant.Any) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, key)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7157,12 +7155,12 @@ func (class) _shaped_text_get_object_rect(impl func(ptr unsafe.Pointer, shaped R
 [b]Required.[/b]
 Returns the character range of the inline object.
 */
-func (class) _shaped_text_get_object_range(impl func(ptr unsafe.Pointer, shaped RID.Any, key variant.Any) Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_object_range(impl func(ptr gdclass.Receiver, shaped RID.Any, key variant.Any) Vector2i.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, key)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7172,12 +7170,12 @@ func (class) _shaped_text_get_object_range(impl func(ptr unsafe.Pointer, shaped 
 [b]Required.[/b]
 Returns the glyph index of the inline object.
 */
-func (class) _shaped_text_get_object_glyph(impl func(ptr unsafe.Pointer, shaped RID.Any, key variant.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_object_glyph(impl func(ptr gdclass.Receiver, shaped RID.Any, key variant.Any) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, key)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7187,10 +7185,10 @@ func (class) _shaped_text_get_object_glyph(impl func(ptr unsafe.Pointer, shaped 
 [b]Required.[/b]
 Returns size of the text.
 */
-func (class) _shaped_text_get_size(impl func(ptr unsafe.Pointer, shaped RID.Any) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_size(impl func(ptr gdclass.Receiver, shaped RID.Any) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7200,10 +7198,10 @@ func (class) _shaped_text_get_size(impl func(ptr unsafe.Pointer, shaped RID.Any)
 [b]Required.[/b]
 Returns the text ascent (number of pixels above the baseline for horizontal layout or to the left of baseline for vertical).
 */
-func (class) _shaped_text_get_ascent(impl func(ptr unsafe.Pointer, shaped RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_ascent(impl func(ptr gdclass.Receiver, shaped RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7213,10 +7211,10 @@ func (class) _shaped_text_get_ascent(impl func(ptr unsafe.Pointer, shaped RID.An
 [b]Required.[/b]
 Returns the text descent (number of pixels below the baseline for horizontal layout or to the right of baseline for vertical).
 */
-func (class) _shaped_text_get_descent(impl func(ptr unsafe.Pointer, shaped RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_descent(impl func(ptr gdclass.Receiver, shaped RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7226,10 +7224,10 @@ func (class) _shaped_text_get_descent(impl func(ptr unsafe.Pointer, shaped RID.A
 [b]Required.[/b]
 Returns width (for horizontal layout) or height (for vertical) of the text.
 */
-func (class) _shaped_text_get_width(impl func(ptr unsafe.Pointer, shaped RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_width(impl func(ptr gdclass.Receiver, shaped RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7239,10 +7237,10 @@ func (class) _shaped_text_get_width(impl func(ptr unsafe.Pointer, shaped RID.Any
 [b]Required.[/b]
 Returns pixel offset of the underline below the baseline.
 */
-func (class) _shaped_text_get_underline_position(impl func(ptr unsafe.Pointer, shaped RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_underline_position(impl func(ptr gdclass.Receiver, shaped RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7252,10 +7250,10 @@ func (class) _shaped_text_get_underline_position(impl func(ptr unsafe.Pointer, s
 [b]Required.[/b]
 Returns thickness of the underline.
 */
-func (class) _shaped_text_get_underline_thickness(impl func(ptr unsafe.Pointer, shaped RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_underline_thickness(impl func(ptr gdclass.Receiver, shaped RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7265,12 +7263,12 @@ func (class) _shaped_text_get_underline_thickness(impl func(ptr unsafe.Pointer, 
 [b]Optional.[/b]
 Returns dominant direction of in the range of text.
 */
-func (class) _shaped_text_get_dominant_direction_in_range(impl func(ptr unsafe.Pointer, shaped RID.Any, start int64, end int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_dominant_direction_in_range(impl func(ptr gdclass.Receiver, shaped RID.Any, start int64, end int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var start = gd.UnsafeGet[int64](p_args, 1)
 		var end = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, start, end)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7280,12 +7278,12 @@ func (class) _shaped_text_get_dominant_direction_in_range(impl func(ptr unsafe.P
 [b]Optional.[/b]
 Returns shapes of the carets corresponding to the character offset [param position] in the text. Returned caret shape is 1 pixel wide rectangle.
 */
-func (class) _shaped_text_get_carets(impl func(ptr unsafe.Pointer, shaped RID.Any, position int64, caret *CaretInfo)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_carets(impl func(ptr gdclass.Receiver, shaped RID.Any, position int64, caret *CaretInfo)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var position = gd.UnsafeGet[int64](p_args, 1)
 		var caret = gd.UnsafeGet[*CaretInfo](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, position, caret)
 	}
 }
@@ -7294,12 +7292,12 @@ func (class) _shaped_text_get_carets(impl func(ptr unsafe.Pointer, shaped RID.An
 [b]Optional.[/b]
 Returns selection rectangles for the specified character range.
 */
-func (class) _shaped_text_get_selection(impl func(ptr unsafe.Pointer, shaped RID.Any, start int64, end int64) Packed.Array[Vector2.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_selection(impl func(ptr gdclass.Receiver, shaped RID.Any, start int64, end int64) Packed.Array[Vector2.XY]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var start = gd.UnsafeGet[int64](p_args, 1)
 		var end = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, start, end)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](ret))
 
@@ -7314,11 +7312,11 @@ func (class) _shaped_text_get_selection(impl func(ptr unsafe.Pointer, shaped RID
 [b]Optional.[/b]
 Returns grapheme index at the specified pixel offset at the baseline, or [code]-1[/code] if none is found.
 */
-func (class) _shaped_text_hit_test_grapheme(impl func(ptr unsafe.Pointer, shaped RID.Any, coord float64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_hit_test_grapheme(impl func(ptr gdclass.Receiver, shaped RID.Any, coord float64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var coord = gd.UnsafeGet[float64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, coord)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7328,11 +7326,11 @@ func (class) _shaped_text_hit_test_grapheme(impl func(ptr unsafe.Pointer, shaped
 [b]Optional.[/b]
 Returns caret character offset at the specified pixel offset at the baseline. This function always returns a valid position.
 */
-func (class) _shaped_text_hit_test_position(impl func(ptr unsafe.Pointer, shaped RID.Any, coord float64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_hit_test_position(impl func(ptr gdclass.Receiver, shaped RID.Any, coord float64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var coord = gd.UnsafeGet[float64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, coord)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7342,7 +7340,7 @@ func (class) _shaped_text_hit_test_position(impl func(ptr unsafe.Pointer, shaped
 [b]Optional.[/b]
 Draw shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
 */
-func (class) _shaped_text_draw(impl func(ptr unsafe.Pointer, shaped RID.Any, canvas RID.Any, pos Vector2.XY, clip_l float64, clip_r float64, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_draw(impl func(ptr gdclass.Receiver, shaped RID.Any, canvas RID.Any, pos Vector2.XY, clip_l float64, clip_r float64, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var canvas = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -7350,7 +7348,7 @@ func (class) _shaped_text_draw(impl func(ptr unsafe.Pointer, shaped RID.Any, can
 		var clip_l = gd.UnsafeGet[float64](p_args, 3)
 		var clip_r = gd.UnsafeGet[float64](p_args, 4)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 5)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, canvas, pos, clip_l, clip_r, color)
 	}
 }
@@ -7359,7 +7357,7 @@ func (class) _shaped_text_draw(impl func(ptr unsafe.Pointer, shaped RID.Any, can
 [b]Optional.[/b]
 Draw the outline of the shaped text into a canvas item at a given position, with [param color]. [param pos] specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
 */
-func (class) _shaped_text_draw_outline(impl func(ptr unsafe.Pointer, shaped RID.Any, canvas RID.Any, pos Vector2.XY, clip_l float64, clip_r float64, outline_size int64, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_draw_outline(impl func(ptr gdclass.Receiver, shaped RID.Any, canvas RID.Any, pos Vector2.XY, clip_l float64, clip_r float64, outline_size int64, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var canvas = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -7368,7 +7366,7 @@ func (class) _shaped_text_draw_outline(impl func(ptr unsafe.Pointer, shaped RID.
 		var clip_r = gd.UnsafeGet[float64](p_args, 4)
 		var outline_size = gd.UnsafeGet[int64](p_args, 5)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 6)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shaped, canvas, pos, clip_l, clip_r, outline_size, color)
 	}
 }
@@ -7377,11 +7375,11 @@ func (class) _shaped_text_draw_outline(impl func(ptr unsafe.Pointer, shaped RID.
 [b]Optional.[/b]
 Returns composite character's bounds as offsets from the start of the line.
 */
-func (class) _shaped_text_get_grapheme_bounds(impl func(ptr unsafe.Pointer, shaped RID.Any, pos int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_grapheme_bounds(impl func(ptr gdclass.Receiver, shaped RID.Any, pos int64) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, pos)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7391,11 +7389,11 @@ func (class) _shaped_text_get_grapheme_bounds(impl func(ptr unsafe.Pointer, shap
 [b]Optional.[/b]
 Returns grapheme end position closest to the [param pos].
 */
-func (class) _shaped_text_next_grapheme_pos(impl func(ptr unsafe.Pointer, shaped RID.Any, pos int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_next_grapheme_pos(impl func(ptr gdclass.Receiver, shaped RID.Any, pos int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, pos)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7405,11 +7403,11 @@ func (class) _shaped_text_next_grapheme_pos(impl func(ptr unsafe.Pointer, shaped
 [b]Optional.[/b]
 Returns grapheme start position closest to the [param pos].
 */
-func (class) _shaped_text_prev_grapheme_pos(impl func(ptr unsafe.Pointer, shaped RID.Any, pos int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_prev_grapheme_pos(impl func(ptr gdclass.Receiver, shaped RID.Any, pos int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, pos)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7419,10 +7417,10 @@ func (class) _shaped_text_prev_grapheme_pos(impl func(ptr unsafe.Pointer, shaped
 [b]Optional.[/b]
 Returns array of the composite character boundaries.
 */
-func (class) _shaped_text_get_character_breaks(impl func(ptr unsafe.Pointer, shaped RID.Any) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_get_character_breaks(impl func(ptr gdclass.Receiver, shaped RID.Any) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
@@ -7437,11 +7435,11 @@ func (class) _shaped_text_get_character_breaks(impl func(ptr unsafe.Pointer, sha
 [b]Optional.[/b]
 Returns composite character end position closest to the [param pos].
 */
-func (class) _shaped_text_next_character_pos(impl func(ptr unsafe.Pointer, shaped RID.Any, pos int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_next_character_pos(impl func(ptr gdclass.Receiver, shaped RID.Any, pos int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, pos)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7451,11 +7449,11 @@ func (class) _shaped_text_next_character_pos(impl func(ptr unsafe.Pointer, shape
 [b]Optional.[/b]
 Returns composite character start position closest to the [param pos].
 */
-func (class) _shaped_text_prev_character_pos(impl func(ptr unsafe.Pointer, shaped RID.Any, pos int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_prev_character_pos(impl func(ptr gdclass.Receiver, shaped RID.Any, pos int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, pos)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7465,11 +7463,11 @@ func (class) _shaped_text_prev_character_pos(impl func(ptr unsafe.Pointer, shape
 [b]Optional.[/b]
 Returns composite character position closest to the [param pos].
 */
-func (class) _shaped_text_closest_character_pos(impl func(ptr unsafe.Pointer, shaped RID.Any, pos int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _shaped_text_closest_character_pos(impl func(ptr gdclass.Receiver, shaped RID.Any, pos int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, shaped, pos)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7479,13 +7477,13 @@ func (class) _shaped_text_closest_character_pos(impl func(ptr unsafe.Pointer, sh
 [b]Optional.[/b]
 Converts a number from the Western Arabic (0..9) to the numeral systems used in [param language].
 */
-func (class) _format_number(impl func(ptr unsafe.Pointer, number String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _format_number(impl func(ptr gdclass.Receiver, number String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var number = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(number))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, number, language)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -7500,13 +7498,13 @@ func (class) _format_number(impl func(ptr unsafe.Pointer, number String.Readable
 [b]Optional.[/b]
 Converts [param number] from the numeral systems used in [param language] to Western Arabic (0..9).
 */
-func (class) _parse_number(impl func(ptr unsafe.Pointer, number String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_number(impl func(ptr gdclass.Receiver, number String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var number = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(number))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, number, language)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -7521,11 +7519,11 @@ func (class) _parse_number(impl func(ptr unsafe.Pointer, number String.Readable,
 [b]Optional.[/b]
 Returns percent sign used in the [param language].
 */
-func (class) _percent_sign(impl func(ptr unsafe.Pointer, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _percent_sign(impl func(ptr gdclass.Receiver, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, language)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -7540,11 +7538,11 @@ func (class) _percent_sign(impl func(ptr unsafe.Pointer, language String.Readabl
 [b]Optional.[/b]
 Strips diacritics from the string.
 */
-func (class) _strip_diacritics(impl func(ptr unsafe.Pointer, s String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _strip_diacritics(impl func(ptr gdclass.Receiver, s String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -7559,20 +7557,20 @@ func (class) _strip_diacritics(impl func(ptr unsafe.Pointer, s String.Readable) 
 [b]Optional.[/b]
 Returns [code]true[/code] if [param string] is a valid identifier.
 */
-func (class) _is_valid_identifier(impl func(ptr unsafe.Pointer, s String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_valid_identifier(impl func(ptr gdclass.Receiver, s String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _is_valid_letter(impl func(ptr unsafe.Pointer, unicode int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_valid_letter(impl func(ptr gdclass.Receiver, unicode int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var unicode = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, unicode)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7582,14 +7580,14 @@ func (class) _is_valid_letter(impl func(ptr unsafe.Pointer, unicode int64) bool)
 [b]Optional.[/b]
 Returns an array of the word break boundaries. Elements in the returned array are the offsets of the start and end of words. Therefore the length of the array is always even.
 */
-func (class) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable, chars_per_line int64) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _string_get_word_breaks(impl func(ptr gdclass.Receiver, s String.Readable, language String.Readable, chars_per_line int64) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
 		var chars_per_line = gd.UnsafeGet[int64](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s, language, chars_per_line)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
@@ -7604,13 +7602,13 @@ func (class) _string_get_word_breaks(impl func(ptr unsafe.Pointer, s String.Read
 [b]Optional.[/b]
 Returns array of the composite character boundaries.
 */
-func (class) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _string_get_character_breaks(impl func(ptr gdclass.Receiver, s String.Readable, language String.Readable) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s, language)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ret))
 
@@ -7625,13 +7623,13 @@ func (class) _string_get_character_breaks(impl func(ptr unsafe.Pointer, s String
 [b]Optional.[/b]
 Returns index of the first string in [param dict] which is visually confusable with the [param string], or [code]-1[/code] if none is found.
 */
-func (class) _is_confusable(impl func(ptr unsafe.Pointer, s String.Readable, dict Packed.Strings) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_confusable(impl func(ptr gdclass.Receiver, s String.Readable, dict Packed.Strings) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
 		var dict = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPackedStrings(dict))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s, dict)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7641,11 +7639,11 @@ func (class) _is_confusable(impl func(ptr unsafe.Pointer, s String.Readable, dic
 [b]Optional.[/b]
 Returns [code]true[/code] if [param string] is likely to be an attempt at confusing the reader.
 */
-func (class) _spoof_check(impl func(ptr unsafe.Pointer, s String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _spoof_check(impl func(ptr gdclass.Receiver, s String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -7655,13 +7653,13 @@ func (class) _spoof_check(impl func(ptr unsafe.Pointer, s String.Readable) bool)
 [b]Optional.[/b]
 Returns the string converted to uppercase.
 */
-func (class) _string_to_upper(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _string_to_upper(impl func(ptr gdclass.Receiver, s String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s, language)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -7676,13 +7674,13 @@ func (class) _string_to_upper(impl func(ptr unsafe.Pointer, s String.Readable, l
 [b]Optional.[/b]
 Returns the string converted to lowercase.
 */
-func (class) _string_to_lower(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _string_to_lower(impl func(ptr gdclass.Receiver, s String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s, language)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -7697,13 +7695,13 @@ func (class) _string_to_lower(impl func(ptr unsafe.Pointer, s String.Readable, l
 [b]Optional.[/b]
 Returns the string converted to title case.
 */
-func (class) _string_to_title(impl func(ptr unsafe.Pointer, s String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _string_to_title(impl func(ptr gdclass.Receiver, s String.Readable, language String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var s = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(s))
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, s, language)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -7718,14 +7716,14 @@ func (class) _string_to_title(impl func(ptr unsafe.Pointer, s String.Readable, l
 [b]Optional.[/b]
 Default implementation of the BiDi algorithm override function. See [enum TextServer.StructuredTextParser] for more info.
 */
-func (class) _parse_structured_text(impl func(ptr unsafe.Pointer, parser_type TextServer.StructuredTextParser, args Array.Any, text String.Readable) Array.Contains[Vector3i.XYZ]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_structured_text(impl func(ptr gdclass.Receiver, parser_type TextServer.StructuredTextParser, args Array.Any, text String.Readable) Array.Contains[Vector3i.XYZ]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var parser_type = gd.UnsafeGet[TextServer.StructuredTextParser](p_args, 0)
 		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(args))
 		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(text))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, parser_type, args, text)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -7740,9 +7738,9 @@ func (class) _parse_structured_text(impl func(ptr unsafe.Pointer, parser_type Te
 [b]Optional.[/b]
 This method is called before text server is unregistered.
 */
-func (class) _cleanup(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _cleanup(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }

@@ -3,7 +3,6 @@
 // Package AudioListener3D provides methods for working with AudioListener3D object instances.
 package AudioListener3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -180,7 +178,7 @@ Enables the listener. This will override the current camera's listener.
 */
 //go:nosplit
 func (self class) MakeCurrent() { //gd:AudioListener3D.make_current
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_current, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_current, 0, &struct{}{})
 }
 
 /*
@@ -188,7 +186,7 @@ Disables the listener to use the current camera's listener instead.
 */
 //go:nosplit
 func (self class) ClearCurrent() { //gd:AudioListener3D.clear_current
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_current, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_current, 0, &struct{}{})
 }
 
 /*
@@ -197,7 +195,7 @@ Returns [code]true[/code] if the listener was made current using [method make_cu
 */
 //go:nosplit
 func (self class) IsCurrent() bool { //gd:AudioListener3D.is_current
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -207,7 +205,7 @@ Returns the listener's global orthonormalized [Transform3D].
 */
 //go:nosplit
 func (self class) GetListenerTransform() Transform3D.BasisOrigin { //gd:AudioListener3D.get_listener_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_listener_transform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_listener_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }

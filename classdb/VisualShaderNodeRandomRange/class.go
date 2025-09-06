@@ -3,7 +3,6 @@
 // Package VisualShaderNodeRandomRange provides methods for working with VisualShaderNodeRandomRange object instances.
 package VisualShaderNodeRandomRange
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle

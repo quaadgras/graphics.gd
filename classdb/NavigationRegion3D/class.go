@@ -3,7 +3,6 @@
 // Package NavigationRegion3D provides methods for working with NavigationRegion3D object instances.
 package NavigationRegion3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -295,31 +293,31 @@ Returns the [RID] of this region on the [NavigationServer3D]. Combined with [met
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:NavigationRegion3D.get_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationMesh(navigation_mesh [1]gdclass.NavigationMesh) { //gd:NavigationRegion3D.set_navigation_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_mesh, 0|(gdextension.SizeObject<<4), &struct{ navigation_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(navigation_mesh[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetNavigationMesh() [1]gdclass.NavigationMesh { //gd:NavigationRegion3D.get_navigation_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_navigation_mesh, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_navigation_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.NavigationMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.NavigationMesh](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:NavigationRegion3D.set_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsEnabled() bool { //gd:NavigationRegion3D.is_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -329,7 +327,7 @@ Sets the [RID] of the navigation map this region should use. By default the regi
 */
 //go:nosplit
 func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationRegion3D.set_navigation_map
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_map, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ navigation_map RID.Any }{navigation_map}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_map, 0|(gdextension.SizeRID<<4), &struct{ navigation_map RID.Any }{navigation_map})
 }
 
 /*
@@ -337,31 +335,31 @@ Returns the current navigation map [RID] used by this region.
 */
 //go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:NavigationRegion3D.get_navigation_map
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseEdgeConnections(enabled bool) { //gd:NavigationRegion3D.set_use_edge_connections
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_edge_connections, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_edge_connections, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetUseEdgeConnections() bool { //gd:NavigationRegion3D.get_use_edge_connections
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_edge_connections, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_edge_connections, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationLayers(navigation_layers int64) { //gd:NavigationRegion3D.set_navigation_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ navigation_layers int64 }{navigation_layers}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layers, 0|(gdextension.SizeInt<<4), &struct{ navigation_layers int64 }{navigation_layers})
 }
 
 //go:nosplit
 func (self class) GetNavigationLayers() int64 { //gd:NavigationRegion3D.get_navigation_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -371,10 +369,10 @@ Based on [param value], enables or disables the specified layer in the [member n
 */
 //go:nosplit
 func (self class) SetNavigationLayerValue(layer_number int64, value bool) { //gd:NavigationRegion3D.set_navigation_layer_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
-	}{layer_number, value}))
+	}{layer_number, value})
 }
 
 /*
@@ -382,7 +380,7 @@ Returns whether or not the specified layer of the [member navigation_layers] bit
 */
 //go:nosplit
 func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:NavigationRegion3D.get_navigation_layer_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
@@ -392,31 +390,31 @@ Returns the [RID] of this region on the [NavigationServer3D].
 */
 //go:nosplit
 func (self class) GetRegionRid() RID.Any { //gd:NavigationRegion3D.get_region_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_region_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_region_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnterCost(enter_cost float64) { //gd:NavigationRegion3D.set_enter_cost
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enter_cost, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ enter_cost float64 }{enter_cost}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enter_cost, 0|(gdextension.SizeFloat<<4), &struct{ enter_cost float64 }{enter_cost})
 }
 
 //go:nosplit
 func (self class) GetEnterCost() float64 { //gd:NavigationRegion3D.get_enter_cost
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_enter_cost, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_enter_cost, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTravelCost(travel_cost float64) { //gd:NavigationRegion3D.set_travel_cost
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_travel_cost, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ travel_cost float64 }{travel_cost}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_travel_cost, 0|(gdextension.SizeFloat<<4), &struct{ travel_cost float64 }{travel_cost})
 }
 
 //go:nosplit
 func (self class) GetTravelCost() float64 { //gd:NavigationRegion3D.get_travel_cost
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_travel_cost, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_travel_cost, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -426,7 +424,7 @@ Bakes the [NavigationMesh]. If [param on_thread] is set to [code]true[/code] (de
 */
 //go:nosplit
 func (self class) BakeNavigationMesh(on_thread bool) { //gd:NavigationRegion3D.bake_navigation_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake_navigation_mesh, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ on_thread bool }{on_thread}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.bake_navigation_mesh, 0|(gdextension.SizeBool<<4), &struct{ on_thread bool }{on_thread})
 }
 
 /*
@@ -434,7 +432,7 @@ Returns [code]true[/code] when the [NavigationMesh] is being baked on a backgrou
 */
 //go:nosplit
 func (self class) IsBaking() bool { //gd:NavigationRegion3D.is_baking
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_baking, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_baking, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -444,7 +442,7 @@ Returns the axis-aligned bounding box for the region's transformed navigation me
 */
 //go:nosplit
 func (self class) GetBounds() AABB.PositionSize { //gd:NavigationRegion3D.get_bounds
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }

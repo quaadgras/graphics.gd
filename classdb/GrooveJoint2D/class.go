@@ -3,7 +3,6 @@
 // Package GrooveJoint2D provides methods for working with GrooveJoint2D object instances.
 package GrooveJoint2D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -165,24 +163,24 @@ func (self Instance) SetInitialOffset(value Float.X) {
 
 //go:nosplit
 func (self class) SetLength(length float64) { //gd:GrooveJoint2D.set_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
 
 //go:nosplit
 func (self class) GetLength() float64 { //gd:GrooveJoint2D.get_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInitialOffset(offset float64) { //gd:GrooveJoint2D.set_initial_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_initial_offset, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_initial_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 
 //go:nosplit
 func (self class) GetInitialOffset() float64 { //gd:GrooveJoint2D.get_initial_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_initial_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_initial_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

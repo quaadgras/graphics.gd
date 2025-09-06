@@ -3,7 +3,6 @@
 // Package GridContainer provides methods for working with GridContainer object instances.
 package GridContainer
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -156,12 +154,12 @@ func (self Instance) SetColumns(value int) {
 
 //go:nosplit
 func (self class) SetColumns(columns int64) { //gd:GridContainer.set_columns
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_columns, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ columns int64 }{columns}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_columns, 0|(gdextension.SizeInt<<4), &struct{ columns int64 }{columns})
 }
 
 //go:nosplit
 func (self class) GetColumns() int64 { //gd:GridContainer.get_columns
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_columns, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_columns, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

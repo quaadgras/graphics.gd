@@ -3,7 +3,6 @@
 // Package SkeletonModification2D provides methods for working with SkeletonModification2D object instances.
 package SkeletonModification2D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -135,10 +133,10 @@ func (self implementation) DrawEditorGizmo() { return }
 /*
 Executes the given modification. This is where the modification performs whatever function it is designed to do.
 */
-func (Instance) _execute(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _execute(impl func(ptr gdclass.Receiver, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, Float.X(delta))
 	}
 }
@@ -146,12 +144,12 @@ func (Instance) _execute(impl func(ptr unsafe.Pointer, delta Float.X)) (cb gd.Ex
 /*
 Called when the modification is setup. This is where the modification performs initialization.
 */
-func (Instance) _setup_modification(impl func(ptr unsafe.Pointer, modification_stack SkeletonModificationStack2D.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _setup_modification(impl func(ptr gdclass.Receiver, modification_stack SkeletonModificationStack2D.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var modification_stack = [1]gdclass.SkeletonModificationStack2D{pointers.New[gdclass.SkeletonModificationStack2D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(modification_stack[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, modification_stack)
 	}
 }
@@ -160,9 +158,9 @@ func (Instance) _setup_modification(impl func(ptr unsafe.Pointer, modification_s
 Used for drawing [b]editor-only[/b] modification gizmos. This function will only be called in the Godot editor and can be overridden to draw custom gizmos.
 [b]Note:[/b] You will need to use the Skeleton2D from [method SkeletonModificationStack2D.get_skeleton] and it's draw functions, as the [SkeletonModification2D] resource cannot draw on its own.
 */
-func (Instance) _draw_editor_gizmo(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw_editor_gizmo(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -292,10 +290,10 @@ func (self Instance) SetExecutionMode(value int) {
 /*
 Executes the given modification. This is where the modification performs whatever function it is designed to do.
 */
-func (class) _execute(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _execute(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var delta = gd.UnsafeGet[float64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, delta)
 	}
 }
@@ -303,12 +301,12 @@ func (class) _execute(impl func(ptr unsafe.Pointer, delta float64)) (cb gd.Exten
 /*
 Called when the modification is setup. This is where the modification performs initialization.
 */
-func (class) _setup_modification(impl func(ptr unsafe.Pointer, modification_stack [1]gdclass.SkeletonModificationStack2D)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _setup_modification(impl func(ptr gdclass.Receiver, modification_stack [1]gdclass.SkeletonModificationStack2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var modification_stack = [1]gdclass.SkeletonModificationStack2D{pointers.New[gdclass.SkeletonModificationStack2D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(modification_stack[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, modification_stack)
 	}
 }
@@ -317,21 +315,21 @@ func (class) _setup_modification(impl func(ptr unsafe.Pointer, modification_stac
 Used for drawing [b]editor-only[/b] modification gizmos. This function will only be called in the Godot editor and can be overridden to draw custom gizmos.
 [b]Note:[/b] You will need to use the Skeleton2D from [method SkeletonModificationStack2D.get_skeleton] and it's draw functions, as the [SkeletonModification2D] resource cannot draw on its own.
 */
-func (class) _draw_editor_gizmo(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _draw_editor_gizmo(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:SkeletonModification2D.set_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetEnabled() bool { //gd:SkeletonModification2D.get_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -341,7 +339,7 @@ Returns the [SkeletonModificationStack2D] that this modification is bound to. Th
 */
 //go:nosplit
 func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2D.get_modification_stack
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SkeletonModificationStack2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModificationStack2D](r_ret)}
 	return ret
 }
@@ -351,7 +349,7 @@ Manually allows you to set the setup state of the modification. This function sh
 */
 //go:nosplit
 func (self class) SetIsSetup(is_setup bool) { //gd:SkeletonModification2D.set_is_setup
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_setup, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ is_setup bool }{is_setup}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_setup, 0|(gdextension.SizeBool<<4), &struct{ is_setup bool }{is_setup})
 }
 
 /*
@@ -359,19 +357,19 @@ Returns whether this modification has been successfully setup or not.
 */
 //go:nosplit
 func (self class) GetIsSetup() bool { //gd:SkeletonModification2D.get_is_setup
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_setup, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_setup, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExecutionMode(execution_mode int64) { //gd:SkeletonModification2D.set_execution_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_execution_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ execution_mode int64 }{execution_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_execution_mode, 0|(gdextension.SizeInt<<4), &struct{ execution_mode int64 }{execution_mode})
 }
 
 //go:nosplit
 func (self class) GetExecutionMode() int64 { //gd:SkeletonModification2D.get_execution_mode
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_execution_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_execution_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -381,12 +379,12 @@ Takes an angle and clamps it so it is within the passed-in [param min] and [para
 */
 //go:nosplit
 func (self class) ClampAngle(angle float64, min float64, max float64, invert bool) float64 { //gd:SkeletonModification2D.clamp_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.clamp_angle, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.clamp_angle, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		angle  float64
 		min    float64
 		max    float64
 		invert bool
-	}{angle, min, max, invert}))
+	}{angle, min, max, invert})
 	var ret = r_ret
 	return ret
 }
@@ -396,7 +394,7 @@ Sets whether this modification will call [method _draw_editor_gizmo] in the Godo
 */
 //go:nosplit
 func (self class) SetEditorDrawGizmo(draw_gizmo bool) { //gd:SkeletonModification2D.set_editor_draw_gizmo
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_draw_gizmo, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw_gizmo bool }{draw_gizmo}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_draw_gizmo, 0|(gdextension.SizeBool<<4), &struct{ draw_gizmo bool }{draw_gizmo})
 }
 
 /*
@@ -404,7 +402,7 @@ Returns whether this modification will call [method _draw_editor_gizmo] in the G
 */
 //go:nosplit
 func (self class) GetEditorDrawGizmo() bool { //gd:SkeletonModification2D.get_editor_draw_gizmo
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_editor_draw_gizmo, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_editor_draw_gizmo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

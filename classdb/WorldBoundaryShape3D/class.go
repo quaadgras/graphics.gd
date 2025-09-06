@@ -3,7 +3,6 @@
 // Package WorldBoundaryShape3D provides methods for working with WorldBoundaryShape3D object instances.
 package WorldBoundaryShape3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -156,12 +154,12 @@ func (self Instance) SetPlane(value Plane.NormalD) {
 
 //go:nosplit
 func (self class) SetPlane(plane Plane.NormalD) { //gd:WorldBoundaryShape3D.set_plane
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plane, 0|(gdextension.SizePlane<<4), unsafe.Pointer(&struct{ plane Plane.NormalD }{plane}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_plane, 0|(gdextension.SizePlane<<4), &struct{ plane Plane.NormalD }{plane})
 }
 
 //go:nosplit
 func (self class) GetPlane() Plane.NormalD { //gd:WorldBoundaryShape3D.get_plane
-	var r_ret = gdextension.Call[Plane.NormalD](gd.ObjectChecked(self.AsObject()), methods.get_plane, gdextension.SizePlane, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Plane.NormalD](gd.ObjectChecked(self.AsObject()), methods.get_plane, gdextension.SizePlane, &struct{}{})
 	var ret = r_ret
 	return ret
 }

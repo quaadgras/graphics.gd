@@ -3,7 +3,6 @@
 // Package AudioEffectSpectrumAnalyzerInstance provides methods for working with AudioEffectSpectrumAnalyzerInstance object instances.
 package AudioEffectSpectrumAnalyzerInstance
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -168,11 +166,11 @@ Returns the magnitude of the frequencies from [param from_hz] to [param to_hz] i
 */
 //go:nosplit
 func (self class) GetMagnitudeForFrequencyRange(from_hz float64, to_hz float64, mode MagnitudeMode) Vector2.XY { //gd:AudioEffectSpectrumAnalyzerInstance.get_magnitude_for_frequency_range
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_magnitude_for_frequency_range, gdextension.SizeVector2|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_magnitude_for_frequency_range, gdextension.SizeVector2|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12), &struct {
 		from_hz float64
 		to_hz   float64
 		mode    MagnitudeMode
-	}{from_hz, to_hz, mode}))
+	}{from_hz, to_hz, mode})
 	var ret = r_ret
 	return ret
 }

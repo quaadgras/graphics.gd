@@ -3,7 +3,6 @@
 // Package RDTextureFormat provides methods for working with RDTextureFormat object instances.
 package RDTextureFormat
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -269,132 +267,132 @@ func (self Instance) SetIsDiscardable(value bool) {
 
 //go:nosplit
 func (self class) SetFormat(p_member Rendering.DataFormat) { //gd:RDTextureFormat.set_format
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.DataFormat }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.DataFormat }{p_member})
 }
 
 //go:nosplit
 func (self class) GetFormat() Rendering.DataFormat { //gd:RDTextureFormat.get_format
-	var r_ret = gdextension.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWidth(p_member int64) { //gd:RDTextureFormat.set_width
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_width, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetWidth() int64 { //gd:RDTextureFormat.get_width
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeight(p_member int64) { //gd:RDTextureFormat.set_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetHeight() int64 { //gd:RDTextureFormat.get_height
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepth(p_member int64) { //gd:RDTextureFormat.set_depth
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetDepth() int64 { //gd:RDTextureFormat.get_depth
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetArrayLayers(p_member int64) { //gd:RDTextureFormat.set_array_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_array_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_array_layers, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetArrayLayers() int64 { //gd:RDTextureFormat.get_array_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_array_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_array_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMipmaps(p_member int64) { //gd:RDTextureFormat.set_mipmaps
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mipmaps, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mipmaps, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetMipmaps() int64 { //gd:RDTextureFormat.get_mipmaps
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mipmaps, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mipmaps, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureType(p_member Rendering.TextureType) { //gd:RDTextureFormat.set_texture_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureType }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_type, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureType }{p_member})
 }
 
 //go:nosplit
 func (self class) GetTextureType() Rendering.TextureType { //gd:RDTextureFormat.get_texture_type
-	var r_ret = gdextension.Call[Rendering.TextureType](gd.ObjectChecked(self.AsObject()), methods.get_texture_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.TextureType](gd.ObjectChecked(self.AsObject()), methods.get_texture_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSamples(p_member Rendering.TextureSamples) { //gd:RDTextureFormat.set_samples
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_samples, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSamples }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_samples, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureSamples }{p_member})
 }
 
 //go:nosplit
 func (self class) GetSamples() Rendering.TextureSamples { //gd:RDTextureFormat.get_samples
-	var r_ret = gdextension.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.get_samples, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.get_samples, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUsageBits(p_member Rendering.TextureUsageBits) { //gd:RDTextureFormat.set_usage_bits
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_usage_bits, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureUsageBits }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_usage_bits, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureUsageBits }{p_member})
 }
 
 //go:nosplit
 func (self class) GetUsageBits() Rendering.TextureUsageBits { //gd:RDTextureFormat.get_usage_bits
-	var r_ret = gdextension.Call[Rendering.TextureUsageBits](gd.ObjectChecked(self.AsObject()), methods.get_usage_bits, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.TextureUsageBits](gd.ObjectChecked(self.AsObject()), methods.get_usage_bits, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIsResolveBuffer(p_member bool) { //gd:RDTextureFormat.set_is_resolve_buffer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_resolve_buffer, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_resolve_buffer, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
 
 //go:nosplit
 func (self class) GetIsResolveBuffer() bool { //gd:RDTextureFormat.get_is_resolve_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_resolve_buffer, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_resolve_buffer, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIsDiscardable(p_member bool) { //gd:RDTextureFormat.set_is_discardable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_discardable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ p_member bool }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_discardable, 0|(gdextension.SizeBool<<4), &struct{ p_member bool }{p_member})
 }
 
 //go:nosplit
 func (self class) GetIsDiscardable() bool { //gd:RDTextureFormat.get_is_discardable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_discardable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_discardable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -404,7 +402,7 @@ Adds [param format] as a valid format for the corresponding [RDTextureView]'s [m
 */
 //go:nosplit
 func (self class) AddShareableFormat(format Rendering.DataFormat) { //gd:RDTextureFormat.add_shareable_format
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_shareable_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ format Rendering.DataFormat }{format}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_shareable_format, 0|(gdextension.SizeInt<<4), &struct{ format Rendering.DataFormat }{format})
 }
 
 /*
@@ -412,7 +410,7 @@ Removes [param format] from the list of valid formats that the corresponding [RD
 */
 //go:nosplit
 func (self class) RemoveShareableFormat(format Rendering.DataFormat) { //gd:RDTextureFormat.remove_shareable_format
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_shareable_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ format Rendering.DataFormat }{format}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_shareable_format, 0|(gdextension.SizeInt<<4), &struct{ format Rendering.DataFormat }{format})
 }
 func (self class) AsRDTextureFormat() Advanced {
 	return Advanced{pointers.AsA[gdclass.RDTextureFormat](self[0])}

@@ -3,7 +3,6 @@
 // Package AudioEffectChorus provides methods for working with AudioEffectChorus object instances.
 package AudioEffectChorus
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -223,126 +221,126 @@ func (self Instance) SetWet(value Float.X) {
 
 //go:nosplit
 func (self class) SetVoiceCount(voices int64) { //gd:AudioEffectChorus.set_voice_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ voices int64 }{voices}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_count, 0|(gdextension.SizeInt<<4), &struct{ voices int64 }{voices})
 }
 
 //go:nosplit
 func (self class) GetVoiceCount() int64 { //gd:AudioEffectChorus.get_voice_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_voice_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_voice_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVoiceDelayMs(voice_idx int64, delay_ms float64) { //gd:AudioEffectChorus.set_voice_delay_ms
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_delay_ms, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_delay_ms, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		voice_idx int64
 		delay_ms  float64
-	}{voice_idx, delay_ms}))
+	}{voice_idx, delay_ms})
 }
 
 //go:nosplit
 func (self class) GetVoiceDelayMs(voice_idx int64) float64 { //gd:AudioEffectChorus.get_voice_delay_ms
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_voice_delay_ms, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ voice_idx int64 }{voice_idx}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_voice_delay_ms, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ voice_idx int64 }{voice_idx})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVoiceRateHz(voice_idx int64, rate_hz float64) { //gd:AudioEffectChorus.set_voice_rate_hz
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_rate_hz, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_rate_hz, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		voice_idx int64
 		rate_hz   float64
-	}{voice_idx, rate_hz}))
+	}{voice_idx, rate_hz})
 }
 
 //go:nosplit
 func (self class) GetVoiceRateHz(voice_idx int64) float64 { //gd:AudioEffectChorus.get_voice_rate_hz
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_voice_rate_hz, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ voice_idx int64 }{voice_idx}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_voice_rate_hz, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ voice_idx int64 }{voice_idx})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVoiceDepthMs(voice_idx int64, depth_ms float64) { //gd:AudioEffectChorus.set_voice_depth_ms
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_depth_ms, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_depth_ms, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		voice_idx int64
 		depth_ms  float64
-	}{voice_idx, depth_ms}))
+	}{voice_idx, depth_ms})
 }
 
 //go:nosplit
 func (self class) GetVoiceDepthMs(voice_idx int64) float64 { //gd:AudioEffectChorus.get_voice_depth_ms
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_voice_depth_ms, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ voice_idx int64 }{voice_idx}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_voice_depth_ms, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ voice_idx int64 }{voice_idx})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVoiceLevelDb(voice_idx int64, level_db float64) { //gd:AudioEffectChorus.set_voice_level_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_level_db, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_level_db, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		voice_idx int64
 		level_db  float64
-	}{voice_idx, level_db}))
+	}{voice_idx, level_db})
 }
 
 //go:nosplit
 func (self class) GetVoiceLevelDb(voice_idx int64) float64 { //gd:AudioEffectChorus.get_voice_level_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_voice_level_db, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ voice_idx int64 }{voice_idx}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_voice_level_db, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ voice_idx int64 }{voice_idx})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVoiceCutoffHz(voice_idx int64, cutoff_hz float64) { //gd:AudioEffectChorus.set_voice_cutoff_hz
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_cutoff_hz, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_cutoff_hz, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		voice_idx int64
 		cutoff_hz float64
-	}{voice_idx, cutoff_hz}))
+	}{voice_idx, cutoff_hz})
 }
 
 //go:nosplit
 func (self class) GetVoiceCutoffHz(voice_idx int64) float64 { //gd:AudioEffectChorus.get_voice_cutoff_hz
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_voice_cutoff_hz, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ voice_idx int64 }{voice_idx}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_voice_cutoff_hz, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ voice_idx int64 }{voice_idx})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVoicePan(voice_idx int64, pan float64) { //gd:AudioEffectChorus.set_voice_pan
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_pan, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_voice_pan, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		voice_idx int64
 		pan       float64
-	}{voice_idx, pan}))
+	}{voice_idx, pan})
 }
 
 //go:nosplit
 func (self class) GetVoicePan(voice_idx int64) float64 { //gd:AudioEffectChorus.get_voice_pan
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_voice_pan, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ voice_idx int64 }{voice_idx}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_voice_pan, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ voice_idx int64 }{voice_idx})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWet(amount float64) { //gd:AudioEffectChorus.set_wet
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wet, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wet, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetWet() float64 { //gd:AudioEffectChorus.get_wet
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wet, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wet, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDry(amount float64) { //gd:AudioEffectChorus.set_dry
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dry, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dry, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetDry() float64 { //gd:AudioEffectChorus.get_dry
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dry, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dry, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

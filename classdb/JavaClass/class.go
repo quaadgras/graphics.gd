@@ -3,7 +3,6 @@
 // Package JavaClass provides methods for working with JavaClass object instances.
 package JavaClass
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -171,7 +169,7 @@ Returns the Java class name.
 */
 //go:nosplit
 func (self class) GetJavaClassName() String.Readable { //gd:JavaClass.get_java_class_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_java_class_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_java_class_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -181,7 +179,7 @@ Returns the object's Java methods and their signatures as an [Array] of dictiona
 */
 //go:nosplit
 func (self class) GetJavaMethodList() Array.Contains[Dictionary.Any] { //gd:JavaClass.get_java_method_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_java_method_list, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_java_method_list, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -191,7 +189,7 @@ Returns a [JavaClass] representing the Java parent class of this class.
 */
 //go:nosplit
 func (self class) GetJavaParentClass() [1]gdclass.JavaClass { //gd:JavaClass.get_java_parent_class
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_java_parent_class, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_java_parent_class, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.JavaClass{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaClass](r_ret)}
 	return ret
 }

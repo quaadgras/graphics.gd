@@ -3,7 +3,6 @@
 // Package InputEventPanGesture provides methods for working with InputEventPanGesture object instances.
 package InputEventPanGesture
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -39,7 +38,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -159,12 +157,12 @@ func (self Instance) SetDelta(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetDelta(delta Vector2.XY) { //gd:InputEventPanGesture.set_delta
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_delta, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ delta Vector2.XY }{delta}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_delta, 0|(gdextension.SizeVector2<<4), &struct{ delta Vector2.XY }{delta})
 }
 
 //go:nosplit
 func (self class) GetDelta() Vector2.XY { //gd:InputEventPanGesture.get_delta
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_delta, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_delta, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

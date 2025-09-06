@@ -3,7 +3,6 @@
 // Package VisualShaderNodeParticleEmit provides methods for working with VisualShaderNodeParticleEmit object instances.
 package VisualShaderNodeParticleEmit
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -154,12 +152,12 @@ func (self Instance) SetFlags(value EmitFlags) {
 
 //go:nosplit
 func (self class) SetFlags(flags EmitFlags) { //gd:VisualShaderNodeParticleEmit.set_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flags EmitFlags }{flags}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flags, 0|(gdextension.SizeInt<<4), &struct{ flags EmitFlags }{flags})
 }
 
 //go:nosplit
 func (self class) GetFlags() EmitFlags { //gd:VisualShaderNodeParticleEmit.get_flags
-	var r_ret = gdextension.Call[EmitFlags](gd.ObjectChecked(self.AsObject()), methods.get_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[EmitFlags](gd.ObjectChecked(self.AsObject()), methods.get_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

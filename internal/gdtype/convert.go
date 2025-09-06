@@ -120,15 +120,15 @@ func EngineTypeAsGoType(pkg, meta string, gdType string) string {
 	case "enum::Error":
 		return "Error.Code"
 	case "const uint8_t **":
-		return "unsafe.Pointer"
+		return "gdextension.Pointer"
 	case "const void*", "const uint8_t*", "const uint8_t *":
-		return "unsafe.Pointer"
+		return "gdextension.Pointer"
 	case "float*":
 		return "*float64"
 	case "int32_t*":
 		return "*int32"
 	case "void*", "uint8_t*":
-		return "unsafe.Pointer"
+		return "gdextension.Pointer"
 	case "Object":
 		return "[1]gd.Object"
 	case "RefCounted":

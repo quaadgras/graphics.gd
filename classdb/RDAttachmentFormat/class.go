@@ -3,7 +3,6 @@
 // Package RDAttachmentFormat provides methods for working with RDAttachmentFormat object instances.
 package RDAttachmentFormat
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -173,36 +171,36 @@ func (self Instance) SetUsageFlags(value int) {
 
 //go:nosplit
 func (self class) SetFormat(p_member Rendering.DataFormat) { //gd:RDAttachmentFormat.set_format
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.DataFormat }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.DataFormat }{p_member})
 }
 
 //go:nosplit
 func (self class) GetFormat() Rendering.DataFormat { //gd:RDAttachmentFormat.get_format
-	var r_ret = gdextension.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSamples(p_member Rendering.TextureSamples) { //gd:RDAttachmentFormat.set_samples
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_samples, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.TextureSamples }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_samples, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.TextureSamples }{p_member})
 }
 
 //go:nosplit
 func (self class) GetSamples() Rendering.TextureSamples { //gd:RDAttachmentFormat.get_samples
-	var r_ret = gdextension.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.get_samples, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.get_samples, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUsageFlags(p_member int64) { //gd:RDAttachmentFormat.set_usage_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_usage_flags, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_usage_flags, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetUsageFlags() int64 { //gd:RDAttachmentFormat.get_usage_flags
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_usage_flags, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_usage_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

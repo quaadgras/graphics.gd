@@ -3,7 +3,6 @@
 // Package ArrayOccluder3D provides methods for working with ArrayOccluder3D object instances.
 package ArrayOccluder3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -167,24 +165,24 @@ Sets [member indices] and [member vertices], while updating the final occluder o
 */
 //go:nosplit
 func (self class) SetArrays(vertices Packed.Array[Vector3.XYZ], indices Packed.Array[int32]) { //gd:ArrayOccluder3D.set_arrays
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_arrays, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_arrays, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
 		vertices gdextension.PackedArray[Vector3.XYZ]
 		indices  gdextension.PackedArray[int32]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))})
 }
 
 //go:nosplit
 func (self class) SetVertices(vertices Packed.Array[Vector3.XYZ]) { //gd:ArrayOccluder3D.set_vertices
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertices, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertices, 0|(gdextension.SizePackedArray<<4), &struct {
 		vertices gdextension.PackedArray[Vector3.XYZ]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))})
 }
 
 //go:nosplit
 func (self class) SetIndices(indices Packed.Array[int32]) { //gd:ArrayOccluder3D.set_indices
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_indices, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_indices, 0|(gdextension.SizePackedArray<<4), &struct {
 		indices gdextension.PackedArray[int32]
-	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](indices))})
 }
 func (self class) AsArrayOccluder3D() Advanced {
 	return Advanced{pointers.AsA[gdclass.ArrayOccluder3D](self[0])}

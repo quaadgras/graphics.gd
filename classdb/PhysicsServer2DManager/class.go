@@ -3,7 +3,6 @@
 // Package PhysicsServer2DManager provides methods for working with PhysicsServer2DManager object instances.
 package PhysicsServer2DManager
 
-import "unsafe"
 import "sync"
 import "reflect"
 import "slices"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -145,10 +143,10 @@ Register a [PhysicsServer2D] implementation by passing a [param name] and a [Cal
 */
 //go:nosplit
 func (self class) RegisterServer(name String.Readable, create_callback Callable.Function) { //gd:PhysicsServer2DManager.register_server
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
 		name            gdextension.String
 		create_callback gdextension.Callable
-	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(create_callback))}))
+	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(create_callback))})
 }
 
 /*
@@ -156,10 +154,10 @@ Set the default [PhysicsServer2D] implementation to the one identified by [param
 */
 //go:nosplit
 func (self class) SetDefaultServer(name String.Readable, priority int64) { //gd:PhysicsServer2DManager.set_default_server
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_server, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		name     gdextension.String
 		priority int64
-	}{pointers.Get(gd.InternalString(name)), priority}))
+	}{pointers.Get(gd.InternalString(name)), priority})
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

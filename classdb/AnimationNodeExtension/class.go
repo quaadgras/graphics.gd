@@ -3,7 +3,6 @@
 // Package AnimationNodeExtension provides methods for working with AnimationNodeExtension object instances.
 package AnimationNodeExtension
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -123,12 +121,12 @@ A version of the [method AnimationNode._process] method that is meant to be over
 The [PackedFloat64Array] parameter contains the playback information, containing the following values encoded as floating point numbers (in order): playback time and delta, start and end times, whether a seek was requested (encoded as a float greater than [code]0[/code]), whether the seek request was externally requested (encoded as a float greater than [code]0[/code]), the current [enum Animation.LoopedFlag] (encoded as a float), and the current blend weight.
 The function must return a [PackedFloat32Array] of the node's time info, containing the following values (in order): animation length, time position, delta, [enum Animation.LoopMode] (encoded as a float), whether the animation is about to end (encoded as a float greater than [code]0[/code]) and whether the animation is infinite (encoded as a float greater than [code]0[/code]). All values must be included in the returned array.
 */
-func (Instance) _process_animation_node(impl func(ptr unsafe.Pointer, playback_info []float64, test_only bool) []float32) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _process_animation_node(impl func(ptr gdclass.Receiver, playback_info []float64, test_only bool) []float32) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var playback_info = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](playback_info))
 		var test_only = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, slices.Collect(playback_info.Values()), test_only)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat32Array, float32](Packed.New(ret...)))
 
@@ -203,12 +201,12 @@ A version of the [method AnimationNode._process] method that is meant to be over
 The [PackedFloat64Array] parameter contains the playback information, containing the following values encoded as floating point numbers (in order): playback time and delta, start and end times, whether a seek was requested (encoded as a float greater than [code]0[/code]), whether the seek request was externally requested (encoded as a float greater than [code]0[/code]), the current [enum Animation.LoopedFlag] (encoded as a float), and the current blend weight.
 The function must return a [PackedFloat32Array] of the node's time info, containing the following values (in order): animation length, time position, delta, [enum Animation.LoopMode] (encoded as a float), whether the animation is about to end (encoded as a float greater than [code]0[/code]) and whether the animation is infinite (encoded as a float greater than [code]0[/code]). All values must be included in the returned array.
 */
-func (class) _process_animation_node(impl func(ptr unsafe.Pointer, playback_info Packed.Array[float64], test_only bool) Packed.Array[float32]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _process_animation_node(impl func(ptr gdclass.Receiver, playback_info Packed.Array[float64], test_only bool) Packed.Array[float32]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var playback_info = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](playback_info))
 		var test_only = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, playback_info, test_only)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat32Array, float32](ret))
 
@@ -224,9 +222,9 @@ Returns [code]true[/code] if the animation for the given [param node_info] is lo
 */
 //go:nosplit
 func (self class) IsLooping(node_info Packed.Array[float32]) bool { //gd:AnimationNodeExtension.is_looping
-	var r_ret = gdextension.CallStatic[bool](methods.is_looping, gdextension.SizeBool|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[bool](methods.is_looping, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
 		node_info gdextension.PackedArray[float32]
-	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info))})
 	var ret = r_ret
 	return ret
 }
@@ -236,10 +234,10 @@ Returns the animation's remaining time for the given node info. For looping anim
 */
 //go:nosplit
 func (self class) GetRemainingTime(node_info Packed.Array[float32], break_loop bool) float64 { //gd:AnimationNodeExtension.get_remaining_time
-	var r_ret = gdextension.CallStatic[float64](methods.get_remaining_time, gdextension.SizeFloat|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[float64](methods.get_remaining_time, gdextension.SizeFloat|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), &struct {
 		node_info  gdextension.PackedArray[float32]
 		break_loop bool
-	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info)), break_loop}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](node_info)), break_loop})
 	var ret = r_ret
 	return ret
 }

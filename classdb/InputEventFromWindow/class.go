@@ -3,7 +3,6 @@
 // Package InputEventFromWindow provides methods for working with InputEventFromWindow object instances.
 package InputEventFromWindow
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -154,12 +152,12 @@ func (self Instance) SetWindowId(value int) {
 
 //go:nosplit
 func (self class) SetWindowId(id int64) { //gd:InputEventFromWindow.set_window_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_window_id, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_window_id, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 
 //go:nosplit
 func (self class) GetWindowId() int64 { //gd:InputEventFromWindow.get_window_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_window_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_window_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

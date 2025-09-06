@@ -3,7 +3,6 @@
 // Package PropertyTweener provides methods for working with PropertyTweener object instances.
 package PropertyTweener
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -318,7 +316,7 @@ tween.TweenProperty(this, "position", new Vector2(200.0f, 100.0f), 1.0f).From(ne
 */
 //go:nosplit
 func (self class) From(value variant.Any) [1]gdclass.PropertyTweener { //gd:PropertyTweener.from
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.from, gdextension.SizeObject|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.from, gdextension.SizeObject|(gdextension.SizeVariant<<4), &struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret)}
 	return ret
 }
@@ -338,7 +336,7 @@ tween.TweenProperty(this, "position", new Vector2(200.0f, 100.0f), 1.0f).FromCur
 */
 //go:nosplit
 func (self class) FromCurrent() [1]gdclass.PropertyTweener { //gd:PropertyTweener.from_current
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.from_current, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.from_current, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret)}
 	return ret
 }
@@ -359,7 +357,7 @@ tween.TweenProperty(this, "position", Vector2.Right * 100.0f, 1.0f).AsRelative()
 */
 //go:nosplit
 func (self class) AsRelative() [1]gdclass.PropertyTweener { //gd:PropertyTweener.as_relative
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.as_relative, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.as_relative, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret)}
 	return ret
 }
@@ -369,7 +367,7 @@ Sets the type of used transition from [enum Tween.TransitionType]. If not set, t
 */
 //go:nosplit
 func (self class) SetTrans(trans Tween.TransitionType) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_trans
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_trans, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ trans Tween.TransitionType }{trans}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_trans, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ trans Tween.TransitionType }{trans})
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret)}
 	return ret
 }
@@ -379,7 +377,7 @@ Sets the type of used easing from [enum Tween.EaseType]. If not set, the default
 */
 //go:nosplit
 func (self class) SetEase(ease Tween.EaseType) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_ease
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ease, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ ease Tween.EaseType }{ease}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_ease, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ ease Tween.EaseType }{ease})
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret)}
 	return ret
 }
@@ -419,7 +417,7 @@ private float TweenCurve(float value)
 */
 //go:nosplit
 func (self class) SetCustomInterpolator(interpolator_method Callable.Function) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_custom_interpolator
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_custom_interpolator, gdextension.SizeObject|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ interpolator_method gdextension.Callable }{pointers.Get(gd.InternalCallable(interpolator_method))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_custom_interpolator, gdextension.SizeObject|(gdextension.SizeCallable<<4), &struct{ interpolator_method gdextension.Callable }{pointers.Get(gd.InternalCallable(interpolator_method))})
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret)}
 	return ret
 }
@@ -429,7 +427,7 @@ Sets the time in seconds after which the [PropertyTweener] will start interpolat
 */
 //go:nosplit
 func (self class) SetDelay(delay float64) [1]gdclass.PropertyTweener { //gd:PropertyTweener.set_delay
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_delay, gdextension.SizeObject|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ delay float64 }{delay}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.set_delay, gdextension.SizeObject|(gdextension.SizeFloat<<4), &struct{ delay float64 }{delay})
 	var ret = [1]gdclass.PropertyTweener{gd.PointerWithOwnershipTransferredToGo[gdclass.PropertyTweener](r_ret)}
 	return ret
 }

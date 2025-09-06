@@ -3,7 +3,6 @@
 // Package EditorPaths provides methods for working with EditorPaths object instances.
 package EditorPaths
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -222,7 +220,7 @@ Returns the absolute path to the user's data folder. This folder should be used 
 */
 //go:nosplit
 func (self class) GetDataDir() String.Readable { //gd:EditorPaths.get_data_dir
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_data_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_data_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -238,7 +236,7 @@ Returns the absolute path to the user's configuration folder. This folder should
 */
 //go:nosplit
 func (self class) GetConfigDir() String.Readable { //gd:EditorPaths.get_config_dir
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_config_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_config_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -254,7 +252,7 @@ Returns the absolute path to the user's cache folder. This folder should be used
 */
 //go:nosplit
 func (self class) GetCacheDir() String.Readable { //gd:EditorPaths.get_cache_dir
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_cache_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_cache_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -268,7 +266,7 @@ Self-contained mode can be enabled by creating a file named [code]._sc_[/code] o
 */
 //go:nosplit
 func (self class) IsSelfContained() bool { //gd:EditorPaths.is_self_contained
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_self_contained, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_self_contained, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -278,7 +276,7 @@ Returns the absolute path to the self-contained file that makes the current Godo
 */
 //go:nosplit
 func (self class) GetSelfContainedFile() String.Readable { //gd:EditorPaths.get_self_contained_file
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_self_contained_file, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_self_contained_file, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -288,7 +286,7 @@ Returns the project-specific editor settings path. Projects all have a unique su
 */
 //go:nosplit
 func (self class) GetProjectSettingsDir() String.Readable { //gd:EditorPaths.get_project_settings_dir
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_project_settings_dir, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_project_settings_dir, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

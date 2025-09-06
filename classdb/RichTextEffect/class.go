@@ -3,7 +3,6 @@
 // Package RichTextEffect provides methods for working with RichTextEffect object instances.
 package RichTextEffect
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -127,12 +125,12 @@ func (self implementation) ProcessCustomFx(char_fx CharFXTransform.Instance) (_ 
 /*
 Override this method to modify properties in [param char_fx]. The method must return [code]true[/code] if the character could be transformed successfully. If the method returns [code]false[/code], it will skip transformation to avoid displaying broken text.
 */
-func (Instance) _process_custom_fx(impl func(ptr unsafe.Pointer, char_fx CharFXTransform.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _process_custom_fx(impl func(ptr gdclass.Receiver, char_fx CharFXTransform.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var char_fx = [1]gdclass.CharFXTransform{pointers.New[gdclass.CharFXTransform]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(char_fx[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, char_fx)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -184,12 +182,12 @@ func New() Instance {
 /*
 Override this method to modify properties in [param char_fx]. The method must return [code]true[/code] if the character could be transformed successfully. If the method returns [code]false[/code], it will skip transformation to avoid displaying broken text.
 */
-func (class) _process_custom_fx(impl func(ptr unsafe.Pointer, char_fx [1]gdclass.CharFXTransform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _process_custom_fx(impl func(ptr gdclass.Receiver, char_fx [1]gdclass.CharFXTransform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var char_fx = [1]gdclass.CharFXTransform{pointers.New[gdclass.CharFXTransform]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(char_fx[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, char_fx)
 		gd.UnsafeSet(p_back, ret)
 	}

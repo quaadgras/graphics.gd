@@ -3,7 +3,6 @@
 // Package RDVertexAttribute provides methods for working with RDVertexAttribute object instances.
 package RDVertexAttribute
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -193,60 +191,60 @@ func (self Instance) SetFrequency(value Rendering.VertexFrequency) {
 
 //go:nosplit
 func (self class) SetLocation(p_member int64) { //gd:RDVertexAttribute.set_location
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_location, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_location, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetLocation() int64 { //gd:RDVertexAttribute.get_location
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_location, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_location, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffset(p_member int64) { //gd:RDVertexAttribute.set_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetOffset() int64 { //gd:RDVertexAttribute.get_offset
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFormat(p_member Rendering.DataFormat) { //gd:RDVertexAttribute.set_format
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.DataFormat }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.DataFormat }{p_member})
 }
 
 //go:nosplit
 func (self class) GetFormat() Rendering.DataFormat { //gd:RDVertexAttribute.get_format
-	var r_ret = gdextension.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.DataFormat](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStride(p_member int64) { //gd:RDVertexAttribute.set_stride
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stride, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member int64 }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stride, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetStride() int64 { //gd:RDVertexAttribute.get_stride
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stride, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stride, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrequency(p_member Rendering.VertexFrequency) { //gd:RDVertexAttribute.set_frequency
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frequency, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ p_member Rendering.VertexFrequency }{p_member}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frequency, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.VertexFrequency }{p_member})
 }
 
 //go:nosplit
 func (self class) GetFrequency() Rendering.VertexFrequency { //gd:RDVertexAttribute.get_frequency
-	var r_ret = gdextension.Call[Rendering.VertexFrequency](gd.ObjectChecked(self.AsObject()), methods.get_frequency, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.VertexFrequency](gd.ObjectChecked(self.AsObject()), methods.get_frequency, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package PackedDataContainerRef provides methods for working with PackedDataContainerRef object instances.
 package PackedDataContainerRef
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -177,7 +175,7 @@ Returns the size of the packed container (see [method Array.size] and [method Di
 */
 //go:nosplit
 func (self class) Size() int64 { //gd:PackedDataContainerRef.size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package AudioStream provides methods for working with AudioStream object instances.
 package AudioStream
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -148,9 +146,9 @@ func (self implementation) GetBarBeats() (_ int)                                
 /*
 Override this method to customize the returned value of [method instantiate_playback]. Should return a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer]).
 */
-func (Instance) _instantiate_playback(impl func(ptr unsafe.Pointer) AudioStreamPlayback.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _instantiate_playback(impl func(ptr gdclass.Receiver) AudioStreamPlayback.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
 
@@ -164,9 +162,9 @@ func (Instance) _instantiate_playback(impl func(ptr unsafe.Pointer) AudioStreamP
 /*
 Override this method to customize the name assigned to this audio stream. Unused by the engine.
 */
-func (Instance) _get_stream_name(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_stream_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -180,9 +178,9 @@ func (Instance) _get_stream_name(impl func(ptr unsafe.Pointer) string) (cb gd.Ex
 /*
 Override this method to customize the returned value of [method get_length]. Should return the length of this audio stream, in seconds.
 */
-func (Instance) _get_length(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_length(impl func(ptr gdclass.Receiver) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -191,9 +189,9 @@ func (Instance) _get_length(impl func(ptr unsafe.Pointer) Float.X) (cb gd.Extens
 /*
 Override this method to customize the returned value of [method is_monophonic]. Should return [code]true[/code] if this audio stream only supports one channel.
 */
-func (Instance) _is_monophonic(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_monophonic(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -203,9 +201,9 @@ func (Instance) _is_monophonic(impl func(ptr unsafe.Pointer) bool) (cb gd.Extens
 Overridable method. Should return the tempo of this audio stream, in beats per minute (BPM). Used by the engine to determine the position of every beat.
 Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 */
-func (Instance) _get_bpm(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_bpm(impl func(ptr gdclass.Receiver) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -215,9 +213,9 @@ func (Instance) _get_bpm(impl func(ptr unsafe.Pointer) Float.X) (cb gd.Extension
 Overridable method. Should return the total number of beats of this audio stream. Used by the engine to determine the position of every beat.
 Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 */
-func (Instance) _get_beat_count(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_beat_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -226,9 +224,9 @@ func (Instance) _get_beat_count(impl func(ptr unsafe.Pointer) int) (cb gd.Extens
 /*
 Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [method Object.get_property_list]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
 */
-func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
@@ -242,9 +240,9 @@ func (Instance) _get_parameter_list(impl func(ptr unsafe.Pointer) []map[any]any)
 /*
 Override this method to return [code]true[/code] if this stream has a loop.
 */
-func (Instance) _has_loop(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _has_loop(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -253,9 +251,9 @@ func (Instance) _has_loop(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionCl
 /*
 Override this method to return the bar beats of this stream.
 */
-func (Instance) _get_bar_beats(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_bar_beats(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -349,9 +347,9 @@ func New() Instance {
 /*
 Override this method to customize the returned value of [method instantiate_playback]. Should return a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer]).
 */
-func (class) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.AudioStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _instantiate_playback(impl func(ptr gdclass.Receiver) [1]gdclass.AudioStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
 
@@ -365,9 +363,9 @@ func (class) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.Audi
 /*
 Override this method to customize the name assigned to this audio stream. Unused by the engine.
 */
-func (class) _get_stream_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_stream_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -381,9 +379,9 @@ func (class) _get_stream_name(impl func(ptr unsafe.Pointer) String.Readable) (cb
 /*
 Override this method to customize the returned value of [method get_length]. Should return the length of this audio stream, in seconds.
 */
-func (class) _get_length(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_length(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -392,9 +390,9 @@ func (class) _get_length(impl func(ptr unsafe.Pointer) float64) (cb gd.Extension
 /*
 Override this method to customize the returned value of [method is_monophonic]. Should return [code]true[/code] if this audio stream only supports one channel.
 */
-func (class) _is_monophonic(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_monophonic(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -404,9 +402,9 @@ func (class) _is_monophonic(impl func(ptr unsafe.Pointer) bool) (cb gd.Extension
 Overridable method. Should return the tempo of this audio stream, in beats per minute (BPM). Used by the engine to determine the position of every beat.
 Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 */
-func (class) _get_bpm(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_bpm(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -416,9 +414,9 @@ func (class) _get_bpm(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionCla
 Overridable method. Should return the total number of beats of this audio stream. Used by the engine to determine the position of every beat.
 Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 */
-func (class) _get_beat_count(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_beat_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -427,9 +425,9 @@ func (class) _get_beat_count(impl func(ptr unsafe.Pointer) int64) (cb gd.Extensi
 /*
 Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [method Object.get_property_list]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
 */
-func (class) _get_parameter_list(impl func(ptr unsafe.Pointer) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -443,9 +441,9 @@ func (class) _get_parameter_list(impl func(ptr unsafe.Pointer) Array.Contains[Di
 /*
 Override this method to return [code]true[/code] if this stream has a loop.
 */
-func (class) _has_loop(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _has_loop(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -454,9 +452,9 @@ func (class) _has_loop(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClass
 /*
 Override this method to return the bar beats of this stream.
 */
-func (class) _get_bar_beats(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_bar_beats(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -467,7 +465,7 @@ Returns the length of the audio stream in seconds.
 */
 //go:nosplit
 func (self class) GetLength() float64 { //gd:AudioStream.get_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -477,7 +475,7 @@ Returns [code]true[/code] if this audio stream only supports one channel ([i]mon
 */
 //go:nosplit
 func (self class) IsMonophonic() bool { //gd:AudioStream.is_monophonic
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monophonic, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monophonic, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -487,7 +485,7 @@ Returns a newly created [AudioStreamPlayback] intended to play this audio stream
 */
 //go:nosplit
 func (self class) InstantiatePlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStream.instantiate_playback
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.instantiate_playback, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.instantiate_playback, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamPlayback](r_ret)}
 	return ret
 }
@@ -497,7 +495,7 @@ Returns if the current [AudioStream] can be used as a sample. Only static stream
 */
 //go:nosplit
 func (self class) CanBeSampled() bool { //gd:AudioStream.can_be_sampled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_be_sampled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_be_sampled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -507,7 +505,7 @@ Generates an [AudioSample] based on the current stream.
 */
 //go:nosplit
 func (self class) GenerateSample() [1]gdclass.AudioSample { //gd:AudioStream.generate_sample
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_sample, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_sample, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioSample{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioSample](r_ret)}
 	return ret
 }
@@ -517,7 +515,7 @@ Returns [code]true[/code] if the stream is a collection of other streams, [code]
 */
 //go:nosplit
 func (self class) IsMetaStream() bool { //gd:AudioStream.is_meta_stream
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_meta_stream, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_meta_stream, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package VisualShaderNodeParticleAccelerator provides methods for working with VisualShaderNodeParticleAccelerator object instances.
 package VisualShaderNodeParticleAccelerator
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -154,12 +152,12 @@ func (self Instance) SetMode(value Mode) {
 
 //go:nosplit
 func (self class) SetMode(mode Mode) { //gd:VisualShaderNodeParticleAccelerator.set_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Mode }{mode})
 }
 
 //go:nosplit
 func (self class) GetMode() Mode { //gd:VisualShaderNodeParticleAccelerator.get_mode
-	var r_ret = gdextension.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Mode](gd.ObjectChecked(self.AsObject()), methods.get_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

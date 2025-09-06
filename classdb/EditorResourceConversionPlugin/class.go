@@ -3,7 +3,6 @@
 // Package EditorResourceConversionPlugin provides methods for working with EditorResourceConversionPlugin object instances.
 package EditorResourceConversionPlugin
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -142,9 +140,9 @@ func (self implementation) Convert(resource Resource.Instance) (_ Resource.Insta
 /*
 Returns the class name of the target type of [Resource] that this plugin converts source resources to.
 */
-func (Instance) _converts_to(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _converts_to(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -158,12 +156,12 @@ func (Instance) _converts_to(impl func(ptr unsafe.Pointer) string) (cb gd.Extens
 /*
 Called to determine whether a particular [Resource] can be converted to the target resource type by this plugin.
 */
-func (Instance) _handles(impl func(ptr unsafe.Pointer, resource Resource.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _handles(impl func(ptr gdclass.Receiver, resource Resource.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(resource[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -172,12 +170,12 @@ func (Instance) _handles(impl func(ptr unsafe.Pointer, resource Resource.Instanc
 /*
 Takes an input [Resource] and converts it to the type given in [method _converts_to]. The returned [Resource] is the result of the conversion, and the input [Resource] remains unchanged.
 */
-func (Instance) _convert(impl func(ptr unsafe.Pointer, resource Resource.Instance) Resource.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _convert(impl func(ptr gdclass.Receiver, resource Resource.Instance) Resource.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(resource[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource)
 		ptr, ok := pointers.End(ret[0])
 
@@ -234,9 +232,9 @@ func New() Instance {
 /*
 Returns the class name of the target type of [Resource] that this plugin converts source resources to.
 */
-func (class) _converts_to(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _converts_to(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -250,12 +248,12 @@ func (class) _converts_to(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.
 /*
 Called to determine whether a particular [Resource] can be converted to the target resource type by this plugin.
 */
-func (class) _handles(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _handles(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(resource[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -264,12 +262,12 @@ func (class) _handles(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource
 /*
 Takes an input [Resource] and converts it to the type given in [method _converts_to]. The returned [Resource] is the result of the conversion, and the input [Resource] remains unchanged.
 */
-func (class) _convert(impl func(ptr unsafe.Pointer, resource [1]gdclass.Resource) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _convert(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(resource[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, resource)
 		ptr, ok := pointers.End(ret[0])
 

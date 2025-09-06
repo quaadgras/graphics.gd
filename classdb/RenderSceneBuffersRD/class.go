@@ -3,7 +3,6 @@
 // Package RenderSceneBuffersRD provides methods for working with RenderSceneBuffersRD object instances.
 package RenderSceneBuffersRD
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -39,7 +38,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -424,10 +422,10 @@ Returns [code]true[/code] if a cached texture exists for this name.
 */
 //go:nosplit
 func (self class) HasTexture(context String.Name, name String.Name) bool { //gd:RenderSceneBuffersRD.has_texture
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_texture, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_texture, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		context gdextension.StringName
 		name    gdextension.StringName
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name))}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
@@ -437,7 +435,7 @@ Create a new texture with the given definition and cache this under the given na
 */
 //go:nosplit
 func (self class) CreateTexture(context String.Name, name String.Name, data_format Rendering.DataFormat, usage_bits int64, texture_samples Rendering.TextureSamples, size Vector2i.XY, layers int64, mipmaps int64, unique bool, discardable bool) RID.Any { //gd:RenderSceneBuffersRD.create_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.create_texture, gdextension.SizeRID|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeVector2i<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeBool<<40), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.create_texture, gdextension.SizeRID|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeVector2i<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeBool<<40), &struct {
 		context         gdextension.StringName
 		name            gdextension.StringName
 		data_format     Rendering.DataFormat
@@ -448,7 +446,7 @@ func (self class) CreateTexture(context String.Name, name String.Name, data_form
 		mipmaps         int64
 		unique          bool
 		discardable     bool
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), data_format, usage_bits, texture_samples, size, layers, mipmaps, unique, discardable}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), data_format, usage_bits, texture_samples, size, layers, mipmaps, unique, discardable})
 	var ret = r_ret
 	return ret
 }
@@ -458,13 +456,13 @@ Create a new texture using the given format and view and cache this under the gi
 */
 //go:nosplit
 func (self class) CreateTextureFromFormat(context String.Name, name String.Name, format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView, unique bool) RID.Any { //gd:RenderSceneBuffersRD.create_texture_from_format
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.create_texture_from_format, gdextension.SizeRID|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeObject<<16)|(gdextension.SizeBool<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.create_texture_from_format, gdextension.SizeRID|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeObject<<16)|(gdextension.SizeBool<<20), &struct {
 		context gdextension.StringName
 		name    gdextension.StringName
 		format  gdextension.Object
 		view    gdextension.Object
 		unique  bool
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(format[0].AsObject())), gdextension.Object(gd.ObjectChecked(view[0].AsObject())), unique}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(format[0].AsObject())), gdextension.Object(gd.ObjectChecked(view[0].AsObject())), unique})
 	var ret = r_ret
 	return ret
 }
@@ -474,12 +472,12 @@ Create a new texture view for an existing texture and cache this under the given
 */
 //go:nosplit
 func (self class) CreateTextureView(context String.Name, name String.Name, view_name String.Name, view [1]gdclass.RDTextureView) RID.Any { //gd:RenderSceneBuffersRD.create_texture_view
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.create_texture_view, gdextension.SizeRID|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeObject<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.create_texture_view, gdextension.SizeRID|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeObject<<16), &struct {
 		context   gdextension.StringName
 		name      gdextension.StringName
 		view_name gdextension.StringName
 		view      gdextension.Object
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(view_name)), gdextension.Object(gd.ObjectChecked(view[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(view_name)), gdextension.Object(gd.ObjectChecked(view[0].AsObject()))})
 	var ret = r_ret
 	return ret
 }
@@ -489,10 +487,10 @@ Returns a cached texture with this name.
 */
 //go:nosplit
 func (self class) GetTexture(context String.Name, name String.Name) RID.Any { //gd:RenderSceneBuffersRD.get_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeRID|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeRID|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		context gdextension.StringName
 		name    gdextension.StringName
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name))}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
@@ -502,10 +500,10 @@ Returns the texture format information with which a cached texture was created.
 */
 //go:nosplit
 func (self class) GetTextureFormat(context String.Name, name String.Name) [1]gdclass.RDTextureFormat { //gd:RenderSceneBuffersRD.get_texture_format
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_format, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_format, gdextension.SizeObject|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		context gdextension.StringName
 		name    gdextension.StringName
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name))}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name))})
 	var ret = [1]gdclass.RDTextureFormat{gd.PointerWithOwnershipTransferredToGo[gdclass.RDTextureFormat](r_ret)}
 	return ret
 }
@@ -515,14 +513,14 @@ Returns a specific slice (layer or mipmap) for a cached texture.
 */
 //go:nosplit
 func (self class) GetTextureSlice(context String.Name, name String.Name, layer int64, mipmap int64, layers int64, mipmaps int64) RID.Any { //gd:RenderSceneBuffersRD.get_texture_slice
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture_slice, gdextension.SizeRID|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture_slice, gdextension.SizeRID|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
 		context gdextension.StringName
 		name    gdextension.StringName
 		layer   int64
 		mipmap  int64
 		layers  int64
 		mipmaps int64
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), layer, mipmap, layers, mipmaps}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), layer, mipmap, layers, mipmaps})
 	var ret = r_ret
 	return ret
 }
@@ -532,7 +530,7 @@ Returns a specific view of a slice (layer or mipmap) for a cached texture.
 */
 //go:nosplit
 func (self class) GetTextureSliceView(context String.Name, name String.Name, layer int64, mipmap int64, layers int64, mipmaps int64, view [1]gdclass.RDTextureView) RID.Any { //gd:RenderSceneBuffersRD.get_texture_slice_view
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture_slice_view, gdextension.SizeRID|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeObject<<28), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture_slice_view, gdextension.SizeRID|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeObject<<28), &struct {
 		context gdextension.StringName
 		name    gdextension.StringName
 		layer   int64
@@ -540,7 +538,7 @@ func (self class) GetTextureSliceView(context String.Name, name String.Name, lay
 		layers  int64
 		mipmaps int64
 		view    gdextension.Object
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), layer, mipmap, layers, mipmaps, gdextension.Object(gd.ObjectChecked(view[0].AsObject()))}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), layer, mipmap, layers, mipmaps, gdextension.Object(gd.ObjectChecked(view[0].AsObject()))})
 	var ret = r_ret
 	return ret
 }
@@ -550,11 +548,11 @@ Returns the texture size of a given slice of a cached texture.
 */
 //go:nosplit
 func (self class) GetTextureSliceSize(context String.Name, name String.Name, mipmap int64) Vector2i.XY { //gd:RenderSceneBuffersRD.get_texture_slice_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_slice_size, gdextension.SizeVector2i|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_slice_size, gdextension.SizeVector2i|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12), &struct {
 		context gdextension.StringName
 		name    gdextension.StringName
 		mipmap  int64
-	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), mipmap}))
+	}{pointers.Get(gd.InternalStringName(context)), pointers.Get(gd.InternalStringName(name)), mipmap})
 	var ret = r_ret
 	return ret
 }
@@ -564,7 +562,7 @@ Frees all buffers related to this context.
 */
 //go:nosplit
 func (self class) ClearContext(context String.Name) { //gd:RenderSceneBuffersRD.clear_context
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_context, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ context gdextension.StringName }{pointers.Get(gd.InternalStringName(context))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_context, 0|(gdextension.SizeStringName<<4), &struct{ context gdextension.StringName }{pointers.Get(gd.InternalStringName(context))})
 }
 
 /*
@@ -573,7 +571,7 @@ If [param msaa] is [code]true[/code] and MSAA is enabled, this returns the MSAA 
 */
 //go:nosplit
 func (self class) GetColorTexture(msaa bool) RID.Any { //gd:RenderSceneBuffersRD.get_color_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_color_texture, gdextension.SizeRID|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ msaa bool }{msaa}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_color_texture, gdextension.SizeRID|(gdextension.SizeBool<<4), &struct{ msaa bool }{msaa})
 	var ret = r_ret
 	return ret
 }
@@ -584,10 +582,10 @@ If [param msaa] is [code]true[/code] and MSAA is enabled, this returns the MSAA 
 */
 //go:nosplit
 func (self class) GetColorLayer(layer int64, msaa bool) RID.Any { //gd:RenderSceneBuffersRD.get_color_layer
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_color_layer, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_color_layer, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer int64
 		msaa  bool
-	}{layer, msaa}))
+	}{layer, msaa})
 	var ret = r_ret
 	return ret
 }
@@ -598,7 +596,7 @@ If [param msaa] is [code]true[/code] and MSAA is enabled, this returns the MSAA 
 */
 //go:nosplit
 func (self class) GetDepthTexture(msaa bool) RID.Any { //gd:RenderSceneBuffersRD.get_depth_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_depth_texture, gdextension.SizeRID|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ msaa bool }{msaa}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_depth_texture, gdextension.SizeRID|(gdextension.SizeBool<<4), &struct{ msaa bool }{msaa})
 	var ret = r_ret
 	return ret
 }
@@ -609,10 +607,10 @@ If [param msaa] is [code]true[/code] and MSAA is enabled, this returns the MSAA 
 */
 //go:nosplit
 func (self class) GetDepthLayer(layer int64, msaa bool) RID.Any { //gd:RenderSceneBuffersRD.get_depth_layer
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_depth_layer, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_depth_layer, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer int64
 		msaa  bool
-	}{layer, msaa}))
+	}{layer, msaa})
 	var ret = r_ret
 	return ret
 }
@@ -623,7 +621,7 @@ If [param msaa] is [b]true[/b] and MSAA is enabled, this returns the MSAA varian
 */
 //go:nosplit
 func (self class) GetVelocityTexture(msaa bool) RID.Any { //gd:RenderSceneBuffersRD.get_velocity_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_velocity_texture, gdextension.SizeRID|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ msaa bool }{msaa}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_velocity_texture, gdextension.SizeRID|(gdextension.SizeBool<<4), &struct{ msaa bool }{msaa})
 	var ret = r_ret
 	return ret
 }
@@ -633,10 +631,10 @@ Returns the specified layer from the velocity texture we are rendering 3D conten
 */
 //go:nosplit
 func (self class) GetVelocityLayer(layer int64, msaa bool) RID.Any { //gd:RenderSceneBuffersRD.get_velocity_layer
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_velocity_layer, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_velocity_layer, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer int64
 		msaa  bool
-	}{layer, msaa}))
+	}{layer, msaa})
 	var ret = r_ret
 	return ret
 }
@@ -646,7 +644,7 @@ Returns the render target associated with this buffers object.
 */
 //go:nosplit
 func (self class) GetRenderTarget() RID.Any { //gd:RenderSceneBuffersRD.get_render_target
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_render_target, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_render_target, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -656,7 +654,7 @@ Returns the view count for the associated viewport.
 */
 //go:nosplit
 func (self class) GetViewCount() int64 { //gd:RenderSceneBuffersRD.get_view_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_view_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -666,7 +664,7 @@ Returns the internal size of the render buffer (size before upscaling) with whic
 */
 //go:nosplit
 func (self class) GetInternalSize() Vector2i.XY { //gd:RenderSceneBuffersRD.get_internal_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_internal_size, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_internal_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -676,7 +674,7 @@ Returns the target size of the render buffer (size after upscaling).
 */
 //go:nosplit
 func (self class) GetTargetSize() Vector2i.XY { //gd:RenderSceneBuffersRD.get_target_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_size, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -686,7 +684,7 @@ Returns the scaling mode used for upscaling.
 */
 //go:nosplit
 func (self class) GetScaling3dMode() RenderingServer.ViewportScaling3DMode { //gd:RenderSceneBuffersRD.get_scaling_3d_mode
-	var r_ret = gdextension.Call[RenderingServer.ViewportScaling3DMode](gd.ObjectChecked(self.AsObject()), methods.get_scaling_3d_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RenderingServer.ViewportScaling3DMode](gd.ObjectChecked(self.AsObject()), methods.get_scaling_3d_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -696,7 +694,7 @@ Returns the FSR sharpness value used while rendering the 3D content (if [method 
 */
 //go:nosplit
 func (self class) GetFsrSharpness() float64 { //gd:RenderSceneBuffersRD.get_fsr_sharpness
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fsr_sharpness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fsr_sharpness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -706,7 +704,7 @@ Returns the applied 3D MSAA mode for this viewport.
 */
 //go:nosplit
 func (self class) GetMsaa3d() RenderingServer.ViewportMSAA { //gd:RenderSceneBuffersRD.get_msaa_3d
-	var r_ret = gdextension.Call[RenderingServer.ViewportMSAA](gd.ObjectChecked(self.AsObject()), methods.get_msaa_3d, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RenderingServer.ViewportMSAA](gd.ObjectChecked(self.AsObject()), methods.get_msaa_3d, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -716,7 +714,7 @@ Returns the number of MSAA samples used.
 */
 //go:nosplit
 func (self class) GetTextureSamples() Rendering.TextureSamples { //gd:RenderSceneBuffersRD.get_texture_samples
-	var r_ret = gdextension.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.get_texture_samples, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.get_texture_samples, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -726,7 +724,7 @@ Returns the screen-space antialiasing method applied.
 */
 //go:nosplit
 func (self class) GetScreenSpaceAa() RenderingServer.ViewportScreenSpaceAA { //gd:RenderSceneBuffersRD.get_screen_space_aa
-	var r_ret = gdextension.Call[RenderingServer.ViewportScreenSpaceAA](gd.ObjectChecked(self.AsObject()), methods.get_screen_space_aa, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RenderingServer.ViewportScreenSpaceAA](gd.ObjectChecked(self.AsObject()), methods.get_screen_space_aa, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -736,7 +734,7 @@ Returns [code]true[/code] if TAA is enabled.
 */
 //go:nosplit
 func (self class) GetUseTaa() bool { //gd:RenderSceneBuffersRD.get_use_taa
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_taa, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_taa, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -746,7 +744,7 @@ Returns [code]true[/code] if debanding is enabled.
 */
 //go:nosplit
 func (self class) GetUseDebanding() bool { //gd:RenderSceneBuffersRD.get_use_debanding
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_debanding, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_debanding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

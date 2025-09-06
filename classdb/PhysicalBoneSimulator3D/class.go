@@ -3,7 +3,6 @@
 // Package PhysicalBoneSimulator3D provides methods for working with PhysicalBoneSimulator3D object instances.
 package PhysicalBoneSimulator3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -200,7 +198,7 @@ Returns a boolean that indicates whether the [PhysicalBoneSimulator3D] is runnin
 */
 //go:nosplit
 func (self class) IsSimulatingPhysics() bool { //gd:PhysicalBoneSimulator3D.is_simulating_physics
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_simulating_physics, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -210,7 +208,7 @@ Tells the [PhysicalBone3D] nodes in the Skeleton to stop simulating.
 */
 //go:nosplit
 func (self class) PhysicalBonesStopSimulation() { //gd:PhysicalBoneSimulator3D.physical_bones_stop_simulation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_stop_simulation, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_stop_simulation, 0, &struct{}{})
 }
 
 /*
@@ -219,7 +217,7 @@ Optionally, a list of bone names can be passed-in, allowing only the passed-in b
 */
 //go:nosplit
 func (self class) PhysicalBonesStartSimulation(bones Array.Contains[String.Name]) { //gd:PhysicalBoneSimulator3D.physical_bones_start_simulation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_start_simulation, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_start_simulation, 0|(gdextension.SizeArray<<4), &struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))})
 }
 
 /*
@@ -228,7 +226,7 @@ Works just like the [RigidBody3D] node.
 */
 //go:nosplit
 func (self class) PhysicalBonesAddCollisionException(exception RID.Any) { //gd:PhysicalBoneSimulator3D.physical_bones_add_collision_exception
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_add_collision_exception, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ exception RID.Any }{exception}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_add_collision_exception, 0|(gdextension.SizeRID<<4), &struct{ exception RID.Any }{exception})
 }
 
 /*
@@ -237,7 +235,7 @@ Works just like the [RigidBody3D] node.
 */
 //go:nosplit
 func (self class) PhysicalBonesRemoveCollisionException(exception RID.Any) { //gd:PhysicalBoneSimulator3D.physical_bones_remove_collision_exception
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_remove_collision_exception, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ exception RID.Any }{exception}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.physical_bones_remove_collision_exception, 0|(gdextension.SizeRID<<4), &struct{ exception RID.Any }{exception})
 }
 func (self class) AsPhysicalBoneSimulator3D() Advanced {
 	return Advanced{pointers.AsA[gdclass.PhysicalBoneSimulator3D](self[0])}

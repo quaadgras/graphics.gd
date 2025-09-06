@@ -3,7 +3,6 @@
 // Package CylinderMesh provides methods for working with CylinderMesh object instances.
 package CylinderMesh
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -215,84 +213,84 @@ func (self Instance) SetCapBottom(value bool) {
 
 //go:nosplit
 func (self class) SetTopRadius(radius float64) { //gd:CylinderMesh.set_top_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_top_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_top_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetTopRadius() float64 { //gd:CylinderMesh.get_top_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_top_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_top_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBottomRadius(radius float64) { //gd:CylinderMesh.set_bottom_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bottom_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bottom_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetBottomRadius() float64 { //gd:CylinderMesh.get_bottom_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bottom_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bottom_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeight(height float64) { //gd:CylinderMesh.set_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ height float64 }{height}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
 
 //go:nosplit
 func (self class) GetHeight() float64 { //gd:CylinderMesh.get_height
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRadialSegments(segments int64) { //gd:CylinderMesh.set_radial_segments
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_segments, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ segments int64 }{segments}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_segments, 0|(gdextension.SizeInt<<4), &struct{ segments int64 }{segments})
 }
 
 //go:nosplit
 func (self class) GetRadialSegments() int64 { //gd:CylinderMesh.get_radial_segments
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_radial_segments, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_radial_segments, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRings(rings int64) { //gd:CylinderMesh.set_rings
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rings, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ rings int64 }{rings}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rings, 0|(gdextension.SizeInt<<4), &struct{ rings int64 }{rings})
 }
 
 //go:nosplit
 func (self class) GetRings() int64 { //gd:CylinderMesh.get_rings
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rings, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rings, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCapTop(cap_top bool) { //gd:CylinderMesh.set_cap_top
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cap_top, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cap_top bool }{cap_top}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cap_top, 0|(gdextension.SizeBool<<4), &struct{ cap_top bool }{cap_top})
 }
 
 //go:nosplit
 func (self class) IsCapTop() bool { //gd:CylinderMesh.is_cap_top
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_top, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_top, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCapBottom(cap_bottom bool) { //gd:CylinderMesh.set_cap_bottom
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cap_bottom, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ cap_bottom bool }{cap_bottom}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cap_bottom, 0|(gdextension.SizeBool<<4), &struct{ cap_bottom bool }{cap_bottom})
 }
 
 //go:nosplit
 func (self class) IsCapBottom() bool { //gd:CylinderMesh.is_cap_bottom
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_bottom, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_cap_bottom, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

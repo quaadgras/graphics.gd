@@ -3,7 +3,6 @@
 // Package AudioEffectReverb provides methods for working with AudioEffectReverb object instances.
 package AudioEffectReverb
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -224,96 +222,96 @@ func (self Instance) SetWet(value Float.X) {
 
 //go:nosplit
 func (self class) SetPredelayMsec(msec float64) { //gd:AudioEffectReverb.set_predelay_msec
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_predelay_msec, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ msec float64 }{msec}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_predelay_msec, 0|(gdextension.SizeFloat<<4), &struct{ msec float64 }{msec})
 }
 
 //go:nosplit
 func (self class) GetPredelayMsec() float64 { //gd:AudioEffectReverb.get_predelay_msec
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_predelay_msec, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_predelay_msec, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPredelayFeedback(feedback float64) { //gd:AudioEffectReverb.set_predelay_feedback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_predelay_feedback, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ feedback float64 }{feedback}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_predelay_feedback, 0|(gdextension.SizeFloat<<4), &struct{ feedback float64 }{feedback})
 }
 
 //go:nosplit
 func (self class) GetPredelayFeedback() float64 { //gd:AudioEffectReverb.get_predelay_feedback
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_predelay_feedback, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_predelay_feedback, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRoomSize(size float64) { //gd:AudioEffectReverb.set_room_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_room_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_room_size, 0|(gdextension.SizeFloat<<4), &struct{ size float64 }{size})
 }
 
 //go:nosplit
 func (self class) GetRoomSize() float64 { //gd:AudioEffectReverb.get_room_size
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_room_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_room_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDamping(amount float64) { //gd:AudioEffectReverb.set_damping
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetDamping() float64 { //gd:AudioEffectReverb.get_damping
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpread(amount float64) { //gd:AudioEffectReverb.set_spread
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spread, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_spread, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetSpread() float64 { //gd:AudioEffectReverb.get_spread
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_spread, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_spread, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDry(amount float64) { //gd:AudioEffectReverb.set_dry
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dry, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dry, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetDry() float64 { //gd:AudioEffectReverb.get_dry
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dry, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dry, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWet(amount float64) { //gd:AudioEffectReverb.set_wet
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wet, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wet, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetWet() float64 { //gd:AudioEffectReverb.get_wet
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wet, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wet, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHpf(amount float64) { //gd:AudioEffectReverb.set_hpf
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hpf, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ amount float64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hpf, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetHpf() float64 { //gd:AudioEffectReverb.get_hpf
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_hpf, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_hpf, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

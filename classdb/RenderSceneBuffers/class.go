@@ -3,7 +3,6 @@
 // Package RenderSceneBuffers provides methods for working with RenderSceneBuffers object instances.
 package RenderSceneBuffers
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -155,7 +153,7 @@ This method is called by the rendering server when the associated viewports conf
 */
 //go:nosplit
 func (self class) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { //gd:RenderSceneBuffers.configure
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.configure, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(config[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.configure, 0|(gdextension.SizeObject<<4), &struct{ config gdextension.Object }{gdextension.Object(gd.ObjectChecked(config[0].AsObject()))})
 }
 func (self class) AsRenderSceneBuffers() Advanced {
 	return Advanced{pointers.AsA[gdclass.RenderSceneBuffers](self[0])}

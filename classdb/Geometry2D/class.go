@@ -3,7 +3,6 @@
 // Package Geometry2D provides methods for working with Geometry2D object instances.
 package Geometry2D
 
-import "unsafe"
 import "sync"
 import "reflect"
 import "slices"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -439,11 +437,11 @@ Returns [code]true[/code] if [param point] is inside the circle or if it's locat
 */
 //go:nosplit
 func (self class) IsPointInCircle(point Vector2.XY, circle_position Vector2.XY, circle_radius float64) bool { //gd:Geometry2D.is_point_in_circle
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_in_circle, gdextension.SizeBool|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_in_circle, gdextension.SizeBool|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeFloat<<12), &struct {
 		point           Vector2.XY
 		circle_position Vector2.XY
 		circle_radius   float64
-	}{point, circle_position, circle_radius}))
+	}{point, circle_position, circle_radius})
 	var ret = r_ret
 	return ret
 }
@@ -453,12 +451,12 @@ Given the 2D segment ([param segment_from], [param segment_to]), returns the pos
 */
 //go:nosplit
 func (self class) SegmentIntersectsCircle(segment_from Vector2.XY, segment_to Vector2.XY, circle_position Vector2.XY, circle_radius float64) float64 { //gd:Geometry2D.segment_intersects_circle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.segment_intersects_circle, gdextension.SizeFloat|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.segment_intersects_circle, gdextension.SizeFloat|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeFloat<<16), &struct {
 		segment_from    Vector2.XY
 		segment_to      Vector2.XY
 		circle_position Vector2.XY
 		circle_radius   float64
-	}{segment_from, segment_to, circle_position, circle_radius}))
+	}{segment_from, segment_to, circle_position, circle_radius})
 	var ret = r_ret
 	return ret
 }
@@ -468,12 +466,12 @@ Checks if the two segments ([param from_a], [param to_a]) and ([param from_b], [
 */
 //go:nosplit
 func (self class) SegmentIntersectsSegment(from_a Vector2.XY, to_a Vector2.XY, from_b Vector2.XY, to_b Vector2.XY) variant.Any { //gd:Geometry2D.segment_intersects_segment
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.segment_intersects_segment, gdextension.SizeVariant|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeVector2<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.segment_intersects_segment, gdextension.SizeVariant|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeVector2<<16), &struct {
 		from_a Vector2.XY
 		to_a   Vector2.XY
 		from_b Vector2.XY
 		to_b   Vector2.XY
-	}{from_a, to_a, from_b, to_b}))
+	}{from_a, to_a, from_b, to_b})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -510,12 +508,12 @@ Geometry2D.LineIntersectsLine(fromA, dirA, fromB, Vector2.Right);
 */
 //go:nosplit
 func (self class) LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b Vector2.XY, dir_b Vector2.XY) variant.Any { //gd:Geometry2D.line_intersects_line
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.line_intersects_line, gdextension.SizeVariant|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeVector2<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.line_intersects_line, gdextension.SizeVariant|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeVector2<<16), &struct {
 		from_a Vector2.XY
 		dir_a  Vector2.XY
 		from_b Vector2.XY
 		dir_b  Vector2.XY
-	}{from_a, dir_a, from_b, dir_b}))
+	}{from_a, dir_a, from_b, dir_b})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -525,12 +523,12 @@ Given the two 2D segments ([param p1], [param q1]) and ([param p2], [param q2]),
 */
 //go:nosplit
 func (self class) GetClosestPointsBetweenSegments(p1 Vector2.XY, q1 Vector2.XY, p2 Vector2.XY, q2 Vector2.XY) Packed.Array[Vector2.XY] { //gd:Geometry2D.get_closest_points_between_segments
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_closest_points_between_segments, gdextension.SizePackedArray|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeVector2<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_closest_points_between_segments, gdextension.SizePackedArray|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeVector2<<16), &struct {
 		p1 Vector2.XY
 		q1 Vector2.XY
 		p2 Vector2.XY
 		q2 Vector2.XY
-	}{p1, q1, p2, q2}))
+	}{p1, q1, p2, q2})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -540,11 +538,11 @@ Returns the 2D point on the 2D segment ([param s1], [param s2]) that is closest 
 */
 //go:nosplit
 func (self class) GetClosestPointToSegment(point Vector2.XY, s1 Vector2.XY, s2 Vector2.XY) Vector2.XY { //gd:Geometry2D.get_closest_point_to_segment
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_closest_point_to_segment, gdextension.SizeVector2|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_closest_point_to_segment, gdextension.SizeVector2|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12), &struct {
 		point Vector2.XY
 		s1    Vector2.XY
 		s2    Vector2.XY
-	}{point, s1, s2}))
+	}{point, s1, s2})
 	var ret = r_ret
 	return ret
 }
@@ -554,11 +552,11 @@ Returns the 2D point on the 2D line defined by ([param s1], [param s2]) that is 
 */
 //go:nosplit
 func (self class) GetClosestPointToSegmentUncapped(point Vector2.XY, s1 Vector2.XY, s2 Vector2.XY) Vector2.XY { //gd:Geometry2D.get_closest_point_to_segment_uncapped
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_closest_point_to_segment_uncapped, gdextension.SizeVector2|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_closest_point_to_segment_uncapped, gdextension.SizeVector2|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12), &struct {
 		point Vector2.XY
 		s1    Vector2.XY
 		s2    Vector2.XY
-	}{point, s1, s2}))
+	}{point, s1, s2})
 	var ret = r_ret
 	return ret
 }
@@ -568,12 +566,12 @@ Returns if [param point] is inside the triangle specified by [param a], [param b
 */
 //go:nosplit
 func (self class) PointIsInsideTriangle(point Vector2.XY, a Vector2.XY, b Vector2.XY, c Vector2.XY) bool { //gd:Geometry2D.point_is_inside_triangle
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.point_is_inside_triangle, gdextension.SizeBool|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeVector2<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.point_is_inside_triangle, gdextension.SizeBool|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeVector2<<16), &struct {
 		point Vector2.XY
 		a     Vector2.XY
 		b     Vector2.XY
 		c     Vector2.XY
-	}{point, a, b, c}))
+	}{point, a, b, c})
 	var ret = r_ret
 	return ret
 }
@@ -584,9 +582,9 @@ Returns [code]true[/code] if [param polygon]'s vertices are ordered in clockwise
 */
 //go:nosplit
 func (self class) IsPolygonClockwise(polygon Packed.Array[Vector2.XY]) bool { //gd:Geometry2D.is_polygon_clockwise
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_polygon_clockwise, gdextension.SizeBool|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_polygon_clockwise, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
 		polygon gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 	var ret = r_ret
 	return ret
 }
@@ -596,10 +594,10 @@ Returns [code]true[/code] if [param point] is inside [param polygon] or if it's 
 */
 //go:nosplit
 func (self class) IsPointInPolygon(point Vector2.XY, polygon Packed.Array[Vector2.XY]) bool { //gd:Geometry2D.is_point_in_polygon
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_in_polygon, gdextension.SizeBool|(gdextension.SizeVector2<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_in_polygon, gdextension.SizeBool|(gdextension.SizeVector2<<4)|(gdextension.SizePackedArray<<8), &struct {
 		point   Vector2.XY
 		polygon gdextension.PackedArray[Vector2.XY]
-	}{point, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))}))
+	}{point, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 	var ret = r_ret
 	return ret
 }
@@ -609,9 +607,9 @@ Triangulates the polygon specified by the points in [param polygon]. Returns a [
 */
 //go:nosplit
 func (self class) TriangulatePolygon(polygon Packed.Array[Vector2.XY]) Packed.Array[int32] { //gd:Geometry2D.triangulate_polygon
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.triangulate_polygon, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.triangulate_polygon, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), &struct {
 		polygon gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -621,9 +619,9 @@ Triangulates the area specified by discrete set of [param points] such that no p
 */
 //go:nosplit
 func (self class) TriangulateDelaunay(points Packed.Array[Vector2.XY]) Packed.Array[int32] { //gd:Geometry2D.triangulate_delaunay
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.triangulate_delaunay, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.triangulate_delaunay, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), &struct {
 		points gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -633,9 +631,9 @@ Given an array of [Vector2]s, returns the convex hull as a list of points in cou
 */
 //go:nosplit
 func (self class) ConvexHull(points Packed.Array[Vector2.XY]) Packed.Array[Vector2.XY] { //gd:Geometry2D.convex_hull
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.convex_hull, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.convex_hull, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), &struct {
 		points gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -645,9 +643,9 @@ Decomposes the [param polygon] into multiple convex hulls and returns an array o
 */
 //go:nosplit
 func (self class) DecomposePolygonInConvex(polygon Packed.Array[Vector2.XY]) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.decompose_polygon_in_convex
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.decompose_polygon_in_convex, gdextension.SizeArray|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.decompose_polygon_in_convex, gdextension.SizeArray|(gdextension.SizePackedArray<<4), &struct {
 		polygon gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -658,10 +656,10 @@ The operation may result in an outer polygon (boundary) and multiple inner polyg
 */
 //go:nosplit
 func (self class) MergePolygons(polygon_a Packed.Array[Vector2.XY], polygon_b Packed.Array[Vector2.XY]) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.merge_polygons
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.merge_polygons, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.merge_polygons, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
 		polygon_a gdextension.PackedArray[Vector2.XY]
 		polygon_b gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_a)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_b))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_a)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_b))})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -672,10 +670,10 @@ If [param polygon_b] is enclosed by [param polygon_a], returns an outer polygon 
 */
 //go:nosplit
 func (self class) ClipPolygons(polygon_a Packed.Array[Vector2.XY], polygon_b Packed.Array[Vector2.XY]) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.clip_polygons
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.clip_polygons, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.clip_polygons, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
 		polygon_a gdextension.PackedArray[Vector2.XY]
 		polygon_b gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_a)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_b))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_a)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_b))})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -686,10 +684,10 @@ The operation may result in an outer polygon (boundary) and inner polygon (hole)
 */
 //go:nosplit
 func (self class) IntersectPolygons(polygon_a Packed.Array[Vector2.XY], polygon_b Packed.Array[Vector2.XY]) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.intersect_polygons
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_polygons, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_polygons, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
 		polygon_a gdextension.PackedArray[Vector2.XY]
 		polygon_b gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_a)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_b))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_a)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_b))})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -700,10 +698,10 @@ The operation may result in an outer polygon (boundary) and inner polygon (hole)
 */
 //go:nosplit
 func (self class) ExcludePolygons(polygon_a Packed.Array[Vector2.XY], polygon_b Packed.Array[Vector2.XY]) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.exclude_polygons
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.exclude_polygons, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.exclude_polygons, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
 		polygon_a gdextension.PackedArray[Vector2.XY]
 		polygon_b gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_a)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_b))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_a)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon_b))})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -713,10 +711,10 @@ Clips [param polyline] against [param polygon] and returns an array of clipped p
 */
 //go:nosplit
 func (self class) ClipPolylineWithPolygon(polyline Packed.Array[Vector2.XY], polygon Packed.Array[Vector2.XY]) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.clip_polyline_with_polygon
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.clip_polyline_with_polygon, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.clip_polyline_with_polygon, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
 		polyline gdextension.PackedArray[Vector2.XY]
 		polygon  gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polyline)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polyline)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -726,10 +724,10 @@ Intersects [param polyline] with [param polygon] and returns an array of interse
 */
 //go:nosplit
 func (self class) IntersectPolylineWithPolygon(polyline Packed.Array[Vector2.XY], polygon Packed.Array[Vector2.XY]) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.intersect_polyline_with_polygon
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_polyline_with_polygon, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.intersect_polyline_with_polygon, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
 		polyline gdextension.PackedArray[Vector2.XY]
 		polygon  gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polyline)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polyline)), pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon))})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -756,11 +754,11 @@ GD.Print((Variant)polygon); // Prints [(50, 50), (150, 50), (150, 150), (50, 150
 */
 //go:nosplit
 func (self class) OffsetPolygon(polygon Packed.Array[Vector2.XY], delta float64, join_type PolyJoinType) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.offset_polygon
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.offset_polygon, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.offset_polygon, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12), &struct {
 		polygon   gdextension.PackedArray[Vector2.XY]
 		delta     float64
 		join_type PolyJoinType
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)), delta, join_type}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polygon)), delta, join_type})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -773,12 +771,12 @@ The operation may result in an outer polygon (boundary) and inner polygon (hole)
 */
 //go:nosplit
 func (self class) OffsetPolyline(polyline Packed.Array[Vector2.XY], delta float64, join_type PolyJoinType, end_type PolyEndType) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.offset_polyline
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.offset_polyline, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.offset_polyline, gdextension.SizeArray|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		polyline  gdextension.PackedArray[Vector2.XY]
 		delta     float64
 		join_type PolyJoinType
 		end_type  PolyEndType
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polyline)), delta, join_type, end_type}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](polyline)), delta, join_type, end_type})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -788,9 +786,9 @@ Given an array of [Vector2]s representing tiles, builds an atlas. The returned d
 */
 //go:nosplit
 func (self class) MakeAtlas(sizes Packed.Array[Vector2.XY]) Dictionary.Any { //gd:Geometry2D.make_atlas
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_atlas, gdextension.SizeDictionary|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.make_atlas, gdextension.SizeDictionary|(gdextension.SizePackedArray<<4), &struct {
 		sizes gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](sizes))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](sizes))})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -806,10 +804,10 @@ func _draw():
 */
 //go:nosplit
 func (self class) BresenhamLine(from Vector2i.XY, to Vector2i.XY) Array.Contains[Vector2i.XY] { //gd:Geometry2D.bresenham_line
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.bresenham_line, gdextension.SizeArray|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.bresenham_line, gdextension.SizeArray|(gdextension.SizeVector2i<<4)|(gdextension.SizeVector2i<<8), &struct {
 		from Vector2i.XY
 		to   Vector2i.XY
-	}{from, to}))
+	}{from, to})
 	var ret = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

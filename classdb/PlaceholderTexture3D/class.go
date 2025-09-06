@@ -3,7 +3,6 @@
 // Package PlaceholderTexture3D provides methods for working with PlaceholderTexture3D object instances.
 package PlaceholderTexture3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -159,12 +157,12 @@ func (self Instance) SetSize(value Vector3i.XYZ) {
 
 //go:nosplit
 func (self class) SetSize(size Vector3i.XYZ) { //gd:PlaceholderTexture3D.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3i<<4), unsafe.Pointer(&struct{ size Vector3i.XYZ }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3i<<4), &struct{ size Vector3i.XYZ }{size})
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3i.XYZ { //gd:PlaceholderTexture3D.get_size
-	var r_ret = gdextension.Call[Vector3i.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3i.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3i, &struct{}{})
 	var ret = r_ret
 	return ret
 }

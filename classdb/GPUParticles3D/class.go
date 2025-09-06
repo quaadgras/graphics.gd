@@ -3,7 +3,6 @@
 // Package GPUParticles3D provides methods for working with GPUParticles3D object instances.
 package GPUParticles3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -44,7 +43,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -503,235 +501,235 @@ func (self Instance) SetDrawSkin(value Skin.Instance) {
 
 //go:nosplit
 func (self class) SetEmitting(emitting bool) { //gd:GPUParticles3D.set_emitting
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emitting, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ emitting bool }{emitting}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emitting, 0|(gdextension.SizeBool<<4), &struct{ emitting bool }{emitting})
 }
 
 //go:nosplit
 func (self class) SetAmount(amount int64) { //gd:GPUParticles3D.set_amount
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_amount, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_amount, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
 
 //go:nosplit
 func (self class) SetLifetime(secs float64) { //gd:GPUParticles3D.set_lifetime
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lifetime, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ secs float64 }{secs}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lifetime, 0|(gdextension.SizeFloat<<4), &struct{ secs float64 }{secs})
 }
 
 //go:nosplit
 func (self class) SetOneShot(enable bool) { //gd:GPUParticles3D.set_one_shot
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) SetPreProcessTime(secs float64) { //gd:GPUParticles3D.set_pre_process_time
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_process_time, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ secs float64 }{secs}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_process_time, 0|(gdextension.SizeFloat<<4), &struct{ secs float64 }{secs})
 }
 
 //go:nosplit
 func (self class) SetExplosivenessRatio(ratio float64) { //gd:GPUParticles3D.set_explosiveness_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_explosiveness_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_explosiveness_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 
 //go:nosplit
 func (self class) SetRandomnessRatio(ratio float64) { //gd:GPUParticles3D.set_randomness_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_randomness_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_randomness_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 
 //go:nosplit
 func (self class) SetVisibilityAabb(aabb AABB.PositionSize) { //gd:GPUParticles3D.set_visibility_aabb
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_aabb, 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ aabb AABB.PositionSize }{aabb}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }
 
 //go:nosplit
 func (self class) SetUseLocalCoordinates(enable bool) { //gd:GPUParticles3D.set_use_local_coordinates
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_local_coordinates, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_local_coordinates, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) SetFixedFps(fps int64) { //gd:GPUParticles3D.set_fixed_fps
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fixed_fps, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ fps int64 }{fps}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fixed_fps, 0|(gdextension.SizeInt<<4), &struct{ fps int64 }{fps})
 }
 
 //go:nosplit
 func (self class) SetFractionalDelta(enable bool) { //gd:GPUParticles3D.set_fractional_delta
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractional_delta, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fractional_delta, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) SetInterpolate(enable bool) { //gd:GPUParticles3D.set_interpolate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interpolate, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interpolate, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) SetProcessMaterial(material [1]gdclass.Material) { //gd:GPUParticles3D.set_process_material
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_material, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) SetSpeedScale(scale float64) { //gd:GPUParticles3D.set_speed_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
 
 //go:nosplit
 func (self class) SetCollisionBaseSize(size float64) { //gd:GPUParticles3D.set_collision_base_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_base_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ size float64 }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_base_size, 0|(gdextension.SizeFloat<<4), &struct{ size float64 }{size})
 }
 
 //go:nosplit
 func (self class) SetInterpToEnd(interp float64) { //gd:GPUParticles3D.set_interp_to_end
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interp_to_end, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ interp float64 }{interp}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interp_to_end, 0|(gdextension.SizeFloat<<4), &struct{ interp float64 }{interp})
 }
 
 //go:nosplit
 func (self class) IsEmitting() bool { //gd:GPUParticles3D.is_emitting
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emitting, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emitting, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetAmount() int64 { //gd:GPUParticles3D.get_amount
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_amount, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_amount, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetLifetime() float64 { //gd:GPUParticles3D.get_lifetime
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lifetime, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_lifetime, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetOneShot() bool { //gd:GPUParticles3D.get_one_shot
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_one_shot, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_one_shot, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetPreProcessTime() float64 { //gd:GPUParticles3D.get_pre_process_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_process_time, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_process_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetExplosivenessRatio() float64 { //gd:GPUParticles3D.get_explosiveness_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_explosiveness_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_explosiveness_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetRandomnessRatio() float64 { //gd:GPUParticles3D.get_randomness_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_randomness_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_randomness_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetVisibilityAabb() AABB.PositionSize { //gd:GPUParticles3D.get_visibility_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_visibility_aabb, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_visibility_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetUseLocalCoordinates() bool { //gd:GPUParticles3D.get_use_local_coordinates
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_local_coordinates, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_local_coordinates, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetFixedFps() int64 { //gd:GPUParticles3D.get_fixed_fps
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fixed_fps, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_fixed_fps, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetFractionalDelta() bool { //gd:GPUParticles3D.get_fractional_delta
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_fractional_delta, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_fractional_delta, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetInterpolate() bool { //gd:GPUParticles3D.get_interpolate
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_interpolate, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_interpolate, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetProcessMaterial() [1]gdclass.Material { //gd:GPUParticles3D.get_process_material
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_process_material, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_process_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetSpeedScale() float64 { //gd:GPUParticles3D.get_speed_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCollisionBaseSize() float64 { //gd:GPUParticles3D.get_collision_base_size
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_base_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_base_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetInterpToEnd() float64 { //gd:GPUParticles3D.get_interp_to_end
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_interp_to_end, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_interp_to_end, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseFixedSeed(use_fixed_seed bool) { //gd:GPUParticles3D.set_use_fixed_seed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_fixed_seed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_fixed_seed bool }{use_fixed_seed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_fixed_seed, 0|(gdextension.SizeBool<<4), &struct{ use_fixed_seed bool }{use_fixed_seed})
 }
 
 //go:nosplit
 func (self class) GetUseFixedSeed() bool { //gd:GPUParticles3D.get_use_fixed_seed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_fixed_seed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_fixed_seed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSeed(seed int64) { //gd:GPUParticles3D.set_seed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seed, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ seed int64 }{seed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seed, 0|(gdextension.SizeInt<<4), &struct{ seed int64 }{seed})
 }
 
 //go:nosplit
 func (self class) GetSeed() int64 { //gd:GPUParticles3D.get_seed
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_seed, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_seed, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawOrder(order DrawOrder) { //gd:GPUParticles3D.set_draw_order
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_order, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ order DrawOrder }{order}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_order, 0|(gdextension.SizeInt<<4), &struct{ order DrawOrder }{order})
 }
 
 //go:nosplit
 func (self class) GetDrawOrder() DrawOrder { //gd:GPUParticles3D.get_draw_order
-	var r_ret = gdextension.Call[DrawOrder](gd.ObjectChecked(self.AsObject()), methods.get_draw_order, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DrawOrder](gd.ObjectChecked(self.AsObject()), methods.get_draw_order, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawPasses(passes int64) { //gd:GPUParticles3D.set_draw_passes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_passes, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ passes int64 }{passes}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_passes, 0|(gdextension.SizeInt<<4), &struct{ passes int64 }{passes})
 }
 
 /*
@@ -739,15 +737,15 @@ Sets the [Mesh] that is drawn at index [param pass].
 */
 //go:nosplit
 func (self class) SetDrawPassMesh(pass int64, mesh [1]gdclass.Mesh) { //gd:GPUParticles3D.set_draw_pass_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_pass_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_pass_mesh, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		pass int64
 		mesh gdextension.Object
-	}{pass, gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
+	}{pass, gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetDrawPasses() int64 { //gd:GPUParticles3D.get_draw_passes
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_draw_passes, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_draw_passes, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -757,19 +755,19 @@ Returns the [Mesh] that is drawn at index [param pass].
 */
 //go:nosplit
 func (self class) GetDrawPassMesh(pass int64) [1]gdclass.Mesh { //gd:GPUParticles3D.get_draw_pass_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_draw_pass_mesh, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ pass int64 }{pass}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_draw_pass_mesh, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ pass int64 }{pass})
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkin(skin [1]gdclass.Skin) { //gd:GPUParticles3D.set_skin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeObject<<4), &struct{ skin gdextension.Object }{gdextension.Object(gd.ObjectChecked(skin[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetSkin() [1]gdclass.Skin { //gd:GPUParticles3D.get_skin
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skin{gd.PointerWithOwnershipTransferredToGo[gdclass.Skin](r_ret)}
 	return ret
 }
@@ -781,7 +779,7 @@ If [param keep_seed] is [code]true[/code], the current random seed will be prese
 */
 //go:nosplit
 func (self class) Restart(keep_seed bool) { //gd:GPUParticles3D.restart
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.restart, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep_seed bool }{keep_seed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.restart, 0|(gdextension.SizeBool<<4), &struct{ keep_seed bool }{keep_seed})
 }
 
 /*
@@ -789,19 +787,19 @@ Returns the axis-aligned bounding box that contains all the particles that are a
 */
 //go:nosplit
 func (self class) CaptureAabb() AABB.PositionSize { //gd:GPUParticles3D.capture_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.capture_aabb, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.capture_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubEmitter(path Path.ToNode) { //gd:GPUParticles3D.set_sub_emitter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sub_emitter, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sub_emitter, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 
 //go:nosplit
 func (self class) GetSubEmitter() Path.ToNode { //gd:GPUParticles3D.get_sub_emitter
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_sub_emitter, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -813,47 +811,47 @@ The default ParticleProcessMaterial will overwrite [param color] and use the con
 */
 //go:nosplit
 func (self class) EmitParticle(xform Transform3D.BasisOrigin, velocity Vector3.XYZ, color Color.RGBA, custom Color.RGBA, flags int64) { //gd:GPUParticles3D.emit_particle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.emit_particle, 0|(gdextension.SizeTransform3D<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.emit_particle, 0|(gdextension.SizeTransform3D<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeInt<<20), &struct {
 		xform    Transform3D.BasisOrigin
 		velocity Vector3.XYZ
 		color    Color.RGBA
 		custom   Color.RGBA
 		flags    int64
-	}{gd.Transposed(xform), velocity, color, custom, flags}))
+	}{gd.Transposed(xform), velocity, color, custom, flags})
 }
 
 //go:nosplit
 func (self class) SetTrailEnabled(enabled bool) { //gd:GPUParticles3D.set_trail_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_trail_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_trail_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) SetTrailLifetime(secs float64) { //gd:GPUParticles3D.set_trail_lifetime
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_trail_lifetime, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ secs float64 }{secs}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_trail_lifetime, 0|(gdextension.SizeFloat<<4), &struct{ secs float64 }{secs})
 }
 
 //go:nosplit
 func (self class) IsTrailEnabled() bool { //gd:GPUParticles3D.is_trail_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_trail_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_trail_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetTrailLifetime() float64 { //gd:GPUParticles3D.get_trail_lifetime
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_trail_lifetime, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_trail_lifetime, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransformAlign(align TransformAlign) { //gd:GPUParticles3D.set_transform_align
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform_align, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ align TransformAlign }{align}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform_align, 0|(gdextension.SizeInt<<4), &struct{ align TransformAlign }{align})
 }
 
 //go:nosplit
 func (self class) GetTransformAlign() TransformAlign { //gd:GPUParticles3D.get_transform_align
-	var r_ret = gdextension.Call[TransformAlign](gd.ObjectChecked(self.AsObject()), methods.get_transform_align, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[TransformAlign](gd.ObjectChecked(self.AsObject()), methods.get_transform_align, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -863,17 +861,17 @@ Sets this node's properties to match a given [CPUParticles3D] node.
 */
 //go:nosplit
 func (self class) ConvertFromParticles(particles [1]gdclass.Node) { //gd:GPUParticles3D.convert_from_particles
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.convert_from_particles, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ particles gdextension.Object }{gdextension.Object(gd.ObjectChecked(particles[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.convert_from_particles, 0|(gdextension.SizeObject<<4), &struct{ particles gdextension.Object }{gdextension.Object(gd.ObjectChecked(particles[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) SetAmountRatio(ratio float64) { //gd:GPUParticles3D.set_amount_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_amount_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_amount_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 
 //go:nosplit
 func (self class) GetAmountRatio() float64 { //gd:GPUParticles3D.get_amount_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_amount_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_amount_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -884,7 +882,7 @@ Useful for particle playback, if used in combination with [member use_fixed_seed
 */
 //go:nosplit
 func (self class) RequestParticlesProcess(process_time float64) { //gd:GPUParticles3D.request_particles_process
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_particles_process, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ process_time float64 }{process_time}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_particles_process, 0|(gdextension.SizeFloat<<4), &struct{ process_time float64 }{process_time})
 }
 func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

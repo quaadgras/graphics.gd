@@ -3,7 +3,6 @@
 // Package AudioListener2D provides methods for working with AudioListener2D object instances.
 package AudioListener2D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -174,7 +172,7 @@ This method will have no effect if the [AudioListener2D] is not added to [SceneT
 */
 //go:nosplit
 func (self class) MakeCurrent() { //gd:AudioListener2D.make_current
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_current, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_current, 0, &struct{}{})
 }
 
 /*
@@ -182,7 +180,7 @@ Disables the [AudioListener2D]. If it's not set as current, this method will hav
 */
 //go:nosplit
 func (self class) ClearCurrent() { //gd:AudioListener2D.clear_current
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_current, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_current, 0, &struct{}{})
 }
 
 /*
@@ -190,7 +188,7 @@ Returns [code]true[/code] if this [AudioListener2D] is currently active.
 */
 //go:nosplit
 func (self class) IsCurrent() bool { //gd:AudioListener2D.is_current
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package FBXState provides methods for working with FBXState object instances.
 package FBXState
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -154,14 +152,14 @@ func (self Instance) SetAllowGeometryHelperNodes(value bool) {
 
 //go:nosplit
 func (self class) GetAllowGeometryHelperNodes() bool { //gd:FBXState.get_allow_geometry_helper_nodes
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_geometry_helper_nodes, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_geometry_helper_nodes, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowGeometryHelperNodes(allow bool) { //gd:FBXState.set_allow_geometry_helper_nodes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_geometry_helper_nodes, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_geometry_helper_nodes, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 func (self class) AsFBXState() Advanced         { return Advanced{pointers.AsA[gdclass.FBXState](self[0])} }
 func (self Instance) AsFBXState() Instance      { return Instance{pointers.AsA[gdclass.FBXState](self[0])} }

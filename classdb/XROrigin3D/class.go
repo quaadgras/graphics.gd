@@ -3,7 +3,6 @@
 // Package XROrigin3D provides methods for working with XROrigin3D object instances.
 package XROrigin3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -166,24 +164,24 @@ func (self Instance) SetCurrent(value bool) {
 
 //go:nosplit
 func (self class) SetWorldScale(world_scale float64) { //gd:XROrigin3D.set_world_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ world_scale float64 }{world_scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_scale, 0|(gdextension.SizeFloat<<4), &struct{ world_scale float64 }{world_scale})
 }
 
 //go:nosplit
 func (self class) GetWorldScale() float64 { //gd:XROrigin3D.get_world_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_world_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_world_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurrent(enabled bool) { //gd:XROrigin3D.set_current
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsCurrent() bool { //gd:XROrigin3D.is_current
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

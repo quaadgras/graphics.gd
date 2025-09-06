@@ -3,7 +3,6 @@
 // Package SyntaxHighlighter provides methods for working with SyntaxHighlighter object instances.
 package SyntaxHighlighter
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -128,10 +126,10 @@ func (self implementation) UpdateCache()                                       {
 Virtual method which can be overridden to return syntax highlighting data.
 See [method get_line_syntax_highlighting] for more details.
 */
-func (Instance) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_line_syntax_highlighting(impl func(ptr gdclass.Receiver, line int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var line = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(line))
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -145,9 +143,9 @@ func (Instance) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line
 /*
 Virtual method which can be overridden to clear any local caches.
 */
-func (Instance) _clear_highlighting_cache(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _clear_highlighting_cache(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -155,9 +153,9 @@ func (Instance) _clear_highlighting_cache(impl func(ptr unsafe.Pointer)) (cb gd.
 /*
 Virtual method which can be overridden to update any local caches.
 */
-func (Instance) _update_cache(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _update_cache(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -259,10 +257,10 @@ func New() Instance {
 Virtual method which can be overridden to return syntax highlighting data.
 See [method get_line_syntax_highlighting] for more details.
 */
-func (class) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_line_syntax_highlighting(impl func(ptr gdclass.Receiver, line int64) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var line = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, line)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -276,9 +274,9 @@ func (class) _get_line_syntax_highlighting(impl func(ptr unsafe.Pointer, line in
 /*
 Virtual method which can be overridden to clear any local caches.
 */
-func (class) _clear_highlighting_cache(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _clear_highlighting_cache(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -286,9 +284,9 @@ func (class) _clear_highlighting_cache(impl func(ptr unsafe.Pointer)) (cb gd.Ext
 /*
 Virtual method which can be overridden to update any local caches.
 */
-func (class) _update_cache(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _update_cache(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -310,7 +308,7 @@ Each entry is a column number containing a nested [Dictionary]. The column numbe
 */
 //go:nosplit
 func (self class) GetLineSyntaxHighlighting(line int64) Dictionary.Any { //gd:SyntaxHighlighter.get_line_syntax_highlighting
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_line_syntax_highlighting, gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line int64 }{line}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_line_syntax_highlighting, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -321,7 +319,7 @@ Clears then updates the [SyntaxHighlighter] caches. Override [method _update_cac
 */
 //go:nosplit
 func (self class) UpdateCache() { //gd:SyntaxHighlighter.update_cache
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_cache, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_cache, 0, &struct{}{})
 }
 
 /*
@@ -330,7 +328,7 @@ Then calls overridable method [method _clear_highlighting_cache].
 */
 //go:nosplit
 func (self class) ClearHighlightingCache() { //gd:SyntaxHighlighter.clear_highlighting_cache
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_highlighting_cache, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_highlighting_cache, 0, &struct{}{})
 }
 
 /*
@@ -338,7 +336,7 @@ Returns the associated [TextEdit] node.
 */
 //go:nosplit
 func (self class) GetTextEdit() [1]gdclass.TextEdit { //gd:SyntaxHighlighter.get_text_edit
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_text_edit, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_text_edit, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TextEdit{gd.PointerMustAssertInstanceID[gdclass.TextEdit](r_ret)}
 	return ret
 }

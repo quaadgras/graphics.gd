@@ -3,7 +3,6 @@
 // Package VisualShaderNodeReroute provides methods for working with VisualShaderNodeReroute object instances.
 package VisualShaderNodeReroute
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -152,7 +150,7 @@ Returns the port type of the reroute node.
 */
 //go:nosplit
 func (self class) GetPortType() VisualShaderNode.PortType { //gd:VisualShaderNodeReroute.get_port_type
-	var r_ret = gdextension.Call[VisualShaderNode.PortType](gd.ObjectChecked(self.AsObject()), methods.get_port_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[VisualShaderNode.PortType](gd.ObjectChecked(self.AsObject()), methods.get_port_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

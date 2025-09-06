@@ -3,7 +3,6 @@
 // Package EncodedObjectAsID provides methods for working with EncodedObjectAsID object instances.
 package EncodedObjectAsID
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -153,12 +151,12 @@ func (self Instance) SetObjectId(value int) {
 
 //go:nosplit
 func (self class) SetObjectId(id int64) { //gd:EncodedObjectAsID.set_object_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_id, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_id, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 
 //go:nosplit
 func (self class) GetObjectId() int64 { //gd:EncodedObjectAsID.get_object_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_object_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_object_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package SeparationRayShape2D provides methods for working with SeparationRayShape2D object instances.
 package SeparationRayShape2D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -164,24 +162,24 @@ func (self Instance) SetSlideOnSlope(value bool) {
 
 //go:nosplit
 func (self class) SetLength(length float64) { //gd:SeparationRayShape2D.set_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ length float64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
 
 //go:nosplit
 func (self class) GetLength() float64 { //gd:SeparationRayShape2D.get_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSlideOnSlope(active bool) { //gd:SeparationRayShape2D.set_slide_on_slope
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slide_on_slope, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slide_on_slope, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
 
 //go:nosplit
 func (self class) GetSlideOnSlope() bool { //gd:SeparationRayShape2D.get_slide_on_slope
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_slide_on_slope, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_slide_on_slope, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

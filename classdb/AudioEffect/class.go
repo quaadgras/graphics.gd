@@ -3,7 +3,6 @@
 // Package AudioEffect provides methods for working with AudioEffect object instances.
 package AudioEffect
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -142,9 +140,9 @@ func _instantiate():
 [/codeblock]
 [b]Note:[/b] It is recommended to keep a reference to the original [AudioEffect] in the new instance. Depending on the implementation this allows the effect instance to listen for changes at run-time and be modified accordingly.
 */
-func (Instance) _instantiate(impl func(ptr unsafe.Pointer) AudioEffectInstance.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _instantiate(impl func(ptr gdclass.Receiver) AudioEffectInstance.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
 
@@ -215,9 +213,9 @@ func _instantiate():
 [/codeblock]
 [b]Note:[/b] It is recommended to keep a reference to the original [AudioEffect] in the new instance. Depending on the implementation this allows the effect instance to listen for changes at run-time and be modified accordingly.
 */
-func (class) _instantiate(impl func(ptr unsafe.Pointer) [1]gdclass.AudioEffectInstance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _instantiate(impl func(ptr gdclass.Receiver) [1]gdclass.AudioEffectInstance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
 

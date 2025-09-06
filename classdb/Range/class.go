@@ -3,7 +3,6 @@
 // Package Range provides methods for working with Range object instances.
 package Range
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -139,10 +137,10 @@ func (self implementation) ValueChanged(new_value Float.X) { return }
 /*
 Called when the [Range]'s value is changed (following the same conditions as [signal value_changed]).
 */
-func (Instance) _value_changed(impl func(ptr unsafe.Pointer, new_value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _value_changed(impl func(ptr gdclass.Receiver, new_value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var new_value = gd.UnsafeGet[float64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, Float.X(new_value))
 	}
 }
@@ -293,59 +291,59 @@ func (self Instance) SetAllowLesser(value bool) {
 /*
 Called when the [Range]'s value is changed (following the same conditions as [signal value_changed]).
 */
-func (class) _value_changed(impl func(ptr unsafe.Pointer, new_value float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _value_changed(impl func(ptr gdclass.Receiver, new_value float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var new_value = gd.UnsafeGet[float64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, new_value)
 	}
 }
 
 //go:nosplit
 func (self class) GetValue() float64 { //gd:Range.get_value
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_value, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_value, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetMin() float64 { //gd:Range.get_min
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_min, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetMax() float64 { //gd:Range.get_max
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetStep() float64 { //gd:Range.get_step
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_step, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetPage() float64 { //gd:Range.get_page
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_page, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_page, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetAsRatio() float64 { //gd:Range.get_as_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_as_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_as_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetValue(value float64) { //gd:Range.set_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_value, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_value, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
 
 /*
@@ -353,78 +351,78 @@ Sets the [Range]'s current value to the specified [param value], without emittin
 */
 //go:nosplit
 func (self class) SetValueNoSignal(value float64) { //gd:Range.set_value_no_signal
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_value_no_signal, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_value_no_signal, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
 
 //go:nosplit
 func (self class) SetMin(minimum float64) { //gd:Range.set_min
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ minimum float64 }{minimum}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min, 0|(gdextension.SizeFloat<<4), &struct{ minimum float64 }{minimum})
 }
 
 //go:nosplit
 func (self class) SetMax(maximum float64) { //gd:Range.set_max
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ maximum float64 }{maximum}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max, 0|(gdextension.SizeFloat<<4), &struct{ maximum float64 }{maximum})
 }
 
 //go:nosplit
 func (self class) SetStep(step float64) { //gd:Range.set_step
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_step, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ step float64 }{step}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_step, 0|(gdextension.SizeFloat<<4), &struct{ step float64 }{step})
 }
 
 //go:nosplit
 func (self class) SetPage(pagesize float64) { //gd:Range.set_page
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_page, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pagesize float64 }{pagesize}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_page, 0|(gdextension.SizeFloat<<4), &struct{ pagesize float64 }{pagesize})
 }
 
 //go:nosplit
 func (self class) SetAsRatio(value float64) { //gd:Range.set_as_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_ratio, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
 
 //go:nosplit
 func (self class) SetUseRoundedValues(enabled bool) { //gd:Range.set_use_rounded_values
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_rounded_values, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_rounded_values, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsUsingRoundedValues() bool { //gd:Range.is_using_rounded_values
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_rounded_values, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_rounded_values, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExpRatio(enabled bool) { //gd:Range.set_exp_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exp_ratio, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exp_ratio, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsRatioExp() bool { //gd:Range.is_ratio_exp
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ratio_exp, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ratio_exp, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowGreater(allow bool) { //gd:Range.set_allow_greater
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_greater, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_greater, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 
 //go:nosplit
 func (self class) IsGreaterAllowed() bool { //gd:Range.is_greater_allowed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_greater_allowed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_greater_allowed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowLesser(allow bool) { //gd:Range.set_allow_lesser
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_lesser, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ allow bool }{allow}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_lesser, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 
 //go:nosplit
 func (self class) IsLesserAllowed() bool { //gd:Range.is_lesser_allowed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_lesser_allowed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_lesser_allowed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -434,7 +432,7 @@ Binds two [Range]s together along with any ranges previously grouped with either
 */
 //go:nosplit
 func (self class) Share(with [1]gdclass.Node) { //gd:Range.share
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.share, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ with gdextension.Object }{gdextension.Object(gd.ObjectChecked(with[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.share, 0|(gdextension.SizeObject<<4), &struct{ with gdextension.Object }{gdextension.Object(gd.ObjectChecked(with[0].AsObject()))})
 }
 
 /*
@@ -442,7 +440,7 @@ Stops the [Range] from sharing its member variables with any other.
 */
 //go:nosplit
 func (self class) Unshare() { //gd:Range.unshare
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unshare, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unshare, 0, &struct{}{})
 }
 func (self Instance) OnValueChanged(cb func(value Float.X), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

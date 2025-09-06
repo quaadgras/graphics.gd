@@ -3,7 +3,6 @@
 // Package Texture2DRD provides methods for working with Texture2DRD object instances.
 package Texture2DRD
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -155,12 +153,12 @@ func (self Instance) SetTextureRdRid(value RID.Any) {
 
 //go:nosplit
 func (self class) SetTextureRdRid(texture_rd_rid RID.Any) { //gd:Texture2DRD.set_texture_rd_rid
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_rd_rid, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ texture_rd_rid RID.Any }{texture_rd_rid}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_rd_rid, 0|(gdextension.SizeRID<<4), &struct{ texture_rd_rid RID.Any }{texture_rd_rid})
 }
 
 //go:nosplit
 func (self class) GetTextureRdRid() RID.Any { //gd:Texture2DRD.get_texture_rd_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture_rd_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture_rd_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package UPNPDevice provides methods for working with UPNPDevice object instances.
 package UPNPDevice
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -253,7 +251,7 @@ Returns [code]true[/code] if this is a valid IGD (InternetGatewayDevice) which p
 */
 //go:nosplit
 func (self class) IsValidGateway() bool { //gd:UPNPDevice.is_valid_gateway
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid_gateway, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_valid_gateway, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -263,7 +261,7 @@ Returns the external IP address of this [UPNPDevice] or an empty string.
 */
 //go:nosplit
 func (self class) QueryExternalAddress() String.Readable { //gd:UPNPDevice.query_external_address
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.query_external_address, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.query_external_address, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -273,13 +271,13 @@ Adds a port mapping to forward the given external port on this [UPNPDevice] for 
 */
 //go:nosplit
 func (self class) AddPortMapping(port int64, port_internal int64, desc String.Readable, proto String.Readable, duration int64) int64 { //gd:UPNPDevice.add_port_mapping
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_port_mapping, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_port_mapping, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeInt<<20), &struct {
 		port          int64
 		port_internal int64
 		desc          gdextension.String
 		proto         gdextension.String
 		duration      int64
-	}{port, port_internal, pointers.Get(gd.InternalString(desc)), pointers.Get(gd.InternalString(proto)), duration}))
+	}{port, port_internal, pointers.Get(gd.InternalString(desc)), pointers.Get(gd.InternalString(proto)), duration})
 	var ret = r_ret
 	return ret
 }
@@ -289,82 +287,82 @@ Deletes the port mapping identified by the given port and protocol combination o
 */
 //go:nosplit
 func (self class) DeletePortMapping(port int64, proto String.Readable) int64 { //gd:UPNPDevice.delete_port_mapping
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.delete_port_mapping, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.delete_port_mapping, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		port  int64
 		proto gdextension.String
-	}{port, pointers.Get(gd.InternalString(proto))}))
+	}{port, pointers.Get(gd.InternalString(proto))})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDescriptionUrl(url String.Readable) { //gd:UPNPDevice.set_description_url
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_description_url, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ url gdextension.String }{pointers.Get(gd.InternalString(url))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_description_url, 0|(gdextension.SizeString<<4), &struct{ url gdextension.String }{pointers.Get(gd.InternalString(url))})
 }
 
 //go:nosplit
 func (self class) GetDescriptionUrl() String.Readable { //gd:UPNPDevice.get_description_url
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_description_url, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_description_url, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetServiceType(atype String.Readable) { //gd:UPNPDevice.set_service_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_service_type, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ atype gdextension.String }{pointers.Get(gd.InternalString(atype))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_service_type, 0|(gdextension.SizeString<<4), &struct{ atype gdextension.String }{pointers.Get(gd.InternalString(atype))})
 }
 
 //go:nosplit
 func (self class) GetServiceType() String.Readable { //gd:UPNPDevice.get_service_type
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_service_type, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_service_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgdControlUrl(url String.Readable) { //gd:UPNPDevice.set_igd_control_url
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_igd_control_url, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ url gdextension.String }{pointers.Get(gd.InternalString(url))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_igd_control_url, 0|(gdextension.SizeString<<4), &struct{ url gdextension.String }{pointers.Get(gd.InternalString(url))})
 }
 
 //go:nosplit
 func (self class) GetIgdControlUrl() String.Readable { //gd:UPNPDevice.get_igd_control_url
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_igd_control_url, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_igd_control_url, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgdServiceType(atype String.Readable) { //gd:UPNPDevice.set_igd_service_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_igd_service_type, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ atype gdextension.String }{pointers.Get(gd.InternalString(atype))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_igd_service_type, 0|(gdextension.SizeString<<4), &struct{ atype gdextension.String }{pointers.Get(gd.InternalString(atype))})
 }
 
 //go:nosplit
 func (self class) GetIgdServiceType() String.Readable { //gd:UPNPDevice.get_igd_service_type
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_igd_service_type, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_igd_service_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgdOurAddr(addr String.Readable) { //gd:UPNPDevice.set_igd_our_addr
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_igd_our_addr, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ addr gdextension.String }{pointers.Get(gd.InternalString(addr))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_igd_our_addr, 0|(gdextension.SizeString<<4), &struct{ addr gdextension.String }{pointers.Get(gd.InternalString(addr))})
 }
 
 //go:nosplit
 func (self class) GetIgdOurAddr() String.Readable { //gd:UPNPDevice.get_igd_our_addr
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_igd_our_addr, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_igd_our_addr, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgdStatus(status IGDStatus) { //gd:UPNPDevice.set_igd_status
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_igd_status, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ status IGDStatus }{status}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_igd_status, 0|(gdextension.SizeInt<<4), &struct{ status IGDStatus }{status})
 }
 
 //go:nosplit
 func (self class) GetIgdStatus() IGDStatus { //gd:UPNPDevice.get_igd_status
-	var r_ret = gdextension.Call[IGDStatus](gd.ObjectChecked(self.AsObject()), methods.get_igd_status, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[IGDStatus](gd.ObjectChecked(self.AsObject()), methods.get_igd_status, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

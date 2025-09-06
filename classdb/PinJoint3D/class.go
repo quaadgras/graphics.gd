@@ -3,7 +3,6 @@
 // Package PinJoint3D provides methods for working with PinJoint3D object instances.
 package PinJoint3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -163,10 +161,10 @@ Sets the value of the specified parameter.
 */
 //go:nosplit
 func (self class) SetParam(param Param, value float64) { //gd:PinJoint3D.set_param
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		param Param
 		value float64
-	}{param, value}))
+	}{param, value})
 }
 
 /*
@@ -174,7 +172,7 @@ Returns the value of the specified parameter.
 */
 //go:nosplit
 func (self class) GetParam(param Param) float64 { //gd:PinJoint3D.get_param
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ param Param }{param})
 	var ret = r_ret
 	return ret
 }

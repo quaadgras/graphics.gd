@@ -299,7 +299,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	if method.IsStatic {
 		needsLifetime = true
 	}
-	fmt.Fprintf(w, "func (Instance) %s(impl func(ptr unsafe.Pointer", method.Name)
+	fmt.Fprintf(w, "func (Instance) %s(impl func(ptr gdclass.Receiver", method.Name)
 	for _, arg := range method.Arguments {
 		fmt.Fprint(w, ", ")
 		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, "", arg.Meta, arg.Type))
@@ -319,7 +319,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 			fmt.Fprintf(w, "\t\tdefer %s\n", gdtype.Name(expert).EndPointer(fixReserved(arg.Name)))
 		}
 	}
-	fmt.Fprintf(w, "\t\tself := reflect.ValueOf(class).UnsafePointer()\n")
+	fmt.Fprintf(w, "\t\tself := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())\n")
 	if resultSimple != "" {
 		fmt.Fprintf(w, "\t\tret := ")
 	}

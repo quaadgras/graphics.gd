@@ -3,7 +3,6 @@
 // Package NavigationPathQueryResult2D provides methods for working with NavigationPathQueryResult2D object instances.
 package NavigationPathQueryResult2D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -191,54 +189,54 @@ func (self Instance) SetPathOwnerIds(value []int64) {
 
 //go:nosplit
 func (self class) SetPath(path Packed.Array[Vector2.XY]) { //gd:NavigationPathQueryResult2D.set_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path, 0|(gdextension.SizePackedArray<<4), &struct {
 		path gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](path))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](path))})
 }
 
 //go:nosplit
 func (self class) GetPath() Packed.Array[Vector2.XY] { //gd:NavigationPathQueryResult2D.get_path
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathTypes(path_types Packed.Array[int32]) { //gd:NavigationPathQueryResult2D.set_path_types
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_types, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_types, 0|(gdextension.SizePackedArray<<4), &struct {
 		path_types gdextension.PackedArray[int32]
-	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](path_types))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](path_types))})
 }
 
 //go:nosplit
 func (self class) GetPathTypes() Packed.Array[int32] { //gd:NavigationPathQueryResult2D.get_path_types
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_types, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_types, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathRids(path_rids Array.Contains[RID.Any]) { //gd:NavigationPathQueryResult2D.set_path_rids
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_rids, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ path_rids gdextension.Array }{pointers.Get(gd.InternalArray(path_rids))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_rids, 0|(gdextension.SizeArray<<4), &struct{ path_rids gdextension.Array }{pointers.Get(gd.InternalArray(path_rids))})
 }
 
 //go:nosplit
 func (self class) GetPathRids() Array.Contains[RID.Any] { //gd:NavigationPathQueryResult2D.get_path_rids
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_path_rids, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_path_rids, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathOwnerIds(path_owner_ids Packed.Array[int64]) { //gd:NavigationPathQueryResult2D.set_path_owner_ids
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_owner_ids, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_owner_ids, 0|(gdextension.SizePackedArray<<4), &struct {
 		path_owner_ids gdextension.PackedArray[int64]
-	}{pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](path_owner_ids))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](path_owner_ids))})
 }
 
 //go:nosplit
 func (self class) GetPathOwnerIds() Packed.Array[int64] { //gd:NavigationPathQueryResult2D.get_path_owner_ids
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_owner_ids, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_owner_ids, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -248,7 +246,7 @@ Reset the result object to its initial state. This is useful to reuse the object
 */
 //go:nosplit
 func (self class) Reset() { //gd:NavigationPathQueryResult2D.reset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset, 0, &struct{}{})
 }
 func (self class) AsNavigationPathQueryResult2D() Advanced {
 	return Advanced{pointers.AsA[gdclass.NavigationPathQueryResult2D](self[0])}

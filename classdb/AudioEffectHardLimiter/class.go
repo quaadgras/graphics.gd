@@ -3,7 +3,6 @@
 // Package AudioEffectHardLimiter provides methods for working with AudioEffectHardLimiter object instances.
 package AudioEffectHardLimiter
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -174,36 +172,36 @@ func (self Instance) SetRelease(value Float.X) {
 
 //go:nosplit
 func (self class) SetCeilingDb(ceiling float64) { //gd:AudioEffectHardLimiter.set_ceiling_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ceiling_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ceiling float64 }{ceiling}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ceiling_db, 0|(gdextension.SizeFloat<<4), &struct{ ceiling float64 }{ceiling})
 }
 
 //go:nosplit
 func (self class) GetCeilingDb() float64 { //gd:AudioEffectHardLimiter.get_ceiling_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ceiling_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ceiling_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPreGainDb(p_pre_gain float64) { //gd:AudioEffectHardLimiter.set_pre_gain_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_gain_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_pre_gain float64 }{p_pre_gain}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pre_gain_db, 0|(gdextension.SizeFloat<<4), &struct{ p_pre_gain float64 }{p_pre_gain})
 }
 
 //go:nosplit
 func (self class) GetPreGainDb() float64 { //gd:AudioEffectHardLimiter.get_pre_gain_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_gain_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pre_gain_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRelease(p_release float64) { //gd:AudioEffectHardLimiter.set_release
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_release, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ p_release float64 }{p_release}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_release, 0|(gdextension.SizeFloat<<4), &struct{ p_release float64 }{p_release})
 }
 
 //go:nosplit
 func (self class) GetRelease() float64 { //gd:AudioEffectHardLimiter.get_release
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_release, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_release, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

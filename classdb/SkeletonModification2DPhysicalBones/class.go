@@ -3,7 +3,6 @@
 // Package SkeletonModification2DPhysicalBones provides methods for working with SkeletonModification2DPhysicalBones object instances.
 package SkeletonModification2DPhysicalBones
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -215,12 +213,12 @@ func (self Instance) SetPhysicalBoneChainLength(value int) {
 
 //go:nosplit
 func (self class) SetPhysicalBoneChainLength(length int64) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_chain_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physical_bone_chain_length, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ length int64 }{length}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physical_bone_chain_length, 0|(gdextension.SizeInt<<4), &struct{ length int64 }{length})
 }
 
 //go:nosplit
 func (self class) GetPhysicalBoneChainLength() int64 { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_chain_length
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physical_bone_chain_length, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physical_bone_chain_length, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -231,10 +229,10 @@ Sets the [PhysicalBone2D] node at [param joint_idx].
 */
 //go:nosplit
 func (self class) SetPhysicalBoneNode(joint_idx int64, physicalbone2d_node Path.ToNode) { //gd:SkeletonModification2DPhysicalBones.set_physical_bone_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physical_bone_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physical_bone_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), &struct {
 		joint_idx           int64
 		physicalbone2d_node gdextension.NodePath
-	}{joint_idx, pointers.Get(gd.InternalNodePath(physicalbone2d_node))}))
+	}{joint_idx, pointers.Get(gd.InternalNodePath(physicalbone2d_node))})
 }
 
 /*
@@ -242,7 +240,7 @@ Returns the [PhysicalBone2D] node at [param joint_idx].
 */
 //go:nosplit
 func (self class) GetPhysicalBoneNode(joint_idx int64) Path.ToNode { //gd:SkeletonModification2DPhysicalBones.get_physical_bone_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_physical_bone_node, gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ joint_idx int64 }{joint_idx}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_physical_bone_node, gdextension.SizeNodePath|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -252,7 +250,7 @@ Empties the list of [PhysicalBone2D] nodes and populates it with all [PhysicalBo
 */
 //go:nosplit
 func (self class) FetchPhysicalBones() { //gd:SkeletonModification2DPhysicalBones.fetch_physical_bones
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fetch_physical_bones, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fetch_physical_bones, 0, &struct{}{})
 }
 
 /*
@@ -261,7 +259,7 @@ Optionally, an array of bone names can be passed to this function, and that will
 */
 //go:nosplit
 func (self class) StartSimulation(bones Array.Contains[String.Name]) { //gd:SkeletonModification2DPhysicalBones.start_simulation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start_simulation, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start_simulation, 0|(gdextension.SizeArray<<4), &struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))})
 }
 
 /*
@@ -270,7 +268,7 @@ Optionally, an array of bone names can be passed to this function, and that will
 */
 //go:nosplit
 func (self class) StopSimulation(bones Array.Contains[String.Name]) { //gd:SkeletonModification2DPhysicalBones.stop_simulation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_simulation, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_simulation, 0|(gdextension.SizeArray<<4), &struct{ bones gdextension.Array }{pointers.Get(gd.InternalArray(bones))})
 }
 func (self class) AsSkeletonModification2DPhysicalBones() Advanced {
 	return Advanced{pointers.AsA[gdclass.SkeletonModification2DPhysicalBones](self[0])}

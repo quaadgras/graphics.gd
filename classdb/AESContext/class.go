@@ -3,7 +3,6 @@
 // Package AESContext provides methods for working with AESContext object instances.
 package AESContext
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -262,11 +260,11 @@ Start the AES context in the given [param mode]. A [param key] of either 16 or 3
 */
 //go:nosplit
 func (self class) Start(mode Mode, key Packed.Bytes, iv Packed.Bytes) Error.Code { //gd:AESContext.start
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), &struct {
 		mode Mode
 		key  gdextension.PackedArray[byte]
 		iv   gdextension.PackedArray[byte]
-	}{mode, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](iv)))}))
+	}{mode, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](iv)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -277,7 +275,7 @@ Run the desired operation for this AES context. Will return a [PackedByteArray] 
 */
 //go:nosplit
 func (self class) Update(src Packed.Bytes) Packed.Bytes { //gd:AESContext.update
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ src gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](src)))}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), &struct{ src gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](src)))})
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -288,7 +286,7 @@ Get the current IV state for this context (IV gets updated when calling [method 
 */
 //go:nosplit
 func (self class) GetIvState() Packed.Bytes { //gd:AESContext.get_iv_state
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_iv_state, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_iv_state, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -298,7 +296,7 @@ Close this AES context so it can be started again. See [method start].
 */
 //go:nosplit
 func (self class) Finish() { //gd:AESContext.finish
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.finish, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.finish, 0, &struct{}{})
 }
 func (self class) AsAESContext() Advanced { return Advanced{pointers.AsA[gdclass.AESContext](self[0])} }
 func (self Instance) AsAESContext() Instance {

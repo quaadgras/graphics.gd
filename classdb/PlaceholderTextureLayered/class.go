@@ -3,7 +3,6 @@
 // Package PlaceholderTextureLayered provides methods for working with PlaceholderTextureLayered object instances.
 package PlaceholderTextureLayered
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -164,19 +162,19 @@ func (self Instance) SetLayers(value int) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2i.XY) { //gd:PlaceholderTextureLayered.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2i<<4), unsafe.Pointer(&struct{ size Vector2i.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
 
 //go:nosplit
 func (self class) GetSize() Vector2i.XY { //gd:PlaceholderTextureLayered.get_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLayers(layers int64) { //gd:PlaceholderTextureLayered.set_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layers int64 }{layers}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layers, 0|(gdextension.SizeInt<<4), &struct{ layers int64 }{layers})
 }
 func (self class) AsPlaceholderTextureLayered() Advanced {
 	return Advanced{pointers.AsA[gdclass.PlaceholderTextureLayered](self[0])}

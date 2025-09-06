@@ -3,7 +3,6 @@
 // Package VisualShaderNodeVec2Constant provides methods for working with VisualShaderNodeVec2Constant object instances.
 package VisualShaderNodeVec2Constant
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -156,12 +154,12 @@ func (self Instance) SetConstant(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetConstant(constant Vector2.XY) { //gd:VisualShaderNodeVec2Constant.set_constant
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ constant Vector2.XY }{constant}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeVector2<<4), &struct{ constant Vector2.XY }{constant})
 }
 
 //go:nosplit
 func (self class) GetConstant() Vector2.XY { //gd:VisualShaderNodeVec2Constant.get_constant
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

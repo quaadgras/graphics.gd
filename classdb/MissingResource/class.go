@@ -3,7 +3,6 @@
 // Package MissingResource provides methods for working with MissingResource object instances.
 package MissingResource
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -164,24 +162,24 @@ func (self Instance) SetRecordingProperties(value bool) {
 
 //go:nosplit
 func (self class) SetOriginalClass(name String.Readable) { //gd:MissingResource.set_original_class
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_class, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_class, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 
 //go:nosplit
 func (self class) GetOriginalClass() String.Readable { //gd:MissingResource.get_original_class
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_class, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_class, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRecordingProperties(enable bool) { //gd:MissingResource.set_recording_properties
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recording_properties, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recording_properties, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsRecordingProperties() bool { //gd:MissingResource.is_recording_properties
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recording_properties, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recording_properties, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

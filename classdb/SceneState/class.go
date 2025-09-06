@@ -3,7 +3,6 @@
 // Package SceneState provides methods for working with SceneState object instances.
 package SceneState
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -337,7 +335,7 @@ The [code]idx[/code] argument used to query node data in other [code]get_node_*[
 */
 //go:nosplit
 func (self class) GetNodeCount() int64 { //gd:SceneState.get_node_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -347,7 +345,7 @@ Returns the type of the node at [param idx].
 */
 //go:nosplit
 func (self class) GetNodeType(idx int64) String.Name { //gd:SceneState.get_node_type
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_node_type, gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_node_type, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -357,7 +355,7 @@ Returns the name of the node at [param idx].
 */
 //go:nosplit
 func (self class) GetNodeName(idx int64) String.Name { //gd:SceneState.get_node_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_node_name, gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_node_name, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -368,10 +366,10 @@ If [param for_parent] is [code]true[/code], returns the path of the [param idx] 
 */
 //go:nosplit
 func (self class) GetNodePath(idx int64, for_parent bool) Path.ToNode { //gd:SceneState.get_node_path
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_path, gdextension.SizeNodePath|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_path, gdextension.SizeNodePath|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		idx        int64
 		for_parent bool
-	}{idx, for_parent}))
+	}{idx, for_parent})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -381,7 +379,7 @@ Returns the path to the owner of the node at [param idx], relative to the root n
 */
 //go:nosplit
 func (self class) GetNodeOwnerPath(idx int64) Path.ToNode { //gd:SceneState.get_node_owner_path
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_owner_path, gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_owner_path, gdextension.SizeNodePath|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -391,7 +389,7 @@ Returns [code]true[/code] if the node at [param idx] is an [InstancePlaceholder]
 */
 //go:nosplit
 func (self class) IsNodeInstancePlaceholder(idx int64) bool { //gd:SceneState.is_node_instance_placeholder
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_node_instance_placeholder, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_node_instance_placeholder, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -401,7 +399,7 @@ Returns the path to the represented scene file if the node at [param idx] is an 
 */
 //go:nosplit
 func (self class) GetNodeInstancePlaceholder(idx int64) String.Readable { //gd:SceneState.get_node_instance_placeholder
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_node_instance_placeholder, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_node_instance_placeholder, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -411,7 +409,7 @@ Returns a [PackedScene] for the node at [param idx] (i.e. the whole branch start
 */
 //go:nosplit
 func (self class) GetNodeInstance(idx int64) [1]gdclass.PackedScene { //gd:SceneState.get_node_instance
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node_instance, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node_instance, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = [1]gdclass.PackedScene{gd.PointerWithOwnershipTransferredToGo[gdclass.PackedScene](r_ret)}
 	return ret
 }
@@ -421,7 +419,7 @@ Returns the list of group names associated with the node at [param idx].
 */
 //go:nosplit
 func (self class) GetNodeGroups(idx int64) Packed.Strings { //gd:SceneState.get_node_groups
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_node_groups, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_node_groups, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -431,7 +429,7 @@ Returns the node's index, which is its position relative to its siblings. This i
 */
 //go:nosplit
 func (self class) GetNodeIndex(idx int64) int64 { //gd:SceneState.get_node_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_index, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_index, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -442,7 +440,7 @@ The [code]prop_idx[/code] argument used to query node property data in other [co
 */
 //go:nosplit
 func (self class) GetNodePropertyCount(idx int64) int64 { //gd:SceneState.get_node_property_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_property_count, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_node_property_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -452,10 +450,10 @@ Returns the name of the property at [param prop_idx] for the node at [param idx]
 */
 //go:nosplit
 func (self class) GetNodePropertyName(idx int64, prop_idx int64) String.Name { //gd:SceneState.get_node_property_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_node_property_name, gdextension.SizeStringName|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_node_property_name, gdextension.SizeStringName|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		idx      int64
 		prop_idx int64
-	}{idx, prop_idx}))
+	}{idx, prop_idx})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -465,10 +463,10 @@ Returns the value of the property at [param prop_idx] for the node at [param idx
 */
 //go:nosplit
 func (self class) GetNodePropertyValue(idx int64, prop_idx int64) variant.Any { //gd:SceneState.get_node_property_value
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_node_property_value, gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_node_property_value, gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		idx      int64
 		prop_idx int64
-	}{idx, prop_idx}))
+	}{idx, prop_idx})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -479,7 +477,7 @@ The [code]idx[/code] argument used to query connection metadata in other [code]g
 */
 //go:nosplit
 func (self class) GetConnectionCount() int64 { //gd:SceneState.get_connection_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_connection_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_connection_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -489,7 +487,7 @@ Returns the path to the node that owns the signal at [param idx], relative to th
 */
 //go:nosplit
 func (self class) GetConnectionSource(idx int64) Path.ToNode { //gd:SceneState.get_connection_source
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_connection_source, gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_connection_source, gdextension.SizeNodePath|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -499,7 +497,7 @@ Returns the name of the signal at [param idx].
 */
 //go:nosplit
 func (self class) GetConnectionSignal(idx int64) String.Name { //gd:SceneState.get_connection_signal
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_connection_signal, gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_connection_signal, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -509,7 +507,7 @@ Returns the path to the node that owns the method connected to the signal at [pa
 */
 //go:nosplit
 func (self class) GetConnectionTarget(idx int64) Path.ToNode { //gd:SceneState.get_connection_target
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_connection_target, gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_connection_target, gdextension.SizeNodePath|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -519,7 +517,7 @@ Returns the method connected to the signal at [param idx].
 */
 //go:nosplit
 func (self class) GetConnectionMethod(idx int64) String.Name { //gd:SceneState.get_connection_method
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_connection_method, gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_connection_method, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -529,7 +527,7 @@ Returns the connection flags for the signal at [param idx]. See [enum Object.Con
 */
 //go:nosplit
 func (self class) GetConnectionFlags(idx int64) int64 { //gd:SceneState.get_connection_flags
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_connection_flags, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_connection_flags, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -539,7 +537,7 @@ Returns the list of bound parameters for the signal at [param idx].
 */
 //go:nosplit
 func (self class) GetConnectionBinds(idx int64) Array.Any { //gd:SceneState.get_connection_binds
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_connection_binds, gdextension.SizeArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_connection_binds, gdextension.SizeArray|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -549,7 +547,7 @@ Returns the number of unbound parameters for the signal at [param idx].
 */
 //go:nosplit
 func (self class) GetConnectionUnbinds(idx int64) int64 { //gd:SceneState.get_connection_unbinds
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_connection_unbinds, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ idx int64 }{idx}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_connection_unbinds, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }

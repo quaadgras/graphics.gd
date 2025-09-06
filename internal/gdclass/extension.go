@@ -9,6 +9,8 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
+type Receiver unsafe.Pointer
+
 type Interface interface {
 	superType() reflect.Type
 	getObject() [1]gd.Object

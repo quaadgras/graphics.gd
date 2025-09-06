@@ -3,7 +3,6 @@
 // Package XRVRS provides methods for working with XRVRS object instances.
 package XRVRS
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -182,38 +180,38 @@ func (self Instance) SetVrsRenderRegion(value Rect2i.PositionSize) {
 
 //go:nosplit
 func (self class) GetVrsMinRadius() float64 { //gd:XRVRS.get_vrs_min_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_min_radius, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_min_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVrsMinRadius(radius float64) { //gd:XRVRS.set_vrs_min_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_min_radius, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ radius float64 }{radius}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_min_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetVrsStrength() float64 { //gd:XRVRS.get_vrs_strength
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_strength, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVrsStrength(strength float64) { //gd:XRVRS.set_vrs_strength
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_strength, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ strength float64 }{strength}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
 
 //go:nosplit
 func (self class) GetVrsRenderRegion() Rect2i.PositionSize { //gd:XRVRS.get_vrs_render_region
-	var r_ret = gdextension.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_vrs_render_region, gdextension.SizeRect2i, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_vrs_render_region, gdextension.SizeRect2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVrsRenderRegion(render_region Rect2i.PositionSize) { //gd:XRVRS.set_vrs_render_region
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_render_region, 0|(gdextension.SizeRect2i<<4), unsafe.Pointer(&struct{ render_region Rect2i.PositionSize }{render_region}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_render_region, 0|(gdextension.SizeRect2i<<4), &struct{ render_region Rect2i.PositionSize }{render_region})
 }
 
 /*
@@ -222,10 +220,10 @@ The result will be cached, requesting a VRS texture with unchanged parameters an
 */
 //go:nosplit
 func (self class) MakeVrsTexture(target_size Vector2.XY, eye_foci Packed.Array[Vector2.XY]) RID.Any { //gd:XRVRS.make_vrs_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.make_vrs_texture, gdextension.SizeRID|(gdextension.SizeVector2<<4)|(gdextension.SizePackedArray<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.make_vrs_texture, gdextension.SizeRID|(gdextension.SizeVector2<<4)|(gdextension.SizePackedArray<<8), &struct {
 		target_size Vector2.XY
 		eye_foci    gdextension.PackedArray[Vector2.XY]
-	}{target_size, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](eye_foci))}))
+	}{target_size, pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](eye_foci))})
 	var ret = r_ret
 	return ret
 }

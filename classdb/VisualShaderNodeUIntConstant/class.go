@@ -3,7 +3,6 @@
 // Package VisualShaderNodeUIntConstant provides methods for working with VisualShaderNodeUIntConstant object instances.
 package VisualShaderNodeUIntConstant
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -155,12 +153,12 @@ func (self Instance) SetConstant(value int) {
 
 //go:nosplit
 func (self class) SetConstant(constant int64) { //gd:VisualShaderNodeUIntConstant.set_constant
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ constant int64 }{constant}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeInt<<4), &struct{ constant int64 }{constant})
 }
 
 //go:nosplit
 func (self class) GetConstant() int64 { //gd:VisualShaderNodeUIntConstant.get_constant
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

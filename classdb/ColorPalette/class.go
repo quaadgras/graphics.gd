@@ -3,7 +3,6 @@
 // Package ColorPalette provides methods for working with ColorPalette object instances.
 package ColorPalette
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -154,14 +152,14 @@ func (self Instance) SetColors(value []Color.RGBA) {
 
 //go:nosplit
 func (self class) SetColors(colors Packed.Array[Color.RGBA]) { //gd:ColorPalette.set_colors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_colors, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_colors, 0|(gdextension.SizePackedArray<<4), &struct {
 		colors gdextension.PackedArray[Color.RGBA]
-	}{pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedColorArray, Color.RGBA](colors))})
 }
 
 //go:nosplit
 func (self class) GetColors() Packed.Array[Color.RGBA] { //gd:ColorPalette.get_colors
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_colors, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_colors, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Color.RGBA](Array.Through(gd.PackedProxy[gd.PackedColorArray, Color.RGBA]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

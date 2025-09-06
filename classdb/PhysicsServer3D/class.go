@@ -3,7 +3,6 @@
 // Package PhysicsServer3D provides methods for working with PhysicsServer3D object instances.
 package PhysicsServer3D
 
-import "unsafe"
 import "sync"
 import "reflect"
 import "slices"
@@ -42,7 +41,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -1683,70 +1681,70 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 
 //go:nosplit
 func (self class) WorldBoundaryShapeCreate() RID.Any { //gd:PhysicsServer3D.world_boundary_shape_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.world_boundary_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.world_boundary_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SeparationRayShapeCreate() RID.Any { //gd:PhysicsServer3D.separation_ray_shape_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.separation_ray_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.separation_ray_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SphereShapeCreate() RID.Any { //gd:PhysicsServer3D.sphere_shape_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.sphere_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.sphere_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) BoxShapeCreate() RID.Any { //gd:PhysicsServer3D.box_shape_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.box_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.box_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) CapsuleShapeCreate() RID.Any { //gd:PhysicsServer3D.capsule_shape_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.capsule_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.capsule_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) CylinderShapeCreate() RID.Any { //gd:PhysicsServer3D.cylinder_shape_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.cylinder_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.cylinder_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) ConvexPolygonShapeCreate() RID.Any { //gd:PhysicsServer3D.convex_polygon_shape_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.convex_polygon_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.convex_polygon_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) ConcavePolygonShapeCreate() RID.Any { //gd:PhysicsServer3D.concave_polygon_shape_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.concave_polygon_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.concave_polygon_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) HeightmapShapeCreate() RID.Any { //gd:PhysicsServer3D.heightmap_shape_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.heightmap_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.heightmap_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) CustomShapeCreate() RID.Any { //gd:PhysicsServer3D.custom_shape_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.custom_shape_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.custom_shape_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1756,10 +1754,10 @@ Sets the shape data that defines its shape and size. The data to be passed depen
 */
 //go:nosplit
 func (self class) ShapeSetData(shape RID.Any, data variant.Any) { //gd:PhysicsServer3D.shape_set_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_set_data, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_set_data, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
 		shape RID.Any
 		data  gdextension.Variant
-	}{shape, gdextension.Variant(pointers.Get(gd.InternalVariant(data)))}))
+	}{shape, gdextension.Variant(pointers.Get(gd.InternalVariant(data)))})
 }
 
 /*
@@ -1768,10 +1766,10 @@ Sets the collision margin for the shape.
 */
 //go:nosplit
 func (self class) ShapeSetMargin(shape RID.Any, margin float64) { //gd:PhysicsServer3D.shape_set_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_set_margin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shape_set_margin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		shape  RID.Any
 		margin float64
-	}{shape, margin}))
+	}{shape, margin})
 }
 
 /*
@@ -1779,7 +1777,7 @@ Returns the type of shape (see [enum ShapeType] constants).
 */
 //go:nosplit
 func (self class) ShapeGetType(shape RID.Any) ShapeType { //gd:PhysicsServer3D.shape_get_type
-	var r_ret = gdextension.Call[ShapeType](gd.ObjectChecked(self.AsObject()), methods.shape_get_type, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shape RID.Any }{shape}))
+	var r_ret = gdextension.Call[ShapeType](gd.ObjectChecked(self.AsObject()), methods.shape_get_type, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ shape RID.Any }{shape})
 	var ret = r_ret
 	return ret
 }
@@ -1789,7 +1787,7 @@ Returns the shape data.
 */
 //go:nosplit
 func (self class) ShapeGetData(shape RID.Any) variant.Any { //gd:PhysicsServer3D.shape_get_data
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.shape_get_data, gdextension.SizeVariant|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shape RID.Any }{shape}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.shape_get_data, gdextension.SizeVariant|(gdextension.SizeRID<<4), &struct{ shape RID.Any }{shape})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -1800,7 +1798,7 @@ Returns the collision margin for the shape.
 */
 //go:nosplit
 func (self class) ShapeGetMargin(shape RID.Any) float64 { //gd:PhysicsServer3D.shape_get_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.shape_get_margin, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ shape RID.Any }{shape}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.shape_get_margin, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ shape RID.Any }{shape})
 	var ret = r_ret
 	return ret
 }
@@ -1810,7 +1808,7 @@ Creates a space. A space is a collection of parameters for the physics engine th
 */
 //go:nosplit
 func (self class) SpaceCreate() RID.Any { //gd:PhysicsServer3D.space_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.space_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.space_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1820,10 +1818,10 @@ Marks a space as active. It will not have an effect, unless it is assigned to an
 */
 //go:nosplit
 func (self class) SpaceSetActive(space RID.Any, active bool) { //gd:PhysicsServer3D.space_set_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.space_set_active, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.space_set_active, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		space  RID.Any
 		active bool
-	}{space, active}))
+	}{space, active})
 }
 
 /*
@@ -1831,7 +1829,7 @@ Returns whether the space is active.
 */
 //go:nosplit
 func (self class) SpaceIsActive(space RID.Any) bool { //gd:PhysicsServer3D.space_is_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.space_is_active, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ space RID.Any }{space}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.space_is_active, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ space RID.Any }{space})
 	var ret = r_ret
 	return ret
 }
@@ -1841,11 +1839,11 @@ Sets the value for a space parameter. A list of available parameters is on the [
 */
 //go:nosplit
 func (self class) SpaceSetParam(space RID.Any, param SpaceParameter, value float64) { //gd:PhysicsServer3D.space_set_param
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.space_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.space_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		space RID.Any
 		param SpaceParameter
 		value float64
-	}{space, param, value}))
+	}{space, param, value})
 }
 
 /*
@@ -1853,10 +1851,10 @@ Returns the value of a space parameter.
 */
 //go:nosplit
 func (self class) SpaceGetParam(space RID.Any, param SpaceParameter) float64 { //gd:PhysicsServer3D.space_get_param
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.space_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.space_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		space RID.Any
 		param SpaceParameter
-	}{space, param}))
+	}{space, param})
 	var ret = r_ret
 	return ret
 }
@@ -1866,7 +1864,7 @@ Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be 
 */
 //go:nosplit
 func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsServer3D.space_get_direct_state
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.space_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ space RID.Any }{space}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.space_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ space RID.Any }{space})
 	var ret = [1]gdclass.PhysicsDirectSpaceState3D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState3D](r_ret)}
 	return ret
 }
@@ -1877,7 +1875,7 @@ Use [method area_add_shape] to add shapes to it, use [method area_set_transform]
 */
 //go:nosplit
 func (self class) AreaCreate() RID.Any { //gd:PhysicsServer3D.area_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.area_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.area_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1887,10 +1885,10 @@ Assigns a space to the area.
 */
 //go:nosplit
 func (self class) AreaSetSpace(area RID.Any, space RID.Any) { //gd:PhysicsServer3D.area_set_space
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		area  RID.Any
 		space RID.Any
-	}{area, space}))
+	}{area, space})
 }
 
 /*
@@ -1898,7 +1896,7 @@ Returns the space assigned to the area.
 */
 //go:nosplit
 func (self class) AreaGetSpace(area RID.Any) RID.Any { //gd:PhysicsServer3D.area_get_space
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.area_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.area_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
 }
@@ -1908,12 +1906,12 @@ Adds a shape to the area, along with a transform matrix. Shapes are usually refe
 */
 //go:nosplit
 func (self class) AreaAddShape(area RID.Any, shape RID.Any, transform Transform3D.BasisOrigin, disabled bool) { //gd:PhysicsServer3D.area_add_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_add_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_add_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeBool<<16), &struct {
 		area      RID.Any
 		shape     RID.Any
 		transform Transform3D.BasisOrigin
 		disabled  bool
-	}{area, shape, gd.Transposed(transform), disabled}))
+	}{area, shape, gd.Transposed(transform), disabled})
 }
 
 /*
@@ -1921,11 +1919,11 @@ Substitutes a given area shape by another. The old shape is selected by its inde
 */
 //go:nosplit
 func (self class) AreaSetShape(area RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer3D.area_set_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
 		area      RID.Any
 		shape_idx int64
 		shape     RID.Any
-	}{area, shape_idx, shape}))
+	}{area, shape_idx, shape})
 }
 
 /*
@@ -1933,20 +1931,20 @@ Sets the transform matrix for an area shape.
 */
 //go:nosplit
 func (self class) AreaSetShapeTransform(area RID.Any, shape_idx int64, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.area_set_shape_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_shape_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_shape_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), &struct {
 		area      RID.Any
 		shape_idx int64
 		transform Transform3D.BasisOrigin
-	}{area, shape_idx, gd.Transposed(transform)}))
+	}{area, shape_idx, gd.Transposed(transform)})
 }
 
 //go:nosplit
 func (self class) AreaSetShapeDisabled(area RID.Any, shape_idx int64, disabled bool) { //gd:PhysicsServer3D.area_set_shape_disabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_shape_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_shape_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		area      RID.Any
 		shape_idx int64
 		disabled  bool
-	}{area, shape_idx, disabled}))
+	}{area, shape_idx, disabled})
 }
 
 /*
@@ -1954,7 +1952,7 @@ Returns the number of shapes assigned to an area.
 */
 //go:nosplit
 func (self class) AreaGetShapeCount(area RID.Any) int64 { //gd:PhysicsServer3D.area_get_shape_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_shape_count, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_shape_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
 }
@@ -1964,10 +1962,10 @@ Returns the [RID] of the nth shape of an area.
 */
 //go:nosplit
 func (self class) AreaGetShape(area RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer3D.area_get_shape
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.area_get_shape, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.area_get_shape, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area      RID.Any
 		shape_idx int64
-	}{area, shape_idx}))
+	}{area, shape_idx})
 	var ret = r_ret
 	return ret
 }
@@ -1977,10 +1975,10 @@ Returns the transform matrix of a shape within an area.
 */
 //go:nosplit
 func (self class) AreaGetShapeTransform(area RID.Any, shape_idx int64) Transform3D.BasisOrigin { //gd:PhysicsServer3D.area_get_shape_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.area_get_shape_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.area_get_shape_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area      RID.Any
 		shape_idx int64
-	}{area, shape_idx}))
+	}{area, shape_idx})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -1990,10 +1988,10 @@ Removes a shape from an area. It does not delete the shape, so it can be reassig
 */
 //go:nosplit
 func (self class) AreaRemoveShape(area RID.Any, shape_idx int64) { //gd:PhysicsServer3D.area_remove_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_remove_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_remove_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area      RID.Any
 		shape_idx int64
-	}{area, shape_idx}))
+	}{area, shape_idx})
 }
 
 /*
@@ -2001,7 +1999,7 @@ Removes all shapes from an area. It does not delete the shapes, so they can be r
 */
 //go:nosplit
 func (self class) AreaClearShapes(area RID.Any) { //gd:PhysicsServer3D.area_clear_shapes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_clear_shapes, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_clear_shapes, 0|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 }
 
 /*
@@ -2009,10 +2007,10 @@ Assigns the area to one or many physics layers.
 */
 //go:nosplit
 func (self class) AreaSetCollisionLayer(area RID.Any, layer int64) { //gd:PhysicsServer3D.area_set_collision_layer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area  RID.Any
 		layer int64
-	}{area, layer}))
+	}{area, layer})
 }
 
 /*
@@ -2020,7 +2018,7 @@ Returns the physics layer or layers an area belongs to.
 */
 //go:nosplit
 func (self class) AreaGetCollisionLayer(area RID.Any) int64 { //gd:PhysicsServer3D.area_get_collision_layer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
 }
@@ -2030,10 +2028,10 @@ Sets which physics layers the area will monitor.
 */
 //go:nosplit
 func (self class) AreaSetCollisionMask(area RID.Any, mask int64) { //gd:PhysicsServer3D.area_set_collision_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area RID.Any
 		mask int64
-	}{area, mask}))
+	}{area, mask})
 }
 
 /*
@@ -2041,7 +2039,7 @@ Returns the physics layer or layers an area can contact with.
 */
 //go:nosplit
 func (self class) AreaGetCollisionMask(area RID.Any) int64 { //gd:PhysicsServer3D.area_get_collision_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
 }
@@ -2051,11 +2049,11 @@ Sets the value for an area parameter. A list of available parameters is on the [
 */
 //go:nosplit
 func (self class) AreaSetParam(area RID.Any, param AreaParameter, value variant.Any) { //gd:PhysicsServer3D.area_set_param
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		area  RID.Any
 		param AreaParameter
 		value gdextension.Variant
-	}{area, param, gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{area, param, gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
 
 /*
@@ -2063,10 +2061,10 @@ Sets the transform matrix for an area.
 */
 //go:nosplit
 func (self class) AreaSetTransform(area RID.Any, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.area_set_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		area      RID.Any
 		transform Transform3D.BasisOrigin
-	}{area, gd.Transposed(transform)}))
+	}{area, gd.Transposed(transform)})
 }
 
 /*
@@ -2074,10 +2072,10 @@ Returns an area parameter value. A list of available parameters is on the [enum 
 */
 //go:nosplit
 func (self class) AreaGetParam(area RID.Any, param AreaParameter) variant.Any { //gd:PhysicsServer3D.area_get_param
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.area_get_param, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.area_get_param, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area  RID.Any
 		param AreaParameter
-	}{area, param}))
+	}{area, param})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -2087,7 +2085,7 @@ Returns the transform matrix for an area.
 */
 //go:nosplit
 func (self class) AreaGetTransform(area RID.Any) Transform3D.BasisOrigin { //gd:PhysicsServer3D.area_get_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.area_get_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.area_get_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -2097,10 +2095,10 @@ Assigns the area to a descendant of [Object], so it can exist in the node tree.
 */
 //go:nosplit
 func (self class) AreaAttachObjectInstanceId(area RID.Any, id int64) { //gd:PhysicsServer3D.area_attach_object_instance_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_attach_object_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_attach_object_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		area RID.Any
 		id   int64
-	}{area, id}))
+	}{area, id})
 }
 
 /*
@@ -2108,7 +2106,7 @@ Gets the instance ID of the object the area is assigned to.
 */
 //go:nosplit
 func (self class) AreaGetObjectInstanceId(area RID.Any) int64 { //gd:PhysicsServer3D.area_get_object_instance_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_object_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ area RID.Any }{area}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.area_get_object_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ area RID.Any }{area})
 	var ret = r_ret
 	return ret
 }
@@ -2124,10 +2122,10 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 */
 //go:nosplit
 func (self class) AreaSetMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer3D.area_set_monitor_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_monitor_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_monitor_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		area     RID.Any
 		callback gdextension.Callable
-	}{area, pointers.Get(gd.InternalCallable(callback))}))
+	}{area, pointers.Get(gd.InternalCallable(callback))})
 }
 
 /*
@@ -2141,18 +2139,18 @@ By counting (or keeping track of) the shapes that enter and exit, it can be dete
 */
 //go:nosplit
 func (self class) AreaSetAreaMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer3D.area_set_area_monitor_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_area_monitor_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_area_monitor_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		area     RID.Any
 		callback gdextension.Callable
-	}{area, pointers.Get(gd.InternalCallable(callback))}))
+	}{area, pointers.Get(gd.InternalCallable(callback))})
 }
 
 //go:nosplit
 func (self class) AreaSetMonitorable(area RID.Any, monitorable bool) { //gd:PhysicsServer3D.area_set_monitorable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_monitorable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_monitorable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		area        RID.Any
 		monitorable bool
-	}{area, monitorable}))
+	}{area, monitorable})
 }
 
 /*
@@ -2160,10 +2158,10 @@ Sets object pickable with rays.
 */
 //go:nosplit
 func (self class) AreaSetRayPickable(area RID.Any, enable bool) { //gd:PhysicsServer3D.area_set_ray_pickable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_ray_pickable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.area_set_ray_pickable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		area   RID.Any
 		enable bool
-	}{area, enable}))
+	}{area, enable})
 }
 
 /*
@@ -2172,7 +2170,7 @@ Use [method body_add_shape] to add shapes to it, use [method body_set_state] to 
 */
 //go:nosplit
 func (self class) BodyCreate() RID.Any { //gd:PhysicsServer3D.body_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.body_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.body_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2182,10 +2180,10 @@ Assigns a space to the body (see [method space_create]).
 */
 //go:nosplit
 func (self class) BodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsServer3D.body_set_space
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body  RID.Any
 		space RID.Any
-	}{body, space}))
+	}{body, space})
 }
 
 /*
@@ -2193,7 +2191,7 @@ Returns the [RID] of the space assigned to a body.
 */
 //go:nosplit
 func (self class) BodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer3D.body_get_space
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.body_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.body_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2203,10 +2201,10 @@ Sets the body mode, from one of the [enum BodyMode] constants.
 */
 //go:nosplit
 func (self class) BodySetMode(body RID.Any, mode BodyMode) { //gd:PhysicsServer3D.body_set_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_mode, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		mode BodyMode
-	}{body, mode}))
+	}{body, mode})
 }
 
 /*
@@ -2214,7 +2212,7 @@ Returns the body mode.
 */
 //go:nosplit
 func (self class) BodyGetMode(body RID.Any) BodyMode { //gd:PhysicsServer3D.body_get_mode
-	var r_ret = gdextension.Call[BodyMode](gd.ObjectChecked(self.AsObject()), methods.body_get_mode, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[BodyMode](gd.ObjectChecked(self.AsObject()), methods.body_get_mode, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2224,10 +2222,10 @@ Sets the physics layer or layers a body belongs to.
 */
 //go:nosplit
 func (self class) BodySetCollisionLayer(body RID.Any, layer int64) { //gd:PhysicsServer3D.body_set_collision_layer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body  RID.Any
 		layer int64
-	}{body, layer}))
+	}{body, layer})
 }
 
 /*
@@ -2235,7 +2233,7 @@ Returns the physics layer or layers a body belongs to.
 */
 //go:nosplit
 func (self class) BodyGetCollisionLayer(body RID.Any) int64 { //gd:PhysicsServer3D.body_get_collision_layer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2245,10 +2243,10 @@ Sets the physics layer or layers a body can collide with.
 */
 //go:nosplit
 func (self class) BodySetCollisionMask(body RID.Any, mask int64) { //gd:PhysicsServer3D.body_set_collision_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		mask int64
-	}{body, mask}))
+	}{body, mask})
 }
 
 /*
@@ -2256,7 +2254,7 @@ Returns the physics layer or layers a body can collide with.
 */
 //go:nosplit
 func (self class) BodyGetCollisionMask(body RID.Any) int64 { //gd:PhysicsServer3D.body_get_collision_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2266,10 +2264,10 @@ Sets the body's collision priority.
 */
 //go:nosplit
 func (self class) BodySetCollisionPriority(body RID.Any, priority float64) { //gd:PhysicsServer3D.body_set_collision_priority
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_collision_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_collision_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body     RID.Any
 		priority float64
-	}{body, priority}))
+	}{body, priority})
 }
 
 /*
@@ -2277,7 +2275,7 @@ Returns the body's collision priority.
 */
 //go:nosplit
 func (self class) BodyGetCollisionPriority(body RID.Any) float64 { //gd:PhysicsServer3D.body_get_collision_priority
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.body_get_collision_priority, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.body_get_collision_priority, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2287,12 +2285,12 @@ Adds a shape to the body, along with a transform matrix. Shapes are usually refe
 */
 //go:nosplit
 func (self class) BodyAddShape(body RID.Any, shape RID.Any, transform Transform3D.BasisOrigin, disabled bool) { //gd:PhysicsServer3D.body_add_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeBool<<16), &struct {
 		body      RID.Any
 		shape     RID.Any
 		transform Transform3D.BasisOrigin
 		disabled  bool
-	}{body, shape, gd.Transposed(transform), disabled}))
+	}{body, shape, gd.Transposed(transform), disabled})
 }
 
 /*
@@ -2300,11 +2298,11 @@ Substitutes a given body shape by another. The old shape is selected by its inde
 */
 //go:nosplit
 func (self class) BodySetShape(body RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer3D.body_set_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
 		body      RID.Any
 		shape_idx int64
 		shape     RID.Any
-	}{body, shape_idx, shape}))
+	}{body, shape_idx, shape})
 }
 
 /*
@@ -2312,20 +2310,20 @@ Sets the transform matrix for a body shape.
 */
 //go:nosplit
 func (self class) BodySetShapeTransform(body RID.Any, shape_idx int64, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.body_set_shape_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_shape_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_shape_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeTransform3D<<12), &struct {
 		body      RID.Any
 		shape_idx int64
 		transform Transform3D.BasisOrigin
-	}{body, shape_idx, gd.Transposed(transform)}))
+	}{body, shape_idx, gd.Transposed(transform)})
 }
 
 //go:nosplit
 func (self class) BodySetShapeDisabled(body RID.Any, shape_idx int64, disabled bool) { //gd:PhysicsServer3D.body_set_shape_disabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_shape_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_shape_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		body      RID.Any
 		shape_idx int64
 		disabled  bool
-	}{body, shape_idx, disabled}))
+	}{body, shape_idx, disabled})
 }
 
 /*
@@ -2333,7 +2331,7 @@ Returns the number of shapes assigned to a body.
 */
 //go:nosplit
 func (self class) BodyGetShapeCount(body RID.Any) int64 { //gd:PhysicsServer3D.body_get_shape_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_shape_count, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_shape_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2343,10 +2341,10 @@ Returns the [RID] of the nth shape of a body.
 */
 //go:nosplit
 func (self class) BodyGetShape(body RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer3D.body_get_shape
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.body_get_shape, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.body_get_shape, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body      RID.Any
 		shape_idx int64
-	}{body, shape_idx}))
+	}{body, shape_idx})
 	var ret = r_ret
 	return ret
 }
@@ -2356,10 +2354,10 @@ Returns the transform matrix of a body shape.
 */
 //go:nosplit
 func (self class) BodyGetShapeTransform(body RID.Any, shape_idx int64) Transform3D.BasisOrigin { //gd:PhysicsServer3D.body_get_shape_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.body_get_shape_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.body_get_shape_transform, gdextension.SizeTransform3D|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body      RID.Any
 		shape_idx int64
-	}{body, shape_idx}))
+	}{body, shape_idx})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -2369,10 +2367,10 @@ Removes a shape from a body. The shape is not deleted, so it can be reused after
 */
 //go:nosplit
 func (self class) BodyRemoveShape(body RID.Any, shape_idx int64) { //gd:PhysicsServer3D.body_remove_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_remove_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_remove_shape, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body      RID.Any
 		shape_idx int64
-	}{body, shape_idx}))
+	}{body, shape_idx})
 }
 
 /*
@@ -2380,7 +2378,7 @@ Removes all shapes from a body.
 */
 //go:nosplit
 func (self class) BodyClearShapes(body RID.Any) { //gd:PhysicsServer3D.body_clear_shapes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_clear_shapes, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_clear_shapes, 0|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 }
 
 /*
@@ -2388,10 +2386,10 @@ Assigns the area to a descendant of [Object], so it can exist in the node tree.
 */
 //go:nosplit
 func (self class) BodyAttachObjectInstanceId(body RID.Any, id int64) { //gd:PhysicsServer3D.body_attach_object_instance_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_attach_object_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_attach_object_instance_id, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		id   int64
-	}{body, id}))
+	}{body, id})
 }
 
 /*
@@ -2399,7 +2397,7 @@ Gets the instance ID of the object the area is assigned to.
 */
 //go:nosplit
 func (self class) BodyGetObjectInstanceId(body RID.Any) int64 { //gd:PhysicsServer3D.body_get_object_instance_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_object_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_object_instance_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2410,10 +2408,10 @@ Continuous collision detection tries to predict where a moving body will collide
 */
 //go:nosplit
 func (self class) BodySetEnableContinuousCollisionDetection(body RID.Any, enable bool) { //gd:PhysicsServer3D.body_set_enable_continuous_collision_detection
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_enable_continuous_collision_detection, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_enable_continuous_collision_detection, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		body   RID.Any
 		enable bool
-	}{body, enable}))
+	}{body, enable})
 }
 
 /*
@@ -2421,7 +2419,7 @@ If [code]true[/code], the continuous collision detection mode is enabled.
 */
 //go:nosplit
 func (self class) BodyIsContinuousCollisionDetectionEnabled(body RID.Any) bool { //gd:PhysicsServer3D.body_is_continuous_collision_detection_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_is_continuous_collision_detection_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_is_continuous_collision_detection_enabled, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2431,11 +2429,11 @@ Sets a body parameter. A list of available parameters is on the [enum BodyParame
 */
 //go:nosplit
 func (self class) BodySetParam(body RID.Any, param BodyParameter, value variant.Any) { //gd:PhysicsServer3D.body_set_param
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		body  RID.Any
 		param BodyParameter
 		value gdextension.Variant
-	}{body, param, gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{body, param, gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
 
 /*
@@ -2443,10 +2441,10 @@ Returns the value of a body parameter. A list of available parameters is on the 
 */
 //go:nosplit
 func (self class) BodyGetParam(body RID.Any, param BodyParameter) variant.Any { //gd:PhysicsServer3D.body_get_param
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.body_get_param, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.body_get_param, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body  RID.Any
 		param BodyParameter
-	}{body, param}))
+	}{body, param})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -2456,7 +2454,7 @@ Restores the default inertia and center of mass based on shapes to cancel any cu
 */
 //go:nosplit
 func (self class) BodyResetMassProperties(body RID.Any) { //gd:PhysicsServer3D.body_reset_mass_properties
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_reset_mass_properties, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_reset_mass_properties, 0|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 }
 
 /*
@@ -2464,11 +2462,11 @@ Sets a body state (see [enum BodyState] constants).
 */
 //go:nosplit
 func (self class) BodySetState(body RID.Any, state BodyState, value variant.Any) { //gd:PhysicsServer3D.body_set_state
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		body  RID.Any
 		state BodyState
 		value gdextension.Variant
-	}{body, state, gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	}{body, state, gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
 
 /*
@@ -2476,10 +2474,10 @@ Returns a body state.
 */
 //go:nosplit
 func (self class) BodyGetState(body RID.Any, state BodyState) variant.Any { //gd:PhysicsServer3D.body_get_state
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.body_get_state, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.body_get_state, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body  RID.Any
 		state BodyState
-	}{body, state}))
+	}{body, state})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -2491,10 +2489,10 @@ This is equivalent to using [method body_apply_impulse] at the body's center of 
 */
 //go:nosplit
 func (self class) BodyApplyCentralImpulse(body RID.Any, impulse Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_central_impulse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_central_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_central_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body    RID.Any
 		impulse Vector3.XYZ
-	}{body, impulse}))
+	}{body, impulse})
 }
 
 /*
@@ -2504,11 +2502,11 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) BodyApplyImpulse(body RID.Any, impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_impulse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), &struct {
 		body     RID.Any
 		impulse  Vector3.XYZ
 		position Vector3.XYZ
-	}{body, impulse, position}))
+	}{body, impulse, position})
 }
 
 /*
@@ -2517,10 +2515,10 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) BodyApplyTorqueImpulse(body RID.Any, impulse Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_torque_impulse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_torque_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_torque_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body    RID.Any
 		impulse Vector3.XYZ
-	}{body, impulse}))
+	}{body, impulse})
 }
 
 /*
@@ -2529,10 +2527,10 @@ This is equivalent to using [method body_apply_force] at the body's center of ma
 */
 //go:nosplit
 func (self class) BodyApplyCentralForce(body RID.Any, force Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_central_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body  RID.Any
 		force Vector3.XYZ
-	}{body, force}))
+	}{body, force})
 }
 
 /*
@@ -2541,11 +2539,11 @@ Applies a positioned force to the body. A force is time dependent and meant to b
 */
 //go:nosplit
 func (self class) BodyApplyForce(body RID.Any, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), &struct {
 		body     RID.Any
 		force    Vector3.XYZ
 		position Vector3.XYZ
-	}{body, force, position}))
+	}{body, force, position})
 }
 
 /*
@@ -2553,10 +2551,10 @@ Applies a rotational force without affecting position. A force is time dependent
 */
 //go:nosplit
 func (self class) BodyApplyTorque(body RID.Any, torque Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_torque
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_apply_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body   RID.Any
 		torque Vector3.XYZ
-	}{body, torque}))
+	}{body, torque})
 }
 
 /*
@@ -2565,10 +2563,10 @@ This is equivalent to using [method body_add_constant_force] at the body's cente
 */
 //go:nosplit
 func (self class) BodyAddConstantCentralForce(body RID.Any, force Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_central_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_constant_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_constant_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body  RID.Any
 		force Vector3.XYZ
-	}{body, force}))
+	}{body, force})
 }
 
 /*
@@ -2577,11 +2575,11 @@ Adds a constant positioned force to the body that keeps being applied over time 
 */
 //go:nosplit
 func (self class) BodyAddConstantForce(body RID.Any, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_constant_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_constant_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), &struct {
 		body     RID.Any
 		force    Vector3.XYZ
 		position Vector3.XYZ
-	}{body, force, position}))
+	}{body, force, position})
 }
 
 /*
@@ -2589,10 +2587,10 @@ Adds a constant rotational force without affecting position that keeps being app
 */
 //go:nosplit
 func (self class) BodyAddConstantTorque(body RID.Any, torque Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_torque
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_constant_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_constant_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body   RID.Any
 		torque Vector3.XYZ
-	}{body, torque}))
+	}{body, torque})
 }
 
 /*
@@ -2601,10 +2599,10 @@ See [method body_add_constant_force] and [method body_add_constant_central_force
 */
 //go:nosplit
 func (self class) BodySetConstantForce(body RID.Any, force Vector3.XYZ) { //gd:PhysicsServer3D.body_set_constant_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_constant_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_constant_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body  RID.Any
 		force Vector3.XYZ
-	}{body, force}))
+	}{body, force})
 }
 
 /*
@@ -2613,7 +2611,7 @@ See [method body_add_constant_force] and [method body_add_constant_central_force
 */
 //go:nosplit
 func (self class) BodyGetConstantForce(body RID.Any) Vector3.XYZ { //gd:PhysicsServer3D.body_get_constant_force
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.body_get_constant_force, gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.body_get_constant_force, gdextension.SizeVector3|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2624,10 +2622,10 @@ See [method body_add_constant_torque].
 */
 //go:nosplit
 func (self class) BodySetConstantTorque(body RID.Any, torque Vector3.XYZ) { //gd:PhysicsServer3D.body_set_constant_torque
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_constant_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_constant_torque, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body   RID.Any
 		torque Vector3.XYZ
-	}{body, torque}))
+	}{body, torque})
 }
 
 /*
@@ -2636,7 +2634,7 @@ See [method body_add_constant_torque].
 */
 //go:nosplit
 func (self class) BodyGetConstantTorque(body RID.Any) Vector3.XYZ { //gd:PhysicsServer3D.body_get_constant_torque
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.body_get_constant_torque, gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.body_get_constant_torque, gdextension.SizeVector3|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2646,27 +2644,27 @@ Sets an axis velocity. The velocity in the given vector axis will be set as the 
 */
 //go:nosplit
 func (self class) BodySetAxisVelocity(body RID.Any, axis_velocity Vector3.XYZ) { //gd:PhysicsServer3D.body_set_axis_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_axis_velocity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_axis_velocity, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		body          RID.Any
 		axis_velocity Vector3.XYZ
-	}{body, axis_velocity}))
+	}{body, axis_velocity})
 }
 
 //go:nosplit
 func (self class) BodySetAxisLock(body RID.Any, axis BodyAxis, lock bool) { //gd:PhysicsServer3D.body_set_axis_lock
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_axis_lock, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_axis_lock, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		body RID.Any
 		axis BodyAxis
 		lock bool
-	}{body, axis, lock}))
+	}{body, axis, lock})
 }
 
 //go:nosplit
 func (self class) BodyIsAxisLocked(body RID.Any, axis BodyAxis) bool { //gd:PhysicsServer3D.body_is_axis_locked
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_is_axis_locked, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_is_axis_locked, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		axis BodyAxis
-	}{body, axis}))
+	}{body, axis})
 	var ret = r_ret
 	return ret
 }
@@ -2676,10 +2674,10 @@ Adds a body to the list of bodies exempt from collisions.
 */
 //go:nosplit
 func (self class) BodyAddCollisionException(body RID.Any, excepted_body RID.Any) { //gd:PhysicsServer3D.body_add_collision_exception
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_add_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body          RID.Any
 		excepted_body RID.Any
-	}{body, excepted_body}))
+	}{body, excepted_body})
 }
 
 /*
@@ -2688,10 +2686,10 @@ Continuous collision detection tries to predict where a moving body will collide
 */
 //go:nosplit
 func (self class) BodyRemoveCollisionException(body RID.Any, excepted_body RID.Any) { //gd:PhysicsServer3D.body_remove_collision_exception
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_remove_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_remove_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body          RID.Any
 		excepted_body RID.Any
-	}{body, excepted_body}))
+	}{body, excepted_body})
 }
 
 /*
@@ -2699,10 +2697,10 @@ Sets the maximum contacts to report. Bodies can keep a log of the contacts with 
 */
 //go:nosplit
 func (self class) BodySetMaxContactsReported(body RID.Any, amount int64) { //gd:PhysicsServer3D.body_set_max_contacts_reported
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_max_contacts_reported, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_max_contacts_reported, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body   RID.Any
 		amount int64
-	}{body, amount}))
+	}{body, amount})
 }
 
 /*
@@ -2710,7 +2708,7 @@ Returns the maximum contacts that can be reported. See [method body_set_max_cont
 */
 //go:nosplit
 func (self class) BodyGetMaxContactsReported(body RID.Any) int64 { //gd:PhysicsServer3D.body_get_max_contacts_reported
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_max_contacts_reported, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.body_get_max_contacts_reported, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2721,10 +2719,10 @@ This method is called when the property [member RigidBody3D.custom_integrator] i
 */
 //go:nosplit
 func (self class) BodySetOmitForceIntegration(body RID.Any, enable bool) { //gd:PhysicsServer3D.body_set_omit_force_integration
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_omit_force_integration, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_omit_force_integration, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		body   RID.Any
 		enable bool
-	}{body, enable}))
+	}{body, enable})
 }
 
 /*
@@ -2732,7 +2730,7 @@ Returns [code]true[/code] if the body is omitting the standard force integration
 */
 //go:nosplit
 func (self class) BodyIsOmittingForceIntegration(body RID.Any) bool { //gd:PhysicsServer3D.body_is_omitting_force_integration
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_is_omitting_force_integration, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_is_omitting_force_integration, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2745,10 +2743,10 @@ The function [param callable] must take the following parameters:
 */
 //go:nosplit
 func (self class) BodySetStateSyncCallback(body RID.Any, callable Callable.Function) { //gd:PhysicsServer3D.body_set_state_sync_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_state_sync_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_state_sync_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		body     RID.Any
 		callable gdextension.Callable
-	}{body, pointers.Get(gd.InternalCallable(callable))}))
+	}{body, pointers.Get(gd.InternalCallable(callable))})
 }
 
 /*
@@ -2761,11 +2759,11 @@ If [param userdata] is [code]null[/code], then [param callable] must take only t
 */
 //go:nosplit
 func (self class) BodySetForceIntegrationCallback(body RID.Any, callable Callable.Function, userdata variant.Any) { //gd:PhysicsServer3D.body_set_force_integration_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_force_integration_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_force_integration_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeVariant<<12), &struct {
 		body     RID.Any
 		callable gdextension.Callable
 		userdata gdextension.Variant
-	}{body, pointers.Get(gd.InternalCallable(callable)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))}))
+	}{body, pointers.Get(gd.InternalCallable(callable)), gdextension.Variant(pointers.Get(gd.InternalVariant(userdata)))})
 }
 
 /*
@@ -2773,10 +2771,10 @@ Sets the body pickable with rays if [param enable] is set.
 */
 //go:nosplit
 func (self class) BodySetRayPickable(body RID.Any, enable bool) { //gd:PhysicsServer3D.body_set_ray_pickable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_ray_pickable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.body_set_ray_pickable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		body   RID.Any
 		enable bool
-	}{body, enable}))
+	}{body, enable})
 }
 
 /*
@@ -2784,11 +2782,11 @@ Returns [code]true[/code] if a collision would result from moving along a motion
 */
 //go:nosplit
 func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTestMotionParameters3D, result [1]gdclass.PhysicsTestMotionResult3D) bool { //gd:PhysicsServer3D.body_test_motion
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_test_motion, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_test_motion, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
 		body       RID.Any
 		parameters gdextension.Object
 		result     gdextension.Object
-	}{body, gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), gdextension.Object(gd.ObjectChecked(result[0].AsObject()))}))
+	}{body, gdextension.Object(gd.ObjectChecked(parameters[0].AsObject())), gdextension.Object(gd.ObjectChecked(result[0].AsObject()))})
 	var ret = r_ret
 	return ret
 }
@@ -2798,7 +2796,7 @@ Returns the [PhysicsDirectBodyState3D] of the body. Returns [code]null[/code] if
 */
 //go:nosplit
 func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyState3D { //gd:PhysicsServer3D.body_get_direct_state
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.body_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.body_get_direct_state, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = [1]gdclass.PhysicsDirectBodyState3D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectBodyState3D](r_ret)}
 	return ret
 }
@@ -2808,7 +2806,7 @@ Creates a new soft body and returns its internal [RID].
 */
 //go:nosplit
 func (self class) SoftBodyCreate() RID.Any { //gd:PhysicsServer3D.soft_body_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.soft_body_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.soft_body_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2818,10 +2816,10 @@ Requests that the physics server updates the rendering server with the latest po
 */
 //go:nosplit
 func (self class) SoftBodyUpdateRenderingServer(body RID.Any, rendering_server_handler [1]gdclass.PhysicsServer3DRenderingServerHandler) { //gd:PhysicsServer3D.soft_body_update_rendering_server
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_update_rendering_server, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_update_rendering_server, 0|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8), &struct {
 		body                     RID.Any
 		rendering_server_handler gdextension.Object
-	}{body, gdextension.Object(gd.ObjectChecked(rendering_server_handler[0].AsObject()))}))
+	}{body, gdextension.Object(gd.ObjectChecked(rendering_server_handler[0].AsObject()))})
 }
 
 /*
@@ -2829,10 +2827,10 @@ Assigns a space to the given soft body (see [method space_create]).
 */
 //go:nosplit
 func (self class) SoftBodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsServer3D.soft_body_set_space
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_space, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body  RID.Any
 		space RID.Any
-	}{body, space}))
+	}{body, space})
 }
 
 /*
@@ -2840,7 +2838,7 @@ Returns the [RID] of the space assigned to the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer3D.soft_body_get_space
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_space, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2850,10 +2848,10 @@ Sets the mesh of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodySetMesh(body RID.Any, mesh RID.Any) { //gd:PhysicsServer3D.soft_body_set_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_mesh, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_mesh, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body RID.Any
 		mesh RID.Any
-	}{body, mesh}))
+	}{body, mesh})
 }
 
 /*
@@ -2861,7 +2859,7 @@ Returns the bounds of the given soft body in global coordinates.
 */
 //go:nosplit
 func (self class) SoftBodyGetBounds(body RID.Any) AABB.PositionSize { //gd:PhysicsServer3D.soft_body_get_bounds
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_bounds, gdextension.SizeAABB|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_bounds, gdextension.SizeAABB|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2871,10 +2869,10 @@ Sets the physics layer or layers the given soft body belongs to.
 */
 //go:nosplit
 func (self class) SoftBodySetCollisionLayer(body RID.Any, layer int64) { //gd:PhysicsServer3D.soft_body_set_collision_layer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_collision_layer, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body  RID.Any
 		layer int64
-	}{body, layer}))
+	}{body, layer})
 }
 
 /*
@@ -2882,7 +2880,7 @@ Returns the physics layer or layers that the given soft body belongs to.
 */
 //go:nosplit
 func (self class) SoftBodyGetCollisionLayer(body RID.Any) int64 { //gd:PhysicsServer3D.soft_body_get_collision_layer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_collision_layer, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2892,10 +2890,10 @@ Sets the physics layer or layers the given soft body can collide with.
 */
 //go:nosplit
 func (self class) SoftBodySetCollisionMask(body RID.Any, mask int64) { //gd:PhysicsServer3D.soft_body_set_collision_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_collision_mask, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body RID.Any
 		mask int64
-	}{body, mask}))
+	}{body, mask})
 }
 
 /*
@@ -2903,7 +2901,7 @@ Returns the physics layer or layers that the given soft body can collide with.
 */
 //go:nosplit
 func (self class) SoftBodyGetCollisionMask(body RID.Any) int64 { //gd:PhysicsServer3D.soft_body_get_collision_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_collision_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -2913,10 +2911,10 @@ Adds the given body to the list of bodies exempt from collisions.
 */
 //go:nosplit
 func (self class) SoftBodyAddCollisionException(body RID.Any, body_b RID.Any) { //gd:PhysicsServer3D.soft_body_add_collision_exception
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_add_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_add_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body   RID.Any
 		body_b RID.Any
-	}{body, body_b}))
+	}{body, body_b})
 }
 
 /*
@@ -2924,10 +2922,10 @@ Removes the given body from the list of bodies exempt from collisions.
 */
 //go:nosplit
 func (self class) SoftBodyRemoveCollisionException(body RID.Any, body_b RID.Any) { //gd:PhysicsServer3D.soft_body_remove_collision_exception
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_remove_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_remove_collision_exception, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		body   RID.Any
 		body_b RID.Any
-	}{body, body_b}))
+	}{body, body_b})
 }
 
 /*
@@ -2936,11 +2934,11 @@ Sets the given body state for the given body (see [enum BodyState] constants).
 */
 //go:nosplit
 func (self class) SoftBodySetState(body RID.Any, state BodyState, v variant.Any) { //gd:PhysicsServer3D.soft_body_set_state
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		body  RID.Any
 		state BodyState
 		v     gdextension.Variant
-	}{body, state, gdextension.Variant(pointers.Get(gd.InternalVariant(v)))}))
+	}{body, state, gdextension.Variant(pointers.Get(gd.InternalVariant(v)))})
 }
 
 /*
@@ -2949,10 +2947,10 @@ Returns the given soft body state (see [enum BodyState] constants).
 */
 //go:nosplit
 func (self class) SoftBodyGetState(body RID.Any, state BodyState) variant.Any { //gd:PhysicsServer3D.soft_body_get_state
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_state, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_state, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body  RID.Any
 		state BodyState
-	}{body, state}))
+	}{body, state})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -2962,10 +2960,10 @@ Sets the global transform of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodySetTransform(body RID.Any, transform Transform3D.BasisOrigin) { //gd:PhysicsServer3D.soft_body_set_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		body      RID.Any
 		transform Transform3D.BasisOrigin
-	}{body, gd.Transposed(transform)}))
+	}{body, gd.Transposed(transform)})
 }
 
 /*
@@ -2973,10 +2971,10 @@ Sets whether the given soft body will be pickable when using object picking.
 */
 //go:nosplit
 func (self class) SoftBodySetRayPickable(body RID.Any, enable bool) { //gd:PhysicsServer3D.soft_body_set_ray_pickable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_ray_pickable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_ray_pickable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		body   RID.Any
 		enable bool
-	}{body, enable}))
+	}{body, enable})
 }
 
 /*
@@ -2984,10 +2982,10 @@ Sets the simulation precision of the given soft body. Increasing this value will
 */
 //go:nosplit
 func (self class) SoftBodySetSimulationPrecision(body RID.Any, simulation_precision int64) { //gd:PhysicsServer3D.soft_body_set_simulation_precision
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_simulation_precision, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_simulation_precision, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body                 RID.Any
 		simulation_precision int64
-	}{body, simulation_precision}))
+	}{body, simulation_precision})
 }
 
 /*
@@ -2995,7 +2993,7 @@ Returns the simulation precision of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetSimulationPrecision(body RID.Any) int64 { //gd:PhysicsServer3D.soft_body_get_simulation_precision
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_simulation_precision, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_simulation_precision, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -3005,10 +3003,10 @@ Sets the total mass for the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodySetTotalMass(body RID.Any, total_mass float64) { //gd:PhysicsServer3D.soft_body_set_total_mass
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_total_mass, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_total_mass, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body       RID.Any
 		total_mass float64
-	}{body, total_mass}))
+	}{body, total_mass})
 }
 
 /*
@@ -3016,7 +3014,7 @@ Returns the total mass assigned to the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetTotalMass(body RID.Any) float64 { //gd:PhysicsServer3D.soft_body_get_total_mass
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_total_mass, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_total_mass, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -3026,10 +3024,10 @@ Sets the linear stiffness of the given soft body. Higher values will result in a
 */
 //go:nosplit
 func (self class) SoftBodySetLinearStiffness(body RID.Any, stiffness float64) { //gd:PhysicsServer3D.soft_body_set_linear_stiffness
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_linear_stiffness, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_linear_stiffness, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body      RID.Any
 		stiffness float64
-	}{body, stiffness}))
+	}{body, stiffness})
 }
 
 /*
@@ -3037,7 +3035,7 @@ Returns the linear stiffness of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetLinearStiffness(body RID.Any) float64 { //gd:PhysicsServer3D.soft_body_get_linear_stiffness
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_linear_stiffness, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_linear_stiffness, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -3047,10 +3045,10 @@ Sets the pressure coefficient of the given soft body. Simulates pressure build-u
 */
 //go:nosplit
 func (self class) SoftBodySetPressureCoefficient(body RID.Any, pressure_coefficient float64) { //gd:PhysicsServer3D.soft_body_set_pressure_coefficient
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_pressure_coefficient, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_pressure_coefficient, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body                 RID.Any
 		pressure_coefficient float64
-	}{body, pressure_coefficient}))
+	}{body, pressure_coefficient})
 }
 
 /*
@@ -3058,7 +3056,7 @@ Returns the pressure coefficient of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetPressureCoefficient(body RID.Any) float64 { //gd:PhysicsServer3D.soft_body_get_pressure_coefficient
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_pressure_coefficient, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_pressure_coefficient, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -3068,10 +3066,10 @@ Sets the damping coefficient of the given soft body. Higher values will slow dow
 */
 //go:nosplit
 func (self class) SoftBodySetDampingCoefficient(body RID.Any, damping_coefficient float64) { //gd:PhysicsServer3D.soft_body_set_damping_coefficient
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_damping_coefficient, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_damping_coefficient, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body                RID.Any
 		damping_coefficient float64
-	}{body, damping_coefficient}))
+	}{body, damping_coefficient})
 }
 
 /*
@@ -3079,7 +3077,7 @@ Returns the damping coefficient of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetDampingCoefficient(body RID.Any) float64 { //gd:PhysicsServer3D.soft_body_get_damping_coefficient
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_damping_coefficient, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_damping_coefficient, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -3090,10 +3088,10 @@ Sets the drag coefficient of the given soft body. Higher values increase this bo
 */
 //go:nosplit
 func (self class) SoftBodySetDragCoefficient(body RID.Any, drag_coefficient float64) { //gd:PhysicsServer3D.soft_body_set_drag_coefficient
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_drag_coefficient, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_drag_coefficient, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		body             RID.Any
 		drag_coefficient float64
-	}{body, drag_coefficient}))
+	}{body, drag_coefficient})
 }
 
 /*
@@ -3101,7 +3099,7 @@ Returns the drag coefficient of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetDragCoefficient(body RID.Any) float64 { //gd:PhysicsServer3D.soft_body_get_drag_coefficient
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_drag_coefficient, gdextension.SizeFloat|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_drag_coefficient, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -3111,11 +3109,11 @@ Moves the given soft body point to a position in global coordinates.
 */
 //go:nosplit
 func (self class) SoftBodyMovePoint(body RID.Any, point_index int64, global_position Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_move_point
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_move_point, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector3<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_move_point, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector3<<12), &struct {
 		body            RID.Any
 		point_index     int64
 		global_position Vector3.XYZ
-	}{body, point_index, global_position}))
+	}{body, point_index, global_position})
 }
 
 /*
@@ -3123,10 +3121,10 @@ Returns the current position of the given soft body point in global coordinates.
 */
 //go:nosplit
 func (self class) SoftBodyGetPointGlobalPosition(body RID.Any, point_index int64) Vector3.XYZ { //gd:PhysicsServer3D.soft_body_get_point_global_position
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_point_global_position, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_point_global_position, gdextension.SizeVector3|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body        RID.Any
 		point_index int64
-	}{body, point_index}))
+	}{body, point_index})
 	var ret = r_ret
 	return ret
 }
@@ -3136,7 +3134,7 @@ Unpins all points of the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyRemoveAllPinnedPoints(body RID.Any) { //gd:PhysicsServer3D.soft_body_remove_all_pinned_points
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_remove_all_pinned_points, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ body RID.Any }{body}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_remove_all_pinned_points, 0|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 }
 
 /*
@@ -3145,11 +3143,11 @@ Pins or unpins the given soft body point based on the value of [param pin].
 */
 //go:nosplit
 func (self class) SoftBodyPinPoint(body RID.Any, point_index int64, pin bool) { //gd:PhysicsServer3D.soft_body_pin_point
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_pin_point, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_pin_point, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		body        RID.Any
 		point_index int64
 		pin         bool
-	}{body, point_index, pin}))
+	}{body, point_index, pin})
 }
 
 /*
@@ -3157,35 +3155,35 @@ Returns whether the given soft body point is pinned.
 */
 //go:nosplit
 func (self class) SoftBodyIsPointPinned(body RID.Any, point_index int64) bool { //gd:PhysicsServer3D.soft_body_is_point_pinned
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.soft_body_is_point_pinned, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.soft_body_is_point_pinned, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		body        RID.Any
 		point_index int64
-	}{body, point_index}))
+	}{body, point_index})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) JointCreate() RID.Any { //gd:PhysicsServer3D.joint_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.joint_create, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.joint_create, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) JointClear(joint RID.Any) { //gd:PhysicsServer3D.joint_clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_clear, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ joint RID.Any }{joint}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_clear, 0|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 }
 
 //go:nosplit
 func (self class) JointMakePin(joint RID.Any, body_A RID.Any, local_A Vector3.XYZ, body_B RID.Any, local_B Vector3.XYZ) { //gd:PhysicsServer3D.joint_make_pin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_pin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeVector3<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_pin, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeVector3<<20), &struct {
 		joint   RID.Any
 		body_A  RID.Any
 		local_A Vector3.XYZ
 		body_B  RID.Any
 		local_B Vector3.XYZ
-	}{joint, body_A, local_A, body_B, local_B}))
+	}{joint, body_A, local_A, body_B, local_B})
 }
 
 /*
@@ -3193,11 +3191,11 @@ Sets a pin_joint parameter (see [enum PinJointParam] constants).
 */
 //go:nosplit
 func (self class) PinJointSetParam(joint RID.Any, param PinJointParam, value float64) { //gd:PhysicsServer3D.pin_joint_set_param
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pin_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pin_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		joint RID.Any
 		param PinJointParam
 		value float64
-	}{joint, param, value}))
+	}{joint, param, value})
 }
 
 /*
@@ -3205,10 +3203,10 @@ Gets a pin_joint parameter (see [enum PinJointParam] constants).
 */
 //go:nosplit
 func (self class) PinJointGetParam(joint RID.Any, param PinJointParam) float64 { //gd:PhysicsServer3D.pin_joint_get_param
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.pin_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.pin_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		param PinJointParam
-	}{joint, param}))
+	}{joint, param})
 	var ret = r_ret
 	return ret
 }
@@ -3218,10 +3216,10 @@ Sets position of the joint in the local space of body a of the joint.
 */
 //go:nosplit
 func (self class) PinJointSetLocalA(joint RID.Any, local_A Vector3.XYZ) { //gd:PhysicsServer3D.pin_joint_set_local_a
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pin_joint_set_local_a, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pin_joint_set_local_a, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		joint   RID.Any
 		local_A Vector3.XYZ
-	}{joint, local_A}))
+	}{joint, local_A})
 }
 
 /*
@@ -3229,7 +3227,7 @@ Returns position of the joint in the local space of body a of the joint.
 */
 //go:nosplit
 func (self class) PinJointGetLocalA(joint RID.Any) Vector3.XYZ { //gd:PhysicsServer3D.pin_joint_get_local_a
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.pin_joint_get_local_a, gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ joint RID.Any }{joint}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.pin_joint_get_local_a, gdextension.SizeVector3|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 	var ret = r_ret
 	return ret
 }
@@ -3239,10 +3237,10 @@ Sets position of the joint in the local space of body b of the joint.
 */
 //go:nosplit
 func (self class) PinJointSetLocalB(joint RID.Any, local_B Vector3.XYZ) { //gd:PhysicsServer3D.pin_joint_set_local_b
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pin_joint_set_local_b, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pin_joint_set_local_b, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
 		joint   RID.Any
 		local_B Vector3.XYZ
-	}{joint, local_B}))
+	}{joint, local_B})
 }
 
 /*
@@ -3250,20 +3248,20 @@ Returns position of the joint in the local space of body b of the joint.
 */
 //go:nosplit
 func (self class) PinJointGetLocalB(joint RID.Any) Vector3.XYZ { //gd:PhysicsServer3D.pin_joint_get_local_b
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.pin_joint_get_local_b, gdextension.SizeVector3|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ joint RID.Any }{joint}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.pin_joint_get_local_b, gdextension.SizeVector3|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) JointMakeHinge(joint RID.Any, body_A RID.Any, hinge_A Transform3D.BasisOrigin, body_B RID.Any, hinge_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_hinge
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_hinge, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_hinge, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), &struct {
 		joint   RID.Any
 		body_A  RID.Any
 		hinge_A Transform3D.BasisOrigin
 		body_B  RID.Any
 		hinge_B Transform3D.BasisOrigin
-	}{joint, body_A, gd.Transposed(hinge_A), body_B, gd.Transposed(hinge_B)}))
+	}{joint, body_A, gd.Transposed(hinge_A), body_B, gd.Transposed(hinge_B)})
 }
 
 /*
@@ -3271,11 +3269,11 @@ Sets a hinge_joint parameter (see [enum HingeJointParam] constants).
 */
 //go:nosplit
 func (self class) HingeJointSetParam(joint RID.Any, param HingeJointParam, value float64) { //gd:PhysicsServer3D.hinge_joint_set_param
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.hinge_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.hinge_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		joint RID.Any
 		param HingeJointParam
 		value float64
-	}{joint, param, value}))
+	}{joint, param, value})
 }
 
 /*
@@ -3283,10 +3281,10 @@ Gets a hinge_joint parameter (see [enum HingeJointParam]).
 */
 //go:nosplit
 func (self class) HingeJointGetParam(joint RID.Any, param HingeJointParam) float64 { //gd:PhysicsServer3D.hinge_joint_get_param
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.hinge_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.hinge_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		param HingeJointParam
-	}{joint, param}))
+	}{joint, param})
 	var ret = r_ret
 	return ret
 }
@@ -3296,11 +3294,11 @@ Sets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
 //go:nosplit
 func (self class) HingeJointSetFlag(joint RID.Any, flag HingeJointFlag, enabled bool) { //gd:PhysicsServer3D.hinge_joint_set_flag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.hinge_joint_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.hinge_joint_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		joint   RID.Any
 		flag    HingeJointFlag
 		enabled bool
-	}{joint, flag, enabled}))
+	}{joint, flag, enabled})
 }
 
 /*
@@ -3308,23 +3306,23 @@ Gets a hinge_joint flag (see [enum HingeJointFlag] constants).
 */
 //go:nosplit
 func (self class) HingeJointGetFlag(joint RID.Any, flag HingeJointFlag) bool { //gd:PhysicsServer3D.hinge_joint_get_flag
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.hinge_joint_get_flag, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.hinge_joint_get_flag, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		flag  HingeJointFlag
-	}{joint, flag}))
+	}{joint, flag})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) JointMakeSlider(joint RID.Any, body_A RID.Any, local_ref_A Transform3D.BasisOrigin, body_B RID.Any, local_ref_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_slider
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_slider, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_slider, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), &struct {
 		joint       RID.Any
 		body_A      RID.Any
 		local_ref_A Transform3D.BasisOrigin
 		body_B      RID.Any
 		local_ref_B Transform3D.BasisOrigin
-	}{joint, body_A, gd.Transposed(local_ref_A), body_B, gd.Transposed(local_ref_B)}))
+	}{joint, body_A, gd.Transposed(local_ref_A), body_B, gd.Transposed(local_ref_B)})
 }
 
 /*
@@ -3332,11 +3330,11 @@ Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
 //go:nosplit
 func (self class) SliderJointSetParam(joint RID.Any, param SliderJointParam, value float64) { //gd:PhysicsServer3D.slider_joint_set_param
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.slider_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.slider_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		joint RID.Any
 		param SliderJointParam
 		value float64
-	}{joint, param, value}))
+	}{joint, param, value})
 }
 
 /*
@@ -3344,23 +3342,23 @@ Gets a slider_joint parameter (see [enum SliderJointParam] constants).
 */
 //go:nosplit
 func (self class) SliderJointGetParam(joint RID.Any, param SliderJointParam) float64 { //gd:PhysicsServer3D.slider_joint_get_param
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.slider_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.slider_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		param SliderJointParam
-	}{joint, param}))
+	}{joint, param})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) JointMakeConeTwist(joint RID.Any, body_A RID.Any, local_ref_A Transform3D.BasisOrigin, body_B RID.Any, local_ref_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_cone_twist
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_cone_twist, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_cone_twist, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), &struct {
 		joint       RID.Any
 		body_A      RID.Any
 		local_ref_A Transform3D.BasisOrigin
 		body_B      RID.Any
 		local_ref_B Transform3D.BasisOrigin
-	}{joint, body_A, gd.Transposed(local_ref_A), body_B, gd.Transposed(local_ref_B)}))
+	}{joint, body_A, gd.Transposed(local_ref_A), body_B, gd.Transposed(local_ref_B)})
 }
 
 /*
@@ -3368,11 +3366,11 @@ Sets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
 //go:nosplit
 func (self class) ConeTwistJointSetParam(joint RID.Any, param ConeTwistJointParam, value float64) { //gd:PhysicsServer3D.cone_twist_joint_set_param
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cone_twist_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cone_twist_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeFloat<<12), &struct {
 		joint RID.Any
 		param ConeTwistJointParam
 		value float64
-	}{joint, param, value}))
+	}{joint, param, value})
 }
 
 /*
@@ -3380,10 +3378,10 @@ Gets a cone_twist_joint parameter (see [enum ConeTwistJointParam] constants).
 */
 //go:nosplit
 func (self class) ConeTwistJointGetParam(joint RID.Any, param ConeTwistJointParam) float64 { //gd:PhysicsServer3D.cone_twist_joint_get_param
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.cone_twist_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.cone_twist_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint RID.Any
 		param ConeTwistJointParam
-	}{joint, param}))
+	}{joint, param})
 	var ret = r_ret
 	return ret
 }
@@ -3393,7 +3391,7 @@ Returns the type of the Joint3D.
 */
 //go:nosplit
 func (self class) JointGetType(joint RID.Any) JointType { //gd:PhysicsServer3D.joint_get_type
-	var r_ret = gdextension.Call[JointType](gd.ObjectChecked(self.AsObject()), methods.joint_get_type, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ joint RID.Any }{joint}))
+	var r_ret = gdextension.Call[JointType](gd.ObjectChecked(self.AsObject()), methods.joint_get_type, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 	var ret = r_ret
 	return ret
 }
@@ -3403,10 +3401,10 @@ Sets the priority value of the Joint3D.
 */
 //go:nosplit
 func (self class) JointSetSolverPriority(joint RID.Any, priority int64) { //gd:PhysicsServer3D.joint_set_solver_priority
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_set_solver_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_set_solver_priority, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		joint    RID.Any
 		priority int64
-	}{joint, priority}))
+	}{joint, priority})
 }
 
 /*
@@ -3414,7 +3412,7 @@ Gets the priority value of the Joint3D.
 */
 //go:nosplit
 func (self class) JointGetSolverPriority(joint RID.Any) int64 { //gd:PhysicsServer3D.joint_get_solver_priority
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.joint_get_solver_priority, gdextension.SizeInt|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ joint RID.Any }{joint}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.joint_get_solver_priority, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 	var ret = r_ret
 	return ret
 }
@@ -3424,10 +3422,10 @@ Sets whether the bodies attached to the [Joint3D] will collide with each other.
 */
 //go:nosplit
 func (self class) JointDisableCollisionsBetweenBodies(joint RID.Any, disable bool) { //gd:PhysicsServer3D.joint_disable_collisions_between_bodies
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_disable_collisions_between_bodies, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_disable_collisions_between_bodies, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		joint   RID.Any
 		disable bool
-	}{joint, disable}))
+	}{joint, disable})
 }
 
 /*
@@ -3435,7 +3433,7 @@ Returns whether the bodies attached to the [Joint3D] will collide with each othe
 */
 //go:nosplit
 func (self class) JointIsDisabledCollisionsBetweenBodies(joint RID.Any) bool { //gd:PhysicsServer3D.joint_is_disabled_collisions_between_bodies
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.joint_is_disabled_collisions_between_bodies, gdextension.SizeBool|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ joint RID.Any }{joint}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.joint_is_disabled_collisions_between_bodies, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ joint RID.Any }{joint})
 	var ret = r_ret
 	return ret
 }
@@ -3445,13 +3443,13 @@ Make the joint a generic six degrees of freedom (6DOF) joint. Use [method generi
 */
 //go:nosplit
 func (self class) JointMakeGeneric6dof(joint RID.Any, body_A RID.Any, local_ref_A Transform3D.BasisOrigin, body_B RID.Any, local_ref_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_generic_6dof
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_generic_6dof, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.joint_make_generic_6dof, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeTransform3D<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeTransform3D<<20), &struct {
 		joint       RID.Any
 		body_A      RID.Any
 		local_ref_A Transform3D.BasisOrigin
 		body_B      RID.Any
 		local_ref_B Transform3D.BasisOrigin
-	}{joint, body_A, gd.Transposed(local_ref_A), body_B, gd.Transposed(local_ref_B)}))
+	}{joint, body_A, gd.Transposed(local_ref_A), body_B, gd.Transposed(local_ref_B)})
 }
 
 /*
@@ -3459,12 +3457,12 @@ Sets the value of a given generic 6DOF joint parameter. See [enum G6DOFJointAxis
 */
 //go:nosplit
 func (self class) Generic6dofJointSetParam(joint RID.Any, axis Vector3.Axis, param G6DOFJointAxisParam, value float64) { //gd:PhysicsServer3D.generic_6dof_joint_set_param
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generic_6dof_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generic_6dof_joint_set_param, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16), &struct {
 		joint RID.Any
 		axis  Vector3.Axis
 		param G6DOFJointAxisParam
 		value float64
-	}{joint, axis, param, value}))
+	}{joint, axis, param, value})
 }
 
 /*
@@ -3472,11 +3470,11 @@ Returns the value of a generic 6DOF joint parameter. See [enum G6DOFJointAxisPar
 */
 //go:nosplit
 func (self class) Generic6dofJointGetParam(joint RID.Any, axis Vector3.Axis, param G6DOFJointAxisParam) float64 { //gd:PhysicsServer3D.generic_6dof_joint_get_param
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.generic_6dof_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.generic_6dof_joint_get_param, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		joint RID.Any
 		axis  Vector3.Axis
 		param G6DOFJointAxisParam
-	}{joint, axis, param}))
+	}{joint, axis, param})
 	var ret = r_ret
 	return ret
 }
@@ -3486,12 +3484,12 @@ Sets the value of a given generic 6DOF joint flag. See [enum G6DOFJointAxisFlag]
 */
 //go:nosplit
 func (self class) Generic6dofJointSetFlag(joint RID.Any, axis Vector3.Axis, flag G6DOFJointAxisFlag, enable bool) { //gd:PhysicsServer3D.generic_6dof_joint_set_flag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generic_6dof_joint_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generic_6dof_joint_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
 		joint  RID.Any
 		axis   Vector3.Axis
 		flag   G6DOFJointAxisFlag
 		enable bool
-	}{joint, axis, flag, enable}))
+	}{joint, axis, flag, enable})
 }
 
 /*
@@ -3499,11 +3497,11 @@ Returns the value of a generic 6DOF joint flag. See [enum G6DOFJointAxisFlag] fo
 */
 //go:nosplit
 func (self class) Generic6dofJointGetFlag(joint RID.Any, axis Vector3.Axis, flag G6DOFJointAxisFlag) bool { //gd:PhysicsServer3D.generic_6dof_joint_get_flag
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.generic_6dof_joint_get_flag, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.generic_6dof_joint_get_flag, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		joint RID.Any
 		axis  Vector3.Axis
 		flag  G6DOFJointAxisFlag
-	}{joint, axis, flag}))
+	}{joint, axis, flag})
 	var ret = r_ret
 	return ret
 }
@@ -3513,7 +3511,7 @@ Destroys any of the objects created by PhysicsServer3D. If the [RID] passed is n
 */
 //go:nosplit
 func (self class) FreeRid(rid RID.Any) { //gd:PhysicsServer3D.free_rid
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_rid, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ rid RID.Any }{rid}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 
 /*
@@ -3521,7 +3519,7 @@ Activates or deactivates the 3D physics engine.
 */
 //go:nosplit
 func (self class) SetActive(active bool) { //gd:PhysicsServer3D.set_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ active bool }{active}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
 
 /*
@@ -3529,7 +3527,7 @@ Returns information about the current state of the 3D physics engine. See [enum 
 */
 //go:nosplit
 func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:PhysicsServer3D.get_process_info
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_info, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ process_info ProcessInfo }{process_info}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_info, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ process_info ProcessInfo }{process_info})
 	var ret = r_ret
 	return ret
 }

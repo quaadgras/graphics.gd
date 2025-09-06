@@ -3,7 +3,6 @@
 // Package StreamPeerGZIP provides methods for working with StreamPeerGZIP object instances.
 package StreamPeerGZIP
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -195,10 +193,10 @@ Start the stream in compression mode with the given [param buffer_size], if [par
 */
 //go:nosplit
 func (self class) StartCompression(use_deflate bool, buffer_size int64) Error.Code { //gd:StreamPeerGZIP.start_compression
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_compression, gdextension.SizeInt|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_compression, gdextension.SizeInt|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
 		use_deflate bool
 		buffer_size int64
-	}{use_deflate, buffer_size}))
+	}{use_deflate, buffer_size})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -208,10 +206,10 @@ Start the stream in decompression mode with the given [param buffer_size], if [p
 */
 //go:nosplit
 func (self class) StartDecompression(use_deflate bool, buffer_size int64) Error.Code { //gd:StreamPeerGZIP.start_decompression
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_decompression, gdextension.SizeInt|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_decompression, gdextension.SizeInt|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
 		use_deflate bool
 		buffer_size int64
-	}{use_deflate, buffer_size}))
+	}{use_deflate, buffer_size})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -221,7 +219,7 @@ Finalizes the stream, compressing or decompressing any buffered chunk left.
 */
 //go:nosplit
 func (self class) Finish() Error.Code { //gd:StreamPeerGZIP.finish
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -231,7 +229,7 @@ Clears this stream, resetting the internal state.
 */
 //go:nosplit
 func (self class) Clear() { //gd:StreamPeerGZIP.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
 func (self class) AsStreamPeerGZIP() Advanced {
 	return Advanced{pointers.AsA[gdclass.StreamPeerGZIP](self[0])}

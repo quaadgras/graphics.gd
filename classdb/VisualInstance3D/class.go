@@ -3,7 +3,6 @@
 // Package VisualInstance3D provides methods for working with VisualInstance3D object instances.
 package VisualInstance3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -123,9 +121,9 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) GetAabb() (_ AABB.PositionSize) { return }
-func (Instance) _get_aabb(impl func(ptr unsafe.Pointer) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_aabb(impl func(ptr gdclass.Receiver) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, AABB.PositionSize(ret))
 	}
@@ -239,9 +237,9 @@ func (self Instance) SetSortingUseAabbCenter(value bool) {
 	class(self).SetSortingUseAabbCenter(value)
 }
 
-func (class) _get_aabb(impl func(ptr unsafe.Pointer) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_aabb(impl func(ptr gdclass.Receiver) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -252,7 +250,7 @@ Sets the resource that is instantiated by this [VisualInstance3D], which changes
 */
 //go:nosplit
 func (self class) SetBase(base RID.Any) { //gd:VisualInstance3D.set_base
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ base RID.Any }{base}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base, 0|(gdextension.SizeRID<<4), &struct{ base RID.Any }{base})
 }
 
 /*
@@ -260,7 +258,7 @@ Returns the RID of the resource associated with this [VisualInstance3D]. For exa
 */
 //go:nosplit
 func (self class) GetBase() RID.Any { //gd:VisualInstance3D.get_base
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_base, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_base, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -270,19 +268,19 @@ Returns the RID of this instance. This RID is the same as the RID returned by [m
 */
 //go:nosplit
 func (self class) GetInstance() RID.Any { //gd:VisualInstance3D.get_instance
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_instance, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_instance, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLayerMask(mask int64) { //gd:VisualInstance3D.set_layer_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 
 //go:nosplit
 func (self class) GetLayerMask() int64 { //gd:VisualInstance3D.get_layer_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -292,10 +290,10 @@ Based on [param value], enables or disables the specified layer in the [member l
 */
 //go:nosplit
 func (self class) SetLayerMaskValue(layer_number int64, value bool) { //gd:VisualInstance3D.set_layer_mask_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
-	}{layer_number, value}))
+	}{layer_number, value})
 }
 
 /*
@@ -303,31 +301,31 @@ Returns whether or not the specified layer of the [member layers] is enabled, gi
 */
 //go:nosplit
 func (self class) GetLayerMaskValue(layer_number int64) bool { //gd:VisualInstance3D.get_layer_mask_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_layer_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_layer_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSortingOffset(offset float64) { //gd:VisualInstance3D.set_sorting_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sorting_offset, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sorting_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 
 //go:nosplit
 func (self class) GetSortingOffset() float64 { //gd:VisualInstance3D.get_sorting_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sorting_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sorting_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSortingUseAabbCenter(enabled bool) { //gd:VisualInstance3D.set_sorting_use_aabb_center
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sorting_use_aabb_center, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sorting_use_aabb_center, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsSortingUseAabbCenter() bool { //gd:VisualInstance3D.is_sorting_use_aabb_center
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sorting_use_aabb_center, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sorting_use_aabb_center, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -337,7 +335,7 @@ Returns the [AABB] (also known as the bounding box) for this [VisualInstance3D].
 */
 //go:nosplit
 func (self class) GetAabb() AABB.PositionSize { //gd:VisualInstance3D.get_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_aabb, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }

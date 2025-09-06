@@ -3,7 +3,6 @@
 // Package PCKPacker provides methods for working with PCKPacker object instances.
 package PCKPacker
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -216,12 +214,12 @@ Creates a new PCK file at the file path [param pck_path]. The [code].pck[/code] 
 */
 //go:nosplit
 func (self class) PckStart(pck_path String.Readable, alignment int64, key String.Readable, encrypt_directory bool) Error.Code { //gd:PCKPacker.pck_start
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pck_start, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pck_start, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), &struct {
 		pck_path          gdextension.String
 		alignment         int64
 		key               gdextension.String
 		encrypt_directory bool
-	}{pointers.Get(gd.InternalString(pck_path)), alignment, pointers.Get(gd.InternalString(key)), encrypt_directory}))
+	}{pointers.Get(gd.InternalString(pck_path)), alignment, pointers.Get(gd.InternalString(key)), encrypt_directory})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -231,11 +229,11 @@ Adds the [param source_path] file to the current PCK package at the [param targe
 */
 //go:nosplit
 func (self class) AddFile(target_path String.Readable, source_path String.Readable, encrypt bool) Error.Code { //gd:PCKPacker.add_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_file, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_file, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), &struct {
 		target_path gdextension.String
 		source_path gdextension.String
 		encrypt     bool
-	}{pointers.Get(gd.InternalString(target_path)), pointers.Get(gd.InternalString(source_path)), encrypt}))
+	}{pointers.Get(gd.InternalString(target_path)), pointers.Get(gd.InternalString(source_path)), encrypt})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -245,7 +243,7 @@ Registers a file removal of the [param target_path] internal path to the PCK. Th
 */
 //go:nosplit
 func (self class) AddFileRemoval(target_path String.Readable) Error.Code { //gd:PCKPacker.add_file_removal
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_file_removal, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ target_path gdextension.String }{pointers.Get(gd.InternalString(target_path))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_file_removal, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ target_path gdextension.String }{pointers.Get(gd.InternalString(target_path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -255,7 +253,7 @@ Writes the files specified using all [method add_file] calls since the last flus
 */
 //go:nosplit
 func (self class) Flush(verbose bool) Error.Code { //gd:PCKPacker.flush
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.flush, gdextension.SizeInt|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ verbose bool }{verbose}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.flush, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ verbose bool }{verbose})
 	var ret = Error.Code(r_ret)
 	return ret
 }

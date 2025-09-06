@@ -3,7 +3,6 @@
 // Package AudioStreamPlaybackResampled provides methods for working with AudioStreamPlaybackResampled object instances.
 package AudioStreamPlaybackResampled
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -106,18 +104,18 @@ type implementation struct{}
 
 func (self implementation) MixResampled(dst_buffer *AudioFrame, frame_count int) (_ int) { return }
 func (self implementation) GetStreamSamplingRate() (_ Float.X)                           { return }
-func (Instance) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame, frame_count int) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _mix_resampled(impl func(ptr gdclass.Receiver, dst_buffer *AudioFrame, frame_count int) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var frame_count = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, dst_buffer, int(frame_count))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
-func (Instance) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_stream_sampling_rate(impl func(ptr gdclass.Receiver) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -169,19 +167,19 @@ func New() Instance {
 	return casted
 }
 
-func (class) _mix_resampled(impl func(ptr unsafe.Pointer, dst_buffer *AudioFrame, frame_count int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _mix_resampled(impl func(ptr gdclass.Receiver, dst_buffer *AudioFrame, frame_count int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var frame_count = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, dst_buffer, frame_count)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 
-func (class) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_stream_sampling_rate(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -189,7 +187,7 @@ func (class) _get_stream_sampling_rate(impl func(ptr unsafe.Pointer) float64) (c
 
 //go:nosplit
 func (self class) BeginResample() { //gd:AudioStreamPlaybackResampled.begin_resample
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.begin_resample, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.begin_resample, 0, &struct{}{})
 }
 func (self class) AsAudioStreamPlaybackResampled() Advanced {
 	return Advanced{pointers.AsA[gdclass.AudioStreamPlaybackResampled](self[0])}

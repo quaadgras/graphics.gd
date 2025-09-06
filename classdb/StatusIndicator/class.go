@@ -3,7 +3,6 @@
 // Package StatusIndicator provides methods for working with StatusIndicator object instances.
 package StatusIndicator
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -189,48 +187,48 @@ func (self Instance) SetVisible(value bool) {
 
 //go:nosplit
 func (self class) SetTooltip(tooltip String.Readable) { //gd:StatusIndicator.set_tooltip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tooltip, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ tooltip gdextension.String }{pointers.Get(gd.InternalString(tooltip))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tooltip, 0|(gdextension.SizeString<<4), &struct{ tooltip gdextension.String }{pointers.Get(gd.InternalString(tooltip))})
 }
 
 //go:nosplit
 func (self class) GetTooltip() String.Readable { //gd:StatusIndicator.get_tooltip
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tooltip, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIcon(texture [1]gdclass.Texture2D) { //gd:StatusIndicator.set_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetIcon() [1]gdclass.Texture2D { //gd:StatusIndicator.get_icon
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_icon, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_icon, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisible(visible bool) { //gd:StatusIndicator.set_visible
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ visible bool }{visible}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
 
 //go:nosplit
 func (self class) IsVisible() bool { //gd:StatusIndicator.is_visible
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visible, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMenu(menu Path.ToNode) { //gd:StatusIndicator.set_menu
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_menu, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ menu gdextension.NodePath }{pointers.Get(gd.InternalNodePath(menu))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_menu, 0|(gdextension.SizeNodePath<<4), &struct{ menu gdextension.NodePath }{pointers.Get(gd.InternalNodePath(menu))})
 }
 
 //go:nosplit
 func (self class) GetMenu() Path.ToNode { //gd:StatusIndicator.get_menu
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_menu, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_menu, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -240,7 +238,7 @@ Returns the status indicator rectangle in screen coordinates. If this status ind
 */
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:StatusIndicator.get_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

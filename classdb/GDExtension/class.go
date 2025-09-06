@@ -3,7 +3,6 @@
 // Package GDExtension provides methods for working with GDExtension object instances.
 package GDExtension
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -163,7 +161,7 @@ Returns [code]true[/code] if this extension's library has been opened.
 */
 //go:nosplit
 func (self class) IsLibraryOpen() bool { //gd:GDExtension.is_library_open
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_library_open, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_library_open, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -173,7 +171,7 @@ Returns the lowest level required for this extension to be properly initialized 
 */
 //go:nosplit
 func (self class) GetMinimumLibraryInitializationLevel() gd.GDExtensionInitializationLevel { //gd:GDExtension.get_minimum_library_initialization_level
-	var r_ret = gdextension.Call[gd.GDExtensionInitializationLevel](gd.ObjectChecked(self.AsObject()), methods.get_minimum_library_initialization_level, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.GDExtensionInitializationLevel](gd.ObjectChecked(self.AsObject()), methods.get_minimum_library_initialization_level, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

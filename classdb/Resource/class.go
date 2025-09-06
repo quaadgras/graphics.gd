@@ -3,7 +3,6 @@
 // Package Resource provides methods for working with Resource object instances.
 package Resource
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -158,9 +156,9 @@ func _setup_local_to_scene():
 
 [/codeblock]
 */
-func (Instance) _setup_local_to_scene(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _setup_local_to_scene(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -168,9 +166,9 @@ func (Instance) _setup_local_to_scene(impl func(ptr unsafe.Pointer)) (cb gd.Exte
 /*
 Override this method to return a custom [RID] when [method get_rid] is called.
 */
-func (Instance) _get_rid(impl func(ptr unsafe.Pointer) ID) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_rid(impl func(ptr gdclass.Receiver) ID) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -179,9 +177,9 @@ func (Instance) _get_rid(impl func(ptr unsafe.Pointer) ID) (cb gd.ExtensionClass
 /*
 For resources that use a variable number of properties, either via [method Object._validate_property] or [method Object._get_property_list], this method should be implemented to correctly clear the resource's state.
 */
-func (Instance) _reset_state(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _reset_state(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -189,11 +187,11 @@ func (Instance) _reset_state(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClas
 /*
 Sets the resource's path to [param path] without involving the resource cache.
 */
-func (Instance) _set_path_cache(impl func(ptr unsafe.Pointer, path string)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_path_cache(impl func(ptr gdclass.Receiver, path string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, path.String())
 	}
 }
@@ -396,9 +394,9 @@ func _setup_local_to_scene():
 
 [/codeblock]
 */
-func (class) _setup_local_to_scene(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _setup_local_to_scene(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -406,9 +404,9 @@ func (class) _setup_local_to_scene(impl func(ptr unsafe.Pointer)) (cb gd.Extensi
 /*
 Override this method to return a custom [RID] when [method get_rid] is called.
 */
-func (class) _get_rid(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_rid(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -417,9 +415,9 @@ func (class) _get_rid(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionCla
 /*
 For resources that use a variable number of properties, either via [method Object._validate_property] or [method Object._get_property_list], this method should be implemented to correctly clear the resource's state.
 */
-func (class) _reset_state(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _reset_state(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -427,18 +425,18 @@ func (class) _reset_state(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCa
 /*
 Sets the resource's path to [param path] without involving the resource cache.
 */
-func (class) _set_path_cache(impl func(ptr unsafe.Pointer, path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_path_cache(impl func(ptr gdclass.Receiver, path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, path)
 	}
 }
 
 //go:nosplit
 func (self class) SetPath(path String.Readable) { //gd:Resource.set_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -446,12 +444,12 @@ Sets the [member resource_path] to [param path], potentially overriding an exist
 */
 //go:nosplit
 func (self class) TakeOverPath(path String.Readable) { //gd:Resource.take_over_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.take_over_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.take_over_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 //go:nosplit
 func (self class) GetPath() String.Readable { //gd:Resource.get_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -461,17 +459,17 @@ Sets the resource's path to [param path] without involving the resource cache.
 */
 //go:nosplit
 func (self class) SetPathCache(path String.Readable) { //gd:Resource.set_path_cache
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_cache, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_cache, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 //go:nosplit
 func (self class) SetName(name String.Readable) { //gd:Resource.set_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 
 //go:nosplit
 func (self class) GetName() String.Readable { //gd:Resource.get_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -481,19 +479,19 @@ Returns the [RID] of this resource (or an empty RID). Many resources (such as [T
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:Resource.get_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLocalToScene(enable bool) { //gd:Resource.set_local_to_scene
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_local_to_scene, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_local_to_scene, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsLocalToScene() bool { //gd:Resource.is_local_to_scene
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_local_to_scene, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_local_to_scene, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -503,7 +501,7 @@ If [member resource_local_to_scene] is set to [code]true[/code] and the resource
 */
 //go:nosplit
 func (self class) GetLocalScene() [1]gdclass.Node { //gd:Resource.get_local_scene
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_local_scene, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_local_scene, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -513,7 +511,7 @@ Calls [method _setup_local_to_scene]. If [member resource_local_to_scene] is set
 */
 //go:nosplit
 func (self class) SetupLocalToScene() { //gd:Resource.setup_local_to_scene
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup_local_to_scene, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup_local_to_scene, 0, &struct{}{})
 }
 
 /*
@@ -521,7 +519,7 @@ For resources that use a variable number of properties, either via [method Objec
 */
 //go:nosplit
 func (self class) ResetState() { //gd:Resource.reset_state
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_state, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_state, 0, &struct{}{})
 }
 
 /*
@@ -530,10 +528,10 @@ Sets the unique identifier to [param id] for the resource with the given [param 
 */
 //go:nosplit
 func (self class) SetIdForPath(path String.Readable, id String.Readable) { //gd:Resource.set_id_for_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_id_for_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_id_for_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		path gdextension.String
 		id   gdextension.String
-	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalString(id))}))
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalString(id))})
 }
 
 /*
@@ -542,7 +540,7 @@ Returns the unique identifier for the resource with the given [param path] from 
 */
 //go:nosplit
 func (self class) GetIdForPath(path String.Readable) String.Readable { //gd:Resource.get_id_for_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id_for_path, gdextension.SizeString|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id_for_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -552,7 +550,7 @@ Returns [code]true[/code] if the resource is built-in (from the engine) or [code
 */
 //go:nosplit
 func (self class) IsBuiltIn() bool { //gd:Resource.is_built_in
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_built_in, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_built_in, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -562,19 +560,19 @@ Generates a unique identifier for a resource to be contained inside a [PackedSce
 */
 //go:nosplit
 func (self class) GenerateSceneUniqueId() String.Readable { //gd:Resource.generate_scene_unique_id
-	var r_ret = gdextension.CallStatic[gdextension.String](methods.generate_scene_unique_id, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.CallStatic[gdextension.String](methods.generate_scene_unique_id, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSceneUniqueId(id String.Readable) { //gd:Resource.set_scene_unique_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_unique_id, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ id gdextension.String }{pointers.Get(gd.InternalString(id))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scene_unique_id, 0|(gdextension.SizeString<<4), &struct{ id gdextension.String }{pointers.Get(gd.InternalString(id))})
 }
 
 //go:nosplit
 func (self class) GetSceneUniqueId() String.Readable { //gd:Resource.get_scene_unique_id
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_scene_unique_id, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_scene_unique_id, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -592,7 +590,7 @@ var damage:
 */
 //go:nosplit
 func (self class) EmitChanged() { //gd:Resource.emit_changed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.emit_changed, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.emit_changed, 0, &struct{}{})
 }
 
 /*
@@ -606,7 +604,7 @@ If [param subresources] is [code]false[/code], a shallow copy is returned; neste
 */
 //go:nosplit
 func (self class) Duplicate(subresources bool) [1]gdclass.Resource { //gd:Resource.duplicate
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.duplicate, gdextension.SizeObject|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ subresources bool }{subresources}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.duplicate, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ subresources bool }{subresources})
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }

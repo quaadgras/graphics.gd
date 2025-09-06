@@ -3,7 +3,6 @@
 // Package EngineProfiler provides methods for working with EngineProfiler object instances.
 package EngineProfiler
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -122,12 +120,12 @@ func (self implementation) Tick(frame_time Float.X, process_time Float.X, physic
 /*
 Called when the profiler is enabled/disabled, along with a set of [param options].
 */
-func (Instance) _toggle(impl func(ptr unsafe.Pointer, enable bool, options []any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _toggle(impl func(ptr gdclass.Receiver, enable bool, options []any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
 		var options = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(options))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, enable, gd.ArrayAs[[]any](gd.InternalArray(options)))
 	}
 }
@@ -135,11 +133,11 @@ func (Instance) _toggle(impl func(ptr unsafe.Pointer, enable bool, options []any
 /*
 Called when data is added to profiler using [method EngineDebugger.profiler_add_frame_data].
 */
-func (Instance) _add_frame(impl func(ptr unsafe.Pointer, data []any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _add_frame(impl func(ptr gdclass.Receiver, data []any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(data))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, gd.ArrayAs[[]any](gd.InternalArray(data)))
 	}
 }
@@ -147,13 +145,13 @@ func (Instance) _add_frame(impl func(ptr unsafe.Pointer, data []any)) (cb gd.Ext
 /*
 Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
 */
-func (Instance) _tick(impl func(ptr unsafe.Pointer, frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _tick(impl func(ptr gdclass.Receiver, frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var frame_time = gd.UnsafeGet[float64](p_args, 0)
 		var process_time = gd.UnsafeGet[float64](p_args, 1)
 		var physics_time = gd.UnsafeGet[float64](p_args, 2)
 		var physics_frame_time = gd.UnsafeGet[float64](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, Float.X(frame_time), Float.X(process_time), Float.X(physics_time), Float.X(physics_frame_time))
 	}
 }
@@ -204,12 +202,12 @@ func New() Instance {
 /*
 Called when the profiler is enabled/disabled, along with a set of [param options].
 */
-func (class) _toggle(impl func(ptr unsafe.Pointer, enable bool, options Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _toggle(impl func(ptr gdclass.Receiver, enable bool, options Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
 		var options = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(options))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, enable, options)
 	}
 }
@@ -217,11 +215,11 @@ func (class) _toggle(impl func(ptr unsafe.Pointer, enable bool, options Array.An
 /*
 Called when data is added to profiler using [method EngineDebugger.profiler_add_frame_data].
 */
-func (class) _add_frame(impl func(ptr unsafe.Pointer, data Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _add_frame(impl func(ptr gdclass.Receiver, data Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(data))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, data)
 	}
 }
@@ -229,13 +227,13 @@ func (class) _add_frame(impl func(ptr unsafe.Pointer, data Array.Any)) (cb gd.Ex
 /*
 Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
 */
-func (class) _tick(impl func(ptr unsafe.Pointer, frame_time float64, process_time float64, physics_time float64, physics_frame_time float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _tick(impl func(ptr gdclass.Receiver, frame_time float64, process_time float64, physics_time float64, physics_frame_time float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var frame_time = gd.UnsafeGet[float64](p_args, 0)
 		var process_time = gd.UnsafeGet[float64](p_args, 1)
 		var physics_time = gd.UnsafeGet[float64](p_args, 2)
 		var physics_frame_time = gd.UnsafeGet[float64](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, frame_time, process_time, physics_time, physics_frame_time)
 	}
 }

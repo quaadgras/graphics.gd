@@ -3,7 +3,6 @@
 // Package OptimizedTranslation provides methods for working with OptimizedTranslation object instances.
 package OptimizedTranslation
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -157,7 +155,7 @@ Generates and sets an optimized translation from the given [Translation] resourc
 */
 //go:nosplit
 func (self class) Generate(from [1]gdclass.Translation) { //gd:OptimizedTranslation.generate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(from[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate, 0|(gdextension.SizeObject<<4), &struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(from[0].AsObject()))})
 }
 func (self class) AsOptimizedTranslation() Advanced {
 	return Advanced{pointers.AsA[gdclass.OptimizedTranslation](self[0])}

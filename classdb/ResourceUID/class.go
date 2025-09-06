@@ -3,7 +3,6 @@
 // Package ResourceUID provides methods for working with ResourceUID object instances.
 package ResourceUID
 
-import "unsafe"
 import "sync"
 import "reflect"
 import "slices"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -204,7 +202,7 @@ Converts the given UID to a [code]uid://[/code] string value.
 */
 //go:nosplit
 func (self class) IdToText(id int64) String.Readable { //gd:ResourceUID.id_to_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.id_to_text, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.id_to_text, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -214,7 +212,7 @@ Extracts the UID value from the given [code]uid://[/code] string.
 */
 //go:nosplit
 func (self class) TextToId(text_id String.Readable) int64 { //gd:ResourceUID.text_to_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.text_to_id, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ text_id gdextension.String }{pointers.Get(gd.InternalString(text_id))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.text_to_id, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ text_id gdextension.String }{pointers.Get(gd.InternalString(text_id))})
 	var ret = r_ret
 	return ret
 }
@@ -225,7 +223,7 @@ In order for this UID to be registered, you must call [method add_id] or [method
 */
 //go:nosplit
 func (self class) CreateId() int64 { //gd:ResourceUID.create_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -235,7 +233,7 @@ Returns whether the given UID value is known to the cache.
 */
 //go:nosplit
 func (self class) HasId(id int64) bool { //gd:ResourceUID.has_id
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_id, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_id, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -246,10 +244,10 @@ Fails with an error if the UID already exists, so be sure to check [method has_i
 */
 //go:nosplit
 func (self class) AddId(id int64, path String.Readable) { //gd:ResourceUID.add_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		id   int64
 		path gdextension.String
-	}{id, pointers.Get(gd.InternalString(path))}))
+	}{id, pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -258,10 +256,10 @@ Fails with an error if the UID does not exist, so be sure to check [method has_i
 */
 //go:nosplit
 func (self class) SetId(id int64, path String.Readable) { //gd:ResourceUID.set_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		id   int64
 		path gdextension.String
-	}{id, pointers.Get(gd.InternalString(path))}))
+	}{id, pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -270,7 +268,7 @@ Fails with an error if the UID does not exist, so be sure to check [method has_i
 */
 //go:nosplit
 func (self class) GetIdPath(id int64) String.Readable { //gd:ResourceUID.get_id_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id_path, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id_path, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -281,7 +279,7 @@ Fails with an error if the UID does not exist, so be sure to check [method has_i
 */
 //go:nosplit
 func (self class) RemoveId(id int64) { //gd:ResourceUID.remove_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_id, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_id, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

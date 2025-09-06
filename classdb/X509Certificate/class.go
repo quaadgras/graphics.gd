@@ -3,7 +3,6 @@
 // Package X509Certificate provides methods for working with X509Certificate object instances.
 package X509Certificate
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -179,7 +177,7 @@ Saves a certificate to the given [param path] (should be a "*.crt" file).
 */
 //go:nosplit
 func (self class) Save(path String.Readable) Error.Code { //gd:X509Certificate.save
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -189,7 +187,7 @@ Loads a certificate from [param path] ("*.crt" file).
 */
 //go:nosplit
 func (self class) Load(path String.Readable) Error.Code { //gd:X509Certificate.load
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -199,7 +197,7 @@ Returns a string representation of the certificate, or an empty string if the ce
 */
 //go:nosplit
 func (self class) SaveToString() String.Readable { //gd:X509Certificate.save_to_string
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.save_to_string, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.save_to_string, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -209,7 +207,7 @@ Loads a certificate from the given [param string].
 */
 //go:nosplit
 func (self class) LoadFromString(s String.Readable) Error.Code { //gd:X509Certificate.load_from_string
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_from_string, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_from_string, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ s gdextension.String }{pointers.Get(gd.InternalString(s))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package JSON provides methods for working with JSON object instances.
 package JSON
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -449,12 +447,12 @@ The [param indent] parameter controls if and how something is indented; its cont
 */
 //go:nosplit
 func (self class) Stringify(data variant.Any, indent String.Readable, sort_keys bool, full_precision bool) String.Readable { //gd:JSON.stringify
-	var r_ret = gdextension.CallStatic[gdextension.String](methods.stringify, gdextension.SizeString|(gdextension.SizeVariant<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.String](methods.stringify, gdextension.SizeString|(gdextension.SizeVariant<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		data           gdextension.Variant
 		indent         gdextension.String
 		sort_keys      bool
 		full_precision bool
-	}{gdextension.Variant(pointers.Get(gd.InternalVariant(data))), pointers.Get(gd.InternalString(indent)), sort_keys, full_precision}))
+	}{gdextension.Variant(pointers.Get(gd.InternalVariant(data))), pointers.Get(gd.InternalString(indent)), sort_keys, full_precision})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -464,7 +462,7 @@ Attempts to parse the [param json_string] provided and returns the parsed data. 
 */
 //go:nosplit
 func (self class) ParseString(json_string String.Readable) variant.Any { //gd:JSON.parse_string
-	var r_ret = gdextension.CallStatic[gdextension.Variant](methods.parse_string, gdextension.SizeVariant|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ json_string gdextension.String }{pointers.Get(gd.InternalString(json_string))}))
+	var r_ret = gdextension.CallStatic[gdextension.Variant](methods.parse_string, gdextension.SizeVariant|(gdextension.SizeString<<4), &struct{ json_string gdextension.String }{pointers.Get(gd.InternalString(json_string))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -477,24 +475,24 @@ The optional [param keep_text] argument instructs the parser to keep a copy of t
 */
 //go:nosplit
 func (self class) Parse(json_text String.Readable, keep_text bool) Error.Code { //gd:JSON.parse
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.parse, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.parse, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		json_text gdextension.String
 		keep_text bool
-	}{pointers.Get(gd.InternalString(json_text)), keep_text}))
+	}{pointers.Get(gd.InternalString(json_text)), keep_text})
 	var ret = Error.Code(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) GetData() variant.Any { //gd:JSON.get_data
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizeVariant, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetData(data variant.Any) { //gd:JSON.set_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ data gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(data)))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizeVariant<<4), &struct{ data gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(data)))})
 }
 
 /*
@@ -502,7 +500,7 @@ Return the text parsed by [method parse] (requires passing [code]keep_text[/code
 */
 //go:nosplit
 func (self class) GetParsedText() String.Readable { //gd:JSON.get_parsed_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_parsed_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_parsed_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -512,7 +510,7 @@ Returns [code]0[/code] if the last call to [method parse] was successful, or the
 */
 //go:nosplit
 func (self class) GetErrorLine() int64 { //gd:JSON.get_error_line
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_error_line, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_error_line, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -522,7 +520,7 @@ Returns an empty string if the last call to [method parse] was successful, or th
 */
 //go:nosplit
 func (self class) GetErrorMessage() String.Readable { //gd:JSON.get_error_message
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_error_message, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_error_message, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -538,10 +536,10 @@ func encode_data(value, full_objects = false):
 */
 //go:nosplit
 func (self class) FromNative(v variant.Any, full_objects bool) variant.Any { //gd:JSON.from_native
-	var r_ret = gdextension.CallStatic[gdextension.Variant](methods.from_native, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Variant](methods.from_native, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
 		v            gdextension.Variant
 		full_objects bool
-	}{gdextension.Variant(pointers.Get(gd.InternalVariant(v))), full_objects}))
+	}{gdextension.Variant(pointers.Get(gd.InternalVariant(v))), full_objects})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -557,10 +555,10 @@ func decode_data(string, allow_objects = false):
 */
 //go:nosplit
 func (self class) ToNative(json variant.Any, allow_objects bool) variant.Any { //gd:JSON.to_native
-	var r_ret = gdextension.CallStatic[gdextension.Variant](methods.to_native, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Variant](methods.to_native, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
 		json          gdextension.Variant
 		allow_objects bool
-	}{gdextension.Variant(pointers.Get(gd.InternalVariant(json))), allow_objects}))
+	}{gdextension.Variant(pointers.Get(gd.InternalVariant(json))), allow_objects})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

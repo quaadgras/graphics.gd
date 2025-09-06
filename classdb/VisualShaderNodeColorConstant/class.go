@@ -3,7 +3,6 @@
 // Package VisualShaderNodeColorConstant provides methods for working with VisualShaderNodeColorConstant object instances.
 package VisualShaderNodeColorConstant
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -157,12 +155,12 @@ func (self Instance) SetConstant(value Color.RGBA) {
 
 //go:nosplit
 func (self class) SetConstant(constant Color.RGBA) { //gd:VisualShaderNodeColorConstant.set_constant
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ constant Color.RGBA }{constant}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeColor<<4), &struct{ constant Color.RGBA }{constant})
 }
 
 //go:nosplit
 func (self class) GetConstant() Color.RGBA { //gd:VisualShaderNodeColorConstant.get_constant
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }

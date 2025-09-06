@@ -129,7 +129,6 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file)
 	fmt.Fprintf(file, `// Package %s provides methods for working with %[1]s object instances.`, class.Name)
 	fmt.Fprintf(file, "\npackage %s\n\n", class.Name)
-	fmt.Fprintln(file, `import "unsafe"`)
 	if singleton {
 		fmt.Fprintln(file, `import "sync"`)
 	}
@@ -158,7 +157,6 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file, "type _ gdclass.Node")
 	fmt.Fprintln(file, "var _ gd.Object")
 	fmt.Fprintln(file, "var _ RefCounted.Instance")
-	fmt.Fprintln(file, "var _ unsafe.Pointer")
 	fmt.Fprintln(file, "var _ reflect.Type")
 	fmt.Fprintln(file, "var _ callframe.Frame")
 	fmt.Fprintln(file, "var _ = pointers.Cycle")

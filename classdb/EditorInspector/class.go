@@ -3,7 +3,6 @@
 // Package EditorInspector provides methods for working with EditorInspector object instances.
 package EditorInspector
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -41,7 +40,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -200,7 +198,7 @@ Shows the properties of the given [param object] in this inspector for editing. 
 */
 //go:nosplit
 func (self class) Edit(obj [1]gd.Object) { //gd:EditorInspector.edit
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))})
 }
 
 /*
@@ -208,7 +206,7 @@ Gets the path of the currently selected property.
 */
 //go:nosplit
 func (self class) GetSelectedPath() String.Readable { //gd:EditorInspector.get_selected_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_selected_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_selected_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -218,7 +216,7 @@ Returns the object currently selected in this inspector.
 */
 //go:nosplit
 func (self class) GetEditedObject() [1]gd.Object { //gd:EditorInspector.get_edited_object
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -228,7 +226,7 @@ Creates a property editor that can be used by plugin UI to edit the specified pr
 */
 //go:nosplit
 func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type, path String.Readable, hint ClassDB.PropertyHint, hint_text String.Readable, usage int64, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.instantiate_property_editor, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.instantiate_property_editor, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
 		obj       gdextension.Object
 		atype     variant.Type
 		path      gdextension.String
@@ -236,7 +234,7 @@ func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type
 		hint_text gdextension.String
 		usage     int64
 		wide      bool
-	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), atype, pointers.Get(gd.InternalString(path)), hint, pointers.Get(gd.InternalString(hint_text)), usage, wide}))
+	}{gdextension.Object(gd.ObjectChecked(obj[0].AsObject())), atype, pointers.Get(gd.InternalString(path)), hint, pointers.Get(gd.InternalString(hint_text)), usage, wide})
 	var ret = [1]gdclass.EditorProperty{gd.PointerMustAssertInstanceID[gdclass.EditorProperty](r_ret)}
 	return ret
 }

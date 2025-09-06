@@ -3,7 +3,6 @@
 // Package ImageFormatLoaderExtension provides methods for working with ImageFormatLoaderExtension object instances.
 package ImageFormatLoaderExtension
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -124,9 +122,9 @@ func (self implementation) LoadImage(image Image.Instance, fileaccess FileAccess
 /*
 Returns the list of file extensions for this image format. Files with the given extensions will be treated as image file and loaded using this class.
 */
-func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -140,7 +138,7 @@ func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []strin
 /*
 Loads the content of [param fileaccess] into the provided [param image].
 */
-func (Instance) _load_image(impl func(ptr unsafe.Pointer, image Image.Instance, fileaccess FileAccess.Instance, flags ImageFormatLoader.LoaderFlags, scale Float.X) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _load_image(impl func(ptr gdclass.Receiver, image Image.Instance, fileaccess FileAccess.Instance, flags ImageFormatLoader.LoaderFlags, scale Float.X) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
@@ -150,7 +148,7 @@ func (Instance) _load_image(impl func(ptr unsafe.Pointer, image Image.Instance, 
 		defer pointers.End(fileaccess[0])
 		var flags = gd.UnsafeGet[ImageFormatLoader.LoaderFlags](p_args, 2)
 		var scale = gd.UnsafeGet[float64](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, image, fileaccess, flags, Float.X(scale))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -221,9 +219,9 @@ func New() Instance {
 /*
 Returns the list of file extensions for this image format. Files with the given extensions will be treated as image file and loaded using this class.
 */
-func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -237,7 +235,7 @@ func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) Packed.Str
 /*
 Loads the content of [param fileaccess] into the provided [param image].
 */
-func (class) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags ImageFormatLoader.LoaderFlags, scale float64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _load_image(impl func(ptr gdclass.Receiver, image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags ImageFormatLoader.LoaderFlags, scale float64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
@@ -247,7 +245,7 @@ func (class) _load_image(impl func(ptr unsafe.Pointer, image [1]gdclass.Image, f
 		defer pointers.End(fileaccess[0])
 		var flags = gd.UnsafeGet[ImageFormatLoader.LoaderFlags](p_args, 2)
 		var scale = gd.UnsafeGet[float64](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, image, fileaccess, flags, scale)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -263,7 +261,7 @@ Add this format loader to the engine, allowing it to recognize the file extensio
 */
 //go:nosplit
 func (self class) AddFormatLoader() { //gd:ImageFormatLoaderExtension.add_format_loader
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_format_loader, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_format_loader, 0, &struct{}{})
 }
 
 /*
@@ -271,7 +269,7 @@ Remove this format loader from the engine.
 */
 //go:nosplit
 func (self class) RemoveFormatLoader() { //gd:ImageFormatLoaderExtension.remove_format_loader
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_format_loader, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_format_loader, 0, &struct{}{})
 }
 func (self class) AsImageFormatLoaderExtension() Advanced {
 	return Advanced{pointers.AsA[gdclass.ImageFormatLoaderExtension](self[0])}

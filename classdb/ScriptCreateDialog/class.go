@@ -3,7 +3,6 @@
 // Package ScriptCreateDialog provides methods for working with ScriptCreateDialog object instances.
 package ScriptCreateDialog
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -39,7 +38,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -189,12 +187,12 @@ Prefills required fields to configure the ScriptCreateDialog for use.
 */
 //go:nosplit
 func (self class) Config(inherits String.Readable, path String.Readable, built_in_enabled bool, load_enabled bool) { //gd:ScriptCreateDialog.config
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.config, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.config, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		inherits         gdextension.String
 		path             gdextension.String
 		built_in_enabled bool
 		load_enabled     bool
-	}{pointers.Get(gd.InternalString(inherits)), pointers.Get(gd.InternalString(path)), built_in_enabled, load_enabled}))
+	}{pointers.Get(gd.InternalString(inherits)), pointers.Get(gd.InternalString(path)), built_in_enabled, load_enabled})
 }
 func (self Instance) OnScriptCreated(cb func(script Script.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

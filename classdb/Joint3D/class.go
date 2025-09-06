@@ -3,7 +3,6 @@
 // Package Joint3D provides methods for working with Joint3D object instances.
 package Joint3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -191,48 +189,48 @@ func (self Instance) SetExcludeNodesFromCollision(value bool) {
 
 //go:nosplit
 func (self class) SetNodeA(node Path.ToNode) { //gd:Joint3D.set_node_a
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_a, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_a, 0|(gdextension.SizeNodePath<<4), &struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))})
 }
 
 //go:nosplit
 func (self class) GetNodeA() Path.ToNode { //gd:Joint3D.get_node_a
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_a, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_a, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNodeB(node Path.ToNode) { //gd:Joint3D.set_node_b
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_b, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_b, 0|(gdextension.SizeNodePath<<4), &struct{ node gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node))})
 }
 
 //go:nosplit
 func (self class) GetNodeB() Path.ToNode { //gd:Joint3D.get_node_b
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_b, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_node_b, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSolverPriority(priority int64) { //gd:Joint3D.set_solver_priority
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_solver_priority, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ priority int64 }{priority}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_solver_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
 
 //go:nosplit
 func (self class) GetSolverPriority() int64 { //gd:Joint3D.get_solver_priority
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_solver_priority, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_solver_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExcludeNodesFromCollision(enable bool) { //gd:Joint3D.set_exclude_nodes_from_collision
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_nodes_from_collision, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_nodes_from_collision, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) GetExcludeNodesFromCollision() bool { //gd:Joint3D.get_exclude_nodes_from_collision
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_nodes_from_collision, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_nodes_from_collision, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -242,7 +240,7 @@ Returns the joint's internal [RID] from the [PhysicsServer3D].
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:Joint3D.get_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package ArrayMesh provides methods for working with ArrayMesh object instances.
 package ArrayMesh
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -38,7 +37,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -400,7 +398,7 @@ Adds name for a blend shape that will be added with [method add_surface_from_arr
 */
 //go:nosplit
 func (self class) AddBlendShape(name String.Name) { //gd:ArrayMesh.add_blend_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_blend_shape, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_blend_shape, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 /*
@@ -408,7 +406,7 @@ Returns the number of blend shapes that the [ArrayMesh] holds.
 */
 //go:nosplit
 func (self class) GetBlendShapeCount() int64 { //gd:ArrayMesh.get_blend_shape_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -418,7 +416,7 @@ Returns the name of the blend shape at this index.
 */
 //go:nosplit
 func (self class) GetBlendShapeName(index int64) String.Name { //gd:ArrayMesh.get_blend_shape_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_name, gdextension.SizeStringName|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_name, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -428,10 +426,10 @@ Sets the name of the blend shape at this index.
 */
 //go:nosplit
 func (self class) SetBlendShapeName(index int64, name String.Name) { //gd:ArrayMesh.set_blend_shape_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_shape_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_shape_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
 		index int64
 		name  gdextension.StringName
-	}{index, pointers.Get(gd.InternalStringName(name))}))
+	}{index, pointers.Get(gd.InternalStringName(name))})
 }
 
 /*
@@ -439,17 +437,17 @@ Removes all blend shapes from this [ArrayMesh].
 */
 //go:nosplit
 func (self class) ClearBlendShapes() { //gd:ArrayMesh.clear_blend_shapes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_blend_shapes, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_blend_shapes, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetBlendShapeMode(mode Mesh.BlendShapeMode) { //gd:ArrayMesh.set_blend_shape_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_shape_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Mesh.BlendShapeMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_shape_mode, 0|(gdextension.SizeInt<<4), &struct{ mode Mesh.BlendShapeMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetBlendShapeMode() Mesh.BlendShapeMode { //gd:ArrayMesh.get_blend_shape_mode
-	var r_ret = gdextension.Call[Mesh.BlendShapeMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Mesh.BlendShapeMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_shape_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -465,13 +463,13 @@ The [param flags] argument is the bitwise OR of, as required: One value of [enum
 */
 //go:nosplit
 func (self class) AddSurfaceFromArrays(primitive Mesh.PrimitiveType, arrays Array.Any, blend_shapes Array.Contains[Array.Any], lods Dictionary.Any, flags Mesh.ArrayFormat) { //gd:ArrayMesh.add_surface_from_arrays
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_surface_from_arrays, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeDictionary<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_surface_from_arrays, 0|(gdextension.SizeInt<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeArray<<12)|(gdextension.SizeDictionary<<16)|(gdextension.SizeInt<<20), &struct {
 		primitive    Mesh.PrimitiveType
 		arrays       gdextension.Array
 		blend_shapes gdextension.Array
 		lods         gdextension.Dictionary
 		flags        Mesh.ArrayFormat
-	}{primitive, pointers.Get(gd.InternalArray(arrays)), pointers.Get(gd.InternalArray(blend_shapes)), pointers.Get(gd.InternalDictionary(lods)), flags}))
+	}{primitive, pointers.Get(gd.InternalArray(arrays)), pointers.Get(gd.InternalArray(blend_shapes)), pointers.Get(gd.InternalDictionary(lods)), flags})
 }
 
 /*
@@ -479,7 +477,7 @@ Removes all surfaces from this [ArrayMesh].
 */
 //go:nosplit
 func (self class) ClearSurfaces() { //gd:ArrayMesh.clear_surfaces
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_surfaces, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_surfaces, 0, &struct{}{})
 }
 
 /*
@@ -487,34 +485,34 @@ Removes the surface at the given index from the Mesh, shifting surfaces with hig
 */
 //go:nosplit
 func (self class) SurfaceRemove(surf_idx int64) { //gd:ArrayMesh.surface_remove
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_remove, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_remove, 0|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 }
 
 //go:nosplit
 func (self class) SurfaceUpdateVertexRegion(surf_idx int64, offset int64, data Packed.Bytes) { //gd:ArrayMesh.surface_update_vertex_region
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_update_vertex_region, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_update_vertex_region, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
 		surf_idx int64
 		offset   int64
 		data     gdextension.PackedArray[byte]
-	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
+	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
 }
 
 //go:nosplit
 func (self class) SurfaceUpdateAttributeRegion(surf_idx int64, offset int64, data Packed.Bytes) { //gd:ArrayMesh.surface_update_attribute_region
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_update_attribute_region, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_update_attribute_region, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
 		surf_idx int64
 		offset   int64
 		data     gdextension.PackedArray[byte]
-	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
+	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
 }
 
 //go:nosplit
 func (self class) SurfaceUpdateSkinRegion(surf_idx int64, offset int64, data Packed.Bytes) { //gd:ArrayMesh.surface_update_skin_region
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_update_skin_region, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_update_skin_region, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
 		surf_idx int64
 		offset   int64
 		data     gdextension.PackedArray[byte]
-	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))}))
+	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
 }
 
 /*
@@ -522,7 +520,7 @@ Returns the length in vertices of the vertex array in the requested surface (see
 */
 //go:nosplit
 func (self class) SurfaceGetArrayLen(surf_idx int64) int64 { //gd:ArrayMesh.surface_get_array_len
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.surface_get_array_len, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.surface_get_array_len, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 	var ret = r_ret
 	return ret
 }
@@ -532,7 +530,7 @@ Returns the length in indices of the index array in the requested surface (see [
 */
 //go:nosplit
 func (self class) SurfaceGetArrayIndexLen(surf_idx int64) int64 { //gd:ArrayMesh.surface_get_array_index_len
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.surface_get_array_index_len, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.surface_get_array_index_len, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 	var ret = r_ret
 	return ret
 }
@@ -542,7 +540,7 @@ Returns the format mask of the requested surface (see [method add_surface_from_a
 */
 //go:nosplit
 func (self class) SurfaceGetFormat(surf_idx int64) Mesh.ArrayFormat { //gd:ArrayMesh.surface_get_format
-	var r_ret = gdextension.Call[Mesh.ArrayFormat](gd.ObjectChecked(self.AsObject()), methods.surface_get_format, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
+	var r_ret = gdextension.Call[Mesh.ArrayFormat](gd.ObjectChecked(self.AsObject()), methods.surface_get_format, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 	var ret = r_ret
 	return ret
 }
@@ -552,7 +550,7 @@ Returns the primitive type of the requested surface (see [method add_surface_fro
 */
 //go:nosplit
 func (self class) SurfaceGetPrimitiveType(surf_idx int64) Mesh.PrimitiveType { //gd:ArrayMesh.surface_get_primitive_type
-	var r_ret = gdextension.Call[Mesh.PrimitiveType](gd.ObjectChecked(self.AsObject()), methods.surface_get_primitive_type, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
+	var r_ret = gdextension.Call[Mesh.PrimitiveType](gd.ObjectChecked(self.AsObject()), methods.surface_get_primitive_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 	var ret = r_ret
 	return ret
 }
@@ -562,7 +560,7 @@ Returns the index of the first surface with this name held within this [ArrayMes
 */
 //go:nosplit
 func (self class) SurfaceFindByName(name String.Readable) int64 { //gd:ArrayMesh.surface_find_by_name
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.surface_find_by_name, gdextension.SizeInt|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.surface_find_by_name, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
@@ -572,10 +570,10 @@ Sets a name for a given surface.
 */
 //go:nosplit
 func (self class) SurfaceSetName(surf_idx int64, name String.Readable) { //gd:ArrayMesh.surface_set_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.surface_set_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		surf_idx int64
 		name     gdextension.String
-	}{surf_idx, pointers.Get(gd.InternalString(name))}))
+	}{surf_idx, pointers.Get(gd.InternalString(name))})
 }
 
 /*
@@ -583,7 +581,7 @@ Gets the name assigned to this surface.
 */
 //go:nosplit
 func (self class) SurfaceGetName(surf_idx int64) String.Readable { //gd:ArrayMesh.surface_get_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.surface_get_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ surf_idx int64 }{surf_idx}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.surface_get_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ surf_idx int64 }{surf_idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -593,7 +591,7 @@ Regenerates tangents for each of the [ArrayMesh]'s surfaces.
 */
 //go:nosplit
 func (self class) RegenNormalMaps() { //gd:ArrayMesh.regen_normal_maps
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.regen_normal_maps, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.regen_normal_maps, 0, &struct{}{})
 }
 
 /*
@@ -601,34 +599,34 @@ Performs a UV unwrap on the [ArrayMesh] to prepare the mesh for lightmapping.
 */
 //go:nosplit
 func (self class) LightmapUnwrap(transform Transform3D.BasisOrigin, texel_size float64) Error.Code { //gd:ArrayMesh.lightmap_unwrap
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.lightmap_unwrap, gdextension.SizeInt|(gdextension.SizeTransform3D<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.lightmap_unwrap, gdextension.SizeInt|(gdextension.SizeTransform3D<<4)|(gdextension.SizeFloat<<8), &struct {
 		transform  Transform3D.BasisOrigin
 		texel_size float64
-	}{gd.Transposed(transform), texel_size}))
+	}{gd.Transposed(transform), texel_size})
 	var ret = Error.Code(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:ArrayMesh.set_custom_aabb
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_aabb, 0|(gdextension.SizeAABB<<4), unsafe.Pointer(&struct{ aabb AABB.PositionSize }{aabb}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }
 
 //go:nosplit
 func (self class) GetCustomAabb() AABB.PositionSize { //gd:ArrayMesh.get_custom_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShadowMesh(mesh [1]gdclass.ArrayMesh) { //gd:ArrayMesh.set_shadow_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_mesh, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetShadowMesh() [1]gdclass.ArrayMesh { //gd:ArrayMesh.get_shadow_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mesh, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }

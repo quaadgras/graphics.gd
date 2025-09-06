@@ -3,7 +3,6 @@
 // Package Input provides methods for working with Input object instances.
 package Input
 
-import "unsafe"
 import "sync"
 import "reflect"
 import "slices"
@@ -38,7 +37,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -799,7 +797,7 @@ Returns [code]true[/code] if any action, key, joypad button, or mouse button is 
 */
 //go:nosplit
 func (self class) IsAnythingPressed() bool { //gd:Input.is_anything_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_anything_pressed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_anything_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -811,7 +809,7 @@ Returns [code]true[/code] if you are pressing the Latin key in the current keybo
 */
 //go:nosplit
 func (self class) IsKeyPressed(keycode Key) bool { //gd:Input.is_key_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_key_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ keycode int64 }{int64(keycode)}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_key_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ keycode int64 }{int64(keycode)})
 	var ret = r_ret
 	return ret
 }
@@ -823,7 +821,7 @@ Returns [code]true[/code] if you are pressing the key in the physical location o
 */
 //go:nosplit
 func (self class) IsPhysicalKeyPressed(keycode Key) bool { //gd:Input.is_physical_key_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physical_key_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ keycode int64 }{int64(keycode)}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_physical_key_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ keycode int64 }{int64(keycode)})
 	var ret = r_ret
 	return ret
 }
@@ -833,7 +831,7 @@ Returns [code]true[/code] if you are pressing the key with the [param keycode] p
 */
 //go:nosplit
 func (self class) IsKeyLabelPressed(keycode Key) bool { //gd:Input.is_key_label_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_key_label_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ keycode int64 }{int64(keycode)}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_key_label_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ keycode int64 }{int64(keycode)})
 	var ret = r_ret
 	return ret
 }
@@ -843,7 +841,7 @@ Returns [code]true[/code] if you are pressing the mouse button specified with [e
 */
 //go:nosplit
 func (self class) IsMouseButtonPressed(button MouseButton) bool { //gd:Input.is_mouse_button_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_mouse_button_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ button int64 }{int64(button)}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_mouse_button_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ button int64 }{int64(button)})
 	var ret = r_ret
 	return ret
 }
@@ -853,10 +851,10 @@ Returns [code]true[/code] if you are pressing the joypad button (see [enum JoyBu
 */
 //go:nosplit
 func (self class) IsJoyButtonPressed(device int64, button JoyButton) bool { //gd:Input.is_joy_button_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_joy_button_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_joy_button_pressed, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		device int64
 		button int64
-	}{device, int64(button)}))
+	}{device, int64(button)})
 	var ret = r_ret
 	return ret
 }
@@ -868,10 +866,10 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsActionPressed(action String.Name, exact_match bool) bool { //gd:Input.is_action_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -886,10 +884,10 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsActionJustPressed(action String.Name, exact_match bool) bool { //gd:Input.is_action_just_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -902,10 +900,10 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsActionJustReleased(action String.Name, exact_match bool) bool { //gd:Input.is_action_just_released
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_released, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_released, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -916,10 +914,10 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) GetActionStrength(action String.Name, exact_match bool) float64 { //gd:Input.get_action_strength
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_action_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_action_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -930,10 +928,10 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) GetActionRawStrength(action String.Name, exact_match bool) float64 { //gd:Input.get_action_raw_strength
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_action_raw_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_action_raw_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -944,10 +942,10 @@ This is a shorthand for writing [code]Input.get_action_strength("positive_action
 */
 //go:nosplit
 func (self class) GetAxis(negative_action String.Name, positive_action String.Name) float64 { //gd:Input.get_axis
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_axis, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_axis, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		negative_action gdextension.StringName
 		positive_action gdextension.StringName
-	}{pointers.Get(gd.InternalStringName(negative_action)), pointers.Get(gd.InternalStringName(positive_action))}))
+	}{pointers.Get(gd.InternalStringName(negative_action)), pointers.Get(gd.InternalStringName(positive_action))})
 	var ret = r_ret
 	return ret
 }
@@ -959,13 +957,13 @@ By default, the deadzone is automatically calculated from the average of the act
 */
 //go:nosplit
 func (self class) GetVector(negative_x String.Name, positive_x String.Name, negative_y String.Name, positive_y String.Name, deadzone float64) Vector2.XY { //gd:Input.get_vector
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_vector, gdextension.SizeVector2|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeStringName<<16)|(gdextension.SizeFloat<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_vector, gdextension.SizeVector2|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeStringName<<16)|(gdextension.SizeFloat<<20), &struct {
 		negative_x gdextension.StringName
 		positive_x gdextension.StringName
 		negative_y gdextension.StringName
 		positive_y gdextension.StringName
 		deadzone   float64
-	}{pointers.Get(gd.InternalStringName(negative_x)), pointers.Get(gd.InternalStringName(positive_x)), pointers.Get(gd.InternalStringName(negative_y)), pointers.Get(gd.InternalStringName(positive_y)), deadzone}))
+	}{pointers.Get(gd.InternalStringName(negative_x)), pointers.Get(gd.InternalStringName(positive_x)), pointers.Get(gd.InternalStringName(negative_y)), pointers.Get(gd.InternalStringName(positive_y)), deadzone})
 	var ret = r_ret
 	return ret
 }
@@ -975,10 +973,10 @@ Adds a new mapping entry (in SDL2 format) to the mapping database. Optionally up
 */
 //go:nosplit
 func (self class) AddJoyMapping(mapping String.Readable, update_existing bool) { //gd:Input.add_joy_mapping
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_joy_mapping, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_joy_mapping, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		mapping         gdextension.String
 		update_existing bool
-	}{pointers.Get(gd.InternalString(mapping)), update_existing}))
+	}{pointers.Get(gd.InternalString(mapping)), update_existing})
 }
 
 /*
@@ -987,7 +985,7 @@ On Android, Godot will map to an internal fallback mapping.
 */
 //go:nosplit
 func (self class) RemoveJoyMapping(guid String.Readable) { //gd:Input.remove_joy_mapping
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_joy_mapping, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ guid gdextension.String }{pointers.Get(gd.InternalString(guid))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_joy_mapping, 0|(gdextension.SizeString<<4), &struct{ guid gdextension.String }{pointers.Get(gd.InternalString(guid))})
 }
 
 /*
@@ -995,7 +993,7 @@ Returns [code]true[/code] if the system knows the specified device. This means t
 */
 //go:nosplit
 func (self class) IsJoyKnown(device int64) bool { //gd:Input.is_joy_known
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_joy_known, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_joy_known, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = r_ret
 	return ret
 }
@@ -1005,10 +1003,10 @@ Returns the current value of the joypad axis at given index (see [enum JoyAxis])
 */
 //go:nosplit
 func (self class) GetJoyAxis(device int64, axis JoyAxis) float64 { //gd:Input.get_joy_axis
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_joy_axis, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_joy_axis, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		device int64
 		axis   int64
-	}{device, int64(axis)}))
+	}{device, int64(axis)})
 	var ret = r_ret
 	return ret
 }
@@ -1018,7 +1016,7 @@ Returns the name of the joypad at the specified device index, e.g. [code]PS4 Con
 */
 //go:nosplit
 func (self class) GetJoyName(device int64) String.Readable { //gd:Input.get_joy_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_joy_name, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_joy_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1029,7 +1027,7 @@ On Windows, all XInput joypad GUIDs will be overridden by Godot to [code]__XINPU
 */
 //go:nosplit
 func (self class) GetJoyGuid(device int64) String.Readable { //gd:Input.get_joy_guid
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_joy_guid, gdextension.SizeString|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_joy_guid, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1049,7 +1047,7 @@ On Linux:
 */
 //go:nosplit
 func (self class) GetJoyInfo(device int64) Dictionary.Any { //gd:Input.get_joy_info
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_joy_info, gdextension.SizeDictionary|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_joy_info, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -1060,10 +1058,10 @@ Queries whether an input device should be ignored or not. Devices can be ignored
 */
 //go:nosplit
 func (self class) ShouldIgnoreDevice(vendor_id int64, product_id int64) bool { //gd:Input.should_ignore_device
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.should_ignore_device, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.should_ignore_device, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		vendor_id  int64
 		product_id int64
-	}{vendor_id, product_id}))
+	}{vendor_id, product_id})
 	var ret = r_ret
 	return ret
 }
@@ -1073,7 +1071,7 @@ Returns an [Array] containing the device IDs of all currently connected joypads.
 */
 //go:nosplit
 func (self class) GetConnectedJoypads() Array.Contains[int64] { //gd:Input.get_connected_joypads
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_connected_joypads, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_connected_joypads, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -1083,7 +1081,7 @@ Returns the strength of the joypad vibration: x is the strength of the weak moto
 */
 //go:nosplit
 func (self class) GetJoyVibrationStrength(device int64) Vector2.XY { //gd:Input.get_joy_vibration_strength
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_joy_vibration_strength, gdextension.SizeVector2|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_joy_vibration_strength, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = r_ret
 	return ret
 }
@@ -1093,7 +1091,7 @@ Returns the duration of the current vibration effect in seconds.
 */
 //go:nosplit
 func (self class) GetJoyVibrationDuration(device int64) float64 { //gd:Input.get_joy_vibration_duration
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_joy_vibration_duration, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_joy_vibration_duration, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 	var ret = r_ret
 	return ret
 }
@@ -1105,12 +1103,12 @@ Starts to vibrate the joypad. Joypads usually come with two rumble motors, a str
 */
 //go:nosplit
 func (self class) StartJoyVibration(device int64, weak_magnitude float64, strong_magnitude float64, duration float64) { //gd:Input.start_joy_vibration
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start_joy_vibration, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start_joy_vibration, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
 		device           int64
 		weak_magnitude   float64
 		strong_magnitude float64
 		duration         float64
-	}{device, weak_magnitude, strong_magnitude, duration}))
+	}{device, weak_magnitude, strong_magnitude, duration})
 }
 
 /*
@@ -1118,7 +1116,7 @@ Stops the vibration of the joypad started with [method start_joy_vibration].
 */
 //go:nosplit
 func (self class) StopJoyVibration(device int64) { //gd:Input.stop_joy_vibration
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_joy_vibration, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_joy_vibration, 0|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 }
 
 /*
@@ -1132,10 +1130,10 @@ Vibrate the handheld device for the specified duration in milliseconds.
 */
 //go:nosplit
 func (self class) VibrateHandheld(duration_ms int64, amplitude float64) { //gd:Input.vibrate_handheld
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.vibrate_handheld, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.vibrate_handheld, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		duration_ms int64
 		amplitude   float64
-	}{duration_ms, amplitude}))
+	}{duration_ms, amplitude})
 }
 
 /*
@@ -1145,7 +1143,7 @@ Returns the gravity in m/s² of the device's accelerometer sensor, if the device
 */
 //go:nosplit
 func (self class) GetGravity() Vector3.XYZ { //gd:Input.get_gravity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gravity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1158,7 +1156,7 @@ Note this method returns an empty [Vector3] when running from the editor even wh
 */
 //go:nosplit
 func (self class) GetAccelerometer() Vector3.XYZ { //gd:Input.get_accelerometer
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_accelerometer, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_accelerometer, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1170,7 +1168,7 @@ Returns the magnetic field strength in micro-Tesla for all axes of the device's 
 */
 //go:nosplit
 func (self class) GetMagnetometer() Vector3.XYZ { //gd:Input.get_magnetometer
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_magnetometer, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_magnetometer, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1182,7 +1180,7 @@ Returns the rotation rate in rad/s around a device's X, Y, and Z axes of the gyr
 */
 //go:nosplit
 func (self class) GetGyroscope() Vector3.XYZ { //gd:Input.get_gyroscope
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gyroscope, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_gyroscope, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1193,7 +1191,7 @@ Sets the gravity value of the accelerometer sensor. Can be used for debugging on
 */
 //go:nosplit
 func (self class) SetGravity(value Vector3.XYZ) { //gd:Input.set_gravity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ value Vector3.XYZ }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gravity, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
 }
 
 /*
@@ -1202,7 +1200,7 @@ Sets the acceleration value of the accelerometer sensor. Can be used for debuggi
 */
 //go:nosplit
 func (self class) SetAccelerometer(value Vector3.XYZ) { //gd:Input.set_accelerometer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accelerometer, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ value Vector3.XYZ }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accelerometer, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
 }
 
 /*
@@ -1211,7 +1209,7 @@ Sets the value of the magnetic field of the magnetometer sensor. Can be used for
 */
 //go:nosplit
 func (self class) SetMagnetometer(value Vector3.XYZ) { //gd:Input.set_magnetometer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_magnetometer, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ value Vector3.XYZ }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_magnetometer, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
 }
 
 /*
@@ -1220,7 +1218,7 @@ Sets the value of the rotation rate of the gyroscope sensor. Can be used for deb
 */
 //go:nosplit
 func (self class) SetGyroscope(value Vector3.XYZ) { //gd:Input.set_gyroscope
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gyroscope, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ value Vector3.XYZ }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gyroscope, 0|(gdextension.SizeVector3<<4), &struct{ value Vector3.XYZ }{value})
 }
 
 /*
@@ -1228,7 +1226,7 @@ Returns the last mouse velocity. To provide a precise and jitter-free velocity, 
 */
 //go:nosplit
 func (self class) GetLastMouseVelocity() Vector2.XY { //gd:Input.get_last_mouse_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_last_mouse_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_last_mouse_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1238,7 +1236,7 @@ Returns the last mouse velocity in screen coordinates. To provide a precise and 
 */
 //go:nosplit
 func (self class) GetLastMouseScreenVelocity() Vector2.XY { //gd:Input.get_last_mouse_screen_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_last_mouse_screen_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_last_mouse_screen_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1248,19 +1246,19 @@ Returns mouse buttons as a bitmask. If multiple mouse buttons are pressed at the
 */
 //go:nosplit
 func (self class) GetMouseButtonMask() MouseButtonMask { //gd:Input.get_mouse_button_mask
-	var r_ret = gdextension.Call[MouseButtonMask](gd.ObjectChecked(self.AsObject()), methods.get_mouse_button_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[MouseButtonMask](gd.ObjectChecked(self.AsObject()), methods.get_mouse_button_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMouseMode(mode MouseModeValue) { //gd:Input.set_mouse_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode MouseModeValue }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_mode, 0|(gdextension.SizeInt<<4), &struct{ mode MouseModeValue }{mode})
 }
 
 //go:nosplit
 func (self class) GetMouseMode() MouseModeValue { //gd:Input.get_mouse_mode
-	var r_ret = gdextension.Call[MouseModeValue](gd.ObjectChecked(self.AsObject()), methods.get_mouse_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[MouseModeValue](gd.ObjectChecked(self.AsObject()), methods.get_mouse_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1272,7 +1270,7 @@ Mouse position is clipped to the limits of the screen resolution, or to the limi
 */
 //go:nosplit
 func (self class) WarpMouse(position Vector2.XY) { //gd:Input.warp_mouse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 
 /*
@@ -1282,10 +1280,10 @@ The strength can be used for non-boolean actions, it's ranged between 0 and 1 re
 */
 //go:nosplit
 func (self class) ActionPress(action String.Name, strength float64) { //gd:Input.action_press
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_press, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_press, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
 		action   gdextension.StringName
 		strength float64
-	}{pointers.Get(gd.InternalStringName(action)), strength}))
+	}{pointers.Get(gd.InternalStringName(action)), strength})
 }
 
 /*
@@ -1293,7 +1291,7 @@ If the specified action is already pressed, this will release it.
 */
 //go:nosplit
 func (self class) ActionRelease(action String.Name) { //gd:Input.action_release
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_release, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.action_release, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
 }
 
 /*
@@ -1303,7 +1301,7 @@ Sets the default cursor shape to be used in the viewport instead of [constant CU
 */
 //go:nosplit
 func (self class) SetDefaultCursorShape(shape CursorShape) { //gd:Input.set_default_cursor_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_cursor_shape, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ shape CursorShape }{shape}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_cursor_shape, 0|(gdextension.SizeInt<<4), &struct{ shape CursorShape }{shape})
 }
 
 /*
@@ -1311,7 +1309,7 @@ Returns the currently assigned cursor shape (see [enum CursorShape]).
 */
 //go:nosplit
 func (self class) GetCurrentCursorShape() CursorShape { //gd:Input.get_current_cursor_shape
-	var r_ret = gdextension.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_current_cursor_shape, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.get_current_cursor_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1326,11 +1324,11 @@ Sets a custom mouse cursor image, which is only visible inside the game window. 
 */
 //go:nosplit
 func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape CursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_mouse_cursor, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_mouse_cursor, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2<<12), &struct {
 		image   gdextension.Object
 		shape   CursorShape
 		hotspot Vector2.XY
-	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), shape, hotspot}))
+	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), shape, hotspot})
 }
 
 /*
@@ -1353,17 +1351,17 @@ Input.ParseInputEvent(cancelEvent);
 */
 //go:nosplit
 func (self class) ParseInputEvent(event [1]gdclass.InputEvent) { //gd:Input.parse_input_event
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.parse_input_event, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(event[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.parse_input_event, 0|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(event[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) SetUseAccumulatedInput(enable bool) { //gd:Input.set_use_accumulated_input
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_accumulated_input, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_accumulated_input, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsUsingAccumulatedInput() bool { //gd:Input.is_using_accumulated_input
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_accumulated_input, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_accumulated_input, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1374,29 +1372,29 @@ The engine will already do this itself at key execution points (at least once pe
 */
 //go:nosplit
 func (self class) FlushBufferedEvents() { //gd:Input.flush_buffered_events
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.flush_buffered_events, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.flush_buffered_events, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetEmulateMouseFromTouch(enable bool) { //gd:Input.set_emulate_mouse_from_touch
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emulate_mouse_from_touch, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emulate_mouse_from_touch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsEmulatingMouseFromTouch() bool { //gd:Input.is_emulating_mouse_from_touch
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emulating_mouse_from_touch, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emulating_mouse_from_touch, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmulateTouchFromMouse(enable bool) { //gd:Input.set_emulate_touch_from_mouse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emulate_touch_from_mouse, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emulate_touch_from_mouse, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsEmulatingTouchFromMouse() bool { //gd:Input.is_emulating_touch_from_mouse
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emulating_touch_from_mouse, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emulating_touch_from_mouse, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package AnimatedTexture provides methods for working with AnimatedTexture object instances.
 package AnimatedTexture
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -232,60 +230,60 @@ func (self Instance) SetSpeedScale(value Float.X) {
 
 //go:nosplit
 func (self class) SetFrames(frames int64) { //gd:AnimatedTexture.set_frames
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frames, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frames int64 }{frames}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frames, 0|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
 }
 
 //go:nosplit
 func (self class) GetFrames() int64 { //gd:AnimatedTexture.get_frames
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurrentFrame(frame_ int64) { //gd:AnimatedTexture.set_current_frame
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_frame, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frame_ int64 }{frame_}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_frame, 0|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
 }
 
 //go:nosplit
 func (self class) GetCurrentFrame() int64 { //gd:AnimatedTexture.get_current_frame
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_frame, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPause(pause bool) { //gd:AnimatedTexture.set_pause
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pause, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pause bool }{pause}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pause, 0|(gdextension.SizeBool<<4), &struct{ pause bool }{pause})
 }
 
 //go:nosplit
 func (self class) GetPause() bool { //gd:AnimatedTexture.get_pause
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_pause, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_pause, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOneShot(one_shot bool) { //gd:AnimatedTexture.set_one_shot
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ one_shot bool }{one_shot}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), &struct{ one_shot bool }{one_shot})
 }
 
 //go:nosplit
 func (self class) GetOneShot() bool { //gd:AnimatedTexture.get_one_shot
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_one_shot, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_one_shot, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSpeedScale(scale float64) { //gd:AnimatedTexture.set_speed_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
 
 //go:nosplit
 func (self class) GetSpeedScale() float64 { //gd:AnimatedTexture.get_speed_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -296,10 +294,10 @@ You can define any number of textures up to [constant MAX_FRAMES], but keep in m
 */
 //go:nosplit
 func (self class) SetFrameTexture(frame_ int64, texture [1]gdclass.Texture2D) { //gd:AnimatedTexture.set_frame_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_texture, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		frame_  int64
 		texture gdextension.Object
-	}{frame_, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))}))
+	}{frame_, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
 }
 
 /*
@@ -307,7 +305,7 @@ Returns the given frame's [Texture2D].
 */
 //go:nosplit
 func (self class) GetFrameTexture(frame_ int64) [1]gdclass.Texture2D { //gd:AnimatedTexture.get_frame_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_frame_texture, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frame_ int64 }{frame_}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_frame_texture, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -317,10 +315,10 @@ Sets the duration of any given [param frame]. The final duration is affected by 
 */
 //go:nosplit
 func (self class) SetFrameDuration(frame_ int64, duration float64) { //gd:AnimatedTexture.set_frame_duration
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_duration, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_duration, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		frame_   int64
 		duration float64
-	}{frame_, duration}))
+	}{frame_, duration})
 }
 
 /*
@@ -328,7 +326,7 @@ Returns the given [param frame]'s duration, in seconds.
 */
 //go:nosplit
 func (self class) GetFrameDuration(frame_ int64) float64 { //gd:AnimatedTexture.get_frame_duration
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frame_duration, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ frame_ int64 }{frame_}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frame_duration, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
 	var ret = r_ret
 	return ret
 }

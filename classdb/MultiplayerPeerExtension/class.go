@@ -3,7 +3,6 @@
 // Package MultiplayerPeerExtension provides methods for working with MultiplayerPeerExtension object instances.
 package MultiplayerPeerExtension
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -102,9 +100,9 @@ type Any interface {
 }
 type Interface interface {
 	//Called when a packet needs to be received by the [MultiplayerAPI], with [param r_buffer_size] being the size of the binary [param r_buffer] in bytes.
-	GetPacket(r_buffer unsafe.Pointer, r_buffer_size *int32) error
+	GetPacket(r_buffer gdextension.Pointer, r_buffer_size *int32) error
 	//Called when a packet needs to be sent by the [MultiplayerAPI], with [param p_buffer_size] being the size of the binary [param p_buffer] in bytes.
-	PutPacket(p_buffer unsafe.Pointer, p_buffer_size int) error
+	PutPacket(p_buffer gdextension.Pointer, p_buffer_size int) error
 	//Called when the available packet count is internally requested by the [MultiplayerAPI].
 	GetAvailablePacketCount() int
 	//Called when the maximum allowed packet size (in bytes) is requested by the [MultiplayerAPI].
@@ -154,38 +152,42 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetPacket(r_buffer unsafe.Pointer, r_buffer_size *int32) (_ error) { return }
-func (self implementation) PutPacket(p_buffer unsafe.Pointer, p_buffer_size int) (_ error)    { return }
-func (self implementation) GetAvailablePacketCount() (_ int)                                  { return }
-func (self implementation) GetMaxPacketSize() (_ int)                                         { return }
-func (self implementation) GetPacketScript() (_ []byte)                                       { return }
-func (self implementation) PutPacketScript(p_buffer []byte) (_ error)                         { return }
-func (self implementation) GetPacketChannel() (_ int)                                         { return }
-func (self implementation) GetPacketMode() (_ MultiplayerPeer.TransferMode)                   { return }
-func (self implementation) SetTransferChannel(p_channel int)                                  { return }
-func (self implementation) GetTransferChannel() (_ int)                                       { return }
-func (self implementation) SetTransferMode(p_mode MultiplayerPeer.TransferMode)               { return }
-func (self implementation) GetTransferMode() (_ MultiplayerPeer.TransferMode)                 { return }
-func (self implementation) SetTargetPeer(p_peer int)                                          { return }
-func (self implementation) GetPacketPeer() (_ int)                                            { return }
-func (self implementation) IsServer() (_ bool)                                                { return }
-func (self implementation) Poll()                                                             { return }
-func (self implementation) Close()                                                            { return }
-func (self implementation) DisconnectPeer(p_peer int, p_force bool)                           { return }
-func (self implementation) GetUniqueId() (_ int)                                              { return }
-func (self implementation) SetRefuseNewConnections(p_enable bool)                             { return }
-func (self implementation) IsRefusingNewConnections() (_ bool)                                { return }
-func (self implementation) IsServerRelaySupported() (_ bool)                                  { return }
-func (self implementation) GetConnectionStatus() (_ MultiplayerPeer.ConnectionStatus)         { return }
+func (self implementation) GetPacket(r_buffer gdextension.Pointer, r_buffer_size *int32) (_ error) {
+	return
+}
+func (self implementation) PutPacket(p_buffer gdextension.Pointer, p_buffer_size int) (_ error) {
+	return
+}
+func (self implementation) GetAvailablePacketCount() (_ int)                          { return }
+func (self implementation) GetMaxPacketSize() (_ int)                                 { return }
+func (self implementation) GetPacketScript() (_ []byte)                               { return }
+func (self implementation) PutPacketScript(p_buffer []byte) (_ error)                 { return }
+func (self implementation) GetPacketChannel() (_ int)                                 { return }
+func (self implementation) GetPacketMode() (_ MultiplayerPeer.TransferMode)           { return }
+func (self implementation) SetTransferChannel(p_channel int)                          { return }
+func (self implementation) GetTransferChannel() (_ int)                               { return }
+func (self implementation) SetTransferMode(p_mode MultiplayerPeer.TransferMode)       { return }
+func (self implementation) GetTransferMode() (_ MultiplayerPeer.TransferMode)         { return }
+func (self implementation) SetTargetPeer(p_peer int)                                  { return }
+func (self implementation) GetPacketPeer() (_ int)                                    { return }
+func (self implementation) IsServer() (_ bool)                                        { return }
+func (self implementation) Poll()                                                     { return }
+func (self implementation) Close()                                                    { return }
+func (self implementation) DisconnectPeer(p_peer int, p_force bool)                   { return }
+func (self implementation) GetUniqueId() (_ int)                                      { return }
+func (self implementation) SetRefuseNewConnections(p_enable bool)                     { return }
+func (self implementation) IsRefusingNewConnections() (_ bool)                        { return }
+func (self implementation) IsServerRelaySupported() (_ bool)                          { return }
+func (self implementation) GetConnectionStatus() (_ MultiplayerPeer.ConnectionStatus) { return }
 
 /*
 Called when a packet needs to be received by the [MultiplayerAPI], with [param r_buffer_size] being the size of the binary [param r_buffer] in bytes.
 */
-func (Instance) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, r_buffer, r_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -199,11 +201,11 @@ func (Instance) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointe
 /*
 Called when a packet needs to be sent by the [MultiplayerAPI], with [param p_buffer_size] being the size of the binary [param p_buffer] in bytes.
 */
-func (Instance) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size int) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension.Pointer, p_buffer_size int) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var p_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_buffer, int(p_buffer_size))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -217,9 +219,9 @@ func (Instance) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointe
 /*
 Called when the available packet count is internally requested by the [MultiplayerAPI].
 */
-func (Instance) _get_available_packet_count(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_available_packet_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -228,9 +230,9 @@ func (Instance) _get_available_packet_count(impl func(ptr unsafe.Pointer) int) (
 /*
 Called when the maximum allowed packet size (in bytes) is requested by the [MultiplayerAPI].
 */
-func (Instance) _get_max_packet_size(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_max_packet_size(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -239,9 +241,9 @@ func (Instance) _get_max_packet_size(impl func(ptr unsafe.Pointer) int) (cb gd.E
 /*
 Called when a packet needs to be received by the [MultiplayerAPI], if [method _get_packet] isn't implemented. Use this when extending this class via GDScript.
 */
-func (Instance) _get_packet_script(impl func(ptr unsafe.Pointer) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_packet_script(impl func(ptr gdclass.Receiver) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.Bytes(Packed.New(ret...)))))
 
@@ -255,11 +257,11 @@ func (Instance) _get_packet_script(impl func(ptr unsafe.Pointer) []byte) (cb gd.
 /*
 Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_packet] isn't implemented. Use this when extending this class via GDScript.
 */
-func (Instance) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer []byte) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _put_packet_script(impl func(ptr gdclass.Receiver, p_buffer []byte) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_buffer = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](p_buffer)))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_buffer.Bytes())
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -273,9 +275,9 @@ func (Instance) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer []byte
 /*
 Called to get the channel over which the next available packet was received. See [method MultiplayerPeer.get_packet_channel].
 */
-func (Instance) _get_packet_channel(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_packet_channel(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -284,9 +286,9 @@ func (Instance) _get_packet_channel(impl func(ptr unsafe.Pointer) int) (cb gd.Ex
 /*
 Called to get the transfer mode the remote peer used to send the next available packet. See [method MultiplayerPeer.get_packet_mode].
 */
-func (Instance) _get_packet_mode(impl func(ptr unsafe.Pointer) MultiplayerPeer.TransferMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_packet_mode(impl func(ptr gdclass.Receiver) MultiplayerPeer.TransferMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -295,10 +297,10 @@ func (Instance) _get_packet_mode(impl func(ptr unsafe.Pointer) MultiplayerPeer.T
 /*
 Called when the channel to use is set for this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_channel]).
 */
-func (Instance) _set_transfer_channel(impl func(ptr unsafe.Pointer, p_channel int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_transfer_channel(impl func(ptr gdclass.Receiver, p_channel int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_channel = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(p_channel))
 	}
 }
@@ -306,9 +308,9 @@ func (Instance) _set_transfer_channel(impl func(ptr unsafe.Pointer, p_channel in
 /*
 Called when the transfer channel to use is read on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_channel]).
 */
-func (Instance) _get_transfer_channel(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_transfer_channel(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -317,10 +319,10 @@ func (Instance) _get_transfer_channel(impl func(ptr unsafe.Pointer) int) (cb gd.
 /*
 Called when the transfer mode is set on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_mode]).
 */
-func (Instance) _set_transfer_mode(impl func(ptr unsafe.Pointer, p_mode MultiplayerPeer.TransferMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_transfer_mode(impl func(ptr gdclass.Receiver, p_mode MultiplayerPeer.TransferMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_mode = gd.UnsafeGet[MultiplayerPeer.TransferMode](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, p_mode)
 	}
 }
@@ -328,9 +330,9 @@ func (Instance) _set_transfer_mode(impl func(ptr unsafe.Pointer, p_mode Multipla
 /*
 Called when the transfer mode to use is read on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_mode]).
 */
-func (Instance) _get_transfer_mode(impl func(ptr unsafe.Pointer) MultiplayerPeer.TransferMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_transfer_mode(impl func(ptr gdclass.Receiver) MultiplayerPeer.TransferMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -339,10 +341,10 @@ func (Instance) _get_transfer_mode(impl func(ptr unsafe.Pointer) MultiplayerPeer
 /*
 Called when the target peer to use is set for this [MultiplayerPeer] (see [method MultiplayerPeer.set_target_peer]).
 */
-func (Instance) _set_target_peer(impl func(ptr unsafe.Pointer, p_peer int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_target_peer(impl func(ptr gdclass.Receiver, p_peer int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_peer = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(p_peer))
 	}
 }
@@ -350,9 +352,9 @@ func (Instance) _set_target_peer(impl func(ptr unsafe.Pointer, p_peer int)) (cb 
 /*
 Called when the ID of the [MultiplayerPeer] who sent the most recent packet is requested (see [method MultiplayerPeer.get_packet_peer]).
 */
-func (Instance) _get_packet_peer(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_packet_peer(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -361,9 +363,9 @@ func (Instance) _get_packet_peer(impl func(ptr unsafe.Pointer) int) (cb gd.Exten
 /*
 Called when the "is server" status is requested on the [MultiplayerAPI]. See [method MultiplayerAPI.is_server].
 */
-func (Instance) _is_server(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_server(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -372,9 +374,9 @@ func (Instance) _is_server(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionC
 /*
 Called when the [MultiplayerAPI] is polled. See [method MultiplayerAPI.poll].
 */
-func (Instance) _poll(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _poll(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -382,9 +384,9 @@ func (Instance) _poll(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVi
 /*
 Called when the multiplayer peer should be immediately closed (see [method MultiplayerPeer.close]).
 */
-func (Instance) _close(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _close(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -392,11 +394,11 @@ func (Instance) _close(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallV
 /*
 Called when the connected [param p_peer] should be forcibly disconnected (see [method MultiplayerPeer.disconnect_peer]).
 */
-func (Instance) _disconnect_peer(impl func(ptr unsafe.Pointer, p_peer int, p_force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _disconnect_peer(impl func(ptr gdclass.Receiver, p_peer int, p_force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_peer = gd.UnsafeGet[int64](p_args, 0)
 		var p_force = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(p_peer), p_force)
 	}
 }
@@ -404,9 +406,9 @@ func (Instance) _disconnect_peer(impl func(ptr unsafe.Pointer, p_peer int, p_for
 /*
 Called when the unique ID of this [MultiplayerPeer] is requested (see [method MultiplayerPeer.get_unique_id]). The value must be between [code]1[/code] and [code]2147483647[/code].
 */
-func (Instance) _get_unique_id(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_unique_id(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -415,10 +417,10 @@ func (Instance) _get_unique_id(impl func(ptr unsafe.Pointer) int) (cb gd.Extensi
 /*
 Called when the "refuse new connections" status is set on this [MultiplayerPeer] (see [member MultiplayerPeer.refuse_new_connections]).
 */
-func (Instance) _set_refuse_new_connections(impl func(ptr unsafe.Pointer, p_enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_refuse_new_connections(impl func(ptr gdclass.Receiver, p_enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_enable = gd.UnsafeGet[bool](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, p_enable)
 	}
 }
@@ -426,9 +428,9 @@ func (Instance) _set_refuse_new_connections(impl func(ptr unsafe.Pointer, p_enab
 /*
 Called when the "refuse new connections" status is requested on this [MultiplayerPeer] (see [member MultiplayerPeer.refuse_new_connections]).
 */
-func (Instance) _is_refusing_new_connections(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_refusing_new_connections(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -437,9 +439,9 @@ func (Instance) _is_refusing_new_connections(impl func(ptr unsafe.Pointer) bool)
 /*
 Called to check if the server can act as a relay in the current configuration. See [method MultiplayerPeer.is_server_relay_supported].
 */
-func (Instance) _is_server_relay_supported(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_server_relay_supported(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -448,9 +450,9 @@ func (Instance) _is_server_relay_supported(impl func(ptr unsafe.Pointer) bool) (
 /*
 Called when the connection status is requested on the [MultiplayerPeer] (see [method MultiplayerPeer.get_connection_status]).
 */
-func (Instance) _get_connection_status(impl func(ptr unsafe.Pointer) MultiplayerPeer.ConnectionStatus) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_connection_status(impl func(ptr gdclass.Receiver) MultiplayerPeer.ConnectionStatus) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -502,11 +504,11 @@ func New() Instance {
 /*
 Called when a packet needs to be received by the [MultiplayerAPI], with [param r_buffer_size] being the size of the binary [param r_buffer] in bytes.
 */
-func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_buffer_size *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_buffer_size *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, r_buffer, r_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -520,11 +522,11 @@ func (class) _get_packet(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, 
 /*
 Called when a packet needs to be sent by the [MultiplayerAPI], with [param p_buffer_size] being the size of the binary [param p_buffer] in bytes.
 */
-func (class) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, p_buffer_size int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension.Pointer, p_buffer_size int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var p_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_buffer, p_buffer_size)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -538,9 +540,9 @@ func (class) _put_packet(impl func(ptr unsafe.Pointer, p_buffer unsafe.Pointer, 
 /*
 Called when the available packet count is internally requested by the [MultiplayerAPI].
 */
-func (class) _get_available_packet_count(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_available_packet_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -549,9 +551,9 @@ func (class) _get_available_packet_count(impl func(ptr unsafe.Pointer) int64) (c
 /*
 Called when the maximum allowed packet size (in bytes) is requested by the [MultiplayerAPI].
 */
-func (class) _get_max_packet_size(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_max_packet_size(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -560,9 +562,9 @@ func (class) _get_max_packet_size(impl func(ptr unsafe.Pointer) int64) (cb gd.Ex
 /*
 Called when a packet needs to be received by the [MultiplayerAPI], if [method _get_packet] isn't implemented. Use this when extending this class via GDScript.
 */
-func (class) _get_packet_script(impl func(ptr unsafe.Pointer) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_packet_script(impl func(ptr gdclass.Receiver) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret)))
 
@@ -576,11 +578,11 @@ func (class) _get_packet_script(impl func(ptr unsafe.Pointer) Packed.Bytes) (cb 
 /*
 Called when a packet needs to be sent by the [MultiplayerAPI], if [method _put_packet] isn't implemented. Use this when extending this class via GDScript.
 */
-func (class) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer Packed.Bytes) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_packet_script(impl func(ptr gdclass.Receiver, p_buffer Packed.Bytes) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_buffer = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](p_buffer)))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_buffer)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -594,9 +596,9 @@ func (class) _put_packet_script(impl func(ptr unsafe.Pointer, p_buffer Packed.By
 /*
 Called to get the channel over which the next available packet was received. See [method MultiplayerPeer.get_packet_channel].
 */
-func (class) _get_packet_channel(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_packet_channel(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -605,9 +607,9 @@ func (class) _get_packet_channel(impl func(ptr unsafe.Pointer) int64) (cb gd.Ext
 /*
 Called to get the transfer mode the remote peer used to send the next available packet. See [method MultiplayerPeer.get_packet_mode].
 */
-func (class) _get_packet_mode(impl func(ptr unsafe.Pointer) MultiplayerPeer.TransferMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_packet_mode(impl func(ptr gdclass.Receiver) MultiplayerPeer.TransferMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -616,10 +618,10 @@ func (class) _get_packet_mode(impl func(ptr unsafe.Pointer) MultiplayerPeer.Tran
 /*
 Called when the channel to use is set for this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_channel]).
 */
-func (class) _set_transfer_channel(impl func(ptr unsafe.Pointer, p_channel int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_transfer_channel(impl func(ptr gdclass.Receiver, p_channel int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_channel = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, p_channel)
 	}
 }
@@ -627,9 +629,9 @@ func (class) _set_transfer_channel(impl func(ptr unsafe.Pointer, p_channel int64
 /*
 Called when the transfer channel to use is read on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_channel]).
 */
-func (class) _get_transfer_channel(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_transfer_channel(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -638,10 +640,10 @@ func (class) _get_transfer_channel(impl func(ptr unsafe.Pointer) int64) (cb gd.E
 /*
 Called when the transfer mode is set on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_mode]).
 */
-func (class) _set_transfer_mode(impl func(ptr unsafe.Pointer, p_mode MultiplayerPeer.TransferMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_transfer_mode(impl func(ptr gdclass.Receiver, p_mode MultiplayerPeer.TransferMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_mode = gd.UnsafeGet[MultiplayerPeer.TransferMode](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, p_mode)
 	}
 }
@@ -649,9 +651,9 @@ func (class) _set_transfer_mode(impl func(ptr unsafe.Pointer, p_mode Multiplayer
 /*
 Called when the transfer mode to use is read on this [MultiplayerPeer] (see [member MultiplayerPeer.transfer_mode]).
 */
-func (class) _get_transfer_mode(impl func(ptr unsafe.Pointer) MultiplayerPeer.TransferMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_transfer_mode(impl func(ptr gdclass.Receiver) MultiplayerPeer.TransferMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -660,10 +662,10 @@ func (class) _get_transfer_mode(impl func(ptr unsafe.Pointer) MultiplayerPeer.Tr
 /*
 Called when the target peer to use is set for this [MultiplayerPeer] (see [method MultiplayerPeer.set_target_peer]).
 */
-func (class) _set_target_peer(impl func(ptr unsafe.Pointer, p_peer int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_target_peer(impl func(ptr gdclass.Receiver, p_peer int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_peer = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, p_peer)
 	}
 }
@@ -671,9 +673,9 @@ func (class) _set_target_peer(impl func(ptr unsafe.Pointer, p_peer int64)) (cb g
 /*
 Called when the ID of the [MultiplayerPeer] who sent the most recent packet is requested (see [method MultiplayerPeer.get_packet_peer]).
 */
-func (class) _get_packet_peer(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_packet_peer(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -682,9 +684,9 @@ func (class) _get_packet_peer(impl func(ptr unsafe.Pointer) int64) (cb gd.Extens
 /*
 Called when the "is server" status is requested on the [MultiplayerAPI]. See [method MultiplayerAPI.is_server].
 */
-func (class) _is_server(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_server(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -693,9 +695,9 @@ func (class) _is_server(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClas
 /*
 Called when the [MultiplayerAPI] is polled. See [method MultiplayerAPI.poll].
 */
-func (class) _poll(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _poll(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -703,9 +705,9 @@ func (class) _poll(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtu
 /*
 Called when the multiplayer peer should be immediately closed (see [method MultiplayerPeer.close]).
 */
-func (class) _close(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _close(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -713,11 +715,11 @@ func (class) _close(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirt
 /*
 Called when the connected [param p_peer] should be forcibly disconnected (see [method MultiplayerPeer.disconnect_peer]).
 */
-func (class) _disconnect_peer(impl func(ptr unsafe.Pointer, p_peer int64, p_force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _disconnect_peer(impl func(ptr gdclass.Receiver, p_peer int64, p_force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_peer = gd.UnsafeGet[int64](p_args, 0)
 		var p_force = gd.UnsafeGet[bool](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, p_peer, p_force)
 	}
 }
@@ -725,9 +727,9 @@ func (class) _disconnect_peer(impl func(ptr unsafe.Pointer, p_peer int64, p_forc
 /*
 Called when the unique ID of this [MultiplayerPeer] is requested (see [method MultiplayerPeer.get_unique_id]). The value must be between [code]1[/code] and [code]2147483647[/code].
 */
-func (class) _get_unique_id(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_unique_id(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -736,10 +738,10 @@ func (class) _get_unique_id(impl func(ptr unsafe.Pointer) int64) (cb gd.Extensio
 /*
 Called when the "refuse new connections" status is set on this [MultiplayerPeer] (see [member MultiplayerPeer.refuse_new_connections]).
 */
-func (class) _set_refuse_new_connections(impl func(ptr unsafe.Pointer, p_enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_refuse_new_connections(impl func(ptr gdclass.Receiver, p_enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var p_enable = gd.UnsafeGet[bool](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, p_enable)
 	}
 }
@@ -747,9 +749,9 @@ func (class) _set_refuse_new_connections(impl func(ptr unsafe.Pointer, p_enable 
 /*
 Called when the "refuse new connections" status is requested on this [MultiplayerPeer] (see [member MultiplayerPeer.refuse_new_connections]).
 */
-func (class) _is_refusing_new_connections(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_refusing_new_connections(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -758,9 +760,9 @@ func (class) _is_refusing_new_connections(impl func(ptr unsafe.Pointer) bool) (c
 /*
 Called to check if the server can act as a relay in the current configuration. See [method MultiplayerPeer.is_server_relay_supported].
 */
-func (class) _is_server_relay_supported(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_server_relay_supported(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -769,9 +771,9 @@ func (class) _is_server_relay_supported(impl func(ptr unsafe.Pointer) bool) (cb 
 /*
 Called when the connection status is requested on the [MultiplayerPeer] (see [method MultiplayerPeer.get_connection_status]).
 */
-func (class) _get_connection_status(impl func(ptr unsafe.Pointer) MultiplayerPeer.ConnectionStatus) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_connection_status(impl func(ptr gdclass.Receiver) MultiplayerPeer.ConnectionStatus) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}

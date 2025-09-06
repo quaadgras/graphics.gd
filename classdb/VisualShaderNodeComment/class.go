@@ -3,7 +3,6 @@
 // Package VisualShaderNodeComment provides methods for working with VisualShaderNodeComment object instances.
 package VisualShaderNodeComment
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -156,12 +154,12 @@ func (self Instance) SetDescription(value string) {
 
 //go:nosplit
 func (self class) SetDescription(description String.Readable) { //gd:VisualShaderNodeComment.set_description
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_description, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_description, 0|(gdextension.SizeString<<4), &struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))})
 }
 
 //go:nosplit
 func (self class) GetDescription() String.Readable { //gd:VisualShaderNodeComment.get_description
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_description, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_description, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

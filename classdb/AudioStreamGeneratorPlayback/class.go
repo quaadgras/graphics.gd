@@ -3,7 +3,6 @@
 // Package AudioStreamGeneratorPlayback provides methods for working with AudioStreamGeneratorPlayback object instances.
 package AudioStreamGeneratorPlayback
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -196,7 +194,7 @@ Pushes a single audio data frame to the buffer. This is usually less efficient t
 */
 //go:nosplit
 func (self class) PushFrame(frame_ Vector2.XY) bool { //gd:AudioStreamGeneratorPlayback.push_frame
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_frame, gdextension.SizeBool|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ frame_ Vector2.XY }{frame_}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_frame, gdextension.SizeBool|(gdextension.SizeVector2<<4), &struct{ frame_ Vector2.XY }{frame_})
 	var ret = r_ret
 	return ret
 }
@@ -206,7 +204,7 @@ Returns [code]true[/code] if a buffer of the size [param amount] can be pushed t
 */
 //go:nosplit
 func (self class) CanPushBuffer(amount int64) bool { //gd:AudioStreamGeneratorPlayback.can_push_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_push_buffer, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ amount int64 }{amount}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_push_buffer, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 	var ret = r_ret
 	return ret
 }
@@ -216,9 +214,9 @@ Pushes several audio data frames to the buffer. This is usually more efficient t
 */
 //go:nosplit
 func (self class) PushBuffer(frames Packed.Array[Vector2.XY]) bool { //gd:AudioStreamGeneratorPlayback.push_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_buffer, gdextension.SizeBool|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_buffer, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
 		frames gdextension.PackedArray[Vector2.XY]
-	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](frames))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](frames))})
 	var ret = r_ret
 	return ret
 }
@@ -228,7 +226,7 @@ Returns the number of frames that can be pushed to the audio sample data buffer 
 */
 //go:nosplit
 func (self class) GetFramesAvailable() int64 { //gd:AudioStreamGeneratorPlayback.get_frames_available
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames_available, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames_available, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -238,7 +236,7 @@ Returns the number of times the playback skipped due to a buffer underrun in the
 */
 //go:nosplit
 func (self class) GetSkips() int64 { //gd:AudioStreamGeneratorPlayback.get_skips
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skips, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skips, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -248,7 +246,7 @@ Clears the audio sample data buffer.
 */
 //go:nosplit
 func (self class) ClearBuffer() { //gd:AudioStreamGeneratorPlayback.clear_buffer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_buffer, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_buffer, 0, &struct{}{})
 }
 func (self class) AsAudioStreamGeneratorPlayback() Advanced {
 	return Advanced{pointers.AsA[gdclass.AudioStreamGeneratorPlayback](self[0])}

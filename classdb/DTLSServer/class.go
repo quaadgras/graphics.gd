@@ -3,7 +3,6 @@
 // Package DTLSServer provides methods for working with DTLSServer object instances.
 package DTLSServer
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -315,7 +313,7 @@ Setup the DTLS server to use the given [param server_options]. See [method TLSOp
 */
 //go:nosplit
 func (self class) Setup(server_options [1]gdclass.TLSOptions) Error.Code { //gd:DTLSServer.setup
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.setup, gdextension.SizeInt|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(server_options[0].AsObject()))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.setup, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(server_options[0].AsObject()))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -326,7 +324,7 @@ Try to initiate the DTLS handshake with the given [param udp_peer] which must be
 */
 //go:nosplit
 func (self class) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS { //gd:DTLSServer.take_connection
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ udp_peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(udp_peer[0].AsObject()))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ udp_peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(udp_peer[0].AsObject()))})
 	var ret = [1]gdclass.PacketPeerDTLS{gd.PointerWithOwnershipTransferredToGo[gdclass.PacketPeerDTLS](r_ret)}
 	return ret
 }

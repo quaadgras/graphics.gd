@@ -3,7 +3,6 @@
 // Package GLTFNode provides methods for working with GLTFNode object instances.
 package GLTFNode
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -306,148 +304,148 @@ func (self Instance) SetLight(value int) {
 
 //go:nosplit
 func (self class) GetOriginalName() String.Readable { //gd:GLTFNode.get_original_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOriginalName(original_name String.Readable) { //gd:GLTFNode.set_original_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_name, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ original_name gdextension.String }{pointers.Get(gd.InternalString(original_name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_name, 0|(gdextension.SizeString<<4), &struct{ original_name gdextension.String }{pointers.Get(gd.InternalString(original_name))})
 }
 
 //go:nosplit
 func (self class) GetParent() int64 { //gd:GLTFNode.get_parent
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParent(parent int64) { //gd:GLTFNode.set_parent
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parent, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ parent int64 }{parent}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parent, 0|(gdextension.SizeInt<<4), &struct{ parent int64 }{parent})
 }
 
 //go:nosplit
 func (self class) GetHeight() int64 { //gd:GLTFNode.get_height
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeight(height int64) { //gd:GLTFNode.set_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ height int64 }{height}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeInt<<4), &struct{ height int64 }{height})
 }
 
 //go:nosplit
 func (self class) GetXform() Transform3D.BasisOrigin { //gd:GLTFNode.get_xform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_xform, gdextension.SizeTransform3D, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_xform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetXform(xform Transform3D.BasisOrigin) { //gd:GLTFNode.set_xform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xform, 0|(gdextension.SizeTransform3D<<4), unsafe.Pointer(&struct{ xform Transform3D.BasisOrigin }{gd.Transposed(xform)}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_xform, 0|(gdextension.SizeTransform3D<<4), &struct{ xform Transform3D.BasisOrigin }{gd.Transposed(xform)})
 }
 
 //go:nosplit
 func (self class) GetMesh() int64 { //gd:GLTFNode.get_mesh
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMesh(mesh int64) { //gd:GLTFNode.set_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mesh int64 }{mesh}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeInt<<4), &struct{ mesh int64 }{mesh})
 }
 
 //go:nosplit
 func (self class) GetCamera() int64 { //gd:GLTFNode.get_camera
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_camera, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_camera, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCamera(camera int64) { //gd:GLTFNode.set_camera
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ camera int64 }{camera}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera, 0|(gdextension.SizeInt<<4), &struct{ camera int64 }{camera})
 }
 
 //go:nosplit
 func (self class) GetSkin() int64 { //gd:GLTFNode.get_skin
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skin, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkin(skin int64) { //gd:GLTFNode.set_skin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ skin int64 }{skin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skin, 0|(gdextension.SizeInt<<4), &struct{ skin int64 }{skin})
 }
 
 //go:nosplit
 func (self class) GetSkeleton() int64 { //gd:GLTFNode.get_skeleton
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkeleton(skeleton int64) { //gd:GLTFNode.set_skeleton
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ skeleton int64 }{skeleton}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton, 0|(gdextension.SizeInt<<4), &struct{ skeleton int64 }{skeleton})
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector3.XYZ { //gd:GLTFNode.get_position
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPosition(position Vector3.XYZ) { //gd:GLTFNode.set_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ position Vector3.XYZ }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector3<<4), &struct{ position Vector3.XYZ }{position})
 }
 
 //go:nosplit
 func (self class) GetRotation() Quaternion.IJKX { //gd:GLTFNode.get_rotation
-	var r_ret = gdextension.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_rotation, gdextension.SizeQuaternion, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_rotation, gdextension.SizeQuaternion, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRotation(rotation Quaternion.IJKX) { //gd:GLTFNode.set_rotation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation, 0|(gdextension.SizeQuaternion<<4), unsafe.Pointer(&struct{ rotation Quaternion.IJKX }{rotation}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation, 0|(gdextension.SizeQuaternion<<4), &struct{ rotation Quaternion.IJKX }{rotation})
 }
 
 //go:nosplit
 func (self class) GetScale() Vector3.XYZ { //gd:GLTFNode.get_scale
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_scale, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_scale, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScale(scale Vector3.XYZ) { //gd:GLTFNode.set_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ scale Vector3.XYZ }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scale, 0|(gdextension.SizeVector3<<4), &struct{ scale Vector3.XYZ }{scale})
 }
 
 //go:nosplit
 func (self class) GetChildren() Packed.Array[int32] { //gd:GLTFNode.get_children
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_children, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_children, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetChildren(children Packed.Array[int32]) { //gd:GLTFNode.set_children
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_children, 0|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_children, 0|(gdextension.SizePackedArray<<4), &struct {
 		children gdextension.PackedArray[int32]
-	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](children))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](children))})
 }
 
 /*
@@ -455,19 +453,19 @@ Appends the given child node index to the [member children] array.
 */
 //go:nosplit
 func (self class) AppendChildIndex(child_index int64) { //gd:GLTFNode.append_child_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_child_index, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ child_index int64 }{child_index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_child_index, 0|(gdextension.SizeInt<<4), &struct{ child_index int64 }{child_index})
 }
 
 //go:nosplit
 func (self class) GetLight() int64 { //gd:GLTFNode.get_light
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_light, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_light, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLight(light int64) { //gd:GLTFNode.set_light
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ light int64 }{light}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light, 0|(gdextension.SizeInt<<4), &struct{ light int64 }{light})
 }
 
 /*
@@ -476,7 +474,7 @@ The argument should be the [GLTFDocumentExtension] name (does not have to match 
 */
 //go:nosplit
 func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //gd:GLTFNode.get_additional_data
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_additional_data, gdextension.SizeVariant|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ extension_name gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_name))}))
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_additional_data, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ extension_name gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -487,10 +485,10 @@ The first argument should be the [GLTFDocumentExtension] name (does not have to 
 */
 //go:nosplit
 func (self class) SetAdditionalData(extension_name String.Name, additional_data variant.Any) { //gd:GLTFNode.set_additional_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_additional_data, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_additional_data, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
 		extension_name  gdextension.StringName
 		additional_data gdextension.Variant
-	}{pointers.Get(gd.InternalStringName(extension_name)), gdextension.Variant(pointers.Get(gd.InternalVariant(additional_data)))}))
+	}{pointers.Get(gd.InternalStringName(extension_name)), gdextension.Variant(pointers.Get(gd.InternalVariant(additional_data)))})
 }
 
 /*
@@ -499,10 +497,10 @@ If [param handle_skeletons] is [code]true[/code], paths to skeleton bone glTF no
 */
 //go:nosplit
 func (self class) GetSceneNodePath(gltf_state [1]gdclass.GLTFState, handle_skeletons bool) Path.ToNode { //gd:GLTFNode.get_scene_node_path
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_scene_node_path, gdextension.SizeNodePath|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_scene_node_path, gdextension.SizeNodePath|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		gltf_state       gdextension.Object
 		handle_skeletons bool
-	}{gdextension.Object(gd.ObjectChecked(gltf_state[0].AsObject())), handle_skeletons}))
+	}{gdextension.Object(gd.ObjectChecked(gltf_state[0].AsObject())), handle_skeletons})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

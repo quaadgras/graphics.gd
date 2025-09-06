@@ -1,6 +1,7 @@
 package gdextension
 
 import (
+	"reflect"
 	"unsafe"
 )
 
@@ -19,15 +20,23 @@ func object_method_call(object Object, method MethodForClass, result *Variant, a
 	Host.Objects.Call(object, method, CallReturns[Variant](result), len(args), CallAccepts[Variant](unsafe.SliceData(args)), CallReturns[CallError](err))
 }
 
-func Call[T any](object Object, method MethodForClass, shape Shape, args unsafe.Pointer) T {
+func Call[T any](object Object, method MethodForClass, shape Shape, args any) T {
+	var argptr unsafe.Pointer = nil
 	var result T
-	call_noescape(object, method, unsafe.Pointer(&result), shape, args)
+	if args != nil {
+		argptr = reflect.ValueOf(args).UnsafePointer()
+	}
+	call_noescape(object, method, unsafe.Pointer(&result), shape, argptr)
 	return result
 }
 
-func CallStatic[T any](method MethodForClass, shape Shape, args unsafe.Pointer) T {
+func CallStatic[T any](method MethodForClass, shape Shape, args any) T {
+	var argptr unsafe.Pointer = nil
 	var result T
-	call_noescape(0, method, unsafe.Pointer(&result), shape, args)
+	if args != nil {
+		argptr = reflect.ValueOf(args).UnsafePointer()
+	}
+	call_noescape(0, method, unsafe.Pointer(&result), shape, argptr)
 	return result
 }
 

@@ -3,7 +3,6 @@
 // Package Generic6DOFJoint3D provides methods for working with Generic6DOFJoint3D object instances.
 package Generic6DOFJoint3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -194,90 +192,90 @@ func New() Instance {
 
 //go:nosplit
 func (self class) SetParamX(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_x
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_x, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_x, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		param Param
 		value float64
-	}{param, value}))
+	}{param, value})
 }
 
 //go:nosplit
 func (self class) GetParamX(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_x
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_x, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_x, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ param Param }{param})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParamY(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_y
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_y, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_y, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		param Param
 		value float64
-	}{param, value}))
+	}{param, value})
 }
 
 //go:nosplit
 func (self class) GetParamY(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_y
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_y, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_y, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ param Param }{param})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParamZ(param Param, value float64) { //gd:Generic6DOFJoint3D.set_param_z
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_z, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_param_z, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		param Param
 		value float64
-	}{param, value}))
+	}{param, value})
 }
 
 //go:nosplit
 func (self class) GetParamZ(param Param) float64 { //gd:Generic6DOFJoint3D.get_param_z
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_z, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ param Param }{param}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_param_z, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ param Param }{param})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlagX(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_x
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_x, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_x, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		flag  Flag
 		value bool
-	}{flag, value}))
+	}{flag, value})
 }
 
 //go:nosplit
 func (self class) GetFlagX(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_x
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_x, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_x, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ flag Flag }{flag})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlagY(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_y
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_y, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_y, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		flag  Flag
 		value bool
-	}{flag, value}))
+	}{flag, value})
 }
 
 //go:nosplit
 func (self class) GetFlagY(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_y
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_y, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_y, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ flag Flag }{flag})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlagZ(flag Flag, value bool) { //gd:Generic6DOFJoint3D.set_flag_z
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_z, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flag_z, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		flag  Flag
 		value bool
-	}{flag, value}))
+	}{flag, value})
 }
 
 //go:nosplit
 func (self class) GetFlagZ(flag Flag) bool { //gd:Generic6DOFJoint3D.get_flag_z
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_z, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ flag Flag }{flag}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_flag_z, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ flag Flag }{flag})
 	var ret = r_ret
 	return ret
 }

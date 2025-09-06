@@ -3,7 +3,6 @@
 // Package FramebufferCacheRD provides methods for working with FramebufferCacheRD object instances.
 package FramebufferCacheRD
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -154,11 +152,11 @@ Creates, or obtains a cached, framebuffer. [param textures] lists textures acces
 */
 //go:nosplit
 func (self class) GetCacheMultipass(textures Array.Contains[RID.Any], passes Array.Contains[[1]gdclass.RDFramebufferPass], views int64) RID.Any { //gd:FramebufferCacheRD.get_cache_multipass
-	var r_ret = gdextension.CallStatic[RID.Any](methods.get_cache_multipass, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[RID.Any](methods.get_cache_multipass, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12), &struct {
 		textures gdextension.Array
 		passes   gdextension.Array
 		views    int64
-	}{pointers.Get(gd.InternalArray(textures)), pointers.Get(gd.InternalArray(passes)), views}))
+	}{pointers.Get(gd.InternalArray(textures)), pointers.Get(gd.InternalArray(passes)), views})
 	var ret = r_ret
 	return ret
 }

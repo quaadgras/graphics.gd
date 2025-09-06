@@ -3,7 +3,6 @@
 // Package ScrollContainer provides methods for working with ScrollContainer object instances.
 package ScrollContainer
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -39,7 +38,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -269,96 +267,96 @@ func (self Instance) SetScrollDeadzone(value int) {
 
 //go:nosplit
 func (self class) SetHScroll(value int64) { //gd:ScrollContainer.set_h_scroll
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_scroll, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value int64 }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_scroll, 0|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 }
 
 //go:nosplit
 func (self class) GetHScroll() int64 { //gd:ScrollContainer.get_h_scroll
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_h_scroll, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_h_scroll, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVScroll(value int64) { //gd:ScrollContainer.set_v_scroll
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_scroll, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value int64 }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_scroll, 0|(gdextension.SizeInt<<4), &struct{ value int64 }{value})
 }
 
 //go:nosplit
 func (self class) GetVScroll() int64 { //gd:ScrollContainer.get_v_scroll
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHorizontalCustomStep(value float64) { //gd:ScrollContainer.set_horizontal_custom_step
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_custom_step, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_custom_step, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
 
 //go:nosplit
 func (self class) GetHorizontalCustomStep() float64 { //gd:ScrollContainer.get_horizontal_custom_step
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_custom_step, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_custom_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVerticalCustomStep(value float64) { //gd:ScrollContainer.set_vertical_custom_step
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_custom_step, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ value float64 }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_custom_step, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
 
 //go:nosplit
 func (self class) GetVerticalCustomStep() float64 { //gd:ScrollContainer.get_vertical_custom_step
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vertical_custom_step, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vertical_custom_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHorizontalScrollMode(enable ScrollMode) { //gd:ScrollContainer.set_horizontal_scroll_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_scroll_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ enable ScrollMode }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_scroll_mode, 0|(gdextension.SizeInt<<4), &struct{ enable ScrollMode }{enable})
 }
 
 //go:nosplit
 func (self class) GetHorizontalScrollMode() ScrollMode { //gd:ScrollContainer.get_horizontal_scroll_mode
-	var r_ret = gdextension.Call[ScrollMode](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_scroll_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ScrollMode](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_scroll_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVerticalScrollMode(enable ScrollMode) { //gd:ScrollContainer.set_vertical_scroll_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_scroll_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ enable ScrollMode }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_scroll_mode, 0|(gdextension.SizeInt<<4), &struct{ enable ScrollMode }{enable})
 }
 
 //go:nosplit
 func (self class) GetVerticalScrollMode() ScrollMode { //gd:ScrollContainer.get_vertical_scroll_mode
-	var r_ret = gdextension.Call[ScrollMode](gd.ObjectChecked(self.AsObject()), methods.get_vertical_scroll_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ScrollMode](gd.ObjectChecked(self.AsObject()), methods.get_vertical_scroll_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeadzone(deadzone int64) { //gd:ScrollContainer.set_deadzone
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deadzone, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ deadzone int64 }{deadzone}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deadzone, 0|(gdextension.SizeInt<<4), &struct{ deadzone int64 }{deadzone})
 }
 
 //go:nosplit
 func (self class) GetDeadzone() int64 { //gd:ScrollContainer.get_deadzone
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_deadzone, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_deadzone, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFollowFocus(enabled bool) { //gd:ScrollContainer.set_follow_focus
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_focus, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_focus, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsFollowingFocus() bool { //gd:ScrollContainer.is_following_focus
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_following_focus, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_following_focus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -369,7 +367,7 @@ Returns the horizontal scrollbar [HScrollBar] of this [ScrollContainer].
 */
 //go:nosplit
 func (self class) GetHScrollBar() [1]gdclass.HScrollBar { //gd:ScrollContainer.get_h_scroll_bar
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_h_scroll_bar, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_h_scroll_bar, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.HScrollBar{gd.PointerLifetimeBoundTo[gdclass.HScrollBar](self.AsObject(), r_ret)}
 	return ret
 }
@@ -380,7 +378,7 @@ Returns the vertical scrollbar [VScrollBar] of this [ScrollContainer].
 */
 //go:nosplit
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:ScrollContainer.get_v_scroll_bar
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret)}
 	return ret
 }
@@ -396,17 +394,17 @@ ensure_control_visible(child_node)
 */
 //go:nosplit
 func (self class) EnsureControlVisible(control [1]gdclass.Control) { //gd:ScrollContainer.ensure_control_visible
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ensure_control_visible, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.ensure_control_visible, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) SetDrawFocusBorder(draw bool) { //gd:ScrollContainer.set_draw_focus_border
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_focus_border, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ draw bool }{draw}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_focus_border, 0|(gdextension.SizeBool<<4), &struct{ draw bool }{draw})
 }
 
 //go:nosplit
 func (self class) GetDrawFocusBorder() bool { //gd:ScrollContainer.get_draw_focus_border
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_draw_focus_border, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_draw_focus_border, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

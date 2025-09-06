@@ -3,7 +3,6 @@
 // Package EditorPlugin provides methods for working with EditorPlugin object instances.
 package EditorPlugin
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -58,7 +57,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -530,12 +528,12 @@ public override bool _ForwardCanvasGuiInput(InputEvent @event)
 [/csharp]
 [/codeblocks]
 */
-func (Instance) _forward_canvas_gui_input(impl func(ptr unsafe.Pointer, event InputEvent.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _forward_canvas_gui_input(impl func(ptr gdclass.Receiver, event InputEvent.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(event[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -582,12 +580,12 @@ public override bool _ForwardCanvasGuiInput(InputEvent @event)
 [/csharp]
 [/codeblocks]
 */
-func (Instance) _forward_canvas_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _forward_canvas_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(viewport_control[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
 }
@@ -596,12 +594,12 @@ func (Instance) _forward_canvas_draw_over_viewport(impl func(ptr unsafe.Pointer,
 This method is the same as [method _forward_canvas_draw_over_viewport], except it draws on top of everything. Useful when you need an extra layer that shows over anything else.
 You need to enable calling of this method by using [method set_force_draw_over_forwarding_enabled].
 */
-func (Instance) _forward_canvas_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _forward_canvas_force_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(viewport_control[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
 }
@@ -646,7 +644,7 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D camera, I
 [/csharp]
 [/codeblocks]
 */
-func (Instance) _forward_3d_gui_input(impl func(ptr unsafe.Pointer, viewport_camera Camera3D.Instance, event InputEvent.Instance) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _forward_3d_gui_input(impl func(ptr gdclass.Receiver, viewport_camera Camera3D.Instance, event InputEvent.Instance) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport_camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
@@ -654,7 +652,7 @@ func (Instance) _forward_3d_gui_input(impl func(ptr unsafe.Pointer, viewport_cam
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
 
 		defer pointers.End(event[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, viewport_camera, event)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -701,12 +699,12 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D viewportC
 [/csharp]
 [/codeblocks]
 */
-func (Instance) _forward_3d_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _forward_3d_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(viewport_control[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
 }
@@ -715,12 +713,12 @@ func (Instance) _forward_3d_draw_over_viewport(impl func(ptr unsafe.Pointer, vie
 This method is the same as [method _forward_3d_draw_over_viewport], except it draws on top of everything. Useful when you need an extra layer that shows over anything else.
 You need to enable calling of this method by using [method set_force_draw_over_forwarding_enabled].
 */
-func (Instance) _forward_3d_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _forward_3d_force_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(viewport_control[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
 }
@@ -729,9 +727,9 @@ func (Instance) _forward_3d_force_draw_over_viewport(impl func(ptr unsafe.Pointe
 Override this method in your plugin to provide the name of the plugin when displayed in the Godot editor.
 For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
 */
-func (Instance) _get_plugin_name(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_plugin_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -769,9 +767,9 @@ public override Texture2D _GetPluginIcon()
 [/csharp]
 [/codeblocks]
 */
-func (Instance) _get_plugin_icon(impl func(ptr unsafe.Pointer) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_plugin_icon(impl func(ptr gdclass.Receiver) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
 
@@ -813,9 +811,9 @@ func _get_plugin_icon():
 
 [/codeblock]
 */
-func (Instance) _has_main_screen(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _has_main_screen(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -825,10 +823,10 @@ func (Instance) _has_main_screen(impl func(ptr unsafe.Pointer) bool) (cb gd.Exte
 This function will be called when the editor is requested to become visible. It is used for plugins that edit a specific object type.
 Remember that you have to manage the visibility of all your editor controls manually.
 */
-func (Instance) _make_visible(impl func(ptr unsafe.Pointer, visible bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _make_visible(impl func(ptr gdclass.Receiver, visible bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var visible = gd.UnsafeGet[bool](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, visible)
 	}
 }
@@ -837,11 +835,11 @@ func (Instance) _make_visible(impl func(ptr unsafe.Pointer, visible bool)) (cb g
 This function is used for plugins that edit specific object types (nodes or resources). It requests the editor to edit the given object.
 [param object] can be [code]null[/code] if the plugin was editing an object, but there is no longer any selected object handled by this plugin. It can be used to cleanup editing state.
 */
-func (Instance) _edit(impl func(ptr unsafe.Pointer, obj Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _edit(impl func(ptr gdclass.Receiver, obj Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(obj[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj)
 	}
 }
@@ -850,11 +848,11 @@ func (Instance) _edit(impl func(ptr unsafe.Pointer, obj Object.Instance)) (cb gd
 Implement this function if your plugin edits a specific type of object (Resource or Node). If you return [code]true[/code], then you will get the functions [method _edit] and [method _make_visible] called when the editor requests them. If you have declared the methods [method _forward_canvas_gui_input] and [method _forward_3d_gui_input] these will be called too.
 [b]Note:[/b] Each plugin should handle only one type of objects at a time. If a plugin handles more types of objects and they are edited at the same time, it will result in errors.
 */
-func (Instance) _handles(impl func(ptr unsafe.Pointer, obj Object.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _handles(impl func(ptr gdclass.Receiver, obj Object.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(obj[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -873,9 +871,9 @@ func _get_state():
 
 [/codeblock]
 */
-func (Instance) _get_state(impl func(ptr unsafe.Pointer) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_state(impl func(ptr gdclass.Receiver) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -897,11 +895,11 @@ func _set_state(data):
 
 [/codeblock]
 */
-func (Instance) _set_state(impl func(ptr unsafe.Pointer, state map[any]any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_state(impl func(ptr gdclass.Receiver, state map[any]any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 0))))
 		defer pointers.End(gd.InternalDictionary(state))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, gd.DictionaryAs[map[any]any](state))
 	}
 }
@@ -909,9 +907,9 @@ func (Instance) _set_state(impl func(ptr unsafe.Pointer, state map[any]any)) (cb
 /*
 Clear all the state and reset the object being edited to zero. This ensures your plugin does not keep editing a currently existing node, or a node from the wrong scene.
 */
-func (Instance) _clear(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _clear(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -945,11 +943,11 @@ func _get_unsaved_status(for_scene):
 
 [/codeblock]
 */
-func (Instance) _get_unsaved_status(impl func(ptr unsafe.Pointer, for_scene string) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_unsaved_status(impl func(ptr gdclass.Receiver, for_scene string) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var for_scene = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(for_scene))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_scene.String())
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -963,9 +961,9 @@ func (Instance) _get_unsaved_status(impl func(ptr unsafe.Pointer, for_scene stri
 /*
 This method is called after the editor saves the project or when it's closed. It asks the plugin to save edited external scenes/resources.
 */
-func (Instance) _save_external_data(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _save_external_data(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -974,9 +972,9 @@ func (Instance) _save_external_data(impl func(ptr unsafe.Pointer)) (cb gd.Extens
 This method is called when the editor is about to save the project, switch to another tab, etc. It asks the plugin to apply any pending state changes to ensure consistency.
 This is used, for example, in shader editors to let the plugin know that it must apply the shader code being written by the user to the object.
 */
-func (Instance) _apply_changes(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _apply_changes(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -984,9 +982,9 @@ func (Instance) _apply_changes(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionCl
 /*
 This is for editors that edit script-based objects. You can return a list of breakpoints in the format ([code]script:line[/code]), for example: [code]res://path_to_script.gd:25[/code].
 */
-func (Instance) _get_breakpoints(impl func(ptr unsafe.Pointer) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_breakpoints(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -1007,12 +1005,12 @@ func _set_window_layout(configuration):
 
 [/codeblock]
 */
-func (Instance) _set_window_layout(impl func(ptr unsafe.Pointer, configuration ConfigFile.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_window_layout(impl func(ptr gdclass.Receiver, configuration ConfigFile.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(configuration[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, configuration)
 	}
 }
@@ -1028,12 +1026,12 @@ func _get_window_layout(configuration):
 
 [/codeblock]
 */
-func (Instance) _get_window_layout(impl func(ptr unsafe.Pointer, configuration ConfigFile.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_window_layout(impl func(ptr gdclass.Receiver, configuration ConfigFile.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(configuration[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, configuration)
 	}
 }
@@ -1042,9 +1040,9 @@ func (Instance) _get_window_layout(impl func(ptr unsafe.Pointer, configuration C
 This method is called when the editor is about to run the project. The plugin can then perform required operations before the project runs.
 This method must return a boolean. If this method returns [code]false[/code], the project will not run. The run is aborted immediately, so this also prevents all other plugins' [method _build] methods from running.
 */
-func (Instance) _build(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _build(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1053,9 +1051,9 @@ func (Instance) _build(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClass
 /*
 Called by the engine when the user enables the [EditorPlugin] in the Plugin tab of the project settings window.
 */
-func (Instance) _enable_plugin(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _enable_plugin(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -1063,9 +1061,9 @@ func (Instance) _enable_plugin(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionCl
 /*
 Called by the engine when the user disables the [EditorPlugin] in the Plugin tab of the project settings window.
 */
-func (Instance) _disable_plugin(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _disable_plugin(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -1584,12 +1582,12 @@ public override bool _ForwardCanvasGuiInput(InputEvent @event)
 [/csharp]
 [/codeblocks]
 */
-func (class) _forward_canvas_gui_input(impl func(ptr unsafe.Pointer, event [1]gdclass.InputEvent) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _forward_canvas_gui_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(event[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, event)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1636,12 +1634,12 @@ public override bool _ForwardCanvasGuiInput(InputEvent @event)
 [/csharp]
 [/codeblocks]
 */
-func (class) _forward_canvas_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _forward_canvas_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(viewport_control[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
 }
@@ -1650,12 +1648,12 @@ func (class) _forward_canvas_draw_over_viewport(impl func(ptr unsafe.Pointer, vi
 This method is the same as [method _forward_canvas_draw_over_viewport], except it draws on top of everything. Useful when you need an extra layer that shows over anything else.
 You need to enable calling of this method by using [method set_force_draw_over_forwarding_enabled].
 */
-func (class) _forward_canvas_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _forward_canvas_force_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(viewport_control[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
 }
@@ -1700,7 +1698,7 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D camera, I
 [/csharp]
 [/codeblocks]
 */
-func (class) _forward_3d_gui_input(impl func(ptr unsafe.Pointer, viewport_camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _forward_3d_gui_input(impl func(ptr gdclass.Receiver, viewport_camera [1]gdclass.Camera3D, event [1]gdclass.InputEvent) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport_camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
@@ -1708,7 +1706,7 @@ func (class) _forward_3d_gui_input(impl func(ptr unsafe.Pointer, viewport_camera
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
 
 		defer pointers.End(event[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, viewport_camera, event)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1755,12 +1753,12 @@ public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D viewportC
 [/csharp]
 [/codeblocks]
 */
-func (class) _forward_3d_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _forward_3d_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(viewport_control[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
 }
@@ -1769,12 +1767,12 @@ func (class) _forward_3d_draw_over_viewport(impl func(ptr unsafe.Pointer, viewpo
 This method is the same as [method _forward_3d_draw_over_viewport], except it draws on top of everything. Useful when you need an extra layer that shows over anything else.
 You need to enable calling of this method by using [method set_force_draw_over_forwarding_enabled].
 */
-func (class) _forward_3d_force_draw_over_viewport(impl func(ptr unsafe.Pointer, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _forward_3d_force_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var viewport_control = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(viewport_control[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, viewport_control)
 	}
 }
@@ -1783,9 +1781,9 @@ func (class) _forward_3d_force_draw_over_viewport(impl func(ptr unsafe.Pointer, 
 Override this method in your plugin to provide the name of the plugin when displayed in the Godot editor.
 For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
 */
-func (class) _get_plugin_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_plugin_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -1823,9 +1821,9 @@ public override Texture2D _GetPluginIcon()
 [/csharp]
 [/codeblocks]
 */
-func (class) _get_plugin_icon(impl func(ptr unsafe.Pointer) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_plugin_icon(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
 
@@ -1867,9 +1865,9 @@ func _get_plugin_icon():
 
 [/codeblock]
 */
-func (class) _has_main_screen(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _has_main_screen(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1879,10 +1877,10 @@ func (class) _has_main_screen(impl func(ptr unsafe.Pointer) bool) (cb gd.Extensi
 This function will be called when the editor is requested to become visible. It is used for plugins that edit a specific object type.
 Remember that you have to manage the visibility of all your editor controls manually.
 */
-func (class) _make_visible(impl func(ptr unsafe.Pointer, visible bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _make_visible(impl func(ptr gdclass.Receiver, visible bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var visible = gd.UnsafeGet[bool](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, visible)
 	}
 }
@@ -1891,11 +1889,11 @@ func (class) _make_visible(impl func(ptr unsafe.Pointer, visible bool)) (cb gd.E
 This function is used for plugins that edit specific object types (nodes or resources). It requests the editor to edit the given object.
 [param object] can be [code]null[/code] if the plugin was editing an object, but there is no longer any selected object handled by this plugin. It can be used to cleanup editing state.
 */
-func (class) _edit(impl func(ptr unsafe.Pointer, obj [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _edit(impl func(ptr gdclass.Receiver, obj [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(obj[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, obj)
 	}
 }
@@ -1904,11 +1902,11 @@ func (class) _edit(impl func(ptr unsafe.Pointer, obj [1]gd.Object)) (cb gd.Exten
 Implement this function if your plugin edits a specific type of object (Resource or Node). If you return [code]true[/code], then you will get the functions [method _edit] and [method _make_visible] called when the editor requests them. If you have declared the methods [method _forward_canvas_gui_input] and [method _forward_3d_gui_input] these will be called too.
 [b]Note:[/b] Each plugin should handle only one type of objects at a time. If a plugin handles more types of objects and they are edited at the same time, it will result in errors.
 */
-func (class) _handles(impl func(ptr unsafe.Pointer, obj [1]gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _handles(impl func(ptr gdclass.Receiver, obj [1]gd.Object) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var obj = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(obj[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, obj)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1927,9 +1925,9 @@ func _get_state():
 
 [/codeblock]
 */
-func (class) _get_state(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_state(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -1951,11 +1949,11 @@ func _set_state(data):
 
 [/codeblock]
 */
-func (class) _set_state(impl func(ptr unsafe.Pointer, state Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_state(impl func(ptr gdclass.Receiver, state Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var state = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 0))))
 		defer pointers.End(gd.InternalDictionary(state))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, state)
 	}
 }
@@ -1963,9 +1961,9 @@ func (class) _set_state(impl func(ptr unsafe.Pointer, state Dictionary.Any)) (cb
 /*
 Clear all the state and reset the object being edited to zero. This ensures your plugin does not keep editing a currently existing node, or a node from the wrong scene.
 */
-func (class) _clear(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _clear(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -1999,11 +1997,11 @@ func _get_unsaved_status(for_scene):
 
 [/codeblock]
 */
-func (class) _get_unsaved_status(impl func(ptr unsafe.Pointer, for_scene String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_unsaved_status(impl func(ptr gdclass.Receiver, for_scene String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var for_scene = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(for_scene))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_scene)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -2017,9 +2015,9 @@ func (class) _get_unsaved_status(impl func(ptr unsafe.Pointer, for_scene String.
 /*
 This method is called after the editor saves the project or when it's closed. It asks the plugin to save edited external scenes/resources.
 */
-func (class) _save_external_data(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _save_external_data(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -2028,9 +2026,9 @@ func (class) _save_external_data(impl func(ptr unsafe.Pointer)) (cb gd.Extension
 This method is called when the editor is about to save the project, switch to another tab, etc. It asks the plugin to apply any pending state changes to ensure consistency.
 This is used, for example, in shader editors to let the plugin know that it must apply the shader code being written by the user to the object.
 */
-func (class) _apply_changes(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _apply_changes(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -2038,9 +2036,9 @@ func (class) _apply_changes(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClass
 /*
 This is for editors that edit script-based objects. You can return a list of breakpoints in the format ([code]script:line[/code]), for example: [code]res://path_to_script.gd:25[/code].
 */
-func (class) _get_breakpoints(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_breakpoints(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -2061,12 +2059,12 @@ func _set_window_layout(configuration):
 
 [/codeblock]
 */
-func (class) _set_window_layout(impl func(ptr unsafe.Pointer, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_window_layout(impl func(ptr gdclass.Receiver, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(configuration[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, configuration)
 	}
 }
@@ -2082,12 +2080,12 @@ func _get_window_layout(configuration):
 
 [/codeblock]
 */
-func (class) _get_window_layout(impl func(ptr unsafe.Pointer, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_window_layout(impl func(ptr gdclass.Receiver, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var configuration = [1]gdclass.ConfigFile{pointers.New[gdclass.ConfigFile]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(configuration[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, configuration)
 	}
 }
@@ -2096,9 +2094,9 @@ func (class) _get_window_layout(impl func(ptr unsafe.Pointer, configuration [1]g
 This method is called when the editor is about to run the project. The plugin can then perform required operations before the project runs.
 This method must return a boolean. If this method returns [code]false[/code], the project will not run. The run is aborted immediately, so this also prevents all other plugins' [method _build] methods from running.
 */
-func (class) _build(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _build(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -2107,9 +2105,9 @@ func (class) _build(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCal
 /*
 Called by the engine when the user enables the [EditorPlugin] in the Plugin tab of the project settings window.
 */
-func (class) _enable_plugin(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _enable_plugin(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -2117,9 +2115,9 @@ func (class) _enable_plugin(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClass
 /*
 Called by the engine when the user disables the [EditorPlugin] in the Plugin tab of the project settings window.
 */
-func (class) _disable_plugin(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _disable_plugin(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -2131,10 +2129,10 @@ When your plugin is deactivated, make sure to remove your custom control with [m
 */
 //go:nosplit
 func (self class) AddControlToContainer(container CustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.add_control_to_container
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_control_to_container, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_control_to_container, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		container CustomControlContainer
 		control   gdextension.Object
-	}{container, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))}))
+	}{container, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))})
 }
 
 /*
@@ -2143,11 +2141,11 @@ Optionally, you can specify a shortcut parameter. When pressed, this shortcut wi
 */
 //go:nosplit
 func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title String.Readable, shortcut [1]gdclass.Shortcut) [1]gdclass.Button { //gd:EditorPlugin.add_control_to_bottom_panel
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_control_to_bottom_panel, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_control_to_bottom_panel, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12), &struct {
 		control  gdextension.Object
 		title    gdextension.String
 		shortcut gdextension.Object
-	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0])), pointers.Get(gd.InternalString(title)), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))}))
+	}{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0])), pointers.Get(gd.InternalString(title)), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))})
 	var ret = [1]gdclass.Button{gd.PointerMustAssertInstanceID[gdclass.Button](r_ret)}
 	return ret
 }
@@ -2160,11 +2158,11 @@ Optionally, you can specify a shortcut parameter. When pressed, this shortcut wi
 */
 //go:nosplit
 func (self class) AddControlToDock(slot DockSlot, control [1]gdclass.Control, shortcut [1]gdclass.Shortcut) { //gd:EditorPlugin.add_control_to_dock
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_control_to_dock, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_control_to_dock, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
 		slot     DockSlot
 		control  gdextension.Object
 		shortcut gdextension.Object
-	}{slot, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0])), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))}))
+	}{slot, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0])), gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))})
 }
 
 /*
@@ -2172,7 +2170,7 @@ Removes the control from the dock. You have to manually [method Node.queue_free]
 */
 //go:nosplit
 func (self class) RemoveControlFromDocks(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_docks
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_docks, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_docks, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))})
 }
 
 /*
@@ -2180,7 +2178,7 @@ Removes the control from the bottom panel. You have to manually [method Node.que
 */
 //go:nosplit
 func (self class) RemoveControlFromBottomPanel(control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_bottom_panel
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_bottom_panel, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_bottom_panel, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.ObjectChecked(control[0].AsObject()))})
 }
 
 /*
@@ -2188,10 +2186,10 @@ Removes the control from the specified container. You have to manually [method N
 */
 //go:nosplit
 func (self class) RemoveControlFromContainer(container CustomControlContainer, control [1]gdclass.Control) { //gd:EditorPlugin.remove_control_from_container
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_container, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_control_from_container, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		container CustomControlContainer
 		control   gdextension.Object
-	}{container, gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
+	}{container, gdextension.Object(gd.ObjectChecked(control[0].AsObject()))})
 }
 
 /*
@@ -2199,10 +2197,10 @@ Sets the tab icon for the given control in a dock slot. Setting to [code]null[/c
 */
 //go:nosplit
 func (self class) SetDockTabIcon(control [1]gdclass.Control, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.set_dock_tab_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dock_tab_icon, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dock_tab_icon, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		control gdextension.Object
 		icon    gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(control[0].AsObject())), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
+	}{gdextension.Object(gd.ObjectChecked(control[0].AsObject())), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
 }
 
 /*
@@ -2210,10 +2208,10 @@ Adds a custom menu item to [b]Project > Tools[/b] named [param name]. When click
 */
 //go:nosplit
 func (self class) AddToolMenuItem(name String.Readable, callable Callable.Function) { //gd:EditorPlugin.add_tool_menu_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tool_menu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tool_menu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
 		name     gdextension.String
 		callable gdextension.Callable
-	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(callable))}))
+	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(callable))})
 }
 
 /*
@@ -2221,10 +2219,10 @@ Adds a custom [PopupMenu] submenu under [b]Project > Tools >[/b] [param name]. U
 */
 //go:nosplit
 func (self class) AddToolSubmenuItem(name String.Readable, submenu [1]gdclass.PopupMenu) { //gd:EditorPlugin.add_tool_submenu_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tool_submenu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tool_submenu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		name    gdextension.String
 		submenu gdextension.Object
-	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0]))}))
+	}{pointers.Get(gd.InternalString(name)), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(submenu[0].AsObject()[0]))})
 }
 
 /*
@@ -2232,7 +2230,7 @@ Removes a menu [param name] from [b]Project > Tools[/b].
 */
 //go:nosplit
 func (self class) RemoveToolMenuItem(name String.Readable) { //gd:EditorPlugin.remove_tool_menu_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_tool_menu_item, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_tool_menu_item, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 
 /*
@@ -2240,7 +2238,7 @@ Returns the [PopupMenu] under [b]Scene > Export As...[/b].
 */
 //go:nosplit
 func (self class) GetExportAsMenu() [1]gdclass.PopupMenu { //gd:EditorPlugin.get_export_as_menu
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_export_as_menu, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_export_as_menu, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
@@ -2255,12 +2253,12 @@ During run-time, this will be a simple object with a script so this function doe
 */
 //go:nosplit
 func (self class) AddCustomType(atype String.Readable, base String.Readable, script [1]gdclass.Script, icon [1]gdclass.Texture2D) { //gd:EditorPlugin.add_custom_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_custom_type, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeObject<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_custom_type, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeObject<<16), &struct {
 		atype  gdextension.String
 		base   gdextension.String
 		script gdextension.Object
 		icon   gdextension.Object
-	}{pointers.Get(gd.InternalString(atype)), pointers.Get(gd.InternalString(base)), gdextension.Object(gd.ObjectChecked(script[0].AsObject())), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))}))
+	}{pointers.Get(gd.InternalString(atype)), pointers.Get(gd.InternalString(base)), gdextension.Object(gd.ObjectChecked(script[0].AsObject())), gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
 }
 
 /*
@@ -2268,7 +2266,7 @@ Removes a custom type added by [method add_custom_type].
 */
 //go:nosplit
 func (self class) RemoveCustomType(atype String.Readable) { //gd:EditorPlugin.remove_custom_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_custom_type, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ atype gdextension.String }{pointers.Get(gd.InternalString(atype))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_custom_type, 0|(gdextension.SizeString<<4), &struct{ atype gdextension.String }{pointers.Get(gd.InternalString(atype))})
 }
 
 /*
@@ -2276,10 +2274,10 @@ Adds a script at [param path] to the Autoload list as [param name].
 */
 //go:nosplit
 func (self class) AddAutoloadSingleton(name String.Readable, path String.Readable) { //gd:EditorPlugin.add_autoload_singleton
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_autoload_singleton, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_autoload_singleton, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		name gdextension.String
 		path gdextension.String
-	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalString(path))}))
+	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -2287,7 +2285,7 @@ Removes an Autoload [param name] from the list.
 */
 //go:nosplit
 func (self class) RemoveAutoloadSingleton(name String.Readable) { //gd:EditorPlugin.remove_autoload_singleton
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_autoload_singleton, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_autoload_singleton, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 
 /*
@@ -2295,7 +2293,7 @@ Updates the overlays of the 2D and 3D editor viewport. Causes methods [method _f
 */
 //go:nosplit
 func (self class) UpdateOverlays() int64 { //gd:EditorPlugin.update_overlays
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update_overlays, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update_overlays, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2305,7 +2303,7 @@ Makes a specific item in the bottom panel visible.
 */
 //go:nosplit
 func (self class) MakeBottomPanelItemVisible(item [1]gdclass.Control) { //gd:EditorPlugin.make_bottom_panel_item_visible
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_bottom_panel_item_visible, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(item[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_bottom_panel_item_visible, 0|(gdextension.SizeObject<<4), &struct{ item gdextension.Object }{gdextension.Object(gd.ObjectChecked(item[0].AsObject()))})
 }
 
 /*
@@ -2313,7 +2311,7 @@ Minimizes the bottom panel.
 */
 //go:nosplit
 func (self class) HideBottomPanel() { //gd:EditorPlugin.hide_bottom_panel
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.hide_bottom_panel, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.hide_bottom_panel, 0, &struct{}{})
 }
 
 /*
@@ -2321,7 +2319,7 @@ Gets the undo/redo object. Most actions in the editor can be undoable, so use th
 */
 //go:nosplit
 func (self class) GetUndoRedo() [1]gdclass.EditorUndoRedoManager { //gd:EditorPlugin.get_undo_redo
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_undo_redo, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_undo_redo, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorUndoRedoManager{gd.PointerLifetimeBoundTo[gdclass.EditorUndoRedoManager](self.AsObject(), r_ret)}
 	return ret
 }
@@ -2332,7 +2330,7 @@ The callback should have 4 arguments: [Object] [code]undo_redo[/code], [Object] 
 */
 //go:nosplit
 func (self class) AddUndoRedoInspectorHookCallback(callable Callable.Function) { //gd:EditorPlugin.add_undo_redo_inspector_hook_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_redo_inspector_hook_callback, 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_undo_redo_inspector_hook_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
 
 /*
@@ -2340,7 +2338,7 @@ Removes a callback previously added by [method add_undo_redo_inspector_hook_call
 */
 //go:nosplit
 func (self class) RemoveUndoRedoInspectorHookCallback(callable Callable.Function) { //gd:EditorPlugin.remove_undo_redo_inspector_hook_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_undo_redo_inspector_hook_callback, 0|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_undo_redo_inspector_hook_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
 
 /*
@@ -2348,7 +2346,7 @@ Queue save the project's editor layout.
 */
 //go:nosplit
 func (self class) QueueSaveLayout() { //gd:EditorPlugin.queue_save_layout
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_save_layout, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_save_layout, 0, &struct{}{})
 }
 
 /*
@@ -2356,7 +2354,7 @@ Registers a custom translation parser plugin for extracting translatable strings
 */
 //go:nosplit
 func (self class) AddTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.add_translation_parser_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation_parser_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(parser[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_translation_parser_plugin, 0|(gdextension.SizeObject<<4), &struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(parser[0].AsObject()))})
 }
 
 /*
@@ -2364,7 +2362,7 @@ Removes a custom translation parser plugin registered by [method add_translation
 */
 //go:nosplit
 func (self class) RemoveTranslationParserPlugin(parser [1]gdclass.EditorTranslationParserPlugin) { //gd:EditorPlugin.remove_translation_parser_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_translation_parser_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(parser[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_translation_parser_plugin, 0|(gdextension.SizeObject<<4), &struct{ parser gdextension.Object }{gdextension.Object(gd.ObjectChecked(parser[0].AsObject()))})
 }
 
 /*
@@ -2375,10 +2373,10 @@ See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 //go:nosplit
 func (self class) AddImportPlugin(importer [1]gdclass.EditorImportPlugin, first_priority bool) { //gd:EditorPlugin.add_import_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_import_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_import_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		importer       gdextension.Object
 		first_priority bool
-	}{gdextension.Object(gd.ObjectChecked(importer[0].AsObject())), first_priority}))
+	}{gdextension.Object(gd.ObjectChecked(importer[0].AsObject())), first_priority})
 }
 
 /*
@@ -2386,7 +2384,7 @@ Removes an import plugin registered by [method add_import_plugin].
 */
 //go:nosplit
 func (self class) RemoveImportPlugin(importer [1]gdclass.EditorImportPlugin) { //gd:EditorPlugin.remove_import_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_import_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(importer[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_import_plugin, 0|(gdextension.SizeObject<<4), &struct{ importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(importer[0].AsObject()))})
 }
 
 /*
@@ -2395,10 +2393,10 @@ If [param first_priority] is [code]true[/code], the new import plugin is inserte
 */
 //go:nosplit
 func (self class) AddSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter, first_priority bool) { //gd:EditorPlugin.add_scene_format_importer_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		scene_format_importer gdextension.Object
 		first_priority        bool
-	}{gdextension.Object(gd.ObjectChecked(scene_format_importer[0].AsObject())), first_priority}))
+	}{gdextension.Object(gd.ObjectChecked(scene_format_importer[0].AsObject())), first_priority})
 }
 
 /*
@@ -2406,7 +2404,7 @@ Removes a scene format importer registered by [method add_scene_format_importer_
 */
 //go:nosplit
 func (self class) RemoveSceneFormatImporterPlugin(scene_format_importer [1]gdclass.EditorSceneFormatImporter) { //gd:EditorPlugin.remove_scene_format_importer_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scene_format_importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_format_importer[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_format_importer_plugin, 0|(gdextension.SizeObject<<4), &struct{ scene_format_importer gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_format_importer[0].AsObject()))})
 }
 
 /*
@@ -2415,10 +2413,10 @@ If [param first_priority] is [code]true[/code], the new import plugin is inserte
 */
 //go:nosplit
 func (self class) AddScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin, first_priority bool) { //gd:EditorPlugin.add_scene_post_import_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_scene_post_import_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_scene_post_import_plugin, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		scene_import_plugin gdextension.Object
 		first_priority      bool
-	}{gdextension.Object(gd.ObjectChecked(scene_import_plugin[0].AsObject())), first_priority}))
+	}{gdextension.Object(gd.ObjectChecked(scene_import_plugin[0].AsObject())), first_priority})
 }
 
 /*
@@ -2426,7 +2424,7 @@ Remove the [EditorScenePostImportPlugin], added with [method add_scene_post_impo
 */
 //go:nosplit
 func (self class) RemoveScenePostImportPlugin(scene_import_plugin [1]gdclass.EditorScenePostImportPlugin) { //gd:EditorPlugin.remove_scene_post_import_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_post_import_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ scene_import_plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_import_plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_scene_post_import_plugin, 0|(gdextension.SizeObject<<4), &struct{ scene_import_plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(scene_import_plugin[0].AsObject()))})
 }
 
 /*
@@ -2435,7 +2433,7 @@ See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 //go:nosplit
 func (self class) AddExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.add_export_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
 }
 
 /*
@@ -2443,7 +2441,7 @@ Removes an export plugin registered by [method add_export_plugin].
 */
 //go:nosplit
 func (self class) RemoveExportPlugin(plugin [1]gdclass.EditorExportPlugin) { //gd:EditorPlugin.remove_export_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
 }
 
 /*
@@ -2451,7 +2449,7 @@ Registers a new [EditorExportPlatform]. Export platforms provides functionality 
 */
 //go:nosplit
 func (self class) AddExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.add_export_platform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_platform, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(platform[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_export_platform, 0|(gdextension.SizeObject<<4), &struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(platform[0].AsObject()))})
 }
 
 /*
@@ -2459,7 +2457,7 @@ Removes an export platform registered by [method add_export_platform].
 */
 //go:nosplit
 func (self class) RemoveExportPlatform(platform [1]gdclass.EditorExportPlatform) { //gd:EditorPlugin.remove_export_platform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_platform, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(platform[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_export_platform, 0|(gdextension.SizeObject<<4), &struct{ platform gdextension.Object }{gdextension.Object(gd.ObjectChecked(platform[0].AsObject()))})
 }
 
 /*
@@ -2468,7 +2466,7 @@ See [method add_inspector_plugin] for an example of how to register a plugin.
 */
 //go:nosplit
 func (self class) AddNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.add_node_3d_gizmo_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
 }
 
 /*
@@ -2476,7 +2474,7 @@ Removes a gizmo plugin registered by [method add_node_3d_gizmo_plugin].
 */
 //go:nosplit
 func (self class) RemoveNode3dGizmoPlugin(plugin [1]gdclass.EditorNode3DGizmoPlugin) { //gd:EditorPlugin.remove_node_3d_gizmo_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node_3d_gizmo_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
 }
 
 /*
@@ -2497,7 +2495,7 @@ func _exit_tree():
 */
 //go:nosplit
 func (self class) AddInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.add_inspector_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_inspector_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_inspector_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
 }
 
 /*
@@ -2505,7 +2503,7 @@ Removes an inspector plugin registered by [method add_inspector_plugin].
 */
 //go:nosplit
 func (self class) RemoveInspectorPlugin(plugin [1]gdclass.EditorInspectorPlugin) { //gd:EditorPlugin.remove_inspector_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_inspector_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_inspector_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
 }
 
 /*
@@ -2514,7 +2512,7 @@ See [EditorResourceConversionPlugin] for an example of how to create a resource 
 */
 //go:nosplit
 func (self class) AddResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.add_resource_conversion_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
 }
 
 /*
@@ -2522,7 +2520,7 @@ Removes a resource conversion plugin registered by [method add_resource_conversi
 */
 //go:nosplit
 func (self class) RemoveResourceConversionPlugin(plugin [1]gdclass.EditorResourceConversionPlugin) { //gd:EditorPlugin.remove_resource_conversion_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_conversion_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
 }
 
 /*
@@ -2530,7 +2528,7 @@ Use this method if you always want to receive inputs from 3D view screen inside 
 */
 //go:nosplit
 func (self class) SetInputEventForwardingAlwaysEnabled() { //gd:EditorPlugin.set_input_event_forwarding_always_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_event_forwarding_always_enabled, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_input_event_forwarding_always_enabled, 0, &struct{}{})
 }
 
 /*
@@ -2538,7 +2536,7 @@ Enables calling of [method _forward_canvas_force_draw_over_viewport] for the 2D 
 */
 //go:nosplit
 func (self class) SetForceDrawOverForwardingEnabled() { //gd:EditorPlugin.set_force_draw_over_forwarding_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_force_draw_over_forwarding_enabled, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_force_draw_over_forwarding_enabled, 0, &struct{}{})
 }
 
 /*
@@ -2547,10 +2545,10 @@ See [enum EditorContextMenuPlugin.ContextMenuSlot] for available context menus. 
 */
 //go:nosplit
 func (self class) AddContextMenuPlugin(slot EditorContextMenuPlugin.ContextMenuSlot, plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.add_context_menu_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_plugin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_plugin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		slot   EditorContextMenuPlugin.ContextMenuSlot
 		plugin gdextension.Object
-	}{slot, gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	}{slot, gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
 }
 
 /*
@@ -2558,7 +2556,7 @@ Removes the specified context menu plugin.
 */
 //go:nosplit
 func (self class) RemoveContextMenuPlugin(plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.remove_context_menu_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_context_menu_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_context_menu_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
 }
 
 /*
@@ -2566,7 +2564,7 @@ Returns the [EditorInterface] singleton instance.
 */
 //go:nosplit
 func (self class) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorPlugin.get_editor_interface
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_interface, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_interface, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorInterface{gd.PointerLifetimeBoundTo[gdclass.EditorInterface](self.AsObject(), r_ret)}
 	return ret
 }
@@ -2578,7 +2576,7 @@ Gets the Editor's dialog used for making scripts.
 */
 //go:nosplit
 func (self class) GetScriptCreateDialog() [1]gdclass.ScriptCreateDialog { //gd:EditorPlugin.get_script_create_dialog
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_create_dialog, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_create_dialog, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ScriptCreateDialog{gd.PointerLifetimeBoundTo[gdclass.ScriptCreateDialog](self.AsObject(), r_ret)}
 	return ret
 }
@@ -2588,7 +2586,7 @@ Adds a [Script] as debugger plugin to the Debugger. The script must extend [Edit
 */
 //go:nosplit
 func (self class) AddDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.add_debugger_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_debugger_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_debugger_plugin, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))})
 }
 
 /*
@@ -2596,7 +2594,7 @@ Removes the debugger plugin with given script from the Debugger.
 */
 //go:nosplit
 func (self class) RemoveDebuggerPlugin(script [1]gdclass.EditorDebuggerPlugin) { //gd:EditorPlugin.remove_debugger_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_debugger_plugin, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_debugger_plugin, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))})
 }
 
 /*
@@ -2604,7 +2602,7 @@ Provide the version of the plugin declared in the [code]plugin.cfg[/code] config
 */
 //go:nosplit
 func (self class) GetPluginVersion() String.Readable { //gd:EditorPlugin.get_plugin_version
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_plugin_version, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_plugin_version, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package ScriptEditor provides methods for working with ScriptEditor object instances.
 package ScriptEditor
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -41,7 +40,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -265,7 +263,7 @@ Returns the [ScriptEditorBase] object that the user is currently editing.
 */
 //go:nosplit
 func (self class) GetCurrentEditor() [1]gdclass.ScriptEditorBase { //gd:ScriptEditor.get_current_editor
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_editor, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_editor, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ScriptEditorBase{gd.PointerMustAssertInstanceID[gdclass.ScriptEditorBase](r_ret)}
 	return ret
 }
@@ -275,7 +273,7 @@ Returns an array with all [ScriptEditorBase] objects which are currently open in
 */
 //go:nosplit
 func (self class) GetOpenScriptEditors() Array.Contains[[1]gdclass.ScriptEditorBase] { //gd:ScriptEditor.get_open_script_editors
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_open_script_editors, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_open_script_editors, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.ScriptEditorBase]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -285,7 +283,7 @@ Returns array of breakpoints.
 */
 //go:nosplit
 func (self class) GetBreakpoints() Packed.Strings { //gd:ScriptEditor.get_breakpoints
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_breakpoints, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_breakpoints, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -296,7 +294,7 @@ Registers the [EditorSyntaxHighlighter] to the editor, the [EditorSyntaxHighligh
 */
 //go:nosplit
 func (self class) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.register_syntax_highlighter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(syntax_highlighter[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(syntax_highlighter[0].AsObject()))})
 }
 
 /*
@@ -305,7 +303,7 @@ Unregisters the [EditorSyntaxHighlighter] from the editor.
 */
 //go:nosplit
 func (self class) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.unregister_syntax_highlighter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_syntax_highlighter, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(syntax_highlighter[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_syntax_highlighter, 0|(gdextension.SizeObject<<4), &struct{ syntax_highlighter gdextension.Object }{gdextension.Object(gd.ObjectChecked(syntax_highlighter[0].AsObject()))})
 }
 
 /*
@@ -313,7 +311,7 @@ Goes to the specified line in the current script.
 */
 //go:nosplit
 func (self class) GotoLine(line_number int64) { //gd:ScriptEditor.goto_line
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.goto_line, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ line_number int64 }{line_number}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.goto_line, 0|(gdextension.SizeInt<<4), &struct{ line_number int64 }{line_number})
 }
 
 /*
@@ -321,7 +319,7 @@ Returns a [Script] that is currently active in editor.
 */
 //go:nosplit
 func (self class) GetCurrentScript() [1]gdclass.Script { //gd:ScriptEditor.get_current_script
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_script, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_current_script, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Script{gd.PointerWithOwnershipTransferredToGo[gdclass.Script](r_ret)}
 	return ret
 }
@@ -331,7 +329,7 @@ Returns an array with all [Script] objects which are currently open in editor.
 */
 //go:nosplit
 func (self class) GetOpenScripts() Array.Contains[[1]gdclass.Script] { //gd:ScriptEditor.get_open_scripts
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_open_scripts, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_open_scripts, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Script]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -341,10 +339,10 @@ Opens the script create dialog. The script will extend [param base_name]. The fi
 */
 //go:nosplit
 func (self class) OpenScriptCreateDialog(base_name String.Readable, base_path String.Readable) { //gd:ScriptEditor.open_script_create_dialog
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.open_script_create_dialog, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.open_script_create_dialog, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		base_name gdextension.String
 		base_path gdextension.String
-	}{pointers.Get(gd.InternalString(base_name)), pointers.Get(gd.InternalString(base_path))}))
+	}{pointers.Get(gd.InternalString(base_name)), pointers.Get(gd.InternalString(base_path))})
 }
 
 /*
@@ -373,7 +371,7 @@ class_theme_item:GraphNode:panel_selected
 */
 //go:nosplit
 func (self class) GotoHelp(topic String.Readable) { //gd:ScriptEditor.goto_help
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.goto_help, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ topic gdextension.String }{pointers.Get(gd.InternalString(topic))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.goto_help, 0|(gdextension.SizeString<<4), &struct{ topic gdextension.String }{pointers.Get(gd.InternalString(topic))})
 }
 
 /*
@@ -382,7 +380,7 @@ Updates the documentation for the given [param script] if the script's documenta
 */
 //go:nosplit
 func (self class) UpdateDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.update_docs_from_script
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_docs_from_script, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_docs_from_script, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))})
 }
 func (self Instance) OnEditorScriptChanged(cb func(script Script.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

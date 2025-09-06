@@ -3,7 +3,6 @@
 // Package AnimationNodeTimeSeek provides methods for working with AnimationNodeTimeSeek object instances.
 package AnimationNodeTimeSeek
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -175,12 +173,12 @@ func (self Instance) SetExplicitElapse(value bool) {
 
 //go:nosplit
 func (self class) SetExplicitElapse(enable bool) { //gd:AnimationNodeTimeSeek.set_explicit_elapse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_explicit_elapse, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_explicit_elapse, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsExplicitElapse() bool { //gd:AnimationNodeTimeSeek.is_explicit_elapse
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_explicit_elapse, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_explicit_elapse, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

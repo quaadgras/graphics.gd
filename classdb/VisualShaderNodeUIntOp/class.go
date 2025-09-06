@@ -3,7 +3,6 @@
 // Package VisualShaderNodeUIntOp provides methods for working with VisualShaderNodeUIntOp object instances.
 package VisualShaderNodeUIntOp
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -154,12 +152,12 @@ func (self Instance) SetOperator(value Operator) {
 
 //go:nosplit
 func (self class) SetOperator(op Operator) { //gd:VisualShaderNodeUIntOp.set_operator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_operator, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ op Operator }{op}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_operator, 0|(gdextension.SizeInt<<4), &struct{ op Operator }{op})
 }
 
 //go:nosplit
 func (self class) GetOperator() Operator { //gd:VisualShaderNodeUIntOp.get_operator
-	var r_ret = gdextension.Call[Operator](gd.ObjectChecked(self.AsObject()), methods.get_operator, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Operator](gd.ObjectChecked(self.AsObject()), methods.get_operator, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package OpenXRInteractionProfile provides methods for working with OpenXRInteractionProfile object instances.
 package OpenXRInteractionProfile
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -208,12 +206,12 @@ func (self Instance) SetBindingModifiers(value []any) {
 
 //go:nosplit
 func (self class) SetInteractionProfilePath(interaction_profile_path String.Readable) { //gd:OpenXRInteractionProfile.set_interaction_profile_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interaction_profile_path, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ interaction_profile_path gdextension.String }{pointers.Get(gd.InternalString(interaction_profile_path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interaction_profile_path, 0|(gdextension.SizeString<<4), &struct{ interaction_profile_path gdextension.String }{pointers.Get(gd.InternalString(interaction_profile_path))})
 }
 
 //go:nosplit
 func (self class) GetInteractionProfilePath() String.Readable { //gd:OpenXRInteractionProfile.get_interaction_profile_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_interaction_profile_path, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_interaction_profile_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -223,7 +221,7 @@ Get the number of bindings in this interaction profile.
 */
 //go:nosplit
 func (self class) GetBindingCount() int64 { //gd:OpenXRInteractionProfile.get_binding_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -233,19 +231,19 @@ Retrieve the binding at this index.
 */
 //go:nosplit
 func (self class) GetBinding(index int64) [1]gdclass.OpenXRIPBinding { //gd:OpenXRInteractionProfile.get_binding
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_binding, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_binding, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = [1]gdclass.OpenXRIPBinding{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRIPBinding](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBindings(bindings Array.Any) { //gd:OpenXRInteractionProfile.set_bindings
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bindings, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ bindings gdextension.Array }{pointers.Get(gd.InternalArray(bindings))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bindings, 0|(gdextension.SizeArray<<4), &struct{ bindings gdextension.Array }{pointers.Get(gd.InternalArray(bindings))})
 }
 
 //go:nosplit
 func (self class) GetBindings() Array.Any { //gd:OpenXRInteractionProfile.get_bindings
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_bindings, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_bindings, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -255,7 +253,7 @@ Get the number of binding modifiers in this interaction profile.
 */
 //go:nosplit
 func (self class) GetBindingModifierCount() int64 { //gd:OpenXRInteractionProfile.get_binding_modifier_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding_modifier_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding_modifier_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -265,19 +263,19 @@ Get the [OpenXRBindingModifier] at this index.
 */
 //go:nosplit
 func (self class) GetBindingModifier(index int64) [1]gdclass.OpenXRIPBindingModifier { //gd:OpenXRInteractionProfile.get_binding_modifier
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_binding_modifier, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ index int64 }{index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_binding_modifier, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = [1]gdclass.OpenXRIPBindingModifier{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRIPBindingModifier](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBindingModifiers(binding_modifiers Array.Any) { //gd:OpenXRInteractionProfile.set_binding_modifiers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding_modifiers, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ binding_modifiers gdextension.Array }{pointers.Get(gd.InternalArray(binding_modifiers))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding_modifiers, 0|(gdextension.SizeArray<<4), &struct{ binding_modifiers gdextension.Array }{pointers.Get(gd.InternalArray(binding_modifiers))})
 }
 
 //go:nosplit
 func (self class) GetBindingModifiers() Array.Any { //gd:OpenXRInteractionProfile.get_binding_modifiers
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_binding_modifiers, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_binding_modifiers, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

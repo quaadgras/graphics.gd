@@ -3,7 +3,6 @@
 // Package Camera2D provides methods for working with Camera2D object instances.
 package Camera2D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -38,7 +37,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -466,60 +464,60 @@ func (self Instance) SetEditorDrawDragMargin(value bool) {
 
 //go:nosplit
 func (self class) SetOffset(offset Vector2.XY) { //gd:Camera2D.set_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ offset Vector2.XY }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 
 //go:nosplit
 func (self class) GetOffset() Vector2.XY { //gd:Camera2D.get_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAnchorMode(anchor_mode AnchorMode) { //gd:Camera2D.set_anchor_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchor_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ anchor_mode AnchorMode }{anchor_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_anchor_mode, 0|(gdextension.SizeInt<<4), &struct{ anchor_mode AnchorMode }{anchor_mode})
 }
 
 //go:nosplit
 func (self class) GetAnchorMode() AnchorMode { //gd:Camera2D.get_anchor_mode
-	var r_ret = gdextension.Call[AnchorMode](gd.ObjectChecked(self.AsObject()), methods.get_anchor_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AnchorMode](gd.ObjectChecked(self.AsObject()), methods.get_anchor_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgnoreRotation(ignore bool) { //gd:Camera2D.set_ignore_rotation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_rotation, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ ignore bool }{ignore}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_rotation, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
 }
 
 //go:nosplit
 func (self class) IsIgnoringRotation() bool { //gd:Camera2D.is_ignoring_rotation
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_rotation, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_rotation, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProcessCallback(mode Camera2DProcessCallback) { //gd:Camera2D.set_process_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_callback, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode Camera2DProcessCallback }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_callback, 0|(gdextension.SizeInt<<4), &struct{ mode Camera2DProcessCallback }{mode})
 }
 
 //go:nosplit
 func (self class) GetProcessCallback() Camera2DProcessCallback { //gd:Camera2D.get_process_callback
-	var r_ret = gdextension.Call[Camera2DProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_process_callback, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Camera2DProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_process_callback, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:Camera2D.set_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsEnabled() bool { //gd:Camera2D.is_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -529,7 +527,7 @@ Forces this [Camera2D] to become the current active one. [member enabled] must b
 */
 //go:nosplit
 func (self class) MakeCurrent() { //gd:Camera2D.make_current
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_current, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.make_current, 0, &struct{}{})
 }
 
 /*
@@ -537,7 +535,7 @@ Returns [code]true[/code] if this [Camera2D] is the active camera (see [method V
 */
 //go:nosplit
 func (self class) IsCurrent() bool { //gd:Camera2D.is_current
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_current, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -547,10 +545,10 @@ Sets the camera limit for the specified [enum Side]. See also [member limit_bott
 */
 //go:nosplit
 func (self class) SetLimit(margin Rect2.Side, limit int64) { //gd:Camera2D.set_limit
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		margin Rect2.Side
 		limit  int64
-	}{margin, limit}))
+	}{margin, limit})
 }
 
 /*
@@ -558,67 +556,67 @@ Returns the camera limit for the specified [enum Side]. See also [member limit_b
 */
 //go:nosplit
 func (self class) GetLimit(margin Rect2.Side) int64 { //gd:Camera2D.get_limit
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_limit, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_limit, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ margin Rect2.Side }{margin})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLimitSmoothingEnabled(limit_smoothing_enabled bool) { //gd:Camera2D.set_limit_smoothing_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_smoothing_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ limit_smoothing_enabled bool }{limit_smoothing_enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_smoothing_enabled, 0|(gdextension.SizeBool<<4), &struct{ limit_smoothing_enabled bool }{limit_smoothing_enabled})
 }
 
 //go:nosplit
 func (self class) IsLimitSmoothingEnabled() bool { //gd:Camera2D.is_limit_smoothing_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_limit_smoothing_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_limit_smoothing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragVerticalEnabled(enabled bool) { //gd:Camera2D.set_drag_vertical_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_vertical_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_vertical_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsDragVerticalEnabled() bool { //gd:Camera2D.is_drag_vertical_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_vertical_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_vertical_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragHorizontalEnabled(enabled bool) { //gd:Camera2D.set_drag_horizontal_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_horizontal_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_horizontal_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsDragHorizontalEnabled() bool { //gd:Camera2D.is_drag_horizontal_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_horizontal_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_horizontal_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragVerticalOffset(offset float64) { //gd:Camera2D.set_drag_vertical_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_vertical_offset, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_vertical_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 
 //go:nosplit
 func (self class) GetDragVerticalOffset() float64 { //gd:Camera2D.get_drag_vertical_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drag_vertical_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drag_vertical_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragHorizontalOffset(offset float64) { //gd:Camera2D.set_drag_horizontal_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_horizontal_offset, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ offset float64 }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_horizontal_offset, 0|(gdextension.SizeFloat<<4), &struct{ offset float64 }{offset})
 }
 
 //go:nosplit
 func (self class) GetDragHorizontalOffset() float64 { //gd:Camera2D.get_drag_horizontal_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drag_horizontal_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drag_horizontal_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -628,10 +626,10 @@ Sets the specified [enum Side]'s margin. See also [member drag_bottom_margin], [
 */
 //go:nosplit
 func (self class) SetDragMargin(margin Rect2.Side, drag_margin float64) { //gd:Camera2D.set_drag_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		margin      Rect2.Side
 		drag_margin float64
-	}{margin, drag_margin}))
+	}{margin, drag_margin})
 }
 
 /*
@@ -639,7 +637,7 @@ Returns the specified [enum Side]'s margin. See also [member drag_bottom_margin]
 */
 //go:nosplit
 func (self class) GetDragMargin(margin Rect2.Side) float64 { //gd:Camera2D.get_drag_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drag_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin Rect2.Side }{margin}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drag_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ margin Rect2.Side }{margin})
 	var ret = r_ret
 	return ret
 }
@@ -650,7 +648,7 @@ Returns this camera's target position, in global coordinates.
 */
 //go:nosplit
 func (self class) GetTargetPosition() Vector2.XY { //gd:Camera2D.get_target_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -661,79 +659,79 @@ Returns the center of the screen from this camera's point of view, in global coo
 */
 //go:nosplit
 func (self class) GetScreenCenterPosition() Vector2.XY { //gd:Camera2D.get_screen_center_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_center_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_center_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetZoom(zoom Vector2.XY) { //gd:Camera2D.set_zoom
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_zoom, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ zoom Vector2.XY }{zoom}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_zoom, 0|(gdextension.SizeVector2<<4), &struct{ zoom Vector2.XY }{zoom})
 }
 
 //go:nosplit
 func (self class) GetZoom() Vector2.XY { //gd:Camera2D.get_zoom
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_zoom, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_zoom, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCustomViewport(viewport [1]gdclass.Node) { //gd:Camera2D.set_custom_viewport
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_viewport, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ viewport gdextension.Object }{gdextension.Object(gd.ObjectChecked(viewport[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_viewport, 0|(gdextension.SizeObject<<4), &struct{ viewport gdextension.Object }{gdextension.Object(gd.ObjectChecked(viewport[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetCustomViewport() [1]gdclass.Node { //gd:Camera2D.get_custom_viewport
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_custom_viewport, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_custom_viewport, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPositionSmoothingSpeed(position_smoothing_speed float64) { //gd:Camera2D.set_position_smoothing_speed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_smoothing_speed, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ position_smoothing_speed float64 }{position_smoothing_speed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_smoothing_speed, 0|(gdextension.SizeFloat<<4), &struct{ position_smoothing_speed float64 }{position_smoothing_speed})
 }
 
 //go:nosplit
 func (self class) GetPositionSmoothingSpeed() float64 { //gd:Camera2D.get_position_smoothing_speed
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_position_smoothing_speed, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_position_smoothing_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPositionSmoothingEnabled(position_smoothing_speed bool) { //gd:Camera2D.set_position_smoothing_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_smoothing_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ position_smoothing_speed bool }{position_smoothing_speed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_smoothing_enabled, 0|(gdextension.SizeBool<<4), &struct{ position_smoothing_speed bool }{position_smoothing_speed})
 }
 
 //go:nosplit
 func (self class) IsPositionSmoothingEnabled() bool { //gd:Camera2D.is_position_smoothing_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_position_smoothing_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_position_smoothing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRotationSmoothingEnabled(enabled bool) { //gd:Camera2D.set_rotation_smoothing_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_smoothing_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_smoothing_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsRotationSmoothingEnabled() bool { //gd:Camera2D.is_rotation_smoothing_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rotation_smoothing_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rotation_smoothing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRotationSmoothingSpeed(speed float64) { //gd:Camera2D.set_rotation_smoothing_speed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_smoothing_speed, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ speed float64 }{speed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_smoothing_speed, 0|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
 }
 
 //go:nosplit
 func (self class) GetRotationSmoothingSpeed() float64 { //gd:Camera2D.get_rotation_smoothing_speed
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation_smoothing_speed, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rotation_smoothing_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -743,7 +741,7 @@ Forces the camera to update scroll immediately.
 */
 //go:nosplit
 func (self class) ForceUpdateScroll() { //gd:Camera2D.force_update_scroll
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update_scroll, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update_scroll, 0, &struct{}{})
 }
 
 /*
@@ -752,7 +750,7 @@ This method has no effect if [member position_smoothing_enabled] is [code]false[
 */
 //go:nosplit
 func (self class) ResetSmoothing() { //gd:Camera2D.reset_smoothing
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_smoothing, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_smoothing, 0, &struct{}{})
 }
 
 /*
@@ -760,41 +758,41 @@ Aligns the camera to the tracked node.
 */
 //go:nosplit
 func (self class) Align() { //gd:Camera2D.align
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.align, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.align, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetScreenDrawingEnabled(screen_drawing_enabled bool) { //gd:Camera2D.set_screen_drawing_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_drawing_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ screen_drawing_enabled bool }{screen_drawing_enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_drawing_enabled, 0|(gdextension.SizeBool<<4), &struct{ screen_drawing_enabled bool }{screen_drawing_enabled})
 }
 
 //go:nosplit
 func (self class) IsScreenDrawingEnabled() bool { //gd:Camera2D.is_screen_drawing_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_screen_drawing_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_screen_drawing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLimitDrawingEnabled(limit_drawing_enabled bool) { //gd:Camera2D.set_limit_drawing_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_drawing_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ limit_drawing_enabled bool }{limit_drawing_enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_drawing_enabled, 0|(gdextension.SizeBool<<4), &struct{ limit_drawing_enabled bool }{limit_drawing_enabled})
 }
 
 //go:nosplit
 func (self class) IsLimitDrawingEnabled() bool { //gd:Camera2D.is_limit_drawing_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_limit_drawing_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_limit_drawing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMarginDrawingEnabled(margin_drawing_enabled bool) { //gd:Camera2D.set_margin_drawing_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin_drawing_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ margin_drawing_enabled bool }{margin_drawing_enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin_drawing_enabled, 0|(gdextension.SizeBool<<4), &struct{ margin_drawing_enabled bool }{margin_drawing_enabled})
 }
 
 //go:nosplit
 func (self class) IsMarginDrawingEnabled() bool { //gd:Camera2D.is_margin_drawing_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_margin_drawing_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_margin_drawing_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

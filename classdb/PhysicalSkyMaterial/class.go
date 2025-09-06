@@ -3,7 +3,6 @@
 // Package PhysicalSkyMaterial provides methods for working with PhysicalSkyMaterial object instances.
 package PhysicalSkyMaterial
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -257,132 +255,132 @@ func (self Instance) SetNightSky(value Texture2D.Instance) {
 
 //go:nosplit
 func (self class) SetRayleighCoefficient(rayleigh float64) { //gd:PhysicalSkyMaterial.set_rayleigh_coefficient
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rayleigh_coefficient, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ rayleigh float64 }{rayleigh}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rayleigh_coefficient, 0|(gdextension.SizeFloat<<4), &struct{ rayleigh float64 }{rayleigh})
 }
 
 //go:nosplit
 func (self class) GetRayleighCoefficient() float64 { //gd:PhysicalSkyMaterial.get_rayleigh_coefficient
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rayleigh_coefficient, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rayleigh_coefficient, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRayleighColor(color Color.RGBA) { //gd:PhysicalSkyMaterial.set_rayleigh_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rayleigh_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rayleigh_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetRayleighColor() Color.RGBA { //gd:PhysicalSkyMaterial.get_rayleigh_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_rayleigh_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_rayleigh_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMieCoefficient(mie float64) { //gd:PhysicalSkyMaterial.set_mie_coefficient
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mie_coefficient, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mie float64 }{mie}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mie_coefficient, 0|(gdextension.SizeFloat<<4), &struct{ mie float64 }{mie})
 }
 
 //go:nosplit
 func (self class) GetMieCoefficient() float64 { //gd:PhysicalSkyMaterial.get_mie_coefficient
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mie_coefficient, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mie_coefficient, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMieEccentricity(eccentricity float64) { //gd:PhysicalSkyMaterial.set_mie_eccentricity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mie_eccentricity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ eccentricity float64 }{eccentricity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mie_eccentricity, 0|(gdextension.SizeFloat<<4), &struct{ eccentricity float64 }{eccentricity})
 }
 
 //go:nosplit
 func (self class) GetMieEccentricity() float64 { //gd:PhysicalSkyMaterial.get_mie_eccentricity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mie_eccentricity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mie_eccentricity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMieColor(color Color.RGBA) { //gd:PhysicalSkyMaterial.set_mie_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mie_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mie_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetMieColor() Color.RGBA { //gd:PhysicalSkyMaterial.get_mie_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_mie_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_mie_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTurbidity(turbidity float64) { //gd:PhysicalSkyMaterial.set_turbidity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_turbidity, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ turbidity float64 }{turbidity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_turbidity, 0|(gdextension.SizeFloat<<4), &struct{ turbidity float64 }{turbidity})
 }
 
 //go:nosplit
 func (self class) GetTurbidity() float64 { //gd:PhysicalSkyMaterial.get_turbidity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_turbidity, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_turbidity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSunDiskScale(scale float64) { //gd:PhysicalSkyMaterial.set_sun_disk_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sun_disk_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ scale float64 }{scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sun_disk_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
 
 //go:nosplit
 func (self class) GetSunDiskScale() float64 { //gd:PhysicalSkyMaterial.get_sun_disk_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sun_disk_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sun_disk_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGroundColor(color Color.RGBA) { //gd:PhysicalSkyMaterial.set_ground_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ground_color, 0|(gdextension.SizeColor<<4), unsafe.Pointer(&struct{ color Color.RGBA }{color}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ground_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetGroundColor() Color.RGBA { //gd:PhysicalSkyMaterial.get_ground_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_ground_color, gdextension.SizeColor, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_ground_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnergyMultiplier(multiplier float64) { //gd:PhysicalSkyMaterial.set_energy_multiplier
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_energy_multiplier, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ multiplier float64 }{multiplier}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_energy_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ multiplier float64 }{multiplier})
 }
 
 //go:nosplit
 func (self class) GetEnergyMultiplier() float64 { //gd:PhysicalSkyMaterial.get_energy_multiplier
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy_multiplier, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy_multiplier, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseDebanding(use_debanding bool) { //gd:PhysicalSkyMaterial.set_use_debanding
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_debanding, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_debanding bool }{use_debanding}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_debanding, 0|(gdextension.SizeBool<<4), &struct{ use_debanding bool }{use_debanding})
 }
 
 //go:nosplit
 func (self class) GetUseDebanding() bool { //gd:PhysicalSkyMaterial.get_use_debanding
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_debanding, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_debanding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNightSky(night_sky [1]gdclass.Texture2D) { //gd:PhysicalSkyMaterial.set_night_sky
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_night_sky, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ night_sky gdextension.Object }{gdextension.Object(gd.ObjectChecked(night_sky[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_night_sky, 0|(gdextension.SizeObject<<4), &struct{ night_sky gdextension.Object }{gdextension.Object(gd.ObjectChecked(night_sky[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetNightSky() [1]gdclass.Texture2D { //gd:PhysicalSkyMaterial.get_night_sky
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_night_sky, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_night_sky, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }

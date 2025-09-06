@@ -3,7 +3,6 @@
 // Package AspectRatioContainer provides methods for working with AspectRatioContainer object instances.
 package AspectRatioContainer
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -185,48 +183,48 @@ func (self Instance) SetAlignmentVertical(value AlignmentMode) {
 
 //go:nosplit
 func (self class) SetRatio(ratio float64) { //gd:AspectRatioContainer.set_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 
 //go:nosplit
 func (self class) GetRatio() float64 { //gd:AspectRatioContainer.get_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStretchMode(stretch_mode StretchMode) { //gd:AspectRatioContainer.set_stretch_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stretch_mode StretchMode }{stretch_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_mode, 0|(gdextension.SizeInt<<4), &struct{ stretch_mode StretchMode }{stretch_mode})
 }
 
 //go:nosplit
 func (self class) GetStretchMode() StretchMode { //gd:AspectRatioContainer.get_stretch_mode
-	var r_ret = gdextension.Call[StretchMode](gd.ObjectChecked(self.AsObject()), methods.get_stretch_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[StretchMode](gd.ObjectChecked(self.AsObject()), methods.get_stretch_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlignmentHorizontal(alignment_horizontal AlignmentMode) { //gd:AspectRatioContainer.set_alignment_horizontal
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment_horizontal, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment_horizontal AlignmentMode }{alignment_horizontal}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment_horizontal, 0|(gdextension.SizeInt<<4), &struct{ alignment_horizontal AlignmentMode }{alignment_horizontal})
 }
 
 //go:nosplit
 func (self class) GetAlignmentHorizontal() AlignmentMode { //gd:AspectRatioContainer.get_alignment_horizontal
-	var r_ret = gdextension.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment_horizontal, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment_horizontal, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlignmentVertical(alignment_vertical AlignmentMode) { //gd:AspectRatioContainer.set_alignment_vertical
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment_vertical, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ alignment_vertical AlignmentMode }{alignment_vertical}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment_vertical, 0|(gdextension.SizeInt<<4), &struct{ alignment_vertical AlignmentMode }{alignment_vertical})
 }
 
 //go:nosplit
 func (self class) GetAlignmentVertical() AlignmentMode { //gd:AspectRatioContainer.get_alignment_vertical
-	var r_ret = gdextension.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment_vertical, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment_vertical, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

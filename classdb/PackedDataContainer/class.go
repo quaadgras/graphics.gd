@@ -3,7 +3,6 @@
 // Package PackedDataContainer provides methods for working with PackedDataContainer object instances.
 package PackedDataContainer
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -185,7 +183,7 @@ Packs the given container into a binary representation. The [param value] must b
 */
 //go:nosplit
 func (self class) Pack(value variant.Any) Error.Code { //gd:PackedDataContainer.pack
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pack, gdextension.SizeInt|(gdextension.SizeVariant<<4), unsafe.Pointer(&struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pack, gdextension.SizeInt|(gdextension.SizeVariant<<4), &struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -195,7 +193,7 @@ Returns the size of the packed container (see [method Array.size] and [method Di
 */
 //go:nosplit
 func (self class) Size() int64 { //gd:PackedDataContainer.size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.size, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package RenderDataExtension provides methods for working with RenderDataExtension object instances.
 package RenderDataExtension
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -125,9 +123,9 @@ func (self implementation) GetCameraAttributes() (_ RID.Any)                    
 /*
 Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.
 */
-func (Instance) _get_render_scene_buffers(impl func(ptr unsafe.Pointer) RenderSceneBuffers.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_render_scene_buffers(impl func(ptr gdclass.Receiver) RenderSceneBuffers.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
 
@@ -141,9 +139,9 @@ func (Instance) _get_render_scene_buffers(impl func(ptr unsafe.Pointer) RenderSc
 /*
 Implement this in GDExtension to return the implementation's [RenderSceneDataExtension] object.
 */
-func (Instance) _get_render_scene_data(impl func(ptr unsafe.Pointer) RenderSceneData.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_render_scene_data(impl func(ptr gdclass.Receiver) RenderSceneData.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
 
@@ -157,9 +155,9 @@ func (Instance) _get_render_scene_data(impl func(ptr unsafe.Pointer) RenderScene
 /*
 Implement this in GDExtension to return the [RID] of the implementation's environment object.
 */
-func (Instance) _get_environment(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_environment(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -168,9 +166,9 @@ func (Instance) _get_environment(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.E
 /*
 Implement this in GDExtension to return the [RID] for the implementation's camera attributes object.
 */
-func (Instance) _get_camera_attributes(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_camera_attributes(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -221,9 +219,9 @@ func New() Instance {
 /*
 Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.
 */
-func (class) _get_render_scene_buffers(impl func(ptr unsafe.Pointer) [1]gdclass.RenderSceneBuffers) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_render_scene_buffers(impl func(ptr gdclass.Receiver) [1]gdclass.RenderSceneBuffers) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
 
@@ -237,9 +235,9 @@ func (class) _get_render_scene_buffers(impl func(ptr unsafe.Pointer) [1]gdclass.
 /*
 Implement this in GDExtension to return the implementation's [RenderSceneDataExtension] object.
 */
-func (class) _get_render_scene_data(impl func(ptr unsafe.Pointer) [1]gdclass.RenderSceneData) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_render_scene_data(impl func(ptr gdclass.Receiver) [1]gdclass.RenderSceneData) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
 
@@ -253,9 +251,9 @@ func (class) _get_render_scene_data(impl func(ptr unsafe.Pointer) [1]gdclass.Ren
 /*
 Implement this in GDExtension to return the [RID] of the implementation's environment object.
 */
-func (class) _get_environment(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_environment(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -264,9 +262,9 @@ func (class) _get_environment(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.Exte
 /*
 Implement this in GDExtension to return the [RID] for the implementation's camera attributes object.
 */
-func (class) _get_camera_attributes(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_camera_attributes(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}

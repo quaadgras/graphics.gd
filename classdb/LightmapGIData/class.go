@@ -3,7 +3,6 @@
 // Package LightmapGIData provides methods for working with LightmapGIData object instances.
 package LightmapGIData
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -217,24 +215,24 @@ func (self Instance) SetLightTexture(value TextureLayered.Instance) {
 
 //go:nosplit
 func (self class) SetLightmapTextures(light_textures Array.Contains[[1]gdclass.TextureLayered]) { //gd:LightmapGIData.set_lightmap_textures
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lightmap_textures, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ light_textures gdextension.Array }{pointers.Get(gd.InternalArray(light_textures))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_lightmap_textures, 0|(gdextension.SizeArray<<4), &struct{ light_textures gdextension.Array }{pointers.Get(gd.InternalArray(light_textures))})
 }
 
 //go:nosplit
 func (self class) GetLightmapTextures() Array.Contains[[1]gdclass.TextureLayered] { //gd:LightmapGIData.get_lightmap_textures
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_lightmap_textures, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_lightmap_textures, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.TextureLayered]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShadowmaskTextures(shadowmask_textures Array.Contains[[1]gdclass.TextureLayered]) { //gd:LightmapGIData.set_shadowmask_textures
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadowmask_textures, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ shadowmask_textures gdextension.Array }{pointers.Get(gd.InternalArray(shadowmask_textures))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadowmask_textures, 0|(gdextension.SizeArray<<4), &struct{ shadowmask_textures gdextension.Array }{pointers.Get(gd.InternalArray(shadowmask_textures))})
 }
 
 //go:nosplit
 func (self class) GetShadowmaskTextures() Array.Contains[[1]gdclass.TextureLayered] { //gd:LightmapGIData.get_shadowmask_textures
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_shadowmask_textures, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_shadowmask_textures, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.TextureLayered]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -245,7 +243,7 @@ If [param uses_spherical_harmonics] is [code]true[/code], tells the engine to tr
 */
 //go:nosplit
 func (self class) SetUsesSphericalHarmonics(uses_spherical_harmonics bool) { //gd:LightmapGIData.set_uses_spherical_harmonics
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uses_spherical_harmonics, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ uses_spherical_harmonics bool }{uses_spherical_harmonics}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uses_spherical_harmonics, 0|(gdextension.SizeBool<<4), &struct{ uses_spherical_harmonics bool }{uses_spherical_harmonics})
 }
 
 /*
@@ -253,7 +251,7 @@ If [code]true[/code], lightmaps were baked with directional information. See als
 */
 //go:nosplit
 func (self class) IsUsingSphericalHarmonics() bool { //gd:LightmapGIData.is_using_spherical_harmonics
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_spherical_harmonics, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_spherical_harmonics, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -263,12 +261,12 @@ Adds an object that is considered baked within this [LightmapGIData].
 */
 //go:nosplit
 func (self class) AddUser(path Path.ToNode, uv_scale Rect2.PositionSize, slice_index int64, sub_instance int64) { //gd:LightmapGIData.add_user
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_user, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_user, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		path         gdextension.NodePath
 		uv_scale     Rect2.PositionSize
 		slice_index  int64
 		sub_instance int64
-	}{pointers.Get(gd.InternalNodePath(path)), uv_scale, slice_index, sub_instance}))
+	}{pointers.Get(gd.InternalNodePath(path)), uv_scale, slice_index, sub_instance})
 }
 
 /*
@@ -276,7 +274,7 @@ Returns the number of objects that are considered baked within this [LightmapGID
 */
 //go:nosplit
 func (self class) GetUserCount() int64 { //gd:LightmapGIData.get_user_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_user_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_user_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -286,7 +284,7 @@ Returns the [NodePath] of the baked object at index [param user_idx].
 */
 //go:nosplit
 func (self class) GetUserPath(user_idx int64) Path.ToNode { //gd:LightmapGIData.get_user_path
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_user_path, gdextension.SizeNodePath|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ user_idx int64 }{user_idx}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_user_path, gdextension.SizeNodePath|(gdextension.SizeInt<<4), &struct{ user_idx int64 }{user_idx})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -296,17 +294,17 @@ Clear all objects that are considered baked within this [LightmapGIData].
 */
 //go:nosplit
 func (self class) ClearUsers() { //gd:LightmapGIData.clear_users
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_users, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_users, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetLightTexture(light_texture [1]gdclass.TextureLayered) { //gd:LightmapGIData.set_light_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_texture, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ light_texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(light_texture[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_texture, 0|(gdextension.SizeObject<<4), &struct{ light_texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(light_texture[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetLightTexture() [1]gdclass.TextureLayered { //gd:LightmapGIData.get_light_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_light_texture, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_light_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TextureLayered{gd.PointerWithOwnershipTransferredToGo[gdclass.TextureLayered](r_ret)}
 	return ret
 }

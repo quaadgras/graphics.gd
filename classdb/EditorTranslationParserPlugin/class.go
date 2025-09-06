@@ -3,7 +3,6 @@
 // Package EditorTranslationParserPlugin provides methods for working with EditorTranslationParserPlugin object instances.
 package EditorTranslationParserPlugin
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -221,11 +219,11 @@ func (self implementation) GetRecognizedExtensions() (_ []string) { return }
 /*
 Override this method to define a custom parsing logic to extract the translatable strings.
 */
-func (Instance) _parse_file(impl func(ptr unsafe.Pointer, path string) [][]string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _parse_file(impl func(ptr gdclass.Receiver, path string) [][]string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path.String())
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Packed.Strings]](ret)))
 
@@ -239,9 +237,9 @@ func (Instance) _parse_file(impl func(ptr unsafe.Pointer, path string) [][]strin
 /*
 Gets the list of file extensions to associate with this parser, e.g. [code]["csv"][/code].
 */
-func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -298,11 +296,11 @@ func New() Instance {
 /*
 Override this method to define a custom parsing logic to extract the translatable strings.
 */
-func (class) _parse_file(impl func(ptr unsafe.Pointer, path String.Readable) Array.Contains[Packed.Strings]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _parse_file(impl func(ptr gdclass.Receiver, path String.Readable) Array.Contains[Packed.Strings]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -316,9 +314,9 @@ func (class) _parse_file(impl func(ptr unsafe.Pointer, path String.Readable) Arr
 /*
 Gets the list of file extensions to associate with this parser, e.g. [code]["csv"][/code].
 */
-func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 

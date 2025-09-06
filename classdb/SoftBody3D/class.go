@@ -3,7 +3,6 @@
 // Package SoftBody3D provides methods for working with SoftBody3D object instances.
 package SoftBody3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -40,7 +39,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -360,31 +358,31 @@ Returns the internal [RID] used by the [PhysicsServer3D] for this body.
 */
 //go:nosplit
 func (self class) GetPhysicsRid() RID.Any { //gd:SoftBody3D.get_physics_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_physics_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_physics_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(collision_mask int64) { //gd:SoftBody3D.set_collision_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_mask int64 }{collision_mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ collision_mask int64 }{collision_mask})
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:SoftBody3D.get_collision_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionLayer(collision_layer int64) { //gd:SoftBody3D.set_collision_layer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ collision_layer int64 }{collision_layer}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ collision_layer int64 }{collision_layer})
 }
 
 //go:nosplit
 func (self class) GetCollisionLayer() int64 { //gd:SoftBody3D.get_collision_layer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -394,10 +392,10 @@ Based on [param value], enables or disables the specified layer in the [member c
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:SoftBody3D.set_collision_mask_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
-	}{layer_number, value}))
+	}{layer_number, value})
 }
 
 /*
@@ -405,7 +403,7 @@ Returns whether or not the specified layer of the [member collision_mask] is ena
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:SoftBody3D.get_collision_mask_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
@@ -415,10 +413,10 @@ Based on [param value], enables or disables the specified layer in the [member c
 */
 //go:nosplit
 func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:SoftBody3D.set_collision_layer_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
-	}{layer_number, value}))
+	}{layer_number, value})
 }
 
 /*
@@ -426,31 +424,31 @@ Returns whether or not the specified layer of the [member collision_layer] is en
 */
 //go:nosplit
 func (self class) GetCollisionLayerValue(layer_number int64) bool { //gd:SoftBody3D.get_collision_layer_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParentCollisionIgnore(parent_collision_ignore Path.ToNode) { //gd:SoftBody3D.set_parent_collision_ignore
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parent_collision_ignore, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ parent_collision_ignore gdextension.NodePath }{pointers.Get(gd.InternalNodePath(parent_collision_ignore))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_parent_collision_ignore, 0|(gdextension.SizeNodePath<<4), &struct{ parent_collision_ignore gdextension.NodePath }{pointers.Get(gd.InternalNodePath(parent_collision_ignore))})
 }
 
 //go:nosplit
 func (self class) GetParentCollisionIgnore() Path.ToNode { //gd:SoftBody3D.get_parent_collision_ignore
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_parent_collision_ignore, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_parent_collision_ignore, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisableMode(mode DisableMode) { //gd:SoftBody3D.set_disable_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode DisableMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DisableMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetDisableMode() DisableMode { //gd:SoftBody3D.get_disable_mode
-	var r_ret = gdextension.Call[DisableMode](gd.ObjectChecked(self.AsObject()), methods.get_disable_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DisableMode](gd.ObjectChecked(self.AsObject()), methods.get_disable_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -460,7 +458,7 @@ Returns an array of nodes that were added as collision exceptions for this body.
 */
 //go:nosplit
 func (self class) GetCollisionExceptions() Array.Contains[[1]gdclass.PhysicsBody3D] { //gd:SoftBody3D.get_collision_exceptions
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_collision_exceptions, gdextension.SizeArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_collision_exceptions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.PhysicsBody3D]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -470,7 +468,7 @@ Adds a body to the list of bodies that this body can't collide with.
 */
 //go:nosplit
 func (self class) AddCollisionExceptionWith(body [1]gdclass.Node) { //gd:SoftBody3D.add_collision_exception_with
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))})
 }
 
 /*
@@ -478,77 +476,77 @@ Removes a body from the list of bodies that this body can't collide with.
 */
 //go:nosplit
 func (self class) RemoveCollisionExceptionWith(body [1]gdclass.Node) { //gd:SoftBody3D.remove_collision_exception_with
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_collision_exception_with, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_collision_exception_with, 0|(gdextension.SizeObject<<4), &struct{ body gdextension.Object }{gdextension.Object(gd.ObjectChecked(body[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) SetSimulationPrecision(simulation_precision int64) { //gd:SoftBody3D.set_simulation_precision
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simulation_precision, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ simulation_precision int64 }{simulation_precision}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simulation_precision, 0|(gdextension.SizeInt<<4), &struct{ simulation_precision int64 }{simulation_precision})
 }
 
 //go:nosplit
 func (self class) GetSimulationPrecision() int64 { //gd:SoftBody3D.get_simulation_precision
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_simulation_precision, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_simulation_precision, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTotalMass(mass float64) { //gd:SoftBody3D.set_total_mass
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_total_mass, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ mass float64 }{mass}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_total_mass, 0|(gdextension.SizeFloat<<4), &struct{ mass float64 }{mass})
 }
 
 //go:nosplit
 func (self class) GetTotalMass() float64 { //gd:SoftBody3D.get_total_mass
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_total_mass, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_total_mass, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearStiffness(linear_stiffness float64) { //gd:SoftBody3D.set_linear_stiffness
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_stiffness, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ linear_stiffness float64 }{linear_stiffness}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_stiffness, 0|(gdextension.SizeFloat<<4), &struct{ linear_stiffness float64 }{linear_stiffness})
 }
 
 //go:nosplit
 func (self class) GetLinearStiffness() float64 { //gd:SoftBody3D.get_linear_stiffness
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_stiffness, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_linear_stiffness, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressureCoefficient(pressure_coefficient float64) { //gd:SoftBody3D.set_pressure_coefficient
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure_coefficient, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pressure_coefficient float64 }{pressure_coefficient}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure_coefficient, 0|(gdextension.SizeFloat<<4), &struct{ pressure_coefficient float64 }{pressure_coefficient})
 }
 
 //go:nosplit
 func (self class) GetPressureCoefficient() float64 { //gd:SoftBody3D.get_pressure_coefficient
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pressure_coefficient, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pressure_coefficient, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDampingCoefficient(damping_coefficient float64) { //gd:SoftBody3D.set_damping_coefficient
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping_coefficient, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ damping_coefficient float64 }{damping_coefficient}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_damping_coefficient, 0|(gdextension.SizeFloat<<4), &struct{ damping_coefficient float64 }{damping_coefficient})
 }
 
 //go:nosplit
 func (self class) GetDampingCoefficient() float64 { //gd:SoftBody3D.get_damping_coefficient
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping_coefficient, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_damping_coefficient, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragCoefficient(drag_coefficient float64) { //gd:SoftBody3D.set_drag_coefficient
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_coefficient, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ drag_coefficient float64 }{drag_coefficient}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_coefficient, 0|(gdextension.SizeFloat<<4), &struct{ drag_coefficient float64 }{drag_coefficient})
 }
 
 //go:nosplit
 func (self class) GetDragCoefficient() float64 { //gd:SoftBody3D.get_drag_coefficient
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drag_coefficient, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_drag_coefficient, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -558,7 +556,7 @@ Returns local translation of a vertex in the surface array.
 */
 //go:nosplit
 func (self class) GetPointTransform(point_index int64) Vector3.XYZ { //gd:SoftBody3D.get_point_transform
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_point_transform, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ point_index int64 }{point_index}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_point_transform, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ point_index int64 }{point_index})
 	var ret = r_ret
 	return ret
 }
@@ -568,12 +566,12 @@ Sets the pinned state of a surface vertex. When set to [code]true[/code], the op
 */
 //go:nosplit
 func (self class) SetPointPinned(point_index int64, pinned bool, attachment_path Path.ToNode, insert_at int64) { //gd:SoftBody3D.set_point_pinned
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_pinned, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeNodePath<<12)|(gdextension.SizeInt<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_pinned, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeNodePath<<12)|(gdextension.SizeInt<<16), &struct {
 		point_index     int64
 		pinned          bool
 		attachment_path gdextension.NodePath
 		insert_at       int64
-	}{point_index, pinned, pointers.Get(gd.InternalNodePath(attachment_path)), insert_at}))
+	}{point_index, pinned, pointers.Get(gd.InternalNodePath(attachment_path)), insert_at})
 }
 
 /*
@@ -581,19 +579,19 @@ Returns [code]true[/code] if vertex is set to pinned.
 */
 //go:nosplit
 func (self class) IsPointPinned(point_index int64) bool { //gd:SoftBody3D.is_point_pinned
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_pinned, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ point_index int64 }{point_index}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_pinned, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ point_index int64 }{point_index})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRayPickable(ray_pickable bool) { //gd:SoftBody3D.set_ray_pickable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ray_pickable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ ray_pickable bool }{ray_pickable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ray_pickable, 0|(gdextension.SizeBool<<4), &struct{ ray_pickable bool }{ray_pickable})
 }
 
 //go:nosplit
 func (self class) IsRayPickable() bool { //gd:SoftBody3D.is_ray_pickable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ray_pickable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ray_pickable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

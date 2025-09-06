@@ -3,7 +3,6 @@
 // Package VideoStream provides methods for working with VideoStream object instances.
 package VideoStream
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -117,9 +115,9 @@ func (self implementation) InstantiatePlayback() (_ VideoStreamPlayback.Instance
 /*
 Called when the video starts playing, to initialize and return a subclass of [VideoStreamPlayback].
 */
-func (Instance) _instantiate_playback(impl func(ptr unsafe.Pointer) VideoStreamPlayback.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _instantiate_playback(impl func(ptr gdclass.Receiver) VideoStreamPlayback.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
 
@@ -184,9 +182,9 @@ func (self Instance) SetFile(value string) {
 /*
 Called when the video starts playing, to initialize and return a subclass of [VideoStreamPlayback].
 */
-func (class) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.VideoStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _instantiate_playback(impl func(ptr gdclass.Receiver) [1]gdclass.VideoStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
 
@@ -199,12 +197,12 @@ func (class) _instantiate_playback(impl func(ptr unsafe.Pointer) [1]gdclass.Vide
 
 //go:nosplit
 func (self class) SetFile(file String.Readable) { //gd:VideoStream.set_file
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_file, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_file, 0|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 }
 
 //go:nosplit
 func (self class) GetFile() String.Readable { //gd:VideoStream.get_file
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

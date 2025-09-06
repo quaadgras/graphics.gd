@@ -3,7 +3,6 @@
 // Package ImageTexture3D provides methods for working with ImageTexture3D object instances.
 package ImageTexture3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -166,14 +164,14 @@ Creates the [ImageTexture3D] with specified [param width], [param height], and [
 */
 //go:nosplit
 func (self class) Create(format Image.Format, width int64, height int64, depth int64, use_mipmaps bool, data Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTexture3D.create
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeArray<<24), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeArray<<24), &struct {
 		format      Image.Format
 		width       int64
 		height      int64
 		depth       int64
 		use_mipmaps bool
 		data        gdextension.Array
-	}{format, width, height, depth, use_mipmaps, pointers.Get(gd.InternalArray(data))}))
+	}{format, width, height, depth, use_mipmaps, pointers.Get(gd.InternalArray(data))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -183,7 +181,7 @@ Replaces the texture's existing data with the layers specified in [param data]. 
 */
 //go:nosplit
 func (self class) Update(data Array.Contains[[1]gdclass.Image]) { //gd:ImageTexture3D.update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0|(gdextension.SizeArray<<4), unsafe.Pointer(&struct{ data gdextension.Array }{pointers.Get(gd.InternalArray(data))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0|(gdextension.SizeArray<<4), &struct{ data gdextension.Array }{pointers.Get(gd.InternalArray(data))})
 }
 func (self class) AsImageTexture3D() Advanced {
 	return Advanced{pointers.AsA[gdclass.ImageTexture3D](self[0])}

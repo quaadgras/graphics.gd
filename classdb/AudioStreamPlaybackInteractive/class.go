@@ -3,7 +3,6 @@
 // Package AudioStreamPlaybackInteractive provides methods for working with AudioStreamPlaybackInteractive object instances.
 package AudioStreamPlaybackInteractive
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -177,7 +175,7 @@ Switch to a clip (by name).
 */
 //go:nosplit
 func (self class) SwitchToClipByName(clip_name String.Name) { //gd:AudioStreamPlaybackInteractive.switch_to_clip_by_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip_by_name, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ clip_name gdextension.StringName }{pointers.Get(gd.InternalStringName(clip_name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip_by_name, 0|(gdextension.SizeStringName<<4), &struct{ clip_name gdextension.StringName }{pointers.Get(gd.InternalStringName(clip_name))})
 }
 
 /*
@@ -185,7 +183,7 @@ Switch to a clip (by index).
 */
 //go:nosplit
 func (self class) SwitchToClip(clip_index int64) { //gd:AudioStreamPlaybackInteractive.switch_to_clip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ clip_index int64 }{clip_index}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.switch_to_clip, 0|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
 }
 
 /*
@@ -199,7 +197,7 @@ var playing_clip_name = stream.get_clip_name(get_stream_playback().get_current_c
 */
 //go:nosplit
 func (self class) GetCurrentClipIndex() int64 { //gd:AudioStreamPlaybackInteractive.get_current_clip_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_clip_index, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_current_clip_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

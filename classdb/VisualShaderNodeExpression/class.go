@@ -3,7 +3,6 @@
 // Package VisualShaderNodeExpression provides methods for working with VisualShaderNodeExpression object instances.
 package VisualShaderNodeExpression
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -157,12 +155,12 @@ func (self Instance) SetExpression(value string) {
 
 //go:nosplit
 func (self class) SetExpression(expression String.Readable) { //gd:VisualShaderNodeExpression.set_expression
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_expression, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ expression gdextension.String }{pointers.Get(gd.InternalString(expression))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_expression, 0|(gdextension.SizeString<<4), &struct{ expression gdextension.String }{pointers.Get(gd.InternalString(expression))})
 }
 
 //go:nosplit
 func (self class) GetExpression() String.Readable { //gd:VisualShaderNodeExpression.get_expression
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_expression, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_expression, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

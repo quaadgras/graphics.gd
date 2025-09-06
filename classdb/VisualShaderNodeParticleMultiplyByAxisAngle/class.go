@@ -3,7 +3,6 @@
 // Package VisualShaderNodeParticleMultiplyByAxisAngle provides methods for working with VisualShaderNodeParticleMultiplyByAxisAngle object instances.
 package VisualShaderNodeParticleMultiplyByAxisAngle
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -154,12 +152,12 @@ func (self Instance) SetDegreesMode(value bool) {
 
 //go:nosplit
 func (self class) SetDegreesMode(enabled bool) { //gd:VisualShaderNodeParticleMultiplyByAxisAngle.set_degrees_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_degrees_mode, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_degrees_mode, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsDegreesMode() bool { //gd:VisualShaderNodeParticleMultiplyByAxisAngle.is_degrees_mode
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_degrees_mode, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_degrees_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

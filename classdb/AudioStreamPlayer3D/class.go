@@ -3,7 +3,6 @@
 // Package AudioStreamPlayer3D provides methods for working with AudioStreamPlayer3D object instances.
 package AudioStreamPlayer3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -38,7 +37,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -426,72 +424,72 @@ func (self Instance) SetDopplerTracking(value DopplerTracking) {
 
 //go:nosplit
 func (self class) SetStream(stream [1]gdclass.AudioStream) { //gd:AudioStreamPlayer3D.set_stream
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetStream() [1]gdclass.AudioStream { //gd:AudioStreamPlayer3D.get_stream
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioStream{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStream](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumeDb(volume_db float64) { //gd:AudioStreamPlayer3D.set_volume_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume_db float64 }{volume_db}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_db, 0|(gdextension.SizeFloat<<4), &struct{ volume_db float64 }{volume_db})
 }
 
 //go:nosplit
 func (self class) GetVolumeDb() float64 { //gd:AudioStreamPlayer3D.get_volume_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumeLinear(volume_linear float64) { //gd:AudioStreamPlayer3D.set_volume_linear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_linear, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume_linear float64 }{volume_linear}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_linear, 0|(gdextension.SizeFloat<<4), &struct{ volume_linear float64 }{volume_linear})
 }
 
 //go:nosplit
 func (self class) GetVolumeLinear() float64 { //gd:AudioStreamPlayer3D.get_volume_linear
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_linear, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_linear, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUnitSize(unit_size float64) { //gd:AudioStreamPlayer3D.set_unit_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unit_size, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ unit_size float64 }{unit_size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_unit_size, 0|(gdextension.SizeFloat<<4), &struct{ unit_size float64 }{unit_size})
 }
 
 //go:nosplit
 func (self class) GetUnitSize() float64 { //gd:AudioStreamPlayer3D.get_unit_size
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_unit_size, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_unit_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxDb(max_db float64) { //gd:AudioStreamPlayer3D.set_max_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ max_db float64 }{max_db}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_db, 0|(gdextension.SizeFloat<<4), &struct{ max_db float64 }{max_db})
 }
 
 //go:nosplit
 func (self class) GetMaxDb() float64 { //gd:AudioStreamPlayer3D.get_max_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPitchScale(pitch_scale float64) { //gd:AudioStreamPlayer3D.set_pitch_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pitch_scale, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pitch_scale float64 }{pitch_scale}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pitch_scale, 0|(gdextension.SizeFloat<<4), &struct{ pitch_scale float64 }{pitch_scale})
 }
 
 //go:nosplit
 func (self class) GetPitchScale() float64 { //gd:AudioStreamPlayer3D.get_pitch_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pitch_scale, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pitch_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -501,7 +499,7 @@ Queues the audio to play on the next physics frame, from the given position [par
 */
 //go:nosplit
 func (self class) Play(from_position float64) { //gd:AudioStreamPlayer3D.play
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ from_position float64 }{from_position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0|(gdextension.SizeFloat<<4), &struct{ from_position float64 }{from_position})
 }
 
 /*
@@ -509,7 +507,7 @@ Sets the position from which audio will be played, in seconds.
 */
 //go:nosplit
 func (self class) SeekTo(to_position float64) { //gd:AudioStreamPlayer3D.seek
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ to_position float64 }{to_position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek, 0|(gdextension.SizeFloat<<4), &struct{ to_position float64 }{to_position})
 }
 
 /*
@@ -517,12 +515,12 @@ Stops the audio.
 */
 //go:nosplit
 func (self class) Stop() { //gd:AudioStreamPlayer3D.stop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) IsPlaying() bool { //gd:AudioStreamPlayer3D.is_playing
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -532,180 +530,180 @@ Returns the position in the [AudioStream].
 */
 //go:nosplit
 func (self class) GetPlaybackPosition() float64 { //gd:AudioStreamPlayer3D.get_playback_position
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playback_position, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playback_position, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBus(bus String.Name) { //gd:AudioStreamPlayer3D.set_bus
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bus, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ bus gdextension.StringName }{pointers.Get(gd.InternalStringName(bus))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bus, 0|(gdextension.SizeStringName<<4), &struct{ bus gdextension.StringName }{pointers.Get(gd.InternalStringName(bus))})
 }
 
 //go:nosplit
 func (self class) GetBus() String.Name { //gd:AudioStreamPlayer3D.get_bus
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_bus, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_bus, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoplay(enable bool) { //gd:AudioStreamPlayer3D.set_autoplay
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsAutoplayEnabled() bool { //gd:AudioStreamPlayer3D.is_autoplay_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autoplay_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_autoplay_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlaying(enable bool) { //gd:AudioStreamPlayer3D.set_playing
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_playing, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_playing, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) SetMaxDistance(meters float64) { //gd:AudioStreamPlayer3D.set_max_distance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ meters float64 }{meters}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_distance, 0|(gdextension.SizeFloat<<4), &struct{ meters float64 }{meters})
 }
 
 //go:nosplit
 func (self class) GetMaxDistance() float64 { //gd:AudioStreamPlayer3D.get_max_distance
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAreaMask(mask int64) { //gd:AudioStreamPlayer3D.set_area_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_area_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_area_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 
 //go:nosplit
 func (self class) GetAreaMask() int64 { //gd:AudioStreamPlayer3D.get_area_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_area_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_area_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionAngle(degrees float64) { //gd:AudioStreamPlayer3D.set_emission_angle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_angle, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ degrees float64 }{degrees}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_angle, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
 }
 
 //go:nosplit
 func (self class) GetEmissionAngle() float64 { //gd:AudioStreamPlayer3D.get_emission_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_angle, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_angle, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionAngleEnabled(enabled bool) { //gd:AudioStreamPlayer3D.set_emission_angle_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_angle_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_angle_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsEmissionAngleEnabled() bool { //gd:AudioStreamPlayer3D.is_emission_angle_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emission_angle_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emission_angle_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmissionAngleFilterAttenuationDb(db float64) { //gd:AudioStreamPlayer3D.set_emission_angle_filter_attenuation_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_angle_filter_attenuation_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ db float64 }{db}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emission_angle_filter_attenuation_db, 0|(gdextension.SizeFloat<<4), &struct{ db float64 }{db})
 }
 
 //go:nosplit
 func (self class) GetEmissionAngleFilterAttenuationDb() float64 { //gd:AudioStreamPlayer3D.get_emission_angle_filter_attenuation_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_angle_filter_attenuation_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_emission_angle_filter_attenuation_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAttenuationFilterCutoffHz(degrees float64) { //gd:AudioStreamPlayer3D.set_attenuation_filter_cutoff_hz
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attenuation_filter_cutoff_hz, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ degrees float64 }{degrees}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attenuation_filter_cutoff_hz, 0|(gdextension.SizeFloat<<4), &struct{ degrees float64 }{degrees})
 }
 
 //go:nosplit
 func (self class) GetAttenuationFilterCutoffHz() float64 { //gd:AudioStreamPlayer3D.get_attenuation_filter_cutoff_hz
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_attenuation_filter_cutoff_hz, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_attenuation_filter_cutoff_hz, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAttenuationFilterDb(db float64) { //gd:AudioStreamPlayer3D.set_attenuation_filter_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attenuation_filter_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ db float64 }{db}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attenuation_filter_db, 0|(gdextension.SizeFloat<<4), &struct{ db float64 }{db})
 }
 
 //go:nosplit
 func (self class) GetAttenuationFilterDb() float64 { //gd:AudioStreamPlayer3D.get_attenuation_filter_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_attenuation_filter_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_attenuation_filter_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAttenuationModel(model AttenuationModel) { //gd:AudioStreamPlayer3D.set_attenuation_model
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attenuation_model, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ model AttenuationModel }{model}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attenuation_model, 0|(gdextension.SizeInt<<4), &struct{ model AttenuationModel }{model})
 }
 
 //go:nosplit
 func (self class) GetAttenuationModel() AttenuationModel { //gd:AudioStreamPlayer3D.get_attenuation_model
-	var r_ret = gdextension.Call[AttenuationModel](gd.ObjectChecked(self.AsObject()), methods.get_attenuation_model, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AttenuationModel](gd.ObjectChecked(self.AsObject()), methods.get_attenuation_model, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDopplerTracking(mode DopplerTracking) { //gd:AudioStreamPlayer3D.set_doppler_tracking
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_doppler_tracking, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode DopplerTracking }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_doppler_tracking, 0|(gdextension.SizeInt<<4), &struct{ mode DopplerTracking }{mode})
 }
 
 //go:nosplit
 func (self class) GetDopplerTracking() DopplerTracking { //gd:AudioStreamPlayer3D.get_doppler_tracking
-	var r_ret = gdextension.Call[DopplerTracking](gd.ObjectChecked(self.AsObject()), methods.get_doppler_tracking, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DopplerTracking](gd.ObjectChecked(self.AsObject()), methods.get_doppler_tracking, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStreamPaused(pause bool) { //gd:AudioStreamPlayer3D.set_stream_paused
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_paused, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pause bool }{pause}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_paused, 0|(gdextension.SizeBool<<4), &struct{ pause bool }{pause})
 }
 
 //go:nosplit
 func (self class) GetStreamPaused() bool { //gd:AudioStreamPlayer3D.get_stream_paused
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_stream_paused, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_stream_paused, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxPolyphony(max_polyphony int64) { //gd:AudioStreamPlayer3D.set_max_polyphony
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_polyphony, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ max_polyphony int64 }{max_polyphony}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_polyphony, 0|(gdextension.SizeInt<<4), &struct{ max_polyphony int64 }{max_polyphony})
 }
 
 //go:nosplit
 func (self class) GetMaxPolyphony() int64 { //gd:AudioStreamPlayer3D.get_max_polyphony
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_polyphony, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_polyphony, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPanningStrength(panning_strength float64) { //gd:AudioStreamPlayer3D.set_panning_strength
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_panning_strength, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ panning_strength float64 }{panning_strength}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_panning_strength, 0|(gdextension.SizeFloat<<4), &struct{ panning_strength float64 }{panning_strength})
 }
 
 //go:nosplit
 func (self class) GetPanningStrength() float64 { //gd:AudioStreamPlayer3D.get_panning_strength
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_panning_strength, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_panning_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -715,7 +713,7 @@ Returns whether the [AudioStreamPlayer] can return the [AudioStreamPlayback] obj
 */
 //go:nosplit
 func (self class) HasStreamPlayback() bool { //gd:AudioStreamPlayer3D.has_stream_playback
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_stream_playback, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_stream_playback, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -725,19 +723,19 @@ Returns the [AudioStreamPlayback] object associated with this [AudioStreamPlayer
 */
 //go:nosplit
 func (self class) GetStreamPlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStreamPlayer3D.get_stream_playback
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream_playback, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_stream_playback, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamPlayback](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlaybackType(playback_type AudioServer.PlaybackType) { //gd:AudioStreamPlayer3D.set_playback_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_playback_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ playback_type AudioServer.PlaybackType }{playback_type}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_playback_type, 0|(gdextension.SizeInt<<4), &struct{ playback_type AudioServer.PlaybackType }{playback_type})
 }
 
 //go:nosplit
 func (self class) GetPlaybackType() AudioServer.PlaybackType { //gd:AudioStreamPlayer3D.get_playback_type
-	var r_ret = gdextension.Call[AudioServer.PlaybackType](gd.ObjectChecked(self.AsObject()), methods.get_playback_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[AudioServer.PlaybackType](gd.ObjectChecked(self.AsObject()), methods.get_playback_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

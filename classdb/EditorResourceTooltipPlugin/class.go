@@ -3,7 +3,6 @@
 // Package EditorResourceTooltipPlugin provides methods for working with EditorResourceTooltipPlugin object instances.
 package EditorResourceTooltipPlugin
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -133,11 +131,11 @@ func (self implementation) MakeTooltipForPath(path string, metadata map[any]any,
 /*
 Return [code]true[/code] if the plugin is going to handle the given [Resource] [param type].
 */
-func (Instance) _handles(impl func(ptr unsafe.Pointer, atype string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _handles(impl func(ptr gdclass.Receiver, atype string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(atype))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, atype.String())
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -159,7 +157,7 @@ func _make_tooltip_for_path(path, metadata, base):
 
 [/codeblock]
 */
-func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string, metadata map[any]any, base Control.Instance) Control.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _make_tooltip_for_path(impl func(ptr gdclass.Receiver, path string, metadata map[any]any, base Control.Instance) Control.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
@@ -168,7 +166,7 @@ func (Instance) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path string
 		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
 
 		defer pointers.End(base[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path.String(), gd.DictionaryAs[map[any]any](metadata), base)
 		ptr, ok := pointers.End(ret[0])
 
@@ -232,11 +230,11 @@ func New() Instance {
 /*
 Return [code]true[/code] if the plugin is going to handle the given [Resource] [param type].
 */
-func (class) _handles(impl func(ptr unsafe.Pointer, atype String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _handles(impl func(ptr gdclass.Receiver, atype String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(atype))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, atype)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -258,7 +256,7 @@ func _make_tooltip_for_path(path, metadata, base):
 
 [/codeblock]
 */
-func (class) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path String.Readable, metadata Dictionary.Any, base [1]gdclass.Control) [1]gdclass.Control) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _make_tooltip_for_path(impl func(ptr gdclass.Receiver, path String.Readable, metadata Dictionary.Any, base [1]gdclass.Control) [1]gdclass.Control) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
@@ -267,7 +265,7 @@ func (class) _make_tooltip_for_path(impl func(ptr unsafe.Pointer, path String.Re
 		var base = [1]gdclass.Control{pointers.New[gdclass.Control]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
 
 		defer pointers.End(base[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path, metadata, base)
 		ptr, ok := pointers.End(ret[0])
 
@@ -283,10 +281,10 @@ Requests a thumbnail for the given [TextureRect]. The thumbnail is created async
 */
 //go:nosplit
 func (self class) RequestThumbnail(path String.Readable, control [1]gdclass.TextureRect) { //gd:EditorResourceTooltipPlugin.request_thumbnail
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_thumbnail, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.request_thumbnail, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
 		path    gdextension.String
 		control gdextension.Object
-	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.ObjectChecked(control[0].AsObject()))}))
+	}{pointers.Get(gd.InternalString(path)), gdextension.Object(gd.ObjectChecked(control[0].AsObject()))})
 }
 func (self class) AsEditorResourceTooltipPlugin() Advanced {
 	return Advanced{pointers.AsA[gdclass.EditorResourceTooltipPlugin](self[0])}

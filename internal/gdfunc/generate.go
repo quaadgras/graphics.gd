@@ -84,7 +84,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 	}
 
 	if method.IsVirtual {
-		fmt.Fprintf(w, "func (class) %s(impl func(ptr unsafe.Pointer", method.Name)
+		fmt.Fprintf(w, "func (class) %s(impl func(ptr gdclass.Receiver", method.Name)
 		for _, arg := range method.Arguments {
 			fmt.Fprint(w, ", ")
 			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type))
@@ -104,7 +104,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 				fmt.Fprintf(w, "\t\tdefer %s\n", gdtype.Name(argType).EndPointer(fixReserved(arg.Name)))
 			}
 		}
-		fmt.Fprintf(w, "\t\tself := reflect.ValueOf(class).UnsafePointer()\n")
+		fmt.Fprintf(w, "\t\tself := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())\n")
 		if result != "" {
 			fmt.Fprintf(w, "\t\tret := ")
 		}
@@ -197,7 +197,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 	} else {
 		callResult = "struct{}"
 	}
-	fmt.Fprintf(w, "gdextension.Call%s[%s](%s methods.%v, %v, unsafe.Pointer(&struct{", static, callResult, self, method.Name, shapeOf(class, method))
+	fmt.Fprintf(w, "gdextension.Call%s[%s](%s methods.%v, %v, &struct{", static, callResult, self, method.Name, shapeOf(class, method))
 	for i, arg := range method.Arguments {
 		if i > 0 {
 			fmt.Fprint(w, "; ")
@@ -227,7 +227,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 		argType := gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)
 		fmt.Fprint(w, gdtype.Name(argType).CallframeValue(fixReserved(arg.Name)))
 	}
-	fmt.Fprint(w, "}))\n")
+	fmt.Fprint(w, "})\n")
 	if isPtr {
 		_, ok := classDB[strings.TrimPrefix(result, "[1]gdclass.")]
 		if ok || result == "[1]gd.Object" {

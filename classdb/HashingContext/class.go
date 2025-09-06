@@ -3,7 +3,6 @@
 // Package HashingContext provides methods for working with HashingContext object instances.
 package HashingContext
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -224,7 +222,7 @@ Starts a new hash computation of the given [param type] (e.g. [constant HASH_SHA
 */
 //go:nosplit
 func (self class) Start(atype HashType) Error.Code { //gd:HashingContext.start
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype HashType }{atype}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype HashType }{atype})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -234,7 +232,7 @@ Updates the computation with the given [param chunk] of data.
 */
 //go:nosplit
 func (self class) Update(chunk Packed.Bytes) Error.Code { //gd:HashingContext.update
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizeInt|(gdextension.SizePackedArray<<4), unsafe.Pointer(&struct{ chunk gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](chunk)))}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ chunk gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](chunk)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -244,7 +242,7 @@ Closes the current context, and return the computed hash.
 */
 //go:nosplit
 func (self class) Finish() Packed.Bytes { //gd:HashingContext.finish
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }

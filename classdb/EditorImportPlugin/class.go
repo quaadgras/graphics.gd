@@ -3,7 +3,6 @@
 // Package EditorImportPlugin provides methods for working with EditorImportPlugin object instances.
 package EditorImportPlugin
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -308,9 +306,9 @@ func (self implementation) CanImportThreaded() (_ bool) { return }
 /*
 Gets the unique name of the importer.
 */
-func (Instance) _get_importer_name(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_importer_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -324,9 +322,9 @@ func (Instance) _get_importer_name(impl func(ptr unsafe.Pointer) string) (cb gd.
 /*
 Gets the name to display in the import window. You should choose this name as a continuation to "Import as", e.g. "Import as Special Mesh".
 */
-func (Instance) _get_visible_name(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_visible_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -340,9 +338,9 @@ func (Instance) _get_visible_name(impl func(ptr unsafe.Pointer) string) (cb gd.E
 /*
 Gets the number of initial presets defined by the plugin. Use [method _get_import_options] to get the default options for the preset and [method _get_preset_name] to get the name of the preset.
 */
-func (Instance) _get_preset_count(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_preset_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -351,10 +349,10 @@ func (Instance) _get_preset_count(impl func(ptr unsafe.Pointer) int) (cb gd.Exte
 /*
 Gets the name of the options preset at this index.
 */
-func (Instance) _get_preset_name(impl func(ptr unsafe.Pointer, preset_index int) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_preset_name(impl func(ptr gdclass.Receiver, preset_index int) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset_index = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(preset_index))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -368,9 +366,9 @@ func (Instance) _get_preset_name(impl func(ptr unsafe.Pointer, preset_index int)
 /*
 Gets the list of file extensions to associate with this loader (case-insensitive). e.g. [code]["obj"][/code].
 */
-func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -384,12 +382,12 @@ func (Instance) _get_recognized_extensions(impl func(ptr unsafe.Pointer) []strin
 /*
 Gets the options and default values for the preset at this index. Returns an Array of Dictionaries with the following keys: [code]name[/code], [code]default_value[/code], [code]property_hint[/code] (optional), [code]hint_string[/code] (optional), [code]usage[/code] (optional).
 */
-func (Instance) _get_import_options(impl func(ptr unsafe.Pointer, path string, preset_index int) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_import_options(impl func(ptr gdclass.Receiver, path string, preset_index int) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var preset_index = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path.String(), int(preset_index))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
 
@@ -403,9 +401,9 @@ func (Instance) _get_import_options(impl func(ptr unsafe.Pointer, path string, p
 /*
 Gets the extension used to save this resource in the [code].godot/imported[/code] directory (see [member ProjectSettings.application/config/use_hidden_project_data_directory]).
 */
-func (Instance) _get_save_extension(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_save_extension(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -419,9 +417,9 @@ func (Instance) _get_save_extension(impl func(ptr unsafe.Pointer) string) (cb gd
 /*
 Gets the Godot resource type associated with this loader. e.g. [code]"Mesh"[/code] or [code]"Animation"[/code].
 */
-func (Instance) _get_resource_type(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_resource_type(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -435,9 +433,9 @@ func (Instance) _get_resource_type(impl func(ptr unsafe.Pointer) string) (cb gd.
 /*
 Gets the priority of this plugin for the recognized extension. Higher priority plugins will be preferred. The default priority is [code]1.0[/code].
 */
-func (Instance) _get_priority(impl func(ptr unsafe.Pointer) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_priority(impl func(ptr gdclass.Receiver) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -446,9 +444,9 @@ func (Instance) _get_priority(impl func(ptr unsafe.Pointer) Float.X) (cb gd.Exte
 /*
 Gets the order of this importer to be run when importing resources. Importers with [i]lower[/i] import orders will be called first, and higher values will be called later. Use this to ensure the importer runs after the dependencies are already imported. The default import order is [code]0[/code] unless overridden by a specific importer. See [enum ResourceImporter.ImportOrder] for some predefined values.
 */
-func (Instance) _get_import_order(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_import_order(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -457,9 +455,9 @@ func (Instance) _get_import_order(impl func(ptr unsafe.Pointer) int) (cb gd.Exte
 /*
 Gets the format version of this importer. Increment this version when making incompatible changes to the format of the imported resources.
 */
-func (Instance) _get_format_version(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_format_version(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -495,7 +493,7 @@ public void _GetOptionVisibility(string option, Godot.Collections.Dictionary opt
 [/codeblocks]
 Returns [code]true[/code] to make all options always visible.
 */
-func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string, option_name string, options map[any]any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_option_visibility(impl func(ptr gdclass.Receiver, path string, option_name string, options map[any]any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
@@ -503,7 +501,7 @@ func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string
 		defer pointers.End(gd.InternalStringName(option_name))
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(options))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path.String(), option_name.String(), gd.DictionaryAs[map[any]any](options))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -513,7 +511,7 @@ func (Instance) _get_option_visibility(impl func(ptr unsafe.Pointer, path string
 Imports [param source_file] into [param save_path] with the import [param options] specified. The [param platform_variants] and [param gen_files] arrays will be modified by this function.
 This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
 */
-func (Instance) _import(impl func(ptr unsafe.Pointer, source_file string, save_path string, options map[any]any, platform_variants []string, gen_files []string) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _import(impl func(ptr gdclass.Receiver, source_file string, save_path string, options map[any]any, platform_variants []string, gen_files []string) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var source_file = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(source_file))
@@ -525,7 +523,7 @@ func (Instance) _import(impl func(ptr unsafe.Pointer, source_file string, save_p
 		defer pointers.End(gd.InternalArray(platform_variants))
 		var gen_files = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 4))))
 		defer pointers.End(gd.InternalArray(gen_files))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, source_file.String(), save_path.String(), gd.DictionaryAs[map[any]any](options), gd.ArrayAs[[]string](gd.InternalArray(platform_variants)), gd.ArrayAs[[]string](gd.InternalArray(gen_files)))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -541,9 +539,9 @@ Tells whether this importer can be run in parallel on threads, or, on the contra
 If this method is not overridden, it will return [code]false[/code] by default.
 If this importer's implementation is thread-safe and can be run in parallel, override this with [code]true[/code] to optimize for concurrency.
 */
-func (Instance) _can_import_threaded(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _can_import_threaded(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -609,9 +607,9 @@ func New() Instance {
 /*
 Gets the unique name of the importer.
 */
-func (class) _get_importer_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_importer_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -625,9 +623,9 @@ func (class) _get_importer_name(impl func(ptr unsafe.Pointer) String.Readable) (
 /*
 Gets the name to display in the import window. You should choose this name as a continuation to "Import as", e.g. "Import as Special Mesh".
 */
-func (class) _get_visible_name(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_visible_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -641,9 +639,9 @@ func (class) _get_visible_name(impl func(ptr unsafe.Pointer) String.Readable) (c
 /*
 Gets the number of initial presets defined by the plugin. Use [method _get_import_options] to get the default options for the preset and [method _get_preset_name] to get the name of the preset.
 */
-func (class) _get_preset_count(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_preset_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -652,10 +650,10 @@ func (class) _get_preset_count(impl func(ptr unsafe.Pointer) int64) (cb gd.Exten
 /*
 Gets the name of the options preset at this index.
 */
-func (class) _get_preset_name(impl func(ptr unsafe.Pointer, preset_index int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_preset_name(impl func(ptr gdclass.Receiver, preset_index int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var preset_index = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, preset_index)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -669,9 +667,9 @@ func (class) _get_preset_name(impl func(ptr unsafe.Pointer, preset_index int64) 
 /*
 Gets the list of file extensions to associate with this loader (case-insensitive). e.g. [code]["obj"][/code].
 */
-func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -685,12 +683,12 @@ func (class) _get_recognized_extensions(impl func(ptr unsafe.Pointer) Packed.Str
 /*
 Gets the options and default values for the preset at this index. Returns an Array of Dictionaries with the following keys: [code]name[/code], [code]default_value[/code], [code]property_hint[/code] (optional), [code]hint_string[/code] (optional), [code]usage[/code] (optional).
 */
-func (class) _get_import_options(impl func(ptr unsafe.Pointer, path String.Readable, preset_index int64) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Readable, preset_index int64) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var preset_index = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path, preset_index)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
 
@@ -704,9 +702,9 @@ func (class) _get_import_options(impl func(ptr unsafe.Pointer, path String.Reada
 /*
 Gets the extension used to save this resource in the [code].godot/imported[/code] directory (see [member ProjectSettings.application/config/use_hidden_project_data_directory]).
 */
-func (class) _get_save_extension(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_save_extension(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -720,9 +718,9 @@ func (class) _get_save_extension(impl func(ptr unsafe.Pointer) String.Readable) 
 /*
 Gets the Godot resource type associated with this loader. e.g. [code]"Mesh"[/code] or [code]"Animation"[/code].
 */
-func (class) _get_resource_type(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_resource_type(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -736,9 +734,9 @@ func (class) _get_resource_type(impl func(ptr unsafe.Pointer) String.Readable) (
 /*
 Gets the priority of this plugin for the recognized extension. Higher priority plugins will be preferred. The default priority is [code]1.0[/code].
 */
-func (class) _get_priority(impl func(ptr unsafe.Pointer) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_priority(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -747,9 +745,9 @@ func (class) _get_priority(impl func(ptr unsafe.Pointer) float64) (cb gd.Extensi
 /*
 Gets the order of this importer to be run when importing resources. Importers with [i]lower[/i] import orders will be called first, and higher values will be called later. Use this to ensure the importer runs after the dependencies are already imported. The default import order is [code]0[/code] unless overridden by a specific importer. See [enum ResourceImporter.ImportOrder] for some predefined values.
 */
-func (class) _get_import_order(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_import_order(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -758,9 +756,9 @@ func (class) _get_import_order(impl func(ptr unsafe.Pointer) int64) (cb gd.Exten
 /*
 Gets the format version of this importer. Increment this version when making incompatible changes to the format of the imported resources.
 */
-func (class) _get_format_version(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_format_version(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -796,7 +794,7 @@ public void _GetOptionVisibility(string option, Godot.Collections.Dictionary opt
 [/codeblocks]
 Returns [code]true[/code] to make all options always visible.
 */
-func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path String.Readable, option_name String.Name, options Dictionary.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.Readable, option_name String.Name, options Dictionary.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
@@ -804,7 +802,7 @@ func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path String.Re
 		defer pointers.End(gd.InternalStringName(option_name))
 		var options = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 2))))
 		defer pointers.End(gd.InternalDictionary(options))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, path, option_name, options)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -814,7 +812,7 @@ func (class) _get_option_visibility(impl func(ptr unsafe.Pointer, path String.Re
 Imports [param source_file] into [param save_path] with the import [param options] specified. The [param platform_variants] and [param gen_files] arrays will be modified by this function.
 This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
 */
-func (class) _import(impl func(ptr unsafe.Pointer, source_file String.Readable, save_path String.Readable, options Dictionary.Any, platform_variants Array.Contains[String.Readable], gen_files Array.Contains[String.Readable]) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _import(impl func(ptr gdclass.Receiver, source_file String.Readable, save_path String.Readable, options Dictionary.Any, platform_variants Array.Contains[String.Readable], gen_files Array.Contains[String.Readable]) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var source_file = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(source_file))
@@ -826,7 +824,7 @@ func (class) _import(impl func(ptr unsafe.Pointer, source_file String.Readable, 
 		defer pointers.End(gd.InternalArray(platform_variants))
 		var gen_files = Array.Through(gd.ArrayProxy[String.Readable]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 4))))
 		defer pointers.End(gd.InternalArray(gen_files))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, source_file, save_path, options, platform_variants, gen_files)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -842,9 +840,9 @@ Tells whether this importer can be run in parallel on threads, or, on the contra
 If this method is not overridden, it will return [code]false[/code] by default.
 If this importer's implementation is thread-safe and can be run in parallel, override this with [code]true[/code] to optimize for concurrency.
 */
-func (class) _can_import_threaded(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _can_import_threaded(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -855,12 +853,12 @@ This function can only be called during the [method _import] callback and it all
 */
 //go:nosplit
 func (self class) AppendImportExternalResource(path String.Readable, custom_options Dictionary.Any, custom_importer String.Readable, generator_parameters variant.Any) Error.Code { //gd:EditorImportPlugin.append_import_external_resource
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.append_import_external_resource, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8)|(gdextension.SizeString<<12)|(gdextension.SizeVariant<<16), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.append_import_external_resource, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8)|(gdextension.SizeString<<12)|(gdextension.SizeVariant<<16), &struct {
 		path                 gdextension.String
 		custom_options       gdextension.Dictionary
 		custom_importer      gdextension.String
 		generator_parameters gdextension.Variant
-	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalDictionary(custom_options)), pointers.Get(gd.InternalString(custom_importer)), gdextension.Variant(pointers.Get(gd.InternalVariant(generator_parameters)))}))
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalDictionary(custom_options)), pointers.Get(gd.InternalString(custom_importer)), gdextension.Variant(pointers.Get(gd.InternalVariant(generator_parameters)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

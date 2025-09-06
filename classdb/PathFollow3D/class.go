@@ -3,7 +3,6 @@
 // Package PathFollow3D provides methods for working with PathFollow3D object instances.
 package PathFollow3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -244,108 +242,108 @@ func (self Instance) SetTiltEnabled(value bool) {
 
 //go:nosplit
 func (self class) SetProgress(progress float64) { //gd:PathFollow3D.set_progress
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ progress float64 }{progress}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress, 0|(gdextension.SizeFloat<<4), &struct{ progress float64 }{progress})
 }
 
 //go:nosplit
 func (self class) GetProgress() float64 { //gd:PathFollow3D.get_progress
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHOffset(h_offset float64) { //gd:PathFollow3D.set_h_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_offset, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ h_offset float64 }{h_offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_offset, 0|(gdextension.SizeFloat<<4), &struct{ h_offset float64 }{h_offset})
 }
 
 //go:nosplit
 func (self class) GetHOffset() float64 { //gd:PathFollow3D.get_h_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_h_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_h_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVOffset(v_offset float64) { //gd:PathFollow3D.set_v_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_offset, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ v_offset float64 }{v_offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_offset, 0|(gdextension.SizeFloat<<4), &struct{ v_offset float64 }{v_offset})
 }
 
 //go:nosplit
 func (self class) GetVOffset() float64 { //gd:PathFollow3D.get_v_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_offset, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_v_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProgressRatio(ratio float64) { //gd:PathFollow3D.set_progress_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress_ratio, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ ratio float64 }{ratio}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 
 //go:nosplit
 func (self class) GetProgressRatio() float64 { //gd:PathFollow3D.get_progress_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress_ratio, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_progress_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRotationMode(rotation_mode RotationMode) { //gd:PathFollow3D.set_rotation_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ rotation_mode RotationMode }{rotation_mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_mode, 0|(gdextension.SizeInt<<4), &struct{ rotation_mode RotationMode }{rotation_mode})
 }
 
 //go:nosplit
 func (self class) GetRotationMode() RotationMode { //gd:PathFollow3D.get_rotation_mode
-	var r_ret = gdextension.Call[RotationMode](gd.ObjectChecked(self.AsObject()), methods.get_rotation_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RotationMode](gd.ObjectChecked(self.AsObject()), methods.get_rotation_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCubicInterpolation(enabled bool) { //gd:PathFollow3D.set_cubic_interpolation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cubic_interpolation, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cubic_interpolation, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetCubicInterpolation() bool { //gd:PathFollow3D.get_cubic_interpolation
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_cubic_interpolation, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_cubic_interpolation, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseModelFront(enabled bool) { //gd:PathFollow3D.set_use_model_front
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_model_front, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_model_front, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsUsingModelFront() bool { //gd:PathFollow3D.is_using_model_front
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_model_front, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_model_front, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoop(loop bool) { //gd:PathFollow3D.set_loop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ loop bool }{loop}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
 }
 
 //go:nosplit
 func (self class) HasLoop() bool { //gd:PathFollow3D.has_loop
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTiltEnabled(enabled bool) { //gd:PathFollow3D.set_tilt_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tilt_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tilt_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsTiltEnabled() bool { //gd:PathFollow3D.is_tilt_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tilt_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tilt_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -355,10 +353,10 @@ Correct the [param transform]. [param rotation_mode] implicitly specifies how po
 */
 //go:nosplit
 func (self class) CorrectPosture(transform Transform3D.BasisOrigin, rotation_mode RotationMode) Transform3D.BasisOrigin { //gd:PathFollow3D.correct_posture
-	var r_ret = gdextension.CallStatic[Transform3D.BasisOrigin](methods.correct_posture, gdextension.SizeTransform3D|(gdextension.SizeTransform3D<<4)|(gdextension.SizeInt<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[Transform3D.BasisOrigin](methods.correct_posture, gdextension.SizeTransform3D|(gdextension.SizeTransform3D<<4)|(gdextension.SizeInt<<8), &struct {
 		transform     Transform3D.BasisOrigin
 		rotation_mode RotationMode
-	}{gd.Transposed(transform), rotation_mode}))
+	}{gd.Transposed(transform), rotation_mode})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }

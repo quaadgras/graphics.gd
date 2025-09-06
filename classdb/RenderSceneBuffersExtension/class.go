@@ -3,7 +3,6 @@
 // Package RenderSceneBuffersExtension provides methods for working with RenderSceneBuffersExtension object instances.
 package RenderSceneBuffersExtension
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -127,12 +125,12 @@ func (self implementation) SetUseDebanding(use_debanding bool)                  
 /*
 Implement this in GDExtension to handle the (re)sizing of a viewport.
 */
-func (Instance) _configure(impl func(ptr unsafe.Pointer, config RenderSceneBuffersConfiguration.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _configure(impl func(ptr gdclass.Receiver, config RenderSceneBuffersConfiguration.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var config = [1]gdclass.RenderSceneBuffersConfiguration{pointers.New[gdclass.RenderSceneBuffersConfiguration]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(config[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, config)
 	}
 }
@@ -140,10 +138,10 @@ func (Instance) _configure(impl func(ptr unsafe.Pointer, config RenderSceneBuffe
 /*
 Implement this in GDExtension to record a new FSR sharpness value.
 */
-func (Instance) _set_fsr_sharpness(impl func(ptr unsafe.Pointer, fsr_sharpness Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_fsr_sharpness(impl func(ptr gdclass.Receiver, fsr_sharpness Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var fsr_sharpness = gd.UnsafeGet[float64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, Float.X(fsr_sharpness))
 	}
 }
@@ -151,10 +149,10 @@ func (Instance) _set_fsr_sharpness(impl func(ptr unsafe.Pointer, fsr_sharpness F
 /*
 Implement this in GDExtension to change the texture mipmap bias.
 */
-func (Instance) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_mipmap_bias Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_texture_mipmap_bias(impl func(ptr gdclass.Receiver, texture_mipmap_bias Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var texture_mipmap_bias = gd.UnsafeGet[float64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, Float.X(texture_mipmap_bias))
 	}
 }
@@ -162,10 +160,10 @@ func (Instance) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_m
 /*
 Implement this in GDExtension to change the anisotropic filtering level.
 */
-func (Instance) _set_anisotropic_filtering_level(impl func(ptr unsafe.Pointer, anisotropic_filtering_level int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_anisotropic_filtering_level(impl func(ptr gdclass.Receiver, anisotropic_filtering_level int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var anisotropic_filtering_level = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(anisotropic_filtering_level))
 	}
 }
@@ -173,10 +171,10 @@ func (Instance) _set_anisotropic_filtering_level(impl func(ptr unsafe.Pointer, a
 /*
 Implement this in GDExtension to react to the debanding flag changing.
 */
-func (Instance) _set_use_debanding(impl func(ptr unsafe.Pointer, use_debanding bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_use_debanding(impl func(ptr gdclass.Receiver, use_debanding bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var use_debanding = gd.UnsafeGet[bool](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, use_debanding)
 	}
 }
@@ -227,12 +225,12 @@ func New() Instance {
 /*
 Implement this in GDExtension to handle the (re)sizing of a viewport.
 */
-func (class) _configure(impl func(ptr unsafe.Pointer, config [1]gdclass.RenderSceneBuffersConfiguration)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _configure(impl func(ptr gdclass.Receiver, config [1]gdclass.RenderSceneBuffersConfiguration)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var config = [1]gdclass.RenderSceneBuffersConfiguration{pointers.New[gdclass.RenderSceneBuffersConfiguration]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(config[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, config)
 	}
 }
@@ -240,10 +238,10 @@ func (class) _configure(impl func(ptr unsafe.Pointer, config [1]gdclass.RenderSc
 /*
 Implement this in GDExtension to record a new FSR sharpness value.
 */
-func (class) _set_fsr_sharpness(impl func(ptr unsafe.Pointer, fsr_sharpness float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_fsr_sharpness(impl func(ptr gdclass.Receiver, fsr_sharpness float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var fsr_sharpness = gd.UnsafeGet[float64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, fsr_sharpness)
 	}
 }
@@ -251,10 +249,10 @@ func (class) _set_fsr_sharpness(impl func(ptr unsafe.Pointer, fsr_sharpness floa
 /*
 Implement this in GDExtension to change the texture mipmap bias.
 */
-func (class) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_mipmap_bias float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_texture_mipmap_bias(impl func(ptr gdclass.Receiver, texture_mipmap_bias float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var texture_mipmap_bias = gd.UnsafeGet[float64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, texture_mipmap_bias)
 	}
 }
@@ -262,10 +260,10 @@ func (class) _set_texture_mipmap_bias(impl func(ptr unsafe.Pointer, texture_mipm
 /*
 Implement this in GDExtension to change the anisotropic filtering level.
 */
-func (class) _set_anisotropic_filtering_level(impl func(ptr unsafe.Pointer, anisotropic_filtering_level int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_anisotropic_filtering_level(impl func(ptr gdclass.Receiver, anisotropic_filtering_level int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var anisotropic_filtering_level = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, anisotropic_filtering_level)
 	}
 }
@@ -273,10 +271,10 @@ func (class) _set_anisotropic_filtering_level(impl func(ptr unsafe.Pointer, anis
 /*
 Implement this in GDExtension to react to the debanding flag changing.
 */
-func (class) _set_use_debanding(impl func(ptr unsafe.Pointer, use_debanding bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_use_debanding(impl func(ptr gdclass.Receiver, use_debanding bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var use_debanding = gd.UnsafeGet[bool](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, use_debanding)
 	}
 }

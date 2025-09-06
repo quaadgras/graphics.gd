@@ -3,7 +3,6 @@
 // Package OccluderInstance3D provides methods for working with OccluderInstance3D object instances.
 package OccluderInstance3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -196,12 +194,12 @@ func (self Instance) SetBakeSimplificationDistance(value Float.X) {
 
 //go:nosplit
 func (self class) SetBakeMask(mask int64) { //gd:OccluderInstance3D.set_bake_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_mask, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mask int64 }{mask}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 
 //go:nosplit
 func (self class) GetBakeMask() int64 { //gd:OccluderInstance3D.get_bake_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -211,10 +209,10 @@ Based on [param value], enables or disables the specified layer in the [member b
 */
 //go:nosplit
 func (self class) SetBakeMaskValue(layer_number int64, value bool) { //gd:OccluderInstance3D.set_bake_mask_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
-	}{layer_number, value}))
+	}{layer_number, value})
 }
 
 /*
@@ -222,31 +220,31 @@ Returns whether or not the specified layer of the [member bake_mask] is enabled,
 */
 //go:nosplit
 func (self class) GetBakeMaskValue(layer_number int64) bool { //gd:OccluderInstance3D.get_bake_mask_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_bake_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBakeSimplificationDistance(simplification_distance float64) { //gd:OccluderInstance3D.set_bake_simplification_distance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_simplification_distance, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ simplification_distance float64 }{simplification_distance}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bake_simplification_distance, 0|(gdextension.SizeFloat<<4), &struct{ simplification_distance float64 }{simplification_distance})
 }
 
 //go:nosplit
 func (self class) GetBakeSimplificationDistance() float64 { //gd:OccluderInstance3D.get_bake_simplification_distance
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bake_simplification_distance, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bake_simplification_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOccluder(occluder [1]gdclass.Occluder3D) { //gd:OccluderInstance3D.set_occluder
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ occluder gdextension.Object }{gdextension.Object(gd.ObjectChecked(occluder[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_occluder, 0|(gdextension.SizeObject<<4), &struct{ occluder gdextension.Object }{gdextension.Object(gd.ObjectChecked(occluder[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetOccluder() [1]gdclass.Occluder3D { //gd:OccluderInstance3D.get_occluder
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_occluder, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Occluder3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Occluder3D](r_ret)}
 	return ret
 }

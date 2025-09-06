@@ -3,7 +3,6 @@
 // Package PortableCompressedTexture2D provides methods for working with PortableCompressedTexture2D object instances.
 package PortableCompressedTexture2D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -38,7 +37,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -231,12 +229,12 @@ If lossy compression is requested, the quality setting can optionally be provide
 */
 //go:nosplit
 func (self class) CreateFromImage(image [1]gdclass.Image, compression_mode CompressionMode, normal_map bool, lossy_quality float64) { //gd:PortableCompressedTexture2D.create_from_image
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeFloat<<16), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_from_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeFloat<<16), &struct {
 		image            gdextension.Object
 		compression_mode CompressionMode
 		normal_map       bool
 		lossy_quality    float64
-	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), compression_mode, normal_map, lossy_quality}))
+	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), compression_mode, normal_map, lossy_quality})
 }
 
 /*
@@ -244,7 +242,7 @@ Return the image format used (valid after initialized).
 */
 //go:nosplit
 func (self class) GetFormat() Image.Format { //gd:PortableCompressedTexture2D.get_format
-	var r_ret = gdextension.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -254,31 +252,31 @@ Return the compression mode used (valid after initialized).
 */
 //go:nosplit
 func (self class) GetCompressionMode() CompressionMode { //gd:PortableCompressedTexture2D.get_compression_mode
-	var r_ret = gdextension.Call[CompressionMode](gd.ObjectChecked(self.AsObject()), methods.get_compression_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[CompressionMode](gd.ObjectChecked(self.AsObject()), methods.get_compression_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSizeOverride(size Vector2.XY) { //gd:PortableCompressedTexture2D.set_size_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_override, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_override, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
 }
 
 //go:nosplit
 func (self class) GetSizeOverride() Vector2.XY { //gd:PortableCompressedTexture2D.get_size_override
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size_override, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size_override, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeepCompressedBuffer(keep bool) { //gd:PortableCompressedTexture2D.set_keep_compressed_buffer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_compressed_buffer, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep bool }{keep}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_compressed_buffer, 0|(gdextension.SizeBool<<4), &struct{ keep bool }{keep})
 }
 
 //go:nosplit
 func (self class) IsKeepingCompressedBuffer() bool { //gd:PortableCompressedTexture2D.is_keeping_compressed_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keeping_compressed_buffer, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_keeping_compressed_buffer, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -288,7 +286,7 @@ Overrides the flag globally for all textures of this type. This is used primaril
 */
 //go:nosplit
 func (self class) SetKeepAllCompressedBuffers(keep bool) { //gd:PortableCompressedTexture2D.set_keep_all_compressed_buffers
-	gdextension.CallStatic[struct{}](methods.set_keep_all_compressed_buffers, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ keep bool }{keep}))
+	gdextension.CallStatic[struct{}](methods.set_keep_all_compressed_buffers, 0|(gdextension.SizeBool<<4), &struct{ keep bool }{keep})
 }
 
 /*
@@ -296,7 +294,7 @@ Return whether the flag is overridden for all textures of this type.
 */
 //go:nosplit
 func (self class) IsKeepingAllCompressedBuffers() bool { //gd:PortableCompressedTexture2D.is_keeping_all_compressed_buffers
-	var r_ret = gdextension.CallStatic[bool](methods.is_keeping_all_compressed_buffers, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.CallStatic[bool](methods.is_keeping_all_compressed_buffers, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

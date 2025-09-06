@@ -3,7 +3,6 @@
 // Package ENetMultiplayerPeer provides methods for working with ENetMultiplayerPeer object instances.
 package ENetMultiplayerPeer
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -220,13 +218,13 @@ Create server that listens to connections via [param port]. The port needs to be
 */
 //go:nosplit
 func (self class) CreateServer(port int64, max_clients int64, max_channels int64, in_bandwidth int64, out_bandwidth int64) Error.Code { //gd:ENetMultiplayerPeer.create_server
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_server, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_server, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
 		port          int64
 		max_clients   int64
 		max_channels  int64
 		in_bandwidth  int64
 		out_bandwidth int64
-	}{port, max_clients, max_channels, in_bandwidth, out_bandwidth}))
+	}{port, max_clients, max_channels, in_bandwidth, out_bandwidth})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -236,14 +234,14 @@ Create client that connects to a server at [param address] using specified [para
 */
 //go:nosplit
 func (self class) CreateClient(address String.Readable, port int64, channel_count int64, in_bandwidth int64, out_bandwidth int64, local_port int64) Error.Code { //gd:ENetMultiplayerPeer.create_client
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_client, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_client, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
 		address       gdextension.String
 		port          int64
 		channel_count int64
 		in_bandwidth  int64
 		out_bandwidth int64
 		local_port    int64
-	}{pointers.Get(gd.InternalString(address)), port, channel_count, in_bandwidth, out_bandwidth, local_port}))
+	}{pointers.Get(gd.InternalString(address)), port, channel_count, in_bandwidth, out_bandwidth, local_port})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -253,7 +251,7 @@ Initialize this [MultiplayerPeer] in mesh mode. The provided [param unique_id] w
 */
 //go:nosplit
 func (self class) CreateMesh(unique_id int64) Error.Code { //gd:ENetMultiplayerPeer.create_mesh
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_mesh, gdextension.SizeInt|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ unique_id int64 }{unique_id}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_mesh, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ unique_id int64 }{unique_id})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -264,10 +262,10 @@ Add a new remote peer with the given [param peer_id] connected to the given [par
 */
 //go:nosplit
 func (self class) AddMeshPeer(peer_id int64, host [1]gdclass.ENetConnection) Error.Code { //gd:ENetMultiplayerPeer.add_mesh_peer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_mesh_peer, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_mesh_peer, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		peer_id int64
 		host    gdextension.Object
-	}{peer_id, gdextension.Object(gd.ObjectChecked(host[0].AsObject()))}))
+	}{peer_id, gdextension.Object(gd.ObjectChecked(host[0].AsObject()))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -277,12 +275,12 @@ The IP used when creating a server. This is set to the wildcard [code]"*"[/code]
 */
 //go:nosplit
 func (self class) SetBindIp(ip String.Readable) { //gd:ENetMultiplayerPeer.set_bind_ip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bind_ip, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ ip gdextension.String }{pointers.Get(gd.InternalString(ip))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bind_ip, 0|(gdextension.SizeString<<4), &struct{ ip gdextension.String }{pointers.Get(gd.InternalString(ip))})
 }
 
 //go:nosplit
 func (self class) GetHost() [1]gdclass.ENetConnection { //gd:ENetMultiplayerPeer.get_host
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_host, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_host, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ENetConnection{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetConnection](r_ret)}
 	return ret
 }
@@ -292,7 +290,7 @@ Returns the [ENetPacketPeer] associated to the given [param id].
 */
 //go:nosplit
 func (self class) GetPeer(id int64) [1]gdclass.ENetPacketPeer { //gd:ENetMultiplayerPeer.get_peer
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_peer, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_peer, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = [1]gdclass.ENetPacketPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.ENetPacketPeer](r_ret)}
 	return ret
 }

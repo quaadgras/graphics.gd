@@ -3,7 +3,6 @@
 // Package OmniLight3D provides methods for working with OmniLight3D object instances.
 package OmniLight3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -157,12 +155,12 @@ func (self Instance) SetOmniShadowMode(value ShadowMode) {
 
 //go:nosplit
 func (self class) SetShadowMode(mode ShadowMode) { //gd:OmniLight3D.set_shadow_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_mode, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode ShadowMode }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ShadowMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetShadowMode() ShadowMode { //gd:OmniLight3D.get_shadow_mode
-	var r_ret = gdextension.Call[ShadowMode](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mode, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[ShadowMode](gd.ObjectChecked(self.AsObject()), methods.get_shadow_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package EditorScenePostImport provides methods for working with EditorScenePostImport object instances.
 package EditorScenePostImport
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -168,12 +166,12 @@ func (self implementation) PostImport(scene Node.Instance) (_ Object.Instance) {
 /*
 Called after the scene was imported. This method must return the modified version of the scene.
 */
-func (Instance) _post_import(impl func(ptr unsafe.Pointer, scene Node.Instance) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _post_import(impl func(ptr gdclass.Receiver, scene Node.Instance) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(scene[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, scene)
 		ptr, ok := pointers.End(ret[0])
 
@@ -237,12 +235,12 @@ func New() Instance {
 /*
 Called after the scene was imported. This method must return the modified version of the scene.
 */
-func (class) _post_import(impl func(ptr unsafe.Pointer, scene [1]gdclass.Node) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _post_import(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(scene[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, scene)
 		ptr, ok := pointers.End(ret[0])
 
@@ -258,7 +256,7 @@ Returns the source file path which got imported (e.g. [code]res://scene.dae[/cod
 */
 //go:nosplit
 func (self class) GetSourceFile() String.Readable { //gd:EditorScenePostImport.get_source_file
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source_file, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source_file, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

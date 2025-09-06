@@ -3,7 +3,6 @@
 // Package GLTFTexture provides methods for working with GLTFTexture object instances.
 package GLTFTexture
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -159,26 +157,26 @@ func (self Instance) SetSampler(value int) {
 
 //go:nosplit
 func (self class) GetSrcImage() int64 { //gd:GLTFTexture.get_src_image
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_src_image, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_src_image, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSrcImage(src_image int64) { //gd:GLTFTexture.set_src_image
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_src_image, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ src_image int64 }{src_image}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_src_image, 0|(gdextension.SizeInt<<4), &struct{ src_image int64 }{src_image})
 }
 
 //go:nosplit
 func (self class) GetSampler() int64 { //gd:GLTFTexture.get_sampler
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sampler, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sampler, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSampler(sampler int64) { //gd:GLTFTexture.set_sampler
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sampler, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ sampler int64 }{sampler}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sampler, 0|(gdextension.SizeInt<<4), &struct{ sampler int64 }{sampler})
 }
 func (self class) AsGLTFTexture() Advanced {
 	return Advanced{pointers.AsA[gdclass.GLTFTexture](self[0])}

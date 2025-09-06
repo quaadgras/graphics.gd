@@ -3,7 +3,6 @@
 // Package PrismMesh provides methods for working with PrismMesh object instances.
 package PrismMesh
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -196,60 +194,60 @@ func (self Instance) SetSubdivideDepth(value int) {
 
 //go:nosplit
 func (self class) SetLeftToRight(left_to_right float64) { //gd:PrismMesh.set_left_to_right
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_left_to_right, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ left_to_right float64 }{left_to_right}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_left_to_right, 0|(gdextension.SizeFloat<<4), &struct{ left_to_right float64 }{left_to_right})
 }
 
 //go:nosplit
 func (self class) GetLeftToRight() float64 { //gd:PrismMesh.get_left_to_right
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_left_to_right, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_left_to_right, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:PrismMesh.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ size Vector3.XYZ }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:PrismMesh.get_size
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubdivideWidth(segments int64) { //gd:PrismMesh.set_subdivide_width
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdivide_width, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ segments int64 }{segments}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdivide_width, 0|(gdextension.SizeInt<<4), &struct{ segments int64 }{segments})
 }
 
 //go:nosplit
 func (self class) GetSubdivideWidth() int64 { //gd:PrismMesh.get_subdivide_width
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdivide_width, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdivide_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubdivideHeight(segments int64) { //gd:PrismMesh.set_subdivide_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdivide_height, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ segments int64 }{segments}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdivide_height, 0|(gdextension.SizeInt<<4), &struct{ segments int64 }{segments})
 }
 
 //go:nosplit
 func (self class) GetSubdivideHeight() int64 { //gd:PrismMesh.get_subdivide_height
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdivide_height, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdivide_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSubdivideDepth(segments int64) { //gd:PrismMesh.set_subdivide_depth
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdivide_depth, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ segments int64 }{segments}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_subdivide_depth, 0|(gdextension.SizeInt<<4), &struct{ segments int64 }{segments})
 }
 
 //go:nosplit
 func (self class) GetSubdivideDepth() int64 { //gd:PrismMesh.get_subdivide_depth
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdivide_depth, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdivide_depth, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

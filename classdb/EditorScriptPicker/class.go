@@ -3,7 +3,6 @@
 // Package EditorScriptPicker provides methods for working with EditorScriptPicker object instances.
 package EditorScriptPicker
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -40,7 +39,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -159,12 +157,12 @@ func (self Instance) SetScriptOwner(value Node.Instance) {
 
 //go:nosplit
 func (self class) SetScriptOwner(owner_node [1]gdclass.Node) { //gd:EditorScriptPicker.set_script_owner
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_script_owner, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ owner_node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(owner_node[0].AsObject()[0]))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_script_owner, 0|(gdextension.SizeObject<<4), &struct{ owner_node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(owner_node[0].AsObject()[0]))})
 }
 
 //go:nosplit
 func (self class) GetScriptOwner() [1]gdclass.Node { //gd:EditorScriptPicker.get_script_owner
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_owner, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_owner, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }

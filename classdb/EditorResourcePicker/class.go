@@ -3,7 +3,6 @@
 // Package EditorResourcePicker provides methods for working with EditorResourcePicker object instances.
 package EditorResourcePicker
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -40,7 +39,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -136,11 +134,11 @@ func (self implementation) HandleMenuSelected(id int) (_ bool)         { return 
 This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. [param menu_node] is a reference to the [PopupMenu] node.
 [b]Note:[/b] Implement [method _handle_menu_selected] to handle these custom items.
 */
-func (Instance) _set_create_options(impl func(ptr unsafe.Pointer, menu_node Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_create_options(impl func(ptr gdclass.Receiver, menu_node Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var menu_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(menu_node[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, menu_node)
 	}
 }
@@ -148,10 +146,10 @@ func (Instance) _set_create_options(impl func(ptr unsafe.Pointer, menu_node Obje
 /*
 This virtual method can be implemented to handle context menu items not handled by default. See [method _set_create_options].
 */
-func (Instance) _handle_menu_selected(impl func(ptr unsafe.Pointer, id int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _handle_menu_selected(impl func(ptr gdclass.Receiver, id int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(id))
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -249,11 +247,11 @@ func (self Instance) SetToggleMode(value bool) {
 This virtual method is called when updating the context menu of [EditorResourcePicker]. Implement this method to override the "New ..." items with your own options. [param menu_node] is a reference to the [PopupMenu] node.
 [b]Note:[/b] Implement [method _handle_menu_selected] to handle these custom items.
 */
-func (class) _set_create_options(impl func(ptr unsafe.Pointer, menu_node [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_create_options(impl func(ptr gdclass.Receiver, menu_node [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var menu_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(menu_node[0])
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, menu_node)
 	}
 }
@@ -261,10 +259,10 @@ func (class) _set_create_options(impl func(ptr unsafe.Pointer, menu_node [1]gd.O
 /*
 This virtual method can be implemented to handle context menu items not handled by default. See [method _set_create_options].
 */
-func (class) _handle_menu_selected(impl func(ptr unsafe.Pointer, id int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _handle_menu_selected(impl func(ptr gdclass.Receiver, id int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, id)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -272,12 +270,12 @@ func (class) _handle_menu_selected(impl func(ptr unsafe.Pointer, id int64) bool)
 
 //go:nosplit
 func (self class) SetBaseType(base_type String.Readable) { //gd:EditorResourcePicker.set_base_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_type, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ base_type gdextension.String }{pointers.Get(gd.InternalString(base_type))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_type, 0|(gdextension.SizeString<<4), &struct{ base_type gdextension.String }{pointers.Get(gd.InternalString(base_type))})
 }
 
 //go:nosplit
 func (self class) GetBaseType() String.Readable { //gd:EditorResourcePicker.get_base_type
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_type, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -287,31 +285,31 @@ Returns a list of all allowed types and subtypes corresponding to the [member ba
 */
 //go:nosplit
 func (self class) GetAllowedTypes() Packed.Strings { //gd:EditorResourcePicker.get_allowed_types
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_allowed_types, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_allowed_types, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditedResource(resource [1]gdclass.Resource) { //gd:EditorResourcePicker.set_edited_resource
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edited_resource, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edited_resource, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetEditedResource() [1]gdclass.Resource { //gd:EditorResourcePicker.get_edited_resource
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_resource, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_resource, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetToggleMode(enable bool) { //gd:EditorResourcePicker.set_toggle_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toggle_mode, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toggle_mode, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsToggleMode() bool { //gd:EditorResourcePicker.is_toggle_mode
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_toggle_mode, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_toggle_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -321,17 +319,17 @@ Sets the toggle mode state for the main button. Works only if [member toggle_mod
 */
 //go:nosplit
 func (self class) SetTogglePressed(pressed bool) { //gd:EditorResourcePicker.set_toggle_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toggle_pressed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pressed bool }{pressed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toggle_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 
 //go:nosplit
 func (self class) SetEditable(enable bool) { //gd:EditorResourcePicker.set_editable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsEditable() bool { //gd:EditorResourcePicker.is_editable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

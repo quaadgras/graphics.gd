@@ -3,7 +3,6 @@
 // Package UniformSetCacheRD provides methods for working with UniformSetCacheRD object instances.
 package UniformSetCacheRD
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -154,11 +152,11 @@ Creates/returns a cached uniform set based on the provided uniforms for a given 
 */
 //go:nosplit
 func (self class) GetCache(shader RID.Any, set int64, uniforms Array.Contains[[1]gdclass.RDUniform]) RID.Any { //gd:UniformSetCacheRD.get_cache
-	var r_ret = gdextension.CallStatic[RID.Any](methods.get_cache, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.CallStatic[RID.Any](methods.get_cache, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12), &struct {
 		shader   RID.Any
 		set      int64
 		uniforms gdextension.Array
-	}{shader, set, pointers.Get(gd.InternalArray(uniforms))}))
+	}{shader, set, pointers.Get(gd.InternalArray(uniforms))})
 	var ret = r_ret
 	return ret
 }

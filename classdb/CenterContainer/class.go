@@ -3,7 +3,6 @@
 // Package CenterContainer provides methods for working with CenterContainer object instances.
 package CenterContainer
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -155,12 +153,12 @@ func (self Instance) SetUseTopLeft(value bool) {
 
 //go:nosplit
 func (self class) SetUseTopLeft(enable bool) { //gd:CenterContainer.set_use_top_left
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_top_left, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enable bool }{enable}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_top_left, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsUsingTopLeft() bool { //gd:CenterContainer.is_using_top_left
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_top_left, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_top_left, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

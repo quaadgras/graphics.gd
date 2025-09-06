@@ -3,7 +3,6 @@
 // Package OpenXRInteractionProfileEditorBase provides methods for working with OpenXRInteractionProfileEditorBase object instances.
 package OpenXRInteractionProfileEditorBase
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -41,7 +40,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -160,10 +158,10 @@ Setup this editor for the provided [param action_map] and [param interaction_pro
 */
 //go:nosplit
 func (self class) Setup(action_map [1]gdclass.OpenXRActionMap, interaction_profile [1]gdclass.OpenXRInteractionProfile) { //gd:OpenXRInteractionProfileEditorBase.setup
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		action_map          gdextension.Object
 		interaction_profile gdextension.Object
-	}{gdextension.Object(gd.ObjectChecked(action_map[0].AsObject())), gdextension.Object(gd.ObjectChecked(interaction_profile[0].AsObject()))}))
+	}{gdextension.Object(gd.ObjectChecked(action_map[0].AsObject())), gdextension.Object(gd.ObjectChecked(interaction_profile[0].AsObject()))})
 }
 func (self class) AsOpenXRInteractionProfileEditorBase() Advanced {
 	return Advanced{pointers.AsA[gdclass.OpenXRInteractionProfileEditorBase](self[0])}

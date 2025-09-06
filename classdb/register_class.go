@@ -12,7 +12,6 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
-	"unsafe"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -777,10 +776,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 			rvalue.Elem().Set(reflect.ValueOf(native))
 			class = native.(isNode)
 		} else {
-			type isUnsafe interface {
-				UnsafePointer() unsafe.Pointer
-			}
-			*(*gd.Object)(class.(isUnsafe).UnsafePointer()) = pointers.Raw[gd.Object](pointers.Get(child[0]))
+			class.(gd.IsClassCastable).SetObject([1]gd.Object{pointers.Raw[gd.Object](pointers.Get(child[0]))})
 		}
 		var mode NodeClass.InternalMode = NodeClass.InternalModeDisabled
 		if !field.IsExported() {

@@ -3,7 +3,6 @@
 // Package ViewportTexture provides methods for working with ViewportTexture object instances.
 package ViewportTexture
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -164,12 +162,12 @@ func (self Instance) SetViewportPath(value string) {
 
 //go:nosplit
 func (self class) SetViewportPathInScene(path Path.ToNode) { //gd:ViewportTexture.set_viewport_path_in_scene
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_viewport_path_in_scene, 0|(gdextension.SizeNodePath<<4), unsafe.Pointer(&struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_viewport_path_in_scene, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 
 //go:nosplit
 func (self class) GetViewportPathInScene() Path.ToNode { //gd:ViewportTexture.get_viewport_path_in_scene
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_viewport_path_in_scene, gdextension.SizeNodePath, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_viewport_path_in_scene, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

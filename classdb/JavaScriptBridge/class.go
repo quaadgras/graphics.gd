@@ -3,7 +3,6 @@
 // Package JavaScriptBridge provides methods for working with JavaScriptBridge object instances.
 package JavaScriptBridge
 
-import "unsafe"
 import "sync"
 import "reflect"
 import "slices"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -251,10 +249,10 @@ If [param use_global_execution_context] is [code]true[/code], the code will be e
 */
 //go:nosplit
 func (self class) Eval(code String.Readable, use_global_execution_context bool) variant.Any { //gd:JavaScriptBridge.eval
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.eval, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.eval, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		code                         gdextension.String
 		use_global_execution_context bool
-	}{pointers.Get(gd.InternalString(code)), use_global_execution_context}))
+	}{pointers.Get(gd.InternalString(code)), use_global_execution_context})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -264,7 +262,7 @@ Returns an interface to a JavaScript object that can be used by scripts. The [pa
 */
 //go:nosplit
 func (self class) GetInterface(intf String.Readable) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_interface, gdextension.SizeObject|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ intf gdextension.String }{pointers.Get(gd.InternalString(intf))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_interface, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ intf gdextension.String }{pointers.Get(gd.InternalString(intf))})
 	var ret = [1]gdclass.JavaScriptObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaScriptObject](r_ret)}
 	return ret
 }
@@ -275,7 +273,7 @@ Creates a reference to a [Callable] that can be used as a callback by JavaScript
 */
 //go:nosplit
 func (self class) CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.create_callback
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_callback, gdextension.SizeObject|(gdextension.SizeCallable<<4), unsafe.Pointer(&struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_callback, gdextension.SizeObject|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 	var ret = [1]gdclass.JavaScriptObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaScriptObject](r_ret)}
 	return ret
 }
@@ -285,7 +283,7 @@ Returns [code]true[/code] if the given [param javascript_object] is of type [url
 */
 //go:nosplit
 func (self class) IsJsBuffer(javascript_object [1]gdclass.JavaScriptObject) bool { //gd:JavaScriptBridge.is_js_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_js_buffer, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ javascript_object gdextension.Object }{gdextension.Object(gd.ObjectChecked(javascript_object[0].AsObject()))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_js_buffer, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ javascript_object gdextension.Object }{gdextension.Object(gd.ObjectChecked(javascript_object[0].AsObject()))})
 	var ret = r_ret
 	return ret
 }
@@ -295,7 +293,7 @@ Returns a copy of [param javascript_buffer]'s contents as a [PackedByteArray]. S
 */
 //go:nosplit
 func (self class) JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScriptObject) Packed.Bytes { //gd:JavaScriptBridge.js_buffer_to_packed_byte_array
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.js_buffer_to_packed_byte_array, gdextension.SizePackedArray|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ javascript_buffer gdextension.Object }{gdextension.Object(gd.ObjectChecked(javascript_buffer[0].AsObject()))}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.js_buffer_to_packed_byte_array, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ javascript_buffer gdextension.Object }{gdextension.Object(gd.ObjectChecked(javascript_buffer[0].AsObject()))})
 	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
 	return ret
 }
@@ -325,11 +323,11 @@ Prompts the user to download a file containing the specified [param buffer]. The
 */
 //go:nosplit
 func (self class) DownloadBuffer(buffer Packed.Bytes, name String.Readable, mime String.Readable) { //gd:JavaScriptBridge.download_buffer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.download_buffer, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.download_buffer, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
 		buffer gdextension.PackedArray[byte]
 		name   gdextension.String
 		mime   gdextension.String
-	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))), pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalString(mime))}))
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))), pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalString(mime))})
 }
 
 /*
@@ -338,7 +336,7 @@ Returns [code]true[/code] if a new version of the progressive web app is waiting
 */
 //go:nosplit
 func (self class) PwaNeedsUpdate() bool { //gd:JavaScriptBridge.pwa_needs_update
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.pwa_needs_update, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.pwa_needs_update, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -350,7 +348,7 @@ Performs the live update of the progressive web app. Forcing the new version to 
 */
 //go:nosplit
 func (self class) PwaUpdate() Error.Code { //gd:JavaScriptBridge.pwa_update
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pwa_update, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pwa_update, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -361,7 +359,7 @@ Force synchronization of the persistent file system (when enabled).
 */
 //go:nosplit
 func (self class) ForceFsSync() { //gd:JavaScriptBridge.force_fs_sync
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_fs_sync, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_fs_sync, 0, &struct{}{})
 }
 func OnPwaUpdateAvailable(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

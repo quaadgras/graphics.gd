@@ -3,7 +3,6 @@
 // Package XRTracker provides methods for working with XRTracker object instances.
 package XRTracker
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -172,38 +170,38 @@ func (self Instance) SetDescription(value string) {
 
 //go:nosplit
 func (self class) GetTrackerType() Type { //gd:XRTracker.get_tracker_type
-	var r_ret = gdextension.Call[Type](gd.ObjectChecked(self.AsObject()), methods.get_tracker_type, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Type](gd.ObjectChecked(self.AsObject()), methods.get_tracker_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerType(atype Type) { //gd:XRTracker.set_tracker_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_type, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ atype Type }{atype}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_type, 0|(gdextension.SizeInt<<4), &struct{ atype Type }{atype})
 }
 
 //go:nosplit
 func (self class) GetTrackerName() String.Name { //gd:XRTracker.get_tracker_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker_name, gdextension.SizeStringName, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerName(name String.Name) { //gd:XRTracker.set_tracker_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_name, 0|(gdextension.SizeStringName<<4), unsafe.Pointer(&struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 //go:nosplit
 func (self class) GetTrackerDesc() String.Readable { //gd:XRTracker.get_tracker_desc
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tracker_desc, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tracker_desc, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackerDesc(description String.Readable) { //gd:XRTracker.set_tracker_desc
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_desc, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker_desc, 0|(gdextension.SizeString<<4), &struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))})
 }
 func (self class) AsXRTracker() Advanced { return Advanced{pointers.AsA[gdclass.XRTracker](self[0])} }
 func (self Instance) AsXRTracker() Instance {

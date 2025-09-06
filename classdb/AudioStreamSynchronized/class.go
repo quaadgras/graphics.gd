@@ -3,7 +3,6 @@
 // Package AudioStreamSynchronized provides methods for working with AudioStreamSynchronized object instances.
 package AudioStreamSynchronized
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -186,12 +184,12 @@ func (self Instance) SetStreamCount(value int) {
 
 //go:nosplit
 func (self class) SetStreamCount(stream_count int64) { //gd:AudioStreamSynchronized.set_stream_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_count, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_count int64 }{stream_count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_count, 0|(gdextension.SizeInt<<4), &struct{ stream_count int64 }{stream_count})
 }
 
 //go:nosplit
 func (self class) GetStreamCount() int64 { //gd:AudioStreamSynchronized.get_stream_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stream_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stream_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -201,10 +199,10 @@ Set one of the synchronized streams, by index.
 */
 //go:nosplit
 func (self class) SetSyncStream(stream_index int64, audio_stream [1]gdclass.AudioStream) { //gd:AudioStreamSynchronized.set_sync_stream
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sync_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sync_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		stream_index int64
 		audio_stream gdextension.Object
-	}{stream_index, gdextension.Object(gd.ObjectChecked(audio_stream[0].AsObject()))}))
+	}{stream_index, gdextension.Object(gd.ObjectChecked(audio_stream[0].AsObject()))})
 }
 
 /*
@@ -212,7 +210,7 @@ Get one of the synchronized streams, by index.
 */
 //go:nosplit
 func (self class) GetSyncStream(stream_index int64) [1]gdclass.AudioStream { //gd:AudioStreamSynchronized.get_sync_stream
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sync_stream, gdextension.SizeObject|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_index int64 }{stream_index}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sync_stream, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ stream_index int64 }{stream_index})
 	var ret = [1]gdclass.AudioStream{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStream](r_ret)}
 	return ret
 }
@@ -222,10 +220,10 @@ Set the volume of one of the synchronized streams, by index.
 */
 //go:nosplit
 func (self class) SetSyncStreamVolume(stream_index int64, volume_db float64) { //gd:AudioStreamSynchronized.set_sync_stream_volume
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sync_stream_volume, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sync_stream_volume, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		stream_index int64
 		volume_db    float64
-	}{stream_index, volume_db}))
+	}{stream_index, volume_db})
 }
 
 /*
@@ -233,7 +231,7 @@ Get the volume of one of the synchronized streams, by index.
 */
 //go:nosplit
 func (self class) GetSyncStreamVolume(stream_index int64) float64 { //gd:AudioStreamSynchronized.get_sync_stream_volume
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sync_stream_volume, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ stream_index int64 }{stream_index}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sync_stream_volume, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ stream_index int64 }{stream_index})
 	var ret = r_ret
 	return ret
 }

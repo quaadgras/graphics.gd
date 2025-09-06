@@ -3,7 +3,6 @@
 // Package VisualShaderNodeSample3D provides methods for working with VisualShaderNodeSample3D object instances.
 package VisualShaderNodeSample3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -154,12 +152,12 @@ func (self Instance) SetSource(value Source) {
 
 //go:nosplit
 func (self class) SetSource(value Source) { //gd:VisualShaderNodeSample3D.set_source
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ value Source }{value}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source, 0|(gdextension.SizeInt<<4), &struct{ value Source }{value})
 }
 
 //go:nosplit
 func (self class) GetSource() Source { //gd:VisualShaderNodeSample3D.get_source
-	var r_ret = gdextension.Call[Source](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Source](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

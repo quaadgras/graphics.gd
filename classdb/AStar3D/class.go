@@ -3,7 +3,6 @@
 // Package AStar3D provides methods for working with AStar3D object instances.
 package AStar3D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -193,11 +191,11 @@ func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X)  
 Called when estimating the cost between a point and the path's ending point.
 Note that this function is hidden in the default [AStar3D] class.
 */
-func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int, end_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _estimate_cost(impl func(ptr gdclass.Receiver, from_id int, end_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 		var end_id = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(from_id), int(end_id))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -207,11 +205,11 @@ func (Instance) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int, end_id
 Called when computing the cost between two connected points.
 Note that this function is hidden in the default [AStar3D] class.
 */
-func (Instance) _compute_cost(impl func(ptr unsafe.Pointer, from_id int, to_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _compute_cost(impl func(ptr gdclass.Receiver, from_id int, to_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 		var to_id = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(from_id), int(to_id))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
@@ -645,11 +643,11 @@ func New() Instance {
 Called when estimating the cost between a point and the path's ending point.
 Note that this function is hidden in the default [AStar3D] class.
 */
-func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int64, end_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id int64, end_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 		var end_id = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, from_id, end_id)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -659,11 +657,11 @@ func (class) _estimate_cost(impl func(ptr unsafe.Pointer, from_id int64, end_id 
 Called when computing the cost between two connected points.
 Note that this function is hidden in the default [AStar3D] class.
 */
-func (class) _compute_cost(impl func(ptr unsafe.Pointer, from_id int64, to_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _compute_cost(impl func(ptr gdclass.Receiver, from_id int64, to_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 		var to_id = gd.UnsafeGet[int64](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, from_id, to_id)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -674,7 +672,7 @@ Returns the next available point ID with no point associated to it.
 */
 //go:nosplit
 func (self class) GetAvailablePointId() int64 { //gd:AStar3D.get_available_point_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_available_point_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_available_point_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -696,11 +694,11 @@ If there already exists a point for the given [param id], its position and weigh
 */
 //go:nosplit
 func (self class) AddPoint(id int64, position Vector3.XYZ, weight_scale float64) { //gd:AStar3D.add_point
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_point, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeFloat<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_point, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeFloat<<12), &struct {
 		id           int64
 		position     Vector3.XYZ
 		weight_scale float64
-	}{id, position, weight_scale}))
+	}{id, position, weight_scale})
 }
 
 /*
@@ -708,7 +706,7 @@ Returns the position of the point associated with the given [param id].
 */
 //go:nosplit
 func (self class) GetPointPosition(id int64) Vector3.XYZ { //gd:AStar3D.get_point_position
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_point_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_point_position, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -718,10 +716,10 @@ Sets the [param position] for the point with the given [param id].
 */
 //go:nosplit
 func (self class) SetPointPosition(id int64, position Vector3.XYZ) { //gd:AStar3D.set_point_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
 		id       int64
 		position Vector3.XYZ
-	}{id, position}))
+	}{id, position})
 }
 
 /*
@@ -729,7 +727,7 @@ Returns the weight scale of the point associated with the given [param id].
 */
 //go:nosplit
 func (self class) GetPointWeightScale(id int64) float64 { //gd:AStar3D.get_point_weight_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_point_weight_scale, gdextension.SizeFloat|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_point_weight_scale, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -739,10 +737,10 @@ Sets the [param weight_scale] for the point with the given [param id]. The [para
 */
 //go:nosplit
 func (self class) SetPointWeightScale(id int64, weight_scale float64) { //gd:AStar3D.set_point_weight_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_weight_scale, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_weight_scale, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		id           int64
 		weight_scale float64
-	}{id, weight_scale}))
+	}{id, weight_scale})
 }
 
 /*
@@ -750,7 +748,7 @@ Removes the point associated with the given [param id] from the points pool.
 */
 //go:nosplit
 func (self class) RemovePoint(id int64) { //gd:AStar3D.remove_point
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_point, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_point, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 
 /*
@@ -758,7 +756,7 @@ Returns whether a point associated with the given [param id] exists.
 */
 //go:nosplit
 func (self class) HasPoint(id int64) bool { //gd:AStar3D.has_point
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_point, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_point, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -793,7 +791,7 @@ long[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
 */
 //go:nosplit
 func (self class) GetPointConnections(id int64) Packed.Array[int64] { //gd:AStar3D.get_point_connections
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_connections, gdextension.SizePackedArray|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_connections, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -803,7 +801,7 @@ Returns an array of all point IDs.
 */
 //go:nosplit
 func (self class) GetPointIds() Packed.Array[int64] { //gd:AStar3D.get_point_ids
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_ids, gdextension.SizePackedArray, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_ids, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -813,10 +811,10 @@ Disables or enables the specified point for pathfinding. Useful for making a tem
 */
 //go:nosplit
 func (self class) SetPointDisabled(id int64, disabled bool) { //gd:AStar3D.set_point_disabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		id       int64
 		disabled bool
-	}{id, disabled}))
+	}{id, disabled})
 }
 
 /*
@@ -824,7 +822,7 @@ Returns whether a point is disabled or not for pathfinding. By default, all poin
 */
 //go:nosplit
 func (self class) IsPointDisabled(id int64) bool { //gd:AStar3D.is_point_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ id int64 }{id}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -848,11 +846,11 @@ astar.ConnectPoints(1, 2, false);
 */
 //go:nosplit
 func (self class) ConnectPoints(id int64, to_id int64, bidirectional bool) { //gd:AStar3D.connect_points
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.connect_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.connect_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		id            int64
 		to_id         int64
 		bidirectional bool
-	}{id, to_id, bidirectional}))
+	}{id, to_id, bidirectional})
 }
 
 /*
@@ -860,11 +858,11 @@ Deletes the segment between the given points. If [param bidirectional] is [code]
 */
 //go:nosplit
 func (self class) DisconnectPoints(id int64, to_id int64, bidirectional bool) { //gd:AStar3D.disconnect_points
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_points, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		id            int64
 		to_id         int64
 		bidirectional bool
-	}{id, to_id, bidirectional}))
+	}{id, to_id, bidirectional})
 }
 
 /*
@@ -872,11 +870,11 @@ Returns whether the two given points are directly connected by a segment. If [pa
 */
 //go:nosplit
 func (self class) ArePointsConnected(id int64, to_id int64, bidirectional bool) bool { //gd:AStar3D.are_points_connected
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_points_connected, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_points_connected, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		id            int64
 		to_id         int64
 		bidirectional bool
-	}{id, to_id, bidirectional}))
+	}{id, to_id, bidirectional})
 	var ret = r_ret
 	return ret
 }
@@ -886,7 +884,7 @@ Returns the number of points currently in the points pool.
 */
 //go:nosplit
 func (self class) GetPointCount() int64 { //gd:AStar3D.get_point_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_count, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -896,7 +894,7 @@ Returns the capacity of the structure backing the points, useful in conjunction 
 */
 //go:nosplit
 func (self class) GetPointCapacity() int64 { //gd:AStar3D.get_point_capacity
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_capacity, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_point_capacity, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -906,7 +904,7 @@ Reserves space internally for [param num_nodes] points. Useful if you're adding 
 */
 //go:nosplit
 func (self class) ReserveSpace(num_nodes int64) { //gd:AStar3D.reserve_space
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reserve_space, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ num_nodes int64 }{num_nodes}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reserve_space, 0|(gdextension.SizeInt<<4), &struct{ num_nodes int64 }{num_nodes})
 }
 
 /*
@@ -914,7 +912,7 @@ Clears all the points and segments.
 */
 //go:nosplit
 func (self class) Clear() { //gd:AStar3D.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
 
 /*
@@ -923,10 +921,10 @@ Returns the ID of the closest point to [param to_position], optionally taking di
 */
 //go:nosplit
 func (self class) GetClosestPoint(to_position Vector3.XYZ, include_disabled bool) int64 { //gd:AStar3D.get_closest_point
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_closest_point, gdextension.SizeInt|(gdextension.SizeVector3<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_closest_point, gdextension.SizeInt|(gdextension.SizeVector3<<4)|(gdextension.SizeBool<<8), &struct {
 		to_position      Vector3.XYZ
 		include_disabled bool
-	}{to_position, include_disabled}))
+	}{to_position, include_disabled})
 	var ret = r_ret
 	return ret
 }
@@ -953,7 +951,7 @@ The result is in the segment that goes from [code]y = 0[/code] to [code]y = 5[/c
 */
 //go:nosplit
 func (self class) GetClosestPositionInSegment(to_position Vector3.XYZ) Vector3.XYZ { //gd:AStar3D.get_closest_position_in_segment
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_closest_position_in_segment, gdextension.SizeVector3|(gdextension.SizeVector3<<4), unsafe.Pointer(&struct{ to_position Vector3.XYZ }{to_position}))
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_closest_position_in_segment, gdextension.SizeVector3|(gdextension.SizeVector3<<4), &struct{ to_position Vector3.XYZ }{to_position})
 	var ret = r_ret
 	return ret
 }
@@ -966,11 +964,11 @@ Additionally, when [param allow_partial_path] is [code]true[/code] and [param to
 */
 //go:nosplit
 func (self class) GetPointPath(from_id int64, to_id int64, allow_partial_path bool) Packed.Array[Vector3.XYZ] { //gd:AStar3D.get_point_path
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_path, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_point_path, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		from_id            int64
 		to_id              int64
 		allow_partial_path bool
-	}{from_id, to_id, allow_partial_path}))
+	}{from_id, to_id, allow_partial_path})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1011,11 +1009,11 @@ If you change the 2nd point's weight to 3, then the result will be [code][1, 4, 
 */
 //go:nosplit
 func (self class) GetIdPath(from_id int64, to_id int64, allow_partial_path bool) Packed.Array[int64] { //gd:AStar3D.get_id_path
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_id_path, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_id_path, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		from_id            int64
 		to_id              int64
 		allow_partial_path bool
-	}{from_id, to_id, allow_partial_path}))
+	}{from_id, to_id, allow_partial_path})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }

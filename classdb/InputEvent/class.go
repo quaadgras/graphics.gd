@@ -3,7 +3,6 @@
 // Package InputEvent provides methods for working with InputEvent object instances.
 package InputEvent
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -320,12 +318,12 @@ func (self Instance) SetDevice(value int) {
 
 //go:nosplit
 func (self class) SetDevice(device int64) { //gd:InputEvent.set_device
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_device, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ device int64 }{device}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_device, 0|(gdextension.SizeInt<<4), &struct{ device int64 }{device})
 }
 
 //go:nosplit
 func (self class) GetDevice() int64 { //gd:InputEvent.get_device
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_device, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_device, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -336,10 +334,10 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsAction(action String.Name, exact_match bool) bool { //gd:InputEvent.is_action
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -351,11 +349,11 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsActionPressed(action String.Name, allow_echo bool, exact_match bool) bool { //gd:InputEvent.is_action_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_pressed, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), &struct {
 		action      gdextension.StringName
 		allow_echo  bool
 		exact_match bool
-	}{pointers.Get(gd.InternalStringName(action)), allow_echo, exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), allow_echo, exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -366,10 +364,10 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsActionReleased(action String.Name, exact_match bool) bool { //gd:InputEvent.is_action_released
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_released, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_released, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -380,10 +378,10 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) GetActionStrength(action String.Name, exact_match bool) float64 { //gd:InputEvent.get_action_strength
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_action_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_action_strength, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		action      gdextension.StringName
 		exact_match bool
-	}{pointers.Get(gd.InternalStringName(action)), exact_match}))
+	}{pointers.Get(gd.InternalStringName(action)), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -393,7 +391,7 @@ Returns [code]true[/code] if this input event has been canceled.
 */
 //go:nosplit
 func (self class) IsCanceled() bool { //gd:InputEvent.is_canceled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_canceled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_canceled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -404,7 +402,7 @@ Returns [code]true[/code] if this input event is pressed. Not relevant for event
 */
 //go:nosplit
 func (self class) IsPressed() bool { //gd:InputEvent.is_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pressed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -414,7 +412,7 @@ Returns [code]true[/code] if this input event is released. Not relevant for even
 */
 //go:nosplit
 func (self class) IsReleased() bool { //gd:InputEvent.is_released
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_released, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_released, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -425,7 +423,7 @@ Returns [code]true[/code] if this input event is an echo event (only for events 
 */
 //go:nosplit
 func (self class) IsEcho() bool { //gd:InputEvent.is_echo
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_echo, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_echo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -435,7 +433,7 @@ Returns a [String] representation of the event.
 */
 //go:nosplit
 func (self class) AsText() String.Readable { //gd:InputEvent.as_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.as_text, gdextension.SizeString, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.as_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -447,10 +445,10 @@ If [param exact_match] is [code]false[/code], it ignores additional input modifi
 */
 //go:nosplit
 func (self class) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { //gd:InputEvent.is_match
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_match, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_match, gdextension.SizeBool|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		event       gdextension.Object
 		exact_match bool
-	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), exact_match}))
+	}{gdextension.Object(gd.ObjectChecked(event[0].AsObject())), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -460,7 +458,7 @@ Returns [code]true[/code] if this input event's type is one that can be assigned
 */
 //go:nosplit
 func (self class) IsActionType() bool { //gd:InputEvent.is_action_type
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_type, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_type, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -471,7 +469,7 @@ The given input event's position, global position and speed will be copied. The 
 */
 //go:nosplit
 func (self class) Accumulate(with_event [1]gdclass.InputEvent) bool { //gd:InputEvent.accumulate
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accumulate, gdextension.SizeBool|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ with_event gdextension.Object }{gdextension.Object(gd.ObjectChecked(with_event[0].AsObject()))}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accumulate, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ with_event gdextension.Object }{gdextension.Object(gd.ObjectChecked(with_event[0].AsObject()))})
 	var ret = r_ret
 	return ret
 }
@@ -481,10 +479,10 @@ Returns a copy of the given input event which has been offset by [param local_of
 */
 //go:nosplit
 func (self class) XformedBy(xform Transform2D.OriginXY, local_ofs Vector2.XY) [1]gdclass.InputEvent { //gd:InputEvent.xformed_by
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.xformed_by, gdextension.SizeObject|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.xformed_by, gdextension.SizeObject|(gdextension.SizeTransform2D<<4)|(gdextension.SizeVector2<<8), &struct {
 		xform     Transform2D.OriginXY
 		local_ofs Vector2.XY
-	}{xform, local_ofs}))
+	}{xform, local_ofs})
 	var ret = [1]gdclass.InputEvent{gd.PointerWithOwnershipTransferredToGo[gdclass.InputEvent](r_ret)}
 	return ret
 }

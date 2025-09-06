@@ -3,7 +3,6 @@
 // Package XRInterfaceExtension provides methods for working with XRInterfaceExtension object instances.
 package XRInterfaceExtension
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -39,7 +38,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -221,9 +219,9 @@ func (self implementation) GetVelocityTexture() (_ RID.Any)          { return }
 /*
 Returns the name of this interface.
 */
-func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalStringName(String.Name(String.New(ret))))
 
@@ -237,9 +235,9 @@ func (Instance) _get_name(impl func(ptr unsafe.Pointer) string) (cb gd.Extension
 /*
 Returns the capabilities of this interface.
 */
-func (Instance) _get_capabilities(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_capabilities(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -248,9 +246,9 @@ func (Instance) _get_capabilities(impl func(ptr unsafe.Pointer) int) (cb gd.Exte
 /*
 Returns [code]true[/code] if this interface has been initialized.
 */
-func (Instance) _is_initialized(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _is_initialized(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -259,9 +257,9 @@ func (Instance) _is_initialized(impl func(ptr unsafe.Pointer) bool) (cb gd.Exten
 /*
 Initializes the interface, returns [code]true[/code] on success.
 */
-func (Instance) _initialize(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _initialize(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -270,9 +268,9 @@ func (Instance) _initialize(impl func(ptr unsafe.Pointer) bool) (cb gd.Extension
 /*
 Uninitialize the interface.
 */
-func (Instance) _uninitialize(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _uninitialize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -280,9 +278,9 @@ func (Instance) _uninitialize(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionCla
 /*
 Returns a [Dictionary] with system information related to this interface.
 */
-func (Instance) _get_system_info(impl func(ptr unsafe.Pointer) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_system_info(impl func(ptr gdclass.Receiver) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
@@ -296,10 +294,10 @@ func (Instance) _get_system_info(impl func(ptr unsafe.Pointer) map[any]any) (cb 
 /*
 Returns [code]true[/code] if this interface supports this play area mode.
 */
-func (Instance) _supports_play_area_mode(impl func(ptr unsafe.Pointer, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _supports_play_area_mode(impl func(ptr gdclass.Receiver, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[XRInterface.PlayAreaMode](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -308,9 +306,9 @@ func (Instance) _supports_play_area_mode(impl func(ptr unsafe.Pointer, mode XRIn
 /*
 Returns the play area mode that sets up our play area.
 */
-func (Instance) _get_play_area_mode(impl func(ptr unsafe.Pointer) XRInterface.PlayAreaMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_play_area_mode(impl func(ptr gdclass.Receiver) XRInterface.PlayAreaMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -319,10 +317,10 @@ func (Instance) _get_play_area_mode(impl func(ptr unsafe.Pointer) XRInterface.Pl
 /*
 Set the play area mode for this interface.
 */
-func (Instance) _set_play_area_mode(impl func(ptr unsafe.Pointer, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_play_area_mode(impl func(ptr gdclass.Receiver, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[XRInterface.PlayAreaMode](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -331,9 +329,9 @@ func (Instance) _set_play_area_mode(impl func(ptr unsafe.Pointer, mode XRInterfa
 /*
 Returns a [PackedVector3Array] that represents the play areas boundaries (if applicable).
 */
-func (Instance) _get_play_area(impl func(ptr unsafe.Pointer) []Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_play_area(impl func(ptr gdclass.Receiver) []Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](Packed.New(ret...)))
 
@@ -347,9 +345,9 @@ func (Instance) _get_play_area(impl func(ptr unsafe.Pointer) []Vector3.XYZ) (cb 
 /*
 Returns the size of our render target for this interface, this overrides the size of the [Viewport] marked as the xr viewport.
 */
-func (Instance) _get_render_target_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_render_target_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
@@ -358,9 +356,9 @@ func (Instance) _get_render_target_size(impl func(ptr unsafe.Pointer) Vector2.XY
 /*
 Returns the number of views this interface requires, 1 for mono, 2 for stereoscopic.
 */
-func (Instance) _get_view_count(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_view_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -369,9 +367,9 @@ func (Instance) _get_view_count(impl func(ptr unsafe.Pointer) int) (cb gd.Extens
 /*
 Returns the [Transform3D] that positions the [XRCamera3D] in the world.
 */
-func (Instance) _get_camera_transform(impl func(ptr unsafe.Pointer) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_camera_transform(impl func(ptr gdclass.Receiver) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Transposed(Transform3D.BasisOrigin(ret)))
 	}
@@ -380,11 +378,11 @@ func (Instance) _get_camera_transform(impl func(ptr unsafe.Pointer) Transform3D.
 /*
 Returns a [Transform3D] for a given view.
 */
-func (Instance) _get_transform_for_view(impl func(ptr unsafe.Pointer, view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_transform_for_view(impl func(ptr gdclass.Receiver, view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
 		var cam_transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(view), cam_transform)
 		gd.UnsafeSet(p_back, gd.Transposed(Transform3D.BasisOrigin(ret)))
 	}
@@ -393,13 +391,13 @@ func (Instance) _get_transform_for_view(impl func(ptr unsafe.Pointer, view int, 
 /*
 Returns the projection matrix for the given view as a [PackedFloat64Array].
 */
-func (Instance) _get_projection_for_view(impl func(ptr unsafe.Pointer, view int, aspect Float.X, z_near Float.X, z_far Float.X) []float64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_projection_for_view(impl func(ptr gdclass.Receiver, view int, aspect Float.X, z_near Float.X, z_far Float.X) []float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
 		var aspect = gd.UnsafeGet[float64](p_args, 1)
 		var z_near = gd.UnsafeGet[float64](p_args, 2)
 		var z_far = gd.UnsafeGet[float64](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(view), Float.X(aspect), Float.X(z_near), Float.X(z_far))
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](Packed.New(ret...)))
 
@@ -409,9 +407,9 @@ func (Instance) _get_projection_for_view(impl func(ptr unsafe.Pointer, view int,
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_vrs_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_vrs_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -420,9 +418,9 @@ func (Instance) _get_vrs_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.E
 /*
 Called if this [XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [XRPositionalTracker]s at this point in time.
 */
-func (Instance) _process(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _process(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -430,9 +428,9 @@ func (Instance) _process(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCal
 /*
 Called if this [XRInterfaceExtension] is active before rendering starts. Most XR interfaces will sync tracking at this point in time.
 */
-func (Instance) _pre_render(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _pre_render(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -440,10 +438,10 @@ func (Instance) _pre_render(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClass
 /*
 Called if this is our primary [XRInterfaceExtension] before we start processing a [Viewport] for every active XR [Viewport], returns [code]true[/code] if that viewport should be rendered. An XR interface may return [code]false[/code] if the user has taken off their headset and we can pause rendering.
 */
-func (Instance) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _pre_draw_viewport(impl func(ptr gdclass.Receiver, render_target RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, render_target)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -452,11 +450,11 @@ func (Instance) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target R
 /*
 Called after the XR [Viewport] draw logic has completed.
 */
-func (Instance) _post_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any, screen_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _post_draw_viewport(impl func(ptr gdclass.Receiver, render_target RID.Any, screen_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
 		var screen_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, render_target, screen_rect)
 	}
 }
@@ -464,9 +462,9 @@ func (Instance) _post_draw_viewport(impl func(ptr unsafe.Pointer, render_target 
 /*
 Called if interface is active and queues have been submitted.
 */
-func (Instance) _end_frame(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _end_frame(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -474,9 +472,9 @@ func (Instance) _end_frame(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassC
 /*
 Returns a [PackedStringArray] with tracker names configured by this interface. Note that user configuration can override this list.
 */
-func (Instance) _get_suggested_tracker_names(impl func(ptr unsafe.Pointer) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_suggested_tracker_names(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -490,11 +488,11 @@ func (Instance) _get_suggested_tracker_names(impl func(ptr unsafe.Pointer) []str
 /*
 Returns a [PackedStringArray] with pose names configured by this interface. Note that user configuration can override this list.
 */
-func (Instance) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_name string) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_suggested_pose_names(impl func(ptr gdclass.Receiver, tracker_name string) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(tracker_name))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, tracker_name.String())
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
@@ -508,9 +506,9 @@ func (Instance) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_
 /*
 Returns a [enum XRInterface.TrackingStatus] specifying the current status of our tracking.
 */
-func (Instance) _get_tracking_status(impl func(ptr unsafe.Pointer) XRInterface.TrackingStatus) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_tracking_status(impl func(ptr gdclass.Receiver) XRInterface.TrackingStatus) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -519,7 +517,7 @@ func (Instance) _get_tracking_status(impl func(ptr unsafe.Pointer) XRInterface.T
 /*
 Triggers a haptic pulse to be emitted on the specified tracker.
 */
-func (Instance) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _trigger_haptic_pulse(impl func(ptr gdclass.Receiver, action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var action_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(action_name))
@@ -529,7 +527,7 @@ func (Instance) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name 
 		var amplitude = gd.UnsafeGet[float64](p_args, 3)
 		var duration_sec = gd.UnsafeGet[float64](p_args, 4)
 		var delay_sec = gd.UnsafeGet[float64](p_args, 5)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, action_name.String(), tracker_name.String(), Float.X(frequency), Float.X(amplitude), Float.X(duration_sec), Float.X(delay_sec))
 	}
 }
@@ -537,9 +535,9 @@ func (Instance) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name 
 /*
 Return [code]true[/code] if anchor detection is enabled for this interface.
 */
-func (Instance) _get_anchor_detection_is_enabled(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_anchor_detection_is_enabled(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -548,10 +546,10 @@ func (Instance) _get_anchor_detection_is_enabled(impl func(ptr unsafe.Pointer) b
 /*
 Enables anchor detection on this interface if supported.
 */
-func (Instance) _set_anchor_detection_is_enabled(impl func(ptr unsafe.Pointer, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _set_anchor_detection_is_enabled(impl func(ptr gdclass.Receiver, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var enabled = gd.UnsafeGet[bool](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, enabled)
 	}
 }
@@ -559,9 +557,9 @@ func (Instance) _set_anchor_detection_is_enabled(impl func(ptr unsafe.Pointer, e
 /*
 Returns the camera feed ID for the [CameraFeed] registered with the [CameraServer] that should be presented as the background on an AR capable device (if applicable).
 */
-func (Instance) _get_camera_feed_id(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_camera_feed_id(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -570,9 +568,9 @@ func (Instance) _get_camera_feed_id(impl func(ptr unsafe.Pointer) int) (cb gd.Ex
 /*
 Return color texture into which to render (if applicable).
 */
-func (Instance) _get_color_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_color_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -581,9 +579,9 @@ func (Instance) _get_color_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd
 /*
 Return depth texture into which to render (if applicable).
 */
-func (Instance) _get_depth_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_depth_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -592,9 +590,9 @@ func (Instance) _get_depth_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd
 /*
 Return velocity texture into which to render (if applicable).
 */
-func (Instance) _get_velocity_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_velocity_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
@@ -669,9 +667,9 @@ func New() Instance {
 /*
 Returns the name of this interface.
 */
-func (class) _get_name(impl func(ptr unsafe.Pointer) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_name(impl func(ptr gdclass.Receiver) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalStringName(ret))
 
@@ -685,9 +683,9 @@ func (class) _get_name(impl func(ptr unsafe.Pointer) String.Name) (cb gd.Extensi
 /*
 Returns the capabilities of this interface.
 */
-func (class) _get_capabilities(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_capabilities(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -696,9 +694,9 @@ func (class) _get_capabilities(impl func(ptr unsafe.Pointer) int64) (cb gd.Exten
 /*
 Returns [code]true[/code] if this interface has been initialized.
 */
-func (class) _is_initialized(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _is_initialized(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -707,9 +705,9 @@ func (class) _is_initialized(impl func(ptr unsafe.Pointer) bool) (cb gd.Extensio
 /*
 Initializes the interface, returns [code]true[/code] on success.
 */
-func (class) _initialize(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _initialize(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -718,9 +716,9 @@ func (class) _initialize(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionCla
 /*
 Uninitialize the interface.
 */
-func (class) _uninitialize(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _uninitialize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -728,9 +726,9 @@ func (class) _uninitialize(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassC
 /*
 Returns a [Dictionary] with system information related to this interface.
 */
-func (class) _get_system_info(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_system_info(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
 
@@ -744,10 +742,10 @@ func (class) _get_system_info(impl func(ptr unsafe.Pointer) Dictionary.Any) (cb 
 /*
 Returns [code]true[/code] if this interface supports this play area mode.
 */
-func (class) _supports_play_area_mode(impl func(ptr unsafe.Pointer, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _supports_play_area_mode(impl func(ptr gdclass.Receiver, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[XRInterface.PlayAreaMode](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -756,9 +754,9 @@ func (class) _supports_play_area_mode(impl func(ptr unsafe.Pointer, mode XRInter
 /*
 Returns the play area mode that sets up our play area.
 */
-func (class) _get_play_area_mode(impl func(ptr unsafe.Pointer) XRInterface.PlayAreaMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_play_area_mode(impl func(ptr gdclass.Receiver) XRInterface.PlayAreaMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -767,10 +765,10 @@ func (class) _get_play_area_mode(impl func(ptr unsafe.Pointer) XRInterface.PlayA
 /*
 Set the play area mode for this interface.
 */
-func (class) _set_play_area_mode(impl func(ptr unsafe.Pointer, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_play_area_mode(impl func(ptr gdclass.Receiver, mode XRInterface.PlayAreaMode) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var mode = gd.UnsafeGet[XRInterface.PlayAreaMode](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, mode)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -779,9 +777,9 @@ func (class) _set_play_area_mode(impl func(ptr unsafe.Pointer, mode XRInterface.
 /*
 Returns a [PackedVector3Array] that represents the play areas boundaries (if applicable).
 */
-func (class) _get_play_area(impl func(ptr unsafe.Pointer) Packed.Array[Vector3.XYZ]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_play_area(impl func(ptr gdclass.Receiver) Packed.Array[Vector3.XYZ]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](ret))
 
@@ -795,9 +793,9 @@ func (class) _get_play_area(impl func(ptr unsafe.Pointer) Packed.Array[Vector3.X
 /*
 Returns the size of our render target for this interface, this overrides the size of the [Viewport] marked as the xr viewport.
 */
-func (class) _get_render_target_size(impl func(ptr unsafe.Pointer) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_render_target_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -806,9 +804,9 @@ func (class) _get_render_target_size(impl func(ptr unsafe.Pointer) Vector2.XY) (
 /*
 Returns the number of views this interface requires, 1 for mono, 2 for stereoscopic.
 */
-func (class) _get_view_count(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_view_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -817,9 +815,9 @@ func (class) _get_view_count(impl func(ptr unsafe.Pointer) int64) (cb gd.Extensi
 /*
 Returns the [Transform3D] that positions the [XRCamera3D] in the world.
 */
-func (class) _get_camera_transform(impl func(ptr unsafe.Pointer) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_camera_transform(impl func(ptr gdclass.Receiver) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, gd.Transposed(ret))
 	}
@@ -828,11 +826,11 @@ func (class) _get_camera_transform(impl func(ptr unsafe.Pointer) Transform3D.Bas
 /*
 Returns a [Transform3D] for a given view.
 */
-func (class) _get_transform_for_view(impl func(ptr unsafe.Pointer, view int64, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_transform_for_view(impl func(ptr gdclass.Receiver, view int64, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
 		var cam_transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, view, cam_transform)
 		gd.UnsafeSet(p_back, gd.Transposed(ret))
 	}
@@ -841,13 +839,13 @@ func (class) _get_transform_for_view(impl func(ptr unsafe.Pointer, view int64, c
 /*
 Returns the projection matrix for the given view as a [PackedFloat64Array].
 */
-func (class) _get_projection_for_view(impl func(ptr unsafe.Pointer, view int64, aspect float64, z_near float64, z_far float64) Packed.Array[float64]) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_projection_for_view(impl func(ptr gdclass.Receiver, view int64, aspect float64, z_near float64, z_far float64) Packed.Array[float64]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var view = gd.UnsafeGet[int64](p_args, 0)
 		var aspect = gd.UnsafeGet[float64](p_args, 1)
 		var z_near = gd.UnsafeGet[float64](p_args, 2)
 		var z_far = gd.UnsafeGet[float64](p_args, 3)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, view, aspect, z_near, z_far)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](ret))
 
@@ -858,9 +856,9 @@ func (class) _get_projection_for_view(impl func(ptr unsafe.Pointer, view int64, 
 	}
 }
 
-func (class) _get_vrs_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_vrs_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -869,9 +867,9 @@ func (class) _get_vrs_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.Exte
 /*
 Called if this [XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [XRPositionalTracker]s at this point in time.
 */
-func (class) _process(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _process(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -879,9 +877,9 @@ func (class) _process(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVi
 /*
 Called if this [XRInterfaceExtension] is active before rendering starts. Most XR interfaces will sync tracking at this point in time.
 */
-func (class) _pre_render(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _pre_render(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -889,10 +887,10 @@ func (class) _pre_render(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCal
 /*
 Called if this is our primary [XRInterfaceExtension] before we start processing a [Viewport] for every active XR [Viewport], returns [code]true[/code] if that viewport should be rendered. An XR interface may return [code]false[/code] if the user has taken off their headset and we can pause rendering.
 */
-func (class) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _pre_draw_viewport(impl func(ptr gdclass.Receiver, render_target RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, render_target)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -901,11 +899,11 @@ func (class) _pre_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.
 /*
 Called after the XR [Viewport] draw logic has completed.
 */
-func (class) _post_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID.Any, screen_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _post_draw_viewport(impl func(ptr gdclass.Receiver, render_target RID.Any, screen_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
 		var screen_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, render_target, screen_rect)
 	}
 }
@@ -913,9 +911,9 @@ func (class) _post_draw_viewport(impl func(ptr unsafe.Pointer, render_target RID
 /*
 Called if interface is active and queues have been submitted.
 */
-func (class) _end_frame(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _end_frame(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
 }
@@ -923,9 +921,9 @@ func (class) _end_frame(impl func(ptr unsafe.Pointer)) (cb gd.ExtensionClassCall
 /*
 Returns a [PackedStringArray] with tracker names configured by this interface. Note that user configuration can override this list.
 */
-func (class) _get_suggested_tracker_names(impl func(ptr unsafe.Pointer) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_suggested_tracker_names(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -939,11 +937,11 @@ func (class) _get_suggested_tracker_names(impl func(ptr unsafe.Pointer) Packed.S
 /*
 Returns a [PackedStringArray] with pose names configured by this interface. Note that user configuration can override this list.
 */
-func (class) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_name String.Name) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_suggested_pose_names(impl func(ptr gdclass.Receiver, tracker_name String.Name) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var tracker_name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(tracker_name))
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, tracker_name)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
 
@@ -957,9 +955,9 @@ func (class) _get_suggested_pose_names(impl func(ptr unsafe.Pointer, tracker_nam
 /*
 Returns a [enum XRInterface.TrackingStatus] specifying the current status of our tracking.
 */
-func (class) _get_tracking_status(impl func(ptr unsafe.Pointer) XRInterface.TrackingStatus) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_tracking_status(impl func(ptr gdclass.Receiver) XRInterface.TrackingStatus) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -968,7 +966,7 @@ func (class) _get_tracking_status(impl func(ptr unsafe.Pointer) XRInterface.Trac
 /*
 Triggers a haptic pulse to be emitted on the specified tracker.
 */
-func (class) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name String.Readable, tracker_name String.Name, frequency float64, amplitude float64, duration_sec float64, delay_sec float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _trigger_haptic_pulse(impl func(ptr gdclass.Receiver, action_name String.Readable, tracker_name String.Name, frequency float64, amplitude float64, duration_sec float64, delay_sec float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var action_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(action_name))
@@ -978,7 +976,7 @@ func (class) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name Str
 		var amplitude = gd.UnsafeGet[float64](p_args, 3)
 		var duration_sec = gd.UnsafeGet[float64](p_args, 4)
 		var delay_sec = gd.UnsafeGet[float64](p_args, 5)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, action_name, tracker_name, frequency, amplitude, duration_sec, delay_sec)
 	}
 }
@@ -986,9 +984,9 @@ func (class) _trigger_haptic_pulse(impl func(ptr unsafe.Pointer, action_name Str
 /*
 Return [code]true[/code] if anchor detection is enabled for this interface.
 */
-func (class) _get_anchor_detection_is_enabled(impl func(ptr unsafe.Pointer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_anchor_detection_is_enabled(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -997,10 +995,10 @@ func (class) _get_anchor_detection_is_enabled(impl func(ptr unsafe.Pointer) bool
 /*
 Enables anchor detection on this interface if supported.
 */
-func (class) _set_anchor_detection_is_enabled(impl func(ptr unsafe.Pointer, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _set_anchor_detection_is_enabled(impl func(ptr gdclass.Receiver, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
 		var enabled = gd.UnsafeGet[bool](p_args, 0)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, enabled)
 	}
 }
@@ -1008,9 +1006,9 @@ func (class) _set_anchor_detection_is_enabled(impl func(ptr unsafe.Pointer, enab
 /*
 Returns the camera feed ID for the [CameraFeed] registered with the [CameraServer] that should be presented as the background on an AR capable device (if applicable).
 */
-func (class) _get_camera_feed_id(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_camera_feed_id(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1019,9 +1017,9 @@ func (class) _get_camera_feed_id(impl func(ptr unsafe.Pointer) int64) (cb gd.Ext
 /*
 Return color texture into which to render (if applicable).
 */
-func (class) _get_color_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_color_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1030,9 +1028,9 @@ func (class) _get_color_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.Ex
 /*
 Return depth texture into which to render (if applicable).
 */
-func (class) _get_depth_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_depth_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1041,9 +1039,9 @@ func (class) _get_depth_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.Ex
 /*
 Return velocity texture into which to render (if applicable).
 */
-func (class) _get_velocity_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_velocity_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
@@ -1051,21 +1049,21 @@ func (class) _get_velocity_texture(impl func(ptr unsafe.Pointer) RID.Any) (cb gd
 
 //go:nosplit
 func (self class) GetColorTexture() RID.Any { //gd:XRInterfaceExtension.get_color_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_color_texture, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_color_texture, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetDepthTexture() RID.Any { //gd:XRInterfaceExtension.get_depth_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_depth_texture, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_depth_texture, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetVelocityTexture() RID.Any { //gd:XRInterfaceExtension.get_velocity_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_velocity_texture, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_velocity_texture, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1075,7 +1073,7 @@ Blits our render results to screen optionally applying lens distortion. This can
 */
 //go:nosplit
 func (self class) AddBlit(render_target RID.Any, src_rect Rect2.PositionSize, dst_rect Rect2i.PositionSize, use_layer bool, layer int64, apply_lens_distortion bool, eye_center Vector2.XY, k1 float64, k2 float64, upscale float64, aspect_ratio float64) { //gd:XRInterfaceExtension.add_blit
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_blit, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2i<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeVector2<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_blit, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2i<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeBool<<24)|(gdextension.SizeVector2<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeFloat<<36)|(gdextension.SizeFloat<<40)|(gdextension.SizeFloat<<44), &struct {
 		render_target         RID.Any
 		src_rect              Rect2.PositionSize
 		dst_rect              Rect2i.PositionSize
@@ -1087,7 +1085,7 @@ func (self class) AddBlit(render_target RID.Any, src_rect Rect2.PositionSize, ds
 		k2                    float64
 		upscale               float64
 		aspect_ratio          float64
-	}{render_target, src_rect, dst_rect, use_layer, layer, apply_lens_distortion, eye_center, k1, k2, upscale, aspect_ratio}))
+	}{render_target, src_rect, dst_rect, use_layer, layer, apply_lens_distortion, eye_center, k1, k2, upscale, aspect_ratio})
 }
 
 /*
@@ -1095,7 +1093,7 @@ Returns a valid [RID] for a texture to which we should render the current frame 
 */
 //go:nosplit
 func (self class) GetRenderTargetTexture(render_target RID.Any) RID.Any { //gd:XRInterfaceExtension.get_render_target_texture
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_render_target_texture, gdextension.SizeRID|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ render_target RID.Any }{render_target}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_render_target_texture, gdextension.SizeRID|(gdextension.SizeRID<<4), &struct{ render_target RID.Any }{render_target})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package ResourceSaver provides methods for working with ResourceSaver object instances.
 package ResourceSaver
 
-import "unsafe"
 import "sync"
 import "reflect"
 import "slices"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -208,11 +206,11 @@ Returns [constant OK] on success.
 */
 //go:nosplit
 func (self class) Save(resource [1]gdclass.Resource, path String.Readable, flags SaverFlags) Error.Code { //gd:ResourceSaver.save
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
 		resource gdextension.Object
 		path     gdextension.String
 		flags    SaverFlags
-	}{gdextension.Object(gd.ObjectChecked(resource[0].AsObject())), pointers.Get(gd.InternalString(path)), flags}))
+	}{gdextension.Object(gd.ObjectChecked(resource[0].AsObject())), pointers.Get(gd.InternalString(path)), flags})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -222,7 +220,7 @@ Returns the list of extensions available for saving a resource of a given type.
 */
 //go:nosplit
 func (self class) GetRecognizedExtensions(atype [1]gdclass.Resource) Packed.Strings { //gd:ResourceSaver.get_recognized_extensions
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_recognized_extensions, gdextension.SizePackedArray|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ atype gdextension.Object }{gdextension.Object(gd.ObjectChecked(atype[0].AsObject()))}))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_recognized_extensions, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ atype gdextension.Object }{gdextension.Object(gd.ObjectChecked(atype[0].AsObject()))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -233,10 +231,10 @@ This method is performed implicitly for ResourceFormatSavers written in GDScript
 */
 //go:nosplit
 func (self class) AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_format_saver, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_format_saver, 0|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		format_saver gdextension.Object
 		at_front     bool
-	}{gdextension.Object(gd.ObjectChecked(format_saver[0].AsObject())), at_front}))
+	}{gdextension.Object(gd.ObjectChecked(format_saver[0].AsObject())), at_front})
 }
 
 /*
@@ -244,7 +242,7 @@ Unregisters the given [ResourceFormatSaver].
 */
 //go:nosplit
 func (self class) RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) { //gd:ResourceSaver.remove_resource_format_saver
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_format_saver, 0|(gdextension.SizeObject<<4), unsafe.Pointer(&struct{ format_saver gdextension.Object }{gdextension.Object(gd.ObjectChecked(format_saver[0].AsObject()))}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_format_saver, 0|(gdextension.SizeObject<<4), &struct{ format_saver gdextension.Object }{gdextension.Object(gd.ObjectChecked(format_saver[0].AsObject()))})
 }
 
 /*
@@ -252,10 +250,10 @@ Returns the resource ID for the given path. If [param generate] is [code]true[/c
 */
 //go:nosplit
 func (self class) GetResourceIdForPath(path String.Readable, generate bool) int64 { //gd:ResourceSaver.get_resource_id_for_path
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_resource_id_for_path, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_resource_id_for_path, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path     gdextension.String
 		generate bool
-	}{pointers.Get(gd.InternalString(path)), generate}))
+	}{pointers.Get(gd.InternalString(path)), generate})
 	var ret = r_ret
 	return ret
 }

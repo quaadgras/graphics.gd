@@ -3,7 +3,6 @@
 // Package StreamPeerExtension provides methods for working with StreamPeerExtension object instances.
 package StreamPeerExtension
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -94,10 +92,10 @@ type Any interface {
 	AsStreamPeerExtension() Instance
 }
 type Interface interface {
-	GetData(r_buffer unsafe.Pointer, r_bytes int, r_received *int32) error
-	GetPartialData(r_buffer unsafe.Pointer, r_bytes int, r_received *int32) error
-	PutData(p_data unsafe.Pointer, p_bytes int, r_sent *int32) error
-	PutPartialData(p_data unsafe.Pointer, p_bytes int, r_sent *int32) error
+	GetData(r_buffer gdextension.Pointer, r_bytes int, r_received *int32) error
+	GetPartialData(r_buffer gdextension.Pointer, r_bytes int, r_received *int32) error
+	PutData(p_data gdextension.Pointer, p_bytes int, r_sent *int32) error
+	PutPartialData(p_data gdextension.Pointer, p_bytes int, r_sent *int32) error
 	GetAvailableBytes() int
 }
 
@@ -106,25 +104,25 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetData(r_buffer unsafe.Pointer, r_bytes int, r_received *int32) (_ error) {
+func (self implementation) GetData(r_buffer gdextension.Pointer, r_bytes int, r_received *int32) (_ error) {
 	return
 }
-func (self implementation) GetPartialData(r_buffer unsafe.Pointer, r_bytes int, r_received *int32) (_ error) {
+func (self implementation) GetPartialData(r_buffer gdextension.Pointer, r_bytes int, r_received *int32) (_ error) {
 	return
 }
-func (self implementation) PutData(p_data unsafe.Pointer, p_bytes int, r_sent *int32) (_ error) {
+func (self implementation) PutData(p_data gdextension.Pointer, p_bytes int, r_sent *int32) (_ error) {
 	return
 }
-func (self implementation) PutPartialData(p_data unsafe.Pointer, p_bytes int, r_sent *int32) (_ error) {
+func (self implementation) PutPartialData(p_data gdextension.Pointer, p_bytes int, r_sent *int32) (_ error) {
 	return
 }
 func (self implementation) GetAvailableBytes() (_ int) { return }
-func (Instance) _get_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_bytes int, r_received *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_data(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_bytes int, r_received *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var r_bytes = gd.UnsafeGet[int64](p_args, 1)
 		var r_received = gd.UnsafeGet[*int32](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, r_buffer, int(r_bytes), r_received)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -134,12 +132,12 @@ func (Instance) _get_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer,
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_partial_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_bytes int, r_received *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_partial_data(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_bytes int, r_received *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var r_bytes = gd.UnsafeGet[int64](p_args, 1)
 		var r_received = gd.UnsafeGet[*int32](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, r_buffer, int(r_bytes), r_received)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -149,12 +147,12 @@ func (Instance) _get_partial_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _put_data(impl func(ptr unsafe.Pointer, p_data unsafe.Pointer, p_bytes int, r_sent *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _put_data(impl func(ptr gdclass.Receiver, p_data gdextension.Pointer, p_bytes int, r_sent *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_data = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var p_data = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_bytes = gd.UnsafeGet[int64](p_args, 1)
 		var r_sent = gd.UnsafeGet[*int32](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_data, int(p_bytes), r_sent)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -164,12 +162,12 @@ func (Instance) _put_data(impl func(ptr unsafe.Pointer, p_data unsafe.Pointer, p
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _put_partial_data(impl func(ptr unsafe.Pointer, p_data unsafe.Pointer, p_bytes int, r_sent *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _put_partial_data(impl func(ptr gdclass.Receiver, p_data gdextension.Pointer, p_bytes int, r_sent *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_data = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var p_data = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_bytes = gd.UnsafeGet[int64](p_args, 1)
 		var r_sent = gd.UnsafeGet[*int32](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_data, int(p_bytes), r_sent)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
@@ -179,9 +177,9 @@ func (Instance) _put_partial_data(impl func(ptr unsafe.Pointer, p_data unsafe.Po
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_available_bytes(impl func(ptr unsafe.Pointer) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_available_bytes(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
@@ -230,12 +228,12 @@ func New() Instance {
 	return casted
 }
 
-func (class) _get_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_bytes int64, r_received *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_data(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_bytes int64, r_received *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var r_bytes = gd.UnsafeGet[int64](p_args, 1)
 		var r_received = gd.UnsafeGet[*int32](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, r_buffer, r_bytes, r_received)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -246,12 +244,12 @@ func (class) _get_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_
 	}
 }
 
-func (class) _get_partial_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Pointer, r_bytes int64, r_received *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_partial_data(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_bytes int64, r_received *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var r_buffer = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var r_bytes = gd.UnsafeGet[int64](p_args, 1)
 		var r_received = gd.UnsafeGet[*int32](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, r_buffer, r_bytes, r_received)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -262,12 +260,12 @@ func (class) _get_partial_data(impl func(ptr unsafe.Pointer, r_buffer unsafe.Poi
 	}
 }
 
-func (class) _put_data(impl func(ptr unsafe.Pointer, p_data unsafe.Pointer, p_bytes int64, r_sent *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_data(impl func(ptr gdclass.Receiver, p_data gdextension.Pointer, p_bytes int64, r_sent *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_data = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var p_data = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_bytes = gd.UnsafeGet[int64](p_args, 1)
 		var r_sent = gd.UnsafeGet[*int32](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_data, p_bytes, r_sent)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -278,12 +276,12 @@ func (class) _put_data(impl func(ptr unsafe.Pointer, p_data unsafe.Pointer, p_by
 	}
 }
 
-func (class) _put_partial_data(impl func(ptr unsafe.Pointer, p_data unsafe.Pointer, p_bytes int64, r_sent *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _put_partial_data(impl func(ptr gdclass.Receiver, p_data gdextension.Pointer, p_bytes int64, r_sent *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		var p_data = gd.UnsafeGet[unsafe.Pointer](p_args, 0)
+		var p_data = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_bytes = gd.UnsafeGet[int64](p_args, 1)
 		var r_sent = gd.UnsafeGet[*int32](p_args, 2)
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, p_data, p_bytes, r_sent)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
 
@@ -294,9 +292,9 @@ func (class) _put_partial_data(impl func(ptr unsafe.Pointer, p_data unsafe.Point
 	}
 }
 
-func (class) _get_available_bytes(impl func(ptr unsafe.Pointer) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_available_bytes(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}

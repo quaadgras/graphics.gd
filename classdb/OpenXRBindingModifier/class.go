@@ -3,7 +3,6 @@
 // Package OpenXRBindingModifier provides methods for working with OpenXRBindingModifier object instances.
 package OpenXRBindingModifier
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -34,7 +33,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -118,9 +116,9 @@ func (self implementation) GetIpModification() (_ []byte) { return }
 /*
 Return the description of this class that is used for the title bar of the binding modifier editor.
 */
-func (Instance) _get_description(impl func(ptr unsafe.Pointer) string) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_description(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
@@ -135,9 +133,9 @@ func (Instance) _get_description(impl func(ptr unsafe.Pointer) string) (cb gd.Ex
 Returns the data that is sent to OpenXR when submitting the suggested interacting bindings this modifier is a part of.
 [b]Note:[/b] This must be data compatible with a [code]XrBindingModificationBaseHeaderKHR[/code] structure.
 */
-func (Instance) _get_ip_modification(impl func(ptr unsafe.Pointer) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_ip_modification(impl func(ptr gdclass.Receiver) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.Bytes(Packed.New(ret...)))))
 
@@ -194,9 +192,9 @@ func New() Instance {
 /*
 Return the description of this class that is used for the title bar of the binding modifier editor.
 */
-func (class) _get_description(impl func(ptr unsafe.Pointer) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_description(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
 
@@ -211,9 +209,9 @@ func (class) _get_description(impl func(ptr unsafe.Pointer) String.Readable) (cb
 Returns the data that is sent to OpenXR when submitting the suggested interacting bindings this modifier is a part of.
 [b]Note:[/b] This must be data compatible with a [code]XrBindingModificationBaseHeaderKHR[/code] structure.
 */
-func (class) _get_ip_modification(impl func(ptr unsafe.Pointer) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_ip_modification(impl func(ptr gdclass.Receiver) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args gd.Address, p_back gd.Address) {
-		self := reflect.ValueOf(class).UnsafePointer()
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret)))
 

@@ -3,7 +3,6 @@
 // Package CanvasGroup provides methods for working with CanvasGroup object instances.
 package CanvasGroup
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -36,7 +35,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -193,36 +191,36 @@ func (self Instance) SetUseMipmaps(value bool) {
 
 //go:nosplit
 func (self class) SetFitMargin(fit_margin float64) { //gd:CanvasGroup.set_fit_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fit_margin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ fit_margin float64 }{fit_margin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fit_margin, 0|(gdextension.SizeFloat<<4), &struct{ fit_margin float64 }{fit_margin})
 }
 
 //go:nosplit
 func (self class) GetFitMargin() float64 { //gd:CanvasGroup.get_fit_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fit_margin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fit_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClearMargin(clear_margin float64) { //gd:CanvasGroup.set_clear_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clear_margin, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ clear_margin float64 }{clear_margin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clear_margin, 0|(gdextension.SizeFloat<<4), &struct{ clear_margin float64 }{clear_margin})
 }
 
 //go:nosplit
 func (self class) GetClearMargin() float64 { //gd:CanvasGroup.get_clear_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_clear_margin, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_clear_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseMipmaps(use_mipmaps bool) { //gd:CanvasGroup.set_use_mipmaps
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_mipmaps, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ use_mipmaps bool }{use_mipmaps}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_mipmaps, 0|(gdextension.SizeBool<<4), &struct{ use_mipmaps bool }{use_mipmaps})
 }
 
 //go:nosplit
 func (self class) IsUsingMipmaps() bool { //gd:CanvasGroup.is_using_mipmaps
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_mipmaps, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_mipmaps, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

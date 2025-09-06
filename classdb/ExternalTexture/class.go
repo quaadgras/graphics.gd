@@ -3,7 +3,6 @@
 // Package ExternalTexture provides methods for working with ExternalTexture object instances.
 package ExternalTexture
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -171,7 +169,7 @@ func (self Instance) SetSize(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2.XY) { //gd:ExternalTexture.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ size Vector2.XY }{size}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2<<4), &struct{ size Vector2.XY }{size})
 }
 
 /*
@@ -180,7 +178,7 @@ Depending on your use case, you may need to pass this to platform APIs, for exam
 */
 //go:nosplit
 func (self class) GetExternalTextureId() int64 { //gd:ExternalTexture.get_external_texture_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_external_texture_id, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_external_texture_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -191,7 +189,7 @@ Depending on your use case, you may need to call this with data received from a 
 */
 //go:nosplit
 func (self class) SetExternalBufferId(external_buffer_id int64) { //gd:ExternalTexture.set_external_buffer_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external_buffer_id, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ external_buffer_id int64 }{external_buffer_id}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external_buffer_id, 0|(gdextension.SizeInt<<4), &struct{ external_buffer_id int64 }{external_buffer_id})
 }
 func (self class) AsExternalTexture() Advanced {
 	return Advanced{pointers.AsA[gdclass.ExternalTexture](self[0])}

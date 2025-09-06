@@ -3,7 +3,6 @@
 // Package AudioEffectAmplify provides methods for working with AudioEffectAmplify object instances.
 package AudioEffectAmplify
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -35,7 +34,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -164,24 +162,24 @@ func (self Instance) SetVolumeLinear(value Float.X) {
 
 //go:nosplit
 func (self class) SetVolumeDb(volume float64) { //gd:AudioEffectAmplify.set_volume_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_db, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume float64 }{volume}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_db, 0|(gdextension.SizeFloat<<4), &struct{ volume float64 }{volume})
 }
 
 //go:nosplit
 func (self class) GetVolumeDb() float64 { //gd:AudioEffectAmplify.get_volume_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_db, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVolumeLinear(volume float64) { //gd:AudioEffectAmplify.set_volume_linear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_linear, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ volume float64 }{volume}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_volume_linear, 0|(gdextension.SizeFloat<<4), &struct{ volume float64 }{volume})
 }
 
 //go:nosplit
 func (self class) GetVolumeLinear() float64 { //gd:AudioEffectAmplify.get_volume_linear
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_linear, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_volume_linear, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -3,7 +3,6 @@
 // Package NavigationLink2D provides methods for working with NavigationLink2D object instances.
 package NavigationLink2D
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -290,19 +288,19 @@ Returns the [RID] of this link on the [NavigationServer2D].
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:NavigationLink2D.get_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:NavigationLink2D.set_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsEnabled() bool { //gd:NavigationLink2D.is_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -312,7 +310,7 @@ Sets the [RID] of the navigation map this link should use. By default the link w
 */
 //go:nosplit
 func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationLink2D.set_navigation_map
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_map, 0|(gdextension.SizeRID<<4), unsafe.Pointer(&struct{ navigation_map RID.Any }{navigation_map}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_map, 0|(gdextension.SizeRID<<4), &struct{ navigation_map RID.Any }{navigation_map})
 }
 
 /*
@@ -320,31 +318,31 @@ Returns the current navigation map [RID] used by this link.
 */
 //go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:NavigationLink2D.get_navigation_map
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBidirectional(bidirectional bool) { //gd:NavigationLink2D.set_bidirectional
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bidirectional, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ bidirectional bool }{bidirectional}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bidirectional, 0|(gdextension.SizeBool<<4), &struct{ bidirectional bool }{bidirectional})
 }
 
 //go:nosplit
 func (self class) IsBidirectional() bool { //gd:NavigationLink2D.is_bidirectional
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_bidirectional, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_bidirectional, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationLayers(navigation_layers int64) { //gd:NavigationLink2D.set_navigation_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layers, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ navigation_layers int64 }{navigation_layers}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layers, 0|(gdextension.SizeInt<<4), &struct{ navigation_layers int64 }{navigation_layers})
 }
 
 //go:nosplit
 func (self class) GetNavigationLayers() int64 { //gd:NavigationLink2D.get_navigation_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -354,10 +352,10 @@ Based on [param value], enables or disables the specified layer in the [member n
 */
 //go:nosplit
 func (self class) SetNavigationLayerValue(layer_number int64, value bool) { //gd:NavigationLink2D.set_navigation_layer_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), unsafe.Pointer(&struct {
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
-	}{layer_number, value}))
+	}{layer_number, value})
 }
 
 /*
@@ -365,31 +363,31 @@ Returns whether or not the specified layer of the [member navigation_layers] bit
 */
 //go:nosplit
 func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:NavigationLink2D.get_navigation_layer_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ layer_number int64 }{layer_number}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStartPosition(position Vector2.XY) { //gd:NavigationLink2D.set_start_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_start_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_start_position, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 
 //go:nosplit
 func (self class) GetStartPosition() Vector2.XY { //gd:NavigationLink2D.get_start_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_start_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_start_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEndPosition(position Vector2.XY) { //gd:NavigationLink2D.set_end_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_end_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_end_position, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 
 //go:nosplit
 func (self class) GetEndPosition() Vector2.XY { //gd:NavigationLink2D.get_end_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_end_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_end_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -399,7 +397,7 @@ Sets the [member start_position] that is relative to the link from a global [par
 */
 //go:nosplit
 func (self class) SetGlobalStartPosition(position Vector2.XY) { //gd:NavigationLink2D.set_global_start_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_start_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_start_position, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 
 /*
@@ -407,7 +405,7 @@ Returns the [member start_position] that is relative to the link as a global pos
 */
 //go:nosplit
 func (self class) GetGlobalStartPosition() Vector2.XY { //gd:NavigationLink2D.get_global_start_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_global_start_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_global_start_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -417,7 +415,7 @@ Sets the [member end_position] that is relative to the link from a global [param
 */
 //go:nosplit
 func (self class) SetGlobalEndPosition(position Vector2.XY) { //gd:NavigationLink2D.set_global_end_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_end_position, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ position Vector2.XY }{position}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_end_position, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 
 /*
@@ -425,31 +423,31 @@ Returns the [member end_position] that is relative to the link as a global posit
 */
 //go:nosplit
 func (self class) GetGlobalEndPosition() Vector2.XY { //gd:NavigationLink2D.get_global_end_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_global_end_position, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_global_end_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnterCost(enter_cost float64) { //gd:NavigationLink2D.set_enter_cost
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enter_cost, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ enter_cost float64 }{enter_cost}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enter_cost, 0|(gdextension.SizeFloat<<4), &struct{ enter_cost float64 }{enter_cost})
 }
 
 //go:nosplit
 func (self class) GetEnterCost() float64 { //gd:NavigationLink2D.get_enter_cost
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_enter_cost, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_enter_cost, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTravelCost(travel_cost float64) { //gd:NavigationLink2D.set_travel_cost
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_travel_cost, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ travel_cost float64 }{travel_cost}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_travel_cost, 0|(gdextension.SizeFloat<<4), &struct{ travel_cost float64 }{travel_cost})
 }
 
 //go:nosplit
 func (self class) GetTravelCost() float64 { //gd:NavigationLink2D.get_travel_cost
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_travel_cost, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_travel_cost, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

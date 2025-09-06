@@ -3,7 +3,6 @@
 // Package InputEventMouseMotion provides methods for working with InputEventMouseMotion object instances.
 package InputEventMouseMotion
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -39,7 +38,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -220,84 +218,84 @@ func (self Instance) SetScreenVelocity(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetTilt(tilt Vector2.XY) { //gd:InputEventMouseMotion.set_tilt
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tilt, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ tilt Vector2.XY }{tilt}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tilt, 0|(gdextension.SizeVector2<<4), &struct{ tilt Vector2.XY }{tilt})
 }
 
 //go:nosplit
 func (self class) GetTilt() Vector2.XY { //gd:InputEventMouseMotion.get_tilt
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_tilt, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_tilt, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressure(pressure float64) { //gd:InputEventMouseMotion.set_pressure
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeFloat<<4), unsafe.Pointer(&struct{ pressure float64 }{pressure}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure, 0|(gdextension.SizeFloat<<4), &struct{ pressure float64 }{pressure})
 }
 
 //go:nosplit
 func (self class) GetPressure() float64 { //gd:InputEventMouseMotion.get_pressure
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeFloat, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_pressure, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPenInverted(pen_inverted bool) { //gd:InputEventMouseMotion.set_pen_inverted
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pen_inverted, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ pen_inverted bool }{pen_inverted}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pen_inverted, 0|(gdextension.SizeBool<<4), &struct{ pen_inverted bool }{pen_inverted})
 }
 
 //go:nosplit
 func (self class) GetPenInverted() bool { //gd:InputEventMouseMotion.get_pen_inverted
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_pen_inverted, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_pen_inverted, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRelative(relative Vector2.XY) { //gd:InputEventMouseMotion.set_relative
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_relative, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ relative Vector2.XY }{relative}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_relative, 0|(gdextension.SizeVector2<<4), &struct{ relative Vector2.XY }{relative})
 }
 
 //go:nosplit
 func (self class) GetRelative() Vector2.XY { //gd:InputEventMouseMotion.get_relative
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_relative, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_relative, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScreenRelative(relative Vector2.XY) { //gd:InputEventMouseMotion.set_screen_relative
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_relative, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ relative Vector2.XY }{relative}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_relative, 0|(gdextension.SizeVector2<<4), &struct{ relative Vector2.XY }{relative})
 }
 
 //go:nosplit
 func (self class) GetScreenRelative() Vector2.XY { //gd:InputEventMouseMotion.get_screen_relative
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_relative, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_relative, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVelocity(velocity Vector2.XY) { //gd:InputEventMouseMotion.set_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeVector2<<4), &struct{ velocity Vector2.XY }{velocity})
 }
 
 //go:nosplit
 func (self class) GetVelocity() Vector2.XY { //gd:InputEventMouseMotion.get_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScreenVelocity(velocity Vector2.XY) { //gd:InputEventMouseMotion.set_screen_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_velocity, 0|(gdextension.SizeVector2<<4), unsafe.Pointer(&struct{ velocity Vector2.XY }{velocity}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_velocity, 0|(gdextension.SizeVector2<<4), &struct{ velocity Vector2.XY }{velocity})
 }
 
 //go:nosplit
 func (self class) GetScreenVelocity() Vector2.XY { //gd:InputEventMouseMotion.get_screen_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_velocity, gdextension.SizeVector2, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

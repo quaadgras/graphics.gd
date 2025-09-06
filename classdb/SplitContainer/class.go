@@ -3,7 +3,6 @@
 // Package SplitContainer provides methods for working with SplitContainer object instances.
 package SplitContainer
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -37,7 +36,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -256,12 +254,12 @@ func (self Instance) SetDragAreaHighlightInEditor(value bool) {
 
 //go:nosplit
 func (self class) SetSplitOffset(offset int64) { //gd:SplitContainer.set_split_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_split_offset, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ offset int64 }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_split_offset, 0|(gdextension.SizeInt<<4), &struct{ offset int64 }{offset})
 }
 
 //go:nosplit
 func (self class) GetSplitOffset() int64 { //gd:SplitContainer.get_split_offset
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_split_offset, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_split_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -271,101 +269,101 @@ Clamps the [member split_offset] value to not go outside the currently possible 
 */
 //go:nosplit
 func (self class) ClampSplitOffset() { //gd:SplitContainer.clamp_split_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clamp_split_offset, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clamp_split_offset, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetCollapsed(collapsed bool) { //gd:SplitContainer.set_collapsed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collapsed, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ collapsed bool }{collapsed}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collapsed, 0|(gdextension.SizeBool<<4), &struct{ collapsed bool }{collapsed})
 }
 
 //go:nosplit
 func (self class) IsCollapsed() bool { //gd:SplitContainer.is_collapsed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collapsed, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collapsed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDraggerVisibility(mode DraggerVisibility) { //gd:SplitContainer.set_dragger_visibility
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dragger_visibility, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ mode DraggerVisibility }{mode}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dragger_visibility, 0|(gdextension.SizeInt<<4), &struct{ mode DraggerVisibility }{mode})
 }
 
 //go:nosplit
 func (self class) GetDraggerVisibility() DraggerVisibility { //gd:SplitContainer.get_dragger_visibility
-	var r_ret = gdextension.Call[DraggerVisibility](gd.ObjectChecked(self.AsObject()), methods.get_dragger_visibility, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[DraggerVisibility](gd.ObjectChecked(self.AsObject()), methods.get_dragger_visibility, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVertical(vertical bool) { //gd:SplitContainer.set_vertical
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ vertical bool }{vertical}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical, 0|(gdextension.SizeBool<<4), &struct{ vertical bool }{vertical})
 }
 
 //go:nosplit
 func (self class) IsVertical() bool { //gd:SplitContainer.is_vertical
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDraggingEnabled(dragging_enabled bool) { //gd:SplitContainer.set_dragging_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dragging_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ dragging_enabled bool }{dragging_enabled}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dragging_enabled, 0|(gdextension.SizeBool<<4), &struct{ dragging_enabled bool }{dragging_enabled})
 }
 
 //go:nosplit
 func (self class) IsDraggingEnabled() bool { //gd:SplitContainer.is_dragging_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dragging_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dragging_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragAreaMarginBegin(margin int64) { //gd:SplitContainer.set_drag_area_margin_begin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_margin_begin, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin int64 }{margin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_margin_begin, 0|(gdextension.SizeInt<<4), &struct{ margin int64 }{margin})
 }
 
 //go:nosplit
 func (self class) GetDragAreaMarginBegin() int64 { //gd:SplitContainer.get_drag_area_margin_begin
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_margin_begin, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_margin_begin, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragAreaMarginEnd(margin int64) { //gd:SplitContainer.set_drag_area_margin_end
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_margin_end, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ margin int64 }{margin}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_margin_end, 0|(gdextension.SizeInt<<4), &struct{ margin int64 }{margin})
 }
 
 //go:nosplit
 func (self class) GetDragAreaMarginEnd() int64 { //gd:SplitContainer.get_drag_area_margin_end
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_margin_end, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_margin_end, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragAreaOffset(offset int64) { //gd:SplitContainer.set_drag_area_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_offset, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ offset int64 }{offset}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_offset, 0|(gdextension.SizeInt<<4), &struct{ offset int64 }{offset})
 }
 
 //go:nosplit
 func (self class) GetDragAreaOffset() int64 { //gd:SplitContainer.get_drag_area_offset
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_offset, gdextension.SizeInt, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragAreaHighlightInEditor(drag_area_highlight_in_editor bool) { //gd:SplitContainer.set_drag_area_highlight_in_editor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_highlight_in_editor, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ drag_area_highlight_in_editor bool }{drag_area_highlight_in_editor}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_area_highlight_in_editor, 0|(gdextension.SizeBool<<4), &struct{ drag_area_highlight_in_editor bool }{drag_area_highlight_in_editor})
 }
 
 //go:nosplit
 func (self class) IsDragAreaHighlightInEditorEnabled() bool { //gd:SplitContainer.is_drag_area_highlight_in_editor_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_area_highlight_in_editor_enabled, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_area_highlight_in_editor_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -380,7 +378,7 @@ $BarnacleButton.reparent($SplitContainer.get_drag_area_control())
 */
 //go:nosplit
 func (self class) GetDragAreaControl() [1]gdclass.Control { //gd:SplitContainer.get_drag_area_control
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_control, gdextension.SizeObject, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_control, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret)}
 	return ret
 }

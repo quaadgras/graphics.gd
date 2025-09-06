@@ -3,7 +3,6 @@
 // Package Semaphore provides methods for working with Semaphore object instances.
 package Semaphore
 
-import "unsafe"
 import "reflect"
 import "slices"
 import "graphics.gd/internal/pointers"
@@ -33,7 +32,6 @@ type _ gdclass.Node
 
 var _ gd.Object
 var _ RefCounted.Instance
-var _ unsafe.Pointer
 var _ reflect.Type
 var _ callframe.Frame
 var _ = pointers.Cycle
@@ -182,7 +180,7 @@ Waits for the [Semaphore], if its value is zero, blocks until non-zero.
 */
 //go:nosplit
 func (self class) Wait() { //gd:Semaphore.wait
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.wait, 0, unsafe.Pointer(&struct{}{}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.wait, 0, &struct{}{})
 }
 
 /*
@@ -190,7 +188,7 @@ Like [method wait], but won't block, so if the value is zero, fails immediately 
 */
 //go:nosplit
 func (self class) TryWait() bool { //gd:Semaphore.try_wait
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.try_wait, gdextension.SizeBool, unsafe.Pointer(&struct{}{}))
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.try_wait, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -200,7 +198,7 @@ Lowers the [Semaphore], allowing one thread in, or more if [param count] is spec
 */
 //go:nosplit
 func (self class) Post(count int64) { //gd:Semaphore.post
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.post, 0|(gdextension.SizeInt<<4), unsafe.Pointer(&struct{ count int64 }{count}))
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.post, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 func (self class) AsSemaphore() Advanced { return Advanced{pointers.AsA[gdclass.Semaphore](self[0])} }
 func (self Instance) AsSemaphore() Instance {
