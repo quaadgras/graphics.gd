@@ -19,7 +19,7 @@ func (variant Variant) Copy() Variant {
 
 // Type returns the variant's type, similar to [reflect.Kind] but for a variant
 // value.
-func (variant Variant) Type() VariantType {
+func (variant Variant) Type() gdextension.VariantType {
 	return gdextension.Host.Variants.Type(pointers.Get(variant))
 }
 

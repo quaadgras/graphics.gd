@@ -345,8 +345,11 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			return
 		}
 		name := String.ToSnakeCase(field.Name)
-		if field.Tag.Get("gd") != "" {
-			name = field.Tag.Get("gd")
+		if tag := field.Tag.Get("gd"); tag != "" {
+			if tag == "-" {
+				return
+			}
+			name = tag
 		}
 		if reflect.PointerTo(field.Type).Implements(reflect.TypeFor[Signal.Pointer]()) {
 			var signal docgen.Signal

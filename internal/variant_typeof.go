@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"unsafe"
 
+	"graphics.gd/internal/gdextension"
 	VariantPkg "graphics.gd/variant"
 	ArrayType "graphics.gd/variant/Array"
 	CallableType "graphics.gd/variant/Callable"
@@ -15,287 +16,287 @@ import (
 	StringType "graphics.gd/variant/String"
 )
 
-func ConvieniantGoTypeOf(vtype VariantType) reflect.Type {
+func ConvieniantGoTypeOf(vtype gdextension.VariantType) reflect.Type {
 	switch vtype {
-	case TypeNil:
+	case gdextension.TypeNil:
 		return reflect.TypeFor[any]()
-	case TypeBool:
+	case gdextension.TypeBool:
 		return reflect.TypeFor[bool]()
-	case TypeInt:
+	case gdextension.TypeInt:
 		return reflect.TypeFor[int]()
-	case TypeFloat:
+	case gdextension.TypeFloat:
 		return reflect.TypeFor[FloatType.X]()
-	case TypeString:
+	case gdextension.TypeString:
 		return reflect.TypeFor[string]()
-	case TypeVector2:
+	case gdextension.TypeVector2:
 		return reflect.TypeFor[Vector2]()
-	case TypeVector2i:
+	case gdextension.TypeVector2i:
 		return reflect.TypeFor[Vector2i]()
-	case TypeRect2:
+	case gdextension.TypeRect2:
 		return reflect.TypeFor[Rect2]()
-	case TypeRect2i:
+	case gdextension.TypeRect2i:
 		return reflect.TypeFor[Rect2i]()
-	case TypeVector3:
+	case gdextension.TypeVector3:
 		return reflect.TypeFor[Vector3]()
-	case TypeVector3i:
+	case gdextension.TypeVector3i:
 		return reflect.TypeFor[Vector3i]()
-	case TypeTransform2D:
+	case gdextension.TypeTransform2D:
 		return reflect.TypeFor[Transform2D]()
-	case TypeVector4:
+	case gdextension.TypeVector4:
 		return reflect.TypeFor[Vector4]()
-	case TypeVector4i:
+	case gdextension.TypeVector4i:
 		return reflect.TypeFor[Vector4i]()
-	case TypePlane:
+	case gdextension.TypePlane:
 		return reflect.TypeFor[Plane]()
-	case TypeQuaternion:
+	case gdextension.TypeQuaternion:
 		return reflect.TypeFor[Quaternion]()
-	case TypeAABB:
+	case gdextension.TypeAABB:
 		return reflect.TypeFor[AABB]()
-	case TypeBasis:
+	case gdextension.TypeBasis:
 		return reflect.TypeFor[Basis]()
-	case TypeTransform3D:
+	case gdextension.TypeTransform3D:
 		return reflect.TypeFor[Transform3D]()
-	case TypeProjection:
+	case gdextension.TypeProjection:
 		return reflect.TypeFor[Projection]()
-	case TypeColor:
+	case gdextension.TypeColor:
 		return reflect.TypeFor[Color]()
-	case TypeStringName:
+	case gdextension.TypeStringName:
 		return reflect.TypeFor[string]()
-	case TypeNodePath:
+	case gdextension.TypeNodePath:
 		return reflect.TypeFor[Path.ToNode]()
-	case TypeRID:
+	case gdextension.TypeRID:
 		return reflect.TypeFor[RID]()
-	case TypeObject:
+	case gdextension.TypeObject:
 		return reflect.TypeFor[Object]()
-	case TypeCallable:
+	case gdextension.TypeCallable:
 		return reflect.TypeFor[CallableType.Function]()
-	case TypeSignal:
+	case gdextension.TypeSignal:
 		return reflect.TypeFor[SignalType.Any]()
-	case TypeDictionary:
+	case gdextension.TypeDictionary:
 		return reflect.TypeFor[DictionaryType.Any]()
-	case TypeArray:
+	case gdextension.TypeArray:
 		return reflect.TypeFor[ArrayType.Any]()
-	case TypePackedByteArray:
+	case gdextension.TypePackedByteArray:
 		return reflect.TypeFor[PackedType.Bytes]()
-	case TypePackedInt32Array:
+	case gdextension.TypePackedInt32Array:
 		return reflect.TypeFor[PackedType.Array[int32]]()
-	case TypePackedInt64Array:
+	case gdextension.TypePackedInt64Array:
 		return reflect.TypeFor[PackedType.Array[int64]]()
-	case TypePackedFloat32Array:
+	case gdextension.TypePackedFloat32Array:
 		return reflect.TypeFor[PackedType.Array[float32]]()
-	case TypePackedFloat64Array:
+	case gdextension.TypePackedFloat64Array:
 		return reflect.TypeFor[PackedType.Array[float64]]()
-	case TypePackedStringArray:
+	case gdextension.TypePackedStringArray:
 		return reflect.TypeFor[PackedType.Strings]()
-	case TypePackedVector2Array:
+	case gdextension.TypePackedVector2Array:
 		return reflect.TypeFor[PackedType.Array[Vector2]]()
-	case TypePackedVector3Array:
+	case gdextension.TypePackedVector3Array:
 		return reflect.TypeFor[PackedType.Array[Vector3]]()
-	case TypePackedColorArray:
+	case gdextension.TypePackedColorArray:
 		return reflect.TypeFor[PackedType.Array[Color]]()
-	case TypePackedVector4Array:
+	case gdextension.TypePackedVector4Array:
 		return reflect.TypeFor[PackedType.Array[Vector4]]()
 	default:
 		return nil
 	}
 }
 
-func VariantTypeOf(rtype reflect.Type) (vtype VariantType, ok bool) {
+func VariantTypeOf(rtype reflect.Type) (vtype gdextension.VariantType, ok bool) {
 	switch rtype.Kind() {
 	case reflect.Bool:
-		return TypeBool, true
+		return gdextension.TypeBool, true
 	case reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Int, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint:
-		return TypeInt, true
+		return gdextension.TypeInt, true
 	case reflect.Uint64:
-		return TypeRID, true
+		return gdextension.TypeRID, true
 	case reflect.Float32, reflect.Float64:
-		return TypeFloat, true
+		return gdextension.TypeFloat, true
 	case reflect.Complex64, reflect.Complex128:
-		return TypeVector2, true
+		return gdextension.TypeVector2, true
 	case reflect.Pointer:
 		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
-			return TypeObject, true
+			return gdextension.TypeObject, true
 		}
 		return VariantTypeOf(rtype.Elem())
 	case reflect.Func:
-		return TypeCallable, true
+		return gdextension.TypeCallable, true
 	case reflect.Array:
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
-			return TypeObject, true
+			return gdextension.TypeObject, true
 		}
-		return TypeArray, true
+		return gdextension.TypeArray, true
 	case reflect.String:
 		if rtype == reflect.TypeFor[Path.ToNode]() {
-			return TypeNodePath, true
+			return gdextension.TypeNodePath, true
 		}
-		return TypeString, true
+		return gdextension.TypeString, true
 	case reflect.Slice:
 		switch rtype.Elem().Kind() {
 		case reflect.Uint8:
-			return TypePackedByteArray, true
+			return gdextension.TypePackedByteArray, true
 		case reflect.Int32:
-			return TypePackedInt32Array, true
+			return gdextension.TypePackedInt32Array, true
 		case reflect.Int64:
-			return TypePackedInt64Array, true
+			return gdextension.TypePackedInt64Array, true
 		case reflect.Float32:
-			return TypePackedFloat32Array, true
+			return gdextension.TypePackedFloat32Array, true
 		case reflect.Float64:
-			return TypePackedFloat64Array, true
+			return gdextension.TypePackedFloat64Array, true
 		case reflect.String:
-			return TypePackedStringArray, true
+			return gdextension.TypePackedStringArray, true
 		default:
 			switch rtype.Elem() {
 			case reflect.TypeFor[Vector2]():
-				return TypePackedVector2Array, true
+				return gdextension.TypePackedVector2Array, true
 			case reflect.TypeFor[Vector3]():
-				return TypePackedVector3Array, true
+				return gdextension.TypePackedVector3Array, true
 			case reflect.TypeFor[Color]():
-				return TypePackedColorArray, true
+				return gdextension.TypePackedColorArray, true
 			case reflect.TypeFor[Vector4]():
-				return TypePackedVector4Array, true
+				return gdextension.TypePackedVector4Array, true
 			default:
-				return TypeArray, true
+				return gdextension.TypeArray, true
 			}
 		}
 	case reflect.Map:
-		return TypeDictionary, true
+		return gdextension.TypeDictionary, true
 	case reflect.Interface:
 		if rtype == reflect.TypeFor[any]() {
-			return TypeNil, true
+			return gdextension.TypeNil, true
 		}
-		return TypeNil, false
+		return gdextension.TypeNil, false
 	case reflect.Struct:
 		switch rtype {
 		case reflect.TypeFor[VariantPkg.Any]():
-			return TypeNil, true
+			return gdextension.TypeNil, true
 		case reflect.TypeFor[PackedType.Bytes]():
-			return TypePackedByteArray, true
+			return gdextension.TypePackedByteArray, true
 		case reflect.TypeFor[PackedType.Array[int32]]():
-			return TypePackedInt32Array, true
+			return gdextension.TypePackedInt32Array, true
 		case reflect.TypeFor[PackedType.Array[int64]]():
-			return TypePackedInt64Array, true
+			return gdextension.TypePackedInt64Array, true
 		case reflect.TypeFor[PackedType.Array[float32]]():
-			return TypePackedFloat32Array, true
+			return gdextension.TypePackedFloat32Array, true
 		case reflect.TypeFor[PackedType.Array[float64]]():
-			return TypePackedFloat64Array, true
+			return gdextension.TypePackedFloat64Array, true
 		case reflect.TypeFor[PackedType.Strings]():
-			return TypePackedStringArray, true
+			return gdextension.TypePackedStringArray, true
 		case reflect.TypeFor[PackedType.Array[Vector2]]():
-			return TypePackedVector2Array, true
+			return gdextension.TypePackedVector2Array, true
 		case reflect.TypeFor[PackedType.Array[Vector3]]():
-			return TypePackedVector3Array, true
+			return gdextension.TypePackedVector3Array, true
 		case reflect.TypeFor[PackedType.Array[Color]]():
-			return TypePackedColorArray, true
+			return gdextension.TypePackedColorArray, true
 		case reflect.TypeFor[PackedType.Array[Vector4]]():
-			return TypePackedVector4Array, true
+			return gdextension.TypePackedVector4Array, true
 		case reflect.TypeFor[ArrayType.Any]():
-			return TypeArray, true
+			return gdextension.TypeArray, true
 		case reflect.TypeFor[StringType.Readable]():
-			return TypeString, true
+			return gdextension.TypeString, true
 		case reflect.TypeFor[Path.ToNode]():
-			return TypeNodePath, true
+			return gdextension.TypeNodePath, true
 		case reflect.TypeFor[StringType.Name]():
-			return TypeStringName, true
+			return gdextension.TypeStringName, true
 		case reflect.TypeFor[DictionaryType.Any]():
-			return TypeDictionary, true
+			return gdextension.TypeDictionary, true
 		case reflect.TypeFor[SignalType.Any]():
-			return TypeSignal, true
+			return gdextension.TypeSignal, true
 		case reflect.TypeOf([0]Variant{}).Elem():
-			vtype = TypeNil
+			vtype = gdextension.TypeNil
 		case reflect.TypeOf([0]bool{}).Elem():
-			vtype = TypeBool
+			vtype = gdextension.TypeBool
 		case reflect.TypeOf([0]Int{}).Elem():
-			vtype = TypeInt
+			vtype = gdextension.TypeInt
 		case reflect.TypeOf([0]Float{}).Elem():
-			vtype = TypeFloat
+			vtype = gdextension.TypeFloat
 		case reflect.TypeOf([0]String{}).Elem():
-			vtype = TypeString
+			vtype = gdextension.TypeString
 		case reflect.TypeOf([0]Vector2{}).Elem():
-			vtype = TypeVector2
+			vtype = gdextension.TypeVector2
 		case reflect.TypeOf([0]Vector2i{}).Elem():
-			vtype = TypeVector2i
+			vtype = gdextension.TypeVector2i
 		case reflect.TypeOf([0]Rect2{}).Elem():
-			vtype = TypeRect2
+			vtype = gdextension.TypeRect2
 		case reflect.TypeOf([0]Rect2i{}).Elem():
-			vtype = TypeRect2i
+			vtype = gdextension.TypeRect2i
 		case reflect.TypeOf([0]Vector3{}).Elem():
-			vtype = TypeVector3
+			vtype = gdextension.TypeVector3
 		case reflect.TypeOf([0]Vector3i{}).Elem():
-			vtype = TypeVector3i
+			vtype = gdextension.TypeVector3i
 		case reflect.TypeOf([0]Transform2D{}).Elem():
-			vtype = TypeTransform2D
+			vtype = gdextension.TypeTransform2D
 		case reflect.TypeOf([0]Vector4{}).Elem():
-			vtype = TypeVector4
+			vtype = gdextension.TypeVector4
 		case reflect.TypeOf([0]Vector4i{}).Elem():
-			vtype = TypeVector4i
+			vtype = gdextension.TypeVector4i
 		case reflect.TypeOf([0]Plane{}).Elem():
-			vtype = TypePlane
+			vtype = gdextension.TypePlane
 		case reflect.TypeOf([0]Quaternion{}).Elem():
-			vtype = TypeQuaternion
+			vtype = gdextension.TypeQuaternion
 		case reflect.TypeOf([0]AABB{}).Elem():
-			vtype = TypeAABB
+			vtype = gdextension.TypeAABB
 		case reflect.TypeOf([0]Basis{}).Elem():
-			vtype = TypeBasis
+			vtype = gdextension.TypeBasis
 		case reflect.TypeOf([0]Transform3D{}).Elem():
-			vtype = TypeTransform3D
+			vtype = gdextension.TypeTransform3D
 		case reflect.TypeOf([0]Projection{}).Elem():
-			vtype = TypeProjection
+			vtype = gdextension.TypeProjection
 		case reflect.TypeOf([0]Color{}).Elem():
-			vtype = TypeColor
+			vtype = gdextension.TypeColor
 		case reflect.TypeOf([0]StringName{}).Elem():
-			vtype = TypeStringName
+			vtype = gdextension.TypeStringName
 		case reflect.TypeOf([0]NodePath{}).Elem():
-			vtype = TypeNodePath
+			vtype = gdextension.TypeNodePath
 		case reflect.TypeOf([0]RID{}).Elem():
-			vtype = TypeRID
+			vtype = gdextension.TypeRID
 		case reflect.TypeOf([0]Object{}).Elem():
-			vtype = TypeObject
+			vtype = gdextension.TypeObject
 		case reflect.TypeFor[Callable](), reflect.TypeFor[CallableType.Function]():
-			vtype = TypeCallable
+			vtype = gdextension.TypeCallable
 		case reflect.TypeOf([0]Dictionary{}).Elem():
-			vtype = TypeDictionary
+			vtype = gdextension.TypeDictionary
 		case reflect.TypeOf([0]Array{}).Elem():
-			vtype = TypeArray
+			vtype = gdextension.TypeArray
 		case reflect.TypeOf([0]PackedByteArray{}).Elem():
-			vtype = TypePackedByteArray
+			vtype = gdextension.TypePackedByteArray
 		case reflect.TypeOf([0]PackedInt32Array{}).Elem():
-			vtype = TypePackedInt32Array
+			vtype = gdextension.TypePackedInt32Array
 		case reflect.TypeOf([0]PackedInt64Array{}).Elem():
-			vtype = TypePackedInt64Array
+			vtype = gdextension.TypePackedInt64Array
 		case reflect.TypeOf([0]PackedFloat32Array{}).Elem():
-			vtype = TypePackedFloat32Array
+			vtype = gdextension.TypePackedFloat32Array
 		case reflect.TypeOf([0]PackedFloat64Array{}).Elem():
-			vtype = TypePackedFloat64Array
+			vtype = gdextension.TypePackedFloat64Array
 		case reflect.TypeOf([0]PackedStringArray{}).Elem():
-			vtype = TypePackedStringArray
+			vtype = gdextension.TypePackedStringArray
 		case reflect.TypeOf([0]PackedVector2Array{}).Elem():
-			vtype = TypePackedVector2Array
+			vtype = gdextension.TypePackedVector2Array
 		case reflect.TypeOf([0]PackedVector3Array{}).Elem():
-			vtype = TypePackedVector3Array
+			vtype = gdextension.TypePackedVector3Array
 		case reflect.TypeOf([0]PackedColorArray{}).Elem():
-			vtype = TypePackedColorArray
+			vtype = gdextension.TypePackedColorArray
 		case reflect.TypeFor[VariantPkg.Any]():
-			vtype = TypeNil
+			vtype = gdextension.TypeNil
 		case reflect.TypeOf([0]unsafe.Pointer{}).Elem():
-			vtype = TypeNil
+			vtype = gdextension.TypeNil
 		case reflect.TypeOf([0]*ScriptLanguageExtensionProfilingInfo{}).Elem():
-			vtype = TypeNil
+			vtype = gdextension.TypeNil
 		default:
 			switch {
 			case rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()):
-				vtype = TypeObject
+				vtype = gdextension.TypeObject
 			case reflect.PointerTo(rtype).Implements(reflect.TypeFor[SignalType.Pointer]()):
-				vtype = TypeSignal
+				vtype = gdextension.TypeSignal
 			case rtype.Implements(reflect.TypeFor[ArrayType.Interface]()):
-				vtype = TypeArray
+				vtype = gdextension.TypeArray
 			case rtype.Implements(reflect.TypeFor[DictionaryType.Interface]()):
-				vtype = TypeDictionary
+				vtype = gdextension.TypeDictionary
 			default:
-				vtype = TypeDictionary
+				vtype = gdextension.TypeDictionary
 			}
 		}
 		return vtype, true
 	default:
-		return TypeNil, false
+		return gdextension.TypeNil, false
 	}
 }

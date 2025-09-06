@@ -24,20 +24,20 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 	if ok {
 		name = tag
 	}
-	var vtype gd.VariantType
+	var vtype gdextension.VariantType
 	var hint PropertyHint
 	var hintString = nameOf(field.Type)
 	var enum = registerEnumsFor(class, field.Type)
 	var className = nameOf(field.Type)
 	if instance, ok := field.Type.MethodByName("Instance"); ok && instance.Type.NumOut() == 2 && field.Type.Name() == "ID" {
-		vtype = gd.TypeObject
+		vtype = gdextension.TypeObject
 		className = nameOf(instance.Type.Out(0))
 		hintString = className
 		field.Type = instance.Type.Out(0)
 	} else {
 		switch {
 		case enum != nil:
-			vtype = gd.TypeInt
+			vtype = gdextension.TypeInt
 			hint |= PropertyHintEnum
 			hintString = ""
 			var first = true
@@ -49,7 +49,7 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 				first = false
 			}
 		case field.Type.Kind() == reflect.Pointer && field.Type.Implements(reflect.TypeOf([0]interface{ Super() ResourceClass.Instance }{}).Elem()):
-			vtype = gd.TypeObject
+			vtype = gdextension.TypeObject
 			hint |= PropertyHintResourceType
 			hintString = nameOf(field.Type.Elem())
 		default:
@@ -57,26 +57,26 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 			if !ok {
 				return false
 			}
-			if vtype == gd.TypeArray && (field.Type.Kind() == reflect.Array || field.Type.Kind() == reflect.Slice) {
+			if vtype == gdextension.TypeArray && (field.Type.Kind() == reflect.Array || field.Type.Kind() == reflect.Slice) {
 				elem := field.Type.Elem()
 				etype, ok := gd.VariantTypeOf(elem)
 				if !ok {
 					return false
 				}
 				if elem.Implements(reflect.TypeFor[ResourceClass.Any]()) {
-					hintString = fmt.Sprintf("%d/%d:%s", gd.TypeObject, PropertyHintResourceType, nameOf(elem)) // MAKE_RESOURCE_TYPE_HINT
-				} else if etype != gd.TypeNil {
+					hintString = fmt.Sprintf("%d/%d:%s", gdextension.TypeObject, PropertyHintResourceType, nameOf(elem)) // MAKE_RESOURCE_TYPE_HINT
+				} else if etype != gdextension.TypeNil {
 					hint |= PropertyHintArrayType
 					hintString = etype.String()
 				}
 			}
-			if vtype == gd.TypeArray && field.Type.Implements(reflect.TypeFor[Array.Interface]()) {
+			if vtype == gdextension.TypeArray && field.Type.Implements(reflect.TypeFor[Array.Interface]()) {
 				elem := reflect.Zero(field.Type).Interface().(Array.Interface).ElemType()
 				etype, ok := gd.VariantTypeOf(elem)
 				if !ok {
 					return false
 				}
-				if etype != gd.TypeNil {
+				if etype != gdextension.TypeNil {
 					hint |= PropertyHintArrayType
 					hintString = etype.String()
 				}
@@ -90,7 +90,7 @@ func propertyOf(class gd.StringName, field reflect.StructField, push_into gdexte
 		hint |= PropertyHintNodeType
 	}
 	var usage = PropertyUsageStorage | PropertyUsageEditor
-	if vtype == gd.TypeNil {
+	if vtype == gdextension.TypeNil {
 		usage |= PropertyUsageNilIsVariant
 	}
 	if rangeHint, ok := field.Tag.Lookup("range"); ok {
@@ -133,6 +133,9 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 				continue
 			}
 			tag, hasTag := rfield.Tag.Lookup("gd")
+			if tag == "-" {
+				return false
+			}
 			if hasTag && !rfield.Anonymous && tag == sname {
 				field = rvalue.FieldByIndex(rfield.Index)
 				break
@@ -149,12 +152,12 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	if !field.CanSet() {
 		return false
 	}
-	if value.Type() == gd.TypeNil {
+	if value.Type() == gdextension.TypeNil {
 		field.Set(reflect.Zero(field.Type()))
 		return true
 	}
 	if reflect.PointerTo(field.Type()).Implements(reflect.TypeFor[Enum.Pointer]()) {
-		if value.Type() != gd.TypeInt {
+		if value.Type() != gdextension.TypeInt {
 			return false
 		}
 		field.Addr().Interface().(Enum.Pointer).SetInt(int(value.Int()))
@@ -162,7 +165,7 @@ func (instance *instanceImplementation) Set(name gd.StringName, value gd.Variant
 	}
 	var isExtensionClass bool
 	var converted reflect.Value
-	if value.Type() == gd.TypeObject {
+	if value.Type() == gdextension.TypeObject {
 		obj := gd.VariantAsObject(value)
 		ext := gd.ExtensionInstanceLookup(gdextension.Object(pointers.Get(obj)[0]))
 		if ext != nil {
@@ -229,6 +232,9 @@ func (instance *instanceImplementation) Get(name gd.StringName) (gd.Variant, boo
 				continue
 			}
 			tag, hasTag := rfield.Tag.Lookup("gd")
+			if tag == "-" {
+				return gd.Variant{}, false
+			}
 			if hasTag && !rfield.Anonymous && tag == sname {
 				field = rvalue.FieldByIndex(rfield.Index)
 				break

@@ -179,120 +179,120 @@ func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd
 		if ok {
 			var value any
 			switch vtype {
-			case gd.TypeBool:
+			case gdextension.TypeBool:
 				value = gd.UnsafeGet[bool](p_args, i-offset)
-			case gd.TypeInt:
+			case gdextension.TypeInt:
 				value = gd.UnsafeGet[int64](p_args, i-offset)
-			case gd.TypeFloat:
+			case gdextension.TypeFloat:
 				value = gd.UnsafeGet[float64](p_args, i-offset)
-			case gd.TypeString:
+			case gdextension.TypeString:
 				ptr := gd.UnsafeGet[gdextension.String](p_args, i-offset)
 				val := pointers.Let[gd.String](ptr)
 				value = val
-			case gd.TypeVector2:
+			case gdextension.TypeVector2:
 				value = gd.UnsafeGet[gd.Vector2](p_args, i-offset)
-			case gd.TypeVector2i:
+			case gdextension.TypeVector2i:
 				value = gd.UnsafeGet[gd.Vector2i](p_args, i-offset)
-			case gd.TypeRect2:
+			case gdextension.TypeRect2:
 				value = gd.UnsafeGet[gd.Rect2](p_args, i-offset)
-			case gd.TypeRect2i:
+			case gdextension.TypeRect2i:
 				value = gd.UnsafeGet[gd.Rect2i](p_args, i-offset)
-			case gd.TypeVector3:
+			case gdextension.TypeVector3:
 				value = gd.UnsafeGet[gd.Vector3](p_args, i-offset)
-			case gd.TypeVector3i:
+			case gdextension.TypeVector3i:
 				value = gd.UnsafeGet[gd.Vector3i](p_args, i-offset)
-			case gd.TypeTransform2D:
+			case gdextension.TypeTransform2D:
 				value = gd.UnsafeGet[gd.Transform2D](p_args, i-offset)
-			case gd.TypeVector4:
+			case gdextension.TypeVector4:
 				value = gd.UnsafeGet[gd.Vector4](p_args, i-offset)
-			case gd.TypeVector4i:
+			case gdextension.TypeVector4i:
 				value = gd.UnsafeGet[gd.Vector4i](p_args, i-offset)
-			case gd.TypePlane:
+			case gdextension.TypePlane:
 				value = gd.UnsafeGet[gd.Plane](p_args, i-offset)
-			case gd.TypeQuaternion:
+			case gdextension.TypeQuaternion:
 				value = gd.UnsafeGet[gd.Quaternion](p_args, i-offset)
-			case gd.TypeAABB:
+			case gdextension.TypeAABB:
 				value = gd.UnsafeGet[gd.AABB](p_args, i-offset)
-			case gd.TypeBasis:
+			case gdextension.TypeBasis:
 				value = gd.UnsafeGet[gd.Basis](p_args, i-offset)
-			case gd.TypeTransform3D:
+			case gdextension.TypeTransform3D:
 				value = gd.UnsafeGet[gd.Transform3D](p_args, i-offset)
-			case gd.TypeProjection:
+			case gdextension.TypeProjection:
 				value = gd.UnsafeGet[gd.Projection](p_args, i-offset)
-			case gd.TypeColor:
+			case gdextension.TypeColor:
 				value = gd.UnsafeGet[gd.Color](p_args, i-offset)
-			case gd.TypeStringName:
+			case gdextension.TypeStringName:
 				ptr := gd.UnsafeGet[gdextension.StringName](p_args, i-offset)
 				val := pointers.Let[gd.StringName](ptr)
 				value = val
-			case gd.TypeNodePath:
+			case gdextension.TypeNodePath:
 				ptr := gd.UnsafeGet[gdextension.NodePath](p_args, i-offset)
 				val := pointers.Let[gd.NodePath](ptr)
 				value = val
-			case gd.TypeRID:
+			case gdextension.TypeRID:
 				value = gd.UnsafeGet[gd.RID](p_args, i-offset)
-			case gd.TypeObject:
+			case gdextension.TypeObject:
 				ptr := gd.UnsafeGet[gd.EnginePointer](p_args, i-offset)
 				val := [1]gd.Object{pointers.Let[gd.Object]([3]uint64{uint64(ptr)})}
 				value = val
-			case gd.TypeCallable:
+			case gdextension.TypeCallable:
 				ptr := gd.UnsafeGet[[2]uint64](p_args, i-offset)
 				val := pointers.Let[gd.Callable](ptr)
 				defer val.Free()
 				value = val
-			case gd.TypeSignal:
+			case gdextension.TypeSignal:
 				ptr := gd.UnsafeGet[[2]uint64](p_args, i-offset)
 				val := pointers.Let[gd.Signal](ptr)
 				value = val
-			case gd.TypeDictionary:
+			case gdextension.TypeDictionary:
 				ptr := gd.UnsafeGet[gdextension.Dictionary](p_args, i-offset)
 				val := pointers.Let[gd.Dictionary](ptr)
 				value = val
-			case gd.TypeArray:
+			case gdextension.TypeArray:
 				ptr := gd.UnsafeGet[gdextension.Array](p_args, i-offset)
 				val := pointers.Let[gd.Array](ptr)
 				value = val
-			case gd.TypePackedByteArray:
+			case gdextension.TypePackedByteArray:
 				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedByteArray](ptr)
 				value = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(val)))
-			case gd.TypePackedInt32Array:
+			case gdextension.TypePackedInt32Array:
 				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedInt32Array](ptr)
 				value = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(val)))
-			case gd.TypePackedInt64Array:
+			case gdextension.TypePackedInt64Array:
 				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedInt64Array](ptr)
 				value = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(val)))
-			case gd.TypePackedFloat32Array:
+			case gdextension.TypePackedFloat32Array:
 				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedFloat32Array](ptr)
 				value = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(val)))
-			case gd.TypePackedFloat64Array:
+			case gdextension.TypePackedFloat64Array:
 				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedFloat64Array](ptr)
 				value = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(val)))
-			case gd.TypePackedStringArray:
+			case gdextension.TypePackedStringArray:
 				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedStringArray](ptr)
 				value = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(val)))
-			case gd.TypePackedVector2Array:
+			case gdextension.TypePackedVector2Array:
 				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedVector2Array](ptr)
 				value = Packed.Array[gd.Vector2](Array.Through(gd.PackedProxy[gd.PackedVector2Array, gd.Vector2]{}, pointers.Pack(val)))
-			case gd.TypePackedVector3Array:
+			case gdextension.TypePackedVector3Array:
 				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedVector3Array](ptr)
 				value = Packed.Array[gd.Vector3](Array.Through(gd.PackedProxy[gd.PackedVector3Array, gd.Vector3]{}, pointers.Pack(val)))
-			case gd.TypePackedColorArray:
+			case gdextension.TypePackedColorArray:
 				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedColorArray](ptr)
 				value = Packed.Array[gd.Color](Array.Through(gd.PackedProxy[gd.PackedColorArray, gd.Color]{}, pointers.Pack(val)))
-			case gd.TypePackedVector4Array:
+			case gdextension.TypePackedVector4Array:
 				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedVector4Array](ptr)
 				value = Packed.Array[gd.Vector4](Array.Through(gd.PackedProxy[gd.PackedVector4Array, gd.Vector4]{}, pointers.Pack(val)))
-			case gd.TypeNil:
+			case gdextension.TypeNil:
 				value = nil
 			default:
 				panic(fmt.Sprintf("gdextension: unsupported Godot -> Go variant type %v", vtype))

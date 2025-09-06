@@ -25,7 +25,7 @@ func (variant Variant) ConvertTo(rtype reflect.Type) (reflect.Value, error) {
 }
 
 func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.Value, error) {
-	if value.Type() == TypeNil {
+	if value.Type() == gdextension.TypeNil {
 		return reflect.Zero(rtype), nil
 	}
 	switch rtype {
@@ -39,7 +39,7 @@ func convertVariantToDesiredGoType(value Variant, rtype reflect.Type) (reflect.V
 		return reflect.ValueOf(gdextension.Host.Variants.Bool(pointers.Get(value))).Convert(rtype), nil
 	case reflect.Array:
 		if reflect.PointerTo(rtype).Implements(reflect.TypeOf([0]IsClassCastable{}).Elem()) {
-			if value.Type() != TypeObject {
+			if value.Type() != gdextension.TypeObject {
 				return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %s to %s", value.Type(), rtype))
 			}
 			var result = reflect.New(rtype)

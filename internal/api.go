@@ -11,8 +11,6 @@ import (
 	"runtime.link/api"
 )
 
-type VariantType = gdextension.VariantType
-
 type Address uintptr
 
 // API specification for Godot's GDExtension.
@@ -108,7 +106,7 @@ const (
 )
 
 type PropertyInfo struct {
-	Type       VariantType
+	Type       gdextension.VariantType
 	Name       StringName
 	ClassName  StringName
 	Hint       int64
