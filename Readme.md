@@ -125,7 +125,7 @@ branch. All the samples are designed to be run with `gd run` without any additio
 
 ## Platform Restrictions
 
-* Go is not available as a 'scripting' language within the editor.
+* Go is not available as a 'scripting language' edited within the editor.
 * 64bit only (arm64 && amd64).
 * No support for video game consoles (this may be achieved in the future with WASM).
 
