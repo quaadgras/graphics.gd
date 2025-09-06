@@ -114,35 +114,27 @@ type class [1]gdclass.VisibleOnScreenEnabler3D
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.VisibleOnScreenEnabler3D)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.VisibleOnScreenEnabler3D](obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.VisibleOnScreenEnabler3D)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.VisibleOnScreenEnabler3D](obj[0])
 		return true
 	}
 	return false
 }
-
-//go:nosplit
-func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
-
-//go:nosplit
-func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
-
 	if !gd.Linked {
-		var placeholder Instance
-		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		var placeholder = Instance([1]gdclass.VisibleOnScreenEnabler3D{pointers.Add[gdclass.VisibleOnScreenEnabler3D]([3]uint64{})})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -152,9 +144,8 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
-	casted := Instance{*(*gdclass.VisibleOnScreenEnabler3D)(unsafe.Pointer(&object))}
-	object[0].Notification(0, false)
+	casted := Instance([1]gdclass.VisibleOnScreenEnabler3D{pointers.New[gdclass.VisibleOnScreenEnabler3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
@@ -197,37 +188,45 @@ func (self class) GetEnableNodePath() Path.ToNode { //gd:VisibleOnScreenEnabler3
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
-func (self class) AsVisibleOnScreenEnabler3D() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsVisibleOnScreenEnabler3D() Advanced {
+	return Advanced{pointers.AsA[gdclass.VisibleOnScreenEnabler3D](self[0])}
+}
 func (self Instance) AsVisibleOnScreenEnabler3D() Instance {
-	return *((*Instance)(unsafe.Pointer(&self)))
+	return Instance{pointers.AsA[gdclass.VisibleOnScreenEnabler3D](self[0])}
 }
 func (self *Extension[T]) AsVisibleOnScreenEnabler3D() Instance {
 	return self.Super().AsVisibleOnScreenEnabler3D()
 }
 func (self class) AsVisibleOnScreenNotifier3D() VisibleOnScreenNotifier3D.Advanced {
-	return *((*VisibleOnScreenNotifier3D.Advanced)(unsafe.Pointer(&self)))
+	return VisibleOnScreenNotifier3D.Advanced{pointers.AsA[gdclass.VisibleOnScreenNotifier3D](self[0])}
 }
 func (self *Extension[T]) AsVisibleOnScreenNotifier3D() VisibleOnScreenNotifier3D.Instance {
 	return self.Super().AsVisibleOnScreenNotifier3D()
 }
 func (self Instance) AsVisibleOnScreenNotifier3D() VisibleOnScreenNotifier3D.Instance {
-	return *((*VisibleOnScreenNotifier3D.Instance)(unsafe.Pointer(&self)))
+	return VisibleOnScreenNotifier3D.Instance{pointers.AsA[gdclass.VisibleOnScreenNotifier3D](self[0])}
 }
 func (self class) AsVisualInstance3D() VisualInstance3D.Advanced {
-	return *((*VisualInstance3D.Advanced)(unsafe.Pointer(&self)))
+	return VisualInstance3D.Advanced{pointers.AsA[gdclass.VisualInstance3D](self[0])}
 }
 func (self *Extension[T]) AsVisualInstance3D() VisualInstance3D.Instance {
 	return self.Super().AsVisualInstance3D()
 }
 func (self Instance) AsVisualInstance3D() VisualInstance3D.Instance {
-	return *((*VisualInstance3D.Instance)(unsafe.Pointer(&self)))
+	return VisualInstance3D.Instance{pointers.AsA[gdclass.VisualInstance3D](self[0])}
 }
-func (self class) AsNode3D() Node3D.Advanced         { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced {
+	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+}
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
-func (self Instance) AsNode3D() Node3D.Instance      { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced             { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self *Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance          { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode3D() Node3D.Instance {
+	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+}
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance {
+	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
@@ -243,7 +242,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("VisibleOnScreenEnabler3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
+	gdclass.Register("VisibleOnScreenEnabler3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.VisibleOnScreenEnabler3D](ptr)} })
 }
 
 type EnableMode int //gd:VisibleOnScreenEnabler3D.EnableMode

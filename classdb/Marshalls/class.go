@@ -181,26 +181,20 @@ type class [1]gdclass.Marshalls
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.Marshalls)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.Marshalls](obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.Marshalls)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.Marshalls](obj[0])
 		return true
 	}
 	return false
 }
-
-//go:nosplit
-func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
-
-//go:nosplit
-func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
 Returns a Base64-encoded string of the [Variant] [param variant]. If [param full_objects] is [code]true[/code], encoding objects is allowed (and can potentially include code).
@@ -284,5 +278,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Marshalls", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
+	gdclass.Register("Marshalls", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Marshalls](ptr)} })
 }

@@ -108,35 +108,27 @@ type class [1]gdclass.XRCamera3D
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.XRCamera3D)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.XRCamera3D](obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.XRCamera3D)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.XRCamera3D](obj[0])
 		return true
 	}
 	return false
 }
-
-//go:nosplit
-func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
-
-//go:nosplit
-func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
-
 	if !gd.Linked {
-		var placeholder Instance
-		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		var placeholder = Instance([1]gdclass.XRCamera3D{pointers.Add[gdclass.XRCamera3D]([3]uint64{})})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -146,28 +138,35 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
-	casted := Instance{*(*gdclass.XRCamera3D)(unsafe.Pointer(&object))}
-	object[0].Notification(0, false)
+	casted := Instance([1]gdclass.XRCamera3D{pointers.New[gdclass.XRCamera3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
-func (self class) AsXRCamera3D() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsXRCamera3D() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsXRCamera3D() Advanced { return Advanced{pointers.AsA[gdclass.XRCamera3D](self[0])} }
+func (self Instance) AsXRCamera3D() Instance {
+	return Instance{pointers.AsA[gdclass.XRCamera3D](self[0])}
+}
 func (self *Extension[T]) AsXRCamera3D() Instance { return self.Super().AsXRCamera3D() }
 func (self class) AsCamera3D() Camera3D.Advanced {
-	return *((*Camera3D.Advanced)(unsafe.Pointer(&self)))
+	return Camera3D.Advanced{pointers.AsA[gdclass.Camera3D](self[0])}
 }
 func (self *Extension[T]) AsCamera3D() Camera3D.Instance { return self.Super().AsCamera3D() }
 func (self Instance) AsCamera3D() Camera3D.Instance {
-	return *((*Camera3D.Instance)(unsafe.Pointer(&self)))
+	return Camera3D.Instance{pointers.AsA[gdclass.Camera3D](self[0])}
 }
-func (self class) AsNode3D() Node3D.Advanced         { return *((*Node3D.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsNode3D() Node3D.Advanced {
+	return Node3D.Advanced{pointers.AsA[gdclass.Node3D](self[0])}
+}
 func (self *Extension[T]) AsNode3D() Node3D.Instance { return self.Super().AsNode3D() }
-func (self Instance) AsNode3D() Node3D.Instance      { return *((*Node3D.Instance)(unsafe.Pointer(&self))) }
-func (self class) AsNode() Node.Advanced             { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
-func (self *Extension[T]) AsNode() Node.Instance     { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance          { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode3D() Node3D.Instance {
+	return Node3D.Instance{pointers.AsA[gdclass.Node3D](self[0])}
+}
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
+func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
+func (self Instance) AsNode() Node.Instance {
+	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
@@ -183,5 +182,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("XRCamera3D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
+	gdclass.Register("XRCamera3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.XRCamera3D](ptr)} })
 }

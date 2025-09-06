@@ -313,26 +313,20 @@ type class [1]gdclass.ResourceLoader
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.ResourceLoader)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.ResourceLoader](obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.ResourceLoader)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.ResourceLoader](obj[0])
 		return true
 	}
 	return false
 }
-
-//go:nosplit
-func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
-
-//go:nosplit
-func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
 Loads the resource using threads. If [param use_sub_threads] is [code]true[/code], multiple threads will be used to load the resource, which makes loading faster, but may affect the main thread (and thus cause game slowdowns).
@@ -521,7 +515,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ResourceLoader", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
+	gdclass.Register("ResourceLoader", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ResourceLoader](ptr)} })
 }
 
 type ThreadLoadStatus int //gd:ResourceLoader.ThreadLoadStatus

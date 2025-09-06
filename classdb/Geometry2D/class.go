@@ -419,26 +419,20 @@ type class [1]gdclass.Geometry2D
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.Geometry2D)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.Geometry2D](obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.Geometry2D)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.Geometry2D](obj[0])
 		return true
 	}
 	return false
 }
-
-//go:nosplit
-func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
-
-//go:nosplit
-func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
 Returns [code]true[/code] if [param point] is inside the circle or if it's located exactly [i]on[/i] the circle's boundary, otherwise returns [code]false[/code].
@@ -833,7 +827,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("Geometry2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
+	gdclass.Register("Geometry2D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Geometry2D](ptr)} })
 }
 
 type PolyBooleanOperation int //gd:Geometry2D.PolyBooleanOperation

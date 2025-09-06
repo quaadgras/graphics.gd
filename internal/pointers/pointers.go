@@ -28,7 +28,8 @@
 //		Bad(ptr) // returns true if the pointer is nil, or freed.
 //		Lay(ptr) // converts a [New] pointer to a [Let] pointer.
 //
-//	 Ask(ptr) (ptr T, pinned bool, letted bool)
+//	 	Ask(ptr) (ptr T, pinned bool, letted bool)
+//		AsA[T](ptr) T // unsafe conversion between different pointer types of the same size.
 //
 // [Cycle] should be called periodically to invalidate any pointer-related resources for re-use. Invalidated pointers
 // will eventually have their [Free] method called as long as the program continues to construct new pointers of the same types.
@@ -628,6 +629,28 @@ func End[T Generic[T, Raw], Raw Size](ptr T) (Raw, bool) {
 		return p.checksum, true
 	}
 	return [1]Raw{}[0], false
+}
+
+// AsA unsafely converts between different pointer types of the same size.
+func AsA[T Generic[T, P], U Generic[U, P], P Size](ptr U) T {
+	p := (struct {
+		_ [0]*U
+
+		sentinal uint64
+		revision revision
+		checksum P
+	})(ptr)
+	return T(struct {
+		_ [0]*T
+
+		sentinal uint64
+		revision revision
+		checksum P
+	}{
+		sentinal: p.sentinal,
+		revision: p.revision,
+		checksum: p.checksum,
+	})
 }
 
 type Kind int

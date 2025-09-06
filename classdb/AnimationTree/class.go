@@ -130,35 +130,27 @@ type class [1]gdclass.AnimationTree
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.AnimationTree)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.AnimationTree](obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.AnimationTree)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.AnimationTree](obj[0])
 		return true
 	}
 	return false
 }
-
-//go:nosplit
-func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
-
-//go:nosplit
-func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
-
 	if !gd.Linked {
-		var placeholder Instance
-		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		var placeholder = Instance([1]gdclass.AnimationTree{pointers.Add[gdclass.AnimationTree]([3]uint64{})})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -168,9 +160,8 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
-	casted := Instance{*(*gdclass.AnimationTree)(unsafe.Pointer(&object))}
-	object[0].Notification(0, false)
+	casted := Instance([1]gdclass.AnimationTree{pointers.New[gdclass.AnimationTree]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
@@ -263,21 +254,27 @@ func (self class) AnimationPlayerChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationPlayerChanged`))))
 }
 
-func (self class) AsAnimationTree() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsAnimationTree() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsAnimationTree() Advanced {
+	return Advanced{pointers.AsA[gdclass.AnimationTree](self[0])}
+}
+func (self Instance) AsAnimationTree() Instance {
+	return Instance{pointers.AsA[gdclass.AnimationTree](self[0])}
+}
 func (self *Extension[T]) AsAnimationTree() Instance { return self.Super().AsAnimationTree() }
 func (self class) AsAnimationMixer() AnimationMixer.Advanced {
-	return *((*AnimationMixer.Advanced)(unsafe.Pointer(&self)))
+	return AnimationMixer.Advanced{pointers.AsA[gdclass.AnimationMixer](self[0])}
 }
 func (self *Extension[T]) AsAnimationMixer() AnimationMixer.Instance {
 	return self.Super().AsAnimationMixer()
 }
 func (self Instance) AsAnimationMixer() AnimationMixer.Instance {
-	return *((*AnimationMixer.Instance)(unsafe.Pointer(&self)))
+	return AnimationMixer.Instance{pointers.AsA[gdclass.AnimationMixer](self[0])}
 }
-func (self class) AsNode() Node.Advanced         { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance      { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance {
+	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
@@ -293,7 +290,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("AnimationTree", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
+	gdclass.Register("AnimationTree", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.AnimationTree](ptr)} })
 }
 
 type AnimationProcessCallback int //gd:AnimationTree.AnimationProcessCallback

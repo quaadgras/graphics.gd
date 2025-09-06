@@ -148,7 +148,7 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 	case reflect.Array:
 		if rtype.Elem().Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
 			var obj = reflect.New(rtype)
-			*(*Object)(obj.UnsafePointer()) = VariantAsObject(variant)
+			obj.Interface().(IsClassCastable).SetObject([1]Object{VariantAsObject(variant)})
 			return obj.Elem(), nil
 		}
 		val, err := convertToGoArrayOf(rtype.Elem(), value)
@@ -214,11 +214,6 @@ func ConvertToDesiredGoType(value any, rtype reflect.Type) (reflect.Value, error
 			return reflect.Value{}, xray.New(fmt.Errorf("cannot convert %T to stringy %s", value, rtype))
 		}
 	case reflect.Struct:
-		if rtype.Implements(reflect.TypeOf([0]IsClass{}).Elem()) {
-			var obj = reflect.New(rtype)
-			*(*[1]Object)(obj.UnsafePointer()) = value.(IsClass).AsObject()
-			return obj.Elem(), nil
-		}
 		val, err := convertToGoStruct(rtype, value)
 		if err != nil {
 			return reflect.Value{}, xray.New(err)

@@ -114,35 +114,27 @@ type class [1]gdclass.ReferenceRect
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.ReferenceRect)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.ReferenceRect](obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.ReferenceRect)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.ReferenceRect](obj[0])
 		return true
 	}
 	return false
 }
-
-//go:nosplit
-func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
-
-//go:nosplit
-func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
-
 	if !gd.Linked {
-		var placeholder Instance
-		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		var placeholder = Instance([1]gdclass.ReferenceRect{pointers.Add[gdclass.ReferenceRect]([3]uint64{})})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -152,9 +144,8 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
-	casted := Instance{*(*gdclass.ReferenceRect)(unsafe.Pointer(&object))}
-	object[0].Notification(0, false)
+	casted := Instance([1]gdclass.ReferenceRect{pointers.New[gdclass.ReferenceRect]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
@@ -217,24 +208,32 @@ func (self class) GetEditorOnly() bool { //gd:ReferenceRect.get_editor_only
 func (self class) SetEditorOnly(enabled bool) { //gd:ReferenceRect.set_editor_only
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_only, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
-func (self class) AsReferenceRect() Advanced           { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsReferenceRect() Instance        { return *((*Instance)(unsafe.Pointer(&self))) }
-func (self *Extension[T]) AsReferenceRect() Instance   { return self.Super().AsReferenceRect() }
-func (self class) AsControl() Control.Advanced         { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsReferenceRect() Advanced {
+	return Advanced{pointers.AsA[gdclass.ReferenceRect](self[0])}
+}
+func (self Instance) AsReferenceRect() Instance {
+	return Instance{pointers.AsA[gdclass.ReferenceRect](self[0])}
+}
+func (self *Extension[T]) AsReferenceRect() Instance { return self.Super().AsReferenceRect() }
+func (self class) AsControl() Control.Advanced {
+	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+}
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return *((*Control.Instance)(unsafe.Pointer(&self)))
+	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
+	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
+	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
 }
-func (self class) AsNode() Node.Advanced         { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance      { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance {
+	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
@@ -250,5 +249,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ReferenceRect", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
+	gdclass.Register("ReferenceRect", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ReferenceRect](ptr)} })
 }

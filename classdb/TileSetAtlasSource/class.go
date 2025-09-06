@@ -419,35 +419,27 @@ type class [1]gdclass.TileSetAtlasSource
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.TileSetAtlasSource)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.TileSetAtlasSource](obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.TileSetAtlasSource)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.TileSetAtlasSource](obj[0])
 		return true
 	}
 	return false
 }
-
-//go:nosplit
-func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
-
-//go:nosplit
-func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
-
 	if !gd.Linked {
-		var placeholder Instance
-		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		var placeholder = Instance([1]gdclass.TileSetAtlasSource{pointers.Add[gdclass.TileSetAtlasSource]([3]uint64{})})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -457,10 +449,9 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
-	casted := Instance{*(*gdclass.TileSetAtlasSource)(unsafe.Pointer(&object))}
+	casted := Instance([1]gdclass.TileSetAtlasSource{pointers.New[gdclass.TileSetAtlasSource]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
 	casted.AsRefCounted()[0].InitRef()
-	object[0].Notification(0, false)
+	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
@@ -915,31 +906,35 @@ func (self class) GetRuntimeTileTextureRegion(atlas_coords Vector2i.XY, frame_ i
 	var ret = r_ret
 	return ret
 }
-func (self class) AsTileSetAtlasSource() Advanced         { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsTileSetAtlasSource() Instance      { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsTileSetAtlasSource() Advanced {
+	return Advanced{pointers.AsA[gdclass.TileSetAtlasSource](self[0])}
+}
+func (self Instance) AsTileSetAtlasSource() Instance {
+	return Instance{pointers.AsA[gdclass.TileSetAtlasSource](self[0])}
+}
 func (self *Extension[T]) AsTileSetAtlasSource() Instance { return self.Super().AsTileSetAtlasSource() }
 func (self class) AsTileSetSource() TileSetSource.Advanced {
-	return *((*TileSetSource.Advanced)(unsafe.Pointer(&self)))
+	return TileSetSource.Advanced{pointers.AsA[gdclass.TileSetSource](self[0])}
 }
 func (self *Extension[T]) AsTileSetSource() TileSetSource.Instance {
 	return self.Super().AsTileSetSource()
 }
 func (self Instance) AsTileSetSource() TileSetSource.Instance {
-	return *((*TileSetSource.Instance)(unsafe.Pointer(&self)))
+	return TileSetSource.Instance{pointers.AsA[gdclass.TileSetSource](self[0])}
 }
 func (self class) AsResource() Resource.Advanced {
-	return *((*Resource.Advanced)(unsafe.Pointer(&self)))
+	return Resource.Advanced{pointers.AsA[gdclass.Resource](self[0])}
 }
 func (self *Extension[T]) AsResource() Resource.Instance { return self.Super().AsResource() }
 func (self Instance) AsResource() Resource.Instance {
-	return *((*Resource.Instance)(unsafe.Pointer(&self)))
+	return Resource.Instance{pointers.AsA[gdclass.Resource](self[0])}
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -956,7 +951,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("TileSetAtlasSource", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
+	gdclass.Register("TileSetAtlasSource", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.TileSetAtlasSource](ptr)} })
 }
 
 type TileAnimationMode int //gd:TileSetAtlasSource.TileAnimationMode

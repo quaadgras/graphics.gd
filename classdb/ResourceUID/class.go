@@ -184,26 +184,20 @@ type class [1]gdclass.ResourceUID
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.ResourceUID)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.ResourceUID](obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.ResourceUID)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.ResourceUID](obj[0])
 		return true
 	}
 	return false
 }
-
-//go:nosplit
-func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
-
-//go:nosplit
-func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
 Converts the given UID to a [code]uid://[/code] string value.
@@ -303,7 +297,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ResourceUID", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
+	gdclass.Register("ResourceUID", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ResourceUID](ptr)} })
 }
 
 const InvalidId Resource.UID = -1 //gd:ResourceUID.INVALID_ID

@@ -120,35 +120,27 @@ type class [1]gdclass.PhysicsTestMotionParameters2D
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.PhysicsTestMotionParameters2D)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.PhysicsTestMotionParameters2D](obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.PhysicsTestMotionParameters2D)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.PhysicsTestMotionParameters2D](obj[0])
 		return true
 	}
 	return false
 }
-
-//go:nosplit
-func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
-
-//go:nosplit
-func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
-
 	if !gd.Linked {
-		var placeholder Instance
-		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		var placeholder = Instance([1]gdclass.PhysicsTestMotionParameters2D{pointers.Add[gdclass.PhysicsTestMotionParameters2D]([3]uint64{})})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -158,10 +150,9 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
-	casted := Instance{*(*gdclass.PhysicsTestMotionParameters2D)(unsafe.Pointer(&object))}
+	casted := Instance([1]gdclass.PhysicsTestMotionParameters2D{pointers.New[gdclass.PhysicsTestMotionParameters2D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
 	casted.AsRefCounted()[0].InitRef()
-	object[0].Notification(0, false)
+	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
@@ -305,20 +296,20 @@ func (self class) SetRecoveryAsCollisionEnabled(enabled bool) { //gd:PhysicsTest
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recovery_as_collision_enabled, 0|(gdextension.SizeBool<<4), unsafe.Pointer(&struct{ enabled bool }{enabled}))
 }
 func (self class) AsPhysicsTestMotionParameters2D() Advanced {
-	return *((*Advanced)(unsafe.Pointer(&self)))
+	return Advanced{pointers.AsA[gdclass.PhysicsTestMotionParameters2D](self[0])}
 }
 func (self Instance) AsPhysicsTestMotionParameters2D() Instance {
-	return *((*Instance)(unsafe.Pointer(&self)))
+	return Instance{pointers.AsA[gdclass.PhysicsTestMotionParameters2D](self[0])}
 }
 func (self *Extension[T]) AsPhysicsTestMotionParameters2D() Instance {
 	return self.Super().AsPhysicsTestMotionParameters2D()
 }
 func (self class) AsRefCounted() [1]gd.RefCounted {
-	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
 }
 func (self *Extension[T]) AsRefCounted() [1]gd.RefCounted { return self.Super().AsRefCounted() }
 func (self Instance) AsRefCounted() [1]gd.RefCounted {
-	return *((*[1]gd.RefCounted)(unsafe.Pointer(&self)))
+	return [1]gd.RefCounted{gd.RefCounted(pointers.AsA[gd.Object](self[0]))}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -335,5 +326,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("PhysicsTestMotionParameters2D", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
+	gdclass.Register("PhysicsTestMotionParameters2D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.PhysicsTestMotionParameters2D](ptr)} })
 }

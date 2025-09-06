@@ -914,35 +914,27 @@ type class [1]gdclass.ScriptLanguageExtension
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.ScriptLanguageExtension)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.ScriptLanguageExtension](obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.ScriptLanguageExtension)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.ScriptLanguageExtension](obj[0])
 		return true
 	}
 	return false
 }
-
-//go:nosplit
-func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
-
-//go:nosplit
-func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
-
 	if !gd.Linked {
-		var placeholder Instance
-		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		var placeholder = Instance([1]gdclass.ScriptLanguageExtension{pointers.Add[gdclass.ScriptLanguageExtension]([3]uint64{})})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -952,9 +944,8 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
-	casted := Instance{*(*gdclass.ScriptLanguageExtension)(unsafe.Pointer(&object))}
-	object[0].Notification(0, false)
+	casted := Instance([1]gdclass.ScriptLanguageExtension{pointers.New[gdclass.ScriptLanguageExtension]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
@@ -1676,21 +1667,23 @@ func (class) _get_global_class_name(impl func(ptr unsafe.Pointer, path String.Re
 	}
 }
 
-func (self class) AsScriptLanguageExtension() Advanced { return *((*Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsScriptLanguageExtension() Advanced {
+	return Advanced{pointers.AsA[gdclass.ScriptLanguageExtension](self[0])}
+}
 func (self Instance) AsScriptLanguageExtension() Instance {
-	return *((*Instance)(unsafe.Pointer(&self)))
+	return Instance{pointers.AsA[gdclass.ScriptLanguageExtension](self[0])}
 }
 func (self *Extension[T]) AsScriptLanguageExtension() Instance {
 	return self.Super().AsScriptLanguageExtension()
 }
 func (self class) AsScriptLanguage() ScriptLanguage.Advanced {
-	return *((*ScriptLanguage.Advanced)(unsafe.Pointer(&self)))
+	return ScriptLanguage.Advanced{pointers.AsA[gdclass.ScriptLanguage](self[0])}
 }
 func (self *Extension[T]) AsScriptLanguage() ScriptLanguage.Instance {
 	return self.Super().AsScriptLanguage()
 }
 func (self Instance) AsScriptLanguage() ScriptLanguage.Instance {
-	return *((*ScriptLanguage.Instance)(unsafe.Pointer(&self)))
+	return ScriptLanguage.Instance{pointers.AsA[gdclass.ScriptLanguage](self[0])}
 }
 
 func (self class) Virtual(name string) reflect.Value {
@@ -1947,7 +1940,7 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("ScriptLanguageExtension", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
+	gdclass.Register("ScriptLanguageExtension", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ScriptLanguageExtension](ptr)} })
 }
 
 type LookupResultType int //gd:ScriptLanguageExtension.LookupResultType

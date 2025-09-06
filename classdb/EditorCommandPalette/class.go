@@ -159,35 +159,27 @@ type class [1]gdclass.EditorCommandPalette
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.EditorCommandPalette)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.EditorCommandPalette](obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.EditorCommandPalette)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.EditorCommandPalette](obj[0])
 		return true
 	}
 	return false
 }
-
-//go:nosplit
-func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
-
-//go:nosplit
-func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
-
 	if !gd.Linked {
-		var placeholder Instance
-		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		var placeholder = Instance([1]gdclass.EditorCommandPalette{pointers.Add[gdclass.EditorCommandPalette]([3]uint64{})})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -197,9 +189,8 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
-	casted := Instance{*(*gdclass.EditorCommandPalette)(unsafe.Pointer(&object))}
-	object[0].Notification(0, false)
+	casted := Instance([1]gdclass.EditorCommandPalette{pointers.New[gdclass.EditorCommandPalette]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
@@ -228,42 +219,52 @@ Removes the custom command from EditorCommandPalette.
 func (self class) RemoveCommand(key_name String.Readable) { //gd:EditorCommandPalette.remove_command
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_command, 0|(gdextension.SizeString<<4), unsafe.Pointer(&struct{ key_name gdextension.String }{pointers.Get(gd.InternalString(key_name))}))
 }
-func (self class) AsEditorCommandPalette() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsEditorCommandPalette() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsEditorCommandPalette() Advanced {
+	return Advanced{pointers.AsA[gdclass.EditorCommandPalette](self[0])}
+}
+func (self Instance) AsEditorCommandPalette() Instance {
+	return Instance{pointers.AsA[gdclass.EditorCommandPalette](self[0])}
+}
 func (self *Extension[T]) AsEditorCommandPalette() Instance {
 	return self.Super().AsEditorCommandPalette()
 }
 func (self class) AsConfirmationDialog() ConfirmationDialog.Advanced {
-	return *((*ConfirmationDialog.Advanced)(unsafe.Pointer(&self)))
+	return ConfirmationDialog.Advanced{pointers.AsA[gdclass.ConfirmationDialog](self[0])}
 }
 func (self *Extension[T]) AsConfirmationDialog() ConfirmationDialog.Instance {
 	return self.Super().AsConfirmationDialog()
 }
 func (self Instance) AsConfirmationDialog() ConfirmationDialog.Instance {
-	return *((*ConfirmationDialog.Instance)(unsafe.Pointer(&self)))
+	return ConfirmationDialog.Instance{pointers.AsA[gdclass.ConfirmationDialog](self[0])}
 }
 func (self class) AsAcceptDialog() AcceptDialog.Advanced {
-	return *((*AcceptDialog.Advanced)(unsafe.Pointer(&self)))
+	return AcceptDialog.Advanced{pointers.AsA[gdclass.AcceptDialog](self[0])}
 }
 func (self *Extension[T]) AsAcceptDialog() AcceptDialog.Instance {
 	return self.Super().AsAcceptDialog()
 }
 func (self Instance) AsAcceptDialog() AcceptDialog.Instance {
-	return *((*AcceptDialog.Instance)(unsafe.Pointer(&self)))
+	return AcceptDialog.Instance{pointers.AsA[gdclass.AcceptDialog](self[0])}
 }
-func (self class) AsWindow() Window.Advanced         { return *((*Window.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsWindow() Window.Advanced {
+	return Window.Advanced{pointers.AsA[gdclass.Window](self[0])}
+}
 func (self *Extension[T]) AsWindow() Window.Instance { return self.Super().AsWindow() }
-func (self Instance) AsWindow() Window.Instance      { return *((*Window.Instance)(unsafe.Pointer(&self))) }
+func (self Instance) AsWindow() Window.Instance {
+	return Window.Instance{pointers.AsA[gdclass.Window](self[0])}
+}
 func (self class) AsViewport() Viewport.Advanced {
-	return *((*Viewport.Advanced)(unsafe.Pointer(&self)))
+	return Viewport.Advanced{pointers.AsA[gdclass.Viewport](self[0])}
 }
 func (self *Extension[T]) AsViewport() Viewport.Instance { return self.Super().AsViewport() }
 func (self Instance) AsViewport() Viewport.Instance {
-	return *((*Viewport.Instance)(unsafe.Pointer(&self)))
+	return Viewport.Instance{pointers.AsA[gdclass.Viewport](self[0])}
 }
-func (self class) AsNode() Node.Advanced         { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance      { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance {
+	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
@@ -279,5 +280,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorCommandPalette", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
+	gdclass.Register("EditorCommandPalette", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EditorCommandPalette](ptr)} })
 }

@@ -178,35 +178,27 @@ type class [1]gdclass.EditorResourcePicker
 func (self class) AsObject() [1]gd.Object { return self[0].AsObject() }
 func (self *class) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.EditorResourcePicker)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.EditorResourcePicker](obj[0])
 		return true
 	}
 	return false
 }
 func (self *Instance) SetObject(obj [1]gd.Object) bool {
 	if gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), otype) != 0 {
-		self[0] = *(*gdclass.EditorResourcePicker)(unsafe.Pointer(&obj))
+		self[0] = pointers.AsA[gdclass.EditorResourcePicker](obj[0])
 		return true
 	}
 	return false
 }
-
-//go:nosplit
-func (self *class) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
-
-//go:nosplit
-func (self *Instance) UnsafePointer() unsafe.Pointer { return unsafe.Pointer(self) }
-func (self *Extension[T]) AsObject() [1]gd.Object    { return self.Super().AsObject() }
+func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 func New() Instance {
-
 	if !gd.Linked {
-		var placeholder Instance
-		*(*gd.Object)(unsafe.Pointer(&placeholder)) = pointers.Add[gd.Object]([3]uint64{})
+		var placeholder = Instance([1]gdclass.EditorResourcePicker{pointers.Add[gdclass.EditorResourcePicker]([3]uint64{})})
 		gd.StartupFunctions = append(gd.StartupFunctions, func() {
 			if gd.Linked {
 				raw, _ := pointers.End(New().AsObject()[0])
-				pointers.Set(*(*gd.Object)(unsafe.Pointer(&placeholder)), raw)
+				pointers.Set(pointers.AsA[gd.Object](placeholder[0]), raw)
 				gd.RegisterCleanup(func() {
 					if raw := pointers.Get[gd.Object](placeholder.AsObject()[0]); raw[0] != 0 && raw[1] == 0 {
 						gdextension.Host.Objects.Unsafe.Free(gdextension.Object(raw[0]))
@@ -216,9 +208,8 @@ func New() Instance {
 		})
 		return placeholder
 	}
-	object := [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})}
-	casted := Instance{*(*gdclass.EditorResourcePicker)(unsafe.Pointer(&object))}
-	object[0].Notification(0, false)
+	casted := Instance([1]gdclass.EditorResourcePicker{pointers.New[gdclass.EditorResourcePicker]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
+	casted.AsObject()[0].Notification(0, false)
 	return casted
 }
 
@@ -368,51 +359,59 @@ func (self class) ResourceChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceChanged`))))
 }
 
-func (self class) AsEditorResourcePicker() Advanced    { return *((*Advanced)(unsafe.Pointer(&self))) }
-func (self Instance) AsEditorResourcePicker() Instance { return *((*Instance)(unsafe.Pointer(&self))) }
+func (self class) AsEditorResourcePicker() Advanced {
+	return Advanced{pointers.AsA[gdclass.EditorResourcePicker](self[0])}
+}
+func (self Instance) AsEditorResourcePicker() Instance {
+	return Instance{pointers.AsA[gdclass.EditorResourcePicker](self[0])}
+}
 func (self *Extension[T]) AsEditorResourcePicker() Instance {
 	return self.Super().AsEditorResourcePicker()
 }
 func (self class) AsHBoxContainer() HBoxContainer.Advanced {
-	return *((*HBoxContainer.Advanced)(unsafe.Pointer(&self)))
+	return HBoxContainer.Advanced{pointers.AsA[gdclass.HBoxContainer](self[0])}
 }
 func (self *Extension[T]) AsHBoxContainer() HBoxContainer.Instance {
 	return self.Super().AsHBoxContainer()
 }
 func (self Instance) AsHBoxContainer() HBoxContainer.Instance {
-	return *((*HBoxContainer.Instance)(unsafe.Pointer(&self)))
+	return HBoxContainer.Instance{pointers.AsA[gdclass.HBoxContainer](self[0])}
 }
 func (self class) AsBoxContainer() BoxContainer.Advanced {
-	return *((*BoxContainer.Advanced)(unsafe.Pointer(&self)))
+	return BoxContainer.Advanced{pointers.AsA[gdclass.BoxContainer](self[0])}
 }
 func (self *Extension[T]) AsBoxContainer() BoxContainer.Instance {
 	return self.Super().AsBoxContainer()
 }
 func (self Instance) AsBoxContainer() BoxContainer.Instance {
-	return *((*BoxContainer.Instance)(unsafe.Pointer(&self)))
+	return BoxContainer.Instance{pointers.AsA[gdclass.BoxContainer](self[0])}
 }
 func (self class) AsContainer() Container.Advanced {
-	return *((*Container.Advanced)(unsafe.Pointer(&self)))
+	return Container.Advanced{pointers.AsA[gdclass.Container](self[0])}
 }
 func (self *Extension[T]) AsContainer() Container.Instance { return self.Super().AsContainer() }
 func (self Instance) AsContainer() Container.Instance {
-	return *((*Container.Instance)(unsafe.Pointer(&self)))
+	return Container.Instance{pointers.AsA[gdclass.Container](self[0])}
 }
-func (self class) AsControl() Control.Advanced         { return *((*Control.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsControl() Control.Advanced {
+	return Control.Advanced{pointers.AsA[gdclass.Control](self[0])}
+}
 func (self *Extension[T]) AsControl() Control.Instance { return self.Super().AsControl() }
 func (self Instance) AsControl() Control.Instance {
-	return *((*Control.Instance)(unsafe.Pointer(&self)))
+	return Control.Instance{pointers.AsA[gdclass.Control](self[0])}
 }
 func (self class) AsCanvasItem() CanvasItem.Advanced {
-	return *((*CanvasItem.Advanced)(unsafe.Pointer(&self)))
+	return CanvasItem.Advanced{pointers.AsA[gdclass.CanvasItem](self[0])}
 }
 func (self *Extension[T]) AsCanvasItem() CanvasItem.Instance { return self.Super().AsCanvasItem() }
 func (self Instance) AsCanvasItem() CanvasItem.Instance {
-	return *((*CanvasItem.Instance)(unsafe.Pointer(&self)))
+	return CanvasItem.Instance{pointers.AsA[gdclass.CanvasItem](self[0])}
 }
-func (self class) AsNode() Node.Advanced         { return *((*Node.Advanced)(unsafe.Pointer(&self))) }
+func (self class) AsNode() Node.Advanced         { return Node.Advanced{pointers.AsA[gdclass.Node](self[0])} }
 func (self *Extension[T]) AsNode() Node.Instance { return self.Super().AsNode() }
-func (self Instance) AsNode() Node.Instance      { return *((*Node.Instance)(unsafe.Pointer(&self))) }
+func (self Instance) AsNode() Node.Instance {
+	return Node.Instance{pointers.AsA[gdclass.Node](self[0])}
+}
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
@@ -436,5 +435,5 @@ func (self Instance) Virtual(name string) reflect.Value {
 	}
 }
 func init() {
-	gdclass.Register("EditorResourcePicker", func(ptr gd.Object) any { return *(*Instance)(unsafe.Pointer(&ptr)) })
+	gdclass.Register("EditorResourcePicker", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EditorResourcePicker](ptr)} })
 }
