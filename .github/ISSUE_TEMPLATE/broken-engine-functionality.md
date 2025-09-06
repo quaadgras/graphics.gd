@@ -1,5 +1,5 @@
 ---
-name: 'Broken Engine Functionality '
+name: 'Broken Engine Functionality'
 about: Is it a bug? + miscellaneous issues
 title: ''
 labels: broken functionality
